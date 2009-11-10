@@ -1338,6 +1338,16 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
     	}
 		return lTempFileDownloadLinkForWEEWFResults;
     }
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#isExperimentBeanType()
+	 */
+	@Override
+	public boolean isExperimentBeanType() {
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		if( AdminManagerImpl.EXECUTABLEPP.equals(expBean.getEtype()) ) return true;
+		return false;
+	}
     
 
 }

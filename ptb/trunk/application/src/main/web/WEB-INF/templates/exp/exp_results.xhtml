@@ -15,66 +15,52 @@
 <h:panelGroup rendered="#{ NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
 <!-- START Automated Results -->
 <a4j:region id="regionAutoMResults" renderRegionOnly="true">
-<rich:simpleTogglePanel label="#{res['exp_stage5.automaticResults']}" opened="true" switchType="ajax">
+
 	<p>These are the results the Testbed has automatically measured and recorded for your experiment.</p>
 
-    <rich:tabPanel width="100%" selectedTab="OverallResultTab" rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }" switchType="ajax">
-        <rich:tab label="Overall Results" name="OverallResultTab">
-     
+    <h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
+    
+<!--  Execution Log -->
 
-        <c:if test="#{ExperimentBean.etype == 'identify'}">
-        
-        <ui:include src="/WEB-INF/templates/exp-types/stage5_identify_result.xhtml">
-           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-        </ui:include>
+     <rich:dataTable value="#{ExpTypeMigrate.migrateResults}" 
+         var="res" styleClass="tbTable" reRender="dolist_ds" rows="10" width="100%">
+        <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
+          <f:facet name="header">Digital Object</f:facet>
+          <!-- 
+          <h:outputLink value="#{res.downloadURL}" styleClass="inTableIcon">
+            <t:graphicImage value="/graphics/go-down.png" alt="Download..."/>
+          </h:outputLink>
+          <h:commandLink title="View Results.">
+              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectedDigitalObjectActionListener"/>
+                 <h:outputText value="#{res.digitalObjectName}"/>
+          </h:commandLink>
+           -->
+          <h:outputLink value="#{res.downloadURL}">
+             <h:outputText value="#{res.digitalObjectName}"/>
+          </h:outputLink>
+        </rich:column>
+        <rich:column>
+          <f:facet name="header">Results</f:facet>
           
-        </c:if>
+         <a4j:repeat value="#{res.migrations}" var="mdo">
+          
+         <h:outputLink value="#{mdo.digitalObjectDownloadURL}">
+           <h:outputText value="#{mdo.digitalObjectResult}"/>
+         </h:outputLink>
+         <br/>
 
-                
-        <c:if test="#{ExperimentBean.etype == 'migrate'}">
-        
-        <ui:include src="/WEB-INF/templates/exp-types/stage5_migrate_result.xhtml">
-           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-        </ui:include>
-        
-        </c:if>
+         </a4j:repeat>
+          
 
-     
-        <c:if test="#{ExperimentBean.etype == 'emulate'}">
-        
-        <ui:include src="/WEB-INF/templates/exp-types/stage5_createview_result.xhtml">
-           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-        </ui:include>
-        
-        </c:if>
-        
-         <c:if test="#{ExperimentBean.etype == 'executablepp'}">
-        
-        <ui:include src="/WEB-INF/templates/exp-types/stage5_executablepp_result.xhtml">
-           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-        </ui:include>
-        
-        </c:if>
-
-     
-        <p>
-        The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects.
-        </p>
-        
-        </rich:tab>
-
-        
-        <rich:tab label="Service Statistics">
-            <p>
-            Runtime statistics here. e.g. execution time of each service/stage, versus (exec, type, size).
-            </p>
-            <p>
-            <img src="#{ExperimentBean.servicePlotImageUrl}" />
-            </p>
-        </rich:tab>
-        
-        <rich:tab label="Raw Execution Log" name="ExeLogTab">
+          
+        </rich:column>
+        <f:facet name="footer">
+          <rich:datascroller id="dolist_ds" renderIfSinglePage="false"></rich:datascroller>
+        </f:facet>
+     </rich:dataTable>
             
+<!--  Execution Log -->
+
 <h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="doListColumn,expDesignColumn">
             <rich:panel styleClass="expExecLogPanel">
                 
@@ -168,21 +154,19 @@
         </h:outputLink>
     </p>
 
-        </rich:tab>
+    <!-- Graphs -->
+    
+            <p>
+            Runtime statistics here. e.g. execution time of each service/stage, versus (exec, type, size).
+            </p>
+            <p>
+            <img src="#{ExperimentBean.servicePlotImageUrl}" />
+            </p>
         
-        <rich:tab label="Server Specification">
-       	 <ui:include src="/WEB-INF/templates/server_spec.xhtml" />
-        </rich:tab>
-        
-     </rich:tabPanel>
-
-</rich:simpleTogglePanel>
+	</h:panelGroup>
 
 </a4j:region>
 <!-- END Automated Results -->
-
-<!-- Manual evaluation: -->
-<ui:include src="/WEB-INF/templates/exp_stage5_manual_properties.xhtml"/>
 
 
 </h:panelGroup>

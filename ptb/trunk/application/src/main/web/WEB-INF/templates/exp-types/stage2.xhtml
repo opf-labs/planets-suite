@@ -11,19 +11,15 @@
 <body>
   <ui:composition rendered="#{ExperimentBean != null}">
 
-        <h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="expDesignColumn,doListColumn">
-            <rich:panel styleClass="expTypePanel">
-                <f:facet name="header">
-                Experiment Design
-                </f:facet>
 
-
-<h:panelGroup rendered="#{ ! ExperimentBean.approved}">
+<h:panelGroup rendered="#{ ! ReadOnly}">
+  <p>At this stage you can specify the design your experiment.  This involves selecting an <b>experiment type</b> and one or more <b>preservation services</b> in the left-hand section of the page, and selecting the <b>digital objects</b> you wish to pass through your chosen services in the right-hand section of the page.</p>
+  
   <p>
     <h:outputLabel value="#{res['new_exp.expEtype']}" for="etype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
         <h:selectOneMenu id="etype" onchange="submit();" required="false"
         value="#{ExperimentBean.etype}"  style="width: 23em;"
- readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
+ readonly="#{ReadOnly}" disabled="#{ReadOnly}">
                 <f:selectItem itemValue="" itemLabel="Select..."/>
                 <f:selectItems value="#{NewExp_Controller.availableExperimentTypes}" />
         </h:selectOneMenu>
@@ -32,13 +28,17 @@
 	<!--  
     <h:commandButton value="#{res['button.select']}"
              action="success"
-             disabled="#{ExperimentBean.approved}" rendered="#{ExperimentBean.etype == ''}"/>
+             disabled="#{ReadOnly}" rendered="#{ExperimentBean.etype == ''}"/>
 	
     <h:commandButton value="#{res['button.change']}"
              action="success"
-             disabled="#{ExperimentBean.approved}" rendered="#{ExperimentBean.etype != ''}"/>
+             disabled="#{ReadOnly}" rendered="#{ExperimentBean.etype != ''}"/>
 	-->
-   &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipExperimentType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+   &nbsp;&nbsp;
+   <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+     <ui:param name="toolTip" value="#{res['new_exp.tooltipExperimentType']}" />
+   </ui:include>
+   
    </p>
    
   <h:message for="etype" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
@@ -50,23 +50,16 @@
     <ui:include src="/WEB-INF/templates/exp-types/stage2_workflow.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
     </ui:include>
-                
-            </rich:panel>
-            
-            <rich:panel styleClass="doListPanel">
-                <f:facet name="header" >
-                    Digital Objects
-                </f:facet>
 
-                <h:panelGroup rendered="#{!ExperimentBean.approved}">
+                <h:panelGroup rendered="#{!ReadOnly}">
                 <fieldset>
                         <legend>#{res['exp_stage2.addDOs']}</legend>
                                      
                          <p class="center">
                           <h:commandButton value="#{res['browse_data.selectData']}"
                            action="browseForData"
-                           disabled="#{ExperimentBean.approved}"
-                           readonly="#{ExperimentBean.approved}"/>
+                           disabled="#{ReadOnly}"
+                           readonly="#{ReadOnly}"/>
                          </p>
 
                 <fieldset>
@@ -79,13 +72,13 @@
                                   styleClass="fileUploadInput"
                                   required="false"
                                   maxlength="10000000"  
-                                  readonly="#{ExperimentBean.approved}" 
-                                  disabled="#{ExperimentBean.approved}"/>
+                                  readonly="#{ReadOnly}" 
+                                  disabled="#{ReadOnly}"/>
                                   
                             <h:commandLink id="link_addFileInputItem" 
                                 action="#{NewExp_Controller.commandAddInputDataItem}" 
-                                disabled="#{ExperimentBean.approved}"
-                                readonly="#{ExperimentBean.approved}">
+                                disabled="#{ReadOnly}"
+                                readonly="#{ReadOnly}">
                                 <t:graphicImage value="/graphics/list-add.png" alt="Add" title="Add"/> #{res['button.add']}
                             </h:commandLink>
                             <h:message for="fileupload" rendered="#{ExperimentBean.numberOfInputFiles gt 0}"/>                            
@@ -114,7 +107,7 @@
                     <h:panelGroup id="addedFileInfoPanel">
                            <t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
                                          layout="unorderedList" rowIndexVar="rowi">
-                                 <h:commandLink title="Remove this Digital Object." rendered="#{ExperimentBean.approved==false}">
+                                 <h:commandLink title="Remove this Digital Object." rendered="#{ReadOnly==false}">
                                    <f:actionListener type="eu.planets_project.tb.gui.backing.exp.RemoveDigitalObjectActionListener"/>
                                    <t:graphicImage value="/graphics/user_trash.png" alt="Delete"/>
                                  </h:commandLink>
@@ -125,12 +118,8 @@
                     <p>Use the above buttons to add more Digital Objects to this experiment.  You can select data from the data registry (data you've uploaded using your FTP account can be found here).  You can also upload files to this experiment one at a time using the 'Upload Data' option.</p>
                         
                 </fieldset>
-
                 
-            </rich:panel>
-        </h:panelGrid>
-
-
+            
   </ui:composition>
 </body>
 </html>

@@ -202,6 +202,8 @@ public class WEEBatchExperimentTestbedUpdater {
 	private void helperUpdateExpWithBatchRecord(Experiment exp,BatchExecutionRecordImpl record){
     	exp.getExperimentExecutable().getBatchExecutionRecords().add(record);
 		exp.getExperimentExecutable().setExecutionCompleted(true);
+        exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+        exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);   
 		//testbedMan.updateExperiment(exp);
 		edao.updateExperiment(exp);
 	}

@@ -9,16 +9,14 @@
     xmlns:a4j="http://richfaces.org/a4j"
     xmlns:rich="http://richfaces.org/rich">
 <body>
-  <ui:composition rendered="#{ExperimentBean.etype == 'migrate'}">
-
-<h:panelGroup id="workflowRegion">
+  <ui:composition rendered="#{ExpTypeMigrate.experimentBeanType}">
 
 <fieldset>
     <legend>Migration Experiment</legend>
     
     <div class="expStartDO">
     For every Digital Object, migrate from input format:<br/>
-    <h:panelGroup rendered="#{!ExperimentBean.approved}">
+    <h:panelGroup rendered="#{!ReadOnly}">
     <span style="color:red;font-weight:bold;"> *</span>
     <a4j:region>
     <h:selectOneMenu id="inputFormatSelectMenu" value="#{ExpTypeMigrate.inputFormat}">
@@ -28,7 +26,7 @@
     </h:selectOneMenu>
     </a4j:region>
     </h:panelGroup>
-    <h:panelGroup rendered="#{ExperimentBean.approved}">
+    <h:panelGroup rendered="#{ReadOnly}">
       <h:outputText value="#{ExpTypeMigrate.inputFormat}"/>
     </h:panelGroup>
     
@@ -38,14 +36,14 @@
       <t:graphicImage value="/graphics/go-down.png" alt="...then..."/>
     </div>
 
-
+<!-- 
     <div class="expChooseService">
     <div class="expStageHeader">Characterise Before</div>
     
-    <h:panelGroup rendered="#{!ExperimentBean.approved}">
+    <h:panelGroup rendered="#{!ReadOnly}">
     <a4j:region>
     <h:selectOneMenu id="preServiceSelectMenu" value="#{ExpTypeMigrate.preMigrationService}"
-            disabled="#{ExperimentBean.approved}">
+            disabled="#{ReadOnly}">
          <f:selectItem itemValue="" itemLabel="Do not characterise." />
          <f:selectItems value="#{ExpTypeMigrate.preMigrationServiceList}" />
          <a4j:support event="onchange" reRender="workflowRegion" />
@@ -53,7 +51,7 @@
     </a4j:region>
     </h:panelGroup>
                  
-    <h:panelGroup rendered="#{ExperimentBean.approved}">
+    <h:panelGroup rendered="#{ReadOnly}">
       <h:outputText value="#{ExpTypeMigrate.preMigrationService}" />
     </h:panelGroup>
              
@@ -62,15 +60,16 @@
     <div class="expSimpleStep">
       <t:graphicImage value="/graphics/go-down.png" alt="...then..."/>
     </div>
+ -->
     
     <div class="expChooseService">
     <div class="expStageHeader">Migrate</div>
     Pass Through This Migration Service:<br/>
     
-    <h:panelGroup rendered="#{!ExperimentBean.approved}">
+    <h:panelGroup rendered="#{!ReadOnly}">
     <span style="color:red;font-weight:bold;"> *</span>
     <a4j:region>
-    <h:selectOneMenu id="serviceSelectMenu" value="#{ExpTypeMigrate.migrationService}">
+    <h:selectOneMenu id="migrateServiceSelectMenu" value="#{ExpTypeMigrate.migrationService}">
          <f:selectItem itemValue="" itemLabel="[undefined]" />
          <f:selectItems value="#{ExpTypeMigrate.migrationServiceList}" />
          <a4j:support event="onchange" reRender="workflowRegion" />
@@ -78,7 +77,7 @@
     </a4j:region>
     </h:panelGroup>
     
-    <h:panelGroup rendered="#{ExperimentBean.approved}">
+    <h:panelGroup rendered="#{ReadOnly}">
       <h:outputText value="#{ExpTypeMigrate.migrationService}" />
     </h:panelGroup>
     
@@ -87,14 +86,15 @@
     <div class="expSimpleStep">
       <t:graphicImage value="/graphics/go-down.png" alt="...then..."/>
     </div>
-    
+
+<!-- 
     <div class="expChooseService">
     <div class="expStageHeader">Characterise After</div>
     
-    <h:panelGroup rendered="#{!ExperimentBean.approved}">
+    <h:panelGroup rendered="#{!ReadOnly}">
     <a4j:region>
     <h:selectOneMenu id="postServiceSelectMenu" value="#{ExpTypeMigrate.postMigrationService}"
-            disabled="#{ExperimentBean.approved}">
+            disabled="#{ReadOnly}">
          <f:selectItem itemValue="" itemLabel="Do not characterise." />
          <f:selectItems value="#{ExpTypeMigrate.postMigrationServiceList}" />
          <a4j:support event="onchange" reRender="workflowRegion" />
@@ -102,7 +102,7 @@
     </a4j:region>
     </h:panelGroup>
 
-    <h:panelGroup rendered="#{ExperimentBean.approved}">
+    <h:panelGroup rendered="#{ReadOnly}">
       <h:outputText value="#{ExpTypeMigrate.postMigrationService}" />
     </h:panelGroup>
              
@@ -111,12 +111,13 @@
     <div class="expSimpleStep">
       <t:graphicImage value="/graphics/go-down.png" alt="...then..."/>
     </div>
+ -->    
 
     <div class="expResultBox">
     <div class="expStageHeader">Result</div>
     A new Digital Object of format:<br/>
     <span style="color:red;font-weight:bold;"> *</span>
-    <h:panelGroup rendered="#{!ExperimentBean.approved}">
+    <h:panelGroup rendered="#{!ReadOnly}">
     <a4j:region>
     <h:selectOneMenu id="outputFormatSelectMenu" value="#{ExpTypeMigrate.outputFormat}">
          <f:selectItem itemValue="" itemLabel="[undefined]" />
@@ -125,15 +126,13 @@
     </h:selectOneMenu>
     </a4j:region>
     </h:panelGroup>
-    <h:panelGroup rendered="#{ExperimentBean.approved}">
+    <h:panelGroup rendered="#{ReadOnly}">
       <h:outputText value="#{ExpTypeMigrate.outputFormat}"/>
     </h:panelGroup>
     
     </div>
     
 </fieldset>
-
-</h:panelGroup>
 
   </ui:composition>
 </body>

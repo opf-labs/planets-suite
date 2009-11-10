@@ -149,6 +149,17 @@
             <value>#{param['serviceHash']}</value>
         </managed-property>
 	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>ExperimentInspector</managed-bean-name>
+		<managed-bean-class>eu.planets_project.tb.gui.backing.exp.ExperimentInspector</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>experimentId</property-name>
+            <value>#{param['eid']}</value>
+        </managed-property>
+	</managed-bean>
+	
 	<managed-bean>
 		<managed-bean-name>PlanetsSharedBean</managed-bean-name>
 		<managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
@@ -222,26 +233,6 @@
 			<from-outcome>upload_data</from-outcome>
 			<to-view-id>/admin/upload_data.xhtml</to-view-id>
 			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<!-- register_TBServices -->
-			<from-action>#{Manager_Backing.initRegisterTBService}</from-action>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<!-- render_TBServices -->
-			<from-action>#{Manager_Backing.initTBServiceDisplayer}</from-action>
-			<to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<!-- remove_TBServices -->
-			<from-action>#{Manager_Backing.initTBServiceManager}</from-action>
-			<to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<!-- import_TBServices through config file -->
-			<from-action>#{Manager_Backing.initTBServiceImporter}</from-action>
-			<to-view-id>/admin/import_registeredTBServices.xhtml</to-view-id>
 		</navigation-case>
 
 		<navigation-case>
@@ -326,189 +317,6 @@
 		</navigation-case>
 	</navigation-rule>
 
-<!-- Start Navigation Rules: General Navigation Rules -->
- <navigation-rule>
-  <from-view-id>/*</from-view-id>
-  <navigation-case>
-   <from-outcome>home</from-outcome>
-   <to-view-id>/reader/welcome.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>login</from-outcome>
-   <to-view-id>/login.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-action>#{Manager_Backing.initExperimentAction}</from-action>
-   <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>import_experiment</from-outcome>
-   <to-view-id>/exp/import_exp.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>my_experiments</from-outcome>
-   <to-view-id>/exp/my_exp.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>browse_experiments</from-outcome>
-   <to-view-id>/reader/browse_exp.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>service_inspector</from-outcome>
-   <to-view-id>/reader/service_inspector.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>browse_services</from-outcome>
-   <to-view-id>/reader/browse_services.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>browse_data</from-outcome>
-   <to-view-id>/reader/browse_data.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-action>#{Manager_Backing.initOntologDnDBean}</from-action>
-   <to-view-id>/reader/browse_ontology.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-action>browse_ontology</from-action>
-   <to-view-id>/reader/browse_ontology.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>exp_scheduler</from-outcome>
-   <to-view-id>/admin/exp_scheduler.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>manage_tb</from-outcome>
-   <to-view-id>/admin/manage_tb.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>upload_data</from-outcome>
-   <to-view-id>/admin/upload_data.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <!-- register_TBServices -->
-   <from-action>#{Manager_Backing.initRegisterTBService}</from-action>
-   <to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-  <!-- render_TBServices -->
-   <from-action>#{Manager_Backing.initTBServiceDisplayer}</from-action>
-   <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-  <!-- remove_TBServices -->
-   <from-action>#{Manager_Backing.initTBServiceManager}</from-action>
-   <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-  <!-- import_TBServices through config file -->
-   <from-action>#{Manager_Backing.initTBServiceImporter}</from-action>
-   <to-view-id>/admin/import_registeredTBServices.xhtml</to-view-id>
-  </navigation-case>
-
-	<navigation-rule>
-		<from-view-id>/edit_comment.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/reader/browse_exp.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-  <navigation-case>
-   <from-outcome>help</from-outcome>
-   <to-view-id>/public/help.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-   <navigation-case>
-   <from-outcome>about</from-outcome>
-   <to-view-id>/public/about.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>server</from-outcome>
-   <to-view-id>/reader/server.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-action>#{Login_Backing.logout}</from-action>
-   <from-outcome>success</from-outcome>
-   <to-view-id>/reader/welcome.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
- 
- <!-- navigating between stages of experiment wizard -->
- <navigation-rule>
-  <from-view-id>/*</from-view-id>
-  <navigation-case>
-   <from-outcome>goToStage1</from-outcome>
-   <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>goToStage2</from-outcome>
-   <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>goToStage3</from-outcome>
-   <to-view-id>/exp/exp_stage3.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>goToStage4</from-outcome>
-   <to-view-id>/exp/exp_stage4.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>goToStage5</from-outcome>
-   <to-view-id>/exp/exp_stage5.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>goToStage6</from-outcome>
-   <to-view-id>/exp/exp_stage6.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>completeExperiment</from-outcome>
-   <to-view-id>/exp/my_exp.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>viewExperimentReport</from-outcome>
-   <to-view-id>/reader/view_exp.xhtml</to-view-id>
-  </navigation-case>  
-  <navigation-case>
-   <from-outcome>viewExperimentExeManager</from-outcome>
-   <to-view-id>/admin/manage_exp.xhtml</to-view-id>
-  </navigation-case>  
-  <navigation-case>
-   <from-outcome>addComment</from-outcome>
-   <to-view-id>/edit_comment.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>browseForData</from-outcome>
-   <to-view-id>/exp/browse_data.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>configAutoEvalSer</from-outcome>
-   <to-view-id>/exp/bmGoalAutoEvaluation/config_auto_eval_ser.xhtml</to-view-id>
-  </navigation-case>
- </navigation-rule>
- 
  <navigation-rule>
   <from-view-id>/edit_comment.xhtml</from-view-id>
   <navigation-case>
@@ -582,14 +390,17 @@
   <navigation-case>
    <from-outcome>viewExp</from-outcome>
    <to-view-id>/reader/view_exp.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>editExp</from-outcome>
    <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>selectDelete</from-outcome>
    <to-view-id>/admin/exp_delete.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -640,266 +451,6 @@
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
-
-	<!-- navigation rules for NEW_EXPERIMENT pages -->
-	<navigation-rule>
-		<from-view-id>/exp/exp_stage1.xhtml</from-view-id>
-		<navigation-case>
-			<from-action>#{NewExp_Controller.updateBasicPropsAction}</from-action>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/exp/exp_stage2.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<!--
-		navigating between stages of reader's version of the experiment wizard
-	-->
-	<navigation-rule>
-		<navigation-case>
-			<from-outcome>goToReaderStage1</from-outcome>
-			<to-view-id>/reader/exp_stage1.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>goToReaderStage2</from-outcome>
-			<to-view-id>/reader/exp_stage2.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>goToReaderStage3</from-outcome>
-			<to-view-id>/reader/exp_stage3.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>goToReaderStage4</from-outcome>
-			<to-view-id>/reader/exp_stage4.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>goToReaderStage5</from-outcome>
-			<to-view-id>/reader/exp_stage5.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>goToReaderStage6</from-outcome>
-			<to-view-id>/reader/exp_stage6.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<!-- navigation rules for MY_EXPERIMENT page -->
-	<navigation-rule>
-		<from-view-id>/exp/my_exp.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>editExp</from-outcome>
-			<to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>viewExp</from-outcome>
-			<to-view-id>/reader/view_exp.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<from-view-id>/admin/exp_delete.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>expDeleted</from-outcome>
-			<to-view-id>/reader/browse_exp.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<from-view-id>/reader/browse_exp.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>viewExp</from-outcome>
-			<to-view-id>/reader/view_exp.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>editExp</from-outcome>
-			<to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>selectDelete</from-outcome>
-			<to-view-id>/admin/exp_delete.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<from-view-id>/reader/exp_stage1.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>goToReaderStage2</from-outcome>
-			<to-view-id>/reader/exp_stage2.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<from-view-id>/reader/exp_stage2.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>goToReaderStage3</from-outcome>
-			<to-view-id>/reader/exp_stage3.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<from-view-id>/reader/exp_stage3.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>goToReaderStage4</from-outcome>
-			<to-view-id>/reader/exp_stage4.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<from-view-id>/reader/exp_stage4.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>goToReaderStage5</from-outcome>
-			<to-view-id>/reader/exp_stage5.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<from-view-id>/reader/exp_stage5.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>goToReaderStage6</from-outcome>
-			<to-view-id>/reader/exp_stage6.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<from-view-id>/reader/view_exp.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>goToBrowseExperiments</from-outcome>
-			<to-view-id>/reader/browse_exp.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-
-	<!-- Navigation for Register TB Service Wizzard (Admin role)-->
-	<!-- for all wizard steps -->
-	<navigation-rule>
-		<from-view-id>/admin/SerRegWizard/*</from-view-id>
-		<navigation-case>
-			<from-outcome>error-analyze</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBServices_error.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>general-error-page</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBServices_error.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>error-send</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBServices_error.xhtml</to-view-id>
-		</navigation-case>
-		<!-- left col wizard navigation options -->
-		<navigation-case>
-			<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
-			<from-outcome>step1</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
-			<from-outcome>step2</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
-			<from-outcome>step3</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
-			<from-outcome>step3</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
-			<from-outcome>step4</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
-			<from-outcome>step5</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<!-- Wizard step1 -->
-	<navigation-rule>
-		<from-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>reload-page</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>success-analyze</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>goTo_nextWizardStep</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<!-- Wizard step2 -->
-	<navigation-rule>
-		<from-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>reload-page</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>goTo_nextWizardStep</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<!-- Wizard step3 -->
-	<navigation-rule>
-		<from-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>reload-page</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>success-send</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<!-- Wizard step4 -->
-	<navigation-rule>
-		<from-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>reload-page</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>goTo_nextWizardStep</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<!-- Wizard step5 -->
-	<navigation-rule>
-		<from-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>reload-page</from-outcome>
-			<to-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<!-- End register TB Service Wizzard rules-->
-
-	<!-- page: overview_registeredTBServices.xhtml -->
-	<navigation-rule>
-		<from-view-id>/admin/overview_registeredTBServices.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>reload-page</from-outcome>
-			<to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<!-- page: remove_registeredTBServices.xhtml -->
-	<navigation-rule>
-		<from-view-id>/admin/remove_registeredTBServices.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>reload-page</from-outcome>
-			<to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
 
 	<!--
 		page: experimenter settings for auto-evaluation service settings

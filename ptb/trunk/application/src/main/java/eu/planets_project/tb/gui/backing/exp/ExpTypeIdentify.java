@@ -199,5 +199,17 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
 	public void checkExpTypeBean_Step2_WorkflowConfigurationOK() throws Exception{
 		// TODO Auto-generated method stub
 	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#isExperimentBeanType()
+	 */
+	@Override
+	public boolean isExperimentBeanType() {
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		log.info("Checking "+expBean.getEtype()+" eq "+AdminManagerImpl.IDENTIFY+" : "+AdminManagerImpl.IDENTIFY.equals(expBean.getEtype()));
+		if( AdminManagerImpl.IDENTIFY.equals(expBean.getEtype()) ) return true;
+		return false;
+	}
+	
     
 }

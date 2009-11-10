@@ -30,18 +30,12 @@
        <ui:param name="ExperimentPhase" value="5" />
        <ui:param name="PlaceBandAsHeader" value="true" />
     </ui:include>
+    
+<!-- ************** Analyse Results *************  -->
 
-<!-- *************** Execution *************** -->
-
-    <ui:include src="/WEB-INF/templates/exp/exp_execution.xhtml">
+    <ui:include src="/WEB-INF/templates/exp/exp_analyse.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-    </ui:include>
-
-
-<!-- ************** Execution Results *************  -->
-
-    <ui:include src="/WEB-INF/templates/exp/exp_results.xhtml">
-       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ReadOnly" value="#{false}" />
     </ui:include>
 
 <!-- ******************  -->

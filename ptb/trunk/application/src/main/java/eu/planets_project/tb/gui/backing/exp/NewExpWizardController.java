@@ -242,11 +242,11 @@ public class NewExpWizardController{
         // Attempt to approve the experiment, and forward appropriately
         if( ! AdminManagerImpl.experimentRequiresApproval(exp) ) {
             autoApproveExperiment();
-            return "goToStage5";
+            return "goToStage3";
         }
         // Otherwise, await approval:
         AdminManagerImpl.requestExperimentApproval(exp);
-        return "goToStage4";
+        return "goToStage2";
     }
     
     public String unsubmitAndEdit() {
@@ -917,8 +917,8 @@ public class NewExpWizardController{
      * This one saves and attempts to submit.
      * @return
      */
-    public String commandSaveStage3AndSubmit() {
-        String result = this.commandSaveExperiment(3);
+    public String commandSaveStage2AndSubmit() {
+        String result = this.commandSaveExperiment(2);
         if( "success".equals(result)) {
             return submitForApproval();
         } else {
@@ -1365,6 +1365,8 @@ public class NewExpWizardController{
               log.info("Got No Such Job.");
               exp.getExperimentExecutable().setExecutionSuccess(false);
               exp.getExperimentExecutable().setExecutionCompleted(true);
+              exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+              exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);   
               testbedMan.updateExperiment(exp);
               return -1;
           } else if( pb.getJobStatus(job_key).equals(TestbedBatchJob.NOT_STARTED) ) {
@@ -1378,6 +1380,9 @@ public class NewExpWizardController{
 
           } else {
               log.info("Got job complete.");
+              exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+              exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);   
+              testbedMan.updateExperiment(exp);
               // Appears to need to return a number greater that 100 in order to force the progress bar to refresh properly.
               return 101;
           }

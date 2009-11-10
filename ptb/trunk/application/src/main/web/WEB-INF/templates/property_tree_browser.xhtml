@@ -69,8 +69,11 @@
 							        defaultLabel="click here to change" >
 							<f:selectItems id="treeviews" value="#{OntologyDnDBean.availableViews}" />
 						    <a4j:support id="treeviewchange" event="onviewactivated" reRender="propertytree" eventsQueue="foo"/>
-						</rich:inplaceSelect>	
-						<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['browse_ontology.tree_view']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+						</rich:inplaceSelect>
+						
+				  		<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+        					<ui:param name="toolTip" value="#{res['browse_ontology.tree_view']}" />
+				      	</ui:include>
 						</p>
 					</a4j:region>
 

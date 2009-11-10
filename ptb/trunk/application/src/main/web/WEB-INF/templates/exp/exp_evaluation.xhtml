@@ -11,11 +11,6 @@
 <body>
   <ui:composition rendered="#{ExperimentBean != null}">
   
-    <ui:include src="/WEB-INF/templates/exp-types/stage2.xhtml">
-       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-       <ui:param name="ReadOnly" value="#{ReadOnly}" />
-    </ui:include>
-      
   </ui:composition>
 </body>
 </html>

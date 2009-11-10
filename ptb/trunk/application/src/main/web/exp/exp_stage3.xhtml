@@ -17,15 +17,13 @@
 		<ui:include src="/WEB-INF/templates/header.xhtml">
 			<ui:param name="page" value="new_exp" />
 		</ui:include>
-		<script type="text/javascript"
-			src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>
 	</ui:define>
 
 	<ui:define name="content" rendered="#{ExperimentBean != null}">
 		<div id="mainwrapper">
 			<div id="maincol">
 				<div class="innertubemain">        
-<a4j:form>
+<h:form>
 
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
        <ui:param name="ExperimentPhase" value="3" />
@@ -34,9 +32,11 @@
 
       <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
 
+<!-- ************** Experiment Approval/Execution *************  -->
 
-    <ui:include src="/WEB-INF/templates/exp/exp_benchmark_goals.xhtml">
+    <ui:include src="/WEB-INF/templates/exp/exp_approve_and_run.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ReadOnly" value="#{false}" />
     </ui:include>
 
 
@@ -46,7 +46,7 @@
        <ui:param name="PlaceBandAsHeader" value="false" />
     </ui:include>
 
-</a4j:form>
+</h:form>
 
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />

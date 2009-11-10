@@ -200,13 +200,27 @@ public class ExperimentImpl extends ExperimentPhaseImpl
      */
     public int getCurrentPhaseIndex() {
         int index = this.getCurrentPhasePointer() + 1;
-        if( index >= 2 ) index += 2;
-        // Patch in the early phases
-        if( index == 1 && this.getExperimentSetup().getSubStage() > 0 ) {
-            index = this.getExperimentSetup().getSubStage();
+        if( index >= 2 ) {
+        	index += 2;
+        } else {
+        	// Patch in the early phases
+        	if( index == 1 && this.getExperimentSetup().getSubStage() > 0 ) {
+        		index = this.getExperimentSetup().getSubStage();
+        	}
         }
+        // Now re-map down to reflect the new wizard stages.
+        if( index == 1 ) index = 1; // Start
+        else if ( index == 2 ) index = 2; // Design
+        else if ( index == 3 ) index = 2; // Design
+        else if ( index == 4 ) index = 3; // Approving
+        else if ( index == 5 ) index = 3; // Running
+        else if ( index == 6 ) index = 6; // Evaluating
+        else if ( index == 7 ) index = 7; // Finalise
+        
         return index;
     }
+    
+    
 
     /**
 	 * @param iPhaseNr may reach from 0..3, representing 
@@ -306,16 +320,24 @@ public class ExperimentImpl extends ExperimentPhaseImpl
      * 
      */
     public static void resetToApprovedStage( Experiment exp ) {
+    	log.info("Resetting experiment to 'Approved': "+exp.getExperimentSetup().getBasicProperties().getExperimentName());
+    	// Wipe any results
+    	exp.getExperimentExecutable().getBatchExecutionRecords().clear();
+    	exp.getExperimentExecutable().setBatchExecutionIdentifier(null);
+    	// Set the state
         exp.getExperimentExecutable().setExecutableInvoked(false);
         exp.getExperimentExecutable().setExecutionCompleted(false);
         exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
-        exp.getExperimentEvaluation().setState(Experiment.STATE_NOT_STARTED);   
+        exp.getExperimentEvaluation().setState(Experiment.STATE_NOT_STARTED);
     }
 
     /**
      * 
      */
     public static void resetToEditingStage(Experiment exp ) {
+    	// Revert exec:
+    	resetToApprovedStage(exp);
+    	// And revert further:
         AdminManagerImpl.toEditFromDenied(exp);
     }
     

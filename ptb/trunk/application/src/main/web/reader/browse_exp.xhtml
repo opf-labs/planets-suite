@@ -37,7 +37,7 @@
     <t:dataTable id="dataTable_allExp"
                  styleClass="tbTable"
                  var="exp"
-                 value="#{ListExp_Backing.allExperiments}"
+                 value="#{ListExp_Backing.allMatchingExperiments}"
                  preserveDataModel="false"
                  rows="#{ListExp_Backing.allExpPageSize}"
                  rowId="#{exp.experimentSetup.basicProperties.experimentName}"
@@ -54,7 +54,8 @@
                     #{res['expList.colHeader.expName']}
                 </t:commandSortHeader>
             </f:facet>
-                <a4j:commandLink action="#{ListExp_Backing.readerExperimentAction}">
+                <h:outputLink value="view_exp.faces" id="editExpActionLink" styleClass="editExpAction">
+                    <f:param name="eid" value="#{exp.entityID}"/>
                     <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
                 	<rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="ajax">
 	               		<rich:menuItem id="contextViewExp" action="#{ListExp_Backing.readerExperimentAction}">
@@ -70,10 +71,7 @@
 							<b>export</b> experiment
 						</rich:menuItem>
 	          		</rich:contextMenu>
-                </a4j:commandLink>
-                <a4j:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
-                    <t:graphicImage value="/graphics/accessories-text-editor.png" alt="edit" styleClass="expEditIcon"/>
-                </a4j:commandLink>
+                </h:outputLink>
         </t:column>
         <t:column>
 	        <f:facet name="header">
@@ -109,6 +107,9 @@
 	    	      #{res['expList.colHeader.currentStage']}
 		  </t:commandSortHeader>
 			</f:facet>		      
+                <h:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
+                    <t:graphicImage value="/graphics/accessories-text-editor.png" alt="edit" styleClass="expEditIcon"/>
+                </h:commandLink>
             <h:outputText value="#{exp.currentPhase.phaseName}" />
         </t:column>
         <t:column>

@@ -213,5 +213,10 @@ public abstract class ExpTypeBackingBean {
      * @throws Exception use the Exception to pass a meaningfull statement to the user
      */
     public abstract void checkExpTypeBean_Step2_WorkflowConfigurationOK() throws Exception;
+    
+    /**
+     * @return true if the ExperimentBean is of this type.
+     */
+    public abstract boolean isExperimentBeanType();
 
 }

@@ -42,7 +42,7 @@
       <h:commandButton value="#{res['button.saveas']}"
          action="#{NewExp_Controller.commandSaveAs}" rendered="#{ExperimentBean.currentStage > 1 and not PlaceBandAsHeader}"
          title="#{res['button.saveAsTitle']}" />
-      
+      <!-- Stage 1: Basic Properties -->
       <c:if test="#{ExperimentPhase == 1}">
       <h:commandButton value="#{res['button.save']}"
                                     action="#{NewExp_Controller.commandSaveStage1}"
@@ -52,37 +52,36 @@
         <h:commandButton value="#{res['reader_exp.buttonStage1']}" 
               action="goToStage2" rendered="#{ExperimentBean.approved}"/>
       </c:if>
+      <!-- Stage 2: Design Experiment -->
       <c:if test="#{ExperimentPhase == 2}">
         <h:commandButton value="#{res['button.save']}"
                                     action="#{NewExp_Controller.commandSaveStage2}"
                                     rendered="#{! ExperimentBean.approved}" />
-        <h:commandButton value="#{res['new_exp.saveStage2']}"
-                                    action="#{NewExp_Controller.commandSaveStage2AndGotoStage3}"
-                                    rendered="#{! ExperimentBean.approved}" />
+        <h:commandButton value="#{res['exp_stage2.saveSubmit']}" 
+              action="#{NewExp_Controller.commandSaveStage2AndSubmit}" rendered="#{! ExperimentBean.approved}"/>
         <h:commandButton value="#{res['reader_exp.buttonStage2']}" 
               action="goToStage3" rendered="#{ExperimentBean.approved}"/>
       </c:if>
+      <!-- Stage 3: Approve/Run Experiment -->
       <c:if test="#{ExperimentPhase == 3}">
-        <h:commandButton value="#{res['button.save']}"
-                                    action="#{NewExp_Controller.commandSaveStage3}"
-                                    rendered="#{! ExperimentBean.approved}" />
-        <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
-              action="#{NewExp_Controller.commandSaveStage3AndSubmit}" rendered="#{! ExperimentBean.approved}"/>
         <h:commandButton value="#{res['reader_exp.buttonStage3']}" 
-              action="goToStage4" rendered="#{ExperimentBean.approved}"/>
+              action="goToStage4" disabled="#{! ExperimentBean.approved}"/>
       </c:if>
+      <!-- Stage 4: Experiment Results -->
       <c:if test="#{ExperimentPhase == 4}">
         <h:commandButton value="#{res['exp_stage4.button.proceed']}"
                 action="goToStage5" disabled="#{ ! ExperimentBean.experiment.approved}" rendered="#{ExperimentBean.currentStage lt 7}"/>
         <h:commandButton value="#{res['reader_exp.buttonStage4']}"
        		action="goToStage5" rendered="#{ExperimentBean.currentStage gt 6}"/>
       </c:if>
+      <!-- Stage 5: Analyse Results -->
       <c:if test="#{ExperimentPhase == 5}">
          <h:commandButton value="#{res['exp_stage5.button.proceed']}"
-                action="#{NewExp_Controller.proceedToStep6Evaluation}" disabled="#{NewExp_Controller.experimentExecutable.executionRunning}" rendered="#{ExperimentBean.currentStage lt 7}"/>
+                action="#{NewExp_Controller.proceedToStep6Evaluation}" rendered="#{ExperimentBean.currentStage lt 7}"/>
       	 <h:commandButton value="#{res['reader_exp.buttonStage5']}"
        		action="goToStage6" rendered="#{ExperimentBean.currentStage gt 6}"/>
       </c:if>
+      <!-- Stage 6 : Evaluate Experiment-->
       <c:if test="#{ExperimentPhase == 6}">
       <h:commandButton value="refresh page" action="goToStage6" rendered="#{ExperimentBean.currentStage lt 7}"/>
       <h:commandButton value="#{res['exp_stage6.finalize']}"

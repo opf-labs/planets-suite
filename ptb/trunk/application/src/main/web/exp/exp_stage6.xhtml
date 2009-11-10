@@ -34,6 +34,12 @@
 
 </h:form>
 
+    <ui:include src="/WEB-INF/templates/exp/exp_evaluation.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ReadOnly" value="#{false}" />
+    </ui:include>
+
+<!-- ************** Evaluate Experiment *************  -->
 
     <!-- Manual evaluation: -->
     <ui:include src="/WEB-INF/templates/exp_stage6_manual_evaluation.xhtml"/>

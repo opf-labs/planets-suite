@@ -1,214 +1,489 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:c="http://java.sun.com/jstl/core" 
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:a4j="http://richfaces.org/a4j"
-    xmlns:rich="http://richfaces.org/rich">
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
 <body>
-  <ui:composition rendered="#{ExperimentBean != null}">
-  
-            <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 1)}">
-             <p>Create a <b>new experiment</b> using the form below.  Once you have saved the required information your experiment will be added to your             
-            <h:commandLink action="my_experiments">
-                <h:outputText value=" #{res['my_exp.pageTitle']}" />
-        </h:commandLink> page.</p>
-        </h:panelGroup>
-        
-        <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 1}">
-            <p>Edit this <b>existing experiment</b> using the form below.</p>
-        </h:panelGroup>
-       
-        <p>You can return to this page to update the information at any point until you submit your experiment for approval so if you don't have all the details to hand at the moment don't worry.  However, filling in as much information as you can before experiment execution is recommended as this will make your experiment more useful in the long-run.</p>
+<ui:composition rendered="#{ExperimentBean != null}">
 
-    <fieldset>
-        <legend>#{res['new_exp.legendGeneral']}</legend>
-            <p>
-                <h:outputLabel value="#{res['new_exp.expName']}" for="ename" ><span style='color:red;font-weight:bold;'> *</span></h:outputLabel>
-                <h:inputText required="true" id="ename" value="#{ExperimentBean.ename}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
-                <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipName']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                <h:message for="ename" errorClass="errorMessage" infoClass="infoMessage"/>
-            </p>
-    <div class="clear"></div>
-                
+	<h:panelGroup
+		rendered="#{ (ExperimentBean.experiment.currentPhaseIndex lt 1) and ! ReadOnly}">
+		<p>Create a <b>new experiment</b> using the form below. Once you
+		have saved the required information your experiment will be added to
+		your <h:commandLink action="my_experiments">
+			<h:outputText value=" #{res['my_exp.pageTitle']}" />
+		</h:commandLink> page.</p>
+	</h:panelGroup>
 
-        <p><h:outputLabel value="#{res['new_exp.expSummary']}" for="esummary" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-<h:inputTextarea rows="2" cols="50" required="true" id="esummary" value="#{ExperimentBean.esummary}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
-<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipSummary']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-<h:message for="esummary" errorClass="errorMessage" infoClass="infoMessage"/>
-</p>
-<div class="clear"></div>
+	<h:panelGroup
+		rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 1 and ! ReadOnly}">
+		<p>Edit this <b>existing experiment</b> using the form below.</p>
+		<p>You can return to this page to update the information at any
+	point until you submit your experiment for approval so if you don't
+	have all the details to hand at the moment don't worry. However,
+	filling in as much information as you can before experiment execution
+	is recommended as this will make your experiment more useful in the
+	long-run.</p>
+	</h:panelGroup>
 
-        <p><h:outputLabel value="#{res['new_exp.expParticipants']}" for="eparticipants" />
-        <h:inputText required="false" id="eparticipants" value="#{ExperimentBean.eparticipants}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipParticipants']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-        <rich:suggestionbox id="suggestionEParticipants" for="eparticipants" tokens=","
-                rules="none"
-                suggestionAction="#{ExperimentBean.autocompleteUsers}" var="umatch"
-                border="1" width="150"
-                height="60"
-                nothingLabel="No matching users found." columnClasses="center">
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="123"></h:outputText>
-                    </f:facet>
-                    <h:outputText value="#{umatch.username}" />
-                </h:column>
-                <!--  Adding this confuses the selection mechanism, sadly.
+	
+	<!-- ******** -->
+
+	<fieldset><legend>#{res['new_exp.legendGeneral']}</legend>
+	<p>
+	<h:outputLabel value="#{res['new_exp.expName']}" for="ename">
+		<h:panelGroup rendered="#{!ReadOnly}" style='color: red; font-weight: bold;'> *</h:panelGroup>
+	</h:outputLabel>
+	<h:panelGroup rendered="#{! ReadOnly}">
+	<h:inputText required="true" id="ename"
+		value="#{ExperimentBean.ename}" size="50"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" />
+		
+        <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipName']}" />
+        </ui:include>
+		
+		<h:message for="ename"
+		errorClass="errorMessage" infoClass="infoMessage" />
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.ename}"/>
+	</h:panelGroup>
+		</p>
+	<div class="clear"></div>
+
+
+	<p><h:outputLabel value="#{res['new_exp.expSummary']}"
+		for="esummary">
+		<h:panelGroup rendered="#{!ReadOnly}" style='color: red; font-weight: bold;'> *</h:panelGroup>
+	</h:outputLabel>
+	<h:panelGroup rendered="#{! ReadOnly}">
+	<h:inputTextarea rows="2" cols="50" required="true" id="esummary"
+		value="#{ExperimentBean.esummary}"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" />
+
+        <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipSummary']}" />
+        </ui:include>
+		
+		<h:message for="esummary"
+		errorClass="errorMessage" infoClass="infoMessage" />
+    </h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.esummary}"/>
+	</h:panelGroup>
+		
+	</p>
+	<div class="clear"></div>
+
+	<p><h:outputLabel value="#{res['new_exp.expParticipants']}"
+		for="eparticipants" />
+	<h:panelGroup rendered="#{! ReadOnly}">
+		<h:inputText required="false"
+		id="eparticipants" value="#{ExperimentBean.eparticipants}" size="50"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" />
+		
+        <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipParticipants']}" />
+        </ui:include>
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.eparticipants}"/>
+	</h:panelGroup>
+		</p>
+	<h:panelGroup rendered="#{! ReadOnly}">
+	<rich:suggestionbox id="suggestionEParticipants" for="eparticipants"
+		tokens="," rules="none"
+		suggestionAction="#{ExperimentBean.autocompleteUsers}" var="umatch"
+		border="1" width="150" height="60"
+		nothingLabel="No matching users found." columnClasses="center">
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="123"></h:outputText>
+			</f:facet>
+			<h:outputText value="#{umatch.username}" />
+		</h:column>
+		<!--  Adding this confuses the selection mechanism, sadly.
                 Probably a bug in our version of RichFaces.
                 fetchValue="#{umatch.username}"
                 <h:column>
                     <h:outputText value="#{umatch.fullName}" />
                 </h:column>
                  -->
-            </rich:suggestionbox>
-        
-<div class="clear"></div>
-    <!--
+	</rich:suggestionbox>
+	</h:panelGroup>
+
+	<div class="clear"></div>
+	<!--
     <p>
+	<h:panelGroup rendered="#{! ReadOnly}">
     <h:outputLabel value="#{res['new_exp.expFormalInformal']}" for="formality"  />
-        <h:selectBooleanCheckbox value="#{ExperimentBean.formality}" id="formality" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
-        <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFormalInformal']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+        <h:selectBooleanCheckbox value="#{ExperimentBean.formality}" id="formality" readonly="#{ReadOnly}" disabled="#{ReadOnly}" />
+        <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipFormalInformal']}" />
+        </ui:include>
+    </h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.formality}"/>
+	</h:panelGroup>
     </p>
     <div class="clear"></div>
      -->
-</fieldset>
-<fieldset>
-    <legend>#{res['new_exp.legendContact']}</legend>
-                            <p><h:outputLabel value="#{res['new_exp.expContactName']}" for="econtactname" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-                <h:inputText  required="true" id="econtactname" value="#{ExperimentBean.econtactname}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipContactName']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                    <h:message for="econtactname" errorClass="errorMessage" infoClass="infoMessage"/></p>
-<div class="clear"></div>
-
-                            <p><h:outputLabel value="#{res['new_exp.expContactEmail']}" for="econtactemail" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-                <h:inputText  required="true" id="econtactemail" value="#{ExperimentBean.econtactemail}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipContactEmail']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                    <h:message for="econtactemail" errorClass="errorMessage" infoClass="infoMessage"/></p>
-<div class="clear"></div>
-
-                            <p><h:outputLabel value="#{res['new_exp.expContactTel']}" for="econtacttel" ></h:outputLabel>
-                <h:inputText  required="false" id="econtacttel" value="#{ExperimentBean.econtacttel}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipContactTel']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-<div class="clear"></div>
-
-                            <p><h:outputLabel value="#{res['new_exp.expContactAddress']}" for="econtactaddress" ></h:outputLabel>
-                            <h:inputTextarea rows="2" cols="50" required="false" id="econtactaddress" value="#{ExperimentBean.econtactaddress}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" ></h:inputTextarea> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipContactAddress']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-<div class="clear"></div>
+    </fieldset>
     
-</fieldset>
+	<!-- ******** -->
 
-<fieldset>
-    <legend>#{res['new_exp.legendReferences']}</legend>
-    <p>
-        <h:outputLabel value="#{res['new_exp.expID']}" for="exid" />
-        <h:inputText  required="false" id="exid" value="#{ExperimentBean.exid}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-        <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipID']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-        <h:message for="exid" errorClass="errorMessage" />          
-    </p>
-    <div class="clear"></div>
-    
-    <p style="color:#006699;">
-      <b>#{res['new_exp.expIdeas']}</b>
-    </p>
-    <!--  Show the referenced experiments as a list: -->
-    <rich:dataList var="exp" value="#{ExperimentBean.erefBeans}" style="list-style: disc; margin-bottom: 0;margin-left:70px;">
-        <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-        <h:commandLink action="#{ExperimentBean.removeExpRef}" title="Remove this reference.">
-            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png" alt="remove reference" title="remove reference" style="margin-left: 10px;"/>
-            <t:updateActionListener property="#{ExperimentBean.expToRemove}" value="#{exp}" />
-        </h:commandLink>
-    </rich:dataList>
-    <ul style="list-style: circle; margin-top: 0;margin-left:70px;">
-    <li>
-        <h:inputText required="false" id="erefFinder" value="#{ExperimentBean.erefFinder}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
-        <h:commandLink action="#{ExperimentBean.addAnotherExpRefAction}">
-            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/list-add.png" alt="add reference" title="add reference" style="margin-left: 5px; margin-right: 5px;"/>#{res['button.add']}
-        </h:commandLink>
-        <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" style="margin-left: 5px;" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-        </li>
-    </ul>
-    <p>
-        <h:message for="erefFinder" errorClass="errorMessage" />
-        <rich:suggestionbox id="suggestionERefFinder" for="erefFinder" tokens=","
-                rules="none"
-                suggestionAction="#{ExperimentBean.autocompleteExperiments}" var="exp"
-                border="1" width="300"
-                height="60"
-                nothingLabel="No matching experiments found." columnClasses="center">
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="123"></h:outputText>
-                    </f:facet>
-                    <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-                </h:column>
-            </rich:suggestionbox>
-    </p>
-  
-    <div class="clear"></div>
+	<fieldset><legend>#{res['new_exp.legendContact']}</legend>
+	<p>
+	<h:outputLabel value="#{res['new_exp.expContactName']}"
+		for="econtactname">
+		<h:panelGroup rendered="#{!ReadOnly}" style='color: red; font-weight: bold;'> *</h:panelGroup>
+	</h:outputLabel>
+	<h:panelGroup rendered="#{! ReadOnly}">
+	<h:inputText required="true" id="econtactname"
+		value="#{ExperimentBean.econtactname}" size="50"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" /> 
+		
+        <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipContactName']}" />
+        </ui:include>
         
-                
-                <p style="color:#006699;"><b>#{res['new_exp.litRef']}</b></p>
-                <t:dataList var="refurl" value="#{ExperimentBean.litRefURI}" rowIndexVar="rowi">
-                <rich:simpleTogglePanel switchType="client" label="#{ExperimentBean.litRefDesc[rowi]}">            
-                <h:panelGroup>
-                    <h:outputLabel for="litRefAuthor_#{rowi+1}" value="#{res['new_exp.litRef_Author']}"/>
-                    <h:inputText id="litRefAuthor_#{rowi+1}" value="#{ExperimentBean.litRefAuthor[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                    <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefAuthor']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                    <h:message for="litRefAuthor_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage" />    
-                </h:panelGroup>   
-                <h:panelGroup>
-                    <h:outputLabel for="litRefTitle_#{rowi+1}" value="#{res['new_exp.litRef_Title']}"/>
-                    <h:inputText id="litRefTitle_#{rowi+1}" value="#{ExperimentBean.litRefTitle[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                    <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefTitle']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                    <h:message for="litRefTitle_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage" /> 
-                </h:panelGroup>
-                <h:panelGroup>
-                    <h:outputLabel for="litRefDesc_#{rowi+1}" value="#{res['new_exp.litRef_Desc']}"/>
-                    <h:inputText id="litRefDesc_#{rowi+1}" required="#{((ExperimentBean.litRefURI[rowi]!=null) and (ExperimentBean.litRefURI[rowi]!=''))}" value="#{ExperimentBean.litRefDesc[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                    <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefDesc']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                    <h:message for="litRefDesc_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage"/>           
-                </h:panelGroup>
-                <h:panelGroup>
-                    <h:outputLabel for="litRefURI_#{rowi+1}" value="#{res['new_exp.litRef_URI']}"/>
-                    <h:inputText id="litRefURI_#{rowi+1}" required="#{((ExperimentBean.litRefDesc[rowi]!=null) and (ExperimentBean.litRefDesc[rowi]!=''))}" value="#{ExperimentBean.litRefURI[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                    <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefURI']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                    <h:message for="litRefURI_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage" />   
-                </h:panelGroup>
-                <div class="clear"></div>
-                </rich:simpleTogglePanel>
-                </t:dataList>                
+		<h:message for="econtactname"
+		errorClass="errorMessage" infoClass="infoMessage" />
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.econtactname}"/>
+	</h:panelGroup>
+		</p>
+	<div class="clear"></div>
 
-<p style="margin-left:110px;">
-  <h:commandLink action="#{NewExp_Controller.addAnotherLitRefAction}">
-    <h:outputText value=" #{res['new_exp.addLitRef']}" />
-  </h:commandLink> 
-</p>
+	<p><h:outputLabel value="#{res['new_exp.expContactEmail']}"
+		for="econtactemail">
+		<h:panelGroup rendered="#{!ReadOnly}" style='color: red; font-weight: bold;'> *</h:panelGroup>
+	</h:outputLabel>
+	<h:panelGroup rendered="#{!ReadOnly}">
+	<h:inputText required="true" id="econtactemail"
+		value="#{ExperimentBean.econtactemail}" size="50"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" /> 
+		
+        <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipContactEmail']}" />
+        </ui:include>
+		
+		<h:message for="econtactemail"
+		errorClass="errorMessage" infoClass="infoMessage" />
+ 	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.econtactemail}"/>
+	</h:panelGroup>
+		</p>
+	<div class="clear"></div>
+
+	<p><h:outputLabel value="#{res['new_exp.expContactTel']}"
+		for="econtacttel"></h:outputLabel>
+	<h:panelGroup rendered="#{!ReadOnly}">
+		<h:inputText required="false"
+		id="econtacttel" value="#{ExperimentBean.econtacttel}" size="50"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" /> 
+		
+        <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipContactTel']}" />
+        </ui:include>
+    </h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.econtacttel}"/>
+	</h:panelGroup>
+	</p>
+	<div class="clear"></div>
+
+	<p><h:outputLabel value="#{res['new_exp.expContactAddress']}"
+		for="econtactaddress"></h:outputLabel>
+		<h:panelGroup rendered="#{!ReadOnly}">
+		<h:inputTextarea rows="2"
+		cols="50" required="false" id="econtactaddress"
+		value="#{ExperimentBean.econtactaddress}"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}"></h:inputTextarea> 
+		
+		<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipContactAddress']}" />
+        </ui:include>
+        </h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.econtactaddress}"/>
+	</h:panelGroup>
+	</p>
+	<div class="clear"></div>
+
+	</fieldset>
+
+	<!-- ******** -->
+
+	<fieldset><legend>#{res['new_exp.legendReferences']}</legend>
+	<p><h:outputLabel value="#{res['new_exp.expID']}" for="exid" />
+	<h:panelGroup rendered="#{!ReadOnly}">
+	<h:inputText
+		required="false" id="exid" value="#{ExperimentBean.exid}" size="50"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" /> 
+
+		<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipID']}" />
+        </ui:include>
+		
+		<h:message for="exid"
+		errorClass="errorMessage" />
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.exid}"/>
+	</h:panelGroup>
+		</p>
+	<div class="clear"></div>
+
+	<p style="color: #006699;"><b>#{res['new_exp.expIdeas']}</b></p>
+	<!--  Show the referenced experiments as a list: --> <rich:dataList
+		var="exp" value="#{ExperimentBean.erefBeans}"
+		style="list-style: disc; margin-bottom: 0;margin-left:70px;">
+		<h:outputText
+			value="#{exp.experimentSetup.basicProperties.experimentName}" />
+		<h:commandLink action="#{ExperimentBean.removeExpRef}" rendered="#{!ReadOnly}"
+			title="Remove this reference.">
+            &nbsp;&nbsp;<img
+				src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png"
+				alt="remove reference" title="remove reference"
+				style="margin-left: 10px;" />
+			<t:updateActionListener property="#{ExperimentBean.expToRemove}"
+				value="#{exp}" />
+		</h:commandLink>
+	</rich:dataList>
+	<h:panelGroup rendered="#{!ReadOnly}">
+	<ul style="list-style: circle; margin-top: 0; margin-left: 70px;">
+		<li><h:inputText required="false" id="erefFinder"
+			value="#{ExperimentBean.erefFinder}" size="50"
+			readonly="#{ReadOnly}"
+			disabled="#{ReadOnly}" /> <h:commandLink
+			action="#{ExperimentBean.addAnotherExpRefAction}">
+            &nbsp;&nbsp;<img
+				src="${facesContext.externalContext.requestContextPath}/graphics/list-add.png"
+				alt="add reference" title="add reference"
+				style="margin-left: 5px; margin-right: 5px;" />#{res['button.add']}
+        </h:commandLink>
+
+		<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          <ui:param name="toolTip" value="#{res['new_exp.tooltipIdeas']}" />
+        </ui:include>
+			
+			</li>
+	</ul>
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	<p><h:message for="erefFinder" errorClass="errorMessage" /> <rich:suggestionbox
+		id="suggestionERefFinder" for="erefFinder" tokens="," rules="none"
+		suggestionAction="#{ExperimentBean.autocompleteExperiments}" var="exp"
+		border="1" width="300" height="60"
+		nothingLabel="No matching experiments found." columnClasses="center">
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="123"></h:outputText>
+			</f:facet>
+			<h:outputText
+				value="#{exp.experimentSetup.basicProperties.experimentName}" />
+		</h:column>
+	</rich:suggestionbox></p>
+	</h:panelGroup>
+
+	<div class="clear"></div>
 
 
-    <div class="clear"></div> 
-</fieldset>
+	<p style="color: #006699;"><b>#{res['new_exp.litRef']}</b></p>
+	<t:dataList var="refurl" value="#{ExperimentBean.litRefURI}"
+		rowIndexVar="rowi">
+		<rich:simpleTogglePanel switchType="client"
+			label="#{ExperimentBean.litRefDesc[rowi]}">
+			<h:panelGroup>
+				<h:outputLabel for="litRefAuthor_#{rowi+1}"
+					value="#{res['new_exp.litRef_Author']}" />
+	<h:panelGroup rendered="#{!ReadOnly}">
+				<h:inputText id="litRefAuthor_#{rowi+1}"
+					value="#{ExperimentBean.litRefAuthor[rowi]}" size="50"
+					readonly="#{ReadOnly}"
+					disabled="#{ReadOnly}"/>
+				
+				<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          			<ui:param name="toolTip" value="#{res['new_exp.tooltipLitRefAuthor']}" />
+       			 </ui:include>
+					
+				<h:message for="litRefAuthor_#{rowi+1}" errorClass="errorMessage"
+					infoClass="infoMessage" />
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.litRefAuthor[rowi]}"/>
+	</h:panelGroup>
+			<div class="clear"></div>
+			</h:panelGroup>
+			<h:panelGroup>
+				<h:outputLabel for="litRefTitle_#{rowi+1}"
+					value="#{res['new_exp.litRef_Title']}" />
+	<h:panelGroup rendered="#{!ReadOnly}">
+				<h:inputText id="litRefTitle_#{rowi+1}"
+					value="#{ExperimentBean.litRefTitle[rowi]}" size="50"
+					readonly="#{ReadOnly}"
+					disabled="#{ReadOnly}" />
+				<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          			<ui:param name="toolTip" value="#{res['new_exp.tooltipLitRefTitle']}" />
+       			 </ui:include>
+				<h:message for="litRefTitle_#{rowi+1}" errorClass="errorMessage"
+					infoClass="infoMessage" />
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.litRefTitle[rowi]}"/>
+	</h:panelGroup>
+			<div class="clear"></div>
+			</h:panelGroup>
+			<h:panelGroup>
+				<h:outputLabel for="litRefDesc_#{rowi+1}"
+					value="#{res['new_exp.litRef_Desc']}" />
+	<h:panelGroup rendered="#{!ReadOnly}">
+				<h:inputText id="litRefDesc_#{rowi+1}"
+					required="#{((ExperimentBean.litRefURI[rowi]!=null) and (ExperimentBean.litRefURI[rowi]!=''))}"
+					value="#{ExperimentBean.litRefDesc[rowi]}" size="50"
+					readonly="#{ReadOnly}"
+					disabled="#{ReadOnly}" />
+				<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          			<ui:param name="toolTip" value="#{res['new_exp.tooltipLitRefDesc']}" />
+       			 </ui:include>
+				<h:message for="litRefDesc_#{rowi+1}" errorClass="errorMessage"
+					infoClass="infoMessage" />
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.litRefDesc[rowi]}"/>
+	</h:panelGroup>
+			<div class="clear"></div>
+			</h:panelGroup>
+			<h:panelGroup>
+				<h:outputLabel for="litRefURI_#{rowi+1}"
+					value="#{res['new_exp.litRef_URI']}" />
+	<h:panelGroup rendered="#{!ReadOnly}">
+				<h:inputText id="litRefURI_#{rowi+1}"
+					required="#{((ExperimentBean.litRefDesc[rowi]!=null) and (ExperimentBean.litRefDesc[rowi]!=''))}"
+					value="#{ExperimentBean.litRefURI[rowi]}" size="50"
+					readonly="#{ReadOnly}"
+					disabled="#{ReadOnly}" />
+				<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+          			<ui:param name="toolTip" value="#{res['new_exp.tooltipLitRefURI']}" />
+       			 </ui:include>
+				<h:message for="litRefURI_#{rowi+1}" errorClass="errorMessage"
+					infoClass="infoMessage" />
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ReadOnly}">
+	  <h:outputText value="#{ExperimentBean.litRefURI[rowi]}"/>
+	</h:panelGroup>
+			<div class="clear"></div>
+			</h:panelGroup>
+		</rich:simpleTogglePanel>
+	</t:dataList>
 
-<fieldset>
-<legend>#{res['new_exp.legendFurtherInfo']}</legend>
-<p><h:outputLabel value="#{res['new_exp.expPurpose']}" for="epurpose" ></h:outputLabel>
-<h:inputTextarea rows="2" cols="50" required="false" id="epurpose" value="#{ExperimentBean.epurpose}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipPurpose']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-<div class="clear"></div>
+	<h:panelGroup rendered="#{!ReadOnly}">
+	<p style="margin-left: 110px;"><h:commandLink
+		action="#{NewExp_Controller.addAnotherLitRefAction}">
+		<h:outputText value=" #{res['new_exp.addLitRef']}" />
+	</h:commandLink></p>
+	</h:panelGroup>
 
 
-<p><h:outputLabel value="#{res['new_exp.expFocus']}" for="efocus" ></h:outputLabel>
-<h:inputTextarea rows="2" cols="50" required="false" id="efocus" value="#{ExperimentBean.efocus}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFocus']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-<div class="clear"></div>
-                <div class="clear"></div>
+	<div class="clear"></div>
+	</fieldset>
 
-<p><h:outputLabel value="#{res['new_exp.expScope']}" for="escope" ></h:outputLabel>
-<h:inputTextarea rows="2" cols="50" required="false" id="escope" value="#{ExperimentBean.escope}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipScope']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-<div class="clear"></div>
+	<!-- ******** -->
 
-                    <p><h:outputLabel value="#{res['new_exp.expConsiderations']}" for="econsiderations" />
-<h:inputTextarea rows="2" cols="50" required="false" id="econsiderations" value="#{ExperimentBean.econsiderations}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipConsiderations']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-<div class="clear"></div>
-</fieldset>
+	<fieldset><legend>#{res['new_exp.legendFurtherInfo']}</legend>
+	<p><h:outputLabel value="#{res['new_exp.expPurpose']}"
+		for="epurpose"></h:outputLabel>
+		<h:panelGroup rendered="#{!ReadOnly}">
+		<h:inputTextarea rows="2" cols="50"
+		required="false" id="epurpose" value="#{ExperimentBean.epurpose}"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" />
+		
+  		<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+        	<ui:param name="toolTip" value="#{res['new_exp.tooltipPurpose']}" />
+       	 </ui:include>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{ReadOnly}">
+		  <h:outputText value="#{ExperimentBean.epurpose}"/>
+		</h:panelGroup>
+		</p>
+	<div class="clear"></div>
 
-  </ui:composition>
+
+	<p><h:outputLabel value="#{res['new_exp.expFocus']}" for="efocus"></h:outputLabel>
+	<h:panelGroup rendered="#{!ReadOnly}">
+	<h:inputTextarea rows="2" cols="50" required="false" id="efocus"
+		value="#{ExperimentBean.efocus}" readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" /> 
+		
+  		<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+        	<ui:param name="toolTip" value="#{res['new_exp.tooltipFocus']}" />
+       	 </ui:include>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{ReadOnly}">
+		  <h:outputText value="#{ExperimentBean.efocus}"/>
+		</h:panelGroup>
+		</p>
+	<div class="clear"></div>
+	<div class="clear"></div>
+
+	<p><h:outputLabel value="#{res['new_exp.expScope']}" for="escope"></h:outputLabel>
+	<h:panelGroup rendered="#{!ReadOnly}">
+	<h:inputTextarea rows="2" cols="50" required="false" id="escope"
+		value="#{ExperimentBean.escope}" readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" /> 
+		
+  		<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+        	<ui:param name="toolTip" value="#{res['new_exp.tooltipScope']}" />
+       	 </ui:include>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{ReadOnly}">
+		  <h:outputText value="#{ExperimentBean.escope}"/>
+		</h:panelGroup>
+		</p>
+	<div class="clear"></div>
+
+	<p><h:outputLabel value="#{res['new_exp.expConsiderations']}"
+		for="econsiderations" /> 
+	<h:panelGroup rendered="#{!ReadOnly}">
+		<h:inputTextarea rows="2" cols="50"
+		required="false" id="econsiderations"
+		value="#{ExperimentBean.econsiderations}"
+		readonly="#{ReadOnly}"
+		disabled="#{ReadOnly}" /> 
+		
+  		<ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+        	<ui:param name="toolTip" value="#{res['new_exp.tooltipConsiderations']}" />
+       	 </ui:include>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{ReadOnly}">
+		  <h:outputText value="#{ExperimentBean.econsiderations}"/>
+		</h:panelGroup>
+       	 
+		</p>
+	<div class="clear"></div>
+	
+	</fieldset>
+
+	<!-- ******** -->
+
+</ui:composition>
 </body>
 </html>

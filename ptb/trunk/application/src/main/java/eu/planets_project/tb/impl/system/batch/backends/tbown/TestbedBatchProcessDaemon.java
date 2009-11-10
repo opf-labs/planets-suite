@@ -141,6 +141,8 @@ public class TestbedBatchProcessDaemon extends Thread {
         exp.getExperimentExecutable().setExecutionCompleted(true);
         exp.getExperimentExecutable().setExecutionEndDate(Calendar.getInstance().getTimeInMillis());
         exp.getExperimentExecution().setEndDate(Calendar.getInstance());
+        exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+        exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);   
         
         // Persist these changes:
         log.info("Attempting to store results...");

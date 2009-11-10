@@ -8,7 +8,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
 	<ui:define name="title">
-        #{res.title} - #{res['new_exp.expName']} #{ExperimentBean.ename}
+        #{res.title} - #{res['new_exp.expName']} #{ExperimentInspector.experimentBean.ename}
   </ui:define>
 
 	<ui:define name="header">
@@ -25,24 +25,11 @@
 
     <ui:include src="/WEB-INF/templates/exp_overview.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-       <ui:param name="ExperimentPhase" value="-1" />
     </ui:include>
 
 
-<h:form>
- <p>
-  <h:commandButton value="#{res['reader_exp.buttonStage6']}"
-   action="goToBrowseExperiments" />
- </p>
- <p>
-  <h:commandButton value="#{res['reader_exp.goToEditor']}"
-   action="goToStage1" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}"/>
- </p>
-</h:form>            
-                        
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-       <ui:param name="ExperimentPhase" value="-1" />
     </ui:include>
             
 		</div>
@@ -60,6 +47,17 @@
           <h:outputText value="#{ExperimentBean.currentPhaseName}" />
         </p>
         
+<h:form>
+ <p>
+  <h:commandButton value="#{res['reader_exp.buttonStage6']}"
+   action="goToBrowseExperiments" />
+ </p>
+ <p>
+  <h:commandButton value="#{res['reader_exp.goToEditor']}"
+   action="goToStage1" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}"/>
+ </p>
+</h:form>            
+                        
 		</div>
         </div>
 

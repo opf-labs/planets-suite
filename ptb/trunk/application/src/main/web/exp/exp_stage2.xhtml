@@ -18,8 +18,6 @@
 		<ui:include src="/WEB-INF/templates/header.xhtml">
 			<ui:param name="page" value="new_exp" />
 		</ui:include>
-		<script type="text/javascript"
-			src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>
 		<script type="text/javascript">
 			var valid_extensions = /(.jpg|.jpeg|.gif)$/i;
 
@@ -51,9 +49,11 @@
 
       <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
 
+<!-- ************** Design Experiment *************  -->
 
     <ui:include src="/WEB-INF/templates/exp/exp_designer.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ReadOnly" value="#{ExperimentBean.approved}" />
     </ui:include>
 
 

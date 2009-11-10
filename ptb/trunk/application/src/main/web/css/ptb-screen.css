@@ -928,13 +928,8 @@ width:100%;
 }
 .expRunStatusPanel {
   display: block;
-  position: absolute;
-  right: 0;
-  margin: -10px 17px;
-  z-index: 1000;
   border: 1px solid #579EC2;
   background-color: #eef2f8;
-  width: 250px;
   height: 25px;
   text-align: center;
   color: #333;

@@ -36,9 +36,11 @@
 
     <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
 
+<!-- ************** Basic Properties *************  -->
   
     <ui:include src="/WEB-INF/templates/exp/exp_metadata.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ReadOnly" value="#{ExperimentBean.approved}" />
     </ui:include>
 
     

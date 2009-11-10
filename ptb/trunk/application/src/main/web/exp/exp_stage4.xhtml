@@ -29,9 +29,11 @@
        <ui:param name="PlaceBandAsHeader" value="true" />
     </ui:include>
 
+<!-- ************** Inspect Experiment Results *************  -->
 
-    <ui:include src="/WEB-INF/templates/exp/exp_approval.xhtml">
+    <ui:include src="/WEB-INF/templates/exp/exp_results.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ReadOnly" value="#{false}" />
     </ui:include>
 
 

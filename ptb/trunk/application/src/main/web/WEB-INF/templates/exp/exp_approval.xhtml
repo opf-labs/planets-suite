@@ -13,12 +13,12 @@
 
 
     <!--  Title, containing the status or result: -->    
-    <h2 class="main">
+    <h3 class="main">
     <h:outputText value="#{res['approve_exp.approvalStatus']}&#160;"/>
     <h:outputText value="#{res['approve_exp.awaitApproval']}" rendered="#{ExperimentBean.experiment.awaitingApproval}"/>
     <h:outputText value="#{res['approve_exp.approved']}" rendered="#{ExperimentBean.experiment.approved}"/>
     <h:outputText value="#{res['approve_exp.denied']}" rendered="#{ExperimentBean.experiment.denied}" styleClass="#{ExperimentBean.experiment.denied ? 'approvalDeniedHeader' : ''}"/>
-    </h2>
+    </h3>
     
     <!-- AWAITING APPROVAL -->
 

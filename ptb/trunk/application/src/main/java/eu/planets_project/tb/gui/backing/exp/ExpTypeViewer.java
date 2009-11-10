@@ -151,6 +151,16 @@ public class ExpTypeViewer extends ExpTypeBackingBean {
     public void checkExpTypeBean_Step2_WorkflowConfigurationOK() throws Exception{
 		// TODO Auto-generated method stub
 	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#isExperimentBeanType()
+	 */
+	@Override
+	public boolean isExperimentBeanType() {
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		if( AdminManagerImpl.EMULATE.equals(expBean.getEtype()) ) return true;
+		return false;
+	}
     
     
 }

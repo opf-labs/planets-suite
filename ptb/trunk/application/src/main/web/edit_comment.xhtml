@@ -14,7 +14,6 @@
     <ui:include src="/WEB-INF/templates/header.xhtml">
         <ui:param name="page" value="edit_comment"/>
     </ui:include>
-            <script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script> 
                 <script type="text/javascript">
         <!--
         function toggleRequired(evt) {
@@ -125,13 +124,21 @@ ni.appendChild(newdiv);
           <h:messages errorClass="errorMessage" infoClass="infoMessage"/>
           <h:outputLabel value="#{res['comment.title']}" for="title" ><span style='color:red;font-weight:bold;'> *</span></h:outputLabel>
           <h:inputText required="true" id="title" value="#{Comment_Backing.title}" size="50" />
-          <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['comment.title.tooltip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+          
+   		  <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+        	<ui:param name="toolTip" value="#{res['comment.title.tooltip']}" />
+       	   </ui:include>
+       	   
           <h:message for="title" errorClass="errorMessage" infoClass="infoMessage"/>
         <div class="clear"></div>
     
           <h:outputLabel value="#{res['comment.comment']}" for="comment" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
           <h:inputTextarea rows="3" cols="50" required="true" id="comment" value="#{Comment_Backing.comment}" />
-          <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['comment.comment.tooltip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+          
+   		  <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
+        	<ui:param name="toolTip" value="#{res['comment.comment.tooltip']}" />
+       	   </ui:include>
+          
           <h:message for="comment" errorClass="errorMessage" infoClass="infoMessage"/>
         <div class="clear"></div>
         

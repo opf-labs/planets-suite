@@ -11,37 +11,33 @@
 <body>
   <ui:composition rendered="#{ExperimentBean != null}">
 
-        <c:if test="#{ExperimentBean.etype == 'identify'}">
-        
+<h:panelGroup id="workflowRegion">
+
+  <h:panelGroup rendered="#{ExpTypeIdentify.experimentBeanType}">
     <ui:include src="/WEB-INF/templates/exp-types/stage2_identify.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
     </ui:include>
+  </h:panelGroup>    
         
-        </c:if>
-        
-        <c:if test="#{ExperimentBean.etype == 'migrate'}">
-
+  <h:panelGroup rendered="#{ExpTypeMigrate.experimentBeanType}">
     <ui:include src="/WEB-INF/templates/exp-types/stage2_migrate.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
     </ui:include>
+  </h:panelGroup>
         
-        </c:if>
-                
-        <c:if test="#{ExperimentBean.etype == 'emulate'}">
-
+  <h:panelGroup rendered="#{ExpTypeViewer.experimentBeanType}">
     <ui:include src="/WEB-INF/templates/exp-types/stage2_createview.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
     </ui:include>
+  </h:panelGroup>
         
-        </c:if>
-        
-        <c:if test="#{ExperimentBean.etype == 'executablepp'}">
-        
+  <h:panelGroup rendered="#{ExpTypeExecutablePP.experimentBeanType}">
     <ui:include src="/WEB-INF/templates/exp-types/stage2_executablepp.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
     </ui:include>
-        
-        </c:if>
+  </h:panelGroup>
+
+</h:panelGroup>
         
   </ui:composition>
 </body>

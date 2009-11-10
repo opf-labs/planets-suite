@@ -41,7 +41,6 @@ public class ExpDesignPhaseListener implements PhaseListener {
             ExpDesignPhaseListener.redirectIfRequired(context, "my_experiments");
         }
         if( viewId.startsWith("/reader/exp_stage") ||
-            viewId.startsWith("/reader/view_exp")  ||
             viewId.startsWith("/admin/manage_exp")  ||
             viewId.startsWith("/admin/exp_delete") ) {
             ExpDesignPhaseListener.redirectIfRequired(context, "browse_experiments");

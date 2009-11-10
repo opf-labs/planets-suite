@@ -31,8 +31,8 @@ public class ExpBeanReqManager {
     private static final Log log = LogFactory.getLog(ExpBeanReqManager.class);
     
     /** */
-    private static final String EXP_BEAN_IN_SESSION = "ExperimentBeanInSession";
-    private static final String EXP_BEAN_IN_REQUEST = "ExperimentBean";
+    static final String EXP_BEAN_IN_SESSION = "ExperimentBeanInSession";
+    static final String EXP_BEAN_IN_REQUEST = "ExperimentBean";
 
     /** */
     private String eid = null;
@@ -111,8 +111,6 @@ public class ExpBeanReqManager {
         //Store selected Experiment Row accessible later as #{ExperimentBean}
         FacesContext ctx = FacesContext.getCurrentInstance();
         ctx.getExternalContext().getRequestMap().put(EXP_BEAN_IN_REQUEST, expBean);
-        // Also overwrite the bean stored in the session.
-        ctx.getExternalContext().getSessionMap().put(EXP_BEAN_IN_SESSION, expBean);
         //finally update the experiment-type specific bean for this expBean
         updateExpTypeBeanForExperimentInSession();
         return expBean;
