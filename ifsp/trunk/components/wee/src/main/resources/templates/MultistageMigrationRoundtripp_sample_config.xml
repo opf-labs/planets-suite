@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
   <template>
-    <class>eu.planets_project.ifr.core.wee.impl.templates.MultistageMigrationRoundtripp</class>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.MultistageMigrationRoundtrippV1_Test8</class>
   </template>
   <services>
     <service id="migrate1">
@@ -13,7 +13,7 @@
         </param>
         <param>
           <name>planets:service/migration/input/migrate_to_fmt</name>
-          <value>planets:fmt/ext/bmp</value>
+          <value>planets:fmt/ext/pnm</value>
         </param>
       </parameters>
     </service>
@@ -22,7 +22,7 @@
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_from_fmt</name>
-          <value>planets:fmt/ext/bmp</value>
+          <value>planets:fmt/ext/pnm</value>
         </param>
         <param>
           <name>planets:service/migration/input/migrate_to_fmt</name>
@@ -39,7 +39,7 @@
         </param>
         <param>
           <name>planets:service/migration/input/migrate_to_fmt</name>
-          <value>planets:fmt/ext/bmp</value>
+          <value>planets:fmt/ext/pnm</value>
         </param>
       </parameters>
     </service>
@@ -48,7 +48,7 @@
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_from_fmt</name>
-          <value>planets:fmt/ext/bmp</value>
+          <value>planets:fmt/ext/pnm</value>
         </param>
         <param>
           <name>planets:service/migration/input/migrate_to_fmt</name>
@@ -57,7 +57,7 @@
       </parameters>
     </service>
     <service id="migratexcdl1">
-      <endpoint>http://testbed.planets-project.eu:80/pserv-xcl/XcdlMigrate?wsdl</endpoint>
+      <endpoint>http://ubuntu.planets-project.arcs.ac.at:80/pserv-xcl/XcdlMigrate?wsdl</endpoint>
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_from_fmt</name>
@@ -70,7 +70,7 @@
       </parameters>
     </service>
     <service id="comparexcdl1">
-      <endpoint>http://testbed.planets-project.eu:80/pserv-xcl/XcdlCompare?wsdl</endpoint>
+      <endpoint>http://ubuntu.planets-project.arcs.ac.at:80/pserv-xcl/XcdlCompare?wsdl</endpoint>
     </service>
   </services>
 </workflowConf>

@@ -1,10 +1,20 @@
 package eu.planets_project.ifr.core.wee.impl.templates;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
@@ -15,21 +25,22 @@ import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Checksum;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 
-//TODO AL: EXTEND THIS TEMPLATE SO THAT THE XCDL FOR INPUT AND OUTPUT FILE ARE CREATED
-//TODO SS: extend compareDigoIdentical method
-//FIXME AL: USE VERSION IN class-name
+//FIXME AL: USE VERSION IN class-name when deploying
 /**
  * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
  * @since 03.11.2009
  */
-public class MultistageMigrationRoundtrippTEMP extends WorkflowTemplateHelper implements WorkflowTemplate {
+public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implements WorkflowTemplate {
 
+	private static Log log = LogFactory.getLog(MultistageMigrationRoundtripp.class);
+	 
     /**
      * Migrate service #1 migrate A>B (e.g. TIF to PNM)
      */
@@ -86,7 +97,7 @@ public class MultistageMigrationRoundtrippTEMP extends WorkflowTemplateHelper im
     //TODO UPDATE DESCRIPTION
     public String describe() {
         return "This template performs a round-tripp migration A>B>C>D>F where the result objects"+
-        	   "A and F as well as B and D are expected to be 'the same'.";
+        	   "A and F are expected to be 'the same' in terms of the configured comparison properties.";
     }
 
     /*
@@ -138,14 +149,14 @@ public class MultistageMigrationRoundtrippTEMP extends WorkflowTemplateHelper im
                     
                     //perform object comparison
                     	wfResultItem.addLogInfo("starting comparisson for XCDL1 and XCDL2");
-                    this.compareDigitalObjectsIdentical(dgoAXCDL, dgoEXCDL);
+                    //EINKOMMENTIEREN this.compareDigitalObjectsIdentical(dgoAXCDL, dgoEXCDL);
                     	wfResultItem.addLogInfo("completed comparisson for XCDL1 and XCDL2");
                     
-                    	wfResultItem.addLogInfo("successfully completed workflow for digitalObject"+processingDigo);
+                    	wfResultItem.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"+processingDigo);
                     	wfResultItem.setEndTime(System.currentTimeMillis());
                     
                 } catch (Exception e) {
-                	String err = "workflow execution error for digitalObject #" + count +" ("+processingDigo+")";            
+                	String err = "workflow execution error for digitalObject #" + count +" with permanent uri: "+processingDigo+"";            
                     wfResultItem.addLogInfo(err+" "+e);
                     wfResultItem.setEndTime(System.currentTimeMillis());
                 }
@@ -216,11 +227,26 @@ public class MultistageMigrationRoundtrippTEMP extends WorkflowTemplateHelper im
 				wfResultItem.addLogInfo(s);
 				throw new Exception(s);
 			}
-			//document: add report on outputDigitalObject
-			wfResultItem.setOutputDigitalObject(migrateResult
-					.getDigitalObject());
-			wfResultItem.addLogInfo("migration completed");
-			return migrateResult.getDigitalObject();
+			
+			//FIXME: try to hand over all digos by reference and not by value - the services should implement this!
+			try{
+				//return a Digo.Content by Reference
+				DigitalObject digoOut = storeObjectByReference(migrateResult.getDigitalObject());
+				wfResultItem.setOutputDigitalObject(digoOut);
+				wfResultItem.addLogInfo("created digital object by reference");
+				wfResultItem.addLogInfo("migration completed");
+				log.info("Test4: Storing digo by reference");
+				return digoOut;
+				
+			}catch(Exception err){
+				//return a Digo.Content by Reference
+				wfResultItem.setOutputDigitalObject(migrateResult
+						.getDigitalObject());
+				wfResultItem.addLogInfo("migration completed");
+				log.info("Test4: Exception Storing digo by value",err);
+				return migrateResult.getDigitalObject();
+			}
+
 		} catch (Exception e) {
 			wfResultItem.addLogInfo("migration failed "+e);
 			throw e;
@@ -235,7 +261,7 @@ public class MultistageMigrationRoundtrippTEMP extends WorkflowTemplateHelper im
      * @param digo2
      * @throws Exception 
      */
-    public void compareDigitalObjectsIdentical(DigitalObject digo1, DigitalObject digo2) throws Exception {
+    private void compareDigitalObjectsIdentical(DigitalObject digo1, DigitalObject digo2) throws Exception {
     
     	//creating the logger
     	WorkflowResultItem wfResultItem = new WorkflowResultItem(
@@ -276,5 +302,84 @@ public class MultistageMigrationRoundtrippTEMP extends WorkflowTemplateHelper im
 			throw e;
 		}
     }
+    
+/* <-- start of DigitalObjectManager functionality
+     * FIXME: In future this steps below should be performed by the Planets wide 
+     * central DigitalObjectManager. 
+     * - store a Digo (content by value) that was computed within the wee's workflow. 
+     * and return the same Digo but just with content by reference. Note: the file-ref contained in content is a temp file.
+     * Issues: How to handle Realm, lookup (JNDI?) over distributed instances, etc.
+     */
+    private static final String externallyReachableFiledir = "../server/server/default/deploy/jboss-web.deployer/ROOT.war/wee-wftemp-data";
 
+    private DigitalObject storeObjectByReference(DigitalObject digo) throws Exception{
+    	//1. get a temporary file
+		File fOut = this.createTempFileInExternallyAccessableDir();
+	    OutputStream out = new FileOutputStream(fOut);
+
+	    //2. store the data as file
+        byte[] buf = new byte[1024];
+        int len;
+        InputStream in = digo.getContent().read();
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        out.close();
+        
+        //3. build the digo by reference
+        URI httpRef = this.getHttpFileRef(fOut);
+        DigitalObjectContent content = Content.byReference(httpRef.toURL());
+        DigitalObject ret = new DigitalObject.Builder(digo).content(content).permanentUri(digo.getPermanentUri()).build();
+        log.info("returning digital object: "+ret.toXml());
+        return ret;
+    }
+    
+    private File createTempFileInExternallyAccessableDir() throws IOException {
+		
+		File f = createTemporaryFile();
+		File dir = new File(externallyReachableFiledir);
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
+		File target = new File(dir.getAbsoluteFile()+"/"+f.getName());
+		target.deleteOnExit();
+		boolean success = f.renameTo(target);
+		if(success){
+			log.info("createTempFileInExternallyAccessableDir success:"+success+" for file: "+f.getAbsolutePath());
+			return target;
+		}else{
+			String err = "Problems saving the digital object's content (by value) to the externally reachable jboss-web deployer dir";
+			log.info(err);
+			throw new IOException(err);
+		}
+	}
+    
+    private static File createTemporaryFile() throws IOException {
+    	int lowerBound = 1; int upperBound = 9999;
+		int random = (int) (lowerBound + Math.random() * ( upperBound - lowerBound) );
+		File f = File.createTempFile("dataHandlerTemp"+random, null);
+		log.info("created temporary file:"+f.getAbsolutePath());
+		f.deleteOnExit();
+		return f;
+    }
+    
+    
+	private URI getHttpFileRef(File tempFileInExternalDir)throws URISyntaxException, FileNotFoundException {
+		//URI file ref for file to be created
+		if(!tempFileInExternalDir.canRead()){
+			String err = "getHttpFileRef for "+tempFileInExternalDir +" not found";
+			log.info(err);
+			throw new FileNotFoundException(err);
+		}
+		String authority = this.getHostAuthority();
+
+		//URI(scheme,authority,path,query,fragement)
+		URI ret = new URI("http",authority,"/wee-wftemp-data/"+tempFileInExternalDir.getName(),null,null);
+		log.info("getHttpFileRef: "+ret);
+		return ret;
+	}
+ 
+    
+//<--- END oF DigitalObjectManager functionality.
+    
 }

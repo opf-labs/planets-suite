@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
+import eu.planets_project.ifr.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -40,7 +40,9 @@ public abstract class WorkflowTemplateHelper implements Serializable {
             "eu.planets_project.services.characterise.DetermineProperties",
             "eu.planets_project.services.compare.BasicCompareFormatPropertie",
             "eu.planets_project.services.migrate.Migrate", "eu.planets_project.services.modify.Modify",
-            "eu.planets_project.services.migrate.MigrateAsync", "eu.planets_project.services.compare.Compare" };
+            "eu.planets_project.services.migrate.MigrateAsync", "eu.planets_project.services.compare.Compare",
+            "eu.planets_project.services.compare.CompareProperties", "eu.planets_project.services.validate.Validate",
+            "eu.planets_project.services.view.CreateView"};
 
     /*
      * (non-Javadoc)
