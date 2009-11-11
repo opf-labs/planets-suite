@@ -21,9 +21,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
-import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry;
-import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryFactory;
-import eu.planets_project.ifr.core.registry.api.jaxr.model.PsService;
+import eu.planets_project.ifr.core.registry.api.Registry;
+import eu.planets_project.ifr.core.registry.api.RegistryFactory;
+//import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry;
+//import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryFactory;
+//import eu.planets_project.ifr.core.registry.api.jaxr.model.PsService;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 
 /**
@@ -38,9 +41,9 @@ public class ServiceRegistryManager {
     private static final Pattern urlpattern = Pattern.compile("http://[^><\\s]*?\\?wsdl");
 
     /** Properties for the IF Service Registry */
-    protected static final String USERNAME = "provider";
+    /*protected static final String USERNAME = "provider";
     protected static final String PASSWORD = "provider";
-    protected static final String WILDCARD = "%";
+    protected static final String WILDCARD = "%";*/
     
     /**
      * 
@@ -49,7 +52,7 @@ public class ServiceRegistryManager {
     public static List<Service> listAvailableServices() {
         List<Service> sl = new ArrayList<Service>();
         
-        for( URI endpoint : listAvailableEndpoints()) {
+        /*for( URI endpoint : listAvailableEndpoints()) {
             log.info("Inspecting endpoint: "+endpoint);
             Service s;
             try {
@@ -65,7 +68,17 @@ public class ServiceRegistryManager {
             for( PsService if_s : retrievedServices ) {
                 log.info("Found service: " + if_s.getName() );
             }
+        }*/
+        
+        //Look up all available Service(Descriptions) from the local service registry
+        Registry serReg = RegistryFactory.getRegistry();
+        //a null ServiceDescription will query all endpoints from the registry
+        List<ServiceDescription> lServiceDescriptions = serReg.query(null);
+        for(ServiceDescription serDesc : lServiceDescriptions){
+        	Service s = new Service(serDesc);
+        	if(s != null) sl.add(s);
         }
+        
         return sl;
     }
 
@@ -73,6 +86,7 @@ public class ServiceRegistryManager {
      * 
      * @return
      */
+    @Deprecated
     public static List<URI> listAvailableEndpoints(){
         Set<URI> uniqueSE = new HashSet<URI>();
         
@@ -102,6 +116,7 @@ public class ServiceRegistryManager {
      * @throws FileNotFoundException
      * @throws IOException
      */
+    @Deprecated
     private static String readUrlContents(URI uri)throws FileNotFoundException, IOException{
 
         InputStream in = null;
@@ -144,6 +159,7 @@ public class ServiceRegistryManager {
      * @return
      * @throws Exception
      */
+    @Deprecated
     private static Set<URI> extractEndpointsFromWebPage(String xhtml){
         Set<URI> ret = new HashSet<URI>();
 

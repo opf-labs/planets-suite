@@ -27,6 +27,7 @@ public class Service {
     
     protected Service() {} 
     
+    @Deprecated
     public Service(URL endpoint) {
         this.endpoint = endpoint;
         // Attempt to query the endpoint for a description.
@@ -34,11 +35,18 @@ public class Service {
         fillFromServiceDescription();
     }
     
+    @Deprecated
     public Service(URL endpoint, ServiceDescription sd ) {
         this.endpoint = endpoint;
         this.sd = sd;
         fillFromServiceDescription();
         // Also add in the date that this service was inspected:
+    }
+    
+    public Service(ServiceDescription serDescr){
+    	sd = serDescr;
+    	this.endpoint = sd.getEndpoint();
+    	fillFromServiceDescription();
     }
     
     /**
