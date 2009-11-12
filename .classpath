@@ -98,6 +98,9 @@
 	<classpathentry kind="src" path="PP/xcl/src/java"/>
 	<classpathentry kind="src" path="PP/xcl/src/test/java"/>
 	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="src" path="PC/odfValidator/src/java"/>
+	<classpathentry kind="src" path="PC/odfValidator/test/java"/>
+	<classpathentry kind="src" path="PC/odfValidator/src/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>

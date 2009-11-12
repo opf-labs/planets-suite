@@ -22,6 +22,7 @@ import ch.enterag.utils.zip.Zip64File;
 import eu.planets_project.services.datatypes.Checksum;
 
 
+
 public class ZipUtils {
 	
 	private static Log log = LogFactory.getLog(ZipUtils.class);
@@ -115,11 +116,11 @@ public class ZipUtils {
 	 * @param destFolder the folder to write the extracted files to.
 	 * @return a List with all extracted files.
 	 */
-	@SuppressWarnings("unchecked")
 	public static List<File> unzipTo(File zipFile, File destFolder) {
 		List<File> extractedFiles = null;
 		try {
 			Zip64File zip64File = new Zip64File(zipFile);
+			
 			List<FileEntry> entries = zip64File.getListFileEntries();
 			extractedFiles = new ArrayList<File>();
 			for (FileEntry fileEntry : entries) {
@@ -154,6 +155,9 @@ public class ZipUtils {
 			fileOut.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		}
+		catch (ZipException e) {
+			log.warn("ATTENTION PLEASE: Some strange, but obviously not serious ZipException occured! Extracted file '" + target.getName() + "' anyway! So don't Panic!" + "\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -216,10 +220,9 @@ public class ZipUtils {
 	 * Fragments can be used to adress entries in a zip file.
 	 * 
 	 * @param zip the zip file to scan
-	 * @return an Fragment[] containing all file entries in this zip. 
+	 * @return an String[] containing all file entries in this zip. 
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	public static String[] getAllFragments(File zip) {
 		String[] fragments = null;
 		try {
@@ -551,7 +554,6 @@ public class ZipUtils {
 		return new File(zip64File.getDiskFile().getFileName());
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static boolean isZipFile(File file) {
 		try {
 			Zip64File zip = new Zip64File(file);
@@ -564,6 +566,9 @@ public class ZipUtils {
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		} catch (ZipException e) {
+			log.info("File '" + file.getName() + "' is NOT a ZIP.");
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -576,7 +581,6 @@ public class ZipUtils {
 	 * @param zip the zip file to scan
 	 * @return a list with all entry paths
 	 */
-	@SuppressWarnings("unchecked")
 	public static List<String> listZipEntries(File zip) {
 		List<String> entryList = new ArrayList<String>();
 		try {
@@ -811,7 +815,6 @@ public class ZipUtils {
 	 * @param zip64File the zip64 file to list the entries 
 	 * @return all entries in this zip64File
 	 */
-	@SuppressWarnings("unchecked")
 	private static List<String> listZipEntries(Zip64File zip64File) {
 		List<String> entryList = new ArrayList<String>();
 		

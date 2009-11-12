@@ -1,24 +1,17 @@
 package eu.planets_project.services.utils;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import eu.planets_project.services.datatypes.Checksum;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.Checksum;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Utilities for reading and writing data.
@@ -37,7 +30,6 @@ public final class FileUtils {
             .getProperty("java.io.tmpdir");
 
     private static final String TEMP_STORE_DIR = "planets-if-temp-store".toUpperCase();
-    
     
 
     /** We enforce non-instantiability with a private constructor. */
@@ -199,6 +191,11 @@ public final class FileUtils {
     		randomName = name + "_" + random.nextInt(Integer.MAX_VALUE);
     	}
     	return randomName;
+    }
+    
+    public static String getFileNameWithoutExtension(File file) {
+    	String baseName = org.apache.commons.io.FilenameUtils.getBaseName(file.getName());
+    	return baseName;
     }
     
     public static String getOutputFileNameFor(String inputFileName, String outFileExtension) {
@@ -404,6 +401,7 @@ public final class FileUtils {
     public static File writeStringToFile(final String content, final File target) {
     	try {
 			org.apache.commons.io.FileUtils.writeStringToFile(target, content);
+			log.info("Written String to file: " + target.getAbsolutePath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -557,7 +555,8 @@ public final class FileUtils {
 //        long size = 0;
 //        try {
 //            int dataBit;
-//            byte[] buf = new byte[BUFFER];
+//            int BUFFER  = 1024;
+//			byte[] buf = new byte[BUFFER];
 //            while ((dataBit = in.read(buf)) != -1) {
 //                out.write(buf, 0, dataBit);
 //                size += dataBit;
@@ -575,6 +574,7 @@ public final class FileUtils {
 //                    // After a short look at the referencing methods, it seems
 //                    // that all Outputstreams are closed outside this
 //                    // this method! So it should do no harm to remove it here?!
+//                    
 //                    // out.close();
 //                }
 //            } catch (IOException e) {
@@ -582,7 +582,7 @@ public final class FileUtils {
 //                return 0;
 //            }
 //        }
-        log.info("Wrote " + size + " bytes.");
+//        log.info("Wrote " + size + " bytes.");
         return size;
     }
 
@@ -683,14 +683,19 @@ public final class FileUtils {
             log.info("File name longer than 8 chars. Truncated file name to: "
                     + newName
                     + " to avoid problems with long file names in DOS!");
+            
+            newName = newName + ext;
+            File renamedFile = new File(new File(parent), newName);
+            boolean renamed = file.renameTo(renamedFile);
+            if (!renamed) {
+//                throw new IllegalArgumentException("Could not rename: " + file);
+            }
+            return renamedFile;
         }
-        newName = newName + ext;
-        File renamedFile = new File(new File(parent), newName);
-        boolean renamed = file.renameTo(renamedFile);
-        if (!renamed) {
-            throw new IllegalArgumentException("Could not rename: " + file);
+        else {
+        	return file;
         }
-        return renamedFile;
+        
     }
     
     /**
