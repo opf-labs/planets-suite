@@ -4,7 +4,6 @@ package eu.planets_project.ifr.core.wee.gui;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.List;
 import java.util.Set;
 
 import javax.management.ObjectName;

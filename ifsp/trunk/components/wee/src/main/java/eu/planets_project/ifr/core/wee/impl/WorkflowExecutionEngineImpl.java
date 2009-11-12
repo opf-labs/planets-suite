@@ -3,27 +3,24 @@
  */
 package eu.planets_project.ifr.core.wee.impl;
 
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.ejb.MessageDrivenContext;
-import javax.ejb.ActivationConfigProperty;
 import javax.jms.JMSException;
-import javax.jms.MessageListener;
 import javax.jms.Message;
-import javax.jms.ObjectMessage;
+import javax.jms.MessageListener;
 import javax.jms.TextMessage;
-import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.wee.api.WeeManager;
 import eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
-
-import org.apache.commons.logging.LogFactory;
-
-import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**

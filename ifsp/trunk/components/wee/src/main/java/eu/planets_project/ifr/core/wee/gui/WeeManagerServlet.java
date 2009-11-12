@@ -3,31 +3,8 @@
  */
 package eu.planets_project.ifr.core.wee.gui;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
-import javax.xml.ws.Service;
-import javax.xml.ws.soap.SOAPBinding;
-
-//import org.jboss.ws.core.server.HttpContext;
-//import org.jboss.ws.core.server.HttpServer;
-
-import eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus;
-import eu.planets_project.ifr.core.wee.impl.WeeManagerImpl;
 
 /**
  * 

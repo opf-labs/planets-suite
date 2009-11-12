@@ -3,7 +3,7 @@ package eu.planets_project.ifr.core.wee.gui;
 
 import org.jboss.logging.Logger;
 import org.jboss.wsf.spi.management.EndpointRegistryFactory;
-import org.jboss.wsf.stack.jbws.EndpointRegistryFactoryImpl;
+import org.jboss.wsf.stack.metro.EndpointRegistryFactoryImpl;
 
 
 /**
