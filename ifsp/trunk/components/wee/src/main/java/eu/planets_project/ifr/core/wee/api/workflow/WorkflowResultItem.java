@@ -6,9 +6,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -16,6 +20,10 @@ import eu.planets_project.services.datatypes.ServiceReport;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WorkflowResultItem implements Serializable{
+	
+    @Transient
+    @XmlTransient
+    private static final Log logger = LogFactory.getLog(WorkflowResultItem.class);
 	
 	public static final String GENERAL_WORKFLOW_ACTION = "general workflow action";
     public static final String SERVICE_ACTION_MIGRATION = "migration";
@@ -85,11 +93,11 @@ public class WorkflowResultItem implements Serializable{
 		}
 		else{
 			aboutExecutionDigoDifferentThanInputDigo = true;
-			this.aboutExecutionDigoRef = aboutDigo.getPermanentUri();
+			this.setAboutExecutionDigoRef(aboutDigo.getPermanentUri());
 		}
-		this.sActionIdentifier = serviceActionIdentifier;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.setSActionIdentifier(serviceActionIdentifier);
+		this.setStartTime(startTime);
+		this.setEndTime(endTime);
 	}
 	
 	
@@ -97,7 +105,8 @@ public class WorkflowResultItem implements Serializable{
 		if(inDigo!=null){
 			this.digoIn = inDigo.toXml();
 			if(!aboutExecutionDigoDifferentThanInputDigo){
-				this.aboutExecutionDigoRef = inDigo.getPermanentUri();
+				this.setAboutExecutionDigoRef(inDigo.getPermanentUri());
+				logger.info("setInputDigitalObject: "+inDigo.toXml());
 			}
 		}
 	}
@@ -106,19 +115,23 @@ public class WorkflowResultItem implements Serializable{
 		if(outDigo!=null){
 			this.digoOut = outDigo.toXml();
 			this.addLogInfo("Successfully added OutputDigitalObject");
+			logger.info("setOutputDigitalObject: "+outDigo.toXml());
 		}
 	}
 	
 	public void setExtractedInformation(List<String> information){
 		this.extractedInformation = information;
+		logger.info("setExtractedInformation: "+information.toString());
 	}
 	
 	public void addExtractedInformation(String information){
 		this.extractedInformation.add(information);
+		logger.info("addExtractedInformation: "+information);
 	}
 	
 	public void addLogInfo(String logInfo){
 		this.logInfo.add(logInfo);
+		logger.info("addExtractedInformation: "+logInfo);
 	}
 	
 	public List<String> getLogInfo(){
@@ -131,6 +144,7 @@ public class WorkflowResultItem implements Serializable{
 
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
+		logger.info("setStartTime: "+startTime);
 	}
 
 	public long getEndTime() {
@@ -139,6 +153,7 @@ public class WorkflowResultItem implements Serializable{
 
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
+		logger.info("setEndTime: "+endTime);
 	}
 	
     /**
@@ -158,6 +173,7 @@ public class WorkflowResultItem implements Serializable{
 
 	public void setSActionIdentifier(String actionIdentifier) {
 		sActionIdentifier = actionIdentifier;
+		logger.info("setSActionIdentifier: "+actionIdentifier);
 	}
 
 	public DigitalObject getInputDigitalObject() {
@@ -191,17 +207,8 @@ public class WorkflowResultItem implements Serializable{
 
 	public void setServiceReport(ServiceReport serviceReport) {
 		this.serReport = serviceReport;
+		logger.info("setServiceReport: "+serviceReport.toString());
 	}
-	
-	/**
-     * {@inheritDoc}
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return String.format("%s, actionIdentifier: %s,logInfo: %s, serviceReport: %s,  start-time: %s, end-time: %s", this
-                .getClass().getSimpleName(), sActionIdentifier,logInfo, serReport, startTime, endTime);
-    }
 
 	public List<Parameter> getServiceParameters() {
 		return serParams;
@@ -209,6 +216,7 @@ public class WorkflowResultItem implements Serializable{
 
 	public void setServiceParameters(List<Parameter> serviceParams) {
 		this.serParams = serviceParams;
+		logger.info("setServiceParameters: "+serviceParams.toString());
 	}
 
 	public URI getAboutExecutionDigoRef() {
@@ -217,6 +225,7 @@ public class WorkflowResultItem implements Serializable{
 
 	public void setAboutExecutionDigoRef(URI aboutExecutionDigoRef) {
 		this.aboutExecutionDigoRef = aboutExecutionDigoRef;
+		logger.info("setAboutExecutionDigoRef: "+aboutExecutionDigoRef);
 	}
 
 	public String getServiceEndpoint() {
@@ -226,8 +235,18 @@ public class WorkflowResultItem implements Serializable{
 	public void setServiceEndpoint(URL serviceEndpoint) {
 		if(serviceEndpoint!=null){
 			this.serviceEndpoint = serviceEndpoint.toExternalForm();
+			logger.info("setServiceEndpoint: "+serviceEndpoint);
 		}
-		
 	}
+	
+	/**
+     * {@inheritDoc}
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return String.format("%s, actionIdentifier: %s,logInfo: %s, serviceReport: %s,  start-time: %s, end-time: %s, aboutExecutionDigitalObjectRef: %s, endpoint: %s, parameters: %s", this
+                .getClass().getSimpleName(), sActionIdentifier,logInfo, serReport, startTime, endTime, this.aboutExecutionDigoRef, this.getServiceEndpoint(), this.getServiceParameters());
+    }
 
 }

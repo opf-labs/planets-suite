@@ -32,7 +32,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 
-//FIXME AL: USE VERSION IN class-name when deploying
+//TODO: USE VERSION IN class-name when deploying
 /**
  * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
  * @since 03.11.2009
@@ -74,7 +74,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
     private Compare comparexcdl1;
     
     private WorkflowResult wfResult;
-	private URI processingDigo;
+	private DigitalObject processingDigo;
 	private static URL configForImages;
 	private static DigitalObject CONFIG;
 	
@@ -94,7 +94,6 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
      * @see
      * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#describe()
      */
-    //TODO UPDATE DESCRIPTION
     public String describe() {
         return "This template performs a round-tripp migration A>B>C>D>F where the result objects"+
         	   "A and F are expected to be 'the same' in terms of the configured comparison properties.";
@@ -122,7 +121,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
             	 wfResult.addWorkflowResultItem(wfResultItem);
             	
             	 //start executing on digital ObjectA
-            	this.processingDigo = dgoA.getPermanentUri();
+            	this.processingDigo = dgoA;
             	
                 try {
                     // Migrate Object round-trip
@@ -149,7 +148,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
                     
                     //perform object comparison
                     	wfResultItem.addLogInfo("starting comparisson for XCDL1 and XCDL2");
-                    //EINKOMMENTIEREN this.compareDigitalObjectsIdentical(dgoAXCDL, dgoEXCDL);
+                    this.compareDigitalObjectsIdentical(dgoAXCDL, dgoEXCDL);
                     	wfResultItem.addLogInfo("completed comparisson for XCDL1 and XCDL2");
                     
                     	wfResultItem.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"+processingDigo);
@@ -179,10 +178,10 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 		//document the service type and start-time
     	WorkflowResultItem wfResultItem;
     	if(endOfRoundtripp){
-    		wfResultItem = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_FINAL_MIGRATION, System.currentTimeMillis());
+    		wfResultItem = new WorkflowResultItem(this.processingDigo,WorkflowResultItem.SERVICE_ACTION_FINAL_MIGRATION, System.currentTimeMillis());
     	}
     	else{
-    		wfResultItem = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_MIGRATION, System.currentTimeMillis());
+    		wfResultItem = new WorkflowResultItem(this.processingDigo,WorkflowResultItem.SERVICE_ACTION_MIGRATION, System.currentTimeMillis());
     	}
 		wfResult.addWorkflowResultItem(wfResultItem);
 		
@@ -268,7 +267,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
         		WorkflowResultItem.SERVICE_ACTION_COMPARE,
         		System.currentTimeMillis());
     	 wfResult.addWorkflowResultItem(wfResultItem);
-    	 wfResultItem.setAboutExecutionDigoRef(processingDigo);
+    	 wfResultItem.setAboutExecutionDigoRef(processingDigo.getPermanentUri());
     	 
         try {
 			//FIXME: using a static list of properties ... this should move to the configuration file
@@ -298,7 +297,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 			wfResultItem.addLogInfo("comparisson completed");
 			
 		} catch (Exception e) {
-			wfResultItem.addLogInfo("Compare failed");
+			wfResultItem.addLogInfo("comparisson failed: "+e);
 			throw e;
 		}
     }
@@ -310,7 +309,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
      * and return the same Digo but just with content by reference. Note: the file-ref contained in content is a temp file.
      * Issues: How to handle Realm, lookup (JNDI?) over distributed instances, etc.
      */
-    private static final String externallyReachableFiledir = "../server/server/default/deploy/jboss-web.deployer/ROOT.war/wee-wftemp-data";
+    private static final String externallyReachableFiledir = "../server/default/deploy/jboss-web.deployer/ROOT.war/wee-wftemp-data";
 
     private DigitalObject storeObjectByReference(DigitalObject digo) throws Exception{
     	//1. get a temporary file
