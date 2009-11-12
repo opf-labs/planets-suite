@@ -96,9 +96,7 @@
       <path id="server_classpath">
         <fileset dir="${pserv.root.dir}/lib">
           <include name="standalone/*.jar" />
-          <include name="jaxws-jboss-native/*.jar"/>
-          <exclude name="jaxws-jboss-native/jaxws-rt.jar"/>
-          <exclude name="jaxws-jboss-native/jaxws-tools.jar"/>
+          <include name="jaxws-ri-2.1.4/lib/*.jar"/>
         </fileset>
         <path refid="pserv_common_classpath"/>
       </path>
