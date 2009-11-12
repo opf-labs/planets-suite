@@ -3,16 +3,15 @@
  */
 package eu.planets_project.services.compare;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceReport;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.datatypes.ServiceReport;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Result type for the {@link Compare} interface.
@@ -23,6 +22,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 public final class CompareResult {
     private List<Property> properties;
     private ServiceReport report;
+    private String fragmentID;
     private List<CompareResult> results;
     
     /** For JAXB. */
@@ -37,8 +37,22 @@ public final class CompareResult {
         this.properties = new ArrayList<Property>(properties);
         this.report = report;
         this.results = Collections.unmodifiableList(new ArrayList<CompareResult>());
+        this.fragmentID = null;
     }
     
+    /**
+     * @param properties The result properties
+     * @param report The report
+     * @param fragmentID the id of the fragment the result refers to
+     */
+    public CompareResult(final List<Property> properties, 
+    		final ServiceReport report, final String fragmentID) {
+        this.properties = new ArrayList<Property>(properties);
+        this.report = report;
+        this.results = Collections.unmodifiableList(new ArrayList<CompareResult>());
+        this.fragmentID = fragmentID;
+    }
+
     /**
      * @param properties The result properties
      * @param report The report
@@ -48,8 +62,23 @@ public final class CompareResult {
         this.properties = new ArrayList<Property>(properties);
         this.report = report;
         this.results = new ArrayList<CompareResult>(results);
+        this.fragmentID = null;
     }
 
+    /**
+     * @param properties The result properties
+     * @param report The report
+     * @param results The embedded results
+     * @param fragmentID the id of the fragment the result refers to
+     */
+    public CompareResult(final List<Property> properties,
+    		final ServiceReport report, final List<CompareResult> results,
+    		final String fragmentID) {
+        this.properties = new ArrayList<Property>(properties);
+        this.report = report;
+        this.results = new ArrayList<CompareResult>(results);
+        this.fragmentID = fragmentID;
+    }
     /**
      * @return An unmodifiable copy of the result properties
      */
@@ -70,5 +99,11 @@ public final class CompareResult {
     public List<CompareResult> getResults() {
         return results == null ? Collections.unmodifiableList(new ArrayList<CompareResult>()) : results;
     }
-
+    
+    /**
+     * @return The fragment ID
+     */
+    public String getFragmentID() {
+    	return this.fragmentID;
+    }
 }
