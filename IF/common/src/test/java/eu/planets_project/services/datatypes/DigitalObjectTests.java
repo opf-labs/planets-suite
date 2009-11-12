@@ -100,7 +100,7 @@ public final class DigitalObjectTests {
     private static final String SOME_URL_2 = "http://url2";
     private static final Checksum CHECKSUM = new Checksum("algo", "checksum");
     private static final Event EVENT = new Event(null, null, 0d, null, null);
-    private static final Fragment FRAGMENT = new Fragment("ID");
+    private static final String FRAGMENT = new String("ID");
     private static final Metadata META = new Metadata(URI.create(SOME_URL_1),
             "meta");
     private static final String TITLE = "title";
@@ -127,25 +127,10 @@ public final class DigitalObjectTests {
             digitalObject1 = new DigitalObject.Builder(content).permanentUri(
                     permanentUrl).events(EVENT).fragments(FRAGMENT)
                     .manifestationOf(manifestationOf).format(planetsFormatUri)
-                    .metadata(META).title(TITLE).contains(digitalObject2)
-                    .build();
+                    .metadata(META).title(TITLE).build();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * DigitalObject instances are comparable and can thus be used with Java's
-     * sorting mechanisms.
-     */
-    @Test
-    public void sortDigitalObjects() {
-        List<ImmutableDigitalObject> objects = Arrays.asList(
-                (ImmutableDigitalObject) digitalObject2,
-                (ImmutableDigitalObject) digitalObject1);
-        Collections.sort(objects);
-        assertEquals("Sorting a collection of digital objects did not work;",
-                digitalObject1, objects.get(0));
     }
 
     /**
@@ -209,7 +194,7 @@ public final class DigitalObjectTests {
 
         // construct a deeper object:
         DigitalObject bytes2 = new DigitalObject.Builder(Content
-                .byValue(new byte[size2])).contains(bytes1).build();
+                .byValue(new byte[size2])).build();
         bytes = DigitalObjectUtils.getContentSize(bytes2);
         assertEquals("Counted, 2-level byte[] size is not correct.",
                 (size1 + size2), bytes);

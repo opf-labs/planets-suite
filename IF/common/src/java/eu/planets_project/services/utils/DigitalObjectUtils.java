@@ -19,7 +19,6 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Checksum;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Fragment;
 
 /**
  * Utils for handling digital objects.
@@ -61,12 +60,6 @@ public final class DigitalObjectUtils {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-        }
-        // Recurse into sub-dobs:
-        if (dob.getContained() != null) {
-            for (DigitalObject cdob : dob.getContained()) {
-                bytes += getContentSize(cdob);
             }
         }
         // Return the total:
@@ -230,19 +223,13 @@ public final class DigitalObjectUtils {
 					folderDigOb = 
 						new DigitalObject.Builder(Content.byReference(FileUtils.getUrlFromFile(folder)))
 							.format(format.createFolderTypeUri())
-							.title(folder.getName())
-							// recurse into all contained files and create DigObs for them as well
-							.contains(createContainedbyReference(folderContent).toArray(new DigitalObject[]{}))
-							.build();
+							.title(folder.getName()).build();
 				}
 				else {
 					folderDigOb = 
 						new DigitalObject.Builder(Content.byReference(folder))
 							.format(format.createFolderTypeUri())
-							.title(folder.getName())
-							// recurse into all contained files and create DigObs for them as well							
-							.contains(createContainedAsStream(folderContent).toArray(new DigitalObject[]{}))
-							.build();
+							.title(folder.getName()).build();
 				}
 			}
 			else {
@@ -297,15 +284,7 @@ public final class DigitalObjectUtils {
 			FileUtils.writeInputStreamToFile(digOb.getContent().read(), content);
 			files.add(content);
 			
-			List<DigitalObject> contained = digOb.getContained();
-			
-			File digOb_contained = FileUtils.createFolderInWorkFolder(tmp, getFolderNameFromDigitalObject(digOb));
-			if(contained.size()>0) {
-				return getDigitalObjectsAsFiles(digOb.getContained(), digOb_contained);
-			}
-			else {
-				return files;
-			}
+			return files;
 		}
 	}
 
@@ -318,7 +297,7 @@ public final class DigitalObjectUtils {
      * @param createByReference create by reference (true) or as stream (false)
      * @return a new DigitalObject containing the extracted fragment as content
      */
-    public static DigitalObject getFragment(DigitalObject digOb, Fragment fragment, boolean createByReference) {
+    public static DigitalObject getFragment(DigitalObject digOb, String fragment, boolean createByReference) {
     	if(!isZipType(digOb)) {
     		LOG.error("The DigitalObject you have passed is NOT a Zip type DigOb. No Fragment could be retrieved!");
     		return null;
@@ -329,7 +308,7 @@ public final class DigitalObjectUtils {
 //    	FileUtils.deleteAllFilesInFolder(digObTmp);
     	File zip = getZipAsFile(digOb);
     	
-    	File target = ZipUtils.getFileFrom(zip, fragment.getId(), digObTmp);    	
+    	File target = ZipUtils.getFileFrom(zip, fragment, digObTmp);    	
 		
 		DigitalObject resultDigOb = createDigitalObject(target, createByReference);
 		
@@ -337,7 +316,7 @@ public final class DigitalObjectUtils {
     }
     
     
-    public static DigitalObject insertFragment(DigitalObject zipTypeDigOb, File fragmentFile, Fragment targetPathInZip, boolean createByReference) {
+    public static DigitalObject insertFragment(DigitalObject zipTypeDigOb, File fragmentFile, String targetPathInZip, boolean createByReference) {
 		if(!isZipType(zipTypeDigOb)) {
 			LOG.error("The DigitalObject you have passed is NOT a Zip type DigOb. No Fragment could be retrieved!");
 			return null;
@@ -345,12 +324,12 @@ public final class DigitalObjectUtils {
 		
 		File zip = getZipAsFile(zipTypeDigOb);
 		
-		File modifiedZip = ZipUtils.insertFileInto(zip, fragmentFile, targetPathInZip.getId());
+		File modifiedZip = ZipUtils.insertFileInto(zip, fragmentFile, targetPathInZip);
 		DigitalObject result = createZipTypeDigitalObjectFromZip(modifiedZip, createByReference, false);
 		return result;
 	}
     
-    public static DigitalObject removeFragment(DigitalObject zipTypeDigOb, Fragment targetPathInZip, boolean createByReference) {
+    public static DigitalObject removeFragment(DigitalObject zipTypeDigOb, String targetPathInZip, boolean createByReference) {
 		if(!isZipType(zipTypeDigOb)) {
 			LOG.error("The DigitalObject you have passed is NOT a Zip type DigOb. No Fragment could be retrieved!");
 			return null;
@@ -358,12 +337,12 @@ public final class DigitalObjectUtils {
 		
 		File zip = getZipAsFile(zipTypeDigOb);
 		
-		File modifiedZip = ZipUtils.removeFileFrom(zip, targetPathInZip.getId());
+		File modifiedZip = ZipUtils.removeFileFrom(zip, targetPathInZip);
 		DigitalObject result = createZipTypeDigitalObjectFromZip(modifiedZip, createByReference, false);
 		return result;
 	}
 
-	public static List<Fragment> listFragments(DigitalObject digOb) {
+	public static List<String> listFragments(DigitalObject digOb) {
     	if(!isZipType(digOb)) {
     		LOG.error("This DigitalObject is NOT a Zip-type DigOb! No Fragments to return, sorry!!!");
     		return null;
@@ -689,15 +668,14 @@ public final class DigitalObjectUtils {
 	 * @param fragment the fragment to get the name from
 	 * @return the name of the file specified by this fragment
 	 */
-	private static String getFragmentName(Fragment fragment) {
-		String fragmentID = fragment.getId();
+	private static String getFragmentName(String fragment) {
 		String name = null;
-		if(fragmentID.contains(File.separator)) {
-			name = fragmentID.substring(fragmentID.lastIndexOf(File.separator)+1);
+		if(fragment.contains(File.separator)) {
+			name = fragment.substring(fragment.lastIndexOf(File.separator)+1);
 			return name;
 		}
 		else {
-			return fragmentID;
+			return fragment;
 		}
 	}
 
@@ -728,11 +706,7 @@ public final class DigitalObjectUtils {
 	private static List<File> getAllFilesFromContainerDigitalObject(DigitalObject digOb, File targetFolder, List<File> allContainedFiles) {
 		if(isContainerType(digOb)) {
 			File topFolder = FileUtils.createFolderInWorkFolder(targetFolder, FileUtils.randomizeFileName(getFolderNameFromDigitalObject(digOb)));
-			List<DigitalObject> containedDigObs = digOb.getContained();
 			
-			for (DigitalObject digitalObject : containedDigObs) {
-				getAllFilesFromContainerDigitalObject(digitalObject, topFolder, allContainedFiles);
-			}
 		}
 		else {
 			File currentContent = new File(targetFolder, getFileNameFromDigitalObject(digOb, null));

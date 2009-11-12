@@ -12,7 +12,6 @@ import java.util.Random;
 import org.junit.Test;
 
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Fragment;
 
 /**
  * @author melmsp
@@ -83,11 +82,11 @@ public class DigitalObjectUtilsTest {
 	public void testGetFragmentFromZipTypeDigitalObject() {
 		printTestTitle("Test getFragmentFromZipTypeDigitalObject()");
 		DigitalObject result = DigitalObjectUtils.createZipTypeDigitalObject(testFolder, "getFragmentTest.zip", false, false, true);
-		List<Fragment> fragments = result.getFragments();
+		List<String> fragments = result.getFragments();
 		DigitalObject fragmentDigOb = null;
 		Random random = new Random();
 		int index = random.nextInt(fragments.size());
-		System.err.println("Getting file: " + fragments.get(index).getId());
+		System.err.println("Getting file: " + fragments.get(index));
 		fragmentDigOb = DigitalObjectUtils.getFragment(result, fragments.get(index), false);
 		printDigOb(fragmentDigOb);
 		
@@ -98,15 +97,15 @@ public class DigitalObjectUtilsTest {
 	public void testInsertFragmentIntoZipTypeDigitalObject() {
 		printTestTitle("Test insertFragmentIntoZipTypeDigitalObject()");
 		DigitalObject result = DigitalObjectUtils.createZipTypeDigitalObject(testFolder, "insertFragmentTest.zip", false, false, true);
-		List<Fragment> fragments = result.getFragments();
+		List<String> fragments = result.getFragments();
 		DigitalObject insertionResult = null;
 		Random random = new Random();
 		int index = random.nextInt(fragments.size());
-		System.err.println("Getting file: " + fragments.get(index).getId());
+		System.err.println("Getting file: " + fragments.get(index));
 		File toInsert = new File("IF/common/src/test/resources/test_zip/images/test_gif/laptop.gif");
-		insertionResult = DigitalObjectUtils.insertFragment(result, toInsert, new Fragment("insertedFiles\\images\\" + toInsert.getName()), false);
+		insertionResult = DigitalObjectUtils.insertFragment(result, toInsert, new String("insertedFiles\\images\\" + toInsert.getName()), false);
 		printDigOb(insertionResult);
-		insertionResult = DigitalObjectUtils.insertFragment(insertionResult, toInsert, new Fragment("insertedFiles\\images\\" + toInsert.getName()), false);
+		insertionResult = DigitalObjectUtils.insertFragment(insertionResult, toInsert, new String("insertedFiles\\images\\" + toInsert.getName()), false);
 		printDigOb(insertionResult);
 	}
 	
@@ -115,7 +114,7 @@ public class DigitalObjectUtilsTest {
 		printTestTitle("Test removeFragmentFromZipTypeDigitalObject()");
 		DigitalObject result = DigitalObjectUtils.createZipTypeDigitalObject(removeZip, "removeFragmentTest.zip", false, false, true);
 		printDigOb(result);
-		DigitalObject removeResult = DigitalObjectUtils.removeFragment(result, new Fragment("insertedFiles\\images\\laptop.gif"), false);
+		DigitalObject removeResult = DigitalObjectUtils.removeFragment(result, new String("insertedFiles\\images\\laptop.gif"), false);
 		FileUtils.writeInputStreamToFile(removeResult.getContent().read(), new File(work_folder, removeResult.getTitle()));
 		printDigOb(removeResult);
 	}
@@ -141,23 +140,23 @@ public class DigitalObjectUtilsTest {
 		return buf.toString();
 	}
 	
-	private void printContained(DigitalObject digOb, int level, int count) {
-		System.out.println(tabulator(level) + digOb.getTitle() + " contains: ");
-		List<DigitalObject> contained = digOb.getContained();
-		for (DigitalObject digitalObject : contained) {
-			if(digitalObject.getContained().size()>0) {
-				System.out.println(tabulator(level) + digitalObject.getTitle());
-				printContained(digitalObject, level++, count++);
-			}
-			
-		}
-	}
+//	private void printContained(DigitalObject digOb, int level, int count) {
+//		System.out.println(tabulator(level) + digOb.getTitle() + " contains: ");
+//		List<DigitalObject> contained = digOb.getContained();
+//		for (DigitalObject digitalObject : contained) {
+//			if(digitalObject.getContained().size()>0) {
+//				System.out.println(tabulator(level) + digitalObject.getTitle());
+//				printContained(digitalObject, level++, count++);
+//			}
+//			
+//		}
+//	}
 	
 	private void printFragments(DigitalObject digOb) {
-		List<Fragment> fragments = digOb.getFragments();
+		List<String> fragments = digOb.getFragments();
 		int i = 1;
-		for (Fragment fragment : fragments) {
-			System.out.println(tabulator(1) + i + ") " + fragment.getId());
+		for (String fragment : fragments) {
+			System.out.println(tabulator(1) + i + ") " + fragment);
 			i++;
 		}
 		System.out.println(tabulator(1) + "total count: " + fragments.size());
@@ -169,10 +168,10 @@ public class DigitalObjectUtilsTest {
 		System.out.println("--------------------------------------");
 		System.out.println("Summary DigitalObject: " + digOb.getTitle());
 		System.out.println("--------------------------------------");
-		if(DigitalObjectUtils.isFolderType(digOb)) {
-			System.out.println("Contained digObs: ");
-			printContained(digOb, 1, 0);
-		}
+//		if(DigitalObjectUtils.isFolderType(digOb)) {
+//			System.out.println("Contained digObs: ");
+//			printContained(digOb, 1, 0);
+//		}
 		if(DigitalObjectUtils.isZipType(digOb)) {
 			System.out.println("Contains Fragments: " + digOb.getFragments().size());
 			printFragments(digOb);
@@ -288,16 +287,16 @@ public class DigitalObjectUtilsTest {
 ////		}
 //	}
 
-	private void listContained(DigitalObject digObj) {
-		List<DigitalObject> contained = digObj.getContained();
-		System.out.println(digObj.getTitle() + " contains: " + System.getProperty("line.separator"));
-		for (DigitalObject digitalObject : contained) {
-			System.out.println(digitalObject.getTitle());
-			if(digitalObject.getContained()!=null && digitalObject.getContained().size()>0) {
-				listContained(digitalObject);
-			}
-		}
-	}
+//	private void listContained(DigitalObject digObj) {
+//		List<DigitalObject> contained = digObj.getContained();
+//		System.out.println(digObj.getTitle() + " contains: " + System.getProperty("line.separator"));
+//		for (DigitalObject digitalObject : contained) {
+//			System.out.println(digitalObject.getTitle());
+//			if(digitalObject.getContained()!=null && digitalObject.getContained().size()>0) {
+//				listContained(digitalObject);
+//			}
+//		}
+//	}
 	
 	
 

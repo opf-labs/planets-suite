@@ -20,8 +20,6 @@ import ch.enterag.utils.zip.EntryOutputStream;
 import ch.enterag.utils.zip.FileEntry;
 import ch.enterag.utils.zip.Zip64File;
 import eu.planets_project.services.datatypes.Checksum;
-import eu.planets_project.services.datatypes.Fragment;
-
 
 
 public class ZipUtils {
@@ -222,21 +220,21 @@ public class ZipUtils {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public static Fragment[] getAllFragments(File zip) {
-		Fragment[] fragments = null;
+	public static String[] getAllFragments(File zip) {
+		String[] fragments = null;
 		try {
 			Zip64File zip64File = new Zip64File(zip);
 			List<FileEntry> entries = zip64File.getListFileEntries();
 			if(entries.size() > 0) {
 				int i = 0;
-				fragments = new Fragment[entries.size()];
+				fragments = new String[entries.size()];
 				for (FileEntry fileEntry : entries) {
-					fragments[i] = new Fragment(fileEntry.getName());
+					fragments[i] = new String(fileEntry.getName());
 					i++;
 				}
 			}
 			else {
-				return new Fragment[]{};
+				return new String[]{};
 			}
 			zip64File.close();
 		} catch (FileNotFoundException e) {
