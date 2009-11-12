@@ -678,13 +678,16 @@ public class DataHandlerImpl implements DataHandler {
 	 */
 	public File createTempFileInExternallyAccessableDir() throws IOException {
 		
+		log.debug("createTempFileInExternallyAccessableDir");
 		File f = createTemporaryFile();
+		log.debug("temp file location: "+f.getAbsolutePath());
 		File dir = new File(externallyReachableFiledir);
-		log.info(dir.exists());
+		log.debug("directory "+externallyReachableFiledir+" exists? "+ dir.exists());
 		File target = new File(dir.getAbsoluteFile()+"/"+f.getName());
 		target.deleteOnExit();
 		boolean success = f.renameTo(target);
 		if(success){
+			log.debug("createTempFileInExternallyAccessableDir returning: "+target.getAbsolutePath());
 			return target;
 		}else{
 			throw new IOException("Problems moving data from temp to externally reachable jboss-web deployer dir");
@@ -697,17 +700,20 @@ public class DataHandlerImpl implements DataHandler {
 	 */
 	public File copyLocalFileAsTempFileInExternallyAccessableDir(String localFileRef) throws IOException{
 		//get a temporary file
+		log.debug("copyLocalFileAsTempFileInExternallyAccessableDir");
 		File f = this.createTempFileInExternallyAccessableDir();
 	 	
 		//copying one file to another with FileChannel 
 		//@see http://www.exampledepot.com/egs/java.nio/File2File.html
 		FileChannel srcChannel = new FileInputStream(localFileRef).getChannel();
 		FileChannel dstChannel = new FileOutputStream(f).getChannel();
+		log.debug("before transferring via FileChannel from src-inputStream: "+localFileRef+" to dest-outputStream: "+f.getAbsolutePath());
 		// Copy file contents from source to destination
         dstChannel.transferFrom(srcChannel, 0, srcChannel.size());
         //Close the channels
         srcChannel.close();
         dstChannel.close();
+        log.debug("copyLocalFileAsTempFileInExternallyAccessableDir returning: "+f.getAbsolutePath());
 		return f;
 	}
 
@@ -722,7 +728,8 @@ public class DataHandlerImpl implements DataHandler {
 	    }
 		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	   	String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
-
+	   	//FIXME: use PlanetsServerConfig class instead for getting host and port
+	   	
    		//URI(scheme,authority,path,query,fragement)
    	    URI ret = new URI("http",authority,"/planets-testbed/"+tempFileInExternalDir.getName(),null,null);
    	    log.debug("returning httpFileRef: "+ret+" for: "+tempFileInExternalDir.getAbsolutePath());
