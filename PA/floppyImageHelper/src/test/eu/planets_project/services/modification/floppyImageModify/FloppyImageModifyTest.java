@@ -92,7 +92,6 @@ public class FloppyImageModifyTest {
 		FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
         DigitalObject inputDigObj = new DigitalObject.Builder(Content.byReference(FLOPPY_IMAGE))
 									.title(FLOPPY_IMAGE.getName())
-									.contains(DigitalObjectUtils.createContainedAsStream(fileList).toArray(new DigitalObject[] {}))
 									.format(format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)))
 									.build();
 		ModifyResult result = FLOPPY_IMAGE_MODIFY.modify(inputDigObj, format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)), null);
