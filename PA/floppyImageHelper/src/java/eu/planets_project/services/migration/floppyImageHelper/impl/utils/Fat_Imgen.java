@@ -7,8 +7,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ZipResult;
 import eu.planets_project.services.utils.ZipUtils;
@@ -38,7 +40,7 @@ public class Fat_Imgen {
 	
 	private static String br = System.getProperty("line.separator");
 	
-	private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
+	private Log log = LogFactory.getLog(this.getClass());
 	
 	public Fat_Imgen() {
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
@@ -224,7 +226,7 @@ public class Fat_Imgen {
 
 
 	private void appendErr (String err) {
-		if(err!=null && !err.equalsIgnoreCase("")) {
+		if(err!=null || !err.equalsIgnoreCase("")) {
 			process_error.append(err);
 			process_error.append(System.getProperty("line.separator"));
 		}
@@ -232,7 +234,7 @@ public class Fat_Imgen {
 
 
 	private void appendOut(String out) {
-		if(out!=null && !out.equalsIgnoreCase("")) {
+		if(out!=null || !out.equalsIgnoreCase("")) {
 			process_output.append(out);
 			process_output.append(System.getProperty("line.separator"));
 		}
