@@ -11,6 +11,9 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
@@ -28,9 +31,7 @@ import eu.planets_project.services.migration.floppyImageHelper.impl.utils.Virtua
 import eu.planets_project.services.modification.floppyImageModify.api.FloppyImageModify;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
-import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -58,7 +59,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	
 	private String br = System.getProperty("line.separator");
 	
-    private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
+    private Log log = LogFactory.getLog(this.getClass());
     
     private static FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
     
@@ -131,11 +132,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		
 		File originalImageFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), TEMP_FOLDER, fileName);
 		
-		List<DigitalObject> contained = digitalObject.getContained();
-		
-		List<File> containedFiles = DigitalObjectUtils.getDigitalObjectsAsFiles(contained, TEMP_FOLDER);
-		
-		FloppyHelperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile, containedFiles);
+		FloppyHelperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile);
 		
 		File modifiedImage = vfdResult.getResultFile();
 		

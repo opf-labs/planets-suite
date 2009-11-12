@@ -5,6 +5,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Checksum;
@@ -24,7 +27,6 @@ import eu.planets_project.services.migration.floppyImageHelper.api.FloppyImageHe
 import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperService;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
 import eu.planets_project.services.utils.ZipResult;
 import eu.planets_project.services.utils.ZipUtils;
@@ -58,7 +60,7 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
 	
 	private static FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
 	
-    private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
+    private Log log = LogFactory.getLog(this.getClass());
     
     private Fat_Imgen fat_imgen = new Fat_Imgen();
     

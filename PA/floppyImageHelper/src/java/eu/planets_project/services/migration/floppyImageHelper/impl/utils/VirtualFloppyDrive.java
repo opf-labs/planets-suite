@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ZipResult;
 import eu.planets_project.services.utils.ZipUtils;
@@ -38,7 +40,7 @@ public class VirtualFloppyDrive {
 	
 	private static String br = System.getProperty("line.separator");
 	
-	private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
+	private Log log = LogFactory.getLog(this.getClass());
 	
 	public VirtualFloppyDrive() {
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
@@ -200,7 +202,7 @@ public class VirtualFloppyDrive {
 		return this.returnWithSuccess(process_output.toString(), null, zip);
 	}
 	
-	public FloppyHelperResult addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
+	public FloppyHelperResult addFilesToFloppyImage(File floppyImage) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -239,15 +241,10 @@ public class VirtualFloppyDrive {
 		List<File> filesOnFloppy = Arrays.asList(floppy.listFiles());
 		
 		allFiles.addAll(filesOnFloppy);
-		allFiles.addAll(filesToAdd);
 		
 		boolean filesTooLarge = FileUtils.filesTooLargeForMedium(allFiles, FLOPPY_SIZE);
 		
 		if(!filesTooLarge) {
-			for (File currentfile : filesToAdd) {
-				File dest = new File(floppy, currentfile.getName());
-				FileUtils.copyFileTo(currentfile, dest);
-			}
 			List<File> afterCopy = Arrays.asList(floppy.listFiles());
 			log.info("Files on floppy: " + br);
 			for (File file : afterCopy) {
