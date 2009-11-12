@@ -143,7 +143,7 @@ public class OdfValidator implements Validate {
 	public ValidateResult validate(DigitalObject digitalObject, URI format,
 			List<Parameter> parameters) {
 		
-		String name = DigitalObjectUtils.getFileNameFromDigitalObject(digitalObject, format);
+		String name = DigitalObjectUtils.getFileNameFromDigObject(digitalObject, format);
 		
 		File odfValidatorTmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_VALIDATOR_TMP");
 		

@@ -36,7 +36,7 @@ public class OdfValidatorTest {
 	
 	private static Validate validator = null;
 
-	File v10TestIn = new File("tests/test-files/documents/test_odt/v10/test_file_v10.odt");
+	File v10TestIn = new File("tests/test-files/documents/test_odt/v11/test_file_v11.odt");
 	static File v10UserDocSchema = new File("tests/test-files/documents/test_odt/v10/schemas/OpenDocument-schema-v1.0-os.rng");
 	static File v10UserDocStrictSchema = new File("tests/test-files/documents/test_odt/v10/schemas/OpenDocument-strict-schema-v1.0-os.rng");
 	static File v10UserManifestSchema = new File("tests/test-files/documents/test_odt/v10/schemas/OpenDocument-manifest-schema-v1.0-os.rng");
@@ -100,7 +100,7 @@ public class OdfValidatorTest {
 	public void testOdfValidate() {
 		printTestTitle("Testing STRICT validation against v1.1 default schemas with ODF v1.1 input file");
 		DigitalObject testIn = new DigitalObject.Builder(Content.byReference(v10TestIn)).title(v10TestIn.getName()).build();
-		URI format = techReg.createExtensionUri("odt");
+		URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v10TestIn));
 		ValidateResult vr = validator.validate(testIn, format, params);
 		assertTrue("ValidateResult should not be NULL!", vr!=null);
 		ServiceReport sr = vr.getReport();

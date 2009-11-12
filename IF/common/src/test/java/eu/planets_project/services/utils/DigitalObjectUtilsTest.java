@@ -60,23 +60,6 @@ public class DigitalObjectUtilsTest {
 //		printDigOb(result);
 //	}
 	
-	@Test
-	public void testCreateFolderTypeDigOb() {
-		printTestTitle("Test createFolderTypeDigOb()");
-		DigitalObject result = DigitalObjectUtils.createFolderTypeDigitalObject(testFolder, true);
-		assertTrue("DigitalObject should NOT be NULL!", result!=null);
-		printDigOb(result);
-	}
-	
-	@Test
-	public void testGetAllFilesFromDigitalObject() {
-		printTestTitle("Test getAllFilesFromDigitalObject()");
-		DigitalObject result = DigitalObjectUtils.createFolderTypeDigitalObject(testFolder, true);
-		assertTrue("DigitalObject should NOT be NULL!", result!=null);
-		List<File> files = DigitalObjectUtils.getAllFiles(result);
-		System.out.println("Extracted files from digOb: " + files.size());
-		printDigOb(result);
-	}
 	
 	@Test
 	public void testGetFragmentFromZipTypeDigitalObject() {

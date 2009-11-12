@@ -117,7 +117,7 @@ public class CoreExtractor {
 //		plogger.info(thisExtractorName + " output folder created: "
 //		        + EXTRACTOR_OUT);
 		
-		String inputFileName = DigitalObjectUtils.getFileNameFromDigitalObject(input, inputFormat);
+		String inputFileName = DigitalObjectUtils.getFileNameFromDigObject(input, inputFormat);
 		
 		if(inputFileName==null || inputFileName.equalsIgnoreCase("")) {
 			inputFileName = FileUtils.randomizeFileName(defaultInputFileName);
