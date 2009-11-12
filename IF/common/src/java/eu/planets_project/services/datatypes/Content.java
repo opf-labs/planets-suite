@@ -1,10 +1,10 @@
 package eu.planets_project.services.datatypes;
 
+import eu.planets_project.services.utils.FileUtils;
+
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Static factory methods for content creation.
@@ -37,6 +37,9 @@ public final class Content {
      * @return A content instance referencing the given location.
      */
     public static DigitalObjectContent byReference(final File reference) {
+        if (!reference.exists()) {
+            throw new IllegalArgumentException("Given file does not exist: " + reference);
+        }
         return new ImmutableContent(reference);
     }
 
@@ -66,6 +69,9 @@ public final class Content {
      * @return A content instance with the specified value
      */
     public static DigitalObjectContent byValue(final File value) {
+        if (!value.exists()) {
+            throw new IllegalArgumentException("Given file does not exist: " + value);
+        }
         byte[] bytes = FileUtils.readFileIntoByteArray(value);
         return new ImmutableContent(bytes);
     }
