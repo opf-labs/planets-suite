@@ -5,7 +5,9 @@ package eu.planets_project.services.datatypes;
 
 import eu.planets_project.services.PlanetsServices;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 import java.util.Collections;
 import java.util.List;
@@ -129,5 +131,74 @@ public final class Event {
      */
     public List<Property> getProperties() {
         return Collections.unmodifiableList(properties);
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((agent == null) ? 0 : agent.hashCode());
+        result = prime * result + ((datetime == null) ? 0 : datetime.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(duration);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+        result = prime * result + ((summary == null) ? 0 : summary.hashCode());
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Event other = (Event) obj;
+        if (agent == null) {
+            if (other.agent != null) {
+                return false;
+            }
+        } else if (!agent.equals(other.agent)) {
+            return false;
+        }
+        if (datetime == null) {
+            if (other.datetime != null) {
+                return false;
+            }
+        } else if (!datetime.equals(other.datetime)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(duration) != Double.doubleToLongBits(other.duration)) {
+            return false;
+        }
+        if (properties == null) {
+            if (other.properties != null) {
+                return false;
+            }
+        } else if (!properties.equals(other.properties)) {
+            return false;
+        }
+        if (summary == null) {
+            if (other.summary != null) {
+                return false;
+            }
+        } else if (!summary.equals(other.summary)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -55,13 +55,6 @@ public interface DigitalObject {
     List<Metadata> getMetadata();
 
     /**
-     * @return The 0..n digital objects contained in this digital object.
-     *         Returns a defensive copy, changes to the obtained list won't
-     *         affect this digital object.
-     */
-    List<DigitalObject> getContained();
-
-    /**
      * @return The actual content reference. Required. Returns a defensive copy,
      *         changes to the obtained instance won't affect this digital
      *         object.
@@ -80,7 +73,7 @@ public interface DigitalObject {
      *         defensive copy, changes to the obtained list won't affect this
      *         digital object.
      */
-    List<Fragment> getFragments();
+    List<String> getFragments();
 
     /**
      * @return An XML representation of this digital object (can be used to
@@ -121,7 +114,7 @@ public interface DigitalObject {
         /* Optional parameters, initialized to default values: */
         private URI permanentUri = null;
         private List<Event> events = new ArrayList<Event>();
-        private List<Fragment> fragments = new ArrayList<Fragment>();
+        private List<String> fragments = new ArrayList<String>();
         private List<DigitalObject> contained = new ArrayList<DigitalObject>();
         private URI manifestationOf = null;
         private List<Metadata> metadata = null;
@@ -151,7 +144,6 @@ public interface DigitalObject {
          */
         public Builder(final DigitalObject digitalObject) {
             content = digitalObject.getContent();
-            contained = digitalObject.getContained();
             events = digitalObject.getEvents();
             fragments = digitalObject.getFragments();
             manifestationOf = digitalObject.getManifestationOf();
@@ -175,7 +167,6 @@ public interface DigitalObject {
                     .of(digitalObjectXml);
             permanentUri = digitalObject.getPermanentUri();
             content = digitalObject.getContent();
-            contained = digitalObject.getContained();
             events = digitalObject.getEvents();
             fragments = digitalObject.getFragments();
             manifestationOf = digitalObject.getManifestationOf();
@@ -223,18 +214,8 @@ public interface DigitalObject {
          * @param fragments The fragments the digital object is made of
          * @return The builder, for cascaded calls
          */
-        public Builder fragments(final Fragment... fragments) {
-            this.fragments = new ArrayList<Fragment>(Arrays.asList(fragments));
-            return this;
-        }
-
-        /**
-         * @param contained The contained digital objects
-         * @return The builder, for cascaded calls
-         */
-        public Builder contains(final DigitalObject... contained) {
-            this.contained = new ArrayList<DigitalObject>(Arrays
-                    .asList(contained));
+        public Builder fragments(final String... fragments) {
+            this.fragments = new ArrayList<String>(Arrays.asList(fragments));
             return this;
         }
 
@@ -302,16 +283,8 @@ public interface DigitalObject {
          * @return The fragments
          * @see DigitalObject#getFragments()
          */
-        public List<Fragment> getFragments() {
+        public List<String> getFragments() {
             return fragments;
-        }
-
-        /**
-         * @return The contained objects
-         * @see DigitalObject#getContained()
-         */
-        public List<DigitalObject> getContained() {
-            return contained;
         }
 
         /**

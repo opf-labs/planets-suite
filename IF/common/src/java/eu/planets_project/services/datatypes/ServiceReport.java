@@ -5,6 +5,10 @@ package eu.planets_project.services.datatypes;
 
 import eu.planets_project.services.PlanetsServices;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -31,6 +35,8 @@ public final class ServiceReport {
     @XmlElement(namespace = PlanetsServices.SERVICES_NS, required = true)
     private Type type;
 
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS, required = true)
+    private List<Property> properties;
     /**
      * Type of information returned by a service.
      * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
@@ -99,6 +105,21 @@ public final class ServiceReport {
     }
 
     /**
+     * Create a service report with specified status, type and message.
+     * @param type The Type enum element
+     * @param status The Status enum element
+     * @param message The message
+     * @param properties A list of ad hoc properties
+     */
+    public ServiceReport(final Type type, final Status status,
+            final String message, List<Property> properties) {
+        this.type = type;
+        this.status = status;
+        this.message = message;
+        this.properties = new ArrayList<Property>(properties);
+    }
+
+    /**
      * @return The message
      */
     public String getMessage() {
@@ -117,6 +138,13 @@ public final class ServiceReport {
      */
     public Type getType() {
         return type;
+    }
+
+    /**
+     * @return The List of Property objects associated with this ServiceReport
+     */
+    public List<Property> getproperties() {
+        return properties == null ? Collections.unmodifiableList(new ArrayList<Property>()) : properties;
     }
 
     /**
