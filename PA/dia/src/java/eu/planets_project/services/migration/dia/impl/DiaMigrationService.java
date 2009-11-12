@@ -2,10 +2,7 @@ package eu.planets_project.services.migration.dia.impl;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -16,7 +13,6 @@ import eu.planets_project.ifr.core.services.migration.genericwrapper2.GenericMig
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;

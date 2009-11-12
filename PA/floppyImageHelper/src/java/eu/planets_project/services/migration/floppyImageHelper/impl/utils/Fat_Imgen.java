@@ -224,7 +224,7 @@ public class Fat_Imgen {
 
 
 	private void appendErr (String err) {
-		if(err!=null || !err.equalsIgnoreCase("")) {
+		if(err!=null && !err.equalsIgnoreCase("")) {
 			process_error.append(err);
 			process_error.append(System.getProperty("line.separator"));
 		}
@@ -232,7 +232,7 @@ public class Fat_Imgen {
 
 
 	private void appendOut(String out) {
-		if(out!=null || !out.equalsIgnoreCase("")) {
+		if(out!=null && !out.equalsIgnoreCase("")) {
 			process_output.append(out);
 			process_output.append(System.getProperty("line.separator"));
 		}

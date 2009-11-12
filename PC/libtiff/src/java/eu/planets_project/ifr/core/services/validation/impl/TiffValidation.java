@@ -10,8 +10,6 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
@@ -25,14 +23,16 @@ import com.sun.jna.ptr.ByReference;
 import com.sun.jna.ptr.IntByReference;
 
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.utils.PlanetsLogger;
-import eu.planets_project.services.validate.Validate;
-import eu.planets_project.services.validate.ValidateResult;
-
-import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult;
 
 
 /**

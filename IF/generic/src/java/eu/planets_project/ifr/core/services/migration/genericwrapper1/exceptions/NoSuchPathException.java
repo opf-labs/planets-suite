@@ -5,7 +5,12 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper1.exception
  */
 public class NoSuchPathException extends MigrationException{
 
-    public NoSuchPathException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4331884817418311800L;
+
+	public NoSuchPathException() {
     }
 
     public NoSuchPathException(String message, Throwable cause) {

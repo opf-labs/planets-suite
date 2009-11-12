@@ -1,5 +1,0 @@
-I had to add some libraries here to make the registry tests work when running 
-against a server via Ant; I added:
-
-- jbossws-common.jar
-- jbossws-native-jaxrpc.jar

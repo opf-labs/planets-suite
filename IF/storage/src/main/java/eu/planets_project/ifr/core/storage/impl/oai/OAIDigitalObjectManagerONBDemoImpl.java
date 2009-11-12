@@ -66,6 +66,7 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
         }
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
     	if ((pdURI == null) || pdURI.equals(root)) {

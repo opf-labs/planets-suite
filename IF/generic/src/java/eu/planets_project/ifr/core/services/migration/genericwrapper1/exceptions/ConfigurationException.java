@@ -9,7 +9,12 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper1.exception
  */
 public class ConfigurationException extends MigrationException{
 
-    public ConfigurationException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3713439986495998064L;
+
+	public ConfigurationException() {
     }
 
     public ConfigurationException(String message, Throwable cause) {

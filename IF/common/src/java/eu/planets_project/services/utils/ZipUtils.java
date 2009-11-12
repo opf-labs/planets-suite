@@ -117,6 +117,7 @@ public class ZipUtils {
 	 * @param destFolder the folder to write the extracted files to.
 	 * @return a List with all extracted files.
 	 */
+	@SuppressWarnings("unchecked")
 	public static List<File> unzipTo(File zipFile, File destFolder) {
 		List<File> extractedFiles = null;
 		try {
@@ -220,6 +221,7 @@ public class ZipUtils {
 	 * @return an Fragment[] containing all file entries in this zip. 
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	public static Fragment[] getAllFragments(File zip) {
 		Fragment[] fragments = null;
 		try {
@@ -551,6 +553,7 @@ public class ZipUtils {
 		return new File(zip64File.getDiskFile().getFileName());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static boolean isZipFile(File file) {
 		try {
 			Zip64File zip = new Zip64File(file);
@@ -575,6 +578,7 @@ public class ZipUtils {
 	 * @param zip the zip file to scan
 	 * @return a list with all entry paths
 	 */
+	@SuppressWarnings("unchecked")
 	public static List<String> listZipEntries(File zip) {
 		List<String> entryList = new ArrayList<String>();
 		try {
@@ -809,6 +813,7 @@ public class ZipUtils {
 	 * @param zip64File the zip64 file to list the entries 
 	 * @return all entries in this zip64File
 	 */
+	@SuppressWarnings("unchecked")
 	private static List<String> listZipEntries(Zip64File zip64File) {
 		List<String> entryList = new ArrayList<String>();
 		

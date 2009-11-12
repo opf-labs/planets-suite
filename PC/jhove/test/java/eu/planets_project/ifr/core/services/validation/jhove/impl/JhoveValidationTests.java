@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.services.validation.jhove.impl;
 
-import static eu.planets_project.services.utils.test.TestFile.testIdentification;
 import static eu.planets_project.services.utils.test.TestFile.testValidation;
 
 import java.io.File;
@@ -15,7 +14,6 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.utils.test.TestFile;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;

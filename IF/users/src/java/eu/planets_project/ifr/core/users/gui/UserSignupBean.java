@@ -1,55 +1,37 @@
 package eu.planets_project.ifr.core.users.gui;
 
-import java.security.MessageDigest;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.UUID;
-import java.io.File;
-import java.io.FileOutputStream; 
-import java.io.ObjectOutputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream; 
-import java.io.ObjectInputStream;
-import java.io.BufferedInputStream;
 
+import javax.annotation.Resource;
+import javax.ejb.EJBContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.annotation.security.RunAs;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.http.HttpServletRequest;
-
-import eu.planets_project.ifr.core.security.api.services.RoleManager;
+import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
 import eu.planets_project.ifr.core.security.api.model.User;
-import eu.planets_project.ifr.core.security.api.model.Role;
+import eu.planets_project.ifr.core.security.api.services.RoleManager;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
-import eu.planets_project.ifr.core.security.api.services.RoleManager.RoleNotFoundException;
 import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotFoundException;
-import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotValidException;
 import eu.planets_project.ifr.core.security.impl.model.AddressImpl;
 import eu.planets_project.ifr.core.security.impl.model.UserImpl;
 import eu.planets_project.ifr.core.security.impl.services.RoleManagerImpl;
 import eu.planets_project.ifr.core.security.impl.services.UserManagerImpl;
-
-import eu.planets_project.ifr.core.common.mail.*;
-
-import javax.ejb.EJB;
-import javax.ejb.EJBContext;
-import javax.ejb.Stateless;
-import java.security.Principal;
-import javax.annotation.Resource;
 /**
  * Simple bean backing self sign-up pages
  * @author Klaus Rechert

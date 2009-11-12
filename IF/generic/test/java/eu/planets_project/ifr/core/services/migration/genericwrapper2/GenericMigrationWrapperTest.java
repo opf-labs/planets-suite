@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
-import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
