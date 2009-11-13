@@ -13,6 +13,9 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Memory;
@@ -30,7 +33,6 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
 
@@ -44,7 +46,7 @@ import eu.planets_project.services.validate.ValidateResult;
 @WebService(
 	name = TiffValidation.NAME, 
 	serviceName = Validate.NAME, 
-	targetNamespace = PlanetsServices.NS, 
+	targetNamespace = PlanetsServices.NS,
 	endpointInterface = "eu.planets_project.services.validate.Validate"
 	)
 @Local(Validate.class)
@@ -59,8 +61,8 @@ public class TiffValidation implements Validate, Serializable
 	 */
 	public static final String NAME = "TiffValidation";
 	
-	private static final PlanetsLogger LOG = 
-		PlanetsLogger.getLogger(TiffValidation.class);
+	private static final Log LOG = 
+		LogFactory.getLog(TiffValidation.class);
 
 	private byte[] bytes;
 
@@ -107,7 +109,7 @@ public class TiffValidation implements Validate, Serializable
 		boolean valid = basicValidateOneBinary(tempFile, fmt);
 
 		result = new ValidateResult.Builder(fmt, new ServiceReport(Type.INFO,
-                Status.SUCCESS, "OK")).ofThisFormat(valid).validInRegardToThisFormat(valid).build();
+                Status.SUCCESS, "OK")).ofThisFormat(valid).build();
 
 		return result;
 	}

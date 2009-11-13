@@ -30,6 +30,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import com.sun.xml.ws.developer.StreamingAttachment;
+
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
@@ -51,6 +53,7 @@ import eu.planets_project.services.utils.FileUtils;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @Stateless
+@StreamingAttachment(parseEagerly = true)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @WebService(name = MetadataExtractor.NAME, serviceName = Characterise.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
 public final class MetadataExtractor implements Characterise {

@@ -1,5 +1,21 @@
 package eu.planets_project.ifr.core.services.validation.impl;
 
+import java.io.File;
+import java.io.Serializable;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.xml.ws.BindingType;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
+
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -9,32 +25,18 @@ import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import java.io.File;
-import java.io.Serializable;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * PngCheck validation service.
  * @author Fabian Steeg
  */
 @WebService(name = PngCheck.NAME, serviceName = Validate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.validate.Validate")
-@Local(Validate.class)
-@Remote(Validate.class)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
-@Stateless()
+@StreamingAttachment(parseEagerly = true)
+@Stateless
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class PngCheck implements Validate, Serializable {
     /***/
     private static final long serialVersionUID = -596706737946485163L;
@@ -48,8 +50,8 @@ public final class PngCheck implements Validate, Serializable {
             .create("info:pronom/fmt/11"), URI.create("info:pronom/fmt/12"),
             URI.create("info:pronom/fmt/13"));
     /***/
-    private static final PlanetsLogger LOG = PlanetsLogger
-            .getLogger(PngCheck.class);
+    private static final Log LOG = LogFactory
+            .getLog(PngCheck.class);
 
     /***/
     // private byte[] bytes;

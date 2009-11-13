@@ -10,13 +10,14 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import edu.harvard.hul.ois.jhove.App;
 import edu.harvard.hul.ois.jhove.JhoveBase;
@@ -40,10 +41,14 @@ import eu.planets_project.services.utils.FileUtils;
  * JHOVE identification service.
  * @author Fabian Steeg
  */
-@WebService(name = JhoveIdentification.NAME, serviceName = Identify.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.Identify")
-@Local(Identify.class)
-@Remote(Identify.class)
-@Stateless()
+@WebService(
+		name = JhoveIdentification.NAME, 
+		serviceName = Identify.NAME, 
+		targetNamespace = PlanetsServices.NS, 
+		endpointInterface = "eu.planets_project.services.identify.Identify")
+@Stateless
+@StreamingAttachment(parseEagerly = true)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class JhoveIdentification implements Identify, Serializable {
     private static Log log = LogFactory.getLog(JhoveIdentification.class);
     /***/

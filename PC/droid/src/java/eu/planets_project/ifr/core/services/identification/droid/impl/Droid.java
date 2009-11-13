@@ -9,10 +9,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +19,9 @@ import org.apache.commons.logging.LogFactory;
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.IdentificationFile;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
+
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -36,10 +38,14 @@ import eu.planets_project.services.utils.FileUtils;
  * Droid identification service.
  * @author Fabian Steeg, Carl Wilson
  */
-@Local(Identify.class)
-@Remote(Identify.class)
-@Stateless()
-@WebService(name = Droid.NAME, serviceName = Identify.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.Identify")
+@Stateless
+@WebService(
+		name = Droid.NAME, 
+		serviceName = Identify.NAME, 
+		targetNamespace = PlanetsServices.NS, 
+		endpointInterface = "eu.planets_project.services.identify.Identify")
+@StreamingAttachment(parseEagerly = true)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class Droid implements Identify, Serializable {
     private static Log log = LogFactory.getLog(Droid.class);
 

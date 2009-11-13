@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+import javax.xml.ws.BindingType;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
 import eu.planets_project.services.PlanetsServices;
@@ -27,11 +27,14 @@ import eu.planets_project.services.validate.ValidateResult;
  * JHOVE validation service.
  * @author Fabian Steeg
  */
-@WebService(name = JhoveValidation.NAME, serviceName = Validate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.validate.Validate")
-@Local(Validate.class)
-@Remote(Validate.class)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
-@Stateless()
+@WebService(
+		name = JhoveValidation.NAME, 
+		serviceName = Validate.NAME, 
+		targetNamespace = PlanetsServices.NS, 
+		endpointInterface = "eu.planets_project.services.validate.Validate")
+@StreamingAttachment(parseEagerly = true)
+@Stateless
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class JhoveValidation implements Validate, Serializable {
     /***/
     private static final long serialVersionUID = 2127494848765937613L;
