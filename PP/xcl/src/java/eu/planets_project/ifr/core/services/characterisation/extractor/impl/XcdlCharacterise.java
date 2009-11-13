@@ -11,9 +11,12 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlParser;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
@@ -36,6 +39,8 @@ import eu.planets_project.services.utils.ServiceUtils;
  */
 @WebService(name = XcdlCharacterise.NAME, serviceName = Characterise.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
 @Stateless
+@StreamingAttachment(parseEagerly = true)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class XcdlCharacterise implements Characterise, Serializable {
 
     private static final long serialVersionUID = -8537596616209516979L;

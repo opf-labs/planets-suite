@@ -7,9 +7,12 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -33,6 +36,8 @@ import eu.planets_project.services.utils.ServiceUtils;
  */
 @WebService(name = XcdlMigrate.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
 @Stateless
+@StreamingAttachment(parseEagerly = true)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class XcdlMigrate implements Migrate {
 
     private static final long serialVersionUID = -8231114442082962651L;

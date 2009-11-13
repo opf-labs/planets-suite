@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlCreator;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlParser;
@@ -32,6 +35,8 @@ import eu.planets_project.services.utils.FileUtils;
  */
 @WebService(name = XcdlCompareProperties.NAME, serviceName = CompareProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CompareProperties")
 @Stateless
+@StreamingAttachment(parseEagerly = true)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class XcdlCompareProperties implements CompareProperties {
     /***/
     static final String NAME = "XcdlCompareProperties";

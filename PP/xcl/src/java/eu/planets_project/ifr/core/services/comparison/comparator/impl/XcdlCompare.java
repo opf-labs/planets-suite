@@ -9,8 +9,11 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.LogFactory;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.CoreExtractor;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreator;
@@ -35,6 +38,8 @@ import eu.planets_project.services.utils.FileUtils;
  */
 @WebService( name = XcdlCompare.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare" )
 @Stateless
+@StreamingAttachment(parseEagerly = true)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class XcdlCompare implements Compare {
     /***/
     static final String NAME = "XcdlCompare";

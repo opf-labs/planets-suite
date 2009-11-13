@@ -10,9 +10,12 @@ import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.services.comparison.explorer.config.ExplorerResultReader;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
@@ -35,6 +38,8 @@ import eu.planets_project.services.utils.ProcessRunner;
  */
 @WebService(name = XcdlCommonProperties.NAME, serviceName = CommonProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CommonProperties")
 @Stateless
+@StreamingAttachment(parseEagerly = true)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class XcdlCommonProperties implements CommonProperties {
     static final String NAME = "XcdlCommonProperties";
     private static final Log LOG = LogFactory.getLog(XcdlCommonProperties.class);
