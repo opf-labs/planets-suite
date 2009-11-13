@@ -26,6 +26,7 @@ import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
@@ -581,7 +582,11 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         msBefore = System.currentTimeMillis();
         try {
             log.info("Characterising "+dob);
-            result = dp.characterise(dob, null);
+            //FIXME this is a hack for disabling norm data for XCDL characterisation services 
+            // as parameters are currently not definable for this expType
+            List<Parameter> parameterList = new ArrayList<Parameter>();
+            parameterList.add(new Parameter("disableNormDataInXCDL","-n"));
+            result = dp.characterise(dob, parameterList);
         } catch( Exception e ) {
             log.error("Characterisation failed with exception: "+e);
             e.printStackTrace();
