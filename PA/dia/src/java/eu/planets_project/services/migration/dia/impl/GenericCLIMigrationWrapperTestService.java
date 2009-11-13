@@ -14,7 +14,10 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.ws.BindingType;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 
 import eu.planets_project.services.PlanetsServices;
@@ -24,7 +27,6 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * DiaMigrationService testing service.
@@ -34,7 +36,13 @@ import eu.planets_project.services.utils.PlanetsLogger;
 @Local(Migrate.class)
 @Remote(Migrate.class)
 @Stateless
-@WebService(name = GenericCLIMigrationWrapperTestService.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
+@WebService(
+		name = GenericCLIMigrationWrapperTestService.NAME, 
+		serviceName = Migrate.NAME, 
+		targetNamespace = PlanetsServices.NS, 
+		endpointInterface = "eu.planets_project.services.migrate.Migrate")
+
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class GenericCLIMigrationWrapperTestService implements Migrate,
         Serializable {
 
@@ -44,8 +52,7 @@ public final class GenericCLIMigrationWrapperTestService implements Migrate,
     /** The service name */
     static final String NAME = "GenericCLIMigrationWrapperTestService";
 
-    private PlanetsLogger log = PlanetsLogger
-            .getLogger(GenericCLIMigrationWrapperTestService.class);
+    private Log log = LogFactory.getLog(GenericCLIMigrationWrapperTestService.class);
 
     /**
      * {@inheritDoc}

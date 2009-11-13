@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -15,7 +17,6 @@ import org.w3c.dom.NodeList;
 
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameter.Builder;
-import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * Factory for construction and initialisation of <code>CliMigrationPaths</code>
@@ -127,8 +128,7 @@ public class CliMigrationPathsFactory {
      */
     private static final String TEMP_FILE_ELEMENT = "tempfile";
 
-    private PlanetsLogger log = PlanetsLogger
-            .getLogger(CliMigrationPathsFactory.class);
+    private Log log = LogFactory.getLog(CliMigrationPathsFactory.class);
 
     // TODO: We should create a schema for the configuration file and refer to
     // it in this javadoc. Also, this factory should check the specified config
