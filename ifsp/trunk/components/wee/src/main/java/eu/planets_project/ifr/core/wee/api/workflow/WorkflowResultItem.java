@@ -131,7 +131,7 @@ public class WorkflowResultItem implements Serializable{
 	
 	public void addLogInfo(String logInfo){
 		this.logInfo.add(logInfo);
-		logger.info("addExtractedInformation: "+logInfo);
+		logger.info("addLogInfo: "+logInfo);
 	}
 	
 	public List<String> getLogInfo(){

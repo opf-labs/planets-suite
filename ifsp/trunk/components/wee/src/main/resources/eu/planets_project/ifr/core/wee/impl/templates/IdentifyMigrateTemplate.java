@@ -210,8 +210,15 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         		System.currentTimeMillis());
         wfresult.addWorkflowResultItem(wfResultItem);
         
+        //get the parameters that were passed along in the configuration
+        List<Parameter> parameterList;
+        if(this.getServiceCallConfigs(identify)!=null){
+        	parameterList = this.getServiceCallConfigs(identify).getAllPropertiesAsParameters();
+        }else{
+        	parameterList = new ArrayList<Parameter>();
+        }
+  
         //now actually execute the identify operation of the service
-        List<Parameter> parameterList = new ArrayList<Parameter>();
         IdentifyResult results = identify.identify(digo, parameterList);
         
         //document the end-time and input digital object and the params

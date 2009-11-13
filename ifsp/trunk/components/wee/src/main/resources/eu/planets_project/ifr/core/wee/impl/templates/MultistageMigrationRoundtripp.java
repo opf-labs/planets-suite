@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.wee.impl.templates;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,10 +11,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 
 
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
@@ -29,17 +31,20 @@ import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 
-//FIXME AL: USE VERSION IN class-name when deploying
+//TODO AL: USE VERSION IN class-name when deploying
 /**
  * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
  * @since 03.11.2009
  */
 public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implements WorkflowTemplate {
 
-	private static Log log = LogFactory.getLog(MultistageMigrationRoundtripp.class);
+	//FIXME: AL: LOG ONLY FOR DEBUGGING - REMOVE
+	//private static Log log = LogFactory.getLog(MultistageMigrationRoundtripp.class);
 	 
     /**
      * Migrate service #1 migrate A>B (e.g. TIF to PNM)
@@ -63,6 +68,11 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
     private Migrate migrate4;
     
     /**
+     * Identify service #1 - QA: checks if the service output is of the expected type
+     */
+    private Identify identify1;
+    
+    /**
      * Migration service #5 extracts XCDL description for input and output object
      */
     private Migrate migratexcdl1;
@@ -74,7 +84,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
     private Compare comparexcdl1;
     
     private WorkflowResult wfResult;
-	private URI processingDigo;
+	private DigitalObject processingDigo;
 	private static URL configForImages;
 	private static DigitalObject CONFIG;
 	
@@ -94,10 +104,10 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
      * @see
      * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#describe()
      */
-    //TODO UPDATE DESCRIPTION
     public String describe() {
         return "This template performs a round-tripp migration A>B>C>D>F where the result objects"+
-        	   "A and F are expected to be 'the same' in terms of the configured comparison properties.";
+        	   "A and F are expected to be 'the same' in terms of the configured comparison properties." +
+        	   "After every migration step an identify service is called to collect additional metadata (e.g. for Service output QA)";
     }
 
     /*
@@ -122,7 +132,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
             	 wfResult.addWorkflowResultItem(wfResultItem);
             	
             	 //start executing on digital ObjectA
-            	this.processingDigo = dgoA.getPermanentUri();
+            	this.processingDigo = dgoA;
             	
                 try {
                     // Migrate Object round-trip
@@ -149,7 +159,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
                     
                     //perform object comparison
                     	wfResultItem.addLogInfo("starting comparisson for XCDL1 and XCDL2");
-                    //EINKOMMENTIEREN this.compareDigitalObjectsIdentical(dgoAXCDL, dgoEXCDL);
+                    this.compareDigitalObjectsIdentical(dgoAXCDL, dgoEXCDL);
                     	wfResultItem.addLogInfo("completed comparisson for XCDL1 and XCDL2");
                     
                     	wfResultItem.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"+processingDigo);
@@ -179,10 +189,10 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 		//document the service type and start-time
     	WorkflowResultItem wfResultItem;
     	if(endOfRoundtripp){
-    		wfResultItem = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_FINAL_MIGRATION, System.currentTimeMillis());
+    		wfResultItem = new WorkflowResultItem(this.processingDigo,WorkflowResultItem.SERVICE_ACTION_FINAL_MIGRATION, System.currentTimeMillis());
     	}
     	else{
-    		wfResultItem = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_MIGRATION, System.currentTimeMillis());
+    		wfResultItem = new WorkflowResultItem(this.processingDigo,WorkflowResultItem.SERVICE_ACTION_MIGRATION, System.currentTimeMillis());
     	}
 		wfResult.addWorkflowResultItem(wfResultItem);
 		
@@ -190,7 +200,12 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 	    	//static definition of which properties to compare - taking the standard set for images
 	    	
 	    	//get all parameters that were added in the configuration file
-			List<Parameter> parameterList = this.getServiceCallConfigs(migrationService).getAllPropertiesAsParameters();
+	    	List<Parameter> parameterList;
+	    	if(this.getServiceCallConfigs(migrationService)!=null){
+	        	parameterList = this.getServiceCallConfigs(migrationService).getAllPropertiesAsParameters();
+	        }else{
+	        	parameterList = new ArrayList<Parameter>();
+	        }
 	    	wfResultItem.setServiceParameters(parameterList);
 	    	
 	    	// get from config: migrate_to_fmt for this service
@@ -235,15 +250,28 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 				wfResultItem.setOutputDigitalObject(digoOut);
 				wfResultItem.addLogInfo("created digital object by reference");
 				wfResultItem.addLogInfo("migration completed");
-				log.info("Test4: Storing digo by reference");
+				try{
+					//call an identification service to record more metadata
+					List<String> identifiedAs = runIdentification(digoOut);
+					wfResultItem.addLogInfo("output object identified as: "+identifiedAs.toString());
+				}catch(Exception err){
+					wfResultItem.addLogInfo("exception using the identification service: "+err);
+				}
 				return digoOut;
 				
 			}catch(Exception err){
-				//return a Digo.Content by Reference
+				//return a Digo.Content as it was
 				wfResultItem.setOutputDigitalObject(migrateResult
 						.getDigitalObject());
 				wfResultItem.addLogInfo("migration completed");
-				log.info("Test4: Exception Storing digo by value",err);
+				try{
+					//call an identification service to record more metadata
+					List<String> identifiedAs = runIdentification(migrateResult.getDigitalObject());
+					wfResultItem.addLogInfo("output object identified as: "+identifiedAs.toString());
+				}catch(Exception exc){
+					wfResultItem.addLogInfo("exception using the identification service: "+exc);
+				}
+				wfResultItem.addLogInfo("using digital object by reference");
 				return migrateResult.getDigitalObject();
 			}
 
@@ -252,6 +280,45 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 			throw e;
 		}
     }
+    
+	/**
+	 * Runs the identification service on a given digital object and returns an Array of identified id's (for Droid e.g. PronomIDs)
+	 * @param DigitalObject the data
+	 * @return
+	 * @throws Exception
+	 */
+	private List<String> runIdentification(DigitalObject digo) throws Exception{
+		
+		//get all parameters that were added in the configuration file
+		 List<Parameter> parameterList;
+        if(this.getServiceCallConfigs(identify1)!=null){
+        	parameterList = this.getServiceCallConfigs(identify1).getAllPropertiesAsParameters();
+        }else{
+        	parameterList = new ArrayList<Parameter>();
+        }
+	        
+        IdentifyResult results = identify1.identify(digo,parameterList);
+        ServiceReport report = results.getReport();
+        List<URI> types = results.getTypes();
+        
+        if(report.getType() == Type.ERROR){
+        	String s = "Service execution failed: " + report.getMessage();
+   
+        	throw new Exception(s);
+        }
+        if(types.size()<1){
+        	String s = "The specified file type is currently not supported by this workflow";
+        	throw new Exception(s);
+        }
+
+        String[] strings = new String[types.size()];
+        int count=0;
+        for (URI uri : types) {
+        	strings[count] = uri.toASCIIString();
+            count++;
+        }
+        return Arrays.asList(strings);
+	}
     
     
     /**
@@ -268,7 +335,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
         		WorkflowResultItem.SERVICE_ACTION_COMPARE,
         		System.currentTimeMillis());
     	 wfResult.addWorkflowResultItem(wfResultItem);
-    	 wfResultItem.setAboutExecutionDigoRef(processingDigo);
+    	 wfResultItem.setAboutExecutionDigoRef(processingDigo.getPermanentUri());
     	 
         try {
 			//FIXME: using a static list of properties ... this should move to the configuration file
@@ -298,10 +365,11 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 			wfResultItem.addLogInfo("comparisson completed");
 			
 		} catch (Exception e) {
-			wfResultItem.addLogInfo("Compare failed");
+			wfResultItem.addLogInfo("comparisson failed: "+e);
 			throw e;
 		}
     }
+    
     
 /* <-- start of DigitalObjectManager functionality
      * FIXME: In future this steps below should be performed by the Planets wide 
@@ -310,7 +378,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
      * and return the same Digo but just with content by reference. Note: the file-ref contained in content is a temp file.
      * Issues: How to handle Realm, lookup (JNDI?) over distributed instances, etc.
      */
-    private static final String externallyReachableFiledir = "../server/server/default/deploy/jboss-web.deployer/ROOT.war/wee-wftemp-data";
+    private static final String externallyReachableFiledir = "../server/default/deploy/jboss-web.deployer/ROOT.war/wee-wftemp-data";
 
     private DigitalObject storeObjectByReference(DigitalObject digo) throws Exception{
     	//1. get a temporary file
@@ -330,7 +398,6 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
         URI httpRef = this.getHttpFileRef(fOut);
         DigitalObjectContent content = Content.byReference(httpRef.toURL());
         DigitalObject ret = new DigitalObject.Builder(digo).content(content).permanentUri(digo.getPermanentUri()).build();
-        log.info("returning digital object: "+ret.toXml());
         return ret;
     }
     
@@ -343,22 +410,37 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 		}
 		File target = new File(dir.getAbsoluteFile()+"/"+f.getName());
 		target.deleteOnExit();
-		boolean success = f.renameTo(target);
-		if(success){
-			log.info("createTempFileInExternallyAccessableDir success:"+success+" for file: "+f.getAbsolutePath());
-			return target;
-		}else{
-			String err = "Problems saving the digital object's content (by value) to the externally reachable jboss-web deployer dir";
-			log.info(err);
-			throw new IOException(err);
-		}
+		
+		// this doesn't work on the CI - use streams instead
+		// boolean success = f.renameTo(target);
+		FileInputStream fis  = new FileInputStream(f);
+	    FileOutputStream fos = new FileOutputStream(target);
+	    try {
+	        byte[] buf = new byte[1024];
+	        int i = 0;
+	        while ((i = fis.read(buf)) != -1) {
+	            fos.write(buf, 0, i);
+	        }
+	        f.delete();
+	    } 
+	    catch (Exception e) {
+	    	String err = "Problems saving the digital object's content (by value) to the externally reachable jboss-web deployer dir "+e;
+	    	throw new IOException(err);
+	    }
+	    finally {
+	        if (fis != null) fis.close();
+	        if (fos != null) fos.close();
+	        f.delete();
+	    }
+	    //log.debug("rename success? target "+target.getAbsolutePath()+" exists?: "+target.exists());
+		return target;
 	}
     
     private static File createTemporaryFile() throws IOException {
     	int lowerBound = 1; int upperBound = 9999;
 		int random = (int) (lowerBound + Math.random() * ( upperBound - lowerBound) );
 		File f = File.createTempFile("dataHandlerTemp"+random, null);
-		log.info("created temporary file:"+f.getAbsolutePath());
+		//log.info("created temporary file:"+f.getAbsolutePath());
 		f.deleteOnExit();
 		return f;
     }
@@ -368,14 +450,14 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 		//URI file ref for file to be created
 		if(!tempFileInExternalDir.canRead()){
 			String err = "getHttpFileRef for "+tempFileInExternalDir +" not found";
-			log.info(err);
+			//log.info(err);
 			throw new FileNotFoundException(err);
 		}
 		String authority = this.getHostAuthority();
 
 		//URI(scheme,authority,path,query,fragement)
 		URI ret = new URI("http",authority,"/wee-wftemp-data/"+tempFileInExternalDir.getName(),null,null);
-		log.info("getHttpFileRef: "+ret);
+		//log.info("getHttpFileRef: "+ret);
 		return ret;
 	}
  
