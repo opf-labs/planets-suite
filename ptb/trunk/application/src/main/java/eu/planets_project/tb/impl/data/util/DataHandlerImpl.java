@@ -679,19 +679,37 @@ public class DataHandlerImpl implements DataHandler {
 	public File createTempFileInExternallyAccessableDir() throws IOException {
 		
 		log.debug("createTempFileInExternallyAccessableDir");
+		//just use this to generate a name - no content within.
 		File f = createTemporaryFile();
 		log.debug("temp file location: "+f.getAbsolutePath());
 		File dir = new File(externallyReachableFiledir);
 		log.debug("directory "+externallyReachableFiledir+" exists? "+ dir.exists());
 		File target = new File(dir.getAbsoluteFile()+"/"+f.getName());
+		log.debug("target: "+dir.getAbsoluteFile()+"/"+f.getName()+" exists: "+target.exists());
 		target.deleteOnExit();
-		boolean success = f.renameTo(target);
-		if(success){
-			log.debug("createTempFileInExternallyAccessableDir returning: "+target.getAbsolutePath());
-			return target;
-		}else{
-			throw new IOException("Problems moving data from temp to externally reachable jboss-web deployer dir");
-		}
+		
+		// this doesn't work on the CI - use streams instead
+		// boolean success = f.renameTo(target);
+		FileInputStream fis  = new FileInputStream(f);
+	    FileOutputStream fos = new FileOutputStream(target);
+	    try {
+	        byte[] buf = new byte[1024];
+	        int i = 0;
+	        while ((i = fis.read(buf)) != -1) {
+	            fos.write(buf, 0, i);
+	        }
+	    } 
+	    catch (Exception e) {
+	    	throw new IOException("Problems moving data from temp to externally reachable jboss-web deployer dir"+e);
+	    }
+	    finally {
+	        if (fis != null) fis.close();
+	        if (fos != null) fos.close();
+	        f.delete();
+	    }
+
+		log.debug("rename success? target "+target.getAbsolutePath()+" exists?: "+target.exists()+" f deleted?: "+f.exists());
+		return target;
 	}
 	
 	
