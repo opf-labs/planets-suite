@@ -1,48 +1,31 @@
 package eu.planets_project.tb.gui.backing.admin.wsclient.util;
 
-import java.io.File;
-
-import java.util.List;
-import java.util.Iterator;
-
 import java.io.ByteArrayOutputStream;
-
-import java.security.PrivilegedActionException;
-
-import java.util.Map;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
+import javax.xml.messaging.URLEndpoint;
 import javax.xml.soap.MessageFactory;
+import javax.xml.soap.MimeHeaders;
 import javax.xml.soap.Name;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
-import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPElement;
+import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPFault;
 import javax.xml.soap.SOAPHeader;
-import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-import javax.xml.soap.MimeHeaders;
-
-import javax.xml.messaging.URLEndpoint;
-
 import javax.xml.transform.Source;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import javax.xml.transform.TransformerFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.Attribute;
 import org.jdom.transform.JDOMResult;
 
 
