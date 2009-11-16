@@ -88,8 +88,6 @@ public class MigrateWrapper implements Migrate {
      */
     public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
             URI outputFormat, List<Parameter> parameters) {
-
-        // Transform the DO into a single binary, if that is sane
         return m.migrate(digitalObject, inputFormat, outputFormat, parameters);
     }
 
