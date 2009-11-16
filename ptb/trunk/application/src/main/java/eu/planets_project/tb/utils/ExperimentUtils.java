@@ -11,7 +11,7 @@ import java.io.Writer;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
