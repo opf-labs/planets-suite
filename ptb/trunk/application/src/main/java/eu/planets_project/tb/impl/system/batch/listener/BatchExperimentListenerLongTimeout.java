@@ -1,13 +1,9 @@
 package eu.planets_project.tb.impl.system.batch.listener;
 
-import java.util.UUID;
-
 import javax.annotation.Resource;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.ejb.MessageDrivenContext;
-import javax.ejb.ActivationConfigProperty;
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
@@ -49,7 +45,7 @@ public class BatchExperimentListenerLongTimeout implements MessageListener{
     	
     	//specify the timeout for this listener
     	BackendProperties bp = new BackendProperties();
-    	long timeout = Long.parseLong(bp.getProperty(bp.TIMEOUT_MANUALLY_APPROVED_EXPERIMENTS));
+    	long timeout = Long.parseLong(bp.getProperty(BackendProperties.TIMEOUT_MANUALLY_APPROVED_EXPERIMENTS));
     	timeOutMillis = timeout * 1000;
     	
     }
