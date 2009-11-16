@@ -69,9 +69,10 @@ public interface DigitalObject {
     List<Event> getEvents();
 
     /**
-     * @return The 0..n fragments this digital object consists of. Returns a
+     * @return The 0..n fragment IDs this digital object consists of. Returns a
      *         defensive copy, changes to the obtained list won't affect this
-     *         digital object.
+     *         digital object. If required, a future version of the framework 
+     *         might use a complex type to represent a fragment.
      */
     List<String> getFragments();
 
@@ -115,9 +116,8 @@ public interface DigitalObject {
         private URI permanentUri = null;
         private List<Event> events = new ArrayList<Event>();
         private List<String> fragments = new ArrayList<String>();
-        private List<DigitalObject> contained = new ArrayList<DigitalObject>();
         private URI manifestationOf = null;
-        private List<Metadata> metadata = null;
+        private List<Metadata> metadata = new ArrayList<Metadata>();
         private URI format = null;
         private String title = null;
 
@@ -158,6 +158,9 @@ public interface DigitalObject {
          * @param digitalObjectXml An XML representation of a digital object.
          */
         public Builder(final String digitalObjectXml) {
+            if (digitalObjectXml == null) {
+                throw new IllegalArgumentException("Cannot create digital object for null string");
+            }
             /*
              * Besides the adapter, this is the second place where we mention
              * the implementation class, but as before, this is behind the
@@ -192,7 +195,7 @@ public interface DigitalObject {
         }
 
         /**
-         * @param permanentUrl The globally unique identifier for this digital
+         * @param permanentUri The globally unique identifier for this digital
          *        object.
          * @return The builder, for cascaded calls
          */

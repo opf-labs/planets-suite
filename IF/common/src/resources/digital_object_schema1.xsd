@@ -3,7 +3,7 @@
 
   <xs:element name="property" type="tns:property"/>
 
-  <xs:complexType name="property">
+  <xs:complexType name="property" final="extension restriction">
     <xs:sequence>
       <xs:element name="uri" type="xs:string" form="qualified" minOccurs="0"/>
       <xs:element name="name" type="xs:string" form="qualified" minOccurs="0"/>

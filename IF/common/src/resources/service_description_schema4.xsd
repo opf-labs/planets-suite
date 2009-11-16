@@ -12,15 +12,15 @@
   <xs:complexType name="serviceDescription" final="extension restriction">
     <xs:sequence>
       <xs:element ref="ns1:title"/>
-      <xs:element name="classname" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="type" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="classname" type="xs:string" form="qualified"/>
+      <xs:element name="type" type="xs:string" form="qualified"/>
       <xs:element name="endpoint" type="xs:anyURI" form="qualified" minOccurs="0"/>
       <xs:element name="parameters" type="tns:parameter" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element ref="ns2:tool" minOccurs="0"/>
+      <xs:element ref="ns2:tool"/>
       <xs:element ref="ns1:description" minOccurs="0"/>
       <xs:element name="version" type="xs:string" form="qualified" minOccurs="0"/>
       <xs:element ref="ns1:identifier" minOccurs="0"/>
-      <xs:element ref="ns1:creator" minOccurs="0"/>
+      <xs:element ref="ns1:creator"/>
       <xs:element ref="ns1:publisher" minOccurs="0"/>
       <xs:element name="instructions" type="xs:string" form="qualified" minOccurs="0"/>
       <xs:element name="furtherInfo" type="xs:string" form="qualified" minOccurs="0"/>
@@ -31,7 +31,7 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="parameter">
+  <xs:complexType name="parameter" final="extension restriction">
     <xs:sequence>
       <xs:element name="name" type="xs:string" minOccurs="0"/>
       <xs:element name="value" type="xs:string" minOccurs="0"/>
@@ -40,7 +40,7 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="path">
+  <xs:complexType name="path" final="extension restriction">
     <xs:sequence>
       <xs:element name="inputFormat" type="xs:string" minOccurs="0"/>
       <xs:element name="outputFormat" type="xs:string" minOccurs="0"/>

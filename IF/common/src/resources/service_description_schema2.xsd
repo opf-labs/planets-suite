@@ -3,7 +3,7 @@
 
   <xs:element name="tool" type="tns:tool"/>
 
-  <xs:complexType name="tool">
+  <xs:complexType name="tool" final="extension restriction">
     <xs:sequence>
       <xs:element name="identifier" type="xs:string" form="qualified" minOccurs="0"/>
       <xs:element name="name" type="xs:string" form="qualified" minOccurs="0"/>

@@ -10,10 +10,13 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.Service;
+import javax.xml.ws.soap.MTOMFeature;
 import javax.xml.ws.soap.SOAPBinding;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.sun.xml.ws.developer.JAXWSProperties;
 
 /**
  * Service creation utilities for use when using testing.
@@ -104,11 +107,12 @@ public final class ServiceCreator {
          */
         abstract <T> T create(QName qname, Class<T> impl, String wsdl);
         
-        private static <T> T createFor(QName qname, Class<T> impl, URL url) {
+        public static <T> T createFor(QName qname, Class<T> impl, URL url) {
             log.info("INIT: Creating the proxied service class.");
             Service service = Service.create(url, qname);
             @SuppressWarnings("unchecked")
-            T ids = (T) service.getPort(impl.getInterfaces()[0]);
+            T ids = (T) service.getPort(impl.getInterfaces()[0], new MTOMFeature());
+            ((BindingProvider)ids).getRequestContext().put(JAXWSProperties.HTTP_CLIENT_STREAMING_CHUNK_SIZE, 8096); //enables streaming
             SOAPBinding binding = (SOAPBinding) ((BindingProvider)ids).getBinding();
             binding.setMTOMEnabled(true);
             log.info("INIT: Created proxy class for service "

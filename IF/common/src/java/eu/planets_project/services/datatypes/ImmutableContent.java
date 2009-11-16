@@ -209,7 +209,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
             } else if (this.bytes != null && that.bytes != null) {
                 return IOUtils
                         .contentEquals(new ByteArrayInputStream(this.bytes), new ByteArrayInputStream(that.bytes));
-            } else {
+            } else if(this.reference != null && that.reference != null) {
                 return this.reference.toString().equals(that.reference.toString());
             }
         } catch (IOException e) {
