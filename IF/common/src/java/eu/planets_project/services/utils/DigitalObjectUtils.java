@@ -33,9 +33,6 @@ public final class DigitalObjectUtils {
             .getFormatRegistry();
     
     private static final URI zipType = format.createExtensionUri("zip");
-//    private static final URI folderType = format.createFolderTypeUri();
-    
-    private static final List<URI> containerTypes = new ArrayList<URI>(Arrays.asList(new URI[] {zipType /*, folderType*/}));
     
     private static File utils_tmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "dig-ob-utils-tmp".toUpperCase());
 
@@ -102,58 +99,6 @@ public final class DigitalObjectUtils {
     
     
 
-//    /**
-//     * Creates the "contained" DigitalObjects for a complex DigOb as a Stream
-//     * 
-//     * @param files The files to wrap as stream-based digital objects
-//     * @return A list of digital object wrapping the given files, streaming the
-//     *         content when read
-//     */
-//    public static List<DigitalObject> createContainedAsStream(
-//            final List<File> files) {
-//        List<DigitalObject> list = new ArrayList<DigitalObject>();
-//        for (File file : files) {
-//        	DigitalObject currentDigObj = null;
-//        	if(file.isDirectory()) {
-//        		currentDigObj = createFolderTypeDigitalObject(file, false);
-//        		list.add(currentDigObj);
-//        	}
-//        	else {
-//        		currentDigObj = 
-//        			new DigitalObject.Builder(Content.byReference(file))
-//                        .title(file.getName())
-//                        .build();
-//        		list.add(currentDigObj);
-//        	}
-//        }
-//        return list;
-//    }
-//
-//    /**
-//     * * Creates the "contained" DigitalObjects for a complex DigOb by Reference
-//     * 
-//     * @param files The files to wrap as stream-based digital objects
-//     * @return A list of digital object with a URL pointing to a location where the files could be downloaded.
-//     */
-//    public static List<DigitalObject> createContainedbyReference(
-//            final List<File> files) {
-//        List<DigitalObject> list = new ArrayList<DigitalObject>();
-//        for (File file : files) {
-//            DigitalObject currentDigObj = null;
-//            if(file.isDirectory()) {
-//            	currentDigObj = createFolderTypeDigitalObject(file, true);
-//            	list.add(currentDigObj);
-//            }
-//            else {
-//				currentDigObj = new DigitalObject.Builder(
-//				        Content.byReference(FileUtils.getUrlFromFile(file)))
-//				        .title(file.getName())
-//				        .build();
-//				list.add(currentDigObj);
-//            }
-//        }
-//        return list;
-//    }
 
         /**
 	 * Creates a tmp-file from the content of a DigitalObject.
@@ -215,10 +160,10 @@ public final class DigitalObjectUtils {
 	/**
 	 * Creates a Zip-type DigitalObject either from a given folder or from a zip file.
 	 * @param zip_Or_Folder
-	 * @param destZipName
-	 * @param createByReference
-	 * @param withChecksum
-	 * @param compress TODO
+	 * @param destZipName the name of the created zip file
+	 * @param createByReference Create the Content of the DO by reference or by value
+	 * @param withChecksum Create a checksum for the zip file to create
+	 * @param compress compress the content of the zip file
 	 * @return
 	 */
 	public static DigitalObject createZipTypeDigitalObject(File zip_Or_Folder, String destZipName, boolean createByReference, boolean withChecksum, boolean compress) {
@@ -230,106 +175,6 @@ public final class DigitalObjectUtils {
 		}
 	}
 
-//	/**
-//	 * Creates a folder-type DigOb, with the passed folder as Content and all files in this folder as "contained" DigObs.
-//	 * @param folder the folder to create a DigOb from
-//	 * @param createByReference create this DigObs content by Reference (true) or as Stream (false)
-//	 * @return a new folder type DigitalObject, containing all files in folder as "contained" DigitalObjects.
-//	 */
-//	public static DigitalObject createFolderTypeDigitalObject(File folder, boolean createByReference) {
-//		DigitalObject folderDigOb = null;
-//		if(folder.isDirectory()) {
-//			List<File> folderContent = Arrays.asList(folder.listFiles());
-//			
-//			if(folderContent!=null && folderContent.size()>0) {
-//				if(createByReference) {
-//					folderDigOb = 
-//						new DigitalObject.Builder(Content.byReference(FileUtils.getUrlFromFile(folder)))
-//							.format(format.createFolderTypeUri())
-//							.title(folder.getName()).build();
-//				}
-//				else {
-//					folderDigOb = 
-//						new DigitalObject.Builder(Content.byReference(folder))
-//							.format(format.createFolderTypeUri())
-//							.title(folder.getName()).build();
-//				}
-//			}
-//			else {
-//				if(createByReference) {
-//					folderDigOb = 
-//						new DigitalObject.Builder(Content.byReference(FileUtils.getUrlFromFile(folder)))
-//							.format(format.createFolderTypeUri())
-//							.title(folder.getName())
-//							.build();
-//				}
-//				else {
-//					folderDigOb = 
-//						new DigitalObject.Builder(Content.byReference(folder))
-//							.format(format.createFolderTypeUri())
-//							.title(folder.getName())
-//							.build();
-//				}
-//			}
-//		}
-//		else {
-//			return null;
-//		}
-//		return folderDigOb;
-//	}
-	
-	
-
-//	/**
-//	 * This method return the content of ALL DigObs which might be included in the passed digOb as
-//	 * files. DigObs are checked recursively.
-//	 * @param digOb the DigitalObject to get the files from (including all nested DigObs)
-//	 * @return a list of Files. the files are nested in folders corresponding to their nesting in the DigOb structure
-//	 */
-//	public static List<File> getAllFiles(DigitalObject digOb) {
-//		if(digOb.getFormat().equals(zipType)) {
-//			List<File> zipFiles = new ArrayList<File>();
-////			File target = FileUtils.getTempFile(getFileNameFromDigObject(digOb, null), "");
-//			File target = new File(FileUtils.getPlanetsTmpStoreFolder(), getFileNameFromDigObject(digOb, null));
-//			FileUtils.writeInputStreamToFile(digOb.getContent().read(), target);
-//			zipFiles.add(target);
-//			return zipFiles;
-//		}
-//		List<File> files = new ArrayList<File>();
-////			FileUtils.deleteAllFilesInFolder(utils_tmp);
-//		File tmp = FileUtils.createFolderInWorkFolder(utils_tmp, FileUtils.randomizeFileName("get-all-files-tmp"));
-////			FileUtils.deleteAllFilesInFolder(tmp);
-//		File content = new File(tmp, getFileNameFromDigObject(digOb, null)); 
-//		FileUtils.writeInputStreamToFile(digOb.getContent().read(), content);
-//		files.add(content);
-//		
-//		// FIXME: Is this call really necessary now, think it was used for containe
-//		FileUtils.createFolderInWorkFolder(tmp, getFolderNameFromDigObject(digOb));
-//		return files;
-//	}
-
-//	/**
-//	 * A utility method that creates files for the content of "contained"-DigObs in a DigOb.
-//	 * This method returns all contained DigObs one level deep.
-//	 * 
-//	 * @param listOfDigObjs The digital objects to create files from
-//	 * @param targetFolder The folder to store result files in
-//	 * @return The child elements of the given digital object as files
-//	 */
-//	public static List<File> getDigitalObjectsAsFiles(final List<DigitalObject> listOfDigObjs, final File targetFolder) {
-//	    List<File> containedFiles = new ArrayList<File>();
-//	    LOG.info("received list of dig obj with lengh: "+ listOfDigObjs.size());
-//	    if (listOfDigObjs.size() > 0) {
-//	        for (DigitalObject currentDigObj : listOfDigObjs) {
-//	            String name = DigitalObjectUtils.getFileNameFromDigObject(currentDigObj, null);
-//	            LOG.info("name of dig obj is: "+name);
-//	            containedFiles.add(FileUtils.writeInputStreamToFile(
-//	                    currentDigObj.getContent().read(), targetFolder, name));
-//	        }
-//	    }
-//	    LOG.info(String.format("Returning %s files", containedFiles.size()));
-//	    return containedFiles;
-//	}
 
 	/**
      * This method returns a new DigOb, containing a file that is specified by the fragment. The Fragment points to a file inside the zip.
@@ -394,23 +239,6 @@ public final class DigitalObjectUtils {
     	return digOb.getFragments();
     }
     
-//    /**
-//	 * test if this is a Container type DigitalObject (format-URL == planets:fmt/ext/zip || planets:fmt/folder)
-//	 * @param digOb the DigitalObject to test
-//	 * @return "true" if it is, "false" if not ;-)
-//	 */
-//	public static boolean isContainerType(DigitalObject digOb) {
-//		if(digOb.getFormat()==null) {
-//			return false;
-//		}
-//		if(containerTypes.contains(digOb.getFormat())) {
-//			return true;
-//		}
-//		else { 
-//			return false;
-//		}
-//	}
-	
 	
 	/**
 	 * test if this is a zip type DigitalObject (format-URL == planets:fmt/ext/zip)
@@ -423,18 +251,6 @@ public final class DigitalObjectUtils {
 		}
 		return digOb.getFormat().equals(zipType);
 	}
-	
-//	/**
-//	 * test if this is a folder type DigitalObject (format-URL == planets:fmt/folder))
-//	 * @param digOb the DigitalObject to test
-//	 * @return "true" if the digOb is of type zip, "false" if not ;-)
-//	 */
-//	public static boolean isFolderType(DigitalObject digOb) {
-//		if(digOb.getFormat()==null) {
-//			return false;
-//		}
-//		return digOb.getFormat().equals(format.createFolderTypeUri());
-//	}
 	
 	
 	/**
@@ -464,7 +280,7 @@ public final class DigitalObjectUtils {
 	/**
 	 * Gets the title from the passed digOb and returns a proper file name
 	 * @param digOb to get the file name from
-	 * @param supposedFormatURI TODO
+	 * @param supposedFormatURI This could be the format you believe the file has. Used to create a proper file name.
 	 * @return the folder name based on "title" in the passed digOb.
 	 */
 	public static String getFileNameFromDigObject(DigitalObject digOb, URI supposedFormatURI) {
@@ -517,7 +333,7 @@ public final class DigitalObjectUtils {
 		 * @param destZipName the name the zip file should have. If no name is specified, the name of the folder will be used.
 		 * @param createByReference a flag to set whether you want to create the DigObs by Reference or as stream...
 		 * @param withChecksum creates a zip with a checksum. 
-		 * @param compress TODO
+		 * @param compress compress the zip content or not.
 		 * @return a DigitalObject containing the zip file created from "folder" and a list of the files inside the zip as "fragments".
 	     */
 	    private static DigitalObject createZipTypeDigitalObjectFromFolder(File folder, String destZipName, boolean createByReference, boolean withChecksum, boolean compress) {
@@ -600,7 +416,6 @@ public final class DigitalObjectUtils {
 			try {
 				checksum = new Checksum("MD5", Arrays.toString(Checksums.md5(zipFile)));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if(createByReference) {
@@ -681,25 +496,4 @@ public final class DigitalObjectUtils {
 		}
 		return result;
 	}
-
-	
-	/**
-	 * Get the file name from a Fragment-Id
-	 * @param fragment the fragment to get the name from
-	 * @return the name of the file specified by this fragment
-	 */
-	private static String getFragmentName(String fragment) {
-		String name = null;
-		if(fragment.contains(File.separator)) {
-			name = fragment.substring(fragment.lastIndexOf(File.separator)+1);
-			return name;
-		}
-		else {
-			return fragment;
-		}
-	}
-
-
-	
-	
 }

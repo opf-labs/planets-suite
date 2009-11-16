@@ -37,7 +37,7 @@ public class OdfSchemaHandler {
 	
 	private static HashMap<String, File> schemaFiles = null;
 	
-	private String ODF_SCHEMA_LIST = "schema_list.config";
+	private String ODF_SCHEMA_LIST = "schema_list.properties";
 	
 	private static File ODF_SH_TMP = null;
 	private static String ODF_SH_TMP_NAME = "ODF_VALIDATOR_TMP";
@@ -45,9 +45,6 @@ public class OdfSchemaHandler {
 	private static File SCHEMAS = null;
 	private static String SCHEMAS_NAME = "SCHEMAS";
 	private static boolean schemasProvided = false;
-	
-	// OWL MetaData files
-	private static String v12_METADATA_OWL = "OpenDocument-metadata-v1.2-cd03.owl";
 	
 	private static Log log = LogFactory.getLog(OdfSchemaHandler.class);
 	
@@ -208,7 +205,7 @@ public class OdfSchemaHandler {
 			String schemaLabel = parts[0].trim();
 			String schemaName = parts[1].trim();
 			File schema = new File(SCHEMAS, schemaName);
-			FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(schemaName), schema);
+			FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(schemaName.replace(".rng", ".xml")), schema);
 			schemaFiles.put(schemaLabel, schema);
 			success[i]=true;
 			i++;

@@ -1,7 +1,5 @@
 package eu.planets_project.services.validation.odfvalidator.utils;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author melmsp
@@ -41,7 +39,7 @@ public class OdfValidatorResult {
 	public boolean usedStrictValidation() {
 		return usedStrictValidation;
 	}
-
+	
 	public void setUsedStrictValidation(boolean usedStrictValidation) {
 		this.usedStrictValidation = usedStrictValidation;
 	}

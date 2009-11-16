@@ -32,7 +32,7 @@ import eu.planets_project.services.validate.ValidateResult;
  */
 public class OdfValidatorTest {
 	
-	private static String WSDL = "/pserv-pc-odf-validator/OdfValidator?wsdl";
+	private static String WSDL = "/pserv-pc-odfvalidator/OdfValidator?wsdl";
 	
 	private static Validate validator = null;
 
@@ -63,6 +63,10 @@ public class OdfValidatorTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		System.setProperty("pserv.test.context", "server");
+		System.setProperty("pserv.test.host", "localhost");
+		System.setProperty("pserv.test.port", "8080");
+		
 		Parameter strictValidation = new Parameter.Builder("strictValidation", "true").build();
 		params.add(strictValidation);
 		

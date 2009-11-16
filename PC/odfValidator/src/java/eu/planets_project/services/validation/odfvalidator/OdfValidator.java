@@ -58,7 +58,7 @@ public class OdfValidator implements Validate {
 	
 	private static String NEWLINE = System.getProperty("line.separator");
 	
-	private String usedSchemas = new String(FileUtils.writeInputStreamToBinary(CoreOdfValidator.class.getResourceAsStream("schema_list.config")));
+	private String usedSchemas = new String(FileUtils.writeInputStreamToBinary(CoreOdfValidator.class.getResourceAsStream("schema_list.properties")));
 
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,Validate.class.getCanonicalName());
