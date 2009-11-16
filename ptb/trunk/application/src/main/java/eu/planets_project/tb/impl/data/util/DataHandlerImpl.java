@@ -379,15 +379,15 @@ public class DataHandlerImpl implements DataHandler {
 	 * @param localFileRefs
 	 * @return
 	 */
-	public List<DigitalObject> convertFileRefsToDigos(Collection<String> localFileRefs){
-		List<File> temps = new ArrayList<File>();
-		for(String fileRef : localFileRefs){
-			temps.add(new File(fileRef));
-		}
+//	public List<DigitalObject> convertFileRefsToDigos(Collection<String> localFileRefs){
+//		List<File> temps = new ArrayList<File>();
+//		for(String fileRef : localFileRefs){
+//			temps.add(new File(fileRef));
+//		}
 		//this does not work as the DigitalObject.Content uses javax.activation.DataHandler which is not serializable!!
 		//DigitalObjectUtils.createContainedAsStream(temps);
-		return DigitalObjectUtils.createContainedbyReference(temps);
-	}
+//		return DigitalObjectUtils.createContainedbyReference(temps);
+//	}
 	
 
 	/* (non-Javadoc)
@@ -402,7 +402,7 @@ public class DataHandlerImpl implements DataHandler {
 				DigitalObject refByValueDigo = digoManager.retrieve(new URI(fileRef));
 				
 				//create a statically accessible temp file that's copied and exposed as URL (through download.jsp)
-				File f = DigitalObjectUtils.getContentAsTempFile(refByValueDigo);
+				File f = DigitalObjectUtils.getAsTmpFile(refByValueDigo);
 				File exposedFile = this.copyLocalFileAsTempFileInExternallyAccessableDir(f.getAbsolutePath());
 				URI httpRef = this.getHttpFileRef(exposedFile);
 				
@@ -420,7 +420,7 @@ public class DataHandlerImpl implements DataHandler {
 				ret.add(o);
 				
 				//finally only clean up this unused temp file - not the URL exposed one!
-				DigitalObjectUtils.cleanUpTmpFiles();
+				DigitalObjectUtils.cleanDigObUtilsTmp();
 				
 			} catch (IOException e) {
 				log.debug("DataHandler.convertFileRefsToURLAccessibleDigos - Could not resolve fileRef "+fileRef);
