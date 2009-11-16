@@ -51,6 +51,11 @@ public final class Content {
     public static DigitalObjectContent byReference(final InputStream inputStream) {
         File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream,
                 "tempContent", ".dat");
+	// FIXME! This is error prone! Two (or more) simultaneously running
+	// migration services may overwrite each others results! A unique random
+	// file name should be used and I also think we should specify a proper
+	// temp. dir for writing the file. - TSH (SB)
+
         return new ImmutableContent(tmpFile);
     }
 

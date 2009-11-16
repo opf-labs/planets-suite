@@ -52,6 +52,7 @@ class PRCommandBuilder {
 
 	// Get a complete list of identifiers used in the command line.
 	final CommandLine commandLine = migrationPath.getCommandLine();
+
 	final Set<String> commandLineIdentifiers = getIdentifiers(commandLine);
 
 	// Get the key-value pairs from toolParameters that are used in the
@@ -301,11 +302,11 @@ class PRCommandBuilder {
     private Set<String> getIdentifiers(CommandLine commandLine) {
 
 	final Set<String> foundIdentifiers = new HashSet<String>();
-	final ArrayList<String> commandLineStrings = commandLine
-		.getToolParameters();
-	commandLineStrings.add(commandLine.getCommand());
+	final List<String> commandParameterStrings = new ArrayList<String>();
+	commandParameterStrings.addAll(commandLine.getToolParameters());
+	commandParameterStrings.add(commandLine.getCommand());
 
-	for (String stringWithIdentifiers : commandLineStrings) {
+	for (String stringWithIdentifiers : commandParameterStrings) {
 
 	    StringTokenizer stringTokenizer = new StringTokenizer(
 		    stringWithIdentifiers);
@@ -318,6 +319,7 @@ class PRCommandBuilder {
 		}
 	    }
 	}
+
 	return foundIdentifiers;
     }
 

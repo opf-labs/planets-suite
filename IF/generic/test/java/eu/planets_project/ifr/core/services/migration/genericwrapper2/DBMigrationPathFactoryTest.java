@@ -86,12 +86,30 @@ public class DBMigrationPathFactoryTest {
 		migrationPath);
 
 	// Verify the command line information
-	List<String> expectedCommandFragments = new ArrayList<String>();
+	
+	final Map<String, Parameter> testParameters = new HashMap<String, Parameter>();
+	Parameter.Builder parameterBuilder = new Parameter.Builder("param1", "7");
+	parameterBuilder.description("Command line parameters for the 'cat' command. See 'man cat'.");
+	Parameter parameter = parameterBuilder.build();
+	testParameters.put(parameter.getName(), parameter);
+	
+	parameterBuilder = new Parameter.Builder("param2", "42");
+	parameterBuilder.description("Command line parameters for the 'tr' command. See 'man tr'.");
+	parameter = parameterBuilder.build();
+	testParameters.put(parameter.getName(), parameter);
+
+	final Map<String, File> testFileDeclarations = new HashMap<String, File>();
+	testFileDeclarations.put("tempSource", new File("/tmp/bogusTempSrcFile"));
+	testFileDeclarations.put("tempDestination", new File("/tmp/bogusTempSrcFile"));
+	testFileDeclarations.put("myInterimFile", new File("bogusInterimFile"));
+	
+	final List<String> expectedCommandFragments = new ArrayList<String>();
 	expectedCommandFragments.add("/bin/sh");
 	expectedCommandFragments.add("-c");
 	expectedCommandFragments
-		.add("cat #param1 #tempSource > #myInterimFile && tr #param2 #myInterimFile > #tempDestination");
-	commandLineTest(migrationPath, expectedCommandFragments);
+		.add("cat 7 /tmp/bogusTempSrcFile > bogusInterimFile && tr 42 bogusInterimFile > /tmp/tempDestination");
+	commandLineTest(migrationPath, testParameters.values(), testFileDeclarations, 
+		expectedCommandFragments);
 
 	// Verify the tool input configuration.
 	final ToolIOProfile toolInputProfile = migrationPath
@@ -143,12 +161,11 @@ public class DBMigrationPathFactoryTest {
 		"Unexpected number of parameters defined for the migration path.",
 		2, toolParameters.size());
 	final HashMap<String, Parameter> parameterMap = new HashMap<String, Parameter>();
-	for (Parameter parameter : toolParameters) {
-	    parameterMap.put(parameter.getName(), parameter);
+	for (Parameter toolParameter : toolParameters) {
+	    parameterMap.put(toolParameter.getName(), toolParameter);
 	}
 
-	final String[] expectedParameterNames = { "param1", "param2" };
-	for (String parameterName : expectedParameterNames) {
+	for (String parameterName : testParameters.keySet()) {
 	    final Parameter currentParameter = parameterMap.get(parameterName);
 	    assertNotNull("The parameter '" + parameterName
 		    + "' was not defined for the migration path.",
@@ -156,8 +173,12 @@ public class DBMigrationPathFactoryTest {
 
 	    assertNotNull("No description specified for parameter: "
 		    + parameterName, currentParameter.getDescription());
-	    assertFalse("Empty description for parameter: " + parameterName,
-		    currentParameter.getDescription().length() == 0);
+	    
+	    final Parameter expectedParameter = testParameters.get(parameterName);
+	    assertEquals("Un-expected default parameter value for parameter: " + parameterName, expectedParameter.getValue(),
+		    currentParameter.getValue());
+	    
+	    assertEquals("Un-expected description set on parameter: " + parameterName, expectedParameter.getDescription(), currentParameter.getDescription());
 	}
 
 	// Verify the tool presets.
@@ -220,7 +241,7 @@ public class DBMigrationPathFactoryTest {
 		    settingParameterNames.add(settingParameter.getName());
 		}
 
-		for (String parameterName : expectedParameterNames) {
+		for (String parameterName : testParameters.keySet()) {
 		    assertNotNull("The '" + parameterName
 			    + "' is not defined in the '" + settingName
 			    + "' setting of the '" + presetName + "' preset.",
@@ -246,12 +267,13 @@ public class DBMigrationPathFactoryTest {
      * @throws MigrationException
      */
     private void commandLineTest(MigrationPath migrationPath,
+	    Collection<Parameter> toolParameters,
+	    Map<String, File> tempFileDeclarations,
 	    List<String> expectedCommandLine) throws MigrationException {
 
-	final ArrayList<Parameter> emptyParameterList = new ArrayList<Parameter>();
-	final HashMap<String, File> emptyFileDeclarations = new HashMap<String, File>();
 	final PRCommandBuilder commandBuilder = new PRCommandBuilder();
-	List<String> prCommand = commandBuilder.buildCommand(migrationPath, emptyParameterList, emptyFileDeclarations);
+	List<String> prCommand = commandBuilder.buildCommand(migrationPath,
+		toolParameters, tempFileDeclarations);
 
 	assertEquals(
 		"Unexpected number of command line fragments in the migration"

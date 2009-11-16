@@ -4,6 +4,8 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
@@ -12,11 +14,11 @@ import java.util.ArrayList;
 class CommandLine {
 
     private String command;
-    private ArrayList<String> parameters;
+    private List<String> parameters;
 
-    CommandLine(String command, ArrayList<String> parameters) {
+    CommandLine(String command, List<String> parameters) {
 	this.command = command;
-	this.parameters = parameters;
+	this.parameters = Collections.unmodifiableList(parameters);
     }
 
     String getCommand() {
@@ -62,7 +64,7 @@ class CommandLine {
      *         instance for each parameter that must be specified in order to
      *         execute the command line of this migration path.
      */
-    ArrayList<String> getToolParameters() {
+    List<String> getToolParameters() {
 	return parameters;
     }
 

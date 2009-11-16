@@ -594,7 +594,7 @@
 					command line will be substituted with the value assigned to them by
 					the caller.
 				-->
-				<parameter name="param1" value="7">
+				<parameter name="param1">
 					<description>Command line parameters for the 'cat'
 						command.
 						See
@@ -602,7 +602,7 @@
 						cat'.
                 	</description>
 				</parameter>
-				<parameter name="param2" value="42">
+				<parameter name="param2">
 					<!-- Demonstration of CDATA usage in descriptions. -->
 					<description><![CDATA[Command line parameters for the 'tr'
 						command.

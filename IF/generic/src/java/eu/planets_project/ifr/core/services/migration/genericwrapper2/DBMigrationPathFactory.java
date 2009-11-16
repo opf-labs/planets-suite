@@ -133,8 +133,7 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	final URI destinationFormatURI = destinationFormatURIs.get(0);
 
 	// Get command line and command line parameters
-	final CommandLine commandLine = getCommandLine(pathNode,
-		"commandline");
+	final CommandLine commandLine = getCommandLine(pathNode, "commandline");
 
 	// Get temp files
 	final Map<String, String> tempFileDeclarations = getTempFileDeclarations(
@@ -494,7 +493,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	}
     }
 
-    /** FIXME! Revisit documentation....
+    /**
+     * FIXME! Revisit documentation....
      * 
      * Get the command line fragments from the element named
      * <code>commandLineElementName</code>. The fragments are returned in a list
@@ -542,7 +542,7 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 		commandLineParameters
 			.add(parameterNode.getTextContent().trim());
 	    }
-
+	    
 	    return new CommandLine(command, commandLineParameters);
 	} catch (XPathExpressionException xpee) {
 	    throw new MigrationPathConfigException(
