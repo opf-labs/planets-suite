@@ -283,6 +283,8 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
      */
     private static long getSizeOfContent( DigitalObjectContent con ) {
         if( con == null ) return 0;
+        if( con.length() >= 0 ) return con.length();
+        // Otherwise, read it to work out how big it is.
         try {
             return con.read().available();   
         } catch (IOException e) {
