@@ -47,19 +47,6 @@ The service registry is deployed as a web service at ''/pserv-if-registry-pserv-
 
 The query part of the API described above (query using example ServiceDescription objects, optional matching mode) can be accessed via SOAP. The screenshot on the right shows the Service registry SOAP API in SoapUI.
 
-== JAXR Service Registry ==
-
-The registry implementation described above (based on ServiceDescription objects) emerged out of the ''repository integration'' work package of the Interoperability Framework (IF/7) and is the default Planets IF service registry.
-
-The Planets Services (PSERV) project also contains an alternative service registry which uses the Apache Scout implementation of the Java API for XML Registries (JAXR) specification. Slightly outdated documentation of different aspects of the alternative JAXR-compliant service registry can be found on the pages below. Current tests and sample usage of the JAXR-compliant service registry can be found in the PSERV project (in IF/jaxr).
-
-* [[IF4D3 Service Registry|Service Registry Overview]]
-* [[IF/Service_Registry_API|Service Registry API]]
-* [[Service_Registry_%26_UDDI|Service Registry and UDDI]]
-* [[Service_Registry_Schema|Service Registry Schema]]
-* [[Concretising_Service_Registry_and_Workflow|Service Registry and Workflows]]
-* [[IF/4_Registries/ServiceRegistry_as_a_Webservice|Service Registry as a Webservice]]
-
 == Contact ==
 
 For further information, contact [[Carl Wilson]] (IF/4 WP lead, Service registry GUI) or [[Fabian Steeg]] (Service registry API).
