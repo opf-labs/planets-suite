@@ -1,48 +1,45 @@
 package eu.planets_project.tb.gui.backing.admin.wsclient.util;
 
-import java.util.Map;
-import java.util.List;
-import java.util.Iterator;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import javax.wsdl.Definition;
-import javax.wsdl.Service;
 import javax.wsdl.Binding;
+import javax.wsdl.BindingInput;
 import javax.wsdl.BindingOperation;
+import javax.wsdl.BindingOutput;
+import javax.wsdl.Definition;
+import javax.wsdl.Input;
 import javax.wsdl.Message;
+import javax.wsdl.Operation;
+import javax.wsdl.Output;
 import javax.wsdl.Part;
 import javax.wsdl.Port;
-import javax.wsdl.BindingInput;
-import javax.wsdl.BindingOutput;
-import javax.xml.namespace.QName;
-import javax.wsdl.Operation;
-import javax.wsdl.Input;
-import javax.wsdl.Output;
+import javax.wsdl.Service;
+import javax.wsdl.extensions.ExtensibilityElement;
+import javax.wsdl.extensions.soap.SOAPAddress;
+import javax.wsdl.extensions.soap.SOAPBinding;
+import javax.wsdl.extensions.soap.SOAPBody;
+import javax.wsdl.extensions.soap.SOAPOperation;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
-import javax.wsdl.extensions.ExtensibilityElement;
-import javax.wsdl.extensions.UnknownExtensibilityElement;
-import javax.wsdl.extensions.soap.SOAPAddress;
-import javax.wsdl.extensions.soap.SOAPOperation;
-import javax.wsdl.extensions.soap.SOAPBody;
-import javax.wsdl.extensions.soap.SOAPBinding;
-
-import org.jdom.Element;
-import org.jdom.Attribute;
-import org.jdom.input.DOMBuilder;
+import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.exolab.castor.xml.schema.Schema;
-import org.exolab.castor.xml.schema.XMLType;
-import org.exolab.castor.xml.schema.ElementDecl;
 import org.exolab.castor.xml.schema.ComplexType;
+import org.exolab.castor.xml.schema.ElementDecl;
 import org.exolab.castor.xml.schema.Group;
 import org.exolab.castor.xml.schema.Particle;
-import org.exolab.castor.xml.schema.Structure;
+import org.exolab.castor.xml.schema.Schema;
 import org.exolab.castor.xml.schema.SimpleTypesFactory;
+import org.exolab.castor.xml.schema.Structure;
+import org.exolab.castor.xml.schema.XMLType;
+import org.jdom.Element;
+import org.jdom.input.DOMBuilder;
 
 
 
