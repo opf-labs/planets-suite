@@ -23,15 +23,12 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.ajax4jsf.component.html.HtmlAjaxSupport;
-import org.richfaces.component.html.HtmlInputNumberSlider;
 import org.richfaces.event.DropEvent;
 
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
-import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
