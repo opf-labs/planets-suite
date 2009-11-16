@@ -141,7 +141,7 @@ public class ImageThumbnail {
      */
     public static void createThumb(DigitalObject dob, OutputStream out) throws Exception {
         log.info("Loading in the image...");
-        File imgFile = DigitalObjectUtils.getContentAsTempFile(dob);
+        File imgFile = DigitalObjectUtils.getAsTmpFile(dob);
         byte[] data = FileUtils.readFileIntoByteArray(imgFile);
         log.info("Writing image to stream...");
         ImageThumbnail
