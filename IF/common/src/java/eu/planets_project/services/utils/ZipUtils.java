@@ -240,6 +240,10 @@ public class ZipUtils {
 				return new String[]{};
 			}
 			zip64File.close();
+		} catch (ZipException e) {
+			log.error("No file entries found! This file is not a valid ZIP file!");
+//			e.printStackTrace();
+			return new String[] {};
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

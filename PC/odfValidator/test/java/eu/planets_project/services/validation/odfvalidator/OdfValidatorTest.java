@@ -36,7 +36,9 @@ public class OdfValidatorTest {
 	
 	private static Validate validator = null;
 
-	File v10TestIn = new File("tests/test-files/documents/test_odt/v11/test_file_v11.odt");
+//	File v10TestIn = new File("tests/test-files/documents/test_odt/v11/test_file_v11.odt");
+	File v10TestIn = new File("tests/test-files/documents/test_pdf/2274192346_4a0a03c5d6.pdf");
+	
 	static File v10UserDocSchema = new File("tests/test-files/documents/test_odt/v10/schemas/OpenDocument-schema-v1.0-os.rng");
 	static File v10UserDocStrictSchema = new File("tests/test-files/documents/test_odt/v10/schemas/OpenDocument-strict-schema-v1.0-os.rng");
 	static File v10UserManifestSchema = new File("tests/test-files/documents/test_odt/v10/schemas/OpenDocument-manifest-schema-v1.0-os.rng");
@@ -103,6 +105,8 @@ public class OdfValidatorTest {
 		URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v10TestIn));
 		ValidateResult vr = validator.validate(testIn, format, params);
 		assertTrue("ValidateResult should not be NULL!", vr!=null);
+		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
 		ServiceReport sr = vr.getReport();
 		System.out.println(sr);
 		
@@ -111,6 +115,8 @@ public class OdfValidatorTest {
 		format = techReg.createExtensionUri("odt");
 		vr = validator.validate(testIn, format, v11_Params);
 		assertTrue("ValidateResult should not be NULL!", vr!=null);
+		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
 		sr = vr.getReport();
 		System.out.println(sr);
 		
@@ -119,6 +125,8 @@ public class OdfValidatorTest {
 		format = techReg.createExtensionUri("odt");
 		vr = validator.validate(testIn, format, null);
 		assertTrue("ValidateResult should not be NULL!", vr!=null);
+		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
 		sr = vr.getReport();
 		System.out.println(sr);
 	}

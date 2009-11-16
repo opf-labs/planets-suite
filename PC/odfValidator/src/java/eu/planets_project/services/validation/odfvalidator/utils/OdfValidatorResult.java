@@ -1,5 +1,6 @@
 package eu.planets_project.services.validation.odfvalidator.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,6 @@ public class OdfValidatorResult {
 	private boolean settingsValid = false;
 	private String manifestErrors = null;
 	private boolean manifestValid;
-	private List<String> errorReportList;
 	
 	private static String CONTENT_XML = "content.xml";
 	private static String STYLES_XML = "styles.xml";
@@ -38,7 +38,7 @@ public class OdfValidatorResult {
 		this.odfVersion = odfVersion;
 	}
 
-	public boolean getValidationMethod() {
+	public boolean usedStrictValidation() {
 		return usedStrictValidation;
 	}
 
@@ -81,8 +81,17 @@ public class OdfValidatorResult {
 			setManifestErrors(error);
 		}
 	}
+
+	public boolean isOdfFile() {
+		if(odfVersion.equalsIgnoreCase("unknown")) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
 	
-	public boolean isDocumentValid() {
+	public boolean documentIsValid() {
 		if(isContentValid() 
 				&& isMetaValid() 
 				&& isStylesValid() 
@@ -114,6 +123,57 @@ public class OdfValidatorResult {
 		return false;
 	}
 	
+	/* ------------------------------------------------------------------------
+	 * Get the error messages for different ODF components, 
+	 * (content.xml, meta.xml, styles.xml, settings.xml, manifest.xml)
+	 * ------------------------------------------------------------------------ 
+	 */
+	
+	public String getContentErrors() {
+		return contentErrors;
+	}
+
+	public String getStylesErrors() {
+		return stylesErrors;
+	}
+
+	public String getMetaErrors() {
+		return metaErrors;
+	}
+
+	public String getSettingsErrors() {
+		return settingsErrors;
+	}
+
+	public String getManifestErrors() {
+		return manifestErrors;
+	}
+
+	@Override
+	public String toString() {
+		return "OdfValidatorResult ["
+				+ (odfVersion != null ? "odfVersion=" + odfVersion + ", " : "")
+				+ "usedStrictValidation()=" + usedStrictValidation() 
+				+ ", documentIsValid()=" + documentIsValid()
+				+ ", isOdfFile()=" + isOdfFile() 
+				+ ", isContentValid()=" + isContentValid() 
+				+ ", isManifestValid()=" + isManifestValid()
+				+ ", isMetaValid()=" + isMetaValid() 
+				+ ", isSettingsValid()=" + isSettingsValid()
+				+ ", isStylesValid()=" + isStylesValid()
+				+ (getContentErrors() != null ? "getContentErrors()="
+						+ getContentErrors() + ", " : "")
+				+ (getManifestErrors() != null ? "getManifestErrors()="
+						+ getManifestErrors() + ", " : "")
+				+ (getMetaErrors() != null ? "getMetaErrors()="
+						+ getMetaErrors() + ", " : "")
+				+ (getSettingsErrors() != null ? "getSettingsErrors()="
+						+ getSettingsErrors() + ", " : "")
+				+ (getStylesErrors() != null ? "getStylesErrors()="
+						+ getStylesErrors() + ", " : "" + "]");
+				
+	}
+
 	private boolean isContentValid() {
 		return contentValid;
 	}
@@ -141,26 +201,6 @@ public class OdfValidatorResult {
 	 * ------------------------------------------------------------------------ 
 	 */
 	
-	public String getContentErrors() {
-		return contentErrors;
-	}
-
-	public String getStylesErrors() {
-		return stylesErrors;
-	}
-
-	public String getMetaErrors() {
-		return metaErrors;
-	}
-
-	public String getSettingsErrors() {
-		return settingsErrors;
-	}
-
-	public String getManifestErrors() {
-		return manifestErrors;
-	}
-
 	private void setContentValid(boolean contentValid) {
 		this.contentValid = contentValid;
 	}
@@ -199,36 +239,5 @@ public class OdfValidatorResult {
 
 	private void setManifestErrors(String manifestErrors) {
 		this.manifestErrors = manifestErrors;
-	}
-
-	public List<String> getErrorReportList() {
-		return errorReportList;
-	}
-
-	public void setErrorReportList(List<String> errorReportList) {
-		this.errorReportList = errorReportList;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "OdfValidatorResult ["
-				+ (contentErrors != null ? "contentErrors=" + contentErrors
-						+ ", " : "")
-				+ (manifestErrors != null ? "manifestErrors=" + manifestErrors
-						+ ", " : "")
-				+ (metaErrors != null ? "metaErrors=" + metaErrors + ", " : "")
-				+ (odfVersion != null ? "odfVersion=" + odfVersion + ", " : "")
-				+ (settingsErrors != null ? "settingsErrors=" + settingsErrors
-						+ ", " : "")
-				+ (stylesErrors != null ? "stylesErrors=" + stylesErrors + ", "
-						: "") + "usedStrictValidation=" + usedStrictValidation
-				+ ", isContentValid()=" + isContentValid()
-				+ ", isManifestValid()=" + isManifestValid()
-				+ ", isMetaValid()=" + isMetaValid() + ", isSettingsValid()="
-				+ isSettingsValid() + ", isStylesValid()=" + isStylesValid()
-				+ "]";
 	}
 }

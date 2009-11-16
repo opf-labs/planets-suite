@@ -27,14 +27,13 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
-import eu.planets_project.services.validation.odfvalidator.utils.OdfValidatorResult;
 import eu.planets_project.services.validation.odfvalidator.utils.CoreOdfValidator;
+import eu.planets_project.services.validation.odfvalidator.utils.OdfValidatorResult;
 
 
 /**
@@ -66,21 +65,21 @@ public class OdfValidator implements Validate {
 	    sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
 	    sd.description("This is an ODF Validator service. It uses the tool 'jing' to check all components of a ODF file for their validity." +
 	    		"It supports ODF 1.0, ODF 1.1 fully and ODF 1.2 in a preliminary state." + NEWLINE + 
-	    		"You can pass custom schema files to validate against. " + NEWLINE +
-	    		"You have two ways of providing the custom schema: 1) You can pass the schema as a String or " +
+	    		"You can pass custom RelaxNG schema files to validate against. " + NEWLINE +
+	    		"You have two ways of providing the custom RelaxNG schema: 1) You can pass the schema as a String or " +
 	    		"												   2) pass a URL where the schema can be retrieved." + NEWLINE + 
 	    		"If you don't pass a custom schema, the official ODF schemas are used for validation: " + NEWLINE +
 	    		"---------------------------------------------------------" + NEWLINE + 
 	    		usedSchemas + NEWLINE + 
 	    		"---------------------------------------------------------" + NEWLINE +
-	    		"The schemas are retrieved automatically depending on the version of your ODF input file.");
+	    		"The schemas are retrieved automatically, depending on the version of the ODF input file.");
 	    sd.classname(this.getClass().getCanonicalName());
 	    sd.version("1.0");
 	    sd.name(NAME);
 	    sd.type(Validate.class.getCanonicalName());
 	    List<Parameter> parameterList = new ArrayList<Parameter>();
 	    
-	    Parameter user_doc_schema_param = new Parameter.Builder("user-doc-schema", "[1) The Schema read to a String / 2) a URL where the schema can be retrieved from.]")
+	    Parameter user_doc_schema_param = new Parameter.Builder("user-doc-schema", "[1) The RwlxNG-Schema read to a String / 2) a URL where the schema can be retrieved from.]")
 	    									.type("String")
 	            							.description("1) You can pass a custom doc-schema file to validate against, read into a String." + NEWLINE + 
 	            										 "2) You can also pass a URL to load the schema. " + NEWLINE + 
@@ -143,6 +142,10 @@ public class OdfValidator implements Validate {
 	public ValidateResult validate(DigitalObject digitalObject, URI format,
 			List<Parameter> parameters) {
 		
+		if(digitalObject==null || digitalObject.getContent() == null) {
+			return this.returnWithErrorMessage(format, "|OdfValidator] ERROR: No input file found!", null);
+		}
+		
 		String name = DigitalObjectUtils.getFileNameFromDigObject(digitalObject, format);
 		
 		File odfValidatorTmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_VALIDATOR_TMP");
@@ -154,10 +157,36 @@ public class OdfValidator implements Validate {
 		
 		OdfValidatorResult result = odfValidator.validate(inputOdfFile, parameters);
 		
-		 ValidateResult vr = new ValidateResult.Builder(format,
+		ValidateResult vr = null;
+		
+		if(result.documentIsValid()) {
+			vr = new ValidateResult.Builder(format,
 	                new ServiceReport(Type.INFO, Status.SUCCESS, result.toString()))
-	                .ofThisFormat(result.isDocumentValid()).validInRegardToThisFormat(result.isDocumentValid()).build();
+	                .ofThisFormat(result.documentIsValid())
+	                .validInRegardToThisFormat(result.documentIsValid()).build();
+		}
+		else {
+			vr = new ValidateResult.Builder(format, new ServiceReport(Type.INFO, Status.SUCCESS, result.toString()))
+			.ofThisFormat(result.isOdfFile())
+			.validInRegardToThisFormat(result.documentIsValid()).build();
+		}
 		return vr;
 	}
+	
+	 /**
+     * @param message an optional message on what happened to the service
+     * @param e the Exception e which causes the problem
+     * @return CharacteriseResult containing a Error-Report
+     */
+    private ValidateResult returnWithErrorMessage(final URI format, final String message,
+            final Exception e) {
+        if (e == null) {
+            return new ValidateResult.Builder(format, ServiceUtils
+                    .createErrorReport(message)).build();
+        } else {
+            return new ValidateResult.Builder(format, ServiceUtils
+                    .createExceptionErrorReport(message, e)).build();
+        }
+    }
 
 }
