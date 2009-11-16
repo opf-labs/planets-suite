@@ -16,7 +16,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -24,35 +23,31 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public abstract class ContentViaServerTestsTemplate {
-    private static final Migrate MIGRATE = ServiceCreator.createTestService(Migrate.QNAME,
-            PassThruMigrationService.class, "/pserv-if-simple/PassThruMigrationService?wsdl");
+    private Migrate migrate = null;
     private URL url;
     private InputStream stream;
-    private byte[] byteArray;
 
     /** @return The file to use for testing content handling via web service. */
     protected abstract File file();
 
     @Before
     public void init() throws IOException {
+        migrate = ServiceCreator.Mode.createFor(//ServiceCreator.createTestService(
+                Migrate.QNAME,
+                PassThruMigrationService.class, new URL("http://metro.planets-project.ait.ac.at/pserv-if-simple/PassThruMigrationService?wsdl"));
         url = file().toURI().toURL();
-        stream = file().toURL().openStream();
-        byteArray = FileUtils.readFileIntoByteArray(file());
+        stream = file().toURI().toURL().openStream();
     }
 
     @Test public void byReferenceToUrl() { test(Content.byReference(url)); }
     @Test public void byReferenceToFile() { test(Content.byReference(file())); }
     @Test public void byReferenceToInputStream() { test(Content.byReference(stream)); }
 
-    @Test public void byValueOfFile() { test(Content.byValue(file())); }
-    @Test public void byValueOfInputStream() { test(Content.byValue(stream)); }
-    @Test public void byValueOfByteArray() { test(Content.byValue(byteArray)); }
-
     private void test(DigitalObjectContent content) {
         DigitalObject in = new DigitalObject.Builder(content).build();
-        MigrateResult res = MIGRATE.migrate(in, null, null, null);
+        MigrateResult res = migrate.migrate(in, null, null, null);
         DigitalObject out = res.getDigitalObject();
-        Assert.assertNotNull("Resulting digital object must not be null", out);
+        // We require the input and output object to be equal:
         Assert.assertEquals("Input and output objects must be equal", in, out);
     }
 

@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 
 import org.jboss.annotation.ejb.TransactionTimeout;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -27,10 +27,11 @@ import eu.planets_project.services.migrate.MigrateResult;
  * allow real-world testing of digital objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@Local(Migrate.class)
-@Remote(Migrate.class)
 @Stateless
-@WebService(name = PassThruMigrationService.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
+@WebService(
+        name = PassThruMigrationService.NAME, serviceName = Migrate.NAME, 
+        targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
+@StreamingAttachment(parseEagerly = true)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @TransactionTimeout(100000)
 public final class PassThruMigrationService implements Migrate, Serializable {
@@ -54,7 +55,9 @@ public final class PassThruMigrationService implements Migrate, Serializable {
         boolean success = newDO != null;
         ServiceReport report;
         if (success) {
-            report = new ServiceReport(Type.INFO, Status.SUCCESS, "Passed through");
+            report = new ServiceReport(ServiceReport.Type.INFO, ServiceReport.Status.SUCCESS,
+                    "Passed through");
+            System.out.println("Passing back: " + newDO.getContent().length() + " bytes");
         } else {
             report = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, "Null result");
         }

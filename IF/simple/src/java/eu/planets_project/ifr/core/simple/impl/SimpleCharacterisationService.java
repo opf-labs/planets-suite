@@ -5,12 +5,14 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
@@ -33,12 +35,12 @@ import eu.planets_project.services.utils.DigitalObjectUtils;
  *
  */
 @Stateless
-@Remote(Characterise.class)
-
 @WebService(name = SimpleCharacterisationService.NAME, 
         serviceName = Characterise.NAME, 
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.characterise.Characterise" )
+@StreamingAttachment(parseEagerly = true)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public class SimpleCharacterisationService implements Characterise {
     private final Log log = LogFactory.getLog(getClass().getName());
     

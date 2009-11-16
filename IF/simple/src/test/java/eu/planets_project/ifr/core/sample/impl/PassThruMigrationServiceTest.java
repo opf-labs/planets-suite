@@ -1,12 +1,5 @@
 package eu.planets_project.ifr.core.sample.impl;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
 import eu.planets_project.ifr.core.simple.impl.PassThruMigrationService;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -14,6 +7,11 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Local and client tests of the digital object migration functionality.
@@ -27,18 +25,18 @@ public final class PassThruMigrationServiceTest extends TestCase {
     /* A holder for the object to be tested */
     Migrate dom = null;
 
-    /*
-     * (non-Javadoc)
+    
+    /**
+     * {@inheritDoc}
      * @see junit.framework.TestCase#setUp()
      */
     @Override
     protected void setUp() throws Exception {
-        dom = ServiceCreator.createTestService(Migrate.QNAME,
-                PassThruMigrationService.class, wsdlLoc);
+        dom = ServiceCreator.createTestService(Migrate.QNAME, PassThruMigrationService.class, wsdlLoc);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see junit.framework.TestCase#tearDown()
      */
     @Override
@@ -63,11 +61,10 @@ public final class PassThruMigrationServiceTest extends TestCase {
     public void testMigrate() {
         try {
             /*
-             * To test usability of the digital object instance in web services,
-             * we simply pass one into the service and expect one back:
+             * To test usability of the digital object instance in web services, we simply pass one into the service and
+             * expect one back:
              */
-            DigitalObject input = new DigitalObject.Builder(Content
-                    .byReference(new URL("http://some"))).build();
+            DigitalObject input = new DigitalObject.Builder(Content.byReference(new URL("http://some"))).build();
             System.out.println("Input: " + input);
 
             MigrateResult mr = dom.migrate(input, null, null, null);
@@ -77,8 +74,7 @@ public final class PassThruMigrationServiceTest extends TestCase {
 
             System.out.println("Output: " + doOut);
 
-            assertTrue("Resulting digital object not .equal to the original.",
-                    input.equals(doOut));
+            assertEquals("Resulting digital object not .equal to the original.", input, doOut);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

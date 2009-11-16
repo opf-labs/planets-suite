@@ -15,6 +15,7 @@ public class ContentViaServerTestsLarge extends ContentViaServerTestsTemplate {
     @Override
     protected File file() {
         return new File("tests/test-files/video/dx1_03.m2ts.mpg");
+//        return new File("/Users/fsteeg/Downloads/Valkaama_v2009-06-24(Beta).avi");
     }
 
 }

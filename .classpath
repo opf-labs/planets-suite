@@ -11,6 +11,8 @@
 	<classpathentry kind="src" path="IF/registry/src/main/java"/>
 	<classpathentry kind="src" path="IF/registry/src/test/java"/>
 	<classpathentry kind="src" path="IF/simple/src/java"/>
+    <classpathentry kind="src" path="IF/simple/src/test/java"/>
+    <classpathentry kind="src" path="IF/simple/src/resources"/>
 	<classpathentry kind="src" path="IF/storage/src/main/java"/>
 	<classpathentry kind="src" path="IF/storage/src/test/java"/>
 	<classpathentry kind="src" path="IF/techreg/src/java"/>
@@ -97,10 +99,10 @@
 	<classpathentry kind="src" path="PC/pngcheck/test/java"/>
 	<classpathentry kind="src" path="PP/xcl/src/java"/>
 	<classpathentry kind="src" path="PP/xcl/src/test/java"/>
-	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="PC/odfValidator/src/java"/>
-	<classpathentry kind="src" path="PC/odfValidator/test/java"/>
-	<classpathentry kind="src" path="PC/odfValidator/src/resources"/>
+    <classpathentry kind="src" path="PC/odfValidator/test/java"/>
+    <classpathentry kind="src" path="PC/odfValidator/src/resources"/>
+	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>

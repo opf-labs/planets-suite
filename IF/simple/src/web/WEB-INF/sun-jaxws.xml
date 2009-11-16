@@ -32,58 +32,23 @@
 		new code is made subject to such option by the copyright holder.
 	-->
 
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<description>if-simple</description>
-	<display-name>if-simple</display-name>
+<endpoints xmlns='http://java.sun.com/xml/ns/jax-ws/ri/runtime'
+	version='2.0'>
 
-	<listener>
-		<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
-	</listener>
+	<endpoint name='PassThruMigrationService'
+		implementation='eu.planets_project.ifr.core.simple.impl.PassThruMigrationService'
+		url-pattern='/PassThruMigrationService' />
 
-	<servlet>
-		<servlet-name>PassThruMigrationService</servlet-name>
-		<servlet-class>eu.planets_project.ifr.core.simple.impl.PassThruMigrationService</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>PassThruMigrationService</servlet-name>
-		<url-pattern>/PassThruMigrationService</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-        <servlet-name>AlwaysSaysValidService</servlet-name>
-        <servlet-class>eu.planets_project.ifr.core.simple.impl.AlwaysSaysValidService</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>AlwaysSaysValidService</servlet-name>
-        <url-pattern>/AlwaysSaysValidService</url-pattern>
-    </servlet-mapping>
+	<endpoint name='AlwaysSaysValidService'
+		implementation='eu.planets_project.ifr.core.simple.impl.AlwaysSaysValidService'
+		url-pattern='/AlwaysSaysValidService' />
     
-    <servlet>
-        <servlet-name>SimpleCharacterisationService</servlet-name>
-        <servlet-class>eu.planets_project.ifr.core.simple.impl.SimpleCharacterisationService</servlet-class>
-    </servlet>
+    <endpoint name='SimpleCharacterisationService'
+        implementation='eu.planets_project.ifr.core.simple.impl.SimpleCharacterisationService'
+        url-pattern='/SimpleCharacterisationService' />
+   
+    <endpoint name='SimpleIdentifyService'
+        implementation='eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService'
+        url-pattern='/SimpleIdentifyService' />
 
-    <servlet-mapping>
-        <servlet-name>SimpleCharacterisationService</servlet-name>
-        <url-pattern>/SimpleCharacterisationService</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>SimpleIdentifyService</servlet-name>
-        <servlet-class>eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>SimpleIdentifyService</servlet-name>
-        <url-pattern>/SimpleIdentifyService</url-pattern>
-    </servlet-mapping>
-
-	<session-config>
-		<session-timeout>60</session-timeout>
-	</session-config>
-
-</web-app>
+</endpoints>

@@ -8,13 +8,14 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.simple.impl.util.FileTypeResolver;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -32,15 +33,13 @@ import eu.planets_project.services.identify.IdentifyResult;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-@Local(Identify.class)
-@Remote(Identify.class)
 @Stateless
-
 @WebService(name = SimpleIdentifyService.NAME, 
         serviceName = Identify.NAME, 
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.identify.Identify" )
-        
+@StreamingAttachment(parseEagerly = true)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public class SimpleIdentifyService implements Identify {
 
     /** The name of the service. */
