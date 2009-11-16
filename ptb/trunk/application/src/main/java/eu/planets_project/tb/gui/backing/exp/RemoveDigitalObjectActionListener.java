@@ -11,7 +11,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
