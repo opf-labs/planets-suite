@@ -10,7 +10,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.utils.PlanetsLogger;
 
 
 /**
