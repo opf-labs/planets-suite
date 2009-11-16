@@ -286,6 +286,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         if( con.length() >= 0 ) return con.length();
         // Otherwise, read it to work out how big it is.
         try {
+            // Note that this can be misleading, as the available bytes may be less than the total size.
             return con.read().available();   
         } catch (IOException e) {
             e.printStackTrace();
