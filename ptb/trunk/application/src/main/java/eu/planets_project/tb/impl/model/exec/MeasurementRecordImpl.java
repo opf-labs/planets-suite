@@ -7,18 +7,10 @@ import java.io.Serializable;
 import java.net.URI;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import com.sun.xml.xsom.impl.util.Uri;
-
-import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 
 /**
  * This is the Testbed's notion of a property, one that can be stored in the DB.
