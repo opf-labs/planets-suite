@@ -46,7 +46,7 @@ public class OdfContentHandler {
 		String[] files = ZipUtils.getAllFragments(odfFile);
 		
 		if(files.length==0) {
-			log.error("The input file is NOT a ODF file! Sorry, returning with error!");
+			log.error("[OdfContentHandler] extractXmlFiles(): The input file '" + odfFile.getName() + "' is NOT an ODF file! Sorry, returning with error!");
 			return new ArrayList<File>();
 		}
 		
