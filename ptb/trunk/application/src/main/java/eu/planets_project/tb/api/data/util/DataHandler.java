@@ -88,7 +88,7 @@ public interface DataHandler {
 	 * @param localFileRefs
 	 * @return
 	 */
-    public List<DigitalObject> convertFileRefsToDigos(Collection<String> localFileRefs);
+    //public List<DigitalObject> convertFileRefsToDigos(Collection<String> localFileRefs);
     
 	/**
 	 * Copies a file from its local location as a temp file into the system's externally accessible directory
