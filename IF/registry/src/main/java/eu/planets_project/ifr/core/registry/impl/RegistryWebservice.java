@@ -11,6 +11,8 @@ import javax.xml.ws.BindingType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sun.xml.ws.developer.StreamingAttachment;
+
 import eu.planets_project.ifr.core.registry.api.MatchingMode;
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.api.RegistryFactory;
@@ -25,6 +27,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 @Stateless
 @WebService(name = RegistryWebservice.NAME, serviceName = Registry.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@StreamingAttachment(parseEagerly = true)
 public final class RegistryWebservice implements Registry {
     /***/
     private static final long serialVersionUID = 1L;

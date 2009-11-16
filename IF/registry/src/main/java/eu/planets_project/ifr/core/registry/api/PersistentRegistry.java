@@ -26,7 +26,7 @@ final class PersistentRegistry implements Registry {
             .getName());
     private static final String DESCRIPTION_REGISTRY = "service-description-registry";
     private static final String LOCAL = "IF/registry/src/main/resources/";
-    private static final String SERVER_DEFAULT_CONF = "/server/default/conf/";
+    private static final String SERVER_DEFAULT_CONF = "/server/default/data/";
     private static final String JBOSS_HOME_DIR = "jboss.home.dir";
     private static String rootLocation = null;
     private static File root = null;
