@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
+import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
 import eu.planets_project.services.datatypes.Parameter;
 
@@ -48,8 +50,7 @@ public class DBMigrationPathFactoryTest {
     public void tearDown() throws Exception {
     }
 
-    
-     // TODO: Do also test a series of broken configuration files.
+    // TODO: Do also test a series of broken configuration files.
 
     /**
      * Test method for
@@ -160,13 +161,17 @@ public class DBMigrationPathFactoryTest {
 	}
 
 	// Verify the tool presets.
-	Collection<Preset> toolPresets = migrationPath.getAllToolPresets();
+	ToolPresets toolPresets = migrationPath.getToolPresets();
+	assertEquals("The tool presets has a wrong default preset ID", "mode",
+		toolPresets.getDefaultPresetID());
+
+	Collection<Preset> presets = toolPresets.getAllToolPresets();
 	assertEquals(
 		"Un-expected number of presets defined for the tested migration path.",
-		2, toolPresets.size());
+		2, presets.size());
 
 	final HashMap<String, Preset> presetMap = new HashMap<String, Preset>();
-	for (Preset preset : toolPresets) {
+	for (Preset preset : presets) {
 	    presetMap.put(preset.getName(), preset);
 	}
 
@@ -226,6 +231,8 @@ public class DBMigrationPathFactoryTest {
     }
 
     /**
+     * FIXME! Revisit documentation...
+     * 
      * Verify that the unprocessed command line from <code>migrationPath</code>
      * is correct. Note that this only verifies the unprocessed command line and
      * not any keyword and variable substitutions as this is not the
@@ -236,22 +243,25 @@ public class DBMigrationPathFactoryTest {
      * @param expectedCommandFragments
      *            A list of the expected command and associated parameters to
      *            use for the test.
+     * @throws MigrationException
      */
     private void commandLineTest(MigrationPath migrationPath,
-	    List<String> expectedCommandLine) {
+	    List<String> expectedCommandLine) throws MigrationException {
 
-	List<String> unprocessedCommandLine = migrationPath.getCommandLine();
+	final ArrayList<Parameter> emptyParameterList = new ArrayList<Parameter>();
+	final HashMap<String, File> emptyFileDeclarations = new HashMap<String, File>();
+	final PRCommandBuilder commandBuilder = new PRCommandBuilder();
+	List<String> prCommand = commandBuilder.buildCommand(migrationPath, emptyParameterList, emptyFileDeclarations);
 
 	assertEquals(
 		"Unexpected number of command line fragments in the migration"
-			+ " path object", expectedCommandLine.size(),
-		unprocessedCommandLine.size());
+			+ " path object", expectedCommandLine.size(), prCommand
+			.size());
 
 	for (int fragmentIdx = 0; fragmentIdx < expectedCommandLine.size(); fragmentIdx++) {
 	    final String expectedFragment = expectedCommandLine
 		    .get(fragmentIdx);
-	    final String actualFragment = unprocessedCommandLine
-		    .get(fragmentIdx);
+	    final String actualFragment = prCommand.get(fragmentIdx);
 	    assertEquals(
 		    "Unexpected command line fragment in the migration path.",
 		    expectedFragment, actualFragment);

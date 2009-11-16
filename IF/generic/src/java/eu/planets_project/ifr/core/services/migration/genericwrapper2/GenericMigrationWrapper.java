@@ -6,7 +6,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.w3c.dom.Document;
 
@@ -34,13 +36,8 @@ public class GenericMigrationWrapper {
     private final TemporaryFileFactory tempFileFactory;
 
     private ServiceDescription serviceDescription; // TODO: Consider building
-    // IF-dependent objects
-    // outside this class.
-
-    private boolean returnByReference; // TODO: This must be a parameter of the
-
-    // generic wrapper!! Default to return by
-    // reference!!
+						   // the service description
+						   // with a separate factory.
 
     // TODO: It would probably be nice to pass a factory for creation of
     // temporary files on order to avoid a tight coupling with the Planets J2EE
@@ -48,7 +45,9 @@ public class GenericMigrationWrapper {
     public GenericMigrationWrapper(Document configuration, String toolIdentifier)
 	    throws MigrationInitialisationException {
 
-	this.toolIdentifier = toolIdentifier;
+	this.toolIdentifier = toolIdentifier; // TODO: Where should we use this
+	// information? Logging?
+	// ServiceDescription?
 	tempFileFactory = new J2EETempFileFactory(toolIdentifier);
 
 	try {
@@ -60,13 +59,6 @@ public class GenericMigrationWrapper {
 		    .getAllMigrationPaths());
 	    serviceDescription = serviceFactory.getServiceDescription(
 		    configuration, planetsPaths, toolIdentifier);
-	    String result = configuration.getDocumentElement().getAttribute(
-		    "returnByReference");// FIXME! This will become a input
-	    // parameter of the migrate method.
-	    if (result != null) {
-		returnByReference = Boolean.valueOf(result);
-	    }
-
 	} catch (Exception e) {
 	    throw new MigrationInitialisationException(
 		    "Failed initialising migration path data from the configuration document: "
@@ -85,13 +77,12 @@ public class GenericMigrationWrapper {
 	return serviceDescription;
     }
 
-    // FIXME! This method should be able to decide whether it should create
-    // temporary files or not.
     /**
      * Migrate the digital object from the sourceFormat to the destination
      * format, with the given parameters
      * 
-     * FIXME! Return by reference must be specified by a prameter...
+     * FIXME! Return by reference must be specified by the parameter:
+     * returnbyreference=true/false. Default is true.
      * 
      * @param sourceObject
      *            the digital object to migrate
@@ -130,121 +121,267 @@ public class GenericMigrationWrapper {
 	    toolParameters = new ArrayList<Parameter>();
 	}
 
-	File inputTempFile = null;
-	InputStream standardInputStream = null;
+	// Prepare any necessary temporary files.
+	final Map<String, File> temporaryFileMappings = createTemporaryFiles(migrationPath);
 
-	if (migrationPath.getToolInputProfile().usePipedIO()) {
+	// Prepare the data to migrate
+	InputStream standardInputStream = null;
+	final ToolIOProfile inputIOProfile = migrationPath
+		.getToolInputProfile();
+	if (inputIOProfile.usePipedIO()) {
+
 	    // Serve the digital object through standard input
 	    standardInputStream = sourceObject.getContent().read();
 	} else {
-	    // Prepare a temporary input file containing the digital object.
-	    inputTempFile = createTempInputFile(sourceObject, migrationPath);
+
+	    // Serve the digital object through a temporary input file.
+	    File inputTempFile = temporaryFileMappings.get(inputIOProfile
+		    .getCommandLineFileLabel());
+	    FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
+		    inputTempFile);
 	}
 
-	// Prepare a temporary file for the migrated object if the tool writes
-	// to a file.
-	File outputTempFile = null;
-	final ToolIOProfile outputIOProfile = migrationPath
-		.getToolOutputProfile();
-	if (outputIOProfile.usePipedIO() == false) {
-	    outputTempFile = createTempFile(outputIOProfile);
-	}
-
-	List<String> command = migrationPath.getCommandLine(toolParameters);
-
-	// FIXME! The command line keyword substitution should take place here
-	// and not in the migration path object!
+	// Create an executable command line for the process runner.
+	final PRCommandBuilder commandBuilder = new PRCommandBuilder();
+	final List<String> prCommand = commandBuilder.buildCommand(
+		migrationPath, toolParameters, temporaryFileMappings);
 
 	// Execute the tool
 	final ProcessRunner toolProcessRunner = new ProcessRunner();
-	ServiceReport serviceReport = executeToolProcess(toolProcessRunner,
-		command, standardInputStream);
+	final boolean executionSuccessful = executeToolProcess(
+		toolProcessRunner, prCommand, standardInputStream);
 
-	if (serviceReport.getType() == Type.ERROR) {
-	    String message = "Failed migrating object with title '"
-		    + sourceObject.getTitle() + "' from format URI: "
-		    + sourceFormat + " to " + destinationFormat
-		    + " Standard output: "
-		    + toolProcessRunner.getProcessOutputAsString()
-		    + "\nStandard error output: "
-		    + toolProcessRunner.getProcessErrorAsString();
-	    serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
-		    message);
-	    return new MigrateResult(null, serviceReport);
+	// Delete temporary files. However, do NOT delete the output unless the
+	// execution failed.
+	final ToolIOProfile outputIOProfile = migrationPath
+		.getToolOutputProfile();
+	if ((outputIOProfile.usePipedIO() == false) && executionSuccessful) {
+
+	    // OK, there should exist an output file. Avoid deleting it.
+	    final String outputFileLabel = outputIOProfile
+		    .getCommandLineFileLabel();
+	    temporaryFileMappings.remove(outputFileLabel);
+	}
+	for (File tempFile : temporaryFileMappings.values()) {
+	    tempFile.delete();
 	}
 
-	// Cleanup temporary files.
-
-	if (inputTempFile != null) {
-	    inputTempFile.delete();
-	}
-	if (outputTempFile != null) {
-	    outputTempFile.delete();
+	if (executionSuccessful == false) {
+	    return buildMigrationResult(migrationPath, sourceObject, null,
+		    toolProcessRunner);
 	}
 
-	// TODO: Delete any intermediate temporary files.
-
-	// READING THE OUTPUT
-	// TODO return a reference to the outputfile
+	// Now create a digital object from the tools output.
 	DigitalObject.Builder builder;
+
+	final ParameterReader parameterReader = new ParameterReader(
+		toolParameters);
+	final boolean returnDataByReference = parameterReader
+		.getBooleanParameter("returnByReference", true);
 
 	final ToolIOProfile toolOutputProfile = migrationPath
 		.getToolOutputProfile();
-	if (!toolOutputProfile.usePipedIO()) {
-	    // we should read a temp file afterwards
-	    File outputfile = new File("");// FIXME! Create temp. file!!
-	    if (returnByReference) {
+	if (toolOutputProfile.usePipedIO() == false) {
+
+	    // The tool has written the output to a temporary file. Create a
+	    // digital object based on that.
+	    final File outputFile = temporaryFileMappings.get(toolOutputProfile
+		    .getCommandLineFileLabel());
+	    if (returnDataByReference) {
 		builder = new DigitalObject.Builder(Content
-			.byReference(outputfile));
+			.byReference(outputFile));
+		// We cannot tell when the temporary file can be deleted, so let
+		// it live.
 	    } else {
-		builder = new DigitalObject.Builder(Content.byValue(outputfile));
-		outputfile.delete();
+		builder = new DigitalObject.Builder(Content.byValue(outputFile));
+
+		// TODO: Should we set metadata such as the object title, and if
+		// so, how can one set it?
+
+		// It is now safe to delete the temporary file.
+		outputFile.delete();
 	    }
-
-	    String message = "Successfully migrated object with title '"
-		    + sourceObject.getTitle() + "' from format URI: "
-		    + sourceFormat + " to " + destinationFormat
-		    + " Standard output: "
-		    + toolProcessRunner.getProcessOutputAsString()
-		    + "\nStandard error output: "
-		    + toolProcessRunner.getProcessErrorAsString();
-	    serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-		    message);
-
 	} else {
 
-	    if (returnByReference) {
-		// we should read the output
+	    // The tool has written the output to standard output. Create a
+	    // digital object based on that output.
+	    if (returnDataByReference) {
+		// Direct the standard output contents to a temporary file.
 		builder = new DigitalObject.Builder(Content
 			.byReference(toolProcessRunner.getProcessOutput()));
 	    } else {
+		// Return the standard output contents by value.
 		builder = new DigitalObject.Builder(Content
 			.byValue(toolProcessRunner.getProcessOutput()));
 	    }
-	    String message = "Successfully migrated object with title '"
-		    + sourceObject.getTitle() + "' from format URI: "
-		    + sourceFormat + " to " + destinationFormat
-		    + " Standard error output: "
-		    + toolProcessRunner.getProcessErrorAsString();
-	    serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-		    message);
-
 	}
 
-	// TODO cleanup the dir
-	DigitalObject destinationObject = builder.format(destinationFormat)
-		.build();
+	final DigitalObject destinationObject = builder.format(
+		destinationFormat).build();
 
-	return new MigrateResult(destinationObject, serviceReport);
+	return buildMigrationResult(migrationPath, sourceObject,
+		destinationObject, toolProcessRunner);
+    }
 
+    private MigrateResult buildMigrationResult(MigrationPath migrationPath,
+	    DigitalObject sourceObject, DigitalObject resultObject,
+	    ProcessRunner toolProcessRunner) {
+
+	String stdoutPart = String.format("Standard output:\n%s\n\n",
+		toolProcessRunner.getProcessOutputAsString());
+
+	// Default to a service report for a failed execution.
+	String statusDescription = "Failed migrating";
+	Type messageType = Type.ERROR;
+	Status messageStatus = Status.TOOL_ERROR;
+
+	if (toolProcessRunner.getReturnCode() != -1) {
+	    // Create a service report for a successful execution.
+
+	    statusDescription = "Successfully migrated";
+	    messageType = Type.INFO;
+	    messageStatus = Status.SUCCESS;
+
+	    final ToolIOProfile toolOutputProfile = migrationPath
+		    .getToolOutputProfile();
+
+	    if (toolOutputProfile.usePipedIO()) {
+		// Avoid printing standard output if the digital object was
+		// returned through that.
+		stdoutPart = "";
+	    }
+	}
+
+	// Fill in the blanks in the generic message template.
+	final String reportMessage = String.format("%s object with title '%s'"
+		+ " from format URI: '%s' to '%s'.\n%sStandard error output:"
+		+ "\n%s", statusDescription, sourceObject.getTitle(),
+		migrationPath.getSourceFormat(), migrationPath
+			.getDestinationFormat(), stdoutPart, toolProcessRunner
+			.getProcessErrorAsString());
+
+	final ServiceReport serviceReport = new ServiceReport(messageType,
+		messageStatus, reportMessage);
+
+	return new MigrateResult(resultObject, serviceReport);
     }
 
     /**
-     * Create a temporary input file and write the contents of the digital
-     * object specified by <code>sourceObject</code> to it if the migration path
-     * dictates the use of a temporary input file. If the migration path does
-     * not dictate the use of a temporary input file, then <code>null</code> is
-     * returned.
+     * Create all the temporary files needed in order to perform a migration
+     * using the migration path specified by <code>migrationPath</code> and
+     * return a map associating the command labels with the appropriate file
+     * path.
+     * 
+     * @param migrationPath
+     *            The migration path to create temporary files for.
+     * @return A <code>Map</code> associating the labels in the command line
+     *         which identifies temporary files with the actual file paths for
+     *         the files.
+     */
+    private Map<String, File> createTemporaryFiles(MigrationPath migrationPath)
+	    throws MigrationException {
+
+	Map<String, File> temporaryFileMappings = new HashMap<String, File>();
+
+	final ToolIOProfile toolInputProfile = migrationPath
+		.getToolInputProfile();
+
+	try {
+	    if (!toolInputProfile.usePipedIO()) {
+
+		temporaryFileMappings = createTemporaryFile(
+			temporaryFileMappings, toolInputProfile
+				.getCommandLineFileLabel(), toolInputProfile
+				.getDesiredTempFileName());
+
+		final String tempFileLabel = toolInputProfile
+			.getCommandLineFileLabel();
+		log.info(String.format("Created a temporary input file. "
+			+ "Label = '%s'. " + "File name: '%s'", tempFileLabel,
+			temporaryFileMappings.get(tempFileLabel)
+				.getCanonicalPath()));
+	    }
+
+	    final ToolIOProfile toolOutputProfile = migrationPath
+		    .getToolOutputProfile();
+	    if (!toolOutputProfile.usePipedIO()) {
+
+		temporaryFileMappings = createTemporaryFile(
+			temporaryFileMappings, toolOutputProfile
+				.getCommandLineFileLabel(), toolOutputProfile
+				.getDesiredTempFileName());
+
+		final String tempFileLabel = toolOutputProfile
+			.getCommandLineFileLabel();
+		log.info(String.format("Created a temporary output file. "
+			+ "Label = '%s'. " + "File name: '%s'", tempFileLabel,
+			temporaryFileMappings.get(tempFileLabel)
+				.getCanonicalPath()));
+	    }
+
+	    final Map<String, String> temporaryFileDeclarations = migrationPath
+		    .getTempFileDeclarations();
+	    for (String tempFileLabel : temporaryFileDeclarations.keySet()) {
+		final String desiredFileName = temporaryFileDeclarations
+			.get(tempFileLabel);
+
+		temporaryFileMappings = createTemporaryFile(
+			temporaryFileMappings, tempFileLabel, desiredFileName);
+	    }
+	} catch (IOException ioe) {
+	    throw new MigrationException("Failed creating temporary files.",
+		    ioe);
+	}
+	return temporaryFileMappings;
+    }
+
+    /**
+     * Create a temporary file with a random name or with a desired name, if a
+     * such is specified. If the caller has no desired file name then
+     * <code>desiredFileName</code> must be <code>null</code>.
+     * <p/>
+     * The created file will be added to <code>tempFileMap</code>, using
+     * <code>fileLabel</code> as the key.
+     * <p/>
+     * Files that are given a random name will have <code>fileLabel</code>
+     * appended to the file name to make debugging easier.
+     * 
+     * @param tempFileMap
+     *            A file map to add the created temporary file to.
+     * @param fileLabel
+     *            The label/key which the generated file must be associated with
+     *            in the returned map.
+     * @param desiredFileName
+     *            The desired name of the temporary file or <code>null</code> if
+     *            the file should be given a random name.
+     * @return <code>tempFileMap</code> with the created file added.
+     */
+    private Map<String, File> createTemporaryFile(
+	    Map<String, File> tempFileMap, String fileLabel,
+	    String desiredFileName) {
+	File temporaryFile = null;
+
+	if (desiredFileName == null) {
+	    // No desired name has been specified. Create a file with a random
+	    // name having the file label added to give a clue in case of
+	    // debugging becomes necessary.
+	    temporaryFile = tempFileFactory
+		    .prepareRandomNamedTempFile(fileLabel);
+	} else {
+	    // Create a temporary file with the desired base name.
+	    temporaryFile = tempFileFactory.prepareTempFile(desiredFileName);
+	}
+
+	tempFileMap.put(fileLabel, temporaryFile);
+	return tempFileMap;
+    }
+
+    /**
+     * FIXME! This appears to be obsolete.... KILL! Create a temporary input
+     * file and write the contents of the digital object specified by
+     * <code>sourceObject</code> to it if the migration path dictates the use of
+     * a temporary input file. If the migration path does not dictate the use of
+     * a temporary input file, then <code>null</code> is returned.
      * 
      * @param sourceObject
      *            The digital object to be written to a temporary file, if
@@ -257,45 +394,46 @@ public class GenericMigrationWrapper {
      *         file containing the data from the digital object if a temporary
      *         file must be used and otherwise <code>null</code>.
      */
-    private File createTempInputFile(DigitalObject sourceObject,
-	    MigrationPath migrationPath) {
-
-	File inputTempFile = null;
-	final ToolIOProfile inputIOProfile = migrationPath
-		.getToolInputProfile();
-	if (!inputIOProfile.usePipedIO()) {
-
-	    // Create a temporary file and write the contents of the digital
-	    // object to it.
-	    inputTempFile = createTempFile(inputIOProfile);
-	    FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
-		    inputTempFile);
-	}
-	return inputTempFile;
-    }
+    // private File createTempInputFile(DigitalObject sourceObject,
+    // MigrationPath migrationPath) {
+    //
+    // File inputTempFile = null;
+    // final ToolIOProfile inputIOProfile = migrationPath
+    // .getToolInputProfile();
+    // if (!inputIOProfile.usePipedIO()) {
+    //
+    // // Create a temporary file and write the contents of the digital
+    // // object to it.
+    // inputTempFile = createTempFile(inputIOProfile);
+    // FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
+    // inputTempFile);
+    // }
+    // return inputTempFile;
+    // }
 
     /**
-     * Create a temporary file based on the <code>{@link ToolIOProfile}</code>
-     * provided by <code>toolIOProfile</code>. If the profile contains a desired
-     * file name, then a temporary file with that name will be created and other
-     * wise a file with a random name will be generated. However, files with
-     * random names will have the command line file label included in their name
-     * to make any debugging easier.
+     * FIXME! This appears to be obsolete.... KILL! Create a temporary file
+     * based on the <code>{@link ToolIOProfile}</code> provided by
+     * <code>toolIOProfile</code>. If the profile contains a desired file name,
+     * then a temporary file with that name will be created and other wise a
+     * file with a random name will be generated. However, files with random
+     * names will have the command line file label included in their name to
+     * make any debugging easier.
      * 
      * @param toolIOProfile
      *            <code>ToolIOProfile</code> with optional name information for
      *            the temporary file to create.
      * @return <code>File</code> representing a temporary file.
      */
-    private File createTempFile(ToolIOProfile toolIOProfile) {
-	if (toolIOProfile.getDesiredTempFileName() != null) {
-	    return tempFileFactory.prepareTempFile(toolIOProfile
-		    .getDesiredTempFileName());
-	} else {
-	    return tempFileFactory.prepareRandomNamedTempFile(toolIOProfile
-		    .getCommandLineFileLabel());
-	}
-    }
+    // private File createTempFile(ToolIOProfile toolIOProfile) {
+    // if (toolIOProfile.getDesiredTempFileName() != null) {
+    // return tempFileFactory.prepareTempFile(toolIOProfile
+    // .getDesiredTempFileName());
+    // } else {
+    // return tempFileFactory.prepareRandomNamedTempFile(toolIOProfile
+    // .getCommandLineFileLabel());
+    // }
+    // }
 
     /**
      * TODO: This should go into a utility class.
@@ -323,7 +461,8 @@ public class GenericMigrationWrapper {
 	    planetsParameters.addAll(migrationPath.getToolParameters());
 
 	    // Add a parameter for each preset (category)
-	    for (Preset preset : migrationPath.getAllToolPresets()) {
+	    for (Preset preset : migrationPath.getToolPresets()
+		    .getAllToolPresets()) {
 
 		Parameter.Builder parameterBuilder = new Parameter.Builder(
 			preset.getName(), null);
@@ -352,7 +491,7 @@ public class GenericMigrationWrapper {
 	return planetsPaths;
     }
 
-    private ServiceReport executeToolProcess(ProcessRunner toolProcessRunner,
+    private boolean executeToolProcess(ProcessRunner toolProcessRunner,
 	    List<String> command, InputStream processStandardInput) {
 
 	toolProcessRunner.setInputStream(processStandardInput);
@@ -361,28 +500,6 @@ public class GenericMigrationWrapper {
 	toolProcessRunner.setOutputCollectionByteSize(-1);
 
 	toolProcessRunner.run();
-	ServiceReport serviceReport;
-	boolean toolError = toolProcessRunner.getReturnCode() == -1;
-	if (toolError) {
-	    serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
-		    toolProcessRunner.getProcessErrorAsString());
-	} else {
-	    serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-		    toolProcessRunner.getProcessOutputAsString());
-	}
-	return serviceReport;
+	return toolProcessRunner.getReturnCode() != -1;
     }
-
-    private void handleTempSourceFile(MigrationPath migrationPath,
-	    DigitalObject sourceObject, File workfolder) throws IOException {
-	// TempFile sourcetempfile = migrationPath.getTempSourceFile();
-	TempFile sourcetempfile = new TempFile("FIXME - Fake"); // FIXME! dooo
-	// somesing
-	// enterrigent
-	// File realtemp = createTemp(workfolder, sourcetempfile);
-	// FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
-	// realtemp);
-	// sourcetempfile.setFile(realtemp);
-    }
-
 }

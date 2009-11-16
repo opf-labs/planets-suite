@@ -133,8 +133,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	final URI destinationFormatURI = destinationFormatURIs.get(0);
 
 	// Get command line and command line parameters
-	final List<String> commandLineFragments = getCommandLineFragments(
-		pathNode, "commandline");
+	final CommandLine commandLine = getCommandLine(pathNode,
+		"commandline");
 
 	// Get temp files
 	final Map<String, String> tempFileDeclarations = getTempFileDeclarations(
@@ -153,15 +153,7 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 		pathNode, "toolparameters");
 
 	// Get tool presets
-	Collection<Preset> toolPresets = getToolPresets(pathNode, "toolpresets");
-
-	// Tool presets are optional, so if there are no presets do not attempt
-	// to read the default attribute - it would end bad.
-	String defaultPresetName = "";
-	if (!toolPresets.isEmpty()) {
-	    defaultPresetName = getDefaultAttributeValue(pathNode,
-		    "toolpresets");
-	}
+	ToolPresets toolPresets = getToolPresets(pathNode, "toolpresets");
 
 	// for each input format {create a path element}.
 
@@ -171,10 +163,9 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 	    newPath.setSourceFormat(sourceFormatURI);
 	    newPath.setDestinationFormat(destinationFormatURI);
-	    newPath.setCommandLine(commandLineFragments);
+	    newPath.setCommandLine(commandLine);
 	    newPath.setTempFilesDeclarations(tempFileDeclarations);
 	    newPath.setToolParameters(toolParameters);
-	    newPath.setDefaultPreset(defaultPresetName);
 	    newPath.setToolPresets(toolPresets);
 	    newPath.setToolInputProfile(toolInputProfile);
 	    newPath.setToolOutputProfile(toolOutputProfile);
@@ -284,45 +275,55 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	}
     }
 
-    private Collection<Preset> getToolPresets(Node pathNode,
-	    String presetsElementName) throws MigrationPathConfigException {
+    private ToolPresets getToolPresets(Node pathNode, String presetsElementName)
+	    throws MigrationPathConfigException {
 
 	final XPath pathsXPath = xPathFactory.newXPath();
-	Collection<Preset> toolPresets = new ArrayList<Preset>();
 
 	try {
 	    final NodeList presetNodes = (NodeList) pathsXPath.evaluate(
 		    presetsElementName + "/" + "preset", pathNode,
 		    XPathConstants.NODESET);
 
-	    for (int presetIndex = 0; presetIndex < presetNodes.getLength(); presetIndex++) {
+	    ToolPresets toolPresets = null;
+	    if (presetNodes.getLength() > 0) {
+		final Collection<Preset> presets = new ArrayList<Preset>();
+		for (int presetIndex = 0; presetIndex < presetNodes.getLength(); presetIndex++) {
 
-		final Node presetNode = presetNodes.item(presetIndex);
+		    final Node presetNode = presetNodes.item(presetIndex);
 
-		final String presetName = getAttributeValue(presetNode, "name");
-		if (presetName.length() == 0) {
-		    throw new MigrationPathConfigException(
-			    "Empty \"name\" attribute declared in node: "
-				    + presetNode.getNodeName());
+		    final String presetName = getAttributeValue(presetNode,
+			    "name");
+		    if (presetName.length() == 0) {
+			throw new MigrationPathConfigException(
+				"Empty \"name\" attribute declared in node: "
+					+ presetNode.getNodeName());
+		    }
+
+		    final String defaultPresetName = getAttributeValue(
+			    presetNode, "default");
+
+		    final Node descriptionNode = (Node) pathsXPath.evaluate(
+			    "description", presetNode, XPathConstants.NODE);
+
+		    final String description = descriptionNode.getTextContent();
+
+		    final Collection<PresetSetting> presetSettings = getPresetSettings(presetNode);
+
+		    final Preset newPreset = new Preset(presetName,
+			    presetSettings, defaultPresetName);
+		    newPreset.setDescription(description);
+
+		    presets.add(newPreset);
 		}
 
-		final String defaultPresetName = getAttributeValue(presetNode,
-			"default");
+		toolPresets = new ToolPresets();
+		toolPresets.setToolPresets(presets);
 
-		final Node descriptionNode = (Node) pathsXPath.evaluate(
-			"description", presetNode, XPathConstants.NODE);
-
-		final String description = descriptionNode.getTextContent();
-
-		final Collection<PresetSetting> presetSettings = getPresetSettings(presetNode);
-
-		final Preset newPreset = new Preset(presetName, presetSettings,
-			defaultPresetName);
-		newPreset.setDescription(description);
-
-		toolPresets.add(newPreset);
+		final String defaultPresetName = getDefaultAttributeValue(
+			pathNode, presetsElementName);
+		toolPresets.setDefaultPresetName(defaultPresetName);
 	    }
-
 	    return toolPresets;
 	} catch (XPathExpressionException xpee) {
 	    throw new MigrationPathConfigException(
@@ -408,7 +409,7 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 		final Node descriptionNode = (Node) pathsXPath.evaluate(
 			"description", parameterNode, XPathConstants.NODE);
 
-		String description = "";
+		String description = null;
 		if (descriptionNode != null) {
 		    description = descriptionNode.getTextContent();
 		}
@@ -493,7 +494,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	}
     }
 
-    /**
+    /** FIXME! Revisit documentation....
+     * 
      * Get the command line fragments from the element named
      * <code>commandLineElementName</code>. The fragments are returned in a list
      * containing the command as the first element, followed by any command
@@ -509,10 +511,9 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
      *             if the command and its parameters could not be extracted from
      *             the document node.
      */
-    private List<String> getCommandLineFragments(Node pathNode,
+    private CommandLine getCommandLine(Node pathNode,
 	    String commandLineElementName) throws MigrationPathConfigException {
 
-	final List<String> commandLineFragments = new ArrayList<String>();
 	final XPath pathsXPath = xPathFactory.newXPath();
 
 	try {
@@ -528,20 +529,21 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 				+ commandLineElementName + "' element in the '"
 				+ pathNode.getNodeName() + "' element.");
 	    }
-	    commandLineFragments.add(command);
 
 	    final NodeList parameterNodes = (NodeList) pathsXPath.evaluate(
 		    commandLineElementName + "/commandparameters/parameter",
 		    pathNode, XPathConstants.NODESET);
 
+	    final ArrayList<String> commandLineParameters = new ArrayList<String>();
 	    for (int parameterIndex = 0; parameterIndex < parameterNodes
 		    .getLength(); parameterIndex++) {
 
 		final Node parameterNode = parameterNodes.item(parameterIndex);
-		commandLineFragments.add(parameterNode.getTextContent().trim());
+		commandLineParameters
+			.add(parameterNode.getTextContent().trim());
 	    }
 
-	    return commandLineFragments;
+	    return new CommandLine(command, commandLineParameters);
 	} catch (XPathExpressionException xpee) {
 	    throw new MigrationPathConfigException(
 		    "Failed reading command and parameters from the '"

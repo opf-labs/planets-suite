@@ -32,14 +32,11 @@ class MigrationPathImpl implements MigrationPath {
     private URI destinationFormatURI;
     private Map<String, String> tempFiles;
     private Map<String, Parameter> parameters;
-    private Map<String, Preset> presets; // TODO: Consider whether it is an
-    // advantage/necessary to use a map
-    // rather than just a collectiton
-    private List<String> commandLine; // TODO: It would be sensible having a
-    // command class now that we will have to
-    // have more commands in connection with
-    // the selftest functionality.
-    private String defaultPresetName;
+    private ToolPresets toolPresets;
+    private CommandLine commandLine;
+
+    // TODO: We will probably need more command lines in connection with the
+    // self-test functionality.
 
     /**
      * The default constructor has default access, as it should only be used by
@@ -47,187 +44,7 @@ class MigrationPathImpl implements MigrationPath {
      */
     MigrationPathImpl() {
 	parameters = new HashMap<String, Parameter>();
-	presets = new HashMap<String, Preset>();
 	tempFiles = new HashMap<String, String>();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
-     * #getCommandLine(java.util.Collection)
-     */
-    public List<String> getCommandLine(Collection<Parameter> toolParameters)
-	    throws MigrationException {
-
-	log.info("Entering getCommandLine");
-	// Get a complete list of identifiers in the command line.
-	final Set<String> usedIdentifiers = getIdentifiers(commandLine);
-
-	// TODO: Work with other presets than the default one
-
-	String defaultpreset = getDefaultPreset();
-	// if the tool parameters contain this preset
-	boolean setDefault = false;
-	for (Parameter toolparam : toolParameters) {
-	    if (toolparam.getName().equals(defaultpreset)) {
-		setDefault = true;
-		Collection<Parameter> presetparams = presets.get(defaultpreset)
-			.getSetting(toolparam.getValue()).getParameters();
-		toolParameters.addAll(presetparams);
-		break;
-	    }
-	}
-
-	// if the tool parameters does not contain this preset
-	if (!setDefault) {
-	    // lookup the value of the default preset
-	    // get the param names and values from there
-	    Preset preset = presets.get(defaultpreset);
-	    if (preset != null) {
-		Collection<Parameter> defaultparams = preset
-			.getDefaultSetting().getParameters();
-		toolParameters.addAll(defaultparams);
-	    } else {
-		// There is no default preset
-	    }
-	}
-
-	final Set<String> validIdentifiers = getValidParameterNames(toolParameters);
-
-	validIdentifiers.addAll(getValidFileIdentifiers(tempFiles));
-
-	final ToolIOProfile toolInputProfile = getToolInputProfile(); 
-	if (!toolInputProfile.usePipedIO()) {
-	    log.info("Adding temp input file as valid identifier "
-		    + toolInputProfile.getCommandLineFileLabel());
-	    validIdentifiers.add(toolInputProfile.getCommandLineFileLabel());
-	}
-
-	final ToolIOProfile toolOuptpuProfile = getToolOutputProfile();
-	if (!toolOuptpuProfile.usePipedIO()) {
-	    log.info("Adding temp dest file as valid identifier: "
-		    + toolOuptpuProfile.getCommandLineFileLabel());
-	    validIdentifiers.add(toolOuptpuProfile.getCommandLineFileLabel());
-	}
-
-	// TODO: Check the parameters and filename mappings for injection
-	// attacks by sanity checking the parameters -
-	// throw exception in case of failure. However, it may be safe omitting
-	// the test for the file name mappings, as they are solely based on the
-	// configuration file and what the generic wrapper is doing.
-
-	if (!validIdentifiers.containsAll(usedIdentifiers)) {
-	    usedIdentifiers.removeAll(validIdentifiers);
-	    throw new MigrationException("Cannot build the command line. "
-		    + "Missing values for these identifiers: "
-		    + usedIdentifiers);
-	}
-
-	List<String> executableCommandLine = new ArrayList<String>();
-	for (String cmd : commandLine) {
-	    for (Parameter parameter : toolParameters) {
-		cmd = cmd.replaceAll("#" + parameter.getName(), parameter
-			.getValue());
-	    }
-
-	    for (String tempFileLabel : tempFiles.keySet()) {
-		// FIXME! This is wrong! The temp file name must be absolute
-		// paths, however, this is easily fixed if the command line is
-		// constructed by the generic wrapper class.
-		cmd = cmd.replaceAll("#" + tempFileLabel, tempFiles
-			.get(tempFileLabel));
-	    }
-	    //FIXME! Broken!
-	    if (!toolOuptpuProfile.usePipedIO()) {
-//		cmd = cmd.replaceAll("#" + tempSourceFile.getCodename(),
-//			tempSourceFile.getFile().getAbsolutePath());
-	    } else {
-//		cmd = cmd.replaceAll("#" + tempOutputFile.getCodename(),
-//			tempOutputFile.getFile().getAbsolutePath());
-	    }
-	    executableCommandLine.add(cmd);
-	}
-
-	return executableCommandLine;
-    }
-
-    /**
-     * Get a <code>Set</code> containing all the valid identifiers for file
-     * names parameters from <code>tempFileMap</code>, that is, identifiers that
-     * are not the empty string and that have an associated file name, which
-     * also is not the empty string.
-     * 
-     * @param tempFileMap
-     *            a <code>Map</code> of file identifiers associated with file
-     *            names.
-     * @return a <code>Set</code> containing the valid identifiers from
-     *         <code>parameters</code>.
-     */
-    private Set<String> getValidFileIdentifiers(Map<String, String> tempFileMap) {
-
-	Set<String> validFileIdentifiers = new HashSet<String>();
-	for (String identifier : tempFileMap.keySet()) {
-	    final String fileName = tempFileMap.get(identifier);
-	    if ((fileName != null) && ("".equals(fileName) == false)
-		    && ("".equals(identifier) == false)) {
-		validFileIdentifiers.add(identifier);
-	    }
-	}
-	return validFileIdentifiers;
-    }
-
-    /**
-     * Get a <code>Set</code> containing all the names of parameters from
-     * <code>parameters</code> that have been initialised with a value, and are
-     * thus valid.
-     * 
-     * @param parameters
-     *            a <code>Collection</code> of parameters to get valid
-     *            parameters from.
-     * @return a <code>Set</code> containing the names of all the parameters
-     *         from <code>parameters</code> that have a value.
-     */
-    private Set<String> getValidParameterNames(Collection<Parameter> parameters) {
-	Set<String> validParameters = new HashSet<String>();
-	for (Parameter parameter : parameters) {
-	    final String parameterName = parameter.getName();
-	    if ((parameterName != null) && ("".equals(parameterName) == false)
-		    && (parameter.getValue() != null)) {
-		validParameters.add(parameterName);
-	    }
-	}
-
-	return validParameters;
-    }
-
-    /**
-     * Get the names of all identifiers (all words with a leading '#') of the
-     * form <code>%myIdentifier%</code> found in
-     * <code>stringWithIdentifiers</code>. If the previous example was found in
-     * the string, then the returned set would contain the string
-     * &quot;myIdentifier&quot;.
-     * 
-     * @param stringListWithIdentifiers
-     *            a <code>String</code> containing identifiers.
-     * @return a <code>Set</code> containing the identifiers found.
-     */
-    private Set<String> getIdentifiers(List<String> stringListWithIdentifiers) {
-	Set<String> foundIdentifiers = new HashSet<String>();
-
-	for (String stringWithIdentifiers : stringListWithIdentifiers) {
-	    StringTokenizer stringTokenizer = new StringTokenizer(
-		    stringWithIdentifiers);
-	    while (stringTokenizer.hasMoreTokens()) {
-		String identifier = stringTokenizer.nextToken();
-		if (identifier.charAt(0) == '#') {
-		    identifier = identifier.substring(1);
-		    foundIdentifiers.add(identifier);
-		}
-	    }
-	}
-	return foundIdentifiers;
     }
 
     /*
@@ -237,44 +54,24 @@ class MigrationPathImpl implements MigrationPath {
      * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
      * #getCommandLine()
      */
-    public List<String> getCommandLine() {
+    public CommandLine getCommandLine() {
 	return commandLine;
     }
 
     /**
+     * FIXME! Revisit documentation....
+     * 
      * Set the command line attribute of this migration path. The command line
-     * may contain tags of the form <code>%my_tag%</code> to indicate that
-     * either a parameter or a name of a temporary file must be put in place at
-     * a specific location. However, these tags must be defined using the
+     * may contain tags of the form <code>#my_tag</code> to indicate that either
+     * a parameter or a name of a temporary file must be put in place at a
+     * specific location. However, these tags must be defined using the
      * {@link #setToolParameters} methods.
      * 
      * @param commandLine
      *            <code>String</code> containing the command line to set.
      */
-    public void setCommandLine(List<String> commandLine) {
+    public void setCommandLine(CommandLine commandLine) {
 	this.commandLine = commandLine;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
-     * #getDefaultPreset()
-     */
-    public String getDefaultPreset() {
-	return defaultPresetName;
-    }
-
-    /**
-     * Set the ID of the default preset category to apply if no preset or
-     * parameters are specified by the user of this migration path.
-     * 
-     * @param defaultPreset
-     *            the ID of the default preset category.
-     */
-    public void setDefaultPreset(String defaultPreset) {
-	this.defaultPresetName = defaultPreset;
     }
 
     /*
@@ -442,7 +239,7 @@ class MigrationPathImpl implements MigrationPath {
 	return parameters.values();
     }
 
-    /**
+    /**FIXME! Revise documentation....
      * Declare a list of parameters that the user of the tool must provide
      * values for in order to execute the tool.
      * 
@@ -464,40 +261,106 @@ class MigrationPathImpl implements MigrationPath {
      * 
      * @see
      * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
-     * #getToolPresetCategories()
+     * #getToolPresets()
      */
-    public Collection<String> getToolPresetCategories() {
-	return presets.keySet();
-    }
+    public ToolPresets getToolPresets() {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
-     * #getAllToolPresets()
-     */
-    public Collection<Preset> getAllToolPresets() {
-	return presets.values();
+	return toolPresets;
     }
 
     /**
      * Set the presets for this <code>MigrationPathImpl</code> instance.
      * 
      * @param toolPresets
-     *            Collection of presets to set.
+     *            <code>ToolPresets</code> instance describing various parameter
+     *            presets that can be applied with the tool used by this
+     *            migration path.
      */
-    void setToolPresets(Collection<Preset> toolPresets) {
+    void setToolPresets(ToolPresets toolPresets) {
 
-	presets = new HashMap<String, Preset>();
-	for (Preset preset : toolPresets) {
-	    presets.put(preset.getName(), preset);
-	}
+	this.toolPresets = toolPresets;
     }
 
     public String toString() {
-	return "CliMigrationPath: " + sourceFormatURI + " -> "
-		+ destinationFormatURI + " Command: " + commandLine;
+	return "MigrationPathImpl: " + sourceFormatURI + " -> "
+		+ destinationFormatURI + " Command line: " + commandLine;
+    }
+
+    /**
+     * Get a <code>Set</code> containing all the valid identifiers for file
+     * names parameters from <code>tempFileMap</code>, that is, identifiers that
+     * are not the empty string and that have an associated file name, which
+     * also is not the empty string.
+     * 
+     * @param tempFileMap
+     *            a <code>Map</code> of file identifiers associated with file
+     *            names.
+     * @return a <code>Set</code> containing the valid identifiers from
+     *         <code>parameters</code>.
+     */
+    private Set<String> getValidFileIdentifiers(Map<String, String> tempFileMap) {
+
+	Set<String> validFileIdentifiers = new HashSet<String>();
+	for (String identifier : tempFileMap.keySet()) {
+	    final String fileName = tempFileMap.get(identifier);
+	    if ((fileName != null) && ("".equals(fileName) == false)
+		    && ("".equals(identifier) == false)) {
+		validFileIdentifiers.add(identifier);
+	    }
+	}
+	return validFileIdentifiers;
+    }
+
+    /**
+     * Get a <code>Set</code> containing all the names of parameters from
+     * <code>parameters</code> that have been initialised with a value, and are
+     * thus valid.
+     * 
+     * @param parameters
+     *            a <code>Collection</code> of parameters to get valid
+     *            parameters from.
+     * @return a <code>Set</code> containing the names of all the parameters
+     *         from <code>parameters</code> that have a value.
+     */
+    private Set<String> getValidParameterNames(Collection<Parameter> parameters) {
+	Set<String> validParameters = new HashSet<String>();
+	for (Parameter parameter : parameters) {
+	    final String parameterName = parameter.getName();
+	    if ((parameterName != null) && ("".equals(parameterName) == false)
+		    && (parameter.getValue() != null)) {
+		validParameters.add(parameterName);
+	    }
+	}
+
+	return validParameters;
+    }
+
+    /**
+     * Get the names of all identifiers (all words with a leading '#') of the
+     * form <code>%myIdentifier%</code> found in
+     * <code>stringWithIdentifiers</code>. If the previous example was found in
+     * the string, then the returned set would contain the string
+     * &quot;myIdentifier&quot;.
+     * 
+     * @param stringListWithIdentifiers
+     *            a <code>String</code> containing identifiers.
+     * @return a <code>Set</code> containing the identifiers found.
+     */
+    private Set<String> getIdentifiers(List<String> stringListWithIdentifiers) {
+	Set<String> foundIdentifiers = new HashSet<String>();
+
+	for (String stringWithIdentifiers : stringListWithIdentifiers) {
+	    StringTokenizer stringTokenizer = new StringTokenizer(
+		    stringWithIdentifiers);
+	    while (stringTokenizer.hasMoreTokens()) {
+		String identifier = stringTokenizer.nextToken();
+		if (identifier.charAt(0) == '#') {
+		    identifier = identifier.substring(1);
+		    foundIdentifiers.add(identifier);
+		}
+	    }
+	}
+	return foundIdentifiers;
     }
 
     /*

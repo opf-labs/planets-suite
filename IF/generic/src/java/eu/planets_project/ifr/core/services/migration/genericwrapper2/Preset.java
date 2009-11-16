@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Data carrier for tool presets from the generic wrapper configuration. A
@@ -35,19 +36,23 @@ class Preset {
 		}
 	}
 
-	public String getName() {
+	String getName() {
 		return name;
 	}
 
-	public PresetSetting getDefaultSetting() {
+	PresetSetting getDefaultSetting() {
 		return settings.get(defaultSettingName);
 	}
 
-	public Collection<PresetSetting> getAllSettings() {
+	Collection<PresetSetting> getAllSettings() {
 		return settings.values();
 	}
 
-	public PresetSetting getSetting(String settingName) {
+	Set<String> getAllSettingNames() {
+		return settings.keySet();
+	}
+
+	PresetSetting getSetting(String settingName) {
 		return settings.get(settingName);
 	}
 
@@ -57,7 +62,7 @@ class Preset {
 	 * 
 	 * @return <code>String</code> containing the description
 	 */
-	public String getDescription() {
+	String getDescription() {
 		return description;
 	}
 

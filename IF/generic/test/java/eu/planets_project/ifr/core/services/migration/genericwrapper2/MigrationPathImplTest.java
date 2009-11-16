@@ -18,7 +18,6 @@ import eu.planets_project.services.datatypes.Parameter;
  */
 public class MigrationPathImplTest {
 
-
     /**
      * @throws java.lang.Exception
      */
@@ -33,44 +32,52 @@ public class MigrationPathImplTest {
     public void tearDown() throws Exception {
     }
 
-    //FIXME! This test needs a check-up - partially disabled.
+    // FIXME! This test needs a check-up - partially disabled.
     @Test
     public void testSetGetCommandLine() throws Exception {
-        final String originalCommandLine = "cat #param1 #tempSource > "
-                + "#myInterimFile && tr #param2 #myInterimFile > "
-                + "#tempDestination";
 
-        // The first trivial test.
-        final MigrationPathImpl migrationPath = new MigrationPathImpl();
-        migrationPath.setCommandLine(Arrays.asList("/bin/sh","-c",originalCommandLine));
-        Assert.assertEquals(
-                "getCommandLine() did not return the value just set.",
-                originalCommandLine, migrationPath.getCommandLine());
+	// TODO: This test does not need all this details. The test of command
+	// line construction should go elsewhere.
+	final String commandParameter = "cat #param1 #tempSource > "
+		+ "#myInterimFile && tr #param2 #myInterimFile > "
+		+ "#tempDestination";
 
-        final ArrayList<Parameter> toolParameters = new ArrayList<Parameter>();
-        // Options for the 'cat' command
-        toolParameters.add(new Parameter("param1", "-n"));
-        // Options for the 'tr' command
-        toolParameters.add(new Parameter("param2", "'[:lower:]' '[:upper:]'"));
+	final ArrayList<String> commandLineParameters = new ArrayList<String>();
+	commandLineParameters.add("-c");
+	commandLineParameters.add(commandParameter);
 
-        TempFile input = new TempFile("tempSource");
-        input.setFile(new File("/random-source-name"));
-        //FIXME! migrationPath.setTempInputFile(input);
+	// The first trivial test.
+	final MigrationPathImpl migrationPath = new MigrationPathImpl();
+	final CommandLine commandLine = new CommandLine("/bin/sh",
+		commandLineParameters);
+	migrationPath.setCommandLine(commandLine);
 
-        TempFile output = new TempFile("tempDestination");
-        output.setFile(new File("/random-destination-name"));
-//FIXME!        migrationPath.setTempOutputFile(output);
+	Assert.assertEquals(commandLine, migrationPath.getCommandLine());
 
-        migrationPath.addTempFilesDeclaration("myInterimFile", "/random-temp-file-name");
+	final ArrayList<Parameter> toolParameters = new ArrayList<Parameter>();
+	// Options for the 'cat' command
+	toolParameters.add(new Parameter("param1", "-n"));
+	// Options for the 'tr' command
+	toolParameters.add(new Parameter("param2", "'[:lower:]' '[:upper:]'"));
 
-        final String executableCommandLine = migrationPath
-                .getCommandLine(toolParameters).get(2);
+	TempFile input = new TempFile("tempSource");
+	input.setFile(new File("/random-source-name"));
+	// FIXME! migrationPath.setTempInputFile(input);
 
-        final String expectedCommandLine = "cat -n /random-source-name > "
-                + "/random-temp-file-name && tr '[:lower:]' '[:upper:]' "
-                + "/random-temp-file-name > " + "/random-destination-name";
+	TempFile output = new TempFile("tempDestination");
+	output.setFile(new File("/random-destination-name"));
+	// FIXME! migrationPath.setTempOutputFile(output);
 
-        Assert.assertEquals("Un-expected output from getCommandLine().",
-                expectedCommandLine, executableCommandLine);
+	migrationPath.addTempFilesDeclaration("myInterimFile",
+		"/random-temp-file-name");
+
+	final String executableCommandLine = migrationPath.getCommandLine().getToolParameters().get(2);
+
+	final String expectedCommandLine = "cat -n /random-source-name > "
+		+ "/random-temp-file-name && tr '[:lower:]' '[:upper:]' "
+		+ "/random-temp-file-name > " + "/random-destination-name";
+
+	Assert.assertEquals("Un-expected output from getCommandLine().",
+		expectedCommandLine, executableCommandLine);
     }
 }
