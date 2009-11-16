@@ -10,7 +10,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
 import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Config;
