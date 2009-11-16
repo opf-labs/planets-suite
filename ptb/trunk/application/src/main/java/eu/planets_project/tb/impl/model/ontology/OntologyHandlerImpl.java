@@ -3,9 +3,6 @@
  */
 package eu.planets_project.tb.impl.model.ontology;
 
-import java.net.URI;
-import java.util.Collection;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -14,12 +11,9 @@ import edu.stanford.smi.protegex.owl.inference.pellet.ProtegePelletJenaReasoner;
 import edu.stanford.smi.protegex.owl.inference.protegeowl.ReasonerManager;
 import edu.stanford.smi.protegex.owl.inference.reasoner.ProtegeReasoner;
 import edu.stanford.smi.protegex.owl.inference.reasoner.exception.ProtegeReasonerException;
-import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
 import edu.stanford.smi.protegex.owl.model.RDFIndividual;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 
 /**
