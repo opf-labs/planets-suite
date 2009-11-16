@@ -19,7 +19,6 @@ import javax.naming.NamingException;
 
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.ejb.cache.simple.CacheConfig;
 import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
