@@ -2,36 +2,26 @@
  * 
  */
 package eu.planets_project.tb.impl.data;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.w3c.dom.Document;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
-import eu.planets_project.ifr.core.storage.api.InvocationEvent;
-import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
-import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
-import eu.planets_project.tb.api.data.DigitalObjectReference;
 
 
 /**
