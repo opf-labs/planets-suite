@@ -29,7 +29,7 @@ public class AllSimpleSuite {
     public static void setupProperties() {
         // The simple component is for web service testing:
         System.setProperty("pserv.test.context", "server");
-        System.setProperty("pserv.test.host", "localhost");
-        System.setProperty("pserv.test.port", "8080");
+        System.setProperty("pserv.test.host", "localhost"); //metro.planets-project.ait.ac.at
+        System.setProperty("pserv.test.port", "8080"); //80
     }
 }

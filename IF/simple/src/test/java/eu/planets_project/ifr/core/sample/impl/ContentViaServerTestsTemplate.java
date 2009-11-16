@@ -32,9 +32,8 @@ public abstract class ContentViaServerTestsTemplate {
 
     @Before
     public void init() throws IOException {
-        migrate = ServiceCreator.Mode.createFor(//ServiceCreator.createTestService(
-                Migrate.QNAME,
-                PassThruMigrationService.class, new URL("http://metro.planets-project.ait.ac.at/pserv-if-simple/PassThruMigrationService?wsdl"));
+        migrate = ServiceCreator.createTestService(Migrate.QNAME, PassThruMigrationService.class,
+                "/pserv-if-simple/PassThruMigrationService?wsdl");
         url = file().toURI().toURL();
         stream = file().toURI().toURL().openStream();
     }
