@@ -7,25 +7,21 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.tree2.HtmlTree;
+import org.apache.myfaces.custom.tree2.TreeModel;
+import org.apache.myfaces.custom.tree2.TreeModelBase;
+import org.apache.myfaces.custom.tree2.TreeNode;
+import org.apache.myfaces.custom.tree2.TreeState;
+import org.apache.myfaces.custom.tree2.TreeWalker;
 
-import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.api.CommentManager;
+import eu.planets_project.tb.api.model.Comment;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.api.CommentManager;
-import eu.planets_project.tb.api.model.Comment;
-import eu.planets_project.tb.impl.model.CommentImpl;
 import eu.planets_project.tb.impl.CommentManagerImpl;
-
-import org.apache.myfaces.custom.tree2.TreeNode;
-import org.apache.myfaces.custom.tree2.TreeNodeBase;
-import org.apache.myfaces.custom.tree2.TreeModel;
-import org.apache.myfaces.custom.tree2.TreeModelBase;
-import org.apache.myfaces.custom.tree2.TreeState;
-import org.apache.myfaces.custom.tree2.TreeStateBase;
-import org.apache.myfaces.custom.tree2.HtmlTree;
-import org.apache.myfaces.custom.tree2.TreeWalker;
+import eu.planets_project.tb.impl.model.CommentImpl;
 
 /**
  * @author AnJackson
