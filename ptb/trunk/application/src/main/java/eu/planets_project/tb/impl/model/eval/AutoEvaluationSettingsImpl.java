@@ -7,26 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 
+import bsh.EvalError;
 import bsh.Interpreter;
-
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
 import eu.planets_project.tb.api.model.eval.Metric;
 import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
-import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
-
-//Note: lindleya: BeanShell - replace with javax.script.ScriptEngine in Java 1.6
-import bsh.Interpreter;
-import bsh.EvalError;
 
 /**
  * Contains the data and settings for automated BMGoal evaluation
