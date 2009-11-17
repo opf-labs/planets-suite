@@ -34,7 +34,11 @@ public final class CompareResult {
      * @param report The report
      */
     public CompareResult(final List<Property> properties, final ServiceReport report) {
-        this.properties = new ArrayList<Property>(properties);
+        if( properties != null ) {
+            this.properties = new ArrayList<Property>(properties);
+        } else {
+            this.properties = new ArrayList<Property>();
+        }
         this.report = report;
         this.results = Collections.unmodifiableList(new ArrayList<CompareResult>());
         this.fragmentID = null;
