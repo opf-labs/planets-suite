@@ -53,6 +53,7 @@ final class CoreRegistry implements Registry {
      */
     public Response register(final ServiceDescription serviceDescription) {
         if (serviceDescription.getEndpoint() == null) {
+            // TODO could we throw an IllegalArgumentException here? OK for web service?
             return new Response(
                     String
                             .format(
@@ -73,8 +74,8 @@ final class CoreRegistry implements Registry {
      */
     public Response delete(final ServiceDescription description) {
         List<ServiceDescription> list = query(description);
-        boolean removed = descriptions.removeAll(list);
-        return new Response("Attempted to delete " +list.size() + " matches for " + description, removed);
+        descriptions.removeAll(list);
+        return new Response("Attempted to delete " +list.size() + " matches for " + description, true);
     }
 
     /**

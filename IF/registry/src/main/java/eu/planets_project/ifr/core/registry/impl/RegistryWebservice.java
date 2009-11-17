@@ -25,7 +25,12 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @Stateless
-@WebService(name = RegistryWebservice.NAME, serviceName = Registry.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(
+        name = RegistryWebservice.NAME, 
+        serviceName = Registry.NAME, 
+        targetNamespace = PlanetsServices.NS,
+        // FIXME: a solution to access the web service on metro at all, but exposes all methods from the interface:
+        endpointInterface = "eu.planets_project.ifr.core.registry.api.Registry")
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @StreamingAttachment(parseEagerly = true)
 public final class RegistryWebservice implements Registry {
