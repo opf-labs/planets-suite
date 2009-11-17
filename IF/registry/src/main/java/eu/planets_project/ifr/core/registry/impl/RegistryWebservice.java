@@ -3,8 +3,6 @@ package eu.planets_project.ifr.core.registry.impl;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 
@@ -29,7 +27,6 @@ import eu.planets_project.services.datatypes.ServiceDescription;
         name = RegistryWebservice.NAME, 
         serviceName = Registry.NAME, 
         targetNamespace = PlanetsServices.NS,
-        // FIXME: a solution to access the web service on metro at all, but exposes all methods from the interface:
         endpointInterface = "eu.planets_project.ifr.core.registry.api.Registry")
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @StreamingAttachment(parseEagerly = true)
@@ -50,8 +47,6 @@ public final class RegistryWebservice implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#query(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    @WebMethod
-    @WebResult
     public List<ServiceDescription> query(final ServiceDescription example) {
         return registry.query(example);
     }
@@ -61,8 +56,6 @@ public final class RegistryWebservice implements Registry {
      * @see eu.planets_project.ifr.core.registry.api.Registry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription,
      *      eu.planets_project.ifr.core.registry.impl.Query.MatchingMode)
      */
-    @WebMethod
-    @WebResult
     public List<ServiceDescription> queryWithMode(final ServiceDescription example, final MatchingMode mode) {
         return registry.queryWithMode(example, mode);
     }

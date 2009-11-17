@@ -25,12 +25,6 @@ public interface Registry {
     QName QNAME = new QName(PlanetsServices.NS, Registry.NAME);
 
     /**
-     * @param serviceDescription The service description to register
-     * @return A response message
-     */
-    Response register(ServiceDescription serviceDescription);
-
-    /**
      * Query by example registry lookup.
      * @param example The sample service description
      * @return The services for which all non-null values correspond to the
@@ -58,14 +52,23 @@ public interface Registry {
     List<ServiceDescription> queryWithMode(ServiceDescription example, MatchingMode mode);
 
     /**
+     * @param serviceDescription The service description to register
+     * @return A response message
+     */
+    @WebMethod(exclude = true)
+    Response register(ServiceDescription serviceDescription);
+    
+    /**
      * Clears the registry of all entries.
      * @return A response message
      */
+    @WebMethod(exclude = true)
     Response clear();
 
     /**
      * @param example The sample of the service descriptions to delete
      * @return A response message
      */
+    @WebMethod(exclude = true)
     Response delete(ServiceDescription example);
 }
