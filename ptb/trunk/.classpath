@@ -15,6 +15,9 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/axis.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/ejb3-persistence.jar"/>
 	<classpathentry kind="lib" path="/pserv/build/pserv-if-common.jar" sourcepath="/pserv/IF/common/src/java"/>
+	<classpathentry kind="lib" path="/pserv/build/pserv-if-registry-api.jar" sourcepath="/pserv/IF/registry/src/java"/>
+	<classpathentry kind="lib" path="/pserv/build/pserv-if-storage-api.jar" sourcepath="/pserv/IF/storage/src/java"/>
+	<classpathentry kind="lib" path="/pserv/build/pserv-if-techreg-api.jar" sourcepath="/pserv/IF/techreg/src/java"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/castor-xml.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/jaxm-api.jar"/>
@@ -30,18 +33,17 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/ejb3.deployer/jboss-annotations-ejb3.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-jca.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/bsh.jar"/>
-	<classpathentry kind="lib" path="/pserv/build/pserv-if-registry-api.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/lib/commons-codec.jar"/>
 	<classpathentry kind="lib" path="/pserv/lib/standalone/jaxb-api.jar"/>
 	<classpathentry kind="lib" path="/pserv/lib/standalone/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="/pserv/lib/standalone/jaxb-xjc.jar"/>
+	<classpathentry kind="lib" path="/pserv/lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/charts4j-1.0.jar"/>
-	<classpathentry kind="lib" path="application/src/test/lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/iText-2.1.3.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/jcommon-1.0.15.jar"/>
-	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/jfreechart-1.0.12.jar" sourcepath="C:/Documents and Settings/AnJackson/My Documents/Libraries/jfreechart-premuim-1.0.12/jfreechart-1.0.12/source"/>
+	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-awt-util.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-anim.jar"/>
-	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-awt-util.jar" sourcepath="C:/Documents and Settings/AnJackson/My Documents/Libraries/batik-1.7/batik-src-1.7.zip"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-bridge.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-codec.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-css.jar"/>
@@ -53,7 +55,7 @@
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-parser.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-script.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-svg-dom.jar"/>
-	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-svggen.jar" sourcepath="C:/Documents and Settings/AnJackson/My Documents/Libraries/batik-1.7/batik-src-1.7.zip"/>
+	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-svggen.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-swing.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-transcoder.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/batik-util.jar"/>
