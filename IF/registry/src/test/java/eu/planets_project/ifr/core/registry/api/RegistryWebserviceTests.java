@@ -26,6 +26,7 @@ public class RegistryWebserviceTests {
     @BeforeClass
     public static void registryCreation() throws MalformedURLException {
         registry = new RegistryWebserviceTests().createRegistry();
+        Assert.assertNotNull("Service registry to test must not be null", registry);
     }
     
     /* All of these should not be available via web service access: */
@@ -64,9 +65,8 @@ public class RegistryWebserviceTests {
     }
 
     static boolean serverMode() {
-        String property = System.getProperty("pserv.test.context");
-        // make sure we are both running in configured server mode and indeed have a webservice proxy:
-        return property != null && property.equals("server") && registry.getClass().getSimpleName().contains("Proxy");
+        // make sure we are indeed using a webservice proxy:
+        return registry.getClass().getSimpleName().contains("Proxy");
     }
 
     Registry createRegistry() {
