@@ -85,32 +85,6 @@ public class DBMigrationPathFactoryTest {
 		+ "'" + inputFormatURI + "' to '" + outputFormatURI + "'",
 		migrationPath);
 
-	// Verify the command line information
-	
-	final Map<String, Parameter> testParameters = new HashMap<String, Parameter>();
-	Parameter.Builder parameterBuilder = new Parameter.Builder("param1", "7");
-	parameterBuilder.description("Command line parameters for the 'cat' command. See 'man cat'.");
-	Parameter parameter = parameterBuilder.build();
-	testParameters.put(parameter.getName(), parameter);
-	
-	parameterBuilder = new Parameter.Builder("param2", "42");
-	parameterBuilder.description("Command line parameters for the 'tr' command. See 'man tr'.");
-	parameter = parameterBuilder.build();
-	testParameters.put(parameter.getName(), parameter);
-
-	final Map<String, File> testFileDeclarations = new HashMap<String, File>();
-	testFileDeclarations.put("tempSource", new File("/tmp/bogusTempSrcFile"));
-	testFileDeclarations.put("tempDestination", new File("/tmp/bogusTempSrcFile"));
-	testFileDeclarations.put("myInterimFile", new File("bogusInterimFile"));
-	
-	final List<String> expectedCommandFragments = new ArrayList<String>();
-	expectedCommandFragments.add("/bin/sh");
-	expectedCommandFragments.add("-c");
-	expectedCommandFragments
-		.add("cat 7 /tmp/bogusTempSrcFile > bogusInterimFile && tr 42 bogusInterimFile > /tmp/tempDestination");
-	commandLineTest(migrationPath, testParameters.values(), testFileDeclarations, 
-		expectedCommandFragments);
-
 	// Verify the tool input configuration.
 	final ToolIOProfile toolInputProfile = migrationPath
 		.getToolInputProfile();
@@ -148,38 +122,81 @@ public class DBMigrationPathFactoryTest {
 
 	final String expectedLabel = "myInterimFile";
 	final String expectedFileName = "myDesiredTempFileName.foo";
+
 	assertEquals("Unexpected label name in temp. file mapping.",
 		expectedLabel, tempFileMappings.keySet().iterator().next());
+
 	assertEquals("Unexpected temp. file name associated with label: "
 		+ expectedLabel, expectedFileName, tempFileMappings
 		.get(expectedLabel));
 
 	// Verify the tool parameters.
+
+	final Map<String, Parameter> testParameters = new HashMap<String, Parameter>();
+	Parameter.Builder parameterBuilder = new Parameter.Builder("param1",
+		"-n");
+	parameterBuilder
+		.description("Command line parameters for the 'cat' command. See 'man cat'.");
+	Parameter parameter = parameterBuilder.build();
+	testParameters.put(parameter.getName(), parameter);
+
+	parameterBuilder = new Parameter.Builder("param2",
+		"'[:lower:]' '[:upper:]'");
+	parameterBuilder
+		.description("Command line parameters for the 'tr' command. See 'man tr'.");
+	parameter = parameterBuilder.build();
+	testParameters.put(parameter.getName(), parameter);
+
 	final Collection<Parameter> toolParameters = migrationPath
 		.getToolParameters();
 	assertEquals(
 		"Unexpected number of parameters defined for the migration path.",
 		2, toolParameters.size());
-	final HashMap<String, Parameter> parameterMap = new HashMap<String, Parameter>();
+	final HashMap<String, Parameter> parametersToTest = new HashMap<String, Parameter>();
 	for (Parameter toolParameter : toolParameters) {
-	    parameterMap.put(toolParameter.getName(), toolParameter);
+	    parametersToTest.put(toolParameter.getName(), toolParameter);
 	}
 
 	for (String parameterName : testParameters.keySet()) {
-	    final Parameter currentParameter = parameterMap.get(parameterName);
-	    assertNotNull("The parameter '" + parameterName
-		    + "' was not defined for the migration path.",
-		    currentParameter);
+
+	    final Parameter parameterToTest = parametersToTest
+		    .get(parameterName);
+	    assertNotNull("The parameter '" + parameterName + "' was not "
+		    + "defined for the migration path.", parameterToTest);
 
 	    assertNotNull("No description specified for parameter: "
-		    + parameterName, currentParameter.getDescription());
-	    
-	    final Parameter expectedParameter = testParameters.get(parameterName);
-	    assertEquals("Un-expected default parameter value for parameter: " + parameterName, expectedParameter.getValue(),
-		    currentParameter.getValue());
-	    
-	    assertEquals("Un-expected description set on parameter: " + parameterName, expectedParameter.getDescription(), currentParameter.getDescription());
+		    + parameterName, parameterToTest.getDescription());
+
+	    final Parameter expectedParameter = testParameters
+		    .get(parameterName);
+
+	    assertNull("Un-expected default parameter value for parameter: "
+		    + parameterName, parameterToTest.getValue());
+
+	    // Do not let changed indentation of the configuration file ruin this test.
+	    final String descriptionToTest = parameterToTest.getDescription().replaceAll("[\n|\r]", "").trim(); 
+	    assertEquals("Un-expected description set on parameter: "
+		    + parameterName, expectedParameter.getDescription(),
+		    descriptionToTest);
 	}
+
+	// Verify the command line information
+
+	final Map<String, File> testFileDeclarations = new HashMap<String, File>();
+	testFileDeclarations.put("tempSource",
+		new File("/tmp/bogusTempSrcFile"));
+	testFileDeclarations.put("tempDestination", new File(
+		"/tmp/bogusTempDstFile"));
+	testFileDeclarations.put("myInterimFile", new File(
+		"/tmp/bogusInterimFile"));
+
+	final List<String> expectedCommandFragments = new ArrayList<String>();
+	expectedCommandFragments.add("/bin/sh");
+	expectedCommandFragments.add("-c");
+	expectedCommandFragments
+		.add("cat -n /tmp/bogusTempSrcFile > /tmp/bogusInterimFile && tr '[:lower:]' '[:upper:]' /tmp/bogusInterimFile > /tmp/bogusTempDstFile");
+	commandLineTest(migrationPath, testParameters.values(),
+		testFileDeclarations, expectedCommandFragments);
 
 	// Verify the tool presets.
 	ToolPresets toolPresets = migrationPath.getToolPresets();
@@ -281,9 +298,11 @@ public class DBMigrationPathFactoryTest {
 			.size());
 
 	for (int fragmentIdx = 0; fragmentIdx < expectedCommandLine.size(); fragmentIdx++) {
+
 	    final String expectedFragment = expectedCommandLine
 		    .get(fragmentIdx);
 	    final String actualFragment = prCommand.get(fragmentIdx);
+
 	    assertEquals(
 		    "Unexpected command line fragment in the migration path.",
 		    expectedFragment, actualFragment);

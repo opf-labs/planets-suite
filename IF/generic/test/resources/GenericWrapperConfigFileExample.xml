@@ -595,20 +595,12 @@
 					the caller.
 				-->
 				<parameter name="param1">
-					<description>Command line parameters for the 'cat'
-						command.
-						See
-						'man
-						cat'.
+					<description><![CDATA[Command line parameters for the 'cat' command. See 'man cat'.]]>
                 	</description>
 				</parameter>
 				<parameter name="param2">
 					<!-- Demonstration of CDATA usage in descriptions. -->
-					<description><![CDATA[Command line parameters for the 'tr'
-						command.
-						See
-						'man
-						tr'.]]>
+					<description><![CDATA[Command line parameters for the 'tr' command. See 'man tr'.]]>
 					</description>
 				</parameter>
 			</toolparameters>
