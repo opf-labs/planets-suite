@@ -1,5 +1,9 @@
 package eu.planets_project.services.validation.odfvalidator.utils;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author melmsp
@@ -18,15 +22,29 @@ public class OdfValidatorResult {
 	private String manifestErrors = null;
 	private boolean manifestValid;
 	
+	private boolean isOdfFile = false;
+	
 	private static String CONTENT_XML = "content.xml";
 	private static String STYLES_XML = "styles.xml";
 	private static String META_XML = "meta.xml";
 	private static String SETTINGS_XML = "settings.xml";
 	private static String MANIFEST_XML = "manifest.xml";
 	
+	private static List<File> xmlComponents = new ArrayList<File>();
+	
 	private boolean usedStrictValidation = false;
 	
 	private String odfVersion = "unknown";
+	
+	private String mimeType = "unknown";
+	
+	public void setXmlComponents(List<File> xmlParts) {
+		xmlComponents = xmlParts;
+	}
+	
+	public List<File> getXmlComponents() {
+		return xmlComponents;
+	}
 	
 	public String getOdfVersion() {
 		return odfVersion;
@@ -34,6 +52,14 @@ public class OdfValidatorResult {
 
 	public void setOdfVersion(String odfVersion) {
 		this.odfVersion = odfVersion;
+	}
+	
+	public String getMimeType() {
+		return mimeType;
+	}
+	
+	public void setMimeType(String mimeType) {
+		this.mimeType = mimeType;
 	}
 
 	public boolean usedStrictValidation() {
@@ -81,7 +107,7 @@ public class OdfValidatorResult {
 	}
 
 	public boolean isOdfFile() {
-		if(odfVersion.equalsIgnoreCase("unknown")) {
+		if(odfVersion.equalsIgnoreCase("unknown") && !isOdfFile) {
 			return false;
 		}
 		else {
@@ -89,17 +115,35 @@ public class OdfValidatorResult {
 		}
 	}
 	
+	public void setIsOdfFile(boolean isOdf) {
+		this.isOdfFile = isOdf;
+	}
+	
 	public boolean documentIsValid() {
-		if(isContentValid() 
-				&& isMetaValid() 
-				&& isStylesValid() 
-				&& isSettingsValid() 
-				&& isManifestValid()) {
+		int xmlCompCount = xmlComponents.size();
+		List<File> xmlComponents = OdfValidatorResult.xmlComponents;
+		int validCount = 0;
+		for (File file : xmlComponents) {
+			if(isValid(file.getName())) {
+				validCount++;
+			}
+		}
+		if(validCount==xmlCompCount && xmlCompCount!=0) {
 			return true;
 		}
 		else {
 			return false;
 		}
+//		if(isContentValid() 
+//				&& isMetaValid() 
+//				&& isStylesValid() 
+//				&& isSettingsValid() 
+//				&& isManifestValid()) {
+//			return true;
+//		}
+//		else {
+//			return false;
+//		}
 	}
 	
 	public boolean isValid(String odfPartName) {
@@ -151,15 +195,16 @@ public class OdfValidatorResult {
 	public String toString() {
 		return "OdfValidatorResult ["
 				+ (odfVersion != null ? "odfVersion=" + odfVersion + ", " : "")
-				+ "usedStrictValidation()=" + usedStrictValidation() 
+				+ "isOdfFile()=" + isOdfFile() 
+				+ ", getMimeType()=" + getMimeType()
+				+ ", usedStrictValidation()=" + usedStrictValidation() 
 				+ ", documentIsValid()=" + documentIsValid()
-				+ ", isOdfFile()=" + isOdfFile() 
 				+ ", isContentValid()=" + isContentValid() 
 				+ ", isManifestValid()=" + isManifestValid()
 				+ ", isMetaValid()=" + isMetaValid() 
 				+ ", isSettingsValid()=" + isSettingsValid()
 				+ ", isStylesValid()=" + isStylesValid()
-				+ (getContentErrors() != null ? "getContentErrors()="
+				+ (getContentErrors() != null ? ", getContentErrors()="
 						+ getContentErrors() + ", " : "")
 				+ (getManifestErrors() != null ? "getManifestErrors()="
 						+ getManifestErrors() + ", " : "")

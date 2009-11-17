@@ -43,12 +43,18 @@ public class OdfValidatorTest {
 	static File v10UserDocStrictSchema = new File("tests/test-files/documents/test_odt/v10/schemas/OpenDocument-strict-schema-v1.0-os.rng");
 	static File v10UserManifestSchema = new File("tests/test-files/documents/test_odt/v10/schemas/OpenDocument-manifest-schema-v1.0-os.rng");
 
-	File v11TestIn = new File("tests/test-files/documents/test_odt/v11/test_file_v11.odt");
+//	File v11TestIn = new File("tests/test-files/documents/test_odt/v11/test_file_v11.odt");
+	File v11_text = new File("tests/test-files/documents/test_odt/v11/test_file_v11.odt");
+	File v11_presentation = new File("tests/test-files/documents/test_odt/v11/test_presentation_v11.odp");
+	File v11_database = new File("tests/test-files/documents/test_odt/v11/test_database_v11.odb");
+	File v11_drawing = new File("tests/test-files/documents/test_odt/v11/drawing_v11.odg");
+	File v11_table = new File("tests/test-files/documents/test_odt/v11/table_v11.ods");
+	File v11_formula = new File("tests/test-files/documents/test_odt/v11/formula_v11.odf");
 	static File v11UserDocSchema = new File("tests/test-files/documents/test_odt/v11/schemas/OpenDocument-schema-v1.1.rng");
 	static File v11UserDocStrictSchema = new File("tests/test-files/documents/test_odt/v11/schemas/OpenDocument-strict-schema-v1.1.rng");
 	static File v11UserManifestSchema = new File("tests/test-files/documents/test_odt/v11/schemas/OpenDocument-manifest-schema-v1.1.rng");
 	
-	File v12TestIn = new File("tests/test-files/documents/test_odt/v12/test_file_v12.odt");
+	File v12TestIn = new File("tests/test-files/documents/test_odt/v12/test_presentation_v12.odp");
 	static File v12UserDocSchema = new File("tests/test-files/documents/test_odt/v12/schemas/OpenDocument-schema-v1.2-cd03.rng");
 	static File v12UserManifestSchema = new File("tests/test-files/documents/test_odt/v12/schemas/OpenDocument-manifest-schema-v1.2-draft7.rng");
 	
@@ -58,39 +64,44 @@ public class OdfValidatorTest {
 	static List<Parameter> v11_Params = new ArrayList<Parameter>();
 	static List<Parameter> v12_Params = new ArrayList<Parameter>();
 	
+	static File[] testFiles = null;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		System.setProperty("pserv.test.context", "server");
-		System.setProperty("pserv.test.host", "localhost");
-		System.setProperty("pserv.test.port", "8080");
+//		System.setProperty("pserv.test.context", "server");
+//		System.setProperty("pserv.test.host", "localhost");
+//		System.setProperty("pserv.test.port", "8080");
+		
+		File testFolder = new File("tests/test-files/documents/test_odt/odf_toolkit_test_files");
+		testFiles = testFolder.listFiles();
 		
 		Parameter strictValidation = new Parameter.Builder("strictValidation", "true").build();
 		params.add(strictValidation);
 		
-//		Parameter v11_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readTxtFileIntoString(v11UserDocSchema)).build();
+////		Parameter v11_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readTxtFileIntoString(v11UserDocSchema)).build();
+////		v11_Params.add(v11_user_doc_schema);
+//		Parameter v11_user_doc_schema = new Parameter.Builder("user-doc-schema", "doc-schema-url=http://docs.oasis-open.org/office/v1.1/OS/OpenDocument-schema-v1.1.rng").build();
 //		v11_Params.add(v11_user_doc_schema);
-		Parameter v11_user_doc_schema = new Parameter.Builder("user-doc-schema", "doc-schema-url=http://docs.oasis-open.org/office/v1.1/OS/OpenDocument-schema-v1.1.rng").build();
-		v11_Params.add(v11_user_doc_schema);
-		Parameter v11_user_doc_strict_schema = new Parameter.Builder("user-doc-strict-schema", FileUtils.readTxtFileIntoString(v11UserDocStrictSchema)).build();
-		v11_Params.add(v11_user_doc_strict_schema);
-//		Parameter v11_user_doc_strict_schema = new Parameter.Builder("user-doc-strict-schema", "doc-strict-schema-url=http://docs.oasis-open.org/office/v1.1/OS/OpenDocument-strict-schema-v1.1.rng").build();
+//		Parameter v11_user_doc_strict_schema = new Parameter.Builder("user-doc-strict-schema", FileUtils.readTxtFileIntoString(v11UserDocStrictSchema)).build();
 //		v11_Params.add(v11_user_doc_strict_schema);
-		Parameter v11_user_manifest_schema = new Parameter.Builder("user-manifest-schema", FileUtils.readTxtFileIntoString(v11UserManifestSchema)).build();
-		v11_Params.add(v11_user_manifest_schema);
-		Parameter v11_strict_validation = new Parameter.Builder("strictValidation", "true").build();
-		v11_Params.add(v11_strict_validation);
-		
-		Parameter v12_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readTxtFileIntoString(v12UserDocSchema)).build();
-		v12_Params.add(v12_user_doc_schema);
-//		Parameter v12_user_doc_strict_schema = new Parameter.Builder("user-doc-strict-schema", FileUtils.readTxtFileIntoString(v12UserDocSchema)).build();
-//		v12_Params.add(v12_user_doc_strict_schema);
-		Parameter v12_strict_validation  = new Parameter.Builder("strictValidation", "true").build();
-		v12_Params.add(v12_strict_validation);
-//		Parameter v12_user_manifest_schema = new Parameter.Builder("user-manifest-schema", FileUtils.readTxtFileIntoString(v11UserManifestSchema)).build();
-//		v12_Params.add(v12_user_manifest_schema);
+////		Parameter v11_user_doc_strict_schema = new Parameter.Builder("user-doc-strict-schema", "doc-strict-schema-url=http://docs.oasis-open.org/office/v1.1/OS/OpenDocument-strict-schema-v1.1.rng").build();
+////		v11_Params.add(v11_user_doc_strict_schema);
+//		Parameter v11_user_manifest_schema = new Parameter.Builder("user-manifest-schema", FileUtils.readTxtFileIntoString(v11UserManifestSchema)).build();
+//		v11_Params.add(v11_user_manifest_schema);
+//		Parameter v11_strict_validation = new Parameter.Builder("strictValidation", "true").build();
+//		v11_Params.add(v11_strict_validation);
+//		
+//		Parameter v12_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readTxtFileIntoString(v12UserDocSchema)).build();
+//		v12_Params.add(v12_user_doc_schema);
+////		Parameter v12_user_doc_strict_schema = new Parameter.Builder("user-doc-strict-schema", FileUtils.readTxtFileIntoString(v12UserDocSchema)).build();
+////		v12_Params.add(v12_user_doc_strict_schema);
+//		Parameter v12_strict_validation  = new Parameter.Builder("strictValidation", "true").build();
+//		v12_Params.add(v12_strict_validation);
+////		Parameter v12_user_manifest_schema = new Parameter.Builder("user-manifest-schema", FileUtils.readTxtFileIntoString(v11UserManifestSchema)).build();
+////		v12_Params.add(v12_user_manifest_schema);
 		validator = ServiceCreator.createTestService(Validate.QNAME, OdfValidator.class, WSDL);
 	}
 	
@@ -104,45 +115,125 @@ public class OdfValidatorTest {
 	
 	@Test
 	public void testOdfValidate() {
-		printTestTitle("Testing validation behaviour if input is NOT an ODF file");
-		DigitalObject testIn = new DigitalObject.Builder(Content.byReference(v10TestIn)).title(v10TestIn.getName()).build();
-		URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v10TestIn));
-		
-		ValidateResult vr = validator.validate(testIn, format, null);
-		
-		assertTrue("ValidateResult should not be NULL!", vr!=null);
-		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
-		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
-		ServiceReport sr = vr.getReport();
-		System.out.println(sr);
-		
-		
-		
-		printTestTitle("Testing validation against user-custom schemas with ODF v1.1 input file");
-		testIn = new DigitalObject.Builder(Content.byReference(v11TestIn)).title(v11TestIn.getName()).build();
-		format = techReg.createExtensionUri("odt");
-		
-		vr = validator.validate(testIn, format, v11_Params);
-		
-		assertTrue("ValidateResult should not be NULL!", vr!=null);
-		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
-		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
-		sr = vr.getReport();
-		System.out.println(sr);
+		for (File currentFile : testFiles) {
+			printTestTitle("Testing validation against default schemas: " + currentFile.getName());
+			DigitalObject testIn = new DigitalObject.Builder(Content.byReference(currentFile)).title(currentFile.getName()).build();
+			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(currentFile));
+			
+			ValidateResult vr = validator.validate(testIn, format, null);
+			
+			assertTrue("ValidateResult should not be NULL!", vr!=null);
+			System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+			System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
+			ServiceReport sr = vr.getReport();
+			System.out.println(sr);
+		}
 		
 		
+//		printTestTitle("Testing validation against default schemas with ODF v1.1 input files");
+//		printTestTitle(v11_database.getName());
+//		
+//		testIn = new DigitalObject.Builder(Content.byReference(v11_database)).title(v11_database.getName()).build();
+//		format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v11_database));
+//		
+//		vr = validator.validate(testIn, format, null);
+//		
+//		assertTrue("ValidateResult should not be NULL!", vr!=null);
+//		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+//		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
+//		sr = vr.getReport();
+//		System.out.println(sr);
+//		
+//		
+//		
+//		printTestTitle("Testing validation against default schemas with ODF v1.1 input files");
+//		printTestTitle(v11_drawing.getName());
+//		
+//		testIn = new DigitalObject.Builder(Content.byReference(v11_drawing)).title(v11_drawing.getName()).build();
+//		format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v11_drawing));
+//		
+//		vr = validator.validate(testIn, format, null);
+//		
+//		assertTrue("ValidateResult should not be NULL!", vr!=null);
+//		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+//		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
+//		sr = vr.getReport();
+//		System.out.println(sr);
+//		
+//		
+//		printTestTitle("Testing validation against default schemas with ODF v1.1 input files");
+//		printTestTitle(v11_formula.getName());
+//		
+//		testIn = new DigitalObject.Builder(Content.byReference(v11_formula)).title(v11_formula.getName()).build();
+//		format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v11_formula));
+//		
+//		vr = validator.validate(testIn, format, null);
+//		
+//		assertTrue("ValidateResult should not be NULL!", vr!=null);
+//		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+//		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
+//		sr = vr.getReport();
+//		System.out.println(sr);
+//		
+//		
+//		
+//		printTestTitle("Testing validation against default schemas with ODF v1.1 input files");
+//		printTestTitle(v11_presentation.getName());
+//		
+//		testIn = new DigitalObject.Builder(Content.byReference(v11_presentation)).title(v11_presentation.getName()).build();
+//		format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v11_presentation));
+//		
+//		vr = validator.validate(testIn, format, null);
+//		
+//		assertTrue("ValidateResult should not be NULL!", vr!=null);
+//		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+//		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
+//		sr = vr.getReport();
+//		System.out.println(sr);
+//		
+//		
+//		
+//		printTestTitle("Testing validation against default schemas with ODF v1.1 input files");
+//		printTestTitle(v11_table.getName());
+//		
+//		testIn = new DigitalObject.Builder(Content.byReference(v11_table)).title(v11_table.getName()).build();
+//		format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v11_table));
+//		
+//		vr = validator.validate(testIn, format, null);
+//		
+//		assertTrue("ValidateResult should not be NULL!", vr!=null);
+//		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+//		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
+//		sr = vr.getReport();
+//		System.out.println(sr);
+//		
+//		
+//		
+//		printTestTitle("Testing validation against default schemas with ODF v1.1 input files");
+//		printTestTitle(v11_text.getName());
+//		
+//		testIn = new DigitalObject.Builder(Content.byReference(v11_text)).title(v11_text.getName()).build();
+//		format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v11_text));
+//		
+//		vr = validator.validate(testIn, format, null);
+//		
+//		assertTrue("ValidateResult should not be NULL!", vr!=null);
+//		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+//		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
+//		sr = vr.getReport();
+//		System.out.println(sr);
 		
-		printTestTitle("Testing validation against v1.2 default schemas with ODF v1.2 input file");
-		testIn = new DigitalObject.Builder(Content.byReference(v12TestIn)).title(v12TestIn.getName()).build();
-		format = techReg.createExtensionUri("odt");
-		
-		vr = validator.validate(testIn, format, null);
-		
-		assertTrue("ValidateResult should not be NULL!", vr!=null);
-		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
-		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
-		sr = vr.getReport();
-		System.out.println(sr);
+//		printTestTitle("Testing validation against v1.2 default schemas with ODF v1.2 input file");
+//		testIn = new DigitalObject.Builder(Content.byReference(v12TestIn)).title(v12TestIn.getName()).build();
+//		format = techReg.createExtensionUri("odt");
+//		
+//		vr = validator.validate(testIn, format, null);
+//		
+//		assertTrue("ValidateResult should not be NULL!", vr!=null);
+//		System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
+//		System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
+//		sr = vr.getReport();
+//		System.out.println(sr);
 	}
 	
 	private static void printTestTitle(String title) {

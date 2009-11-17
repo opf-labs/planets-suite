@@ -224,32 +224,42 @@ public class ZipUtils {
 	 * 
 	 */
 	public static String[] getAllFragments(File zip) {
-		String[] fragments = null;
-		try {
-			Zip64File zip64File = new Zip64File(zip);
-			List<FileEntry> entries = zip64File.getListFileEntries();
-			if(entries.size() > 0) {
-				int i = 0;
-				fragments = new String[entries.size()];
-				for (FileEntry fileEntry : entries) {
-					fragments[i] = new String(fileEntry.getName());
-					i++;
-				}
+//		String[] fragments = null;
+//		try {
+//			Zip64File zip64File = new Zip64File(zip);
+//			List<FileEntry> entries = zip64File.getListFileEntries();
+//			if(entries.size() > 0) {
+//				int i = 0;
+//				fragments = new String[entries.size()];
+//				for (FileEntry fileEntry : entries) {
+//					fragments[i] = new String(fileEntry.getName());
+//					i++;
+//				}
+//			}
+//			else {
+//				return new String[]{};
+//			}
+//			zip64File.close();
+		
+			List<String> entries = listZipEntries(zip);
+			if(entries.size()>0) {
+				return entries.toArray(new String[] {});
 			}
 			else {
-				return new String[]{};
+				log.error("[ZipUtils] getAllFragments(): No file entries found! This file is not a valid ZIP file!");
+				return new String[] {};
 			}
-			zip64File.close();
-		} catch (ZipException e) {
-			log.error("[ZipUtils] getAllFragments(): No file entries found! This file is not a valid ZIP file!");
+			
+//		} catch (ZipException e) {
+//			log.error("[ZipUtils] getAllFragments(): No file entries found! This file is not a valid ZIP file!");
+////			e.printStackTrace();
+//			return new String[] {};
+//		} catch (FileNotFoundException e) {
 //			e.printStackTrace();
-			return new String[] {};
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return fragments;
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		return fragments;
 	}
 	
 	
@@ -593,16 +603,55 @@ public class ZipUtils {
 			
 			if(entries.size() > 0) {
 				for (FileEntry fileEntry : entries) {
+					List<String> parents = getParents(fileEntry);
+					if(parents!=null) {
+						for (String currentPart : parents) {
+							if(!entryList.contains(currentPart)) {
+								entryList.add(currentPart);
+							}
+						}
+					}
 					entryList.add(fileEntry.getName());
 				}
 			}
+			else {
+				return new ArrayList<String>();
+			}
 			
+		} catch (ZipException e) {
+			log.error("[ZipUtils] listZipEntries(): " + e.getMessage());
+//			e.printStackTrace();
+			return entryList;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return entryList;
+	}
+	
+	private static List<String> getParents(FileEntry fileEntry) {
+		List<String> parentsList = new ArrayList<String>();
+		String path = fileEntry.getName();
+		String[] parents = null;
+		if(path.contains("/")) {
+			parents = path.split("/");
+			String tmp = "";
+			for (int i=0;i<parents.length-1;i++) {
+				if(tmp.equalsIgnoreCase("")) {
+					parentsList.add(tmp + parents[i] + "/");
+					tmp = tmp + parents[i];
+				}
+				else {
+					parentsList.add(tmp + "/" + parents[i] + "/");
+					tmp = tmp + "/" + parents[i];
+				}
+			}
+			return parentsList;
+		}
+		else {
+			return null;
+		}
 	}
 	
 

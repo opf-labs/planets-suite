@@ -59,17 +59,25 @@ public class CoreOdfValidator {
 	
 	public OdfValidatorResult validate(File odfFile, List<Parameter> parameters) {
 		contentHandler = new OdfContentHandler(odfFile);
-		List<File> xmlParts = contentHandler.getXmlComponents();
-		version = contentHandler.getOdfVersion();
-		
-		if(xmlParts.size()==0) {
-			return new OdfValidatorResult();
-		}
 		OdfValidatorResult result = new OdfValidatorResult();
 		
-		parseParameters(parameters);
+		// check if the input file is an ODF file at all
+		if(!contentHandler.isOdfFile()) {
+			return result;
+		}
 		
+		result.setIsOdfFile(contentHandler.isOdfFile());
+		
+		List<File> xmlParts = contentHandler.getXmlComponents();
+		result.setXmlComponents(xmlParts);
+		version = contentHandler.getOdfVersion();
 		result.setOdfVersion(version);
+		
+		String mimeType = contentHandler.getMimeType();
+		
+		result.setMimeType(mimeType);
+		
+		parseParameters(parameters);
 		
 		File doc_schema = null;
 		File manifest_schema = null;
@@ -91,6 +99,8 @@ public class CoreOdfValidator {
 		else {
 			manifest_schema = schemaHandler.retrieveOdfManifestSchemaFile(version);
 		}
+		
+		log.info("input MIME type = '" + mimeType + "'");
 		
 		for (File file : xmlParts) {
 			result = validateFile(file, doc_schema, manifest_schema, result);

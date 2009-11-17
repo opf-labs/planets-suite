@@ -146,10 +146,21 @@
 	<classpathentry kind="lib" path="IF/storage/lib/oai4j-0.6b1.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-io-1.4.jar"/>
-	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar" sourcepath="E:/ODFValidator/SOURCE/src"/>
 	<classpathentry kind="lib" path="lib/standalone/jsf-facelets.jar"/>
 	<classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar"/>
 	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-rt.jar"/>
 	<classpathentry kind="lib" path="IF/common/lib/mimepull.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfdom.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/isorelax-jaxp-bridge-1.0.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/isorelax.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/msv.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/relaxngDatatype.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/resolver.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/serializer.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xmlParserAPIs.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xsdlib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

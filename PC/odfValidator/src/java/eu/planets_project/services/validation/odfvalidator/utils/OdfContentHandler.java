@@ -19,10 +19,7 @@ import eu.planets_project.services.utils.ZipUtils;
 
 public class OdfContentHandler {
 	
-	public OdfContentHandler(File odfFile) {
-		xmlComponents = extractXmlFiles(odfFile);
-	}
-	
+	private static final String MIMETYPE = "mimetype";
 	public static String CONTENT_XML = "content.xml";
 	public static String STYLES_XML = "styles.xml";
 	public static String META_XML = "meta.xml";
@@ -30,14 +27,68 @@ public class OdfContentHandler {
 	public static String MANIFEST_XML = "manifest.xml";
 	
 	private static List<File> xmlComponents = null;
+	private static List<String> manifestEntries = null;
+	private static List<String> missingFileEntries = null;
 	
+	private static File manifestXml = null;
+	
+	private static String mimeType = null;
+	
+	private boolean isNotODF = false;
+
 	private String version = null;
 	
 	private static File ODF_VALIDATOR_TMP = null;
 	
 	private static Log log = LogFactory.getLog(OdfContentHandler.class);
+	
+	
+	/**
+	 * Constructor. Is initialized with the odfFile to be examined. 
+	 * @param odfFile the odf file to validate
+	 */
+	public OdfContentHandler(File odfFile) {
+		xmlComponents = initialize(odfFile);
+		
+		if(!isNotODF) {
+			missingFileEntries = checkContainerContent(odfFile);
+		}
+	}
+	
+	public boolean isOdfFile() {
+		return !isNotODF;
+	}
 
-	private List<File> extractXmlFiles(File odfFile) {
+	public List<File> getXmlComponents() {
+		return xmlComponents;
+	}
+
+	public String getOdfVersion() {
+		return version;
+	}
+	
+	public String getMimeType() {
+		return mimeType;
+	}
+
+	public boolean documentIsComplete() {
+		if(missingFileEntries.size()==0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public List<String> getMissingDocumentEntries() {
+		return missingFileEntries;
+	}
+
+//	public List<String> getManifestEntries() {
+//		return manifestEntries;
+//	}
+
+	private List<File> initialize(File odfFile) {
 		List<File> odfXmlParts = new ArrayList<File>(); 
 		ODF_VALIDATOR_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_VALIDATOR_TMP");
 		File xmlTmp = FileUtils.createFolderInWorkFolder(ODF_VALIDATOR_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
@@ -47,34 +98,75 @@ public class OdfContentHandler {
 		
 		if(files.length==0) {
 			log.error("[OdfContentHandler] extractXmlFiles(): The input file '" + odfFile.getName() + "' is NOT an ODF file! Sorry, returning with error!");
-			return new ArrayList<File>();
+			isNotODF = true;
+			return odfXmlParts;
 		}
 		
 		for (String currentFragment : files) {
+			if(currentFragment.endsWith(MIMETYPE)) {
+				File tmpMimetype = ZipUtils.getFileFrom(odfFile, currentFragment, xmlTmp);
+				mimeType = FileUtils.readTxtFileIntoString(tmpMimetype);
+				continue;
+			}
 			if(currentFragment.endsWith(CONTENT_XML)) {
 				File tmpContent = ZipUtils.getFileFrom(odfFile, currentFragment, xmlTmp);
 				version = getOdfVersion(tmpContent);
 				odfXmlParts.add(tmpContent);
 				continue;
 			}
+			if(currentFragment.endsWith(MANIFEST_XML)) {
+				manifestXml = ZipUtils.getFileFrom(odfFile, currentFragment, xmlTmp);
+				odfXmlParts.add(manifestXml);
+				continue;
+			}
 			if(currentFragment.endsWith(META_XML) 
 					|| currentFragment.endsWith(SETTINGS_XML)
-					|| currentFragment.endsWith(MANIFEST_XML)
 					|| currentFragment.endsWith(STYLES_XML)) {
 				odfXmlParts.add(ZipUtils.getFileFrom(odfFile, currentFragment, xmlTmp));
+				continue;
 			}
 		}
 		return odfXmlParts;
 	}
 	
-	public List<File> getXmlComponents() {
-		return xmlComponents;
-	}
-	
-	public String getOdfVersion() {
-		return version;
+	private List<String> checkContainerContent(File odfFile) {
+		manifestEntries = getManifestEntries(manifestXml);
+		List<String> missingList = new ArrayList<String>();
+		if(!isNotODF) {
+			List<String> odfContent = ZipUtils.listZipEntries(odfFile);
+			
+			for (String currentManifestEntry : manifestEntries) {
+				if(!odfContent.contains(currentManifestEntry)) {
+					if(!currentManifestEntry.contains("META-INF") && !currentManifestEntry.equalsIgnoreCase("/")) {
+						missingList.add(currentManifestEntry);
+					}
+				}
+			}
+		}
+		return missingList;
 	}
 
+	private List<String> getManifestEntries(File manifestXml) {
+		List<String> manifestEntries = new ArrayList<String>(); 
+		SAXBuilder builder = new SAXBuilder();
+		Document doc = null;
+		try {
+			doc = builder.build(manifestXml);
+			Element root = doc.getRootElement();
+			Namespace ns = root.getNamespace();
+			List<Element> fileEntries = root.getChildren("file-entry", ns);
+			for (Element currentElement : fileEntries) {
+				Attribute fileEntryFullPath = currentElement.getAttribute("full-path", ns);
+				manifestEntries.add(fileEntryFullPath.getValue());
+			}
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return manifestEntries;
+	}
+	
 	private String getOdfVersion(File contentXml) {
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = null;

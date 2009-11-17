@@ -32,7 +32,14 @@ public class ODFValidatorWrapper {
      * @param aArgs
      */
     public static void main(String[] aArgs) {
-        
+//        String javaVersion = System.getProperty("java.version");
+//    	
+//    	if(javaVersion.startsWith("1.6")) {
+//    		System.setProperty("javax.xml.validation.SchemaFactory:http://relaxng.org/ns/structure/1.0", "org.iso_relax.verifier.jaxp.validation.RELAXNGSchemaFactoryImpl");
+//    		System.setProperty("org.iso_relax.verifier.VerifierFactoryLoader", "com.sun.msv.verifier.jarv.FactoryLoaderImpl");
+//    	}
+    	
+    	
         String aConfigFileName = null;
         String aFilterFileName = null;
         String aSchemaFileName = null;
@@ -243,6 +250,12 @@ public class ODFValidatorWrapper {
      * @return the result of the validation of the ODF file
      */
     public static ValidateResult validateODF( DigitalObject dob, URI format ) {
+    	String javaVersion = System.getProperty("java.version");
+    	
+    	if(javaVersion.startsWith("1.6")) {
+    		System.setProperty("javax.xml.validation.SchemaFactory:http://relaxng.org/ns/structure/1.0", "org.iso_relax.verifier.jaxp.validation.RELAXNGSchemaFactoryImpl");
+    		System.setProperty("org.iso_relax.verifier.VerifierFactoryLoader", "com.sun.msv.verifier.jarv.FactoryLoaderImpl");
+    	}
         // These will contain the validation results before the ValidateResult is built.
         // NOTE that 'null' means 'cannot determine whether statement is true or false'.
         Boolean ofThisFormat = null;
@@ -250,7 +263,7 @@ public class ODFValidatorWrapper {
         
         Configuration aConfig = null;
         // TODO Support proper format URIs and map from those to '1.0','1.1' or '1.2':
-        String aVersion = "1.2";
+        String aVersion = "1.1";
         /*
          *             else if( aArg.equals("-1.0") || aArg.equals("-1.1") || aArg.equals("-1.2") )
             {
@@ -302,7 +315,12 @@ public class ODFValidatorWrapper {
         // TODO Patch in the log from the output stream.
         ValidateResult.Builder vrb = new ValidateResult.Builder(format, new ServiceReport(Type.INFO, Status.SUCCESS, "Executed.") );
         vrb.ofThisFormat(ofThisFormat);
-        vrb.validInRegardToThisFormat(validWrtThisFormat);
+        if(validWrtThisFormat!=null) {
+        	vrb.validInRegardToThisFormat(validWrtThisFormat);
+        }
+        else {
+        	vrb.validInRegardToThisFormat(false);
+        }
         return vrb.build();
     }
         

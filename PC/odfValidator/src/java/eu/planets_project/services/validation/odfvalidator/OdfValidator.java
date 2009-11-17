@@ -162,7 +162,7 @@ public class OdfValidator implements Validate {
 		if(result.documentIsValid()) {
 			vr = new ValidateResult.Builder(format,
 	                new ServiceReport(Type.INFO, Status.SUCCESS, result.toString()))
-	                .ofThisFormat(result.documentIsValid())
+	                .ofThisFormat(result.isOdfFile())
 	                .validInRegardToThisFormat(result.documentIsValid()).build();
 		}
 		else {

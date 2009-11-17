@@ -59,7 +59,7 @@ public class ODFValidatorServiceTest {
     public void testValidate() throws MalformedURLException, URISyntaxException {
         // TODO Fix these so that they make sense, use the correct format URIs, testing files and finding them valid/invalid as appropriate.
         // TODO Move test files to the shared bit.
-        testValidateThis(new DigitalObject.Builder( Content.byValue(new File("PC/odf-toolkit/src/test/resources/HelloWorld.odt") ) ).build() , new URI("planets:fmt/ext/odf"),
+        testValidateThis(new DigitalObject.Builder( Content.byValue(new File("tests/test-files/documents/test_odt/v11/test_file_v11.odt") ) ).build() , new URI("planets:fmt/ext/odf"),
         true);
         testValidateThis(new DigitalObject.Builder( Content.byReference(new File("PC/odf-toolkit/src/test/resources/HelloWorld.doc") ) ).build() , new URI("planets:fmt/ext/odf"),
                 true);
