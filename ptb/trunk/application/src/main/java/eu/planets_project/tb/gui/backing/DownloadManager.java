@@ -14,19 +14,14 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
-import javax.activation.MimetypesFileTypeMap;
-
-import org.jfree.util.Log;
-
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.serialization.ExperimentFileCache;
