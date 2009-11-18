@@ -130,6 +130,7 @@ public class DataHandlerImpl implements DataHandler {
 	 * as location for storing files, as this is accessible from outside.
 	 * @see eu.planets_project.tb.api.data.util.DataHandler#getHttpFileRef(java.io.File)
 	 */
+	@Deprecated
 	public URI getHttpFileRef(File localFileRef,boolean input) throws URISyntaxException, FileNotFoundException{
 	    if(!localFileRef.canRead()){
 	    	throw new FileNotFoundException(localFileRef +" not found");
@@ -744,9 +745,9 @@ public class DataHandlerImpl implements DataHandler {
 		if(!tempFileInExternalDir.canRead()){
 	    	throw new FileNotFoundException("getHttpFileRef for "+tempFileInExternalDir +" not found");
 	    }
-		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-	   	String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
-	   	//FIXME: use PlanetsServerConfig class instead for getting host and port
+		//HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+	   	//String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
+	   	String authority = PlanetsServerConfig.getHostname() + ":" + PlanetsServerConfig.getPort();
 	   	
    		//URI(scheme,authority,path,query,fragement)
    	    URI ret = new URI("http",authority,"/planets-testbed/"+tempFileInExternalDir.getName(),null,null);
