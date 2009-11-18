@@ -59,14 +59,21 @@ public class CoreOdfValidator {
 	
 	public OdfValidatorResult validate(File odfFile, List<Parameter> parameters) {
 		contentHandler = new OdfContentHandler(odfFile);
-		OdfValidatorResult result = new OdfValidatorResult();
+		OdfValidatorResult result = new OdfValidatorResult(odfFile);
 		
 		// check if the input file is an ODF file at all
 		if(!contentHandler.isOdfFile()) {
+			result.setError(odfFile, "The input file '" + odfFile.getName() + "' is NOT an ODF file!");
 			return result;
 		}
 		
 		result.setIsOdfFile(contentHandler.isOdfFile());
+		
+		boolean isCompliant = contentHandler.isOdfCompliant();
+		result.setIsOdfCompliant(isCompliant);
+		if(!isCompliant) {
+			result.setMissingManifestEntries(contentHandler.getMissingManifestEntries());
+		}
 		
 		List<File> xmlParts = contentHandler.getXmlComponents();
 		result.setXmlComponents(xmlParts);
@@ -85,19 +92,25 @@ public class CoreOdfValidator {
 		if(USE_USER_DOC_SCHEMA) {
 			if(USE_USER_DOC_STRICT_SCHEMA) {
 				doc_schema = USER_DOC_STRICT_SCHEMA;
+				result.setStrictDocSchema(doc_schema);
+				result.setDocumentSchema(USER_DOC_SCHEMA);
 			}
 			else {
 				doc_schema = USER_DOC_SCHEMA;
+				result.setDocumentSchema(USER_DOC_SCHEMA);
 			}
 		}
 		else {
 			doc_schema = schemaHandler.retrieveOdfDocSchemaFile(version, STRICT_VALIDATION);
+			result.setDocumentSchema(doc_schema);
 		}
 		if(USE_USER_MANIFEST_SCHEMA) {
 			manifest_schema = USER_MANIFEST_SCHEMA;
+			result.setManifestSchema(manifest_schema);
 		}
 		else {
 			manifest_schema = schemaHandler.retrieveOdfManifestSchemaFile(version);
+			result.setManifestSchema(manifest_schema);
 		}
 		
 		log.info("input MIME type = '" + mimeType + "'");
@@ -171,6 +184,7 @@ public class CoreOdfValidator {
 							USER_DOC_STRICT_SCHEMA = schemaHandler.createUserDocStrictSchema(version, value, USER_DOC_SCHEMA);
 						}
 						USE_USER_DOC_STRICT_SCHEMA = true;
+						STRICT_VALIDATION = true;
 						continue;
 					}
 					else {
@@ -203,30 +217,28 @@ public class CoreOdfValidator {
 	}
 	
 	private static OdfValidatorResult validateFile(File odfXmlComponent, File docSchema, File manifestSchema, OdfValidatorResult result) {
-		ProcessRunner validator = null;
+		ProcessRunner validator = new ProcessRunner();
 		String name = odfXmlComponent.getName();
 		
 		if(name.equalsIgnoreCase(OdfContentHandler.MANIFEST_XML)) {
-			validator = new ProcessRunner();
-			validator.setCommand(getValidateManifestCmd(odfXmlComponent, manifestSchema));
-			validator.run();
+			validator.setCommand(getValidateOdfXmlPartCmd(odfXmlComponent, manifestSchema));
 		}
 		else {
-			validator = new ProcessRunner();
 			validator.setCommand(getValidateOdfXmlPartCmd(odfXmlComponent, docSchema));
-			validator.run();
 		}
 		
+		validator.run();
+		
 		String out = validator.getProcessOutputAsString();
-		String err = validator.getProcessErrorAsString();
 
 		if(out.equalsIgnoreCase("")) {
-			result.setValid(name, true);
-			log.info("'" + name + "' is valid: " + result.isValid(name));
+			result.setValid(odfXmlComponent, true);
+			log.info("'" + name + "' is valid: " + result.componentIsValid(odfXmlComponent));
 		}
 		else {
-			result.setError(name, out);
-			log.error("'" + name + "' is valid: " + result.isValid(name));
+			result.setValid(odfXmlComponent, false);
+			result.setError(odfXmlComponent, out);
+			log.error("'" + name + "' is valid: " + result.componentIsValid(odfXmlComponent));
 			log.error("Message: " + out);
 		}
 		return result;
@@ -244,16 +256,16 @@ public class CoreOdfValidator {
 		return cmd;
 	}
 	
-	private static ArrayList<String> getValidateManifestCmd(File manifestXml, File manifestSchema) {
-		ArrayList<String> cmd = new ArrayList<String>();
-		cmd.add("java");
-		cmd.add("-jar");
-		cmd.add(JING_HOME + File.separator + JING);
-		cmd.add("-i");
-		cmd.add(manifestSchema.getAbsolutePath());
-		cmd.add(manifestXml.getAbsolutePath());
-		return cmd;
-	}
+//	private static ArrayList<String> getValidateManifestCmd(File manifestXml, File manifestSchema) {
+//		ArrayList<String> cmd = new ArrayList<String>();
+//		cmd.add("java");
+//		cmd.add("-jar");
+//		cmd.add(JING_HOME + File.separator + JING);
+//		cmd.add("-i");
+//		cmd.add(manifestSchema.getAbsolutePath());
+//		cmd.add(manifestXml.getAbsolutePath());
+//		return cmd;
+//	}
 	
 
 }

@@ -51,7 +51,7 @@ public class OdfContentHandler {
 		xmlComponents = initialize(odfFile);
 		
 		if(!isNotODF) {
-			missingFileEntries = checkContainerContent(odfFile);
+			missingFileEntries = checkContainerConformity(odfFile);
 		}
 	}
 	
@@ -71,7 +71,7 @@ public class OdfContentHandler {
 		return mimeType;
 	}
 
-	public boolean documentIsComplete() {
+	public boolean isOdfCompliant() {
 		if(missingFileEntries.size()==0) {
 			return true;
 		}
@@ -80,7 +80,7 @@ public class OdfContentHandler {
 		}
 	}
 
-	public List<String> getMissingDocumentEntries() {
+	public List<String> getMissingManifestEntries() {
 		return missingFileEntries;
 	}
 
@@ -129,7 +129,7 @@ public class OdfContentHandler {
 		return odfXmlParts;
 	}
 	
-	private List<String> checkContainerContent(File odfFile) {
+	private List<String> checkContainerConformity(File odfFile) {
 		manifestEntries = getManifestEntries(manifestXml);
 		List<String> missingList = new ArrayList<String>();
 		if(!isNotODF) {

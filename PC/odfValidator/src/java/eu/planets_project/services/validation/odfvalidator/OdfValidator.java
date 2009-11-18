@@ -143,7 +143,7 @@ public class OdfValidator implements Validate {
 			List<Parameter> parameters) {
 		
 		if(digitalObject==null || digitalObject.getContent() == null) {
-			return this.returnWithErrorMessage(format, "|OdfValidator] ERROR: No input file found!", null);
+			return this.returnWithErrorMessage(format, "[OdfValidator] ERROR: No input file found!", null);
 		}
 		
 		String name = DigitalObjectUtils.getFileNameFromDigObject(digitalObject, format);
@@ -161,12 +161,12 @@ public class OdfValidator implements Validate {
 		
 		if(result.documentIsValid()) {
 			vr = new ValidateResult.Builder(format,
-	                new ServiceReport(Type.INFO, Status.SUCCESS, result.toString()))
+	                new ServiceReport(Type.INFO, Status.SUCCESS, result.getValidationResultAsString()))
 	                .ofThisFormat(result.isOdfFile())
 	                .validInRegardToThisFormat(result.documentIsValid()).build();
 		}
 		else {
-			vr = new ValidateResult.Builder(format, new ServiceReport(Type.INFO, Status.SUCCESS, result.toString()))
+			vr = new ValidateResult.Builder(format, new ServiceReport(Type.INFO, Status.SUCCESS, result.getValidationResultAsString()))
 			.ofThisFormat(result.isOdfFile())
 			.validInRegardToThisFormat(result.documentIsValid()).build();
 		}
