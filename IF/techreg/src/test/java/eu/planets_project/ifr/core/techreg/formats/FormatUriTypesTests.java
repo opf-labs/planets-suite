@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
+import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
 
 /**
  * Format registry format URI creation and info tests.
