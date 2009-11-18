@@ -1,0 +1,225 @@
+<serviceWrapping version="1.0">
+
+	<serviceDescription>
+
+		<title>
+			Dia migration service.
+        </title>
+		<description>
+			fff
+        </description>
+		<tool>
+			<name>
+				fff
+            </name>
+			<identifier>http://spu.spu</identifier>
+			<description>
+				fff
+            </description>
+			<homepage>http://spu.spu</homepage>
+			<version>
+				ddd
+            </version>
+		</tool>
+		<version>
+			ddd
+        </version>
+		<creator>
+			dddd
+        </creator>
+		<publisher>
+			ddd
+        </publisher>
+		<identifier>http://spu.spu</identifier>
+		<instructions>
+			ddd
+        </instructions>
+		<furtherinfo>http://spu.spu</furtherinfo>
+		<logo>http://spu.spu</logo>
+		<classname>
+			ddd
+        </classname>
+	</serviceDescription>
+
+	<paths>
+		<path>
+			<inputformats>
+				<!-- Dia files. -->
+				<uri value="info:pronom/x-fmt/381" />
+
+				<!-- Xfig files -->
+				<!-- FIXME! What's the way to specify a format that is unknown to PRONOM? -->
+				<uri value="planets:fig" />
+
+				<!-- FIXME! Verify that all PNG versions work -->
+				<!-- PNG 1.0 -->
+				<uri value="info:pronom/fmt/11" />
+
+				<!-- PNG 1.1 -->
+				<uri value="info:pronom/fmt/12" />
+
+				<!-- PNG 1.2 -->
+				<uri value="info:pronom/fmt/13" />
+
+				<!-- FIXME! Verify that all SVG versions work! -->
+				<!-- SVG 1.0 -->
+				<uri value="info:pronom/fmt/91" />
+
+				<!-- SVG 1.1 -->
+				<uri value="info:pronom/fmt/92" />
+
+				<!-- FIXME! Verify that all Windows BMP versions work -->
+
+				<!-- Windows BMP 1.0 -->
+				<uri value="info:pronom/fmt/114" />
+
+				<!-- Windows BMP 2.0 -->
+				<uri value="info:pronom/fmt/115" />
+
+				<!-- Windows BMP 3.0 -->
+				<uri value="info:pronom/fmt/116" />
+
+				<!-- Windows BMP 3.0 NT -->
+				<uri value="info:pronom/fmt/117" />
+
+				<!-- Windows BMP 4.0 -->
+				<uri value="info:pronom/fmt/118" />
+
+				<!-- Windows BMP 5.0 -->
+				<uri value="info:pronom/fmt/119" />
+
+				<!-- FIXME! Add the rest of the formats -->
+
+                    <!-- 
+                    
+                     EXPORT FORMATS
+       The following export formats are supported by dia.
+
+       ·  cgm (Computer Graphics Metafile, ISO 8632)
+
+       ·  dia (Native dia diagram)
+
+       ·  dxf (Drawing Interchange File)
+
+       ·  eps or eps-builtin or eps-pango (Encapsulated PostScript)
+
+          The format specifications eps, and eps-pango all use the  font  ren‐
+          derer  of  the  Pango library, while eps-builtin uses a dia specific
+          font renderer. If you have problems with Pango rendering, e.g.  Uni‐
+          code, try eps-builtin instead.
+
+       ·  fig (XFig format)
+
+       ·  mp (TeX MetaPost macros)
+
+       ·  plt or hpgl (HP Graphics Language)
+
+       ·  png (Portable Network Graphics)
+
+       ·  shape (Dia shape file)
+
+       ·  svg (Scalable Vector Graphics)
+
+       ·  tex (TeX PSTricks macros)
+
+       ·  wpg (WordPerfect Graphics)
+
+       ·  wmf (Windows MetaFile)
+                     -->
+
+			</inputformats>
+
+			<outputformat>
+				<!-- SVG 1.1 -->
+				<uri value="info:pronom/fmt/92" />
+
+			</outputformat>
+
+			<commandline>
+				<command>
+					/bin/sh
+                </command>
+				<commandparameters>
+					<parameter>
+						-c
+                    </parameter>
+					<parameter>
+						<![CDATA[dia -n -t dia -e #tempDiaFile #inputFile && dia -n -t #outputFormat -e #outputFile #tempDiaFile]]>
+					</parameter>
+				</commandparameters>
+			</commandline>
+
+			<toolinput>
+				<tempfile label="inputFile" name="inputFile.dia">
+				</tempfile>
+			</toolinput>
+
+			<tooloutput>
+				<tempfile label="outputFile">
+				</tempfile>
+			</tooloutput>
+
+			<tempfiles>
+				<tempfile label="tempDiaFile">
+				</tempfile>
+			</tempfiles>
+
+			<toolparameters>
+				<parameter name="outputFormat">
+					<description>
+						<![CDATA[This parameter controls the output format of the migration.
+						Valid values are:
+						dia : FIXME! Add Dia PRONOM UID here
+						fig : FIXME! Add Fig PRONOM UID here
+						png : FIXME! Add PNG PRONOM UID here
+						jpg : FIXME! Add JPG PRONOM UID here
+						bmp : FIXME! Add BMP PRONOM UID here
+						FIXME! Add the rest of the formats!!!
+						]]>
+					</description>
+                    <!-- 
+                    
+                     EXPORT FORMATS
+       The following export formats are supported by dia.
+
+       ·  cgm (Computer Graphics Metafile, ISO 8632)
+
+       ·  dia (Native dia diagram)
+
+       ·  dxf (Drawing Interchange File)
+
+       ·  eps or eps-builtin or eps-pango (Encapsulated PostScript)
+
+          The format specifications eps, and eps-pango all use the  font  ren‐
+          derer  of  the  Pango library, while eps-builtin uses a dia specific
+          font renderer. If you have problems with Pango rendering, e.g.  Uni‐
+          code, try eps-builtin instead.
+
+       ·  fig (XFig format)
+
+       ·  mp (TeX MetaPost macros)
+
+       ·  plt or hpgl (HP Graphics Language)
+
+       ·  png (Portable Network Graphics)
+
+       ·  shape (Dia shape file)
+
+       ·  svg (Scalable Vector Graphics)
+
+       ·  tex (TeX PSTricks macros)
+
+       ·  wpg (WordPerfect Graphics)
+
+       ·  wmf (Windows MetaFile)
+                     -->
+
+
+				</parameter>
+			</toolparameters>
+			<toolpresets default="">
+			</toolpresets>
+
+		</path>
+	</paths>
+</serviceWrapping>

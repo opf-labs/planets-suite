@@ -7,8 +7,7 @@ package eu.planets_project.services.migration.dia.impl;
 	 * Dia migration service test suite.
 	 */
 	@RunWith(Suite.class)
-//	@Suite.SuiteClasses({ DiaMigrationServiceTest.class })
-	@Suite.SuiteClasses({  })
+	@Suite.SuiteClasses({ DiaMigrationServiceTest.class })
 
 	public class DiaMigrationServiceTestSuite { }
 

@@ -36,8 +36,9 @@ public class GenericMigrationWrapper {
     private final TemporaryFileFactory tempFileFactory;
 
     private ServiceDescription serviceDescription; // TODO: Consider building
-						   // the service description
-						   // with a separate factory.
+
+    // the service description
+    // with a separate factory.
 
     // TODO: It would probably be nice to pass a factory for creation of
     // temporary files on order to avoid a tight coupling with the Planets J2EE
@@ -146,6 +147,11 @@ public class GenericMigrationWrapper {
 	final List<String> prCommand = commandBuilder.buildCommand(
 		migrationPath, toolParameters, temporaryFileMappings);
 
+	String fullCommandLine = "";
+	for (String cmdfrag : prCommand) {
+	    fullCommandLine += cmdfrag + " ";
+	}
+
 	// Execute the tool
 	final ProcessRunner toolProcessRunner = new ProcessRunner();
 	final boolean executionSuccessful = executeToolProcess(
@@ -155,15 +161,23 @@ public class GenericMigrationWrapper {
 	// execution failed.
 	final ToolIOProfile outputIOProfile = migrationPath
 		.getToolOutputProfile();
-	if ((outputIOProfile.usePipedIO() == false) && executionSuccessful) {
 
+	final String outputFileLabel = outputIOProfile
+		.getCommandLineFileLabel();
+	
+	if ((outputIOProfile.usePipedIO() == false) && executionSuccessful) {
 	    // OK, there should exist an output file. Avoid deleting it.
-	    final String outputFileLabel = outputIOProfile
-		    .getCommandLineFileLabel();
-	    temporaryFileMappings.remove(outputFileLabel);
-	}
-	for (File tempFile : temporaryFileMappings.values()) {
-	    tempFile.delete();
+	    for (String tempFileLabel : temporaryFileMappings.keySet()) {
+		if (outputFileLabel.equals(tempFileLabel) == false) {
+		    temporaryFileMappings.get(tempFileLabel).delete();
+		}
+	    }
+	} else {
+	    // The output has been returned through a pipe, so it is safe to
+	    // delete all files.
+	    for (File tempFile : temporaryFileMappings.values()) {
+		tempFile.delete();
+	    }
 	}
 
 	if (executionSuccessful == false) {
@@ -461,8 +475,9 @@ public class GenericMigrationWrapper {
 	    planetsParameters.addAll(migrationPath.getToolParameters());
 
 	    // Add a parameter for each preset (category)
-	    for (Preset preset : migrationPath.getToolPresets()
-		    .getAllToolPresets()) {
+	    final ToolPresets toolPresets = migrationPath.getToolPresets();
+	    final Collection<Preset> presets = toolPresets.getAllToolPresets();
+	    for (Preset preset : presets) {
 
 		Parameter.Builder parameterBuilder = new Parameter.Builder(
 			preset.getName(), null);

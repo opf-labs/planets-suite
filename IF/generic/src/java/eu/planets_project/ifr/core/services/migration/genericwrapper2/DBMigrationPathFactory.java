@@ -285,44 +285,44 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 		    XPathConstants.NODESET);
 
 	    ToolPresets toolPresets = null;
-	    if (presetNodes.getLength() > 0) {
-		final Collection<Preset> presets = new ArrayList<Preset>();
-		for (int presetIndex = 0; presetIndex < presetNodes.getLength(); presetIndex++) {
+	    final Collection<Preset> presets = new ArrayList<Preset>();
+	    for (int presetIndex = 0; presetIndex < presetNodes.getLength(); presetIndex++) {
 
-		    final Node presetNode = presetNodes.item(presetIndex);
+		final Node presetNode = presetNodes.item(presetIndex);
 
-		    final String presetName = getAttributeValue(presetNode,
-			    "name");
-		    if (presetName.length() == 0) {
-			throw new MigrationPathConfigException(
-				"Empty \"name\" attribute declared in node: "
-					+ presetNode.getNodeName());
-		    }
-
-		    final String defaultPresetName = getAttributeValue(
-			    presetNode, "default");
-
-		    final Node descriptionNode = (Node) pathsXPath.evaluate(
-			    "description", presetNode, XPathConstants.NODE);
-
-		    final String description = descriptionNode.getTextContent();
-
-		    final Collection<PresetSetting> presetSettings = getPresetSettings(presetNode);
-
-		    final Preset newPreset = new Preset(presetName,
-			    presetSettings, defaultPresetName);
-		    newPreset.setDescription(description);
-
-		    presets.add(newPreset);
+		final String presetName = getAttributeValue(presetNode, "name");
+		if (presetName.length() == 0) {
+		    throw new MigrationPathConfigException(
+			    "Empty \"name\" attribute declared in node: "
+				    + presetNode.getNodeName());
 		}
 
-		toolPresets = new ToolPresets();
-		toolPresets.setToolPresets(presets);
+		final String defaultPresetName = getAttributeValue(presetNode,
+			"default");
 
-		final String defaultPresetName = getDefaultAttributeValue(
-			pathNode, presetsElementName);
-		toolPresets.setDefaultPresetName(defaultPresetName);
+		final Node descriptionNode = (Node) pathsXPath.evaluate(
+			"description", presetNode, XPathConstants.NODE);
+
+		final String description = descriptionNode.getTextContent();
+
+		final Collection<PresetSetting> presetSettings = getPresetSettings(presetNode);
+
+		final Preset newPreset = new Preset(presetName, presetSettings,
+			defaultPresetName);
+		newPreset.setDescription(description);
+
+		presets.add(newPreset);
 	    }
+
+	    toolPresets = new ToolPresets();
+	    toolPresets.setToolPresets(presets);
+
+	    String defaultPresetName = "";
+	    if (presets.size() > 0) {
+		defaultPresetName = getDefaultAttributeValue(pathNode,
+			presetsElementName);
+	    }
+	    toolPresets.setDefaultPresetName(defaultPresetName);
 	    return toolPresets;
 	} catch (XPathExpressionException xpee) {
 	    throw new MigrationPathConfigException(
@@ -542,7 +542,7 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 		commandLineParameters
 			.add(parameterNode.getTextContent().trim());
 	    }
-	    
+
 	    return new CommandLine(command, commandLineParameters);
 	} catch (XPathExpressionException xpee) {
 	    throw new MigrationPathConfigException(

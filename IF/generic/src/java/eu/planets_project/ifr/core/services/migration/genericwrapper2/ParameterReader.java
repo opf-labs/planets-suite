@@ -3,6 +3,7 @@
  */
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -30,6 +31,8 @@ public class ParameterReader {
      *            A list of parameters to read parameter values from.
      */
     public ParameterReader(List<Parameter> parameters) {
+
+	parameterMap = new HashMap<String, Parameter>();
 	for (Parameter parameter : parameters) {
 	    parameterMap.put(parameter.getName(), parameter);
 	}

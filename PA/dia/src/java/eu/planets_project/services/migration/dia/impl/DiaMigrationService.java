@@ -2,16 +2,14 @@ package eu.planets_project.services.migration.dia.impl;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -19,9 +17,11 @@ import eu.planets_project.ifr.core.services.migration.genericwrapper2.GenericMig
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 
@@ -45,7 +45,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
     /** The service name */
     static final String NAME = "DiaMigrationService";
 
-    static final String configfile = "dia.paths.xml";
+    static final String configfile = "DiaServiceConfiguration.xml";
 
     /** The unique class id */
     private static final long serialVersionUID = 4596228292063217306L;
@@ -84,7 +84,10 @@ public final class DiaMigrationService implements Migrate, Serializable {
 			    + digitalObject.getTitle()
 			    + "' from input format URI: " + inputFormat
 			    + " to output format URI: " + outputFormat, e);
-	    return new MigrateResult(null, null); // FIXME! Report failure in a
+	    e.printStackTrace(System.out);
+	    System.out.println();
+	    ServiceReport serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, e.toString());
+	    return new MigrateResult(null, serviceReport); // FIXME! Report failure in a
 						  // proper way.
 	}
 

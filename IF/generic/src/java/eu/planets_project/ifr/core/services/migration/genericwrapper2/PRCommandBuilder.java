@@ -50,9 +50,9 @@ class PRCommandBuilder {
 	    Collection<Parameter> toolParameters,
 	    Map<String, File> tempFileMappings) throws MigrationException {
 
-	// Get a complete list of identifiers used in the command line.
 	final CommandLine commandLine = migrationPath.getCommandLine();
 
+	// Get a complete list of identifiers used in the command line.
 	final Set<String> commandLineIdentifiers = getIdentifiers(commandLine);
 
 	// Get the key-value pairs from toolParameters that are used in the
@@ -85,16 +85,28 @@ class PRCommandBuilder {
 	// Replace the identifiers in the command line fragments with their
 	// associated value (parameter, temp. file path etc.).
 	final List<String> executableCommandLine = new ArrayList<String>();
+
+	// TODO/FIXME! We still need to add the precise (absolute) file path to
+	// the command, however, the mechanism for obtaining this has not yet
+	// been delivered from the IF team. It is probably possible to obtain by
+	// using command line parameters which the generic wrapper class defines
+	// based on information on the environment. Thus a comand line in the
+	// config would look something like this: #commandPath/sh -c
+	// #toolPath/myMigrationTool Making "commandPath" and "toolPath"
+	// reserved names.
 	executableCommandLine.add(commandLine.getCommand());
 	executableCommandLine.addAll(commandLine.getToolParameters());
 
 	for (int commandFragmentIdx = 0; commandFragmentIdx < executableCommandLine
 		.size(); commandFragmentIdx++) {
 
-	    String substitudedString = "";
-	    final StringTokenizer stringTokenizer = new StringTokenizer(
-		    executableCommandLine.get(commandFragmentIdx));
+	    final String commandFragment = executableCommandLine
+		    .get(commandFragmentIdx);
 
+	    final StringTokenizer stringTokenizer = new StringTokenizer(
+		    commandFragment);
+
+	    String substitudedString = "";
 	    while (stringTokenizer.hasMoreTokens()) {
 
 		String token = stringTokenizer.nextToken();

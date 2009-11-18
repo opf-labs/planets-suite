@@ -204,6 +204,7 @@ public class DBMigrationPathFactoryTest {
 		toolPresets.getDefaultPresetID());
 
 	Collection<Preset> presets = toolPresets.getAllToolPresets();
+	assertNotNull(presets);
 	assertEquals(
 		"Un-expected number of presets defined for the tested migration path.",
 		2, presets.size());
