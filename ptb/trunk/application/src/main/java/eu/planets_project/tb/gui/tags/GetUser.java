@@ -1,6 +1,5 @@
 package eu.planets_project.tb.gui.tags;
 
-import javax.servlet.jsp.JspException;
 import com.sun.facelets.tag.*;
 import javax.servlet.http.*;
 import com.sun.facelets.FaceletContext;
