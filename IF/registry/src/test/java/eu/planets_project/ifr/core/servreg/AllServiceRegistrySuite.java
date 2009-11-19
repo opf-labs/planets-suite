@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.servreg;
 
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -22,12 +21,4 @@ import eu.planets_project.ifr.core.servreg.api.ServiceRegistryLocalTests;
         ServiceRegistryFactoryRemoteTests.class,
         /* And the sample usage: */
         ServiceRegistrySampleUsage.class })
-public class AllServiceRegistrySuite {
-    @BeforeClass
-    public static void setupProperties() {
-        // The simple component is for web service testing:
-        System.setProperty("pserv.test.context", "server");
-        System.setProperty("pserv.test.host", "localhost"); // metro.planets-project.ait.ac.at
-        System.setProperty("pserv.test.port", "8080"); // 80
-    }
-}
+public class AllServiceRegistrySuite { }
