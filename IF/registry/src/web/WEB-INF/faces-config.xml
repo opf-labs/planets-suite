@@ -15,25 +15,25 @@
 
     <managed-bean>
         <managed-bean-name>RegistryBean</managed-bean-name>
-        <managed-bean-class>eu.planets_project.ifr.core.registry.gui.RegistryBackingBean</managed-bean-class>
+        <managed-bean-class>eu.planets_project.ifr.core.servreg.gui.ServiceRegistryBackingBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 	
     <managed-bean>
         <managed-bean-name>EndpointBean</managed-bean-name>
-        <managed-bean-class>eu.planets_project.ifr.core.registry.gui.EndpointBackingBean</managed-bean-class>
+        <managed-bean-class>eu.planets_project.ifr.core.servreg.gui.EndpointBackingBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
     <managed-bean>
         <managed-bean-name>DescriptionBean</managed-bean-name>
-        <managed-bean-class>eu.planets_project.ifr.core.registry.gui.ServiceDescriptionBackingBean</managed-bean-class>
+        <managed-bean-class>eu.planets_project.ifr.core.servreg.gui.ServiceDescriptionBackingBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
     <managed-bean>
         <managed-bean-name>ExternalBean</managed-bean-name>
-        <managed-bean-class>eu.planets_project.ifr.core.registry.gui.ExternalEndpointBackingBean</managed-bean-class>
+        <managed-bean-class>eu.planets_project.ifr.core.servreg.gui.ExternalEndpointBackingBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 

@@ -14,17 +14,17 @@ The Service Registry can be accessed both through a Java API and via SOAP.
 
 === Java API ===
 
-Given a running and configured Planets Services (PSERV) project (see http://gforge.planets-project.eu/gf/project/pserv), the local Service registry can be accessed via the RegistryFactory class:
+Given a running and configured Planets Services (PSERV) project (see http://gforge.planets-project.eu/gf/project/pserv), the local Service registry can be accessed via the ServiceRegistryFactory class:
 
-  Registry registry = RegistryFactory.getRegistry();
+  ServiceRegistry registry = ServiceRegistryFactory.getRegistry();
 
 [[Image:ServiceDescriptionSchema.png|thumb|right|350px|Service description structure for queries by example]]
 
 To connect to a remote Service registry, supply the location of the WSDL, e.g.
 
-  Registry registry = RegistryFactory.getRegistry(
+  ServiceRegistry registry = ServiceRegistryFactory.getRegistry(
     "http://ubuntu.planets-project.arcs.ac.at" + 
-        "/pserv-if-registry-pserv-if-registry/RegistryWebservice?wsdl");
+        "/pserv-if-servreg-pserv-if-servreg/RemoteServiceRegistry?wsdl");
 
 Using the Registry instance, ServiceDescription objects can be registered and the registry can be queried. Queries are submitted using a ''query by example'' mechanism: a ServiceDescription object describing the services to find is created and passed to the query method, e.g. to find services by name:
 
@@ -43,7 +43,7 @@ The diagram above shows the structure of the ServiceDescription objects used as 
 
 [[Image:ServiceRegistrySoapUi.png|thumb|right|350px|Service registry SOAP API in SoapUI]]
 
-The service registry is deployed as a web service at ''/pserv-if-registry-pserv-if-registry/RegistryWebservice?wsdl'' of an IF instance, e.g. on the staging server at http://ubuntu.planets-project.arcs.ac.at/pserv-if-registry-pserv-if-registry/RegistryWebservice?wsdl. 
+The service registry is deployed as a web service at ''/pserv-if-servreg-pserv-if-servreg/RemoteServiceRegistry?wsdl'' of an IF instance, e.g. on the staging server at http://ubuntu.planets-project.arcs.ac.at/pserv-if-servreg-pserv-if-servreg/RemoteServiceRegistry?wsdl. 
 
 The query part of the API described above (query using example ServiceDescription objects, optional matching mode) can be accessed via SOAP. The screenshot on the right shows the Service registry SOAP API in SoapUI.
 

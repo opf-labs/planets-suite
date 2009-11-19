@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="if-registry" default="deploy" basedir=".">
+<project name="if-servreg" default="deploy" basedir=".">
 
 	<!-- Define the project name and directory, based on the project name specified above. -->
 	<property name="appName" value="${ant.project.name}" />
@@ -23,7 +23,7 @@
 	<property name="src.web" value="${appDir}/src/web" />
 
 	<!-- Define the API part-->
-	<property name="src.api.includes" value="eu/planets_project/ifr/core/registry/api/**" />
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/servreg/api/**" />
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test/java" />
