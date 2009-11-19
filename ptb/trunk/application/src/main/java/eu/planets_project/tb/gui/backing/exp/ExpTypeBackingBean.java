@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Vector;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.RegistryFactory;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
@@ -39,7 +39,7 @@ public abstract class ExpTypeBackingBean {
     private HashMap<String, String> ewfCacheParameters = null;
 
     /** A Service Registry instance for look-ups. */
-    protected Registry registry = RegistryFactory.getRegistry();
+    protected ServiceRegistry registry = ServiceRegistryFactory.getRegistry();
 
     /**
      * @return

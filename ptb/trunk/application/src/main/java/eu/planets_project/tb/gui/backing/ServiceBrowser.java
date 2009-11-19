@@ -27,11 +27,11 @@ import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.RegistryFactory;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.ifr.core.techreg.formats.Format;
-import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
+import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
@@ -88,7 +88,7 @@ public class ServiceBrowser {
 //    public static Format unknown = fr.getFormatForURI( Format.extensionToURI("unknown") );
 
     //Instantiate a registry:
-    Registry registry = RegistryFactory.getRegistry();
+    ServiceRegistry registry = ServiceRegistryFactory.getRegistry();
     
     /**
      * 
@@ -301,8 +301,8 @@ public class ServiceBrowser {
     /**
      * @return Looks up the service registry, cached in ServiceBrowser in Session scope.
      */
-    private static Registry instanciateServiceRegistry() {
-        return RegistryFactory.getRegistry();
+    private static ServiceRegistry instanciateServiceRegistry() {
+        return ServiceRegistryFactory.getRegistry();
     }
 
     /**
@@ -605,7 +605,7 @@ public class ServiceBrowser {
         
         ServiceRecordImpl sr = null;
         
-        Registry registry = instanciateServiceRegistry();
+        ServiceRegistry registry = instanciateServiceRegistry();
         ServiceDescription sdQuery = new ServiceDescription.Builder(null, null).endpoint(endpoint).build();
         
         List<ServiceDescription> result = registry.query(sdQuery);

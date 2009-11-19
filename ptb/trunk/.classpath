@@ -15,7 +15,6 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/axis.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/ejb3-persistence.jar"/>
 	<classpathentry kind="lib" path="/pserv/build/pserv-if-common.jar" sourcepath="/pserv/IF/common/src/java"/>
-	<classpathentry kind="lib" path="/pserv/build/pserv-if-registry-api.jar" sourcepath="/pserv/IF/registry/src/java"/>
 	<classpathentry kind="lib" path="/pserv/build/pserv-if-storage-api.jar" sourcepath="/pserv/IF/storage/src/java"/>
 	<classpathentry kind="lib" path="/pserv/build/pserv-if-techreg-api.jar" sourcepath="/pserv/IF/techreg/src/java"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/castor-xml.jar"/>
@@ -117,5 +116,6 @@
 	<classpathentry kind="lib" path="/pserv/lib/jaxws-ri-2.1.4/lib/sjsxp.jar"/>
 	<classpathentry kind="lib" path="/pserv/lib/jaxws-ri-2.1.4/lib/stax-ex.jar"/>
 	<classpathentry kind="lib" path="/pserv/lib/jaxws-ri-2.1.4/lib/streambuffer.jar"/>
+	<classpathentry kind="lib" path="/pserv/build/pserv-if-servreg-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

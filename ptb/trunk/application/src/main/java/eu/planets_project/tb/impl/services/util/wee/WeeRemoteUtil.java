@@ -5,8 +5,8 @@ import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.RegistryFactory;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 
@@ -21,7 +21,7 @@ public class WeeRemoteUtil {
 	private PlanetsLogger log = PlanetsLogger.getLogger(WeeRemoteUtil.class, "testbed-log4j.xml");
 	private WftRegistryService wftRegImp;
 	private WeeService weeService;
-	private Registry registry;
+	private ServiceRegistry registry;
 	private static WeeRemoteUtil weeRemote= null;
 	
 	public static synchronized WeeRemoteUtil getInstance(){
@@ -42,7 +42,7 @@ public class WeeRemoteUtil {
 		return wftRegImp;
 	}
 	
-	public Registry getServiceRegistry(){
+	public ServiceRegistry getServiceRegistry(){
 		return registry;
 	}
 	
@@ -62,7 +62,7 @@ public class WeeRemoteUtil {
 		}
 	
 		//get an instance of the ServiceRegistry
-		registry = RegistryFactory.getRegistry();
+		registry = ServiceRegistryFactory.getRegistry();
 	}
 
 }

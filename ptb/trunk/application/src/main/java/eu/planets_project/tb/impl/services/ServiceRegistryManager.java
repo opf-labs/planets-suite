@@ -21,13 +21,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.RegistryFactory;
-//import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry;
-//import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryFactory;
-//import eu.planets_project.ifr.core.registry.api.jaxr.model.PsService;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.tb.impl.AdminManagerImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -71,7 +67,7 @@ public class ServiceRegistryManager {
         }*/
         
         //Look up all available Service(Descriptions) from the local service registry
-        Registry serReg = RegistryFactory.getRegistry();
+        ServiceRegistry serReg = ServiceRegistryFactory.getRegistry();
         //a null ServiceDescription will query all endpoints from the registry
         List<ServiceDescription> lServiceDescriptions = serReg.query(null);
         for(ServiceDescription serDesc : lServiceDescriptions){
