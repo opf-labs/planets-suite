@@ -162,5 +162,6 @@
 	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xmlParserAPIs.jar"/>
 	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xsdlib.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/velocity-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
