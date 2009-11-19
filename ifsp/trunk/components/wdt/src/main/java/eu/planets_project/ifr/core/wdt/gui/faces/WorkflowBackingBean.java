@@ -57,8 +57,8 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.RegistryFactory;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectReference;
@@ -66,7 +66,6 @@ import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -123,7 +122,7 @@ public class WorkflowBackingBean {
 	private WeeService weeService;
 	private UUID workflowUUID = null;
 	private SAXBuilder builder;
-	private Registry registry;
+	private ServiceRegistry registry;
 	private ArrayList<SubmittedWorkflowBean> submittedWorkflows;
 	private HashMap<UUID, SubmittedWorkflowBean> workflowLookup;
 
@@ -146,7 +145,7 @@ public class WorkflowBackingBean {
 			errorMessageString.add("Unable to retrieve Workflow Services.");
 		}
 
-		registry = RegistryFactory.getRegistry();
+		registry = ServiceRegistryFactory.getRegistry();
 
 		builder = new SAXBuilder();
 
