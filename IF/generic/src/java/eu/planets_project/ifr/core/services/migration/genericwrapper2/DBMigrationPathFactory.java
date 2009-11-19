@@ -317,7 +317,7 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	    toolPresets = new ToolPresets();
 	    toolPresets.setToolPresets(presets);
 
-	    String defaultPresetName = "";
+	    String defaultPresetName = null;
 	    if (presets.size() > 0) {
 		defaultPresetName = getDefaultAttributeValue(pathNode,
 			presetsElementName);

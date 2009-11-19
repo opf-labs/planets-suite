@@ -44,9 +44,6 @@
 	<paths>
 		<path>
 			<inputformats>
-				<!-- Dia files. -->
-				<uri value="info:pronom/x-fmt/381" />
-
 				<!-- Xfig files -->
 				<!-- FIXME! What's the way to specify a format that is unknown to PRONOM? -->
 				<uri value="planets:fig" />
@@ -217,9 +214,103 @@
 
 				</parameter>
 			</toolparameters>
-			<toolpresets default="">
+			<toolpresets>
 			</toolpresets>
 
 		</path>
+
+  <path>
+   <inputformats>
+    <!-- Xfig files -->
+    <!-- FIXME! What's the way to specify a format that is unknown to PRONOM? -->
+    <uri value="planets:fig" />
+   </inputformats>
+
+   <outputformat>
+    <!-- SVG 1.1 -->
+    <uri value="info:pronom/fmt/92" />
+   </outputformat>
+
+   <commandline>
+    <command>
+     /bin/sh
+                </command>
+    <commandparameters>
+     <parameter>
+      -c
+                    </parameter>
+     <parameter>
+      <![CDATA[dia -n -t dia -e #tempDiaFile #inputFile && dia -n -t svg -e #outputFile #tempDiaFile]]>
+     </parameter>
+    </commandparameters>
+   </commandline>
+
+   <toolinput>
+    <tempfile label="inputFile" name="inputFile.fig">
+    </tempfile>
+   </toolinput>
+
+   <tooloutput>
+    <tempfile label="outputFile">
+    </tempfile>
+   </tooloutput>
+
+   <tempfiles>
+    <tempfile label="tempDiaFile" name="tempDiaFile.dia">
+    </tempfile>
+   </tempfiles>
+
+   <toolparameters>
+   </toolparameters>
+
+   <toolpresets>
+   </toolpresets>
+  </path>
+
+  <path>
+   <inputformats>
+    <!-- Dia files. -->
+    <uri value="info:pronom/x-fmt/381" />
+   </inputformats>
+
+   <outputformat>
+    <!-- SVG 1.1 -->
+    <uri value="info:pronom/fmt/92" />
+
+   </outputformat>
+
+   <commandline>
+    <command>
+     /bin/sh
+                </command>
+    <commandparameters>
+     <parameter>
+      -c
+                    </parameter>
+     <parameter>
+      <![CDATA[dia -n -t svg -e #outputFile #inputFile]]>
+     </parameter>
+    </commandparameters>
+   </commandline>
+
+   <toolinput>
+    <tempfile label="inputFile" name="inputFile.dia">
+    </tempfile>
+   </toolinput>
+
+   <tooloutput>
+    <tempfile label="outputFile">
+    </tempfile>
+   </tooloutput>
+
+   <tempfiles>
+   </tempfiles>
+
+   <toolparameters>
+   </toolparameters>
+   <toolpresets>
+   </toolpresets>
+  </path>
+
 	</paths>
 </serviceWrapping>

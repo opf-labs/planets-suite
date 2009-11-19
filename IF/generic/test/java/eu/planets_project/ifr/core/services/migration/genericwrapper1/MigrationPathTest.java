@@ -76,7 +76,6 @@ public class MigrationPathTest {
                 + "/random-temp-file-name && tr '[:lower:]' '[:upper:]' "
                 + "/random-temp-file-name > " + "/random-destination-name";
 
-        System.out.println("expected: " + expectedCommandLine + "\n\nactual: " + executableCommandLine);
         Assert.assertEquals("Un-expected output from getCommandLine().",
                 expectedCommandLine, executableCommandLine);
     }

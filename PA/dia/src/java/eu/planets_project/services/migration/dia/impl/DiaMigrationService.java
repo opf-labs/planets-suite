@@ -84,8 +84,6 @@ public final class DiaMigrationService implements Migrate, Serializable {
 			    + digitalObject.getTitle()
 			    + "' from input format URI: " + inputFormat
 			    + " to output format URI: " + outputFormat, e);
-	    e.printStackTrace(System.out);
-	    System.out.println();
 	    ServiceReport serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, e.toString());
 	    return new MigrateResult(null, serviceReport); // FIXME! Report failure in a
 						  // proper way.

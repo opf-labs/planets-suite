@@ -147,11 +147,14 @@ public class GenericMigrationWrapper {
 	final List<String> prCommand = commandBuilder.buildCommand(
 		migrationPath, toolParameters, temporaryFileMappings);
 
-	String fullCommandLine = "";
-	for (String cmdfrag : prCommand) {
-	    fullCommandLine += cmdfrag + " ";
+	if (log.isInfoEnabled()) {
+	    String fullCommandLine = "";
+	    for (String cmdfrag : prCommand) {
+		fullCommandLine += cmdfrag + " ";
+	    }
+	    log.info("Executing command line: " + fullCommandLine);
 	}
-
+	
 	// Execute the tool
 	final ProcessRunner toolProcessRunner = new ProcessRunner();
 	final boolean executionSuccessful = executeToolProcess(
@@ -159,14 +162,14 @@ public class GenericMigrationWrapper {
 
 	// Delete temporary files. However, do NOT delete the output unless the
 	// execution failed.
+
 	final ToolIOProfile outputIOProfile = migrationPath
 		.getToolOutputProfile();
 
-	final String outputFileLabel = outputIOProfile
-		.getCommandLineFileLabel();
-	
 	if ((outputIOProfile.usePipedIO() == false) && executionSuccessful) {
 	    // OK, there should exist an output file. Avoid deleting it.
+	    final String outputFileLabel = outputIOProfile
+		    .getCommandLineFileLabel();
 	    for (String tempFileLabel : temporaryFileMappings.keySet()) {
 		if (outputFileLabel.equals(tempFileLabel) == false) {
 		    temporaryFileMappings.get(tempFileLabel).delete();
@@ -249,7 +252,7 @@ public class GenericMigrationWrapper {
 	Type messageType = Type.ERROR;
 	Status messageStatus = Status.TOOL_ERROR;
 
-	if (toolProcessRunner.getReturnCode() != -1) {
+	if (toolProcessRunner.getReturnCode() == 0) {
 	    // Create a service report for a successful execution.
 
 	    statusDescription = "Successfully migrated";
@@ -515,6 +518,6 @@ public class GenericMigrationWrapper {
 	toolProcessRunner.setOutputCollectionByteSize(-1);
 
 	toolProcessRunner.run();
-	return toolProcessRunner.getReturnCode() != -1;
+	return toolProcessRunner.getReturnCode() == 0;
     }
 }

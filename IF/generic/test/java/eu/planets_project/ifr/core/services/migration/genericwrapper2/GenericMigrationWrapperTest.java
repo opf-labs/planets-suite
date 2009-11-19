@@ -52,8 +52,8 @@ public class GenericMigrationWrapperTest {
 
     @Test
     public void testDescribe() {
+	//FIXME! Make a meaningful implementation.
 	ServiceDescription sb = genericWrapper.describe();
-	System.out.println(sb);
     }
 
     @Test

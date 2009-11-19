@@ -57,7 +57,6 @@ final List<Parameter> testParameters = new ArrayList<Parameter>();
     @Test
     public void testDescribe(){
         ServiceDescription sb = genericWrapper.describe();
-        System.out.println(sb);
     }
 
     @Test

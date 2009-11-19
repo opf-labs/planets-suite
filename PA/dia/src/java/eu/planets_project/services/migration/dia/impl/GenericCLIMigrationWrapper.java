@@ -172,7 +172,7 @@ public class GenericCLIMigrationWrapper {
 
         toolProcessRunner.run();
         ServiceReport serviceReport;
-        boolean toolError = toolProcessRunner.getReturnCode() == -1;
+        boolean toolError = toolProcessRunner.getReturnCode() != 0;
         if (toolError) {
             serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
                     toolProcessRunner.getProcessErrorAsString());

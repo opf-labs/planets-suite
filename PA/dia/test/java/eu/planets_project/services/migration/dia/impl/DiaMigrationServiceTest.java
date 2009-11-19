@@ -100,7 +100,37 @@ public class DiaMigrationServiceTest extends TestCase {
 		final ServiceReport serviceReport = migrationResult.getReport();
 		final ServiceReport.Status migrationStatus = serviceReport.getStatus();
 		assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
+	}
+
+	/**
+	 * Test migration from Xfig to SVG version 1.1
+	 * 
+	 * Test method for {@link eu.planets_project.services.migration.dia.impl.DiaMigrationService#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)}.
+	 */
+	@Test
+	public void testMigrationFigToSvg() throws Exception {
+
+		final String figTestFileName = "z80pio.fig";
+
+		/**
+		 * Full path to the Fig test file to use.
+		 */
+		final File figTestFile = new File(TEST_FILE_PATH, figTestFileName);
+
+		final URI diaFormatURI = new URI("planets:fig"); // Fig URI
+		final URI svgFormatURI = new URI("info:pronom/fmt/92"); // SVG version 1.1
+
+		final DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(Content.byValue(figTestFile));
+		digitalObjectBuilder.format(diaFormatURI);
+		digitalObjectBuilder.title(figTestFileName);
+		final DigitalObject digitalObject = digitalObjectBuilder.build();
+			
+		final List<Parameter> testParameters = new ArrayList<Parameter>();
+		final MigrateResult migrationResult = migrationService.migrate(digitalObject, diaFormatURI, svgFormatURI, testParameters);
 		
+		final ServiceReport serviceReport = migrationResult.getReport();
+		final ServiceReport.Status migrationStatus = serviceReport.getStatus();
+		assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
 	}
 
 	/**
