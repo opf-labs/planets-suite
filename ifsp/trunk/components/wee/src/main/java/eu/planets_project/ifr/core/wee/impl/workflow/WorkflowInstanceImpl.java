@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.wee.impl.workflow;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;

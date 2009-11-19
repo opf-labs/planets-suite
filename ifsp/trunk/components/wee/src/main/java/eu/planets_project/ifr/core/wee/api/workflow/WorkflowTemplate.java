@@ -6,7 +6,6 @@ import java.util.List;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameter;
 
 
 /**

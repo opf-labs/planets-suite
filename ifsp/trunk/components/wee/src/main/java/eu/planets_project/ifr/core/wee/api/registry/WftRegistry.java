@@ -1,8 +1,5 @@
 package eu.planets_project.ifr.core.wee.api.registry;
 
-import java.io.IOException;
-import java.util.List;
-
 import javax.ejb.Remote;
 
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;

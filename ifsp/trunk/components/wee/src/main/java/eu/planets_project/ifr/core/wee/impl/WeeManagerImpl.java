@@ -49,6 +49,10 @@ import eu.planets_project.services.PlanetsException;
  */
 public class WeeManagerImpl implements WeeManager, Serializable {
     
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3148507118149727434L;
 	private static final Log log = LogFactory.getLog(WeeManagerImpl.class);
 	//contains FIFO of workflows to execute. only wfs that have not yet been executed
     private LinkedList<WorkflowInstance> localJobqueue;

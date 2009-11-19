@@ -14,7 +14,11 @@ import org.jboss.wsf.stack.metro.EndpointRegistryFactoryImpl;
  */
 public class WeeContextServlet extends MonitoringContextServlet
 {
-   // provide logging
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 99344881644343667L;
+// provide logging
    protected final Logger log = Logger.getLogger(WeeContextServlet.class);
 
    protected void initServiceEndpointManager()

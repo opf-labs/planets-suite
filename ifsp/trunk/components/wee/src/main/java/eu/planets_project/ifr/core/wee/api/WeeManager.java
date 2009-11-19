@@ -4,10 +4,10 @@
 package eu.planets_project.ifr.core.wee.api;
 
 import java.util.UUID;
+
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.datatypes.DigitalObject;
 
 
 /**

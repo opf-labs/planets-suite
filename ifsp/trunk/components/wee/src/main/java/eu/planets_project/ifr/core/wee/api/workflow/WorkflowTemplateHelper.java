@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,7 +27,11 @@ import eu.planets_project.services.utils.DigitalObjectUtils;
  */
 public abstract class WorkflowTemplateHelper implements Serializable {
 
-    private Map<PlanetsService, ServiceCallConfigs> serviceInvocationConfigs = new HashMap<PlanetsService, ServiceCallConfigs>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9043319482888030134L;
+	private Map<PlanetsService, ServiceCallConfigs> serviceInvocationConfigs = new HashMap<PlanetsService, ServiceCallConfigs>();
     private List<DigitalObject> data = new ArrayList<DigitalObject>();
 
     /*
@@ -170,7 +173,6 @@ public abstract class WorkflowTemplateHelper implements Serializable {
         List<Parameter> links = new ArrayList<Parameter>();
         for (int i = 0; i < results.size(); i++) {
             URL url = results.get(i);
-            String url_ = url.toString();
             String[] strings = url.getFile().split("/");
             //hack to change from file uri to relative path
             links.add(new Parameter("File " + (i + 1), String.format("<a href='%s'>%s</a>", /*url*/strings[strings.length - 1],

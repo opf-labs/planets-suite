@@ -10,6 +10,10 @@ package eu.planets_project.ifr.core.wee.impl.exception;
  */
 public class WorkflowInstantiationException extends Exception{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7035816545303908616L;
 	private errCodes err; // a unique id
 	enum errCodes{
 		invalidXMLTemplate(1,"The provided XML Template is invalid against the schema"),

@@ -6,17 +6,12 @@ package eu.planets_project.ifr.core.wee.impl.mockup;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
 
 import javax.jcr.LoginException;
 import javax.jcr.PathNotFoundException;
@@ -44,7 +39,6 @@ public class DataRegistryMockup implements DataManagerLocal{
 	 //e.g. ../server/default/data/wee
     private String weeDirBase ="";
     private String weewfTemplatesDir ="";
-    private String weeTmpDir ="";
     
     public DataRegistryMockup(){
     	readDirectorySettings();
@@ -54,7 +48,6 @@ public class DataRegistryMockup implements DataManagerLocal{
     private void readDirectorySettings(){
     	weeDirBase = RegistryUtils.getWeeDirBase();
     	weewfTemplatesDir = RegistryUtils.getWeeWFTemplateDir();
-    	weeTmpDir = RegistryUtils.getWeeTmpDir();
     }
     
     private void createWFTemplateDir() {

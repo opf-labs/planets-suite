@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.wee.gui;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.Set;
 
 import javax.management.ObjectName;
@@ -29,7 +28,12 @@ import org.jboss.wsf.spi.management.EndpointRegistry;
  */
 public abstract class MonitoringContextServlet extends HttpServlet
 {
-   // provide logging
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6123588268584270087L;
+
+// provide logging
    protected final Logger log = Logger.getLogger(MonitoringContextServlet.class);
 
 //   protected ServiceEndpointManager epManager;
@@ -53,8 +57,6 @@ public abstract class MonitoringContextServlet extends HttpServlet
 
       writer.print("<html>");
       setupHTMLResponseHeader(writer, req);
-
-      URL requestURL = new URL(req.getRequestURL().toString());
 
       writer.print("<body style='font-size:1.0em;'>");
       writer.print("<div id='wrapper'><a name='top'></a> <span class='hide'><a href='#content'>Skip Navigation / Jump to Content</a></span>");

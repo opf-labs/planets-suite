@@ -4,20 +4,14 @@
 package eu.planets_project.ifr.core.wee.api.wsinterface;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
-import javax.xml.ws.BindingType;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
-
-import org.jboss.annotation.ejb.RemoteBinding;
+import javax.xml.ws.BindingType;
 
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.services.PlanetsServices;

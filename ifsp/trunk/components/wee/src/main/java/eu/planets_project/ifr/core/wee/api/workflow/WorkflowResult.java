@@ -32,7 +32,6 @@ public class WorkflowResult implements Serializable {
     /** Generated. */
     private static final long serialVersionUID = -7804803563573452403L;
 
-    @SuppressWarnings("unused")
     // For JAXB - even if empty
     public WorkflowResult() {
     	this.startTime = System.currentTimeMillis();
@@ -50,7 +49,8 @@ public class WorkflowResult implements Serializable {
     private List<WorkflowResultItem> resultItems;
     private long startTime=-1;
     private long endTime=-1;
-    private String partialResults;
+    @SuppressWarnings("unused")
+	private String partialResults;
 
     /**
      * @param report The location of the report

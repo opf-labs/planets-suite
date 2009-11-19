@@ -3,19 +3,6 @@
  */
 package eu.planets_project.ifr.core.wee.api;
 
-import java.io.IOException;
-import java.io.Serializable;
-import javax.ejb.MessageDriven;
-import javax.ejb.MessageDrivenContext;
-import javax.ejb.ActivationConfigProperty;
-import javax.jms.MessageListener;
-import javax.jms.Message;
-import javax.jms.TextMessage;
-import javax.jms.JMSException;
-import javax.annotation.Resource;
-
-import java.util.UUID;
-import java.util.logging.Logger;
 
 
 /**

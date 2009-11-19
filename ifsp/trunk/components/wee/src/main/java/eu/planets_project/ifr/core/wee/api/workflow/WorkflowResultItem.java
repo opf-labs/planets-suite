@@ -21,7 +21,12 @@ import eu.planets_project.services.datatypes.ServiceReport;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WorkflowResultItem implements Serializable{
 	
-    @Transient
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7296972920451369134L;
+
+	@Transient
     @XmlTransient
     private static final Log logger = LogFactory.getLog(WorkflowResultItem.class);
 	
