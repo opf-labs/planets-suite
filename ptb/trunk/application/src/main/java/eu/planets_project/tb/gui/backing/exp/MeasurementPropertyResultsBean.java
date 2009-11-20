@@ -97,12 +97,29 @@ public class MeasurementPropertyResultsBean {
 		
 		private String value = null;
 		
+		/**
+		 * Note: In case of a String > 60 chars a modified Substring 
+		 * for GUI representation is returned.
+		 * @return
+		 */
 		public String getRecordValue(){
-			return this.value;
+			return getWordWrappedString(this.value);
 		}
 		
 		public void setRecordValue(String value){
 			this.value = value;
+		}
+		
+		//FIXME: Firefox does not support word-wrap in tables - therefore cut off after 60 chars...
+		//http://www.w3.org/TR/css3-text/#word-wrap
+		private String getWordWrappedString(String s){
+			String ret = s;
+			if((s!=null)&&(s.length()>60)){
+				StringBuffer sb = new StringBuffer(s);
+				sb.insert(30, "[...]");
+				ret = sb.substring(0, 65);
+			}
+			return ret;
 		}
 		
 	}
