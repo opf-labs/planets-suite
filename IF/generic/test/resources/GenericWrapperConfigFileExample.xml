@@ -8,43 +8,75 @@
 			Notice the URIs/URLs are without empty spaces.
 		-->
 
+		<!-- A brief name by which this service is known. (Required field) -->
 		<title>
-			ff
+			Example: Eggnog migration service.
         </title>
+        
+        <!--
+        A human readable description of the service. This is your chance to describe your service to potential users. Although automatic service discovery will more likely depend upon service type, input formats and tool wrapped, users browsing the Planets service registry will see the name and description. 
+        The description may be written in HTML, using a <![CDATA[ <b>Hi</b> ]]> (Optional field)-->
 		<description>
-			fff
+			Example description of a fantastic tool for migrating from an egg to eggnog.
         </description>
+        <!-- The link to the Tool registry. (Required field) -->
 		<tool>
+			<!-- The name of the wrapped tool (Optional field) -->
 			<name>
-				fff
+				Example: HandMixer.exe
             </name>
-			<identifier>http://spu.spu</identifier>
+			<!-- An identifier for this tool, should be resolvable via a tool registry. (Optional field) -->
+			<identifier>http://example-planets-registry.eu/toolident?4385794357</identifier>
+			<!-- Tool description (Optional field) -->
 			<description>
-				fff
+				Example: A useful tool for migrating eggs to eggnog.
             </description>
-			<homepage>http://spu.spu</homepage>
+            <!-- Link to the (project) home page of the tool. (Optional field) -->
+			<homepage>http://example.org</homepage>
+			<!-- Tool version information. (Optional field) -->
 			<version>
-				ddd
+				4.13
             </version>
 		</tool>
+		<!-- Service wrapping version information. (Optional field)-->
 		<version>
-			ddd
+			3.141592653589793
         </version>
+        <!-- Who wrote the wrapper. Preferred form would be a URI or a full email address, like: "Full Name <fullname@server.com>". (Required field)        -->
 		<creator>
-			dddd
+			<![CDATA["Easter Bunny <easter.bunny@bunny.net>"]]>
         </creator>
-		<publisher>
-			ddd
-        </publisher>
-		<identifier>http://spu.spu</identifier>
+        <!-- Identifier - A unique identifier for this service. "We need a unique id
+      for every service; Andrew Lindley is using a MD5 hash to identify a
+      service. This is a brilliant idea. I would say this field summarizes Name
+      of class impl service, Version of service and ID of Tool (URI) or makes
+      them unnecessary.". This is an optional field, however, the generic wrapper will automatically generate an identifier if no value is
+      specified. This is done by generating a MD5 hash of a string containing the canonical class name
+      of the wrapping service implementation class, the service version and the toolID.
+         -->
+		<identifier>Example_custom_identifier</identifier>
+		
+		<!-- Installation and setup instructions for the service. This includes software to be installed, environment variables to be set, properties to be set, etc. It is the responsibility of the developer to ensure that the instructions provided are of appropriate detail and quality. This really depends upon the tool been wrapped, for example the pure Java services currently in pserv don't provide any instructions but they should build and deploy when the pserv project is built and they should simply work without any set up. More complex tools relying on installed software will require more detailed information.
+
+As yet, there are no formal requirements on the instructions, but they should be sufficient for the build manager and the testbed manager to deploy the service. The instructions should closely follow the installation instructions from the Service Submission document.
+(Optional field) 
+		 -->
 		<instructions>
-			ddd
+			Example: Please install the XYZ tool on the system to make this service work.
         </instructions>
-		<furtherinfo>http://spu.spu</furtherinfo>
-		<logo>http://spu.spu</logo>
-		<classname>
-			ddd
-        </classname>
+        <!-- A URI that provides a link to further information about a service wrapper. This could point to a web page, information about the tool wrapped, or a help page hosted on the web. (Optional field)-->
+		<furtherinfo>http://example.org</furtherinfo>
+		
+		<!-- A URI that can be used to provide a graphic image logo for the service. This will be displayed in the service registry if present. (Optional field) -->
+		<logo>http://www.planets-project.eu/graphics/Planets_Logo.png</logo>
+		
+		<!-- An optional list of hard-coded properties to add to the service description. -->
+		<properties>
+		<property name="exampleName">
+		 exampleValue
+		</property>
+		</properties>
+		
 	</serviceDescription>
 
 	<!--
