@@ -248,6 +248,11 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	public void store(URI pdURI, DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException {
 		try {
+		       if( digitalObject.getTitle() == null ) {
+		          throw new DigitalObjectNotStoredException(
+		        		"The DigitalObject titel was not found!");
+		       }
+
 			// get the path from the URI to store at
 			PDURI _parsedURI = new PDURI(pdURI);
 			String path = _parsedURI.getDataRegistryPath();
