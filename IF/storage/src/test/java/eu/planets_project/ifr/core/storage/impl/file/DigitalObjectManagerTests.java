@@ -94,6 +94,8 @@ public class DigitalObjectManagerTests {
         DigitalObjectContent c1 = Content.byReference(purl.toURL());
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl).build();
+	// Check digital object. Title should not be null 
+        assertNotNull(object.getTitle());
         // Now store it
 		_dom.store(new URI("planets://localhost:8080/dr/test/test_word.doc"), object);
 		// Then retrieve it and check it's the same
