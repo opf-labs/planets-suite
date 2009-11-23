@@ -8,8 +8,8 @@
 	<classpathentry kind="src" path="IF/fedora/test/java"/>
 	<classpathentry kind="src" path="IF/generic/src/java"/>
 	<classpathentry kind="src" path="IF/generic/test/java"/>
-	<classpathentry kind="src" path="IF/registry/src/main/java"/>
-	<classpathentry kind="src" path="IF/registry/src/test/java"/>
+	<classpathentry kind="src" path="IF/servreg/src/main/java"/>
+	<classpathentry kind="src" path="IF/servreg/src/test/java"/>
 	<classpathentry kind="src" path="IF/simple/src/java"/>
 	<classpathentry kind="src" path="IF/simple/src/test/java"/>
 	<classpathentry kind="src" path="IF/simple/src/resources"/>
