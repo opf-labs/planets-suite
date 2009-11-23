@@ -1,18 +1,18 @@
-package eu.planets_project.ifr.core.techreg.formats.api;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
-import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
+
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  */
 public interface FormatRegistry {
-
+    
     /* Query methods: */
 
     /**
@@ -51,7 +51,7 @@ public interface FormatRegistry {
      * @param puri The Planets URI (see FormatRegistry)
      * @return A format instance for the given URI
      */
-    Format getFormatForURI(URI puri);
+    Format getFormatForUri(URI puri);
     
     /**
      * @param uri The URI to find extensions for
@@ -72,7 +72,6 @@ public interface FormatRegistry {
      * @return A URI representing the extension
      */
     URI createExtensionUri(String extension);
-    
     
     /**
      * @param action the action a modify service can perform (e.g.: "repair", "rotate", "crop" ...)
@@ -96,7 +95,6 @@ public interface FormatRegistry {
      * @return A URI representing any format.
      */
     URI createAnyFormatUri();
-    
     
     /**
      * @return a URI representing a folder.

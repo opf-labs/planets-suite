@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
-import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
 
 /**
  * Format registry format URI creation and info tests.
@@ -59,7 +58,7 @@ public class FormatUriTypesTests {
         URI uri = registry.createAnyFormatUri();
         Assert.assertTrue(registry.isUriOfType(uri, UriType.ANY));
         /* Or use the constant: */
-        uri = Format.ANY;
+        uri = MutableFormat.ANY;
         Assert.assertTrue(registry.isUriOfType(uri, UriType.ANY));
         /* Any-Format URIs have no value: */
         Assert.assertEquals(null, registry.getValueFromUri(uri));
@@ -71,7 +70,7 @@ public class FormatUriTypesTests {
         URI uri = registry.createUnknownFormatUri();
         Assert.assertTrue(registry.isUriOfType(uri, UriType.UNKNOWN));
         /* Or use the constant: */
-        uri = Format.UNKNOWN;
+        uri = MutableFormat.UNKNOWN;
         Assert.assertTrue(registry.isUriOfType(uri, UriType.UNKNOWN));
         /* Unknown-Format URIs have no value: */
         Assert.assertEquals(null, registry.getValueFromUri(uri));

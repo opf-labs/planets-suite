@@ -76,15 +76,15 @@ class DroidFormatRegistry  {
      * @param ff The droid file format
      * @return A Planets format created from the given droid format
      */
-    private Format fillFormatFromPRONOM( FileFormat ff ) {
+    private MutableFormat fillFormatFromPRONOM( FileFormat ff ) {
         if( ff == null ) return null;
         
         // Store the unique id and the description
-        Format fmt  = new Format( PUIDtoURI(ff.getPUID()) );
+        MutableFormat fmt  = new MutableFormat( PUIDtoURI(ff.getPUID()) );
         try {
-            fmt.setRegistryURL( new URL("http://www.nationalarchives.gov.uk/PRONOM/Format/proFormatSearch.aspx?status=detailReport&id=" + ff.getID()) );
+            fmt.setRegistryUrl( new URL("http://www.nationalarchives.gov.uk/PRONOM/Format/proFormatSearch.aspx?status=detailReport&id=" + ff.getID()) );
         } catch (MalformedURLException e) {
-            fmt.setRegistryURL(null);
+            fmt.setRegistryUrl(null);
         }
         fmt.setSummary( ff.getName() );
         fmt.setVersion( ff.getVersion() );
@@ -110,8 +110,8 @@ class DroidFormatRegistry  {
      * 
      * @return the formats in a Set
      */
-    public Set<Format> getFormats() {
-       HashSet<Format> fmts = new HashSet<Format>();
+    public Set<MutableFormat> getFormats() {
+       HashSet<MutableFormat> fmts = new HashSet<MutableFormat>();
        for( int i = 0; i < sigFile.getNumFileFormats(); i++ ) {
            fmts.add( fillFormatFromPRONOM(sigFile.getFileFormat(i)) );
        }

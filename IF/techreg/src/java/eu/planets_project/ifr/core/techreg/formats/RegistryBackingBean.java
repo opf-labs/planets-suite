@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.richfaces.component.html.HtmlDataTable;
 
 
+
 /**
  * GUI backing bean for the format registry.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -27,7 +28,7 @@ public class RegistryBackingBean {
     
     private HtmlDataTable formatsDataTable;
     
-    private Format currentFormat = null;
+    private MutableFormat currentFormat = null;
     
     /**
      * Constructor, initialised the format registry.
@@ -45,7 +46,7 @@ public class RegistryBackingBean {
         Set<URI> uris = ftr.getUrisForExtension(searchStr);
         if( uris == null ) return fmts;
         for( URI puri : uris ) {
-            Format fmt = ftr.getFormatForURI(puri);
+            Format fmt = ftr.getFormatForUri(puri);
             fmts.add(fmt);
         }
         return fmts;
@@ -82,14 +83,14 @@ public class RegistryBackingBean {
     /**
      * @return the currentFormat
      */
-    public Format getCurrentFormat() {
+    public MutableFormat getCurrentFormat() {
         return currentFormat;
     }
 
     /**
      * @param currentFormat the currentFormat to set
      */
-    public void setCurrentFormat(Format currentFormat) {
+    public void setCurrentFormat(MutableFormat currentFormat) {
         this.currentFormat = currentFormat;
     }
 
@@ -100,7 +101,7 @@ public class RegistryBackingBean {
      * @return the jsf outcome
      */
     public String selectAFormat() {
-        currentFormat = (Format) this.formatsDataTable.getRowData();
+        currentFormat = (MutableFormat) this.formatsDataTable.getRowData();
         return "success";
     }
 

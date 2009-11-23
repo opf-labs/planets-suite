@@ -56,7 +56,7 @@ class FormatRegistryIndexer {
      * 
      * @param fmt
      */
-    void add( Format fmt ) {
+    void add( MutableFormat fmt ) {
         // Add a Format to the index.
         try {
             IndexWriter iwriter = openWriter();
@@ -72,7 +72,7 @@ class FormatRegistryIndexer {
      * 
      * @param fmts
      */
-    void add( Set<Format> fmts ) {
+    void add( Set<MutableFormat> fmts ) {
         
     }
 
@@ -81,7 +81,7 @@ class FormatRegistryIndexer {
      * @param fmt
      * @return
      */
-    private Document formatToDocument( Format fmt ) {
+    private Document formatToDocument( MutableFormat fmt ) {
         Document doc = new Document();
         String text = "This is the text to be indexed.";
         doc.add(new Field("fieldname", text, Field.Store.YES,

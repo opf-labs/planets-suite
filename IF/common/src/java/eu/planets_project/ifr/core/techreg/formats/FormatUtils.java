@@ -3,7 +3,7 @@ package eu.planets_project.ifr.core.techreg.formats;
 import java.net.URI;
 import java.util.Set;
 
-import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
+
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -37,7 +37,7 @@ final class FormatUtils {
             return null;
         }
         FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
-        Set<String> set = fr.getFormatForURI(uri).getExtensions();
+        Set<String> set = fr.getFormatForUri(uri).getExtensions();
         if (set != null) {
             return set.iterator().next();
         }
