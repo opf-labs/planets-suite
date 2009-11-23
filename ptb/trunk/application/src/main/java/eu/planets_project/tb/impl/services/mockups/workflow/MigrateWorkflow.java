@@ -19,13 +19,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.techreg.formats.Format;
-import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -304,7 +304,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private List<URI> getPronomURIAliases(URI typeURI) {
         Set<URI> turis = new HashSet<URI>();
         
-        Format fmt = format.getFormatForURI(typeURI);
+        Format fmt = format.getFormatForUri(typeURI);
         if( format.isUriOfType(typeURI,UriType.MIME) ) {
             Set<URI> furis = ServiceBrowser.fr.getUrisForMimeType(fmt.getMimeTypes().iterator().next());
             turis.addAll(furis);

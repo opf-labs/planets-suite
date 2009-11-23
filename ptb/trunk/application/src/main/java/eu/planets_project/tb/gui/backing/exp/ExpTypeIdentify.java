@@ -4,7 +4,6 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -20,7 +19,6 @@ import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
-import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 
 /**
@@ -167,7 +165,7 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
          */
         public String getSummary() {
             try {
-                Format f = ServiceBrowser.fr.getFormatForURI(new URI(format));
+                Format f = ServiceBrowser.fr.getFormatForUri(new URI(format));
                 if( f.getExtensions() != null && f.getExtensions().size() > 0 ) {
                     String fs = ""; // Use the (1st) longest extension:
                     for( String ext : f.getExtensions() ) {
@@ -177,10 +175,10 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
                     if( f.getVersion() != null ) fs += " v."+f.getVersion();
                     if( f.getSummary() != null )
                         fs += " - "+f.getSummary();
-                    fs += " ("+f.getTypeURI()+")";
+                    fs += " ("+f.getUri()+")";
                     return fs;
                 } else {
-                    return f.getSummaryAndVersion();
+                    return f.getSummary() + " " + f.getVersion();
                 }
             } catch ( Exception e) {
                 log.error("Could not understand format URI: "+format);

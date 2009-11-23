@@ -65,7 +65,7 @@ public class FormatBean implements Comparable<FormatBean> {
     public String getSummary() {
         if( format != null ) {
             if( format.getVersion() != null ) {
-              return format.getSummaryAndVersion();
+              return format.getSummary() + " " + format.getVersion();
 	    } else {
               return format.getSummary();
             }
@@ -78,7 +78,7 @@ public class FormatBean implements Comparable<FormatBean> {
      */
     public URI getUri() {
         if( format == null ) return null;
-        return format.getTypeURI();
+        return format.getUri();
     }
 
     /* (non-Javadoc)
@@ -103,8 +103,8 @@ public class FormatBean implements Comparable<FormatBean> {
     public boolean equals(Object obj) {
         if( obj instanceof FormatBean ) {
             FormatBean fb = (FormatBean) obj;
-            if( format != null && format.getTypeURI() != null && fb != null && fb.getFormat() != null ) {
-              return format.getTypeURI().equals( fb.getFormat().getTypeURI() );
+            if( format != null && format.getUri() != null && fb != null && fb.getFormat() != null ) {
+              return format.getUri().equals( fb.getFormat().getUri() );
             } else {
               return super.equals(obj);
             }
@@ -118,8 +118,8 @@ public class FormatBean implements Comparable<FormatBean> {
      */
     @Override
     public int hashCode() {
-        if( format != null && format.getTypeURI() != null )
-            return format.getTypeURI().hashCode();
+        if( format != null && format.getUri() != null )
+            return format.getUri().hashCode();
         return super.hashCode();
     }
     

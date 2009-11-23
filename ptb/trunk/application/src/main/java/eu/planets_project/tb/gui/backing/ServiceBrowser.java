@@ -30,8 +30,8 @@ import org.richfaces.model.TreeNodeImpl;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.ifr.core.techreg.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
@@ -343,8 +343,8 @@ public class ServiceBrowser {
             log.info("Inspecting "+sd.getName());
             for( MigrationPath path : sd.getPaths() ) {
                 ServiceRecordBean srb = new ServiceRecordBean(sd);
-                FormatBean in = new FormatBean( ServiceBrowser.fr.getFormatForURI( path.getInputFormat() ) );
-                FormatBean out = new FormatBean( ServiceBrowser.fr.getFormatForURI( path.getOutputFormat() ) );
+                FormatBean in = new FormatBean( ServiceBrowser.fr.getFormatForUri( path.getInputFormat() ) );
+                FormatBean out = new FormatBean( ServiceBrowser.fr.getFormatForUri( path.getOutputFormat() ) );
                 PathwayBean pb = new PathwayBean( srb, in, out );
                 paths.add(pb);
             }
@@ -396,7 +396,7 @@ public class ServiceBrowser {
             for( MigrationPath path : sd.getPaths() ) {
                 if( ( endpoint == null ) || endpoint.equals(sd.getEndpoint().toString()) ) {
                     if( ( outputFormat == null ) || outputFormat.equals(path.getOutputFormat().toString()) ) {
-                        Format fmt = fr.getFormatForURI( path.getInputFormat() );
+                        Format fmt = fr.getFormatForUri( path.getInputFormat() );
                         formats.add(fmt);
                     }
                 }
@@ -418,7 +418,7 @@ public class ServiceBrowser {
             for( MigrationPath path : sd.getPaths() ) {
                 if( ( endpoint == null ) || endpoint.equals(sd.getEndpoint().toString()) ) {
                     if( ( inputFormat == null ) || inputFormat.equals(path.getInputFormat().toString()) ) {
-                        Format fmt = fr.getFormatForURI( path.getOutputFormat() );
+                        Format fmt = fr.getFormatForUri( path.getOutputFormat() );
                         formats.add(fmt);
                     }
                 }
@@ -593,7 +593,7 @@ public class ServiceBrowser {
      * @return
      */
     private static SelectItem createFormatSelectItem( Format fmt ) {
-        return new SelectItem( fmt.getTypeURI().toString(), fmt.getSummaryAndVersion() );
+        return new SelectItem( fmt.getUri().toString(), fmt.getSummary() + " " + fmt.getVersion() );
     }
     
     /**
@@ -706,7 +706,7 @@ public class ServiceBrowser {
             if( srb.getInputs() != null ) {
                 for( URI fmt : srb.getInputs() ) {
                     if( sbn.get(fmt) == null ) {
-                        sbn.put(fmt, new ServiceRecordsByFormatBean( fr.getFormatForURI(fmt) ) );
+                        sbn.put(fmt, new ServiceRecordsByFormatBean( fr.getFormatForUri(fmt) ) );
                     }
                     sbn.get(fmt).addAsInputService(srb);
                 }
@@ -714,7 +714,7 @@ public class ServiceBrowser {
             if( srb.getOutputs() != null ) {
                 for( URI fmt : srb.getOutputs() ) {
                     if( sbn.get(fmt) == null ) {
-                        sbn.put(fmt, new ServiceRecordsByFormatBean( fr.getFormatForURI(fmt) ) );
+                        sbn.put(fmt, new ServiceRecordsByFormatBean( fr.getFormatForUri(fmt) ) );
                     }
                     sbn.get(fmt).addAsOutputService(srb);
                 }

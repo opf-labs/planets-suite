@@ -306,7 +306,7 @@ public class ServiceRecordBean {
         if( uris == null ) return null;
         List<Format> fmts = new ArrayList<Format>();
         for( URI fmturi: uris ) {
-            Format fmt = ServiceBrowser.fr.getFormatForURI( fmturi );
+            Format fmt = ServiceBrowser.fr.getFormatForUri( fmturi );
             fmts.add(fmt);
         }
         return fmts;
@@ -363,11 +363,11 @@ public class ServiceRecordBean {
      * @return
      */
     private String formatSummary( URI fmturi ) {
-        Format fmt = ServiceBrowser.fr.getFormatForURI( fmturi );
+        Format fmt = ServiceBrowser.fr.getFormatForUri( fmturi );
         if( fmt.getSummary() != null ) {
-            return fmt.getSummaryAndVersion();
+            return fmt.getSummary() + " " + fmt.getVersion();
         } else {
-            return fmt.getTypeURI().toString();
+            return fmt.getUri().toString();
         }
     }
 

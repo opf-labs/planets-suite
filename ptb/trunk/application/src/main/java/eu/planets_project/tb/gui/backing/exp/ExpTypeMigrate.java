@@ -24,6 +24,7 @@ import javax.faces.model.SelectItem;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.techreg.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
@@ -123,13 +124,13 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         // Accepts any input?
         if( sd.getInputFormats() == null 
                 || sd.getInputFormats().size() == 0 
-                || sd.getInputFormats().contains( Format.ANY ) ) return true;
+                || sd.getInputFormats().contains( UriType.ANY ) ) return true;
         
         // Examine accepted inputs:
         for( URI sinf : sd.getInputFormats() ) {
             // Examine aliases for that format:
             for( Format alias : ServiceBrowser.fr.getFormatAliases(sinf) ) {
-                if( alias.getTypeURI().equals( formatUri )) return true;
+                if( alias.getUri().equals( formatUri )) return true;
             }
         }
         return false;
