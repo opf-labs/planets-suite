@@ -7,15 +7,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.ReportingLog;
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
@@ -31,8 +27,6 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.modify.Modify;
-import eu.planets_project.services.modify.ModifyResult;
 
 public class IdentifyMigrateTemplateNamed extends WorkflowTemplateHelper implements WorkflowTemplate {
 
