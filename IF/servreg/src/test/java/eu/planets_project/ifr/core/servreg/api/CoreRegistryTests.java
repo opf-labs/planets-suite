@@ -16,8 +16,8 @@ import eu.planets_project.ifr.core.servreg.api.CoreRegistry;
 import eu.planets_project.ifr.core.servreg.api.MatchingMode;
 import eu.planets_project.ifr.core.servreg.api.Response;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
