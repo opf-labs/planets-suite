@@ -5,129 +5,128 @@
 		<title>
 			Dia migration service.
         </title>
+
 		<description>
-			fff
+			Migration of formats that can be handled by Dia. E.g.
+			migration from Dia files to a variety of other formats such as Fig,
+			SVG and PNG, but also migration between non-Dia formats. E.g.
+			migration from Fig to SVG.  
         </description>
+
 		<tool>
 			<name>
-				fff
+				dia
             </name>
-			<identifier>http://spu.spu</identifier>
+
 			<description>
-				fff
-            </description>
-			<homepage>http://spu.spu</homepage>
+				Dia is roughly inspired by the commercial Windows
+				program 'Visio', though more geared towards informal diagrams for
+				casual use. It can be used to draw many different kinds of diagrams.
+				It currently has special objects to help draw entity relationship
+				diagrams, UML diagrams, flowcharts, network diagrams, and many other
+				diagrams. It is also possible to add support for new shapes by
+				writing simple XML files, using a subset of SVG to draw the shape.
+
+				It can load and save diagrams to a custom XML format (gzipped by
+				default, to save space), can export diagrams to a number of formats,
+				including EPS, SVG, XFIG, WMF and PNG, and can print diagrams
+				(including ones that span multiple pages).
+			</description>
+
+			<homepage>http://live.gnome.org/Dia</homepage>
+
 			<version>
-				ddd
+				Dia version 0.96.1, compiled 09:31:57 Nov 26 2008
             </version>
 		</tool>
+
 		<version>
-			ddd
+			1.00
         </version>
+
 		<creator>
-			dddd
-        </creator>
-		<publisher>
-			ddd
-        </publisher>
-		<identifier>http://spu.spu</identifier>
+			<![CDATA["Pelle Kofod <pko@statsbiblioteket.dk>",
+			"Thomas Skou Hansen <tsh@statsbiblioteket.dk>"]]>
+		</creator>
+
+		<identifier>Example_custom_identifier</identifier>
+
 		<instructions>
-			ddd
+			Example: Please install the XYZ tool on the system to
+			make this service work.
         </instructions>
-		<furtherinfo>http://spu.spu</furtherinfo>
-		<logo>http://spu.spu</logo>
-		<classname>
-			ddd
-        </classname>
+
+		<furtherinfo>http://example.org</furtherinfo>
+
+		<logo>http://projects.gnome.org/dia/images/dialogo.jpg</logo>
+
+		<properties>
+			<property name="exampleName">
+				exampleValue
+		</property>
+		</properties>
 	</serviceDescription>
 
 	<paths>
 		<path>
 			<inputformats>
-				<!-- Xfig files -->
-				<!-- FIXME! What's the way to specify a format that is unknown to PRONOM? -->
-				<uri value="planets:fig" />
-
-				<!-- FIXME! Verify that all PNG versions work -->
-				<!-- PNG 1.0 -->
-				<uri value="info:pronom/fmt/11" />
-
-				<!-- PNG 1.1 -->
-				<uri value="info:pronom/fmt/12" />
-
-				<!-- PNG 1.2 -->
-				<uri value="info:pronom/fmt/13" />
-
-				<!-- FIXME! Verify that all SVG versions work! -->
-				<!-- SVG 1.0 -->
-				<uri value="info:pronom/fmt/91" />
-
-				<!-- SVG 1.1 -->
-				<uri value="info:pronom/fmt/92" />
-
-				<!-- FIXME! Verify that all Windows BMP versions work -->
-
-				<!-- Windows BMP 1.0 -->
-				<uri value="info:pronom/fmt/114" />
-
-				<!-- Windows BMP 2.0 -->
-				<uri value="info:pronom/fmt/115" />
-
-				<!-- Windows BMP 3.0 -->
-				<uri value="info:pronom/fmt/116" />
-
-				<!-- Windows BMP 3.0 NT -->
-				<uri value="info:pronom/fmt/117" />
-
-				<!-- Windows BMP 4.0 -->
-				<uri value="info:pronom/fmt/118" />
-
-				<!-- Windows BMP 5.0 -->
-				<uri value="info:pronom/fmt/119" />
-
-				<!-- FIXME! Add the rest of the formats -->
-
-                    <!-- 
-                    
-                     EXPORT FORMATS
-       The following export formats are supported by dia.
-
-       ·  cgm (Computer Graphics Metafile, ISO 8632)
-
-       ·  dia (Native dia diagram)
-
-       ·  dxf (Drawing Interchange File)
-
-       ·  eps or eps-builtin or eps-pango (Encapsulated PostScript)
-
-          The format specifications eps, and eps-pango all use the  font  ren‐
-          derer  of  the  Pango library, while eps-builtin uses a dia specific
-          font renderer. If you have problems with Pango rendering, e.g.  Uni‐
-          code, try eps-builtin instead.
-
-       ·  fig (XFig format)
-
-       ·  mp (TeX MetaPost macros)
-
-       ·  plt or hpgl (HP Graphics Language)
-
-       ·  png (Portable Network Graphics)
-
-       ·  shape (Dia shape file)
-
-       ·  svg (Scalable Vector Graphics)
-
-       ·  tex (TeX PSTricks macros)
-
-       ·  wpg (WordPerfect Graphics)
-
-       ·  wmf (Windows MetaFile)
-                     -->
-
+				<!-- Xfig file extension-->
+				<uri value="info:planets/fmt/ext/fig" />
 			</inputformats>
 
 			<outputformat>
 				<!-- SVG 1.1 -->
+				<!-- FIXME! Verify that Dia outputs SVG 1.1 files! -->
+				<uri value="info:pronom/fmt/92" />
+			</outputformat>
+
+			<commandline>
+				<command>
+					/bin/sh
+                </command>
+
+				<commandparameters>
+					<parameter>
+						-c
+                    </parameter>
+
+					<parameter>
+      					<![CDATA[dia -n -t dia -e #tempDiaFile #inputFile && dia -n -t svg -e #outputFile #tempDiaFile]]>
+					</parameter>
+				</commandparameters>
+			</commandline>
+
+			<toolinput>
+				<tempfile label="inputFile" name="inputFile.fig">
+				</tempfile>
+			</toolinput>
+
+			<tooloutput>
+				<tempfile label="outputFile">
+				</tempfile>
+			</tooloutput>
+
+			<tempfiles>
+				<tempfile label="tempDiaFile" name="tempDiaFile.dia">
+				</tempfile>
+			</tempfiles>
+
+			<toolparameters>
+			</toolparameters>
+
+			<toolpresets>
+			</toolpresets>
+		</path>
+
+		<path>
+			<inputformats>
+				<!-- Dia files. -->
+				<uri value="info:pronom/x-fmt/381" />
+			</inputformats>
+
+			<outputformat>
+				<!-- SVG 1.1 -->
+				<!-- FIXME! Verify that Dia outputs SVG 1.1 files! -->
 				<uri value="info:pronom/fmt/92" />
 
 			</outputformat>
@@ -136,12 +135,14 @@
 				<command>
 					/bin/sh
                 </command>
+                
 				<commandparameters>
 					<parameter>
 						-c
                     </parameter>
+                    
 					<parameter>
-						<![CDATA[dia -n -t dia -e #tempDiaFile #inputFile && dia -n -t #outputFormat -e #outputFile #tempDiaFile]]>
+				    	<![CDATA[dia -n -t svg -e #outputFile #inputFile]]>
 					</parameter>
 				</commandparameters>
 			</commandline>
@@ -157,160 +158,13 @@
 			</tooloutput>
 
 			<tempfiles>
-				<tempfile label="tempDiaFile">
-				</tempfile>
 			</tempfiles>
 
 			<toolparameters>
-				<parameter name="outputFormat">
-					<description>
-						<![CDATA[This parameter controls the output format of the migration.
-						Valid values are:
-						dia : FIXME! Add Dia PRONOM UID here
-						fig : FIXME! Add Fig PRONOM UID here
-						png : FIXME! Add PNG PRONOM UID here
-						jpg : FIXME! Add JPG PRONOM UID here
-						bmp : FIXME! Add BMP PRONOM UID here
-						FIXME! Add the rest of the formats!!!
-						]]>
-					</description>
-                    <!-- 
-                    
-                     EXPORT FORMATS
-       The following export formats are supported by dia.
-
-       ·  cgm (Computer Graphics Metafile, ISO 8632)
-
-       ·  dia (Native dia diagram)
-
-       ·  dxf (Drawing Interchange File)
-
-       ·  eps or eps-builtin or eps-pango (Encapsulated PostScript)
-
-          The format specifications eps, and eps-pango all use the  font  ren‐
-          derer  of  the  Pango library, while eps-builtin uses a dia specific
-          font renderer. If you have problems with Pango rendering, e.g.  Uni‐
-          code, try eps-builtin instead.
-
-       ·  fig (XFig format)
-
-       ·  mp (TeX MetaPost macros)
-
-       ·  plt or hpgl (HP Graphics Language)
-
-       ·  png (Portable Network Graphics)
-
-       ·  shape (Dia shape file)
-
-       ·  svg (Scalable Vector Graphics)
-
-       ·  tex (TeX PSTricks macros)
-
-       ·  wpg (WordPerfect Graphics)
-
-       ·  wmf (Windows MetaFile)
-                     -->
-
-
-				</parameter>
 			</toolparameters>
+			
 			<toolpresets>
 			</toolpresets>
-
 		</path>
-
-  <path>
-   <inputformats>
-    <!-- Xfig files -->
-    <!-- FIXME! What's the way to specify a format that is unknown to PRONOM? -->
-    <uri value="planets:fig" />
-   </inputformats>
-
-   <outputformat>
-    <!-- SVG 1.1 -->
-    <uri value="info:pronom/fmt/92" />
-   </outputformat>
-
-   <commandline>
-    <command>
-     /bin/sh
-                </command>
-    <commandparameters>
-     <parameter>
-      -c
-                    </parameter>
-     <parameter>
-      <![CDATA[dia -n -t dia -e #tempDiaFile #inputFile && dia -n -t svg -e #outputFile #tempDiaFile]]>
-     </parameter>
-    </commandparameters>
-   </commandline>
-
-   <toolinput>
-    <tempfile label="inputFile" name="inputFile.fig">
-    </tempfile>
-   </toolinput>
-
-   <tooloutput>
-    <tempfile label="outputFile">
-    </tempfile>
-   </tooloutput>
-
-   <tempfiles>
-    <tempfile label="tempDiaFile" name="tempDiaFile.dia">
-    </tempfile>
-   </tempfiles>
-
-   <toolparameters>
-   </toolparameters>
-
-   <toolpresets>
-   </toolpresets>
-  </path>
-
-  <path>
-   <inputformats>
-    <!-- Dia files. -->
-    <uri value="info:pronom/x-fmt/381" />
-   </inputformats>
-
-   <outputformat>
-    <!-- SVG 1.1 -->
-    <uri value="info:pronom/fmt/92" />
-
-   </outputformat>
-
-   <commandline>
-    <command>
-     /bin/sh
-                </command>
-    <commandparameters>
-     <parameter>
-      -c
-                    </parameter>
-     <parameter>
-      <![CDATA[dia -n -t svg -e #outputFile #inputFile]]>
-     </parameter>
-    </commandparameters>
-   </commandline>
-
-   <toolinput>
-    <tempfile label="inputFile" name="inputFile.dia">
-    </tempfile>
-   </toolinput>
-
-   <tooloutput>
-    <tempfile label="outputFile">
-    </tempfile>
-   </tooloutput>
-
-   <tempfiles>
-   </tempfiles>
-
-   <toolparameters>
-   </toolparameters>
-   <toolpresets>
-   </toolpresets>
-  </path>
-
 	</paths>
 </serviceWrapping>

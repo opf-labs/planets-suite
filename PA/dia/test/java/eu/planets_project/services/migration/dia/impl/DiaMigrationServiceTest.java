@@ -26,8 +26,7 @@ import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
- * @author tsh
- *
+ * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
 public class DiaMigrationServiceTest extends TestCase {
 
@@ -117,8 +116,11 @@ public class DiaMigrationServiceTest extends TestCase {
 		 */
 		final File figTestFile = new File(TEST_FILE_PATH, figTestFileName);
 
-		final URI diaFormatURI = new URI("planets:fig"); // Fig URI
-		final URI svgFormatURI = new URI("info:pronom/fmt/92"); // SVG version 1.1
+		// Fig format URI
+		final URI diaFormatURI = new URI("info:planets/fmt/ext/fig");
+		
+		// SVG version 1.1 format URI
+		final URI svgFormatURI = new URI("info:pronom/fmt/92");
 
 		final DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(Content.byValue(figTestFile));
 		digitalObjectBuilder.format(diaFormatURI);
