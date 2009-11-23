@@ -4,6 +4,7 @@
 package eu.planets_project.ifr.core.storage.impl.file;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
