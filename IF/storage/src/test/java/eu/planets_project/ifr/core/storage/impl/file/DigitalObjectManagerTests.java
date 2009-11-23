@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -81,29 +82,29 @@ public class DigitalObjectManagerTests {
 
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)}.
-	 * @throws MalformedURLException 
 	 * @throws URISyntaxException 
 	 * @throws DigitalObjectNotStoredException 
 	 * @throws DigitalObjectNotFoundException 
+	 * @throws IOException 
 	 */
 	@Test
-	public final void testStoreAndRetrieve() throws MalformedURLException, DigitalObjectNotStoredException, URISyntaxException, DigitalObjectNotFoundException {
+	public final void testStoreAndRetrieve() throws DigitalObjectNotStoredException, URISyntaxException, DigitalObjectNotFoundException, IOException {
 		// OK we can create an Digital Object from the test resource data, we need a URL
 		System.out.println("Testing storage of Digital Object");
 		URI purl = new File("IF/storage/src/test/resources/testdata/test_word.doc").toURI();
         /* Create the content: */
-        DigitalObjectContent c1 = Content.byReference(purl.toURL());
+        DigitalObjectContent c1 = Content.byReference(purl.toURL().openStream());
         /* Given these, we can instantiate our object: */
-        DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl).build();
-	// Check digital object. Title should not be null 
+        DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl).title(purl.toString()).build();
+        // Check digital object. Title should not be null 
         assertNotNull(object.getTitle());
         // Now store it
 		_dom.store(new URI("planets://localhost:8080/dr/test/test_word.doc"), object);
 		// Then retrieve it and check it's the same
 		DigitalObject retObject = _dom.retrieve(new URI("planets://localhost:8080/dr/test/test_word.doc"));
 		URI newPurl = new File("IF/storage/src/test/resources/testroot/test_word.doc").toURI();
-		DigitalObjectContent c2 = Content.byReference(newPurl.toURL());
-		DigitalObject expectedObject = new DigitalObject.Builder(c2).permanentUri(newPurl).build(); 
+		DigitalObjectContent c2 = Content.byReference(newPurl.toURL().openStream());
+		DigitalObject expectedObject = new DigitalObject.Builder(c2).permanentUri(newPurl).title("test_word.doc.planets").build(); 
 		assertEquals("Retrieve Digital Object doesn't match that stored", expectedObject, retObject);
 		
 		// We can test that the list method works properly now also
