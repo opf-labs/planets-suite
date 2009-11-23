@@ -26,6 +26,10 @@ import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
+/**
+ * 
+ * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
+ */
 public class GenericMigrationWrapper {
 
     private PlanetsLogger log = PlanetsLogger

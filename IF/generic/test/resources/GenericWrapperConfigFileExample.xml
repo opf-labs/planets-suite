@@ -2,100 +2,151 @@
 
 	<serviceDescription>
 
-		<!--
-			Description of the service, in this case ps2pdf. In this case the
-			description is only for testing purposes and thus not informative.
-			Notice the URIs/URLs are without empty spaces.
-		-->
-
 		<!-- A brief name by which this service is known. (Required field) -->
 		<title>
 			Example: Eggnog migration service.
         </title>
-        
-        <!--
-        A human readable description of the service. This is your chance to describe your service to potential users. Although automatic service discovery will more likely depend upon service type, input formats and tool wrapped, users browsing the Planets service registry will see the name and description. 
-        The description may be written in HTML, using a <![CDATA[ <b>Hi</b> ]]> (Optional field)-->
+
+		<!--
+			A human readable description of the service. This is your chance to
+			describe your service to potential users. Although automatic service
+			discovery will more likely depend upon service type, input formats
+			and tool wrapped, users browsing the Planets service registry will
+			see the name and description. The description may be written in HTML,
+			using a <![CDATA[ <b>Hi</b> ]]> (Optional field)
+		-->
 		<description>
-			Example description of a fantastic tool for migrating from an egg to eggnog.
+			Example description of a fantastic tool for migrating
+			from an egg to eggnog.
         </description>
-        <!-- The link to the Tool registry. (Required field) -->
+
+		<!-- Detailed description of the wrapped tool. (Required field) -->
 		<tool>
+
 			<!-- The name of the wrapped tool (Optional field) -->
 			<name>
 				Example: HandMixer.exe
             </name>
-			<!-- An identifier for this tool, should be resolvable via a tool registry. (Optional field) -->
-			<identifier>http://example-planets-registry.eu/toolident?4385794357</identifier>
+
+			<!--
+				An identifier for this tool, should be resolvable via a tool
+				registry. (Optional field)
+			-->
+			<identifier>http://example-planets-registry.eu/toolident?4385794357
+			</identifier>
+
 			<!-- Tool description (Optional field) -->
 			<description>
 				Example: A useful tool for migrating eggs to eggnog.
-            </description>
-            <!-- Link to the (project) home page of the tool. (Optional field) -->
+			</description>
+
+			<!-- Link to the (project) home page of the tool. (Optional field) -->
 			<homepage>http://example.org</homepage>
-			<!-- Tool version information. (Optional field) -->
+
+			<!--
+				Tool version information. E.g. the version string printed by the
+				tool. (Optional field)
+			-->
 			<version>
-				4.13
+				HandMixer V4.13 by J. Random Hacker.
             </version>
 		</tool>
+
 		<!-- Service wrapping version information. (Optional field)-->
 		<version>
 			3.141592653589793
         </version>
-        <!-- Who wrote the wrapper. Preferred form would be a URI or a full email address, like: "Full Name <fullname@server.com>". (Required field)        -->
+
+		<!--
+			Who wrote the wrapper. Preferred form would be a URI or a full email
+			address(es), like: "Full Name <fullname@server.com>". (Required
+			field)
+		-->
 		<creator>
 			<![CDATA["Easter Bunny <easter.bunny@bunny.net>"]]>
-        </creator>
-        <!-- Identifier - A unique identifier for this service. "We need a unique id
-      for every service; Andrew Lindley is using a MD5 hash to identify a
-      service. This is a brilliant idea. I would say this field summarizes Name
-      of class impl service, Version of service and ID of Tool (URI) or makes
-      them unnecessary.". This is an optional field, however, the generic wrapper will automatically generate an identifier if no value is
-      specified. This is done by generating a MD5 hash of a string containing the canonical class name
-      of the wrapping service implementation class, the service version and the toolID.
-         -->
-		<identifier>Example_custom_identifier</identifier>
-		
-		<!-- Installation and setup instructions for the service. This includes software to be installed, environment variables to be set, properties to be set, etc. It is the responsibility of the developer to ensure that the instructions provided are of appropriate detail and quality. This really depends upon the tool been wrapped, for example the pure Java services currently in pserv don't provide any instructions but they should build and deploy when the pserv project is built and they should simply work without any set up. More complex tools relying on installed software will require more detailed information.
+		</creator>
 
-As yet, there are no formal requirements on the instructions, but they should be sufficient for the build manager and the testbed manager to deploy the service. The instructions should closely follow the installation instructions from the Service Submission document.
-(Optional field) 
-		 -->
+		<!--
+			A unique identifier for this service. "We need a unique id for every
+			service; Andrew Lindley is using a MD5 hash to identify a service.
+			This is a brilliant idea. I would say this field summarizes Name of
+			class impl service, Version of service and ID of Tool (URI) or makes
+			them unnecessary.". This is an optional field, however, the generic
+			wrapper will automatically generate an identifier if no value is
+			specified. This is done by generating a MD5 hash of a string
+			containing the canonical class name of the wrapping service
+			implementation class, the service version and the toolID.
+		-->
+		<identifier>Example_custom_identifier</identifier>
+
+		<!--
+			Installation and setup instructions for the service. This includes
+			software to be installed, environment variables to be set, properties
+			to be set, etc. It is the responsibility of the developer to ensure
+			that the instructions provided are of appropriate detail and quality.
+			This really depends upon the tool been wrapped, for example the pure
+			Java services currently in pserv don't provide any instructions but
+			they should build and deploy when the pserv project is built and they
+			should simply work without any set up. More complex tools relying on
+			installed software will require more detailed information. As yet,
+			there are no formal requirements on the instructions, but they should
+			be sufficient for the build manager and the testbed manager to deploy
+			the service. The instructions should closely follow the installation
+			instructions from the Service Submission document. (Optional field)
+		-->
 		<instructions>
-			Example: Please install the XYZ tool on the system to make this service work.
+			Example: Please install the XYZ tool on the system to
+			make this service work.
         </instructions>
-        <!-- A URI that provides a link to further information about a service wrapper. This could point to a web page, information about the tool wrapped, or a help page hosted on the web. (Optional field)-->
+
+		<!--
+			A URI that provides a link to further information about a service
+			wrapper. This could point to a web page, information about the tool
+			wrapped, or a help page hosted on the web. (Optional field)
+		-->
 		<furtherinfo>http://example.org</furtherinfo>
-		
-		<!-- A URI that can be used to provide a graphic image logo for the service. This will be displayed in the service registry if present. (Optional field) -->
+
+		<!--
+			A URI that can be used to provide a graphic image logo for the
+			service. This will be displayed in the service registry if present.
+			(Optional field)
+		-->
 		<logo>http://www.planets-project.eu/graphics/Planets_Logo.png</logo>
-		
-		<!-- An optional list of hard-coded properties to add to the service description. -->
+
+		<!--
+			An optional list of hard-coded properties to add to the service
+			description. FIXME! Come up with some brilliant examples here.....
+			Would OS/Hardware platform qualify?
+		-->
 		<properties>
-		<property name="exampleName">
-		 exampleValue
+			<property name="exampleName">
+				exampleValue
 		</property>
 		</properties>
-		
+
 	</serviceDescription>
 
 	<!--
-		The self-test section is currently not used and should thus be omitted
+		THE SELF-TEST SECTION IS CURRENTLY NOT USED and should thus be omitted
 		in the current wrappings.
 	-->
 	<selfTests>
+
 		<test name="tr version test">
 			<command>
 				/bin/sh
             </command>
+
 			<commandparameters>
 				<parameter>
 					-c
                 </parameter>
+
 				<parameter>
 					tr --version | md5sum
                 </parameter>
 			</commandparameters>
+
 			<expectedOutput>9bac2d02bdb596a4d3297e44e5c8008 -</expectedOutput>
 			<expectedExitCode>0</expectedExitCode>
 		</test>
@@ -104,14 +155,15 @@ As yet, there are no formal requirements on the instructions, but they should be
 	<paths>
 		<!--
 			The following path is just an illustration of the possibility to
-			define multiple migration paths for the same wrapped tool. However,
-			there is no validation of that the tool used in the various path
-			definitions are actually the same, as this is not possible due to the
-			fact that the command lines may be substantially different although
-			the same tool is used for the migration, as different helper tools
-			may be used e.g. for pre- or post-processing. Thus, it is the
-			responsibility of the person writing the configuration file that it
-			is in fact the same migration tool used by all the defined paths.
+			actually define multiple migration paths with only one path element,
+			which is convenient in case the tool is capable of migrating from a
+			number of formats to one specific format. However, the generic
+			wrapper is unable to automatically validating that the all these
+			migrations can be performed with the same command line (except from
+			different parameters specified by the caller). Thus, it is the
+			responsibility of the person writing the configuration file, to
+			verify that it in deed is possible to migrate from all the input
+			formats to the output format, using the same migration command line.
 		-->
 		<path>
 			<!--
@@ -123,7 +175,9 @@ As yet, there are no formal requirements on the instructions, but they should be
 					wrapped command(s) in this "path" section. It is recommended to use
 					PRONOM URIs where possible in order to achieve the most accurate
 					description of the formats. File suffixes are inaccurate as most
-					file formats are available in several revisions.
+					file formats are available in several revisions. However, if a
+					format is unknown to PRONOM the the format URIs should be on the
+					form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
 				-->
 				<uri value="info:pronom/x-fmt/91" />
 				<uri value="info:pronom/x-fmt/406" />
@@ -137,7 +191,9 @@ As yet, there are no formal requirements on the instructions, but they should be
 					in this "path" section. It is recommended to use a PRONOM URI when
 					possible in order to achieve the most accurate description of the
 					format. File suffixes are inaccurate as most file formats are
-					available in several revisions.
+					available in several revisions. However, if a format is unknown to
+					PRONOM the the format URI should be on the form:
+					"info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
 				-->
 				<uri value="info:pronom/fmt/16" />
 			</outputformat>
@@ -248,7 +304,9 @@ As yet, there are no formal requirements on the instructions, but they should be
 					wrapped command(s) in this "path" section. It is recommended to use
 					PRONOM URIs where possible in order to achieve the most accurate
 					description of the formats. File suffixes are inaccurate as most
-					file formats are available in several revisions.
+					file formats are available in several revisions. However, if a
+					format is unknown to PRONOM the the format URIs should be on the
+					form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
 				-->
 				<uri value="info:pronom/x-fmt/91" />
 				<uri value="info:pronom/x-fmt/406" />
@@ -262,7 +320,9 @@ As yet, there are no formal requirements on the instructions, but they should be
 					in this "path" section. It is recommended to use a PRONOM URI when
 					possible in order to achieve the most accurate description of the
 					format. File suffixes are inaccurate as most file formats are
-					available in several revisions.
+					available in several revisions. However, if a format is unknown to
+					PRONOM the the format URI should be on the form:
+					"info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
 				-->
 				<uri value="info:pronom/fmt/17" />
 			</outputformat>
@@ -373,7 +433,9 @@ As yet, there are no formal requirements on the instructions, but they should be
 					wrapped command(s) in this "path" section. It is recommended to use
 					PRONOM URIs where possible in order to achieve the most accurate
 					description of the formats. File suffixes are inaccurate as most
-					file formats are available in several revisions.
+					file formats are available in several revisions. However, if a
+					format is unknown to PRONOM the the format URIs should be on the
+					form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
 				-->
 				<uri value="info:pronom/x-fmt/91" />
 				<uri value="info:pronom/x-fmt/406" />
@@ -387,7 +449,9 @@ As yet, there are no formal requirements on the instructions, but they should be
 					in this "path" section. It is recommended to use a PRONOM URI when
 					possible in order to achieve the most accurate description of the
 					format. File suffixes are inaccurate as most file formats are
-					available in several revisions.
+					available in several revisions. However, if a format is unknown to
+					PRONOM the the format URI should be on the form:
+					"info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
 				-->
 				<uri value="info:pronom/fmt/18" />
 			</outputformat>
@@ -504,9 +568,11 @@ As yet, there are no formal requirements on the instructions, but they should be
 					wrapped command(s) in this "path" section. It is recommended to use
 					PRONOM URIs where possible in order to achieve the most accurate
 					description of the formats. File suffixes are inaccurate as most
-					file formats are available in several revisions.
+					file formats are available in several revisions. However, if a
+					format is unknown to PRONOM the the format URIs should be on the
+					form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
 				-->
-				<uri value="info:test/lowercase" />
+				<uri value="info:planets/fmt/ext/lowercase" />
 			</inputformats>
 
 			<outputformat>
@@ -515,9 +581,11 @@ As yet, there are no formal requirements on the instructions, but they should be
 					in this "path" section. It is recommended to use a PRONOM URI when
 					possible in order to achieve the most accurate description of the
 					format. File suffixes are inaccurate as most file formats are
-					available in several revisions.
+					available in several revisions. However, if a format is unknown to
+					PRONOM the the format URI should be on the form:
+					"info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
 				-->
-				<uri value="info:test/uppercase" />
+				<uri value="info:planets/fmt/ext/uppercase" />
 			</outputformat>
 
 			<commandline>
@@ -628,7 +696,7 @@ As yet, there are no formal requirements on the instructions, but they should be
 				-->
 				<parameter name="param1">
 					<description><![CDATA[Command line parameters for the 'cat' command. See 'man cat'.]]>
-                	</description>
+					</description>
 				</parameter>
 				<parameter name="param2">
 					<!-- Demonstration of CDATA usage in descriptions. -->
@@ -714,13 +782,31 @@ As yet, there are no formal requirements on the instructions, but they should be
 		</path>
 
 		<path>
+			<!--
+				List of format URIs identifying the valid input formats for the
+				wrapped command(s) in this "path" section. It is recommended to use
+				PRONOM URIs where possible in order to achieve the most accurate
+				description of the formats. File suffixes are inaccurate as most
+				file formats are available in several revisions. However, if a
+				format is unknown to PRONOM the the format URIs should be on the
+				form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
+			-->
 
 			<inputformats>
-				<uri value="info:test/foo" />
+				<uri value="info:planets/fmt/ext/foo" />
 			</inputformats>
 
+			<!--
+				Format URI identifying the output format of the wrapped command(s)
+				in this "path" section. It is recommended to use a PRONOM URI when
+				possible in order to achieve the most accurate description of the
+				format. File suffixes are inaccurate as most file formats are
+				available in several revisions. However, if a format is unknown to
+				PRONOM the the format URI should be on the form:
+				"info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
+			-->
 			<outputformat>
-				<uri value="info:test/bar" />
+				<uri value="planets/fmt/ext/bar" />
 			</outputformat>
 
 			<commandline>

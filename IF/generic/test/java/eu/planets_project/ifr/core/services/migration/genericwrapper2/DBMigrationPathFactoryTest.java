@@ -75,8 +75,8 @@ public class DBMigrationPathFactoryTest {
 		14, migrationPaths.getAllMigrationPaths().size());
 
 	// Verify a specific migration path
-	final URI inputFormatURI = new URI("info:test/lowercase");
-	final URI outputFormatURI = new URI("info:test/uppercase");
+	final URI inputFormatURI = new URI("info:planets/fmt/ext/lowercase");
+	final URI outputFormatURI = new URI("info:planets/fmt/ext/uppercase");
 
 	MigrationPath migrationPath = migrationPaths.getMigrationPath(
 		inputFormatURI, outputFormatURI);
