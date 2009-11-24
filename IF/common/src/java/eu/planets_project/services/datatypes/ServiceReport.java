@@ -141,11 +141,12 @@ public final class ServiceReport {
     }
 
     /**
-     * @return The List of Property objects associated with this ServiceReport
+     * @return An unmodifiable copy of the list of Property objects associated with this ServiceReport
      */
-    public List<Property> getproperties() {
-        return properties == null ? Collections.unmodifiableList(new ArrayList<Property>()) : properties;
-    }
+    public List<Property> getProperties() {
+        return properties == null ? Collections.unmodifiableList(new ArrayList<Property>()) : Collections
+                .unmodifiableList(properties);
+   }
 
     /**
      * {@inheritDoc}
