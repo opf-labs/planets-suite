@@ -34,7 +34,7 @@ public class PlanetsServerConfig {
         InputStream stream = null;
         try {
             stream = PlanetsServerConfig.class.getResourceAsStream(
-                    "/eu/planets_project/ifr/common/conf/planets-server-config.properties" );
+                    "/eu/planets_project/ifr/core/common/conf/planets-server-config.properties" );
             props.load( stream );
         } catch( IOException e ) {
             log.error("Server properties failed to load! :: "+e);
