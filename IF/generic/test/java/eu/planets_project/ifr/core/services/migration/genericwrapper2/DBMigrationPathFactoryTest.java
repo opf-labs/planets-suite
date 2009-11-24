@@ -72,7 +72,7 @@ public class DBMigrationPathFactoryTest {
 
 	// Verify the number of paths.
 	assertEquals("The factory returned a wrong number of migration paths.",
-		14, migrationPaths.getAllMigrationPaths().size());
+		6, migrationPaths.getAllMigrationPaths().size());
 
 	// Verify a specific migration path
 	final URI inputFormatURI = new URI("info:planets/fmt/ext/lowercase");
