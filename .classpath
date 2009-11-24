@@ -164,5 +164,6 @@
 	<classpathentry kind="lib" path="IF/storage/lib/jcr-1.0.jar"/>
 	<classpathentry kind="lib" path="IF/storage/lib/jackrabbit-core-1.4.5.jar"/>
 	<classpathentry kind="lib" path="IF/storage/lib/soap.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
