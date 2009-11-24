@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:t="http://myfaces.apache.org/tomahawk">
+<head>
+  <link rel="stylesheet" href="#{PlanetsSharedBean.sharedFileContext}css/planets-top-nav.css" type="text/css" media="screen" />
+</head>
+<body style="margin:0px; padding:0px">
+<f:view>
+
+<ui:include src="#{PlanetsSharedBean.sharedFileBasePath}WEB-INF/templates/planets-header.xhtml">
+  <ui:param name="loginUrl" value="login-redirect.jsp" />
+  <ui:param name="logoutUrl" value="logout-redirect.jsp" />
+</ui:include>
+
+</f:view>
+</body>
+</html>
