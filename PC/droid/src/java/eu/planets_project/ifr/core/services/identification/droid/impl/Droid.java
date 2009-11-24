@@ -120,9 +120,8 @@ public final class Droid implements Identify, Serializable {
         sd.tool(Tool.create(null, "DROID", "3.0-16", null,
                 "http://droid.sourceforge.net/"));
         sd.furtherInfo(URI.create("http://droid.sourceforge.net/"));
-        sd
-                .logo(URI
-                        .create("http://droid.sourceforge.net/wiki/skins/snaphouston/droidlogo.gif"));
+        // Taking this out as logo is no longer hosted there, and this is bad practice anyway - should be hosted locally.
+        //sd.logo( URI.create("http://droid.sourceforge.net/wiki/skins/snaphouston/droidlogo.gif"));
         sd.serviceProvider("The Planets Consortium.");
         return sd.build();
     }
