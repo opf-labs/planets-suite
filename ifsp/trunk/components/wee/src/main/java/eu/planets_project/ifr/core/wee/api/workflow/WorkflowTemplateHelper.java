@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import eu.planets_project.ifr.common.conf.PlanetsServerConfig;
+import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.DigitalObject;
