@@ -41,14 +41,14 @@
       <h:panelGrid columns="2" columnClasses="formatGridCol1, formatGridCol2" width="100%">
       
         <rich:dataTable id="formatResults" value="#{Registry.formats}" var="fmt" styleClass="formatTable" width="100%" binding="#{Registry.formatsDataTable}">
-          <rich:column sortBy="#{fmt.summaryAndVersion}" sortOrder="ASCENDING" styleClass="#{ ( Registry.currentFormat.typeURI == fmt.typeURI ) ? 'isCurrentFormat' : 'isNotCurrentFormat'}">
+          <rich:column sortBy="#{fmt.summary} + '  ' + #{fmt.version}" sortOrder="ASCENDING" styleClass="#{ ( Registry.currentFormat.uri == fmt.uri ) ? 'isCurrentFormat' : 'isNotCurrentFormat'}">
             <f:facet name="header">
               <h:outputText styleClass="headerText" value="Formats" />
             </f:facet>
             <h:commandLink action="#{Registry.selectAFormat}" styleClass="formatListItem">
             <h:outputText value="#{fmt.summary} #{fmt.version}" styleClass="formatItemTitle"/>
             <br/>
-            <h:outputText value="#{fmt.typeURI}"/>
+            <h:outputText value="#{fmt.uri}"/>
             </h:commandLink>
           </rich:column>
         </rich:dataTable>
@@ -61,7 +61,7 @@
             <c:if test="#{Registry.currentFormat.version != null }">
                 <li><h:outputText value="Version #{Registry.currentFormat.version}"/></li>
             </c:if>
-            <li><a href="#{Registry.currentFormat.registryURL}" target="_new"><h:outputText value="#{Registry.currentFormat.typeURI}"/></a></li>
+            <li><a href="#{Registry.currentFormat.registryUrl}" target="_new"><h:outputText value="#{Registry.currentFormat.uri}"/></a></li>
             <c:if test="#{Registry.currentFormat.extensions != null }">
                 <li><h:outputText value="#{Registry.currentFormat.extensions}"/></li>
             </c:if>
@@ -70,11 +70,11 @@
             </c:if>
         </ul>
         
-        <c:if test="#{Registry.currentFormat.registryURL != null }">
+        <c:if test="#{Registry.currentFormat.registryUrl != null }">
         <rich:modalPanel id="panel" width="700" height="500" autosized="true"> <!--  onmaskclick="javascript:Richfaces.hideModalPanel('form:panel')" -->
         <f:facet name="header">
             <h:panelGroup>
-                <h:outputText value="About Format #{Registry.currentFormat.typeURI}"></h:outputText>
+                <h:outputText value="About Format #{Registry.currentFormat.uri}"></h:outputText>
             </h:panelGroup>
         </f:facet>
         <f:facet name="controls">
@@ -83,7 +83,7 @@
                 <rich:componentControl for="panel" attachTo="hidelink" operation="hide" event="onclick"/>
             </h:panelGroup>
         </f:facet>
-        <iframe src="#{Registry.currentFormat.registryURL}" width="100%" height="500"/>
+        <iframe src="#{Registry.currentFormat.registryUrl}" width="100%" height="500"/>
         </rich:modalPanel>
         <h:outputLink value="#" id="link">
         Show Information Held On The External Registry.
