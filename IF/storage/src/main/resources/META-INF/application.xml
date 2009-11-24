@@ -13,19 +13,15 @@
 
 <!--  jars defindes as java are availabel for ejb + war -->
 <module>
-	<java>pserv-if-storage.jar</java>
-</module>
-
- 
-<module>
 	<web>
 		<web-uri>pserv-if-storage.war</web-uri>
-		<context-root>storage-browser</context-root>
+		<context-root>/storage</context-root>
 	</web>
 </module>
 
-<!--module>
-        <java>storage-ds.xml</java>
-</module-->
-
+  <module>
+    <java>pserv-if-storage.jar</java>
+  </module>
+  
+  
 </application>

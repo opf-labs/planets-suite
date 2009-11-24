@@ -161,5 +161,8 @@
 	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xsdlib.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/velocity-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/stax-ex.jar"/>
+	<classpathentry kind="lib" path="IF/storage/lib/jcr-1.0.jar"/>
+	<classpathentry kind="lib" path="IF/storage/lib/jackrabbit-core-1.4.5.jar"/>
+	<classpathentry kind="lib" path="IF/storage/lib/soap.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -190,16 +190,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			        fileData.append(buf, 0, numRead);
 			    }
 			    reader.close();
-			    // Add title to the dob
-      		String title = null;
-          title = fullPath;
-					if(title.contains(".") && title.contains("/")) 
-					{
-							title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
-					}
-			    FilesystemDigitalObjectManagerImpl._log.debug("Add title: " + title);
-												
-			    dob = new DigitalObject.Builder(fileData.toString()).title(title);
+			    dob = new DigitalObject.Builder(fileData.toString());
 			    DigitalObjectContent c = Content.byReference(dob.getContent().read());
 			    dob.content(c);
 			} else {

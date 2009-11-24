@@ -1,3 +1,3 @@
 <%
-response.sendRedirect(request.getContextPath() + "/browser/welcome.faces");
+response.sendRedirect(request.getContextPath() + "/welcome.faces");
 %>

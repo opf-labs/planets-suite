@@ -187,7 +187,15 @@
   <target name="deploy:common" unless="have.deployed.common">
     <ant dir="${pserv.root.dir}/IF/common" inheritAll="false" target="compile:common"/>
     <ant dir="${pserv.root.dir}" inheritAll="false" target="deploy:api"/>
-    <!-- Ensure any new jars are added to the classpath? -->
+
+    <!-- Update component properties files, destined for jars -->
+    <copy file="${pserv.root.dir}/IF/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties.template" tofile="${pserv.root.dir}/IF/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties" />
+    <replace file="${pserv.root.dir}/IF/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties">
+      <replacefilter token="@planets.server.hostname@" value="${if_server.host}" />
+      <replacefilter token="@planets.server.port@" value="${if_server.port}" />
+    </replace>
+
+  	<!-- Ensure any new jars are added to the classpath? -->
     <path id="pserv_common_classpath">
       <fileset dir="${pserv.root.dir}/build/">
         <include name="*.jar" />

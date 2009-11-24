@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.common.conf;
+package eu.planets_project.ifr.core.common.conf;
 
 import java.io.IOException;
 import java.io.InputStream;

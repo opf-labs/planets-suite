@@ -168,23 +168,6 @@
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
     
-    <filter-mapping>
-        <filter-name>extensionsFilter</filter-name>
-        <url-pattern>*.faces</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>extensionsFilter</filter-name>
-        <url-pattern>/faces/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>extensionsFilter</filter-name>
-        <url-pattern>*.xhtml</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>extensionsFilter</filter-name>
-        <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
-    </filter-mapping>
-
     <!-- Denying Directory Browsing -->
     <servlet>
         <servlet-name>local_default</servlet-name>

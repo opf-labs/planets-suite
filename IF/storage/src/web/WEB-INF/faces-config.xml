@@ -15,7 +15,7 @@
 		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>home</from-outcome>
-			<to-view-id>/browser/welcome.xhtml</to-view-id>
+			<to-view-id>/welcome.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

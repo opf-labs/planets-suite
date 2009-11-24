@@ -18,7 +18,7 @@
     <import file="${pserv.root.dir}/build.common.xml"/>
 
     <!-- update the server configuration -->
-    <property name="server.properties.file.name" value="${src.dir}/eu/planets_project/ifr/common/conf/planets-server-config.properties"/>
+    <property name="server.properties.file.name" value="${src.dir}/eu/planets_project/ifr/core/common/conf/planets-server-config.properties"/>
     <echo message="Configuring server details as ${if_server.host}:${if_server.port}/${if_server.ssl.port}."/>
     <copy file="${server.properties.file.name}.template" tofile="${server.properties.file.name}" overwrite="true"/>
     <replace file="${server.properties.file.name}">

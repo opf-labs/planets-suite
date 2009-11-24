@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.common.conf.PlanetsServerConfig;
+import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 
 /**
  * @author <a href="mailto:andrew.jackson@bl.uk">Andy Jackson</a>
