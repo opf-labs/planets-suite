@@ -593,7 +593,9 @@ public class ServiceBrowser {
      * @return
      */
     private static SelectItem createFormatSelectItem( Format fmt ) {
-        return new SelectItem( fmt.getUri().toString(), fmt.getSummary() + " " + fmt.getVersion() );
+    	String format = fmt.getSummary();
+    	if( fmt.getVersion() != null ) format += " " + fmt.getVersion();
+        return new SelectItem( fmt.getUri().toString(), format );
     }
     
     /**
