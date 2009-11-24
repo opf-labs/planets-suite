@@ -32,7 +32,7 @@
 	<if>
 	<isset property="jboss.home"/>
 	<then>
-	<copy file="${src.resources}/DROID_SignatureFile_Planets.xml" todir="${jboss.home}/server/default/conf/" overwrite="true" />
+	<copy file="${src.resources}/DROID_SignatureFile_Planets.xml" todir="${jboss.home}/server/default/data/" overwrite="true" />
 	</then>
 	</if>
 
