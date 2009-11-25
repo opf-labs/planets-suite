@@ -73,7 +73,9 @@ public class OntologyHandlerImpl {
 		ReasonerManager reasonerManager = ReasonerManager.getInstance();
 
 		//Get an instance of the Protege Pellet reasoner
-		ProtegeReasoner preasoner = reasonerManager.createProtegeReasoner(owlModel, ProtegePelletJenaReasoner.class);
+		ProtegeReasoner preasoner = null; 
+		// FIXME Switching this out, as slf4j compatability bug means it is not usable at present. 
+		// reasonerManager.createProtegeReasoner(owlModel, ProtegePelletJenaReasoner.class);
 		reasoner = preasoner;
 		return preasoner;
 	}
