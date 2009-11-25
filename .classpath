@@ -117,7 +117,6 @@
 	<classpathentry kind="lib" path="PC/libtiff/lib/jna.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/ejb3-persistence.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/commons-lang-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jbossall-client.jar"/>
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>
 	<classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1.jar"/>
@@ -164,6 +163,9 @@
 	<classpathentry kind="lib" path="IF/storage/lib/jcr-1.0.jar"/>
 	<classpathentry kind="lib" path="IF/storage/lib/jackrabbit-core-1.4.5.jar"/>
 	<classpathentry kind="lib" path="IF/storage/lib/soap.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-configuration-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
