@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<head>
+  <title>#{pagetitle} - Planets</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="/css/planets.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="/css/planets_print.css" type="text/css" media="print" />
+  <link rel="stylesheet" href="#{PlanetsSharedBean.sharedFileContext}css/planets-top-nav.css" type="text/css" media="screen" />
+  <c:if test="${extraCSS != null}">
+   <link rel="stylesheet" href="#{extraCSS}" type="text/css" />
+  </c:if>
+  <!-- IE fix to ensure transparent PNG works okay for the logo -->
+<!--[if gte IE 5.5]>
+<![if lt IE 7]>
+<style type="text/css">
+body {
+ background-image: none;
+ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/hatch.png');
+}
+#pl-logo {
+ background-image: none;
+ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/PlanetsLogo.png');
+}
+#istLogo {
+ background-image: none;
+ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/INFSOTechLogo85x44.png');
+}
+</style>
+<![endif]>
+<![endif]-->
+</head>
+<body>
+
+<ui:include src="#{PlanetsSharedBean.sharedFileBasePath}WEB-INF/templates/planets-header.xhtml">
+  <ui:param name="homeUrl" value="/registry/" />
+  <ui:param name="loginUrl" value="/registry/login-redirect.jsp" />
+  <ui:param name="logoutUrl" value="/registry/logout-redirect.jsp" />
+</ui:include>
+
+<div id="pl-wrapper"><a name="top"></a> <span class="hide"><a href="#pl-main">Skip Navigation / Jump to Content</a></span>
+
+<!--  f:subview id="planets-global-navigation">
+  <ui:include src="/WEB-INF/planets/top-nav.xhtml">
+    <ui:param name="pageTitle" value="#{pageTitle}" />
+  </ui:include>
+</f:subview -->
+
+<div id="pl-header">
+  <a href="/admin/">
+    <div alt="Planets" id="pl-logo"> </div>
+  </a>
+  <h1 id="pl-pageTitle">#{pagetitle}</h1>
+</div>
+
+<div id="pl-main">
+
+
+<!--  body  -->
+
+
+<ui:insert/>
+
+
+<!-- footer -->
+
+
+</div>
+
+<div id="pl-footer">
+<c:if test="${pageContext.request.remoteUser != null}">
+Logged in as <a href="/admin/">${pageContext.request.remoteUser}</a> |
+</c:if>
+ The Planets Suite | <a href="http://www.planets-project.eu/">www.planets-project.eu</a> | &copy; The Planets Consortium 2006-2010.
+</div>
+
+<div id="pl-logos">
+ <a target="_blank" href="http://www.cordis.lu/ist/" rel="external"><div title="Information Society Technologies" id="istLogo"></div></a>
+</div>
+
+</div>
+</body>
+</html>
