@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.services.validation.odfvalidator;
+package eu.planets_project.services.validation.odfvalidators;
 
 
 import static org.junit.Assert.assertTrue;
