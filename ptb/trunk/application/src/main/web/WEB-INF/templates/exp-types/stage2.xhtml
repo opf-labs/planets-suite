@@ -15,7 +15,8 @@
 <h:panelGroup rendered="#{ ! ReadOnly}">
   <p>At this stage you can specify the design your experiment.  This involves selecting an <b>experiment type</b> and one or more <b>preservation services</b> in the left-hand section of the page, and selecting the <b>digital objects</b> you wish to pass through your chosen services in the right-hand section of the page.</p>
   
-  <p>
+  <fieldset>
+    <legend>#{res['new_exp.expEtype']}</legend>
     <h:outputLabel value="#{res['new_exp.expEtype']}" for="etype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
         <h:selectOneMenu id="etype" onchange="submit();" required="false"
         value="#{ExperimentBean.etype}"  style="width: 23em;"
@@ -39,7 +40,7 @@
      <ui:param name="toolTip" value="#{res['new_exp.tooltipExperimentType']}" />
    </ui:include>
    
-   </p>
+  </fieldset>
    
   <h:message for="etype" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
 
@@ -47,13 +48,42 @@
 
 </h:panelGroup>
 
+<h:panelGroup rendered="#{ExperimentBean.etype == '' and ! ReadOnly}">
+<!--  No experiment type yet selected. -->
+</h:panelGroup>
+
+
     <ui:include src="/WEB-INF/templates/exp-types/stage2_workflow.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
     </ui:include>
 
+<!-- Digital Object selection part... -->
+
+        <fieldset>
+                
+            <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
+                    <p>The list of Digital Object to experiment upon.</p>
+                    <h:message for="addedFileInfoPanel" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
+                    
+                    <h:panelGroup id="addedFileInfoPanel">
+                           <t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
+                                         layout="unorderedList" rowIndexVar="rowi">
+                                 <h:commandLink title="Remove this Digital Object." rendered="#{! ReadOnly}">
+                                   <f:actionListener type="eu.planets_project.tb.gui.backing.exp.RemoveDigitalObjectActionListener"/>
+                                   <t:graphicImage value="/graphics/user_trash.png" alt="Delete"/>
+                                 </h:commandLink>
+                                 <a href="#{filemap['uri']}">#{filemap['name']}</a>
+                           </t:dataList>
+                    </h:panelGroup>
+					<h:panelGroup rendered="#{!ReadOnly}">
+					<h4>#{res['exp_stage2.addDOs']}</h4>
+                    <p>Use the buttons below to add more Digital Objects to this experiment.  You can select data from the data registry (including data you've uploaded using your FTP account),  or you can upload files to this experiment one at a time using the 'Upload Data' option.</p>
+                    </h:panelGroup>
+
+
                 <h:panelGroup rendered="#{!ReadOnly}">
                 <fieldset>
-                        <legend>#{res['exp_stage2.addDOs']}</legend>
+                        <legend>#{res['browse_data.selectData']}</legend>
                                      
                          <p class="center">
                           <h:commandButton value="#{res['browse_data.selectData']}"
@@ -61,7 +91,7 @@
                            disabled="#{ReadOnly}"
                            readonly="#{ReadOnly}"/>
                          </p>
-
+				</fieldset>
                 <fieldset>
                         <legend>#{res['exp_stage3.uploadFile']}</legend>
                         
@@ -84,41 +114,45 @@
                             <h:message for="fileupload" rendered="#{ExperimentBean.numberOfInputFiles gt 0}"/>                            
                         </p>
                         
+
+    <p style="text-align: center;">
+    <h:outputLink value="#" id="link">
+        Click here to use the advanced multi-file uploader.
+        <rich:componentControl for="mpanel" attachTo="link" operation="show" event="onclick"/>
+    </h:outputLink> 
+	</p>                       
               </fieldset>
-              
-<!-- 
-            <rich:fileUpload fileUploadListener="# {richFileUploadBean.listener}"
-                maxFilesQuantity="# {richFileUploadBean.maxFiles}"
-                id="richUpload" immediateUpload="false" width="90%"
-                acceptedTypes="# {richFileUploadBean.fileTypes}" allowFlash="true">
+
+
+   <rich:modalPanel id="mpanel" width="402" height="450">
+        <f:facet name="header">
+            <h:panelGroup>
+                <h:outputText value="Advanced #{res['exp_stage3.uploadFile']}"></h:outputText>
+            </h:panelGroup>
+        </f:facet>
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/graphics/close.png" styleClass="hidelink" id="hidelink" alt="Close"/>
+                <rich:componentControl for="mpanel" attachTo="hidelink" operation="hide" event="onclick"/>
+            </h:panelGroup>
+        </f:facet>
+            <rich:fileUpload fileUploadListener="#{richFileUploadBean.listener}"
+                maxFilesQuantity="#{richFileUploadBean.maxFiles}"
+                id="richUpload" immediateUpload="false" noDuplicate="true"
+                acceptedTypes="#{richFileUploadBean.fileTypes}" allowFlash="true">
                 <a4j:support event="onuploadcomplete" reRender="addedFileInfoPanel" />
             </rich:fileUpload>
- -->                        
- 
-                </fieldset>
-                </h:panelGroup>
-
-                <fieldset>
-                
-                    <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
-                    <p>The list of Digital Object to experiment upon.</p>
-                    <h:message for="addedFileInfoPanel" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
-                    
-                    <h:panelGroup id="addedFileInfoPanel">
-                           <t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
-                                         layout="unorderedList" rowIndexVar="rowi">
-                                 <h:commandLink title="Remove this Digital Object." rendered="#{ReadOnly==false}">
-                                   <f:actionListener type="eu.planets_project.tb.gui.backing.exp.RemoveDigitalObjectActionListener"/>
-                                   <t:graphicImage value="/graphics/user_trash.png" alt="Delete"/>
-                                 </h:commandLink>
-                                 <a href="#{filemap['uri']}">#{filemap['name']}</a>
-                           </t:dataList>
-                    </h:panelGroup>
-
-                    <p>Use the above buttons to add more Digital Objects to this experiment.  You can select data from the data registry (data you've uploaded using your FTP account can be found here).  You can also upload files to this experiment one at a time using the 'Upload Data' option.</p>
+        <p style="text-align: center;">
+        This multiple file uploader will not work on all browsers. If you are having problems, you should return the the experiment designer page and add files one-by-one using the simple upload option.
+        <br/>
+        <a href="#" onclick="#{rich:component('mpanel')}.hide()">Click here to return to the Experiment Designer</a>
+        </p>
+    </rich:modalPanel>
                         
-                </fieldset>
-                
+        </h:panelGroup>
+ 
+      </fieldset>
+
             
   </ui:composition>
 </body>

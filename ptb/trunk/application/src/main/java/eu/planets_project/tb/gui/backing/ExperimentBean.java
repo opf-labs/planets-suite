@@ -569,11 +569,15 @@ public class ExperimentBean {
     			//retrieve URI
     		    String fInput = localFileRefs.get(key);
     		    DigitalObjectRefBean dobr = dh.get(fInput);
+    		    if(dobr != null ) {
 				URI uri = dobr.getDownloadUri();
 				map.put("uri", uri.toString()) ;
 				map.put("name", this.createShortDoName(dobr) );
 				map.put("inputID", key);
 				ret.add(map);
+    		    } else {
+    		    	log.error("Digital Object "+key+" could not be found!");
+    		    }
 			} catch (FileNotFoundException e) {
 				log.error(e.toString());
 			}

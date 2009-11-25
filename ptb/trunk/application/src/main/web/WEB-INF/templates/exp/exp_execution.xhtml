@@ -11,7 +11,7 @@
 <body>
   <ui:composition rendered="#{ExperimentBean != null}">
 
-<h:panelGroup class="expRunStatusPanel" rendered="#{NewExp_Controller.executeExperimentProgress != 9999}">
+<h:panelGroup class="expRunStatusPanel" rendered="#{NewExp_Controller.executeExperimentProgress != 9999 and !ReadOnly}">
     <a4j:outputPanel id="progressPanel">
       <h:panelGroup styleClass="#{NewExp_Controller.experimentExecutable.executionRunning ? 'expRunStatusRun' : 'expRunStatusWait' }">
       <h:outputText value="Executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times." 
@@ -25,7 +25,7 @@
     </a4j:outputPanel>
     </h:panelGroup>
     	
-<a4j:outputPanel id="runExperimentForm">
+<a4j:outputPanel id="runExperimentForm" rendered="#{!ReadOnly}">
     <h:panelGroup rendered="#{not NewExp_Controller.experimentExecutable.executionCompleted}">
     
                    <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
@@ -62,16 +62,7 @@
                         </p>
      </h:panelGroup>
      
-</a4j:outputPanel>
-
-        <p>
-        The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects.
-        </p>
-        
-  
-<!-- ******************  -->
-
-        <rich:simpleTogglePanel label="Admin Options" opened="false" switchType="client"> <!-- rendered="#{UserBean.admin}" -->
+     <rich:simpleTogglePanel label="Admin Options" opened="false" switchType="client"> <!-- rendered="#{UserBean.admin}" -->
          <p>
        #{NewExp_Controller.executeExperimentIsRunning}, and #{TestbedBatchProcessor.daemon.secs}
        </p>
@@ -83,6 +74,18 @@
                         action="#{NewExp_Controller.unsubmitAndEdit}" disabled="#{! ExperimentBean.approved}"/>
        
          </p>
+     </rich:simpleTogglePanel>
+     
+</a4j:outputPanel>
+
+        <p>
+        The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects.
+        </p>
+        
+  
+<!-- ******************  -->
+
+        
 
     <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (NewExp_Controller.experimentExecutable.executionCompleted))}">
                 <p>Experiment execution took place with the following details:</p>
@@ -99,9 +102,6 @@
                 </div>
     </h:panelGroup>
         
-        </rich:simpleTogglePanel>
-        
-   <rich:simpleTogglePanel label="#{res['reader_exp.stageFourLegendOne']}" opened="true" switchType="ajax">
        <p>Experiment execution took place with the following details:</p>
        <div class="box">
            <!--  display some statistics -->
@@ -114,7 +114,6 @@
                <b>#{res['exp_stage5.success']} </b>#{NewExp_Controller.experimentExecutable.executionSuccess}<br />
            </p>
        </div>
-    </rich:simpleTogglePanel>
         
 
   </ui:composition>

@@ -1843,8 +1843,10 @@ public class NewExpWizardController{
     public List<MeasurementBean> getManualObservables() {
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         // Use the stage to narrow the list:
-        String selectedStage = expBean.getSelectedStage().getName();
-        this.chooseManualObservablesForEtype(expBean.getEtype(), expBean.getExperiment(), selectedStage );
+    	if( expBean.getSelectedStage() != null ) {
+    		String selectedStage = expBean.getSelectedStage().getName();
+    		this.chooseManualObservablesForEtype(expBean.getEtype(), expBean.getExperiment(), selectedStage );
+    	}
         return obsManual;
     }
     
