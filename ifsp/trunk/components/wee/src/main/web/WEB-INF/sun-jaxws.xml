@@ -35,12 +35,12 @@
 <endpoints xmlns='http://java.sun.com/xml/ns/jax-ws/ri/runtime'
 	version='2.0'>
 
-	<endpoint name='WftRegistryService'
+	<endpoint name='WorkflowTemplateRegistry'
 		implementation='eu.planets_project.ifr.core.wee.impl.registry.WftRegistryImpl'
-		url-pattern='/WftRegistryService' />
+		url-pattern='/WorkflowTemplateRegistry' />
 		
-	<endpoint name='WeeService'
+	<endpoint name='WorkflowExecutionManager'
 		implementation='eu.planets_project.ifr.core.wee.impl.registry.WeeServiceImpl'
-		url-pattern='/WeeService' />		
+		url-pattern='/WorkflowExecutionManager' />		
 	
 </endpoints>
