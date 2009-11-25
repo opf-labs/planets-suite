@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file                                    -->
+<!-- ======================================================================= -->
+
+<project name="if-selfreg" default="deploy" basedir=".">
+
+	<property name="appName" value="${ant.project.name}"/>
+	<property name="appDir" value="."/>
+	<!-- Specify the build type: ejb, war or ear. -->
+	<property name="pserv.app.build.type" value="ear"/>
+
+	<!-- Specify if this application requires further software to be installed -->
+	<property name="pserv.app.deploy.mode" value="pure-java" />
+
+	<property name="src.dir" value="${appDir}/src/java" />
+	<property name="lib.dir" value="${appDir}/lib"/>
+	<property name="src.resources" value="${appDir}/src/resources"/>
+	<property name="src.web" value="${appDir}/src/web"/>
+
+	<!-- Unit testing definitions -->
+	<property name="test.src.dir" value="${appDir}/src/test/java" />
+	<property name="test.local" value="" />
+	<property name="test.standalone" value="" />
+	<property name="test.server" value="" />
+
+	<property name="pserv.root.dir" value="../.." />
+	<import file="${pserv.root.dir}/build.common.xml" />
+
+	<property name="pserv.root.dir" value="../.." />
+	<import file="${pserv.root.dir}/build.common.xml"/>
+
+</project>

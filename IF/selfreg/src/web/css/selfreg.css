@@ -1,0 +1,19 @@
+#pl-wrapper {
+  width: 70%;
+  margin: 0 auto;
+  padding: 0.5em 1em;
+  background: transparent url('/images/white-50.png');
+  border: 1px dotted #ddd;
+  border-top: none;
+  font-size: 12px;
+}
+
+#pl-header {
+  height: auto;
+}
+
+#pl-header h1 {
+  padding-top: 0.2em !important;
+  margin-bottom: 1em;
+}
+
