@@ -1,26 +1,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:c="http://java.sun.com/jstl/core">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
-	<ui:define name="title">
+    <ui:define name="title">
         #{res.title} - #{ExperimentBean.ename}: #{res['exp_stage4.pageTitle']}
   </ui:define>
 
-	<ui:define name="header">
-		<ui:include src="/WEB-INF/templates/header.xhtml">
-			<ui:param name="page" value="new_exp" />
-		</ui:include>
-	</ui:define>
+    <ui:define name="header">
+        <ui:include src="/WEB-INF/templates/header.xhtml">
+            <ui:param name="page" value="new_exp" />
+        </ui:include>
+    </ui:define>
 
-	<ui:define name="content" rendered="#{ExperimentBean != null}">
-		<div id="mainwrapper">
-		<div id="maincol">
-		<div class="innertubemain">
+    <ui:define name="content" rendered="#{ExperimentBean != null}">
+        <div id="mainwrapper">
+        <div id="maincol">
+        <div class="innertubemain">
 
 <h:form>    
 
@@ -50,24 +50,24 @@
        <ui:param name="ExperimentPhase" value="4" />
     </ui:include>
 
-		<p>&#160;</p>
-		<p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
 
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
 
-		</div>
-		</div>
-		</div>
+        </div>
+        </div>
+        </div>
 
 
-		<div id="leftcol">
+        <div id="leftcol">
 
         <!-- Include the standard experiment builder sidebar. -->
         <ui:include src="/WEB-INF/templates/exp_sidebar.xhtml">
@@ -75,12 +75,12 @@
            <ui:param name="ExperimentPhase" value="4" />
         </ui:include>
 
-		</div>
+        </div>
 
-	</ui:define>
-	<ui:define name="footer">
-		<ui:include src="/WEB-INF/templates/footer.xhtml" />
-	</ui:define>
+    </ui:define>
+    <ui:define name="footer">
+        <ui:include src="/WEB-INF/templates/footer.xhtml" />
+    </ui:define>
 </ui:composition>
 
 </body>

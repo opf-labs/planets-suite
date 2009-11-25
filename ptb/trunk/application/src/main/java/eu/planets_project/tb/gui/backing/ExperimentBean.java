@@ -633,6 +633,7 @@ public class ExperimentBean {
     		this.helperCreateRemoveFileElement(panel, localFileRef, key);
             return key;
     	} else {
+    	    log.info("InputData contains "+localFileRef);
     	    return null;
         }
     }

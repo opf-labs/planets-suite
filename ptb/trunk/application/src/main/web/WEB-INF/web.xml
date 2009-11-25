@@ -73,7 +73,8 @@
             <param-value>1000000</param-value>
         </init-param>
     </filter>
-  <!--Extension Filter for File Upload -->
+    
+    <!--Extension Filter for File Upload -->
 	<filter>
           <filter-name>extensionsFilter</filter-name>
           <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>

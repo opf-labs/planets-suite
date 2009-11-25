@@ -4,6 +4,7 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,17 +24,24 @@ import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
  */
 public class RichFileUploadBean {
   
-    private static PlanetsLogger log = PlanetsLogger.getLogger(RichFileUploadBean.class, "testbed-log4j.xml");
+    private static PlanetsLogger log = PlanetsLogger.getLogger(RichFileUploadBean.class);
     
     private DataHandler dh = new DataHandlerImpl();
+    
+    private boolean richUploadEnabled = false;
     
     private String fileTypes = "*";
     
     private Integer maxFiles = 50;
+    
+    public RichFileUploadBean() {
+        log.info("Constructed.");
+    }
 
-    public void listener(UploadEvent event) throws Exception{
+    public void listener(UploadEvent event) throws Exception {
+        log.info("Got: "+event.getUploadItems());
         UploadItem item = event.getUploadItem();
-        System.out.println("File : '" + item.getFileName() + "' was uploaded");
+        log.info("File : '" + item.getFileName() + "' was uploaded");
         URI furi = null;
         if (item.getFile() != null ) {
             File file = item.getFile();
@@ -42,23 +50,15 @@ public class RichFileUploadBean {
             try {
 				furi = dh.storeBytestream(new FileInputStream( file ) , item.getFileName() );
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
+                log.error("File, FileNotFoundException: "+e);
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+                log.error("File, IOException: "+e);
 				e.printStackTrace();
 			}
 
         } else if ( item.getData() != null ) {
-            try {
-				furi = dh.storeBytearray(item.getData(), item.getFileName() );
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			furi = dh.storeBytearray(item.getData(), item.getFileName() );
         	
         } else {
         	log.error("Upload failed: both Data and File are null!");
@@ -70,13 +70,24 @@ public class RichFileUploadBean {
         	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         	String position = expBean.addExperimentInputData(furi.toString());
         	log.info("File added in position: "+position);
+        } else {
+            log.error("Upload could not be stored! "+event.isMultiUpload());
         }
     }
+    
+    public void enableRichUpload() {
+        this.richUploadEnabled = true;
+    }
 
+    public void disableRichUpload() {
+        this.richUploadEnabled = false;
+    }
+    
     /**
      * @return the fileTypes
      */
     public String getFileTypes() {
+        log.info("Getting fileTypes: "+fileTypes);
         return fileTypes;
     }
 
@@ -91,6 +102,7 @@ public class RichFileUploadBean {
      * @return the maxFiles
      */
     public Integer getMaxFiles() {
+        log.info("Getting maxFiles: "+maxFiles);
         return maxFiles;
     }
 
@@ -99,6 +111,20 @@ public class RichFileUploadBean {
      */
     public void setMaxFiles(Integer maxFiles) {
         this.maxFiles = maxFiles;
+    }
+
+    /**
+     * @return the richUploadEnabled
+     */
+    public boolean isRichUploadEnabled() {
+        return richUploadEnabled;
+    }
+
+    /**
+     * @param richUploadEnabled the richUploadEnabled to set
+     */
+    public void setRichUploadEnabled(boolean richUploadEnabled) {
+        this.richUploadEnabled = richUploadEnabled;
     }
 
 }
