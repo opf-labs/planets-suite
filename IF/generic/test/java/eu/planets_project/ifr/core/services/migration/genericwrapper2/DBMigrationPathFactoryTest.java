@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URI;
@@ -135,15 +136,11 @@ public class DBMigrationPathFactoryTest {
 	final Map<String, Parameter> testParameters = new HashMap<String, Parameter>();
 	Parameter.Builder parameterBuilder = new Parameter.Builder("param1",
 		"-n");
-	parameterBuilder
-		.description("Command line parameters for the 'cat' command. See 'man cat'.");
 	Parameter parameter = parameterBuilder.build();
 	testParameters.put(parameter.getName(), parameter);
 
 	parameterBuilder = new Parameter.Builder("param2",
 		"'[:lower:]' '[:upper:]'");
-	parameterBuilder
-		.description("Command line parameters for the 'tr' command. See 'man tr'.");
 	parameter = parameterBuilder.build();
 	testParameters.put(parameter.getName(), parameter);
 
@@ -167,17 +164,12 @@ public class DBMigrationPathFactoryTest {
 	    assertNotNull("No description specified for parameter: "
 		    + parameterName, parameterToTest.getDescription());
 
-	    final Parameter expectedParameter = testParameters
-		    .get(parameterName);
+	    assertTrue("Empty description specified for parameter: "
+		    + parameterName,
+		    parameterToTest.getDescription().length() > 0);
 
 	    assertNull("Un-expected default parameter value for parameter: "
 		    + parameterName, parameterToTest.getValue());
-
-	    // Do not let changed indentation of the configuration file ruin this test.
-	    final String descriptionToTest = parameterToTest.getDescription().replaceAll("[\n|\r]", "").trim(); 
-	    assertEquals("Un-expected description set on parameter: "
-		    + parameterName, expectedParameter.getDescription(),
-		    descriptionToTest);
 	}
 
 	// Verify the command line information
