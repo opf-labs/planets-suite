@@ -2,8 +2,8 @@ package eu.planets_project.services.validation.odfvalidators.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -22,12 +22,14 @@ import eu.planets_project.services.utils.ZipUtils;
 
 public class OdfContentHandler {
 	
-	private static final String MIMETYPE = "mimetype";
+	private static String MIMETYPE_XML = "mimetype";
 	public static String CONTENT_XML = "content.xml";
 	public static String STYLES_XML = "styles.xml";
 	public static String META_XML = "meta.xml";
 	public static String SETTINGS_XML = "settings.xml";
 	public static String MANIFEST_XML = "manifest.xml";
+	public static String DOC_DSIGS_XML = "documentsignatures.xml";
+	public static String MACRO_DSIGS_XML = "macrosignatures.xml";
 	
 	private static final String MATHML_MIMETYPE = "application/vnd.oasis.opendocument.formula";
 	
@@ -39,11 +41,13 @@ public class OdfContentHandler {
 	
 	private static File manifestXml = null;
 	
-	private static File mimetype = null;
+	private static File mimetype_file = null;
 	
-	private static String mimeType = null;
+	private static String mimeType_string = null;
 	
 	private boolean mimeTypeVerified = false;
+	
+	private boolean detectedDsigSubFiles = false;
 	
 	private String manifestMimeType = null;
 	
@@ -63,49 +67,24 @@ public class OdfContentHandler {
 	 * @param odfFile the odf file to validate
 	 */
 	public OdfContentHandler(File odfFile) {
-		ODF_VALIDATOR_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_VALIDATOR_TMP");
+		ODF_VALIDATOR_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_CONTENT_HANDLER");
+		FileUtils.deleteAllFilesInFolder(ODF_VALIDATOR_TMP);
 		xmlTmp = FileUtils.createFolderInWorkFolder(ODF_VALIDATOR_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
-		FileUtils.deleteAllFilesInFolder(xmlTmp);
 		
 		// 1) get all Odf sub files from zp container
 		odfSubFiles = extractOdfSubFiles(odfFile);
 		
 		if(!isNotODF) {
-			// read the Odf mimeType 
-			mimeType = getMimeType(mimetype);
 			
-			// if the mimetype indicates a MathML file, retrieve the MathML version for schema handling
-			// AND the ODF version for the other subfiles...
-			if(mimeType.equalsIgnoreCase(OdfContentHandler.MATHML_MIMETYPE)) {
-				mathMLVersion = getMathMLVersion(odfSubFiles.get("content"));
-				
-				Set<String> keys = odfSubFiles.keySet();
-				
-				for (String string : keys) {
-					if(string.equalsIgnoreCase("settings") 
-							|| string.equalsIgnoreCase("styles") 
-							|| string.equalsIgnoreCase("meta")) {
-						odfVersion = getOdfVersion(odfSubFiles.get(string));
-						break;
-					}
-				}
-			}
-			// else, just retrieve the Odf version for schema handling
-			else {
-				odfVersion = getOdfVersion(odfSubFiles.get("content"));
-			}
+			getVersions(odfSubFiles);
 			
-			// check the container integrity, i.e.:
-			// 1) check, if all entries in META-INF/manifest.xml are present in
-			// the odf container.
-			// 2) check if the manifest.xml mimetype is the same as the subfile mimetype. If not, 
-			// log out a warning.
+//			cleanUpContent(odfSubFiles);
 			
 			missingFileEntries = checkContainerConformity(odfFile);
 		}
 	}
 	
-	public static File getXmlTmpDir() {
+	public File getCurrentXmlTmpDir() {
 		return xmlTmp;
 	}
 	
@@ -123,8 +102,8 @@ public class OdfContentHandler {
 		HashMap<String, File> subFilesTmp = new HashMap<String, File>();
 		for (String currentEntry : files) {
 			
-			if(currentEntry.endsWith(OdfContentHandler.MIMETYPE)) {
-				mimetype = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
+			if(currentEntry.endsWith(OdfContentHandler.MIMETYPE_XML)) {
+				mimetype_file = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
 				continue;
 			}
 			
@@ -157,8 +136,26 @@ public class OdfContentHandler {
 				subFilesTmp.put("meta", tmpMeta);
 				continue;
 			}
+			
+			if(currentEntry.endsWith(OdfContentHandler.DOC_DSIGS_XML)) {
+				File tmpDocDsig = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
+				subFilesTmp.put("doc_dsigs", tmpDocDsig);
+				detectedDsigSubFiles = true;
+				continue;
+			}
+			
+			if(currentEntry.endsWith(OdfContentHandler.MACRO_DSIGS_XML)) {
+				File tmpMacroDsig = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
+				subFilesTmp.put("macro_dsigs", tmpMacroDsig);
+				detectedDsigSubFiles = true;
+				continue;
+			}
 		}
 		return subFilesTmp;
+	}
+	
+	public boolean containsDsigSubFiles() {
+		return detectedDsigSubFiles;
 	}
 	
 	
@@ -180,6 +177,7 @@ public class OdfContentHandler {
 		String[] parts = contentString.split(" ");
 		String version = null;
 		for (int i=0;i<parts.length;i++) {
+			String debug = parts[i];
 			if(parts[i].equalsIgnoreCase("MathML")) {
 				version = parts[i+1];
 				version = "MathML:" + version.substring(0, version.lastIndexOf("//"));
@@ -190,9 +188,62 @@ public class OdfContentHandler {
 		return version;
 	}
 	
+	public boolean containsDocTypeDeclaration(File mathmlXml) {
+		String contentString = FileUtils.readTxtFileIntoString(mathmlXml);
+		String docTypePattern = "<!DOCTYPE";
+		return contentString.contains(docTypePattern);
+	}
+	
+	
+	public File removeMathMLDocTypeAndNS(File mathmlXML) {
+		String contentString = FileUtils.readTxtFileIntoString(mathmlXML);
+		contentString = contentString.replaceAll(">", ">" + System.getProperty("line.separator"));
+		String[] lines = contentString.split(System.getProperty("line.separator"));
+		String docTypePattern = "<!DOCTYPE";
+		
+		String dest = "<math:math xmlns:math=\"http://www.w3.org/1998/Math/MathML\"" 
+			+ " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+			+ " xsi:schemaLocation=\"http://www.w3.org/1998/Math/MathML http://www.w3.org/Math/XMLSchema/mathml2/mathml2.xsd\">";
+		
+		for (int i=0;i<lines.length;i++) {
+			if(lines[i].contains(docTypePattern)) {
+				lines[i]="";
+				continue;
+			}
+			if(lines[i].contains("xmlns:")) {
+				lines[i] = dest;
+				continue;
+			}
+		}
+		
+		StringBuffer content = new StringBuffer();
+		
+		for (String string : lines) {
+			content.append(string.trim());
+		}
+		
+		File cleanedTmp = new File(xmlTmp, FileUtils.randomizeFileName(mathmlXML.getName()));
+		String finalStr = content.toString();
+		FileUtils.writeStringToFile(content.toString(), cleanedTmp);
+		
+//		SAXBuilder builder = new SAXBuilder();
+//		Document doc = null;
+//		try {
+//			doc = builder.build(new StringReader(contentString));
+//			Element root = doc.getRootElement();
+//			String rootContent = root.getTextTrim();
+//			
+//		} catch (JDOMException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		
+		return cleanedTmp;
+	}
 	
 	private String getOdfVersion(File odfSubFile) {
-		SAXBuilder builder = new SAXBuilder();
+		SAXBuilder builder = new SAXBuilder(false);
 		Document doc = null;
 		try {
 			doc = builder.build(odfSubFile);
@@ -219,6 +270,33 @@ public class OdfContentHandler {
 		return subFiles;
 	}
 
+	private void getVersions(HashMap<String, File> odfSubFiles) {
+		// read the Odf mimeType 
+		mimeType_string = getMimeType(mimetype_file);
+		
+		// if the mimetype indicates a MathML file, retrieve the MathML version for schema handling
+		// AND the ODF version for the other subfiles...
+		if(mimeType_string.equalsIgnoreCase(OdfContentHandler.MATHML_MIMETYPE)) {
+			mathMLVersion = getMathMLVersion(odfSubFiles.get("content"));
+			
+			// And now check the version of the other files...
+			Set<String> keys = odfSubFiles.keySet();
+			
+			for (String string : keys) {
+				if(string.equalsIgnoreCase("settings") 
+						|| string.equalsIgnoreCase("styles") 
+						|| string.equalsIgnoreCase("meta")) {
+					odfVersion = getOdfVersion(odfSubFiles.get(string));
+					break;
+				}
+			}
+		}
+		// if we don't have a formula file here just retrieve the Odf version from 'content.xml' for schema handling
+		else {
+			odfVersion = getOdfVersion(odfSubFiles.get("content"));
+		}
+	}
+
 	public String getOdfVersion() {
 		return odfVersion;
 	}
@@ -228,7 +306,7 @@ public class OdfContentHandler {
 	}
 	
 	public String getMimeType() {
-		return mimeType;
+		return mimeType_string;
 	}
 
 	public boolean isOdfCompliant() {
@@ -258,9 +336,9 @@ public class OdfContentHandler {
 		
 		// Determine the MimeType
 		for (String string : files) {
-			if(string.endsWith(MIMETYPE)) {
+			if(string.endsWith(MIMETYPE_XML)) {
 				File tmpMimetype = ZipUtils.getFileFrom(odfFile, string, xmlTmp);
-				mimeType = FileUtils.readTxtFileIntoString(tmpMimetype);
+				mimeType_string = FileUtils.readTxtFileIntoString(tmpMimetype);
 				continue;
 			}
 		}
@@ -294,7 +372,7 @@ public class OdfContentHandler {
 	}
 	
 	private List<String> checkContainerConformity(File odfFile) {
-		mimeTypeVerified = verifyManifestMimeType(mimeType, odfSubFiles.get("manifest"));
+		mimeTypeVerified = verifyManifestMimeType(mimeType_string, odfSubFiles.get("manifest"));
 		
 		manifestEntries = getManifestEntries(odfSubFiles.get("manifest"));
 		List<String> missingList = new ArrayList<String>();
@@ -308,6 +386,9 @@ public class OdfContentHandler {
 					}
 				}
 			}
+		}
+		if(missingList.size()==0) {
+			log.info("[OdfContentHandler] checkContainerIntegrity(): Congratulations!!! Successfully checked container integrity of file '" + odfFile.getName() + "'");
 		}
 		return missingList;
 	}
@@ -347,7 +428,7 @@ public class OdfContentHandler {
 				mediaType = currentElement.getAttributeValue("media-type", ns);
 				String path = currentElement.getAttributeValue("full-path", ns);
 				if(path.equalsIgnoreCase("/") && mediaType.equalsIgnoreCase(mimeType)) {
-					log.info("SUCCESS!!! META-INF/MANIFEST.XML mimeType verified!");
+					log.info("[OdfContentHandler] verifyManifestMimeType(): SUCCESS!!! 'META-INF/manifest.xml' mimeType verified!");
 					return true;
 				}
 			}
@@ -356,7 +437,7 @@ public class OdfContentHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		log.warn("Warning: META-INF/MANIFEST.XML mimetype should be: '" + mimeType + "', BUT is: '" + mediaType + "!");
+		log.warn("Mismatch warning: 'META-INF/manifest.xml' mimetype should be: '" + mimeType + "', BUT is: '" + mediaType + "!");
 		manifestMimeType = mediaType;
 		return false;
 	}

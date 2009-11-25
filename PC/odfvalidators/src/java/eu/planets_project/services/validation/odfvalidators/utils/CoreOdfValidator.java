@@ -4,19 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.SortedMap;
-
-import odfvalidator.ODFFileValidator;
-import odfvalidator.ODFValidator;
-import odfvalidator.ODFValidatorException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.net.URL;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.utils.FileUtils;
@@ -33,7 +30,7 @@ public class CoreOdfValidator {
 	private static final String USER_MANIFEST_SCHEMA_PARAM = "user-manifest-schema";
 	private static String STRICT_PARAM_NAME = "strictValidation";
 	
-	private static final String MATHML_MIMETYPE = "application/vnd.oasis.opendocument.formula";
+	private static final String FORMULA_MIMETYPE = "application/vnd.oasis.opendocument.formula";
 	
 	// Flag section
 	private static boolean STRICT_VALIDATION = false;
@@ -46,6 +43,8 @@ public class CoreOdfValidator {
 	private static File USER_DOC_STRICT_SCHEMA = null;
 	private static File USER_MANIFEST_SCHEMA = null;
 	
+	private static HashMap<String, File> schemaList = new HashMap<String, File>();
+	
 	private static OdfSchemaHandler schemaHandler = new OdfSchemaHandler();
 	private static OdfContentHandler contentHandler = null;
 	
@@ -54,113 +53,231 @@ public class CoreOdfValidator {
 	private static final String JING_HOME = System.getenv("JING_HOME");
 	private static final String JING = "jing.jar";
 	
-	private static final String MSV_HOME = "E:/MSV/msv.20090415/msv-20090415";
-	private static final String MSV = "msv.jar";
-	
-	private static final String ODF_TOOLKIT_VALIDATOR_HOME = "E:/ODF_TOOLKIT_HOME";
-	private static final String ODF_TOOLKIT = "odfvalidator.jar";
-	
-	private static File ODF_VALIDATOR_TMP = null;
-	
 	private static Log log = LogFactory.getLog(CoreOdfValidator.class);
 	
+	private static OdfValidatorResult result = null;
 	
+	private static String mimeType = null;
 	
-	public CoreOdfValidator() {
-		
-		ODF_VALIDATOR_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_VALIDATOR_TMP");
-//		schemaHandler.provideSchemas();
-	}
 	
 	public OdfValidatorResult validate(File odfFile, List<Parameter> parameters) {
 		contentHandler = new OdfContentHandler(odfFile);
-		OdfValidatorResult result = new OdfValidatorResult(odfFile);
+		result = new OdfValidatorResult(odfFile);
 		
 		// check if the input file is an ODF file at all
 		if(!contentHandler.isOdfFile()) {
 			result.setError(odfFile, "The input file '" + odfFile.getName() + "' is NOT an ODF file!");
 			return result;
 		}
-		
 		result.setIsOdfFile(contentHandler.isOdfFile());
 		
+		
+		// File is ODF spec compliant, i.e. all mandatory files are included in container?
 		boolean isCompliant = contentHandler.isOdfCompliant();
 		result.setIsOdfCompliant(isCompliant);
+		// if it is not compliant, e.g. if manifest entries are found that are not present in the container,
+		// list the missing entries in the result.
 		if(!isCompliant) {
 			result.setMissingManifestEntries(contentHandler.getMissingManifestEntries());
 		}
 		
-		List<File> xmlParts = contentHandler.getXmlComponents();
+		// list the contained subfiles in this ODF container, as not all sub files are mandatory!
+		List<File> xmlParts = new ArrayList<File>(contentHandler.getXmlComponents());
+		// list them in the result
 		result.setXmlComponents(xmlParts);
+		
+		// get the version of this ODF file and note in result
 		version = contentHandler.getOdfVersion();
 		result.setOdfVersion(version);
 		
-		String mimeType = contentHandler.getMimeType();
-		
-		if(mimeType.equalsIgnoreCase(MATHML_MIMETYPE)) {
-			result.setMathMLVersion(contentHandler.getMathMLVersion());
+		// get the mimetype of this ODF file
+		mimeType = contentHandler.getMimeType();
+		// if this is a formula file, get the version of the embedded MathML
+		if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)) {
+			result.setMathMLVersion(contentHandler.getMathMLVersion()); // and set it in the result
 		}
-		
+		// set the mimetype
 		result.setMimeType(mimeType);
 		
+		// check parameters
 		parseParameters(parameters);
 		
-		File doc_schema = null;
-		File mathml_schema = null;
-		File manifest_schema = null;
+		// get all necessary schemas, depending on ODF version and mimetype (MathML/formula) 
+		collectSchemas();
 		
-		if(mimeType.equalsIgnoreCase(MATHML_MIMETYPE)) {
-			mathml_schema = schemaHandler.retrieveMathMLSchemaOrDtdFile(result.getMathMLVersion());
-			File xmlTmpDir = contentHandler.getXmlTmpDir();
-			FileUtils.copyFileTo(mathml_schema, new File(xmlTmpDir, mathml_schema.getName()));
-			result.setMathMLSchema(mathml_schema);
-		}
+		log.info("Validating input file of mimeType = '" + mimeType + "'");
 		
-		if(USE_USER_DOC_SCHEMA) {
-			if(USE_USER_DOC_STRICT_SCHEMA) {
-				doc_schema = USER_DOC_STRICT_SCHEMA;
-				result.setStrictDocSchema(doc_schema);
-				result.setDocumentSchema(USER_DOC_SCHEMA);
-			}
-			else {
-				doc_schema = USER_DOC_SCHEMA;
-				result.setDocumentSchema(USER_DOC_SCHEMA);
-			}
-		}
-		else {
-			doc_schema = schemaHandler.retrieveOdfDocSchemaFile(version, STRICT_VALIDATION);
-			result.setDocumentSchema(doc_schema);
-		}
-		if(USE_USER_MANIFEST_SCHEMA) {
-			manifest_schema = USER_MANIFEST_SCHEMA;
-			result.setManifestSchema(manifest_schema);
-		}
-		else {
-			manifest_schema = schemaHandler.retrieveOdfManifestSchemaFile(version);
-			result.setManifestSchema(manifest_schema);
-		}
-		
-		log.info("input MIME type = '" + mimeType + "'");
-		
+		// validate all relevant sub files in this ODF container
 		for (File file : xmlParts) {
-			result = validateFile(file, doc_schema, manifest_schema, mathml_schema, result);
+			result = validateFile(file, result);
 		}
 		
+		// validated in strict mode? Note it in result...
 		if(STRICT_VALIDATION) {
 			result.setUsedStrictValidation(STRICT_VALIDATION);
 		}
 		reset();
 		return result;
 	}
+	
+	private static OdfValidatorResult validateFile(File odfXmlComponent, OdfValidatorResult result) {
+		String name = odfXmlComponent.getName();
 
-	private void reset() {
-		STRICT_VALIDATION = false;
-		USE_USER_DOC_SCHEMA = false;
-		USE_USER_DOC_STRICT_SCHEMA = false;
-		USE_USER_MANIFEST_SCHEMA = false;
+		// Do we have a FORMULA (MathML) file?		
+		if(name.equalsIgnoreCase(OdfContentHandler.CONTENT_XML)) {
+			if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)) {
+				result = validateMathML(odfXmlComponent, schemaHandler.retrieveMathML101Dtd(), schemaList.get("mathml"), result);
+			}
+			else {
+				result = validateSubFile(odfXmlComponent, schemaList.get("doc"), result);
+			}
+		}
+		
+		// do we have the manifest.xml file here? Then validate it against the manifest schema!
+		if(name.equalsIgnoreCase(OdfContentHandler.MANIFEST_XML)) {
+			result = validateSubFile(odfXmlComponent, schemaList.get("manifest"), result);
+		}
+		
+		// do we have a signature file here, then validate it against the dsig schema
+		if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2) && name.equalsIgnoreCase(OdfContentHandler.DOC_DSIGS_XML)
+				|| name.equalsIgnoreCase(OdfContentHandler.MACRO_DSIGS_XML)) {
+			result = validateSubFile(odfXmlComponent, schemaList.get("dsig"), result);
+		}
+		
+		// Or do we have a 'normal' ODF subfile (content.xml, settings.xml, styles.xml, meta.xml)?
+		if(name.equalsIgnoreCase(OdfContentHandler.SETTINGS_XML)
+				|| name.equalsIgnoreCase(OdfContentHandler.STYLES_XML)
+				|| name.equalsIgnoreCase(OdfContentHandler.META_XML)) {
+			result = validateSubFile(odfXmlComponent, schemaList.get("doc"), result);
+		}
+		return result;
 	}
 	
 	
+	private static OdfValidatorResult validateSubFile(File odfSubFile, File schema, OdfValidatorResult result) {
+		ProcessRunner validator = new ProcessRunner();
+		validator.setCommand(getJingValidateCmd(odfSubFile, schema));
+		validator.run();
+		
+		String out = validator.getProcessOutputAsString();
+	
+		if(out.equalsIgnoreCase("")) {
+			result.setValid(odfSubFile, true);
+			log.info("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+		}
+		else {
+			result.setValid(odfSubFile, false);
+			result.setError(odfSubFile, out);
+			log.error("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+			log.error("Message: " + out);
+		}
+		return result;
+	}
+
+	private static OdfValidatorResult validateMathML(File mathmlFile, File mathmlDtd, File mathmlSchema, OdfValidatorResult result) {
+		File dtdDest = new File(contentHandler.getCurrentXmlTmpDir(), mathmlDtd.getName());
+		FileUtils.copyFileTo(mathmlDtd, dtdDest);
+		
+		File cleanedMathML = contentHandler.removeMathMLDocTypeAndNS(mathmlFile);
+		StringBuffer warnings = new StringBuffer();
+		if(contentHandler.containsDocTypeDeclaration(mathmlFile)) {
+			result.setWarning(mathmlFile, "This files contains a DOCTYPE declaration, " +
+					"which has been removed before validation!" +
+					System.getProperty("line.separator") +
+					"Correct Namespace declaration has been added to enable validation against the MathMl 2.0 schema!"
+					+ System.getProperty("line.separator"));
+		}
+		
+		URL schemaUrl = FileUtils.getUrlFromFile(mathmlSchema);
+		
+		SAXBuilder builder = new  SAXBuilder (false);
+		builder.setProperty ("http://apache.org/xml/properties/schema/external-schemaLocation", schemaUrl);
+		Document doc = null;
+		try {
+			doc = builder.build(cleanedMathML);
+		} catch (JDOMException e) {
+			result.setValid(mathmlFile, false);
+			result.setError(mathmlFile, e.getLocalizedMessage());
+			log.error("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+			log.error("Message: " + e.getLocalizedMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		result.setValid(mathmlFile, true);
+		log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+		log.warn("[CoreOdfValidator] validateMathML(): VALIDATION SKIPPED! This ODF file " +
+				"contains MathML and is at least wellformed.");
+		result.setWarning(mathmlFile, "VALIDATION SKIPPED! This ODF file " +
+				"contains MathML and is at least wellformed.");
+		
+//		ProcessRunner mathmlValidator = new ProcessRunner(getJingValidateCmd(cleanedMathML, mathmlSchema));
+//		mathmlValidator.run();
+//		String out = mathmlValidator.getProcessOutputAsString();
+//		String error = mathmlValidator.getProcessErrorAsString();
+//		
+//		if(out.equalsIgnoreCase("")) {
+//			result.setValid(mathmlFile, true);
+//			log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+//		}
+//		else {
+//			result.setValid(mathmlFile, false);
+//			result.setError(mathmlFile, out);
+//			log.error("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+//			log.error("Message: " + out);
+//		}
+		return result;
+	}
+	
+	
+	private static ArrayList<String> getJingValidateCmd(File odfXmlFile, File schemaFile) {
+		ArrayList<String> cmd = new ArrayList<String>();
+		cmd.add("java");
+		cmd.add("-jar");
+		cmd.add(JING_HOME + File.separator + JING);
+		cmd.add("-i");
+		cmd.add(schemaFile.getAbsolutePath());
+		cmd.add(odfXmlFile.getAbsolutePath());
+		return cmd;
+	}
+	
+	private void collectSchemas() {
+		if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)) {
+			schemaList.put("mathml", schemaHandler.retrieveMathMLSchemaOrDtdFile(result.getMathMLVersion()));
+			result.setMathMLSchema(schemaList.get("mathml"));
+		}
+		
+		if(USE_USER_DOC_SCHEMA) {
+			if(USE_USER_DOC_STRICT_SCHEMA) {
+				schemaList.put("doc", USER_DOC_STRICT_SCHEMA);
+				result.setStrictDocSchema(USER_DOC_STRICT_SCHEMA);
+				result.setDocumentSchema(USER_DOC_STRICT_SCHEMA);
+			}
+			else {
+				schemaList.put("doc", USER_DOC_SCHEMA);
+				result.setDocumentSchema(USER_DOC_SCHEMA);
+			}
+		}
+		else {
+			schemaList.put("doc", schemaHandler.retrieveOdfDocSchemaFile(version, STRICT_VALIDATION));
+			result.setDocumentSchema(schemaList.get("doc"));
+		}
+		if(USE_USER_MANIFEST_SCHEMA) {
+			schemaList.put("manifest", USER_MANIFEST_SCHEMA);
+			result.setManifestSchema(USER_MANIFEST_SCHEMA);
+		}
+		else {
+			schemaList.put("manifest", schemaHandler.retrieveOdfManifestSchemaFile(version));
+			result.setManifestSchema(schemaList.get("manifest"));
+		}
+		if(contentHandler.containsDsigSubFiles()) {
+			if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2)) {
+				schemaList.put("dsig", schemaHandler.retrieveDsigSchema(version));
+				result.setDsigSchema(schemaList.get("dsig"));
+			}
+		}
+	}
+
 	private static void parseParameters(List<Parameter> parameters) {
 		if(parameters!=null && parameters.size()>0) {
 			for (Parameter parameter : parameters) {
@@ -227,7 +344,7 @@ public class CoreOdfValidator {
 		}
 		
 	}
-	
+
 	private static URL parseForURL(String parameterValue) {
 		URL url = null;
 		if(parameterValue.contains(DOC_SCHEMA_URL_MARKER) 
@@ -242,101 +359,15 @@ public class CoreOdfValidator {
 		}
 		return url;
 	}
-	
-	private static OdfValidatorResult validateFile(File odfXmlComponent, File docSchema, File manifestSchema, File mathMLSchema, OdfValidatorResult result) {
-		String javaVersion = System.getProperty("java.version");
-    	
-    	if(javaVersion.startsWith("1.6")) {
-    		System.setProperty("javax.xml.validation.SchemaFactory:http://relaxng.org/ns/structure/1.0", "org.iso_relax.verifier.jaxp.validation.RELAXNGSchemaFactoryImpl");
-    		System.setProperty("org.iso_relax.verifier.VerifierFactoryLoader", "com.sun.msv.verifier.jarv.FactoryLoaderImpl");
-    	}
-    	
-		ProcessRunner validator = null;
-		String name = odfXmlComponent.getName();
-		
-		if(result.getMimeType().equalsIgnoreCase(MATHML_MIMETYPE)) {
-			if(name.equalsIgnoreCase(OdfContentHandler.CONTENT_XML)) {
-				validator = new ProcessRunner();
-				validator.setCommand(getMsvValidateMathMLContentCmd(odfXmlComponent, mathMLSchema));
-			}
-		}
-		else {
-			validator = new ProcessRunner();
-			validator.setCommand(getValidateOdfXmlPartCmd(odfXmlComponent, docSchema));
-		}
-		
-		if(name.equalsIgnoreCase(OdfContentHandler.SETTINGS_XML)
-				|| name.equalsIgnoreCase(OdfContentHandler.STYLES_XML)
-				|| name.equalsIgnoreCase(OdfContentHandler.META_XML)) {
-			validator = new ProcessRunner();
-			validator.setCommand(getValidateOdfXmlPartCmd(odfXmlComponent, docSchema));
-		}
-		
-		if(name.equalsIgnoreCase(OdfContentHandler.MANIFEST_XML)) {
-			validator = new ProcessRunner();
-			validator.setCommand(getValidateOdfXmlPartCmd(odfXmlComponent, manifestSchema));
-		}
-		
-		validator.run();
-		
-		String out = validator.getProcessOutputAsString();
-		String error = validator.getProcessErrorAsString();
 
-		if(out.equalsIgnoreCase("")) {
-			result.setValid(odfXmlComponent, true);
-			log.info("'" + name + "' is valid: " + result.componentIsValid(odfXmlComponent));
-		}
-		else {
-			result.setValid(odfXmlComponent, false);
-			result.setError(odfXmlComponent, out);
-			log.error("'" + name + "' is valid: " + result.componentIsValid(odfXmlComponent));
-			log.error("Message: " + out);
-		}
-		return result;
+	private void reset() {
+		STRICT_VALIDATION = false;
+		USE_USER_DOC_SCHEMA = false;
+		USE_USER_DOC_STRICT_SCHEMA = false;
+		USE_USER_MANIFEST_SCHEMA = false;
+		USER_DOC_SCHEMA = null;
+		USER_DOC_STRICT_SCHEMA = null;
+		USER_MANIFEST_SCHEMA = null;
+		mimeType = null;
 	}
-	
-	
-	private static ArrayList<String> getValidateOdfXmlPartCmd(File odfXmlFile, File schemaFile) {
-		ArrayList<String> cmd = new ArrayList<String>();
-		cmd.add("java");
-		cmd.add("-jar");
-		cmd.add(JING_HOME + File.separator + JING);
-		cmd.add("-i");
-		cmd.add(schemaFile.getAbsolutePath());
-		cmd.add(odfXmlFile.getAbsolutePath());
-		return cmd;
-	}
-	
-	private static ArrayList<String> getMsvValidateMathMLContentCmd(File contentXml, File schemaOrDTD) {
-		ArrayList<String> cmd = new ArrayList<String>();
-		cmd.add("java");
-		cmd.add("-jar");
-		cmd.add(MSV_HOME + File.separator + MSV);
-		cmd.add("-standalone");
-		cmd.add(schemaOrDTD.getAbsolutePath());
-		cmd.add(contentXml.getAbsolutePath());
-		return cmd;
-	}
-	
-//	private static ArrayList<String> getOdfToolkitMathMLCmd(File contentXml, File schemaOrDTD) {
-//		ArrayList<String> cmd = new ArrayList<String>();
-//		cmd.add("java");
-//		cmd.add("-jar");
-//		cmd.add(ODF_TOOLKIT_VALIDATOR_HOME + File.separator + ODF_TOOLKIT);
-//		cmd.add(contentXml.getAbsolutePath());
-//		return cmd;
-//	}
-	
-//	private static ArrayList<String> getValidateManifestCmd(File manifestXml, File manifestSchema) {
-//		ArrayList<String> cmd = new ArrayList<String>();
-//		cmd.add("java");
-//		cmd.add("-jar");
-//		cmd.add(JING_HOME + File.separator + JING);
-//		cmd.add("-i");
-//		cmd.add(manifestSchema.getAbsolutePath());
-//		cmd.add(manifestXml.getAbsolutePath());
-//		return cmd;
-//	}
-	
-
 }

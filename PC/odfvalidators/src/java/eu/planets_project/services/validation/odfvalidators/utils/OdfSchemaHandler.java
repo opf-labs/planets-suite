@@ -2,15 +2,14 @@ package eu.planets_project.services.validation.odfvalidators.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.ZipUtils;
 
 public class OdfSchemaHandler {
 	
@@ -33,7 +32,6 @@ public class OdfSchemaHandler {
 	// Strict Document Schemas
 	private static String v10_STRICT_DOC_SCHEMA = "v10_STRICT_DOC_SCHEMA";
 	private static String v11_STRICT_DOC_SCHEMA = "v11_STRICT_DOC_SCHEMA";
-	private static String v12_STRICT_DOC_SCHEMA = "v12_STRICT_DOC_SCHEMA";
 	private static String v12_DSIG_SCHEMA = "v12_DSIG_SCHEMA";
 	private static final String MATHML2_SCHEMA = "MATHML2_SCHEMA";
 	private static final String MATH101_DTD = "MATH101_DTD";
@@ -46,10 +44,9 @@ public class OdfSchemaHandler {
 	private static final String MATHMLSCHEMAS_PROPERTIES = "mathmlschemas.properties";
 	
 	private static File ODF_SH_TMP = null;
-	private static String ODF_SH_TMP_NAME = "ODF_VALIDATOR_TMP";
+	private static String ODF_SH_TMP_NAME = "ODF_SCHEMA_HANDLER";
 	
 	private static File SCHEMAS = null;
-	private static File MATHML_SCHEMAS = null;
 	private static String SCHEMAS_NAME = "SCHEMAS";
 	private static boolean schemasProvided = false;
 	
@@ -98,10 +95,16 @@ public class OdfSchemaHandler {
 		return null;
 	}
 	
+	public File retrieveMathML101Dtd() {
+		log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML v1.01 DTD file: " + schemaFiles.get(MATH101_DTD).getName());
+		return schemaFiles.get(MATH101_DTD);
+	}
+	
 	public File retrieveMathMLSchemaOrDtdFile(String mathMLVersion) {
 		if(mathMLVersion.equalsIgnoreCase(MATHML_v101)) {
-			log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML v1.01 DTD file: " + schemaFiles.get(MATH101_DTD).getName());
-			return schemaFiles.get(MATH101_DTD);
+			log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML v1.01 DTD file: " + schemaFiles.get(MATHML2_SCHEMA).getName());
+//			return schemaFiles.get(MATH101_DTD);
+			return schemaFiles.get(MATHML2_SCHEMA);
 		}
 		if(mathMLVersion.equalsIgnoreCase(MATHML_v2)) {
 			log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML 2 Schema file: " + schemaFiles.get(MATHML2_SCHEMA).getName());
@@ -109,6 +112,14 @@ public class OdfSchemaHandler {
 		}
 		log.error("Unable to retrieve MathML schema or DTD!!!");
 		return null;
+	}
+	
+	public File retrieveDsigSchema(String version) {
+		return schemaFiles.get(v12_DSIG_SCHEMA);
+	}
+	
+	public File getSchemaDir() {
+		return SCHEMAS;
 	}
 
 	public File retrieveOdfManifestSchemaFile(String version) {
@@ -241,10 +252,19 @@ public class OdfSchemaHandler {
 		boolean[] success = new boolean[entryCount];
 		int i=0;
 		for (String currentEntry : entries) {
+//			if(currentEntry.equalsIgnoreCase("mmlents.zip")) {
+//				File entZip = new File(SCHEMAS, "mmlents.zip");
+//				FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream("schemas/mathml/" + currentEntry.trim()), entZip);
+//				ZipUtils.unzipTo(entZip, SCHEMAS);
+//				continue;
+//			}
 			String[] parts = currentEntry.split("/");
 			String parent = parts[0];
 			String name = parts[1];
-			File parentDir = FileUtils.createFolderInWorkFolder(SCHEMAS, parent);
+			File parentDir = new File(SCHEMAS, parent);
+			if(!parentDir.exists()) {
+				FileUtils.createFolderInWorkFolder(SCHEMAS, parent);
+			}
 			File schema = new File(parentDir, name);
 			FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream("schemas/mathml/" + parent + "/" + name), schema);
 			success[i] = schema.exists();

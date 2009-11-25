@@ -14,6 +14,10 @@ import eu.planets_project.services.utils.FileUtils;
  */
 public class OdfValidatorResult {
 	
+	private static final String DSIG_LABEL = "dsig";
+
+	private static final String USER_DSIG_LABEL = "user_dsig";
+
 	private static final String DOC_LABEL = "doc";
 
 	private static final String USER_DOC_LABEL = "userDoc";
@@ -37,6 +41,7 @@ public class OdfValidatorResult {
 	private List<File> xmlComponents = new ArrayList<File>();
 	private HashMap<File, Boolean> validatedList = new HashMap<File, Boolean>();
 	private HashMap<File, String> errorList = new HashMap<File, String>();
+	private HashMap<File, List<String>> warningList = new HashMap<File, List<String>>();
 	private List<File> invalidComponents = new ArrayList<File>();
 	private List<String> missingManifestEntries = new ArrayList<String>();
 	private HashMap<String, File> schemaFiles = new HashMap<String, File>();
@@ -132,6 +137,15 @@ public class OdfValidatorResult {
 				schemas.add("[User MathML Schema] = " + schemaFiles.get(string).getName());
 				continue;
 			}
+			if(string.equalsIgnoreCase(DSIG_LABEL)) {
+				schemas.add("[DSIG Schema] = " + schemaFiles.get(string).getName());
+				continue;
+			}
+			if(string.equalsIgnoreCase(USER_DSIG_LABEL)) {
+				schemas.add("[User DSIG Schema] = " + schemaFiles.get(string).getName());
+				continue;
+			}
+			
 		}
 		return schemas;
 	}
@@ -199,6 +213,18 @@ public class OdfValidatorResult {
 								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
 				schemaContents.add(tmpUserMathML);
 			}
+			if(label.equalsIgnoreCase(DSIG_LABEL)) {
+				String tmpDSIG = "[DSIG Schema] = " 
+								+ NEWLINE 
+								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
+				schemaContents.add(tmpDSIG);
+			}
+			if(label.equalsIgnoreCase(USER_DSIG_LABEL)) {
+				String tmpUserDSIG = "[User DSIG Schema] = " 
+								+ NEWLINE 
+								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
+				schemaContents.add(tmpUserDSIG);
+			}
 		}
 		return schemaContents;
 	}
@@ -236,6 +262,13 @@ public class OdfValidatorResult {
 		buf.append("---------- Document Validity ----------" + NEWLINE);
 		buf.append("[IsOdfFile()] = " + this.isOdfFile + NEWLINE);
 		buf.append("[documentIsValid()] = " + this.documentIsValid() + NEWLINE);
+		if(warningList.size()>0) {
+			buf.append("---------- Warning Messages ----------" + NEWLINE);
+			Set<File> files = warningList.keySet();
+			for (File file : files) {
+				buf.append(getWarnings(file));
+			}
+		}
 		if(!this.documentIsValid()) {
 			buf.append("---------- Error Messages ----------" + NEWLINE);
 			for (File invalidComponent : invalidComponents) {
@@ -253,7 +286,7 @@ public class OdfValidatorResult {
 		return xmlComponents;
 	}
 	
-	public boolean isOdfCompliant() {
+	public boolean set() {
 		return isOdfCompliant;
 	}
 
@@ -284,6 +317,15 @@ public class OdfValidatorResult {
 		}
 	}
 	
+	public void setDsigSchema(File dsigSchema) {
+		if(dsigSchema.getName().contains("user")) {
+			schemaFiles.put(USER_DSIG_LABEL, dsigSchema);
+		}
+		else {
+			schemaFiles.put(DSIG_LABEL, dsigSchema);
+		}
+	}
+	
 	public void setManifestSchema(File manifestSchema) {
 		if(manifestSchema.getName().contains("user")) {
 			schemaFiles.put(USER_MANIFEST_LABEL, manifestSchema);
@@ -305,6 +347,27 @@ public class OdfValidatorResult {
 	public void setError(File file, String errorMessage) {
 		errorList.put(file, errorMessage);
 		invalidComponents.add(file);
+	}
+	
+	public String getWarnings(File file) {
+		List<String> warnings = warningList.get(file);
+		StringBuffer buf = new StringBuffer();
+		int i=1;
+		buf.append("Warnings for '" + file.getName() + "':" + NEWLINE);
+		for (String string : warnings) {
+			buf.append(i + ") " + string + NEWLINE);
+			i++;
+		}
+		return buf.toString();
+	}
+	
+	public void setWarning(File file, String warningMessage) {
+		List<String> entries = warningList.get(file);
+		if(entries==null) {
+			entries = new ArrayList<String>();
+		}
+		entries.add(warningMessage);
+		warningList.put(file, entries);
 	}
 	
 	public void setIsOdfCompliant(boolean compliant) {
@@ -351,6 +414,7 @@ public class OdfValidatorResult {
 		return usedStrictValidation;
 	}
 	
+	@Override
 	public String toString() {
 		return getValidationResultAsString();
 	}

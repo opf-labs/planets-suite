@@ -14,7 +14,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -25,7 +25,6 @@ import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
-import eu.planets_project.services.validation.odfvalidators.OdfValidator;
 
 /**
  * @author melmsp
@@ -118,7 +117,7 @@ public class OdfValidatorTest {
 	public void testOdfValidate() {
 		
 		for (File currentFile : testFiles) {
-			if(currentFile.isHidden()) {
+			if(currentFile.isHidden() /*|| !currentFile.getName().contains("formula")*/) {
 				continue;
 			}
 			printTestTitle("Testing validation against default schemas: " + currentFile.getName());

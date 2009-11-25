@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
-import eu.planets_project.ifr.core.techreg.formats.api.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -148,7 +148,7 @@ public class OdfValidator implements Validate {
 		
 		String name = DigitalObjectUtils.getFileNameFromDigObject(digitalObject, format);
 		
-		File odfValidatorTmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_VALIDATOR_TMP");
+		File odfValidatorTmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODFVALIADTOR_INPUT");
 		
 		File inputOdfFile = new File(odfValidatorTmp, FileUtils.randomizeFileName(name));
 		FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), inputOdfFile); 
