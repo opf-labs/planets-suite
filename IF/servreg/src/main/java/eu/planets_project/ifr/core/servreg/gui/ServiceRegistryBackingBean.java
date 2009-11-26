@@ -22,7 +22,7 @@ public class ServiceRegistryBackingBean {
 	// keeping the logger just in case
 	private static Log log = LogFactory.getLog(ServiceRegistryBackingBean.class);
 
-    public static final ServiceRegistry registry = ServiceRegistryFactory.getRegistry();
+    public static final ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();
     
     List<PlanetsServiceEndpoint> services = null;
 

@@ -31,7 +31,7 @@ public class ServiceRegistryFactoryRemoteTests extends RemoteServiceRegistryTest
          * Test retrieving a service registry instance from a specified WSDL location:
          */
         try {
-            ServiceRegistry remoteRegistry = ServiceRegistryFactory.getRegistry(REGISTRY_WEBSERVICE_WSDL);
+            ServiceRegistry remoteRegistry = ServiceRegistryFactory.getServiceRegistry(REGISTRY_WEBSERVICE_WSDL);
             /*
              * We fall back during testing if we are not running a server. Here, it makes no sense to use the
              * ServiceCreator as for the other tests, as we explicitly want to test the factory method that takes a full
@@ -49,6 +49,6 @@ public class ServiceRegistryFactoryRemoteTests extends RemoteServiceRegistryTest
     private static ServiceRegistry fallBack() {
         System.out.println("Falling back to local instance while testing remote registry webservice at: "
                 + REGISTRY_WEBSERVICE_WSDL);
-        return ServiceRegistryFactory.getRegistry();
+        return ServiceRegistryFactory.getServiceRegistry();
     }
 }

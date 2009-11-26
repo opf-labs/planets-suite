@@ -197,7 +197,7 @@ public class EndpointBackingBean {
     	// get the selected endpoint
     	_log.info("Getting Row data");
         _currentEndpoint = (PlanetsServiceEndpoint) this._endpointsDataTable.getRowData();
-    	ServiceRegistry registry = ServiceRegistryFactory.getRegistry();
+    	ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();
     	ServiceDescription example = new ServiceDescription.Builder(null, null).endpoint(_currentEndpoint.getLocation()).build();
     	List<ServiceDescription> _matches = registry.query(example);  
         // If it's registered then get the description from the registry

@@ -22,6 +22,6 @@ public class ServiceRegistryLocalTests extends PersistentRegistryTests {
      */
     @Override
     ServiceRegistry createRegistry() {
-        return ServiceRegistryFactory.getRegistry();
+        return ServiceRegistryFactory.getServiceRegistry();
     }
 }

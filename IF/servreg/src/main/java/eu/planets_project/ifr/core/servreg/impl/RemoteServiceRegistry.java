@@ -34,7 +34,7 @@ public final class RemoteServiceRegistry implements ServiceRegistry {
     /***/
     private static final long serialVersionUID = 1L;
     /***/
-    private ServiceRegistry registry = ServiceRegistryFactory.getRegistry();
+    private ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();
     /***/
     @SuppressWarnings("unused")
     private static Log log = LogFactory.getLog(RemoteServiceRegistry.class.getName());

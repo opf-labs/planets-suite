@@ -22,7 +22,7 @@ public final class ServiceRegistryFactory {
     private ServiceRegistryFactory() {}
 
     /** @return A local service registry instance */
-    public static ServiceRegistry getRegistry() {
+    public static ServiceRegistry getServiceRegistry() {
         return INSTANCE;
     }
 
@@ -30,7 +30,7 @@ public final class ServiceRegistryFactory {
      * @param wsdlLocation The location of the WSDL
      * @return A registry instance running on the specified location
      */
-    public static ServiceRegistry getRegistry(final String wsdlLocation) {
+    public static ServiceRegistry getServiceRegistry(final String wsdlLocation) {
         /* We cache and reuse registries for the individual WSDL locations: */
         if (!registries.containsKey(wsdlLocation)) {
             ServiceRegistry registry = createRegistry(wsdlLocation);
