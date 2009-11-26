@@ -20,15 +20,11 @@
 	<property name="src.web" value="${appDir}/src/web"/>
 
 	<!-- Unit testing definitions -->
-	<property name="test.src.dir" value="${appDir}/src/test/java" />
+	<property name="test.src.dir" value="${appDir}/src/test" />
 	<property name="test.local" value="" />
 	<property name="test.standalone" value="" />
 	<property name="test.server" value="" />
 
 	<property name="pserv.root.dir" value="../.." />
 	<import file="${pserv.root.dir}/build.common.xml" />
-
-	<property name="pserv.root.dir" value="../.." />
-	<import file="${pserv.root.dir}/build.common.xml"/>
-
 </project>
