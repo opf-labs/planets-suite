@@ -32,16 +32,21 @@ public final class ServiceRegistryFactory {
      */
     public static ServiceRegistry getRegistry(final String wsdlLocation) {
         /* We cache and reuse registries for the individual WSDL locations: */
-        synchronized (registries) {
-            if (!registries.containsKey(wsdlLocation)) {
-                ServiceRegistry registry = createRegistry(wsdlLocation);
-                if (registry == null) {
-                    return null;
-                }
-                registries.put(wsdlLocation, registry);
+        if (!registries.containsKey(wsdlLocation)) {
+            ServiceRegistry registry = createRegistry(wsdlLocation);
+            if (registry == null) {
+                return null;
             }
-            return registries.get(wsdlLocation);
+            /*
+             * We can't just do the one line below instead of the checks above as we only want to create the registry if
+             * it is absent, but if we'd call `registries.putIfAbsent(wsdlLocation, createRegistry(wsdlLocation));` we
+             * would always create a new instance. And we can't just say put below, even though we are on a
+             * ConcurrentHashMap, as that would introduce a race condition (if somebody puts a registry after the
+             * check).
+             */
+            registries.putIfAbsent(wsdlLocation, registry);
         }
+        return registries.get(wsdlLocation);
     }
 
     /**
