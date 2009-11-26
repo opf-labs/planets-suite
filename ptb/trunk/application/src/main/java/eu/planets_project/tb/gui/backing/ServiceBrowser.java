@@ -88,7 +88,7 @@ public class ServiceBrowser {
 //    public static Format unknown = fr.getFormatForURI( Format.extensionToURI("unknown") );
 
     //Instantiate a registry:
-    ServiceRegistry registry = ServiceRegistryFactory.getRegistry();
+    ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();
     
     /**
      * 
@@ -302,7 +302,7 @@ public class ServiceBrowser {
      * @return Looks up the service registry, cached in ServiceBrowser in Session scope.
      */
     private static ServiceRegistry instanciateServiceRegistry() {
-        return ServiceRegistryFactory.getRegistry();
+        return ServiceRegistryFactory.getServiceRegistry();
     }
 
     /**

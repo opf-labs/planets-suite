@@ -67,7 +67,7 @@ public class ServiceRegistryManager {
         }*/
         
         //Look up all available Service(Descriptions) from the local service registry
-        ServiceRegistry serReg = ServiceRegistryFactory.getRegistry();
+        ServiceRegistry serReg = ServiceRegistryFactory.getServiceRegistry();
         //a null ServiceDescription will query all endpoints from the registry
         List<ServiceDescription> lServiceDescriptions = serReg.query(null);
         for(ServiceDescription serDesc : lServiceDescriptions){

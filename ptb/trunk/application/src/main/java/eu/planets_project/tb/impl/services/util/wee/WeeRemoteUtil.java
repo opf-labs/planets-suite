@@ -62,7 +62,7 @@ public class WeeRemoteUtil {
 		}
 	
 		//get an instance of the ServiceRegistry
-		registry = ServiceRegistryFactory.getRegistry();
+		registry = ServiceRegistryFactory.getServiceRegistry();
 	}
 
 }

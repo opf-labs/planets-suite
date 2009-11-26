@@ -39,7 +39,7 @@ public abstract class ExpTypeBackingBean {
     private HashMap<String, String> ewfCacheParameters = null;
 
     /** A Service Registry instance for look-ups. */
-    protected ServiceRegistry registry = ServiceRegistryFactory.getRegistry();
+    protected ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();
 
     /**
      * @return
