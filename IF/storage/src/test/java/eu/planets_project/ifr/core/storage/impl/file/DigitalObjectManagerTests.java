@@ -100,8 +100,10 @@ public class DigitalObjectManagerTests {
     	// Check digital object. Title should not be null 
         boolean storeFlag = true;
         // Now store it
+        URI pdURI = null;
         try {
-		   _dom.store(new URI("planets://localhost:8080/dr/test/test_word.doc"), object);
+
+            pdURI = _dom.storeAsNew(object);
         } catch (Exception e) {
         	assertTrue(e.getClass().equals(DigitalObjectNotStoredException.class));
         	storeFlag = false;
@@ -113,7 +115,7 @@ public class DigitalObjectManagerTests {
         if (storeFlag)
         {
 			// Then retrieve it and check it's the same
-			DigitalObject retObject = _dom.retrieve(new URI("planets://localhost:8080/dr/test/test_word.doc"));
+			DigitalObject retObject = _dom.retrieve(pdURI);
 			URI newPurl = new File("IF/storage/src/test/resources/testroot/test_word.doc").toURI();
 			DigitalObjectContent c2 = Content.byReference(newPurl.toURL().openStream());
 			DigitalObject expectedObject = new DigitalObject.Builder(c2).permanentUri(newPurl).title("test_word.doc.planets").build(); 

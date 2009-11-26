@@ -84,6 +84,7 @@ public class WorkflowManagerImpl implements WorkflowManager {
 		return _retVal;
 	}
 
+
     /**
      * @see eu.planets_project.ifr.core.storage.api.WorkflowManager#getWorkflow(java.lang.String)
      */
@@ -98,7 +99,8 @@ public class WorkflowManagerImpl implements WorkflowManager {
 		}
 		return _retVal;
 	}
-	
+
+
     /**
      * @see eu.planets_project.ifr.core.storage.api.WorkflowManager#createWorkflowInstance(eu.planets_project.ifr.core.storage.api.WorkflowExecution)
      */
@@ -130,7 +132,8 @@ public class WorkflowManagerImpl implements WorkflowManager {
 		}
 		return _retVal;
 	}
-	
+
+
     /**
      * @see eu.planets_project.ifr.core.storage.api.WorkflowManager#createInvocationEvent(eu.planets_project.ifr.core.storage.api.InvocationEvent, java.lang.String)
      */

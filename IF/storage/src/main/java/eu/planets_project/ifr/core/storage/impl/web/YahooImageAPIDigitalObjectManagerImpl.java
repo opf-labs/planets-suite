@@ -63,7 +63,7 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
     /**
      * Logger.
      */
-    private static Log _log = LogFactory.getLog(SimpleSRUDigitalObjectManagerImpl.class);
+    private static Log _log = LogFactory.getLog(eu.planets_project.ifr.core.storage.impl.web.SimpleSRUDigitalObjectManagerImpl.class);
 
 	/**
      * API base URL (incl. Yahoo App ID).
@@ -84,6 +84,14 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
 		throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");		
 	}
+
+    public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
     /**
      * {@inheritDoc}

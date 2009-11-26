@@ -155,5 +155,13 @@ public class OAIDigitalObjectManagerONBImpl extends AbstractOAIDigitalObjectMana
 		
 		System.out.println("done.");
 	}
+    public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
+    public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    
 }

@@ -14,15 +14,25 @@ import java.util.List;
  * 
  */
 public interface DigitalObjectManager {
-	/**
-	 * Persist a DigitalObject to the Data Registry.
-	 * 
-	 * @param pdURI
-	 *            The URI which uniquely identifies the persisted DigitalObject
-	 * @param digitalObject The object to store
-	 * @throws DigitalObjectNotStoredException  if the storing somehow failed
-	 */
-	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException;
+
+    /**
+     * Persist a DigitalObject to the Data Registry as a new object
+     *
+     * @param digitalObject The object to store
+     * @throws DigitalObjectNotStoredException  if the storing somehow failed
+     */
+
+    public URI storeAsNew(DigitalObject digitalObject) throws DigitalObjectNotStoredException;
+
+    /**
+     * Updates an existing object in the repository to contain the given digital object. The repository might create a
+     * new object for the new version. This method returns the uri of the updated object.
+     * @param pdURI the object to update
+     * @param digitalObject the information to update with
+     * @return the id of the updated object
+     * @throws DigitalObjectNotStoredException if the storing somehow failed
+     */
+    public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException, DigitalObjectNotFoundException;
 
 	/**
 	 * Test if Digital Objects can be persisted.
