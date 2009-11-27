@@ -2,12 +2,10 @@ package eu.planets_project.ifr.core.servreg.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
@@ -20,7 +18,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class ServiceRegistryBackingBean {
 	// keeping the logger just in case
-	private static Log log = LogFactory.getLog(ServiceRegistryBackingBean.class);
+	private static Logger log = Logger.getLogger(ServiceRegistryBackingBean.class.getName());
 
     public static final ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();
     
@@ -167,8 +165,8 @@ public class ServiceRegistryBackingBean {
             try {
                 serv = new PlanetsServiceEndpoint(desc);
             } catch (IllegalArgumentException e) {
-                log.error("Null or bad service description used to construct endpoint");
-                log.error(e.getStackTrace());
+                log.severe("Null or bad service description used to construct endpoint");
+                log.severe(e.getStackTrace().toString());
                 continue;
             }
             // Add to the list:

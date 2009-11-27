@@ -9,9 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -37,7 +35,7 @@ public class AlwaysSaysValidService implements Validate {
     /** The service name. */
     public static final String NAME = "AlwaysSaysValidService";
 
-    private static Log log = LogFactory.getLog(AlwaysSaysValidService.class);
+    private static Logger log = Logger.getLogger(AlwaysSaysValidService.class.getName());
 
     /**
      * {@inheritDoc}

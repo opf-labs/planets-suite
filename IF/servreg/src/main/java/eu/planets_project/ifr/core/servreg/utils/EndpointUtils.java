@@ -11,11 +11,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 
@@ -23,7 +21,7 @@ import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
  * @author <a href="mailto:andrew.jackson@bl.uk">Andy Jackson</a>
  */
 public class EndpointUtils {
-    private static final Log log = LogFactory.getLog(EndpointUtils.class);
+    private static final Logger log = Logger.getLogger(EndpointUtils.class.getName());
     private static final Pattern urlpattern = Pattern
             .compile("http://[^><\\s]*?\\?wsdl");
 
@@ -54,9 +52,9 @@ public class EndpointUtils {
             log.info("Got page content, now extracting URIs of services");
             uniqueSE.addAll(extractEndpointsFromWebPage(pageContent));
         } catch (URISyntaxException e) {
-            log.error("URI Syntax exception : " + e);
+            log.severe("URI Syntax exception : " + e);
         } catch (IOException e) {
-            log.error("IO Exception reading URL contents" + e);
+            log.severe("IO Exception reading URL contents" + e);
         }
 
         // Now sort the list and return it.
@@ -143,7 +141,7 @@ public class EndpointUtils {
                     e.printStackTrace();
                 }
             } catch (MalformedURLException e) {
-                log.warn("Could not parse URL from " + matcher.group());
+                log.severe("Could not parse URL from " + matcher.group());
             }
         }
         log.info("returning the URI set");

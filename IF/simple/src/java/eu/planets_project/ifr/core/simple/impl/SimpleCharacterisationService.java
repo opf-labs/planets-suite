@@ -4,13 +4,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -42,7 +40,7 @@ import eu.planets_project.services.utils.DigitalObjectUtils;
 @StreamingAttachment(parseEagerly = true)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public class SimpleCharacterisationService implements Characterise {
-    private final Log log = LogFactory.getLog(getClass().getName());
+    private final static Logger log = Logger.getLogger(SimpleCharacterisationService.class.getName());
     
     /** A unique name for this service. */
     static final String NAME = "SimpleCharacterisationService";

@@ -7,13 +7,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -45,7 +43,7 @@ public class SimpleIdentifyService implements Identify {
     /** The name of the service. */
     public static final String NAME="SimpleIdentifyService";
     
-    private static Log log = LogFactory.getLog(SimpleIdentifyService.class);
+    private static Logger log = Logger.getLogger(SimpleIdentifyService.class.getName());
 
     /**
      * {@inheritDoc}

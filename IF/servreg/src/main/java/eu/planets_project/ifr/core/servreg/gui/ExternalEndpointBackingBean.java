@@ -6,9 +6,7 @@ package eu.planets_project.ifr.core.servreg.gui;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.servreg.utils.DiscoveryUtils;
 import eu.planets_project.ifr.core.servreg.utils.PlanetsServiceExplorer;
@@ -19,7 +17,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class ExternalEndpointBackingBean {
 	/** Static logger for External bean class */
-	private static Log _log = LogFactory.getLog(ExternalEndpointBackingBean.class);
+	private static Logger log = Logger.getLogger(ExternalEndpointBackingBean.class.getName());
 	private static final String WSDL_QUERY = "?wsdl";
 
 	private String _externalUrl = "";
@@ -88,7 +86,7 @@ public class ExternalEndpointBackingBean {
 	public String parseExternalEndpoint() {
 		if (this._externalUrl.toLowerCase().indexOf(ExternalEndpointBackingBean.WSDL_QUERY) == -1)
 			this._externalUrl += ExternalEndpointBackingBean.WSDL_QUERY;
-		ExternalEndpointBackingBean._log.info("ExternalURL->" + this._externalUrl);
+		ExternalEndpointBackingBean.log.info("ExternalURL->" + this._externalUrl);
 		try {
 			URI externalURI = new URI(this._externalUrl);
 			PlanetsServiceExplorer pse = new PlanetsServiceExplorer(externalURI.toURL());
@@ -107,12 +105,12 @@ public class ExternalEndpointBackingBean {
 				this._endpoint = new PlanetsServiceEndpoint(this._desc);
 			}
 		} catch (URISyntaxException e) {
-			ExternalEndpointBackingBean._log.error("Invalid External URI->" + this._externalUrl);
-			ExternalEndpointBackingBean._log.error(e.getStackTrace());
+			ExternalEndpointBackingBean.log.severe("Invalid External URI->" + this._externalUrl);
+			ExternalEndpointBackingBean.log.severe(e.getStackTrace().toString());
 			return "invalidURI";
 		} catch (MalformedURLException e) {
-			ExternalEndpointBackingBean._log.error("Malformed External URL->" + this._externalUrl);
-			ExternalEndpointBackingBean._log.error(e.getStackTrace());
+			ExternalEndpointBackingBean.log.severe("Malformed External URL->" + this._externalUrl);
+			ExternalEndpointBackingBean.log.severe(e.getStackTrace().toString());
 			return "invalidURI";
 		}
 		return "success";

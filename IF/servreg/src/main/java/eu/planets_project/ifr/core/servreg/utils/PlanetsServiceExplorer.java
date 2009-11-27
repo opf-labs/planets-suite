@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.servreg.utils;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -9,8 +10,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.Service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -32,7 +31,7 @@ import eu.planets_project.services.view.CreateView;
  *
  */
 public class PlanetsServiceExplorer {
-	private static Log log = LogFactory.getLog(PlanetsServiceExplorer.class);
+	private static Logger log = Logger.getLogger(PlanetsServiceExplorer.class.getName());
 
     private URL wsdlLocation = null;
     private QName qName = null;
@@ -56,7 +55,7 @@ public class PlanetsServiceExplorer {
      * @param wsdlLocation The location of the WSDL of the service.
      */
     public PlanetsServiceExplorer(URL wsdlLocation) {
-    	log.debug("Creating new instance");
+    	log.fine("Creating new instance");
         this.wsdlLocation = wsdlLocation;
         this.qName = determineServiceQNameFromWsdl();
     }
@@ -119,13 +118,13 @@ public class PlanetsServiceExplorer {
      * @return the QName
      */
     private QName determineServiceQNameFromWsdl() {
-    	log.debug("determining qname");
+    	log.fine("determining qname");
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
         // Using factory get an instance of document builder
         DocumentBuilder db;
         try {
-        	log.debug("new doc builder");
+        	log.fine("new doc builder");
             db = dbf.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -135,7 +134,7 @@ public class PlanetsServiceExplorer {
         // parse using builder to get DOM representation of the XML file
         Document dom;
         try {
-        	log.debug("parsing wsdl");
+        	log.fine("parsing wsdl");
             dom = db.parse(wsdlLocation.openStream());
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,7 +143,7 @@ public class PlanetsServiceExplorer {
 
         // get the root elememt
         Element root = dom.getDocumentElement();
-        log.debug("getting root element");
+        log.fine("getting root element");
         return new QName(root.getAttribute("targetNamespace"), root
                 .getAttribute("name"));
     }

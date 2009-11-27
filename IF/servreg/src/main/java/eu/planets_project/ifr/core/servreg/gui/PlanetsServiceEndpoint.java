@@ -5,9 +5,7 @@ package eu.planets_project.ifr.core.servreg.gui;
 
 import java.net.URL;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.servreg.api.Response;
 import eu.planets_project.ifr.core.servreg.utils.PlanetsServiceExplorer;
@@ -22,7 +20,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class PlanetsServiceEndpoint {
 	/** The logger for this class */
-	private static Log _log = LogFactory.getLog(PlanetsServiceEndpoint.class);
+	private static Logger log = Logger.getLogger(PlanetsServiceEndpoint.class.getName());
 	
 	// TODO This is a bodge to work around a bool read problem in JSF
 	private static final String notRegGraphic = "/images/exclamation.png"; 
@@ -79,11 +77,11 @@ public class PlanetsServiceEndpoint {
 		// Check that the passed argument is not null and the class is not null
 		if (pse == null) {
 			String message = "The PlanetsServiceExplorer object cannot be null";
-			PlanetsServiceEndpoint._log.error(message);
+			log.severe(message);
 			throw new IllegalArgumentException(message);
 		} else if (pse.getServiceClass() == null) {
 			String message = "The PlanetsServiceExplorer contained a null service class";
-			PlanetsServiceEndpoint._log.error(message);
+			log.severe(message);
 			throw new IllegalArgumentException(message);
 		}
 		// Now set the location
@@ -97,7 +95,7 @@ public class PlanetsServiceEndpoint {
 			    try {
 			        this._serviceDescription = pse.getServiceDescription();
 			    } catch (Exception e) {
-			        _log.error("Failed to find service description for endpoint: "+pse.getWsdlLocation()+" : "+e);
+			        log.severe("Failed to find service description for endpoint: "+pse.getWsdlLocation()+" : "+e);
 			    }
 			} else {
 			    this._status = Status.FAILED;
@@ -252,7 +250,7 @@ public class PlanetsServiceEndpoint {
      * @return
      */
     public String updateDescription() {
-        _log.info("update: "+this.getLocation());
+        log.info("update: "+this.getLocation());
         ServiceDescription csd = getCurrentServiceDescription();
         if( csd != null ) {
             if( this.getDescription().equals( csd )) {
@@ -275,10 +273,10 @@ public class PlanetsServiceEndpoint {
         ServiceDescription toReg =  new ServiceDescription.Builder( this.getDescription() ).endpoint( 
                 this.getLocation() ).build();
         Response response = ServiceRegistryBackingBean.registry.register( toReg );
-        _log.info("Got response success: "+response.success());
-        _log.info("Got response: "+response.getMessage());
+        log.info("Got response success: "+response.success());
+        log.info("Got response: "+response.getMessage());
         if( response.success() ) {
-            _log.info("Updated. "+this.getDescription().getEndpoint());
+            log.info("Updated. "+this.getDescription().getEndpoint());
         }
         this.setRegistered(true);
     }
@@ -288,9 +286,9 @@ public class PlanetsServiceEndpoint {
                 new ServiceDescription.Builder( this.getDescription().getName(), this.getDescription().getType() 
                         ).endpoint( this.getDescription().getEndpoint() ).build() );
 //        Response response = RegistryBackingBean.registry.delete( this.getDescription() );
-        _log.info("Got response: "+response.getMessage());
+        log.info("Got response: "+response.getMessage());
         if( response.success() )
-            _log.info("Deregistered: "+this.getLocation());
+            log.info("Deregistered: "+this.getLocation());
         this.setRegistered(false);
     }
     
@@ -339,15 +337,15 @@ public class PlanetsServiceEndpoint {
                 this.setDescriptionStatus(DescriptionStatus.OK);
             } else {
                 this.setDescriptionStatus(DescriptionStatus.OUTDATED);
-                _log.info("Old: " + this.getDescription().toXmlFormatted());
+                log.info("Old: " + this.getDescription().toXmlFormatted());
                 if (csd != null) {
-                    _log.info("New: " + csd.toXmlFormatted());
+                    log.info("New: " + csd.toXmlFormatted());
                 } else {
-                    _log.info("No new service description");
+                    log.info("No new service description");
                 }
             }
         } catch( Exception e ) {
-            _log.error("Could not check service description for: "+this.getDescription().getEndpoint());
+            log.severe("Could not check service description for: "+this.getDescription().getEndpoint());
         }
         
     }
@@ -360,7 +358,7 @@ public class PlanetsServiceEndpoint {
             return new ServiceDescription.Builder( 
                     pse.getServiceDescription().toXml() ).endpoint( this.getDescription().getEndpoint() ).build();
         } catch( Exception e ) {
-            _log.error("Could not check service description for: "+this.getDescription().getEndpoint());
+            log.severe("Could not check service description for: "+this.getDescription().getEndpoint());
             return null;
         }
     }

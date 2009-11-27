@@ -9,9 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.services.datatypes.ServiceDescription;
 
@@ -22,8 +20,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 final class PersistentRegistry implements ServiceRegistry {
     private static final String SUFFIX = ".xml";
-    private static Log log = LogFactory.getLog(PersistentRegistry.class
-            .getName());
+    private static Logger log = Logger.getLogger(PersistentRegistry.class.getName());
     private static final String DESCRIPTION_REGISTRY = "service-description-registry";
     private static final String LOCAL = "IF/servreg/src/main/resources/";
     private static final String SERVER_DEFAULT_CONF = "/server/default/data/";
@@ -159,7 +156,7 @@ final class PersistentRegistry implements ServiceRegistry {
      * @param registry The backing registry instance
      */
     private PersistentRegistry(final ServiceRegistry registry) {
-        log.debug("Using registry root: " + rootLocation);
+        log.fine("Using registry root: " + rootLocation);
         root = new File(rootLocation);
         this.registry = registry;
         boolean mkdir = root.mkdir();
@@ -181,7 +178,7 @@ final class PersistentRegistry implements ServiceRegistry {
          */
         boolean ok = root.setLastModified(System.nanoTime());
         if (!ok) {
-            log.warn("Could not set root modified time");
+            log.warning("Could not set root modified time");
         }
     }
 

@@ -8,11 +8,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.richfaces.component.html.HtmlDataTable;
 
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
@@ -26,7 +25,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
 public class EndpointBackingBean {
-	private static Log _log = LogFactory.getLog(EndpointBackingBean.class);
+	private static Logger log = Logger.getLogger(EndpointBackingBean.class.getName());
 
 	private static final String ALL_CATEGORY = "All";
 
@@ -181,7 +180,7 @@ public class EndpointBackingBean {
 	public void addEndpoint(PlanetsServiceEndpoint endpoint) {
 		this._currentEndpoint = endpoint;
 		if (!this._endpoints.contains(endpoint)) {
-			_log.info("Adding external endpoint to list as ITS NEW");
+			log.info("Adding external endpoint to list as ITS NEW");
 			this._endpoints.add(endpoint);
 		}
 	}
@@ -195,7 +194,7 @@ public class EndpointBackingBean {
     	// get the ServiceDescription backing bean
     	ServiceDescriptionBackingBean descBean = (ServiceDescriptionBackingBean) ServiceRegistryBackingBean.getManagedObject("DescriptionBean");
     	// get the selected endpoint
-    	_log.info("Getting Row data");
+    	log.info("Getting Row data");
         _currentEndpoint = (PlanetsServiceEndpoint) this._endpointsDataTable.getRowData();
     	ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();
     	ServiceDescription example = new ServiceDescription.Builder(null, null).endpoint(_currentEndpoint.getLocation()).build();
@@ -205,7 +204,7 @@ public class EndpointBackingBean {
         	descBean.setServiceDescription(_matches.get(0));
         // If it's a new style endpoint then we can get the description and set the bean
         } else if (! _currentEndpoint.isDeprecated()) {
-        	_log.info("");
+        	log.info("");
         	// Get the service description and add the endpoint
         	ServiceDescription servDev = DiscoveryUtils.getServiceDescription(_currentEndpoint.getLocation());
         	servDev = new ServiceDescription.Builder(servDev).endpoint(_currentEndpoint.getLocation()).build();
@@ -247,7 +246,7 @@ public class EndpointBackingBean {
     //====================================================================================
     
     private void findEndpoints() {
-    	_log.info("looking for deployed endpoints");
+    	log.info("looking for deployed endpoints");
     	// Get the endpoints from ServiceLookup we need to initialise the endpoint list
     	// then a hash set of URIs to keep track of duplicates
     	this._endpoints = new ArrayList<PlanetsServiceEndpoint>();
@@ -272,13 +271,13 @@ public class EndpointBackingBean {
 
     	// Now loop throught the other endpoints
     	List<URI> serviceEndpoints = EndpointUtils.listAvailableEndpoints();
-    	_log.info("endpoints found->" + serviceEndpoints.size());
+    	log.info("endpoints found->" + serviceEndpoints.size());
     	// for each URI location create a new Endpoint
     	for (URI location : serviceEndpoints) {
     		try {
 	    		// If we've already got this endpoint then push on to the next
 				if (uris.contains(location.toURL().toURI())) {
-					_log.info("Service registered->" + location);
+					log.info("Service registered->" + location);
 					continue;
 				}
 
@@ -292,11 +291,11 @@ public class EndpointBackingBean {
 					_cats.add(_endpoint.getCategory());
 				}
 			} catch (MalformedURLException e) {
-				_log.error("Endpoint " + location.toASCIIString() + " is a malformed URL");
-				_log.error(e.getStackTrace());
+				log.severe("Endpoint " + location.toASCIIString() + " is a malformed URL");
+				log.severe(e.getStackTrace().toString());
 			} catch (IllegalArgumentException e) {
-				_log.error("Null or bad PlanetsServiceExplorer used as constructor for PlanetsServiceEndpoint");
-				_log.error(e.getStackTrace());
+				log.severe("Null or bad PlanetsServiceExplorer used as constructor for PlanetsServiceEndpoint");
+				log.severe(e.getStackTrace().toString());
 			} catch (URISyntaxException e) {
                 e.printStackTrace();
             }

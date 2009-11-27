@@ -13,9 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 /**
  * A class to hold some utility functions for Planets Service developers.
@@ -25,7 +23,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ServiceUtils {
     /** */
-    private static Log log = LogFactory.getLog(ServiceUtils.class);
+    private static Logger log = Logger.getLogger(ServiceUtils.class.getName());
 
     /**
      * @param message A message that described the error.
@@ -166,7 +164,7 @@ public class ServiceUtils {
             return jspp;
         } catch ( IOException e ) {
             // Fail silently.
-            log.debug("IOException when storing server properties to XML. "+e);
+            log.fine("IOException when storing server properties to XML. "+e);
         }
         
         return null;

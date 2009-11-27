@@ -6,9 +6,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -23,7 +21,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 final class Query {
 
     private List<ServiceDescription> descriptions = null;
-    private static Log log = LogFactory.getLog(Query.class.getName());
+    private static Logger log = Logger.getLogger(Query.class.getName());
 
     /**
      * @param descriptions The descriptions to query
@@ -81,7 +79,7 @@ final class Query {
                     String message = String.format(
                             "Comparing values for method '%s' of query example '%s' to candidate instance '%s'.",
                             method.getName(), sampleValue, candidateValue);
-                    log.debug(message);
+                    log.fine(message);
                     /*
                      * If the sample value is null, we don't want to consider it:
                      */

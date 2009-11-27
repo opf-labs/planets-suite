@@ -1,11 +1,9 @@
 package eu.planets_project.ifr.core.servreg.utils;
 
 import java.net.URL;
+import java.util.logging.Logger;
 
 import javax.xml.ws.Service;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -17,7 +15,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class DiscoveryUtils {
     /** */
-    private static final Log log = LogFactory.getLog(DiscoveryUtils.class);
+    private static final Logger log = Logger.getLogger(DiscoveryUtils.class.getName());
      
     /**
      * Attempts to determine the service description for the given WSDL.
@@ -33,7 +31,7 @@ public class DiscoveryUtils {
             ServiceDescription sd = s.describe();
             return sd;
         } catch( Exception e ) {
-            log.error("Runtime exception while inspecting WSDL: "+wsdlLocation+" : "+e);
+            log.severe("Runtime exception while inspecting WSDL: "+wsdlLocation+" : "+e);
             e.printStackTrace();
             return null;
         }

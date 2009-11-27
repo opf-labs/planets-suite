@@ -11,9 +11,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import ch.enterag.utils.zip.EntryInputStream;
 import ch.enterag.utils.zip.EntryOutputStream;
@@ -25,7 +23,7 @@ import eu.planets_project.services.datatypes.Checksum;
 
 public class ZipUtils {
 	
-	private static Log log = LogFactory.getLog(ZipUtils.class);
+	private static Logger log = Logger.getLogger(ZipUtils.class.getName());
 	
 	/**
 	 * Creates a Zip64File zip file.
@@ -39,7 +37,7 @@ public class ZipUtils {
 		Zip64File zipFile = null;
 		
 		if(!srcFolder.isDirectory()) {
-			log.error("[createZip] The File object you have passed is NOT a folder! Nothing has been done, sorry.");
+			log.severe("[createZip] The File object you have passed is NOT a folder! Nothing has been done, sorry.");
 			return null;
 		}
 		
@@ -157,7 +155,7 @@ public class ZipUtils {
 			e.printStackTrace();
 		}
 		catch (ZipException e) {
-			log.warn("ATTENTION PLEASE: Some strange, but obviously not serious ZipException occured! Extracted file '" + target.getName() + "' anyway! So don't Panic!" + "\n");
+			log.warning("ATTENTION PLEASE: Some strange, but obviously not serious ZipException occured! Extracted file '" + target.getName() + "' anyway! So don't Panic!" + "\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -199,10 +197,10 @@ public class ZipUtils {
 			byte[] fileDigest = Checksums.md5(zipFile);
 			String fileDigestString = Arrays.toString(fileDigest);
 			if(!fileDigestString.equals(checksum.getValue())) {
-				log.warn("[checkAndUnzipTo] WARNING: The calculated checksum of the zip file is NOT equal to the passed checksum. File might be corrupted!");
-				log.warn("[checkAndUnzipTo] Checksum Algorithm: " + checksum.getAlgorithm());
-				log.warn("[checkAndUnzipTo] Passed checksum: " + checksum.getValue());
-				log.warn("[checkAndUnzipTo] Calculated checksum: " + fileDigestString);
+				log.warning("[checkAndUnzipTo] WARNING: The calculated checksum of the zip file is NOT equal to the passed checksum. File might be corrupted!");
+				log.warning("[checkAndUnzipTo] Checksum Algorithm: " + checksum.getAlgorithm());
+				log.warning("[checkAndUnzipTo] Passed checksum: " + checksum.getValue());
+				log.warning("[checkAndUnzipTo] Calculated checksum: " + fileDigestString);
 			}
 			else {
 				log.info("[checkAndUnzipTo] Success!! Checksum correct!");
@@ -246,12 +244,12 @@ public class ZipUtils {
 				return entries.toArray(new String[] {});
 			}
 			else {
-				log.error("[ZipUtils] getAllFragments(): No file entries found! This file is not a valid ZIP file!");
+				log.severe("[ZipUtils] getAllFragments(): No file entries found! This file is not a valid ZIP file!");
 				return new String[] {};
 			}
 			
 //		} catch (ZipException e) {
-//			log.error("[ZipUtils] getAllFragments(): No file entries found! This file is not a valid ZIP file!");
+//			log.severe("[ZipUtils] getAllFragments(): No file entries found! This file is not a valid ZIP file!");
 ////			e.printStackTrace();
 //			return new String[] {};
 //		} catch (FileNotFoundException e) {
@@ -283,7 +281,7 @@ public class ZipUtils {
 				target = readEntry(zip64File, targetEntry, destFolder);
 			}
 			else {
-				log.error("[getFileFrom] Sorry, the file/folder you ask for could not be found in this zip: " + targetPathInZipfile);
+				log.severe("[getFileFrom] Sorry, the file/folder you ask for could not be found in this zip: " + targetPathInZipfile);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -619,7 +617,7 @@ public class ZipUtils {
 			}
 			
 		} catch (ZipException e) {
-			log.error("[ZipUtils] listZipEntries(): " + e.getMessage());
+			log.severe("[ZipUtils] listZipEntries(): " + e.getMessage());
 //			e.printStackTrace();
 			return entryList;
 		} catch (FileNotFoundException e) {
@@ -814,7 +812,7 @@ public class ZipUtils {
 			log.info("[getFileEntry] Found entry: " + testEntry.getName());
 		}
 		else {
-			log.error("[getFileEntry] Entry NOT found: " + entryPath);
+			log.severe("[getFileEntry] Entry NOT found: " + entryPath);
 		}
 		return testEntry;
 	}

@@ -1,7 +1,6 @@
 package eu.planets_project.ifr.core.servreg.gui;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.services.datatypes.ServiceDescription;
 
@@ -13,7 +12,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 public class ServiceDescriptionBackingBean {
 	// keeping the logger just in case
 	@SuppressWarnings("unused")
-	private static Log log = LogFactory.getLog(ServiceDescriptionBackingBean.class);
+	private static Logger log = Logger.getLogger(ServiceDescriptionBackingBean.class.getName());
 	
 	// The original Service Description
 	private ServiceDescription _serviceDescription = null;

@@ -4,9 +4,8 @@
 package eu.planets_project.webui;
 
 import java.net.URL;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import com.sun.facelets.impl.DefaultResourceResolver;
 
 /**
@@ -28,7 +27,7 @@ import com.sun.facelets.impl.DefaultResourceResolver;
  *
  */
 public class PlanetsFaceletsResourceResolver extends DefaultResourceResolver {
-    private final Log log = LogFactory.getLog(getClass().getName());
+    private static final Logger log = Logger.getLogger(PlanetsFaceletsResourceResolver.class.getName());
 
     /**
      * 
@@ -50,13 +49,13 @@ public class PlanetsFaceletsResourceResolver extends DefaultResourceResolver {
      * @return the resolved URL for passed path
      */
     public URL resolveUrl(String path) {
-        log.debug("resolving: " + path);
+        log.fine("resolving: " + path);
         if (path.startsWith(getViewIdPrefix())) {
             log.info("viewId '" + path + "' begins with '" + getViewIdPrefix()
                     + "', so using file from an internal jar");
             String file = path.substring(getViewIdPrefix().length());
             URL xhtml = this.getClass().getResource(getClassPrefix() + file);
-            log.debug("xhtml url:  " + xhtml.toString());
+            log.fine("xhtml url:  " + xhtml.toString());
             return xhtml;
         }
         return super.resolveUrl(path);

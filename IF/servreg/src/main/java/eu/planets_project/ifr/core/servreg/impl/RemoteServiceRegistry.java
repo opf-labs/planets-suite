@@ -2,12 +2,10 @@ package eu.planets_project.ifr.core.servreg.impl;
 
 import java.util.List;
 
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -37,7 +35,7 @@ public final class RemoteServiceRegistry implements ServiceRegistry {
     private ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();
     /***/
     @SuppressWarnings("unused")
-    private static Log log = LogFactory.getLog(RemoteServiceRegistry.class.getName());
+    private static Logger log = Logger.getLogger(RemoteServiceRegistry.class.getName());
     /***/
     static final String NAME = "RemoteServiceRegistry";
 
