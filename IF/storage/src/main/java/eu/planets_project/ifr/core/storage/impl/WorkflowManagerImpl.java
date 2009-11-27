@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.storage.impl;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -14,7 +15,6 @@ import javax.xml.soap.SOAPException;
 
 import org.jboss.annotation.ejb.LocalBinding;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.InvocationEvent;
 import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
 import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
@@ -32,7 +32,7 @@ import eu.planets_project.ifr.core.storage.impl.util.JCRManager;
 @LocalBinding(jndiBinding="planets-project.eu/WorkflowManager")
 public class WorkflowManagerImpl implements WorkflowManager {
 	// PLANETS logger
-	private static PlanetsLogger logger = PlanetsLogger.getLogger(WorkflowManagerImpl.class);
+	private static Logger log = Logger.getLogger(WorkflowManagerImpl.class.getName());
 	// Properties file location and holder for the DataManager
 	private static final String propPath = "eu/planets_project/ifr/core/storage/datamanager.properties";
 	private Properties properties = null;
@@ -50,19 +50,19 @@ public class WorkflowManagerImpl implements WorkflowManager {
 	 */
 	public WorkflowManagerImpl() throws SOAPException {
 		try {
-			logger.debug("WorkflowManagerImpl::WorkflowManagerImpl()");
+			log.fine("WorkflowManagerImpl::WorkflowManagerImpl()");
 			properties = new Properties();
-			logger.debug("Getting properties");
+			log.fine("Getting properties");
 	       	properties.load(this.getClass().getClassLoader().getResourceAsStream(propPath));
-			logger.debug("Creating JCRManager");
-	       	jcrManager = new JCRManager(properties.getProperty("planets.if.dr.default.jndi"), logger);
+			log.fine("Creating JCRManager");
+	       	jcrManager = new JCRManager(properties.getProperty("planets.if.dr.default.jndi"));
 		} catch (IOException _exp) {
 			String _message = "WorkflowManagerImpl::WorkflowManagerImpl() Cannot load resources"; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		} catch (NamingException _exp) {
 			String _message = "DataManager::WorkflowManagerImpl() Cannot connect to Repository";
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		}
 	}

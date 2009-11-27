@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 import javax.jcr.LoginException;
 import javax.jcr.RepositoryException;
@@ -15,8 +16,6 @@ import javax.naming.NoInitialContextException;
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
 import javax.xml.ws.Service;
-
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
 /**
  * @author Peter Melms (original code)
@@ -42,8 +41,7 @@ public class DataRegistryAccessHelper {
         this.createCalendar();
     }
 
-    private final static PlanetsLogger plogger = PlanetsLogger
-            .getLogger(DataRegistryAccessHelper.class);
+    private static Logger log = Logger.getLogger(DataRegistryAccessHelper.class.getName());
 
     private void createCalendar() {
         // Creating a Calendar instance for the timestamp used in the
@@ -64,13 +62,13 @@ public class DataRegistryAccessHelper {
      * @return src file as byte[] for conversion
      */
     public byte[] read(String fileReference) {
-        plogger.debug("Starting to get File from DataRegistry...");
+        log.fine("Starting to get File from DataRegistry...");
 
         URI fileURI = null;
         try {
             fileURI = new URI(fileReference);
         } catch (URISyntaxException e1) {
-            plogger.warn("Exception: " + e1.getLocalizedMessage());
+            log.warning("Exception: " + e1.getLocalizedMessage());
             e1.printStackTrace();
         }
 
@@ -78,18 +76,18 @@ public class DataRegistryAccessHelper {
 
         // Binding the DataManagerLocal-Interface to the local
         // DataManager-Instance via JNDI.
-        plogger.debug("Trying to get InitialContext for JNDI-Lookup...");
+        log.fine("Trying to get InitialContext for JNDI-Lookup...");
         dataRegistry = createDataRegistry();
 
         byte[] srcFileArray = null;
         if (fileURI != null) {
             try {
-                plogger.debug("Retrieving file from DataRegistry: "
+                log.fine("Retrieving file from DataRegistry: "
                         + fileURI.toASCIIString());
                 srcFileArray = dataRegistry.retrieveBinary(fileURI);
-                plogger.debug("Successfully retrieved file!");
+                log.fine("Successfully retrieved file!");
             } catch (SOAPException e) {
-                plogger.error("Exception: " + e.getLocalizedMessage());
+                log.severe("Exception: " + e.getLocalizedMessage());
                 e.printStackTrace();
             }
         }
@@ -99,7 +97,7 @@ public class DataRegistryAccessHelper {
     /* FIXME write access currently not possible (security issues), therefore private */
     @SuppressWarnings("unused")
     private URI write(byte[] binary, String fileName, String outputDir) {
-        plogger.info("Starting to store File in DataRegistry...");
+        log.info("Starting to store File in DataRegistry...");
         DataManagerLocal dataRegistry = null;
         URI fileURI = null;
         URI registryRoot = null;
@@ -116,7 +114,7 @@ public class DataRegistryAccessHelper {
             URI[] storagePaths = dataRegistry.list(null);
             registryRoot = storagePaths[0];
             dataRegistryPath = registryRoot.toASCIIString();
-            plogger.info("Registry root: " + dataRegistryPath);
+            log.info("Registry root: " + dataRegistryPath);
 
         } catch (SOAPException e) {
             // TODO Auto-generated catch block
@@ -124,28 +122,28 @@ public class DataRegistryAccessHelper {
         }
 
         try {
-            plogger.info("Creating File URI...");
-            plogger.info("URI will be: " + dataRegistryPath + "/" + outputDir
+            log.info("Creating File URI...");
+            log.info("URI will be: " + dataRegistryPath + "/" + outputDir
                     + "/" + fileName);
 
             // Create the new URI for storing the file to the DataRegistry.
             fileURI = new URI(dataRegistryPath + "/" + outputDir + "/"
                     + fileName);
 
-            plogger.info("Created File URI: " + fileURI.toASCIIString());
+            log.info("Created File URI: " + fileURI.toASCIIString());
         } catch (URISyntaxException e) {
-            plogger.error("Malformed URI...! ");
+            log.severe("Malformed URI...! ");
             e.printStackTrace();
         }
 
         try {
-            plogger.info("Starting to write binary to DataRegistry...");
+            log.info("Starting to write binary to DataRegistry...");
             // URI of the default OUTPUT_FOLDER of this Service, used as search
             // root when testing
             // if a file already exists.
             URI outputFolderURI = new URI(dataRegistryPath + "/" + outputDir);
-            plogger.info("Outputfolder: " + outputFolderURI.toASCIIString());
-            plogger.info("Searching for duplicated files...");
+            log.info("Outputfolder: " + outputFolderURI.toASCIIString());
+            log.info("Searching for duplicated files...");
 
             URI[] searchResults = null;
             try {
@@ -164,7 +162,7 @@ public class DataRegistryAccessHelper {
             }
             // end debug output
 
-            plogger.info("Found the following hits: " + sb.toString());
+            log.info("Found the following hits: " + sb.toString());
 
             String searchPattern = outputDir + "/" + fileName;
 
@@ -176,12 +174,12 @@ public class DataRegistryAccessHelper {
             if (hitFound) {
                 renamedFileName = addTimestampToFileName(fileName);
                 URI newURI = createNewURI(renamedFileName, outputFolderURI);
-                plogger.info("Storing file with new name: " + renamedFileName
+                log.info("Storing file with new name: " + renamedFileName
                         + " in DataRegistry...");
                 // store it in the DataRegistry, using the new
                 // filename
                 dataRegistry.storeBinary(newURI, binary);
-                plogger.info("Successfully stored binary in DataRegistry: "
+                log.info("Successfully stored binary in DataRegistry: "
                         + renamedFileName);
                 fileURI = newURI;
             } else {
@@ -189,7 +187,7 @@ public class DataRegistryAccessHelper {
             }
 
         } catch (URISyntaxException e) {
-            plogger.error("URISyntaxException: " + e.getLocalizedMessage());
+            log.severe("URISyntaxException: " + e.getLocalizedMessage());
             e.printStackTrace();
         } catch (LoginException e) {
             // TODO Auto-generated catch block
@@ -209,9 +207,9 @@ public class DataRegistryAccessHelper {
             renamedFileURI = new URI(outputFolderURI.toASCIIString() + "/"
                     + renamedFileName);
 
-            plogger.info("New file URI: " + renamedFileURI.toASCIIString());
+            log.info("New file URI: " + renamedFileURI.toASCIIString());
 
-            plogger.info("Storing file with new name: " + renamedFileName
+            log.info("Storing file with new name: " + renamedFileName
                     + " in DataRegistry...");
         } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
@@ -223,7 +221,7 @@ public class DataRegistryAccessHelper {
     private String addTimestampToFileName(String fileName) {
         if (!fileName
                 .matches(".*_[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]_[0-9][0-9]-[0-9][0-9]-[0-9][0-9]_[0-9][0-9][0-9]ms.*")) {
-            plogger.info("File already exists: " + fileName
+            log.info("File already exists: " + fileName
                     + ". File will be renamed...");
 
             // ...get a timestamp
@@ -233,29 +231,29 @@ public class DataRegistryAccessHelper {
             // ...split the initial filename in a prefix and...
             String fileNamePrefix = fileName.substring(0, fileName
                     .lastIndexOf("."));
-            plogger.info("fileNamePrefix: " + fileNamePrefix);
+            log.info("fileNamePrefix: " + fileNamePrefix);
 
             // // ...and the postfix
             String fileNamePostfix = fileName.substring(fileName
                     .lastIndexOf("."));
-            plogger.info("fileNamePostfix: " + fileNamePostfix);
+            log.info("fileNamePostfix: " + fileNamePostfix);
 
             // // and add the "_[timestamp]" to the filename
-            plogger.info("Adding timestamp to filename: " + timestamp);
+            log.info("Adding timestamp to filename: " + timestamp);
             String renamedFileName = fileNamePrefix + "_" + timestamp
                     + fileNamePostfix;
 
-            plogger.info("New file Name: " + renamedFileName);
+            log.info("New file Name: " + renamedFileName);
             return renamedFileName;
         } else {
             String timestamp = getTimeStamp();
-            plogger.info("Filename already contains timestamp!");
-            plogger.info("Replacing timestamp...");
+            log.info("Filename already contains timestamp!");
+            log.info("Replacing timestamp...");
             fileName = fileName
                     .replaceFirst(
                             "[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]_[0-9][0-9]-[0-9][0-9]-[0-9][0-9]_[0-9][0-9][0-9]ms",
                             timestamp);
-            plogger.info("New file name: " + fileName);
+            log.info("New file name: " + fileName);
             return fileName;
         }
 
@@ -296,14 +294,14 @@ public class DataRegistryAccessHelper {
     private DataManagerLocal createDataRegistry() {
         Context ctx;
         try {
-            plogger.info("Trying to get InitialContext for JNDI-Lookup...");
+            log.info("Trying to get InitialContext for JNDI-Lookup...");
             ctx = new InitialContext();
             DataManagerLocal dataRegistry = null;
             try {
                 dataRegistry = (DataManagerLocal) ctx
                         .lookup("planets-project.eu/DataManager/local");
             } catch (NoInitialContextException x) {
-                plogger.warn("No initial context, trying via service...");
+                log.warning("No initial context, trying via service...");
                 URL url = null;
                 try {
                     url = new URL(this.host
@@ -317,7 +315,7 @@ public class DataRegistryAccessHelper {
                 dataRegistry = service.getPort(DataManagerLocal.class);
                 // x.printStackTrace();
             }
-            plogger.info("Created dataRegistry-Object...");
+            log.info("Created dataRegistry-Object...");
 
             return dataRegistry;
         } catch (NamingException e1) {

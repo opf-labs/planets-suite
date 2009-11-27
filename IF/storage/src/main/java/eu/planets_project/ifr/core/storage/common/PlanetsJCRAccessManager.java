@@ -22,6 +22,7 @@ import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemNotFoundException;
@@ -39,10 +40,8 @@ import org.apache.jackrabbit.core.ItemId;
 import org.apache.jackrabbit.core.security.AMContext;
 import org.apache.jackrabbit.core.security.AccessManager;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-
 public class PlanetsJCRAccessManager implements AccessManager {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(PlanetsJCRAccessManager.class);
+    private static Logger log = Logger.getLogger(PlanetsJCRAccessManager.class.getName());
 
     /**
      * Subject whose access rights this AccessManager should reflect
@@ -91,13 +90,13 @@ public class PlanetsJCRAccessManager implements AccessManager {
         log.info("Load jbossgroup role mappings from " + rolemaploc);
         
         for (Principal p : ps){
-          log.warn(p.getName());
+          log.warning(p.getName());
             if (p.getName().equalsIgnoreCase("Roles")){
-              log.warn("listing roles: "+p);
-              log.warn("listing class: " + p.getClass().toString());
+              log.warning("listing roles: "+p);
+              log.warning("listing class: " + p.getClass().toString());
               
               java.security.acl.Group sg = (java.security.acl.Group)p;
-              log.warn("listing baseroles: "+sg);
+              log.warning("listing baseroles: "+sg);
               Enumeration<java.security.Principal> em = 
                   (Enumeration<java.security.Principal>) sg.members();
               while (em.hasMoreElements()) {
@@ -215,26 +214,25 @@ public class PlanetsJCRAccessManager implements AccessManager {
             InitialContext ic = new InitialContext();
             alreadyAuthenticated = (Subject)ic.lookup("java:comp/env/security/subject");
         } catch( NamingException e ) {
-            log.error("Failed while looking up the security Subject. "+e);
+            log.severe("Failed while looking up the security Subject. "+e);
             return null;
         }
         
         // Create a doAs class
         PrivilegedAction<Session> pas =  new PrivilegedAction<Session>() { 
             public Session run() {
-                PlanetsLogger log = PlanetsLogger.getLogger(PlanetsJCRAccessManager.class);
                 try {
                     InitialContext context = new InitialContext();
                     Repository repository = (Repository) context.lookup("java:jcr/local");
                     return repository.login(); 
                 } catch( NamingException e ) {
-                    log.error("Failed while looking up the security Subject. "+e);
+                    log.severe("Failed while looking up the security Subject. "+e);
                     return null;
                 } catch( LoginException e ) {
-                    log.error("Caught LoginException "+e);
+                    log.severe("Caught LoginException "+e);
                     return null;
                 } catch( RepositoryException e ) {
-                    log.error("Caught RepositoryException "+e);
+                    log.severe("Caught RepositoryException "+e);
                     return null;
                 }
             } 

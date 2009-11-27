@@ -1,19 +1,17 @@
 package eu.planets_project.ifr.core.common.mail;
 
 import java.io.StringWriter;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.exception.VelocityException;
-
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
 import java.util.*;
 
 public class PlanetsMailer 
 {    
-    protected static final Log log = PlanetsLogger.getLogger(PlanetsMailer.class);
+    protected static final Logger log = Logger.getLogger(PlanetsMailer.class.getName());
     private VelocityEngine velocityEngine;
 
     public PlanetsMailer() 
@@ -26,7 +24,7 @@ public class PlanetsMailer
         try {
             velocityEngine.init(props);
         } catch( Exception e ) {
-            log.error("Failed to initialise the Velocity engine. :: " + e );
+            log.severe("Failed to initialise the Velocity engine. :: " + e );
         }
     }
     
@@ -80,7 +78,7 @@ public class PlanetsMailer
         } catch  (RuntimeException ex) {
             throw ex;
         } catch  (Exception ex) {
-            log.error("Why does VelocityEngine throw a generic checked exception, after all?", ex);
+            log.severe("Why does VelocityEngine throw a generic checked exception, after all("+ex.getMessage()+")?");
             throw new VelocityException(ex.getMessage());
         }
         return result.toString();

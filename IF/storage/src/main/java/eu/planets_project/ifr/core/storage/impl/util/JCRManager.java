@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -34,7 +35,6 @@ import org.jboss.annotation.security.SecurityDomain;
 
 import java.security.PrivilegedAction;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.InvocationEvent;
 import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
 import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
@@ -67,23 +67,20 @@ public class JCRManager {
 	private Properties properties = new Properties();
 	private Repository repository = null;
     private Session session = null;
-    private PlanetsLogger _logger = null;
+    private static Logger log = Logger.getLogger(JCRManager.class.getName());
 	/**
 	 * Constructor for JCRManager, connects to repository and initialises object.
 	 * 
 	 * @param	repositoryName
 	 * 			JNDI name of the JCR to connect to.
-	 * @param	logger
-	 * 			A PLANETS logger instance used for logging and debugging.
 	 * @throws	NamingException
 	 * 			Thrown when the JNDI lookup for the Jackrabbit repository fails.  Suggests an installation / setup problem.
 	 */
-    public JCRManager(String repositoryName, PlanetsLogger logger) throws NamingException {
+    public JCRManager(String repositoryName) throws NamingException {
 		try {
 			properties.load(this.getClass().getClassLoader().getResourceAsStream(PROP_FILE_PATH));
 			// JNDI Lookup of the repository
 	        this.repository = (Repository)this.ctx.lookup(repositoryName);
-	        _logger = logger;
 		} catch (IOException _exp) {
 			throw new RuntimeException(_exp);
 		}
@@ -454,17 +451,17 @@ public class JCRManager {
      */
     public void importDocumentView(InputStream stream, String path) throws LoginException, RepositoryException, IOException  {
     	try {
-    		_logger.debug("JCRManager.importDocumentView()");
-    		_logger.debug("getting session");
+    		log.fine("JCRManager.importDocumentView()");
+    		log.fine("getting session");
     		this.getSession();
-    		_logger.debug("calling createDocumentNode()");
+    		log.fine("calling createDocumentNode()");
     		this.createDocumentNode(path, false);
-    		_logger.debug("calling session.import()");
+    		log.fine("calling session.import()");
     		session.importXML(path, stream, javax.jcr.ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
-    		_logger.debug("saving session");
+    		log.fine("saving session");
     		session.save();
     	} finally {
-    		_logger.debug("logging out session");
+    		log.fine("logging out session");
     		session.logout();
     	}
     }
@@ -481,25 +478,25 @@ public class JCRManager {
 	 * @throws	RepositoryException
 	 */
     public String storeWorkflowDefinition(WorkflowDefinition workflow, String path) throws IOException, RepositoryException {
-    	_logger.debug("JCRManager.storeWorkflowDefinition()");
+    	log.fine("JCRManager.storeWorkflowDefinition()");
     	try {
     		if (workflow == null) {
     			return null;
     		}
     		this.getSession();
-    		_logger.debug("Checking for existence of WorkflowDefinition node");
+    		log.fine("Checking for existence of WorkflowDefinition node");
     		String _queryString = "//WorkflowDefinition[@id=\"" + workflow.getId() + "\"]";
     		NodeIterator _nodes = this.executeQuery(_queryString);
     		if (_nodes.getSize() > 0) {
-    			_logger.debug("WorkflowDefinition with id = " + workflow.getId() + " already exists.");
+    			log.fine("WorkflowDefinition with id = " + workflow.getId() + " already exists.");
     			throw new RuntimeException("WorkflowDefinition with id = " + workflow.getId() + " already exists.");
     		}
     		path = path.concat("/WorkflowDefinition");
-	    	_logger.debug("Creating Document node for the workflow");
+	    	log.fine("Creating Document node for the workflow");
 	    	Node _defNode = this.createDocumentNode(path, true);
-	    	_logger.debug("Creating workflow definition node");
+	    	log.fine("Creating workflow definition node");
 	    	// Add the specific node properties from the workflow properties
-	    	_logger.debug("Adding properties");
+	    	log.fine("Adding properties");
 	    	if (workflow.getDate() != null) {
 	    		Calendar _calendar = Calendar.getInstance();
 		    	_calendar.setTime(workflow.getDate());
@@ -517,7 +514,7 @@ public class JCRManager {
 	    		_defNode.setProperty("description", workflow.getDescription());
 	    	session.save();
     	} finally {
-    		_logger.debug("logging out session");
+    		log.fine("logging out session");
     		session.logout();
     	}
     	return workflow.getId();
@@ -533,15 +530,15 @@ public class JCRManager {
      * @throws	RepositoryException
      */
     public WorkflowDefinition retrieveWorkflowDefinition(String id) throws ItemNotFoundException, RepositoryException {
-    	_logger.debug("JCRManager.retrieveWorkflowDefinition()");
+    	log.fine("JCRManager.retrieveWorkflowDefinition()");
     	WorkflowDefinition _retVal = null;
     	try {
     		this.getSession();
     		String _queryString = "//WorkflowDefinition[@id=\"" + id + "\"]";
-    		_logger.debug("Query string:" + _queryString);
+    		log.fine("Query string:" + _queryString);
 	    	NodeIterator _nodes = this.executeQuery(_queryString);
 	    	if (_nodes.getSize() == 0) {
-	    		_logger.debug("No WorkflowDefinition with id " + id + " found");
+	    		log.fine("No WorkflowDefinition with id " + id + " found");
 	    		throw new ItemNotFoundException("WorkflowDefinition id = " + id + " was not found");
 	    	}
 	    	else {
@@ -557,7 +554,7 @@ public class JCRManager {
 	        	_retVal.setVersion(_propVersion.getString());
 	    	}
     	} finally {
-    		_logger.debug("logging out session");
+    		log.fine("logging out session");
     		session.logout();
     	}
     	
@@ -574,37 +571,37 @@ public class JCRManager {
 	 * @throws	RepositoryException
 	 */
     public String storeWorkflowExecution(WorkflowExecution workflow) throws IOException, RepositoryException {
-    	_logger.debug("JCRManager.storeWorkflowExecution()");
+    	log.fine("JCRManager.storeWorkflowExecution()");
     	String _retVal = null;
     	try {
     		this.getSession();
     		// Find the WorfkflowExecution node that will be the parent
-    		_logger.debug("Locating the parent WorkflowDefinition");
+    		log.fine("Locating the parent WorkflowDefinition");
     		String _queryStr = "//WorkflowDefinition[@id=\"" + workflow.getWorkflowId() + "\"]";
-    		_logger.debug("Query:" + _queryStr);
+    		log.fine("Query:" + _queryStr);
     		NodeIterator _nodes = this.executeQuery(_queryStr);
-    		_logger.debug("Node size = " + _nodes.getSize());
+    		log.fine("Node size = " + _nodes.getSize());
     		if (_nodes.getSize() < 1) {
-    			_logger.debug("WorkflowDefinition with id = " + workflow.getWorkflowId() + " doesn't exists.");
+    			log.fine("WorkflowDefinition with id = " + workflow.getWorkflowId() + " doesn't exists.");
     			throw new RuntimeException("WorkflowDefinition with id = " + workflow.getWorkflowId() + " doesn't exists.");
     		}
     		Node _defNode = _nodes.nextNode(); 
     		String _path = _defNode.getPath().concat("/WorkflowExecution");
-	    	_logger.debug("Creating Document node for the workflow");
+	    	log.fine("Creating Document node for the workflow");
 	    	Node _execNode = this.createDocumentNode(_path, true);
 	    	// Add mix:referencable to generate an id
 	    	_execNode.addMixin("mix:referenceable");
 	    	_retVal = _execNode.getUUID();
-	    	_logger.debug("Creating workflow definition node");
+	    	log.fine("Creating workflow definition node");
 	    	// Add the specific node properties from the workflow properties
-	    	_logger.debug("Adding properties");
+	    	log.fine("Adding properties");
 	    	if (workflow.getUser() != null)
 	    		_execNode.setProperty("userName", workflow.getUser());
 	    	if (workflow.getWorkflowId() != null)
 	    		_execNode.setProperty("workflowId", workflow.getWorkflowId());
 	    	session.save();
     	} finally {
-    		_logger.debug("logging out session");
+    		log.fine("logging out session");
     		session.logout();
     	}
     	return _retVal;
@@ -620,7 +617,7 @@ public class JCRManager {
      * @throws	RepositoryException
      */
 	public WorkflowExecution retrieveWorkflowExecution(String id) throws ItemNotFoundException, RepositoryException {
-    	_logger.debug("JCRManager.retrieveWorkflowExecution()");
+    	log.fine("JCRManager.retrieveWorkflowExecution()");
     	WorkflowExecution _retVal = null;
     	try {
     		this.getSession();
@@ -631,7 +628,7 @@ public class JCRManager {
         	_retVal = new WorkflowExecution(_propId.getString(), _propUser.getString());
         	_retVal.setWorkflowId(_propWorkflowId.getString());
     	} finally {
-    		_logger.debug("logging out session");
+    		log.fine("logging out session");
     		session.logout();
     	}
     	
@@ -651,20 +648,20 @@ public class JCRManager {
 	 * @throws	RepositoryException
 	 */
     public String storeInvocationEvent(InvocationEvent event, String workflowExecutionId) throws IOException, ItemNotFoundException, RepositoryException {
-    	_logger.debug("JCRManager.storeWorkflowExecution()");
+    	log.fine("JCRManager.storeWorkflowExecution()");
     	String _retVal = null;
     	try {
     		this.getSession();
     		// Find the WorfkflowExecution node that will be the parent
     		Node _execNode = session.getNodeByUUID(workflowExecutionId); 
     		String _path = _execNode.getPath().concat("/InvocationEvent");
-	    	_logger.debug("Creating Document node for the InvocationEvent");
+	    	log.fine("Creating Document node for the InvocationEvent");
 	    	Node _eventNode = this.createDocumentNode(_path, true);
 	    	// Add mix:referencable to generate an id
 	    	_eventNode.addMixin("mix:referenceable");
 	    	_retVal = _eventNode.getUUID();
 	    	// Add the specific node properties from the workflow properties
-	    	_logger.debug("Adding properties");
+	    	log.fine("Adding properties");
 	    	Calendar _calendar = Calendar.getInstance();
 	    	_eventNode.setProperty("service", event.getService().toString());
 	    	if (event.getOperation() != null)
@@ -679,7 +676,7 @@ public class JCRManager {
 	    	_eventNode.setProperty("end", _calendar);
 	    	session.save();
     	} finally {
-    		_logger.debug("logging out session");
+    		log.fine("logging out session");
     		session.logout();
     	}
     	return _retVal;
@@ -696,7 +693,7 @@ public class JCRManager {
      * @throws	URISyntaxException
      */
     public InvocationEvent retrieveInvocationEvent(String id) throws ItemNotFoundException, RepositoryException, URISyntaxException {
-    	_logger.debug("JCRManager.retrieveWorkflowExecution()");
+    	log.fine("JCRManager.retrieveWorkflowExecution()");
     	InvocationEvent _retVal = null;
     	try {
     		this.getSession();
@@ -715,7 +712,7 @@ public class JCRManager {
         								  _propStart.getDate().getTime(),
         								  _propEnd.getDate().getTime());
     	} finally {
-    		_logger.debug("logging out session");
+    		log.fine("logging out session");
     		session.logout();
     	}
     	
@@ -724,49 +721,49 @@ public class JCRManager {
     
     private Node createDocumentNode(String path, Boolean force) throws IOException, RepositoryException {
 		// Carve the path into an array around the separator character
-		_logger.debug("JCRManager.createDocumentNode()");
-		_logger.debug("splitting path array");
+		log.fine("JCRManager.createDocumentNode()");
+		log.fine("splitting path array");
 		String[] _pathArray = path.split("/");
 
 		// Get the root node for the workspace
-		_logger.debug("getting root node");
+		log.fine("getting root node");
 		Node _node = session.getRootNode();
 		
 		// Now loop through the path array and navigate the path, creating the nt:folder nodes that don't exist
 		// We save the last part of the path as this is the name and is hence an nt:file node
-		_logger.debug("iterating through " + _pathArray.length + " elements");
+		log.fine("iterating through " + _pathArray.length + " elements");
 		for (int _loop = 1; _loop < _pathArray.length - 1; _loop++) {
 			// Check to see if the current node has a child matching the next path part
-			_logger.debug("element " + _loop);
-			_logger.debug("element is called:" + _pathArray[_loop]);
+			log.fine("element " + _loop);
+			log.fine("element is called:" + _pathArray[_loop]);
 			if (!_node.hasNode(_pathArray[_loop])) {
 				// If it doesn't then create the nt:folder node and set _node to the newly created node
-				_logger.debug("adding:" + _pathArray[_loop]);
+				log.fine("adding:" + _pathArray[_loop]);
 				_node = _node.addNode(_pathArray[_loop]);
-				_logger.debug("finished the add call");
+				log.fine("finished the add call");
 			} else {
 				// Else if it exists get it and set _node to the retrieved node
-				_logger.debug("getting:" + _pathArray[_loop]);
+				log.fine("getting:" + _pathArray[_loop]);
 				_node = _node.getNode(_pathArray[_loop]);
 			}
 		}
 		
 		// We're at the end of the loop so this is the final part of the path which is the name of the file node
 		// First get the last part of the path array and check to see if the node exists
-		_logger.debug("at last node now called:" + _pathArray[_pathArray.length - 1]);
+		log.fine("at last node now called:" + _pathArray[_pathArray.length - 1]);
 		if (!_node.hasNode(_pathArray[_pathArray.length - 1]) || (force)) {
 			// If not then create it, we need to add an nt:file node and an nt:resource node named jcr:content that
 			// holds the binary
-			_logger.debug("adding" + _pathArray[_pathArray.length - 1]);
+			log.fine("adding" + _pathArray[_pathArray.length - 1]);
 			_node = _node.addNode(_pathArray[_pathArray.length - 1]);
-			_logger.debug("finshed add call");
+			log.fine("finshed add call");
 		}
 		else {
 			// If the node already existed then throw a file exists exception as the JCR is write once
-			_logger.debug("throwing file exists exception");
+			log.fine("throwing file exists exception");
 			throw new IOException("File exists");
 		}
-		_logger.debug("returning node");
+		log.fine("returning node");
 		return _node;
     }
 
@@ -792,12 +789,12 @@ public class JCRManager {
         		_queryString = "//element(*, nt:file)";
     		else
         		_queryString = "/" + searchRoot + "//element(*, nt:file)";
-    		_logger.debug(_queryString);
+    		log.fine(_queryString);
     		NodeIterator _it = this.executeQuery(_queryString);
     		
     		while (_it.hasNext()) {
     			Node _node = _it.nextNode();
-    			_logger.debug("Node Name/" + _node.getName());
+    			log.fine("Node Name/" + _node.getName());
     			if (_node.getName().contains(name))
     				_list.add(_node.getPath());
     		}
@@ -828,11 +825,11 @@ public class JCRManager {
         		_queryString = "//element(*, nt:file)";
     		else
         		_queryString = "/" + searchRoot + "//element(*, nt:file)";
-    		_logger.debug(_queryString);
+    		log.fine(_queryString);
     		NodeIterator _it = this.executeQuery(_queryString);
     		while (_it.hasNext()) {
     			Node _node = _it.nextNode();
-    			_logger.debug("Node Name/" + _node.getName());
+    			log.fine("Node Name/" + _node.getName());
     			if (_node.getName().endsWith(ext))
     				_list.add(_node.getPath());
     		}

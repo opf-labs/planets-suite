@@ -18,6 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.annotation.security.RunAs;
 import javax.ejb.Local;
@@ -37,7 +38,6 @@ import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 import org.jboss.annotation.security.SecurityDomain;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DataManagerRemote;
 import eu.planets_project.ifr.core.storage.common.FileHandler;
@@ -86,12 +86,12 @@ import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 public class DataManager implements DataManagerRemote, DataManagerLocal {
 
 	// PLANETS logger
-    PlanetsLogger logger = PlanetsLogger.getLogger(DataManager.class);
+    private static Logger log = Logger.getLogger(DataManager.class.getName());
 	// Properties file location and holder for the DataManager
 	private static final String propPath = "eu/planets_project/ifr/core/storage/datamanager.properties";
 	private Properties properties = null;
 	// JCRManager manages Jackrabbit functionality
-	private JCRManager jcrManager = null;
+	private static JCRManager jcrManager = null;
 	
 	/**
 	 * Constructor for the Data Manager. Simply loads the properties and
@@ -104,19 +104,19 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
 	 */
 	public DataManager() throws SOAPException {
 		try {
-			logger.debug("DataManager::DataManager()");
+			log.fine("DataManager::DataManager()");
 			properties = new Properties();
-			logger.debug("Getting properties");
+			log.fine("Getting properties");
 	       	properties.load(this.getClass().getClassLoader().getResourceAsStream(propPath));
-			logger.debug("Creating JCRManager");
-	       	jcrManager = new JCRManager(properties.getProperty("planets.if.dr.default.jndi"), logger);
+			log.fine("Creating JCRManager");
+	       	jcrManager = new JCRManager(properties.getProperty("planets.if.dr.default.jndi"));
 		} catch (IOException _exp) {
 			String _message = "DataManager::DataManger() Cannot load resources"; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+ _exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		} catch (NamingException _exp) {
 			String _message = "DataManager::DataManger() Cannot connect to Repository";
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+ _exp.getMessage());;
 			throw new SOAPException(_message, _exp);
 		}
 	}
@@ -126,28 +126,28 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
      */
 	@javax.jws.WebMethod()
 	public URI[] list(URI pdURI) throws SOAPException {
-    		logger.debug("DataManager::list(URI pdURI)");
+    		log.fine("DataManager::list(URI pdURI)");
 		URI[] _retVal = null;
 		PDURI _pdURI = null;
 		String _path = null;
 		
 		try {
-			logger.debug("Testing for null URI");
+			log.fine("Testing for null URI");
 			if (pdURI == null)
 			{
-				logger.debug("URI is empty so return root");
+				log.fine("URI is empty so return root");
 				_retVal = new URI[1];
-				logger.debug("Assigning array item");
+				log.fine("Assigning array item");
 				_retVal[0] = PDURI.formDataRegistryRootURI(properties.getProperty("planets.server.hostname"), properties.getProperty("planets.server.port"), properties.getProperty("planets.if.dr.default.name")); 
 				return _retVal; 
 			}
-			logger.debug("URI is NOT NULL");
-			_pdURI = new PDURI(pdURI, logger);
-			logger.debug("parsing the Data Registry path");
+			log.fine("URI is NOT NULL");
+			_pdURI = new PDURI(pdURI);
+			log.fine("parsing the Data Registry path");
 			_path = _pdURI.getDataRegistryPath();
-			logger.debug("Data Registry path is:" + _path);
+			log.fine("Data Registry path is:" + _path);
 		} catch (URISyntaxException _exp) {
-			logger.debug(_exp);
+			log.fine(_exp.getMessage());
 			throw new SOAPException(_exp);
 		}
 
@@ -156,16 +156,16 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
 			if (_pathList != null) {
 				_retVal = new URI[_pathList.size()];
 				int _arrayCount = 0;
-				logger.debug("Cycling through returned paths, there are " + _pathList.size() + " elements");
+				log.fine("Cycling through returned paths, there are " + _pathList.size() + " elements");
 				for (String _string : _pathList) {
-					logger.debug("Getting a new URI for:" + _string);
+					log.fine("Getting a new URI for:" + _string);
 					_pdURI.replaceDecodedPath(_string);
 					_retVal[_arrayCount++] = _pdURI.getURI();
-					logger.debug("New URI added:" + _retVal[_arrayCount - 1]);
+					log.fine("New URI added:" + _retVal[_arrayCount - 1]);
 				}
 			}
 		} catch (URISyntaxException _exp) {
-			logger.debug(_exp);
+			log.fine(_exp.getMessage());
 			throw new SOAPException(_exp);
 		}
 
@@ -177,24 +177,24 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
      */
 	@javax.jws.WebMethod()
 	public URI listDownladURI(URI pdURI) throws SOAPException {
-    	logger.debug("DataManager::listDownloadURI(URI pdURI)");
+    	log.fine("DataManager::listDownloadURI(URI pdURI)");
     	URI _retVal = null;
     	PDURI _parsedURI = null;
     	try {
-        	_parsedURI = new PDURI(pdURI, logger);
+        	_parsedURI = new PDURI(pdURI);
     		// Check that the item exists, if not throw a SOAP Exception
     		if (!this.jcrManager.nodeExists(_parsedURI.getDataRegistryPath())) {
     			String _message = "DataManager.listDownloadURI() Cannot locate item " + pdURI.toASCIIString(); 
-    			logger.debug(_message);;
+    			log.fine(_message);;
     			throw new SOAPException(_message);
     		}
     	} catch (URISyntaxException _exp) {
 			String _message = "DataManager.listDownloadURI() " + pdURI.toASCIIString() + " is not a PLANETS Data Registry URI."; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
     	} catch (RepositoryException _exp) {
 			String _message = "DataManager.listDownloadURI() Repository call failed."; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
     	}
 	// Now get the JBOSS Server and port
@@ -208,7 +208,7 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
     		_retVal = new URI("http://" + _serverName + ":" + _port + _webdavRoot + _parsedURI.getDataRegistryPath());
     	} catch (URISyntaxException _exp) {
 			String _message = "DataManager.listDownloadURI() Cannot get server URI."; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());;
 			throw new SOAPException(_message, _exp);
     	}
 		return _retVal; 
@@ -219,15 +219,15 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
      */
 	@Deprecated
 	public InputStream retrieve(URI pdURI) throws PathNotFoundException, URISyntaxException {
-		logger.debug("DataManager::openFileStream(URI pdURI)");
+		log.fine("DataManager::openFileStream(URI pdURI)");
 		InputStream _stream = null;
-		PDURI _parsedURI = new PDURI(pdURI, logger);
+		PDURI _parsedURI = new PDURI(pdURI);
 		try {
 			_stream = jcrManager.readContent(_parsedURI.getDataRegistryPath());
 		} catch (LoginException _exp) {
 			throw new RuntimeException(_exp);
 		} catch (PathNotFoundException _exp) {
-			logger.debug("DataManager::openFileStream() Couldn't find path");
+			log.fine("DataManager::openFileStream() Couldn't find path");
 			throw _exp;
 		} catch (RepositoryException _exp) {
 			throw new RuntimeException(_exp);
@@ -240,19 +240,19 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
      */
 	@Deprecated
 	public void store(URI pdURI, InputStream stream) throws LoginException, RepositoryException, URISyntaxException {
-		logger.debug("DataManager::writeFileStream(URI pdURI, FileInputStream stream)");
+		log.fine("DataManager::writeFileStream(URI pdURI, FileInputStream stream)");
 		try {
-			PDURI _parsedURI = new PDURI(pdURI, logger);
+			PDURI _parsedURI = new PDURI(pdURI);
 			jcrManager.addBinaryContent(_parsedURI.getDataRegistryPath(), stream);
 		} catch (LoginException _exp) {
-			logger.debug("DataManager::writeFileStream() Couldn't log user into jcr");
+			log.fine("DataManager::writeFileStream() Couldn't log user into jcr");
 			throw _exp;
 		} catch (RepositoryException _exp) {
-			logger.debug("DataManager::writeFileStream() Repository Exception adding content");
+			log.fine("DataManager::writeFileStream() Repository Exception adding content");
 			throw _exp;
     	} catch (URISyntaxException _exp) {
 			String _message = "DataManager.listDownloadURI() " + pdURI.toASCIIString() + " is not a PLANETS Data Registyr URI."; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());;
 			throw _exp;
 		}
 	}
@@ -261,7 +261,7 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#createLocalSandbox()
      */
 	public URI createLocalSandbox() throws URISyntaxException {
-		logger.debug("DataManager::createLocalSandbox()");
+		log.fine("DataManager::createLocalSandbox()");
 		return new URI("file:/" + 
 					   System.getProperty("jboss.server.data.dir").replace('\\', '/') +
 					   properties.getProperty("planets.sandbox.root").replace('\\', '/'));
@@ -273,31 +273,31 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
 	@javax.jws.WebMethod()
 	@Deprecated
 	public String read(URI pdURI) throws SOAPException {
-		logger.debug("DataManager::read(URI pdURI)");
+		log.fine("DataManager::read(URI pdURI)");
 		try{
-			PDURI _parsedURI = new PDURI(pdURI, logger);
+			PDURI _parsedURI = new PDURI(pdURI);
 			FileHandler _encoder = new FileHandler(jcrManager.readContent(_parsedURI.getDataRegistryPath()));
-			logger.debug("DataManager::read() getting XML document");
+			log.fine("DataManager::read() getting XML document");
 			return _encoder.getXmlDocument();
 		} catch (ParserConfigurationException _exp) {
 			String _message = "DataManager.read() Encoding exception for UTF8??"; 
-			logger.debug(_message, _exp);
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		} catch (PathNotFoundException _exp) {
 			String _message = "DataManager.read() Path not found for content"; 
-			logger.debug(_message, _exp);
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		} catch (TransformerException _exp) {
 			String _message = "DataManager.read() TransformerException"; 
-			logger.debug(_message, _exp);
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		} catch (UnsupportedEncodingException _exp) {
 			String _message = "DataManager.read() EncodingException"; 
-			logger.debug(_message, _exp);
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		} catch (Exception _exp) {
 			String _message = "DataManager.store() bytstream failed MD5 check."; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		}
 	}
@@ -308,22 +308,22 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
 	@Deprecated
 	public void store(URI pdURI, String encodedFile) throws SOAPException {
 		try {
-			PDURI _parsedURI = new PDURI(pdURI, logger);
+			PDURI _parsedURI = new PDURI(pdURI);
 			FileHandler _handler = new FileHandler(encodedFile);
 			ByteArrayInputStream _byteStream = new ByteArrayInputStream(_handler.getDecodedBytes());
 			jcrManager.addBinaryContent(_parsedURI.getDataRegistryPath(), _byteStream);
 		} catch (LoginException _exp) {
 			String _message = "DataManager.store() Repository login error."; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		} catch (RepositoryException _exp) {
 			String _message = "DataManager.store() Repository malfunction."; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		// TODO make a proper Exception
 		} catch (Exception _exp) {
 			String _message = "DataManager.store() bytstream failed MD5 check."; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());
 			throw new SOAPException(_message, _exp);
 		} 
 	}
@@ -336,7 +336,7 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
 	{
 		byte[] _binary = null;
 		try {
-			PDURI _parsedURI = new PDURI(pdURI, logger);
+			PDURI _parsedURI = new PDURI(pdURI);
 			InputStream _inStream = this.jcrManager.readContent(_parsedURI.getDataRegistryPath());
 			ByteArrayOutputStream _outStream = new ByteArrayOutputStream(1024);
 			byte[] _bytes = new byte[512];
@@ -359,21 +359,21 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#storeBinary(java.net.URI, byte[])
      */
 	public void storeBinary(URI pdURI, byte[] binary) throws LoginException, RepositoryException, URISyntaxException {
-		logger.debug("DataManager:storeBinary(URI pdURI, byte[] binary)");
+		log.fine("DataManager:storeBinary(URI pdURI, byte[] binary)");
 		ByteArrayInputStream _inStream = new ByteArrayInputStream(binary);
 		
 		try {
-			PDURI _parsedURI = new PDURI(pdURI, logger);
+			PDURI _parsedURI = new PDURI(pdURI);
 			jcrManager.addBinaryContent(_parsedURI.getDataRegistryPath(), _inStream);
 		} catch (LoginException _exp) {
-			logger.debug("DataManager::writeFileStream() Couldn't log user into jcr");
+			log.fine("DataManager::writeFileStream() Couldn't log user into jcr");
 			throw _exp;
 		} catch (RepositoryException _exp) {
-			logger.debug("DataManager::writeFileStream() Repository Exception adding content");
+			log.fine("DataManager::writeFileStream() Repository Exception adding content");
 			throw _exp;
     	} catch (URISyntaxException _exp) {
 			String _message = "DataManager.listDownloadURI() " + pdURI.toASCIIString() + " is not a PLANETS Data Registyr URI."; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());;
 			throw _exp;
 		}
 	}
@@ -385,12 +385,12 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
 	public URI[] findFilesWithNameContaining(URI pdURI, String name) throws SOAPException {
 		URI[] _retVal = null;
 		try {
-			PDURI _parsedURI = new PDURI(pdURI, logger);
+			PDURI _parsedURI = new PDURI(pdURI);
 			ArrayList<String> _pathList = this.jcrManager.findFilesWithNameContaining(_parsedURI.getDataRegistryPath(), name);
 			if (_pathList != null) {
 				_retVal = new URI[_pathList.size()];
 				int _arrayCount = 0;
-				logger.debug("Cycling through returned paths, there are " + _pathList.size() + " elements");
+				log.fine("Cycling through returned paths, there are " + _pathList.size() + " elements");
 				for (String _string : _pathList) {
 					_parsedURI.replaceDecodedPath(_string);
 					_retVal[_arrayCount++] = _parsedURI.getURI();
@@ -409,12 +409,12 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
 	public URI[] findFilesWithExtension(URI pdURI, String ext) throws SOAPException {
 		URI[] _retVal = null;
 		try {
-			PDURI _parsedURI = new PDURI(pdURI, logger);
+			PDURI _parsedURI = new PDURI(pdURI);
 			ArrayList<String> _pathList = this.jcrManager.findFilesWithExtension(_parsedURI.getDataRegistryPath(), ext);
 			if (_pathList != null) {
 				_retVal = new URI[_pathList.size()];
 				int _arrayCount = 0;
-				logger.debug("Cycling through returned paths, there are " + _pathList.size() + " elements");
+				log.fine("Cycling through returned paths, there are " + _pathList.size() + " elements");
 				for (String _string : _pathList) {
 					_parsedURI.replaceDecodedPath(_string);
 					_retVal[_arrayCount++] = _parsedURI.getURI();

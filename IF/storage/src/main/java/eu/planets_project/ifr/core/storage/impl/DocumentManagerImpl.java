@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -31,7 +32,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.w3c.dom.Document;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DocumentManager;
 import eu.planets_project.ifr.core.storage.impl.util.JCRManager;
 
@@ -46,7 +46,7 @@ import eu.planets_project.ifr.core.storage.impl.util.JCRManager;
 @LocalBinding(jndiBinding="planets-project.eu/DocumentManager")
 public class DocumentManagerImpl implements DocumentManager {
 	// PLANETS logger
-	private static PlanetsLogger logger = PlanetsLogger.getLogger(DocumentManagerImpl.class);
+	private static Logger log = Logger.getLogger(DocumentManagerImpl.class.getName());
 	// Properties file location and holder for the DocumentManager
 	private static final String propPath = "eu/planets_project/ifr/core/storage/datamanager.properties";
 	private Properties properties = null;
@@ -64,19 +64,19 @@ public class DocumentManagerImpl implements DocumentManager {
 	 */
 	public DocumentManagerImpl() throws SOAPException {
 		try {
-			logger.debug("DocumentManagerImpl::DocumentManagerImpl()");
+			log.fine("DocumentManagerImpl::DocumentManagerImpl()");
 			properties = new Properties();
-			logger.debug("Getting properties");
+			log.fine("Getting properties");
 	       	properties.load(this.getClass().getClassLoader().getResourceAsStream(propPath));
-			logger.debug("Creating JCRManager");
-	       	jcrManager = new JCRManager(properties.getProperty("planets.if.dr.default.jndi"), logger);
+			log.fine("Creating JCRManager");
+	       	jcrManager = new JCRManager(properties.getProperty("planets.if.dr.default.jndi"));
 		} catch (IOException _exp) {
 			String _message = "DocumentManagerImpl::DocumentManagerImpl() Cannot load resources"; 
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());;
 			throw new SOAPException(_message, _exp);
 		} catch (NamingException _exp) {
 			String _message = "DocumentManagerImpl::DocumentManagerImpl() Cannot connect to Repository";
-			logger.debug(_message, _exp);;
+			log.fine(_message+": "+_exp.getMessage());;
 			throw new SOAPException(_message, _exp);
 		}
 	}
@@ -85,34 +85,34 @@ public class DocumentManagerImpl implements DocumentManager {
      * @see eu.planets_project.ifr.core.storage.api.DocumentManager#storeDocument(java.lang.String, org.w3c.dom.Document)
      */
 	public URI storeDocument(String name, Document doc) throws IOException, LoginException, RepositoryException, TransformerConfigurationException, TransformerException {
-		logger.debug("DataManager.storeDocument(String, Document)");
+		log.fine("DataManager.storeDocument(String, Document)");
 		URI _uri = null;
 		String _path =  "/documents/".concat(name);
 		File _tempFile = null;
 		
 		// Open the temp dire and create it if it doesn't exist
-		logger.debug("getting temp directory");
+		log.fine("getting temp directory");
 		String _dirName = this.getTempDir();
-		logger.debug("opening temp directory");
+		log.fine("opening temp directory");
 		File _tempDir = new File(_dirName);
 		// make a temp file name
 		String[] _nameParts = name.split("/");
 		// Now a temp file
-		logger.debug("creating temp file");
+		log.fine("creating temp file");
 		_tempFile = File.createTempFile(_nameParts[_nameParts.length - 1], "tmp", _tempDir);
 		// _tempFile.deleteOnExit();
 		// Prepare the source for writing
-		logger.debug("new source document");
+		log.fine("new source document");
 		Source _source = new DOMSource(doc);
 		// And a result for the file
-		logger.debug("doing the resutl transoformer thing");
+		log.fine("doing the resutl transoformer thing");
 		Result _result = new StreamResult(_tempFile);
 		Transformer _transformer = TransformerFactory.newInstance().newTransformer();
 		_transformer.transform(_source, _result);
 		// Now get the input stream for import to JCR
-		logger.debug("sorting the input stream");
+		log.fine("sorting the input stream");
 		InputStream _inStream = new FileInputStream(_tempFile);
-		logger.debug("calling improt document view");
+		log.fine("calling improt document view");
 		this.jcrManager.importDocumentView(_inStream, _path);
 
 		return _uri;
@@ -165,10 +165,10 @@ public class DocumentManagerImpl implements DocumentManager {
 	}
 
 	private String getTempDir() {
-		logger.debug("the JBOSS dir IS");
-		logger.debug(System.getProperty("jboss.server.data.dir"));
-		logger.debug("the data dir IS");
-		logger.debug(properties.getProperty("planets.data.temp.root"));
+		log.fine("the JBOSS dir IS");
+		log.fine(System.getProperty("jboss.server.data.dir"));
+		log.fine("the data dir IS");
+		log.fine(properties.getProperty("planets.data.temp.root"));
 		return System.getProperty("jboss.server.data.dir").replace('\\', '/') +
 		   properties.getProperty("planets.data.temp.root").replace('\\', '/');
 	}
