@@ -11,9 +11,7 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -29,7 +27,7 @@ import eu.planets_project.services.utils.FileUtils;
  */
 public class DigitalObjectDiskCache {
 
-    public static final Log log = LogFactory.getLog(DigitalObjectDiskCache.class);
+    private static final Logger log = Logger.getLogger(DigitalObjectDiskCache.class.getName());
     private static File cachedir = new File(System
             .getProperty("java.io.tmpdir"), "planets-tmp-dob-cache/");
 
@@ -41,7 +39,7 @@ public class DigitalObjectDiskCache {
         String sessionId = UUID.randomUUID().toString();
         if (!cachedir.exists()) {
             if (!cachedir.mkdirs()) {
-                log.error("failed to create caching dir: " + cachedir);
+                log.severe("failed to create caching dir: " + cachedir);
                 return null;
             }
         }
@@ -64,15 +62,15 @@ public class DigitalObjectDiskCache {
 	{
 		if(!cachedir.isDirectory())
 		{
-			log.error("recovering failed: " + cachedir);
-			log.error("no such directory");
+			log.severe("recovering failed: " + cachedir);
+			log.severe("no such directory");
 			return null;
 		}
 
 		File f = new File(cachedir, sessionId);
 		if(!f.exists())
 		{
-			log.error("no such file or directory: " + f);
+			log.severe("no such file or directory: " + f);
 			return null;
 		}
 		// Look for the file:
@@ -114,15 +112,15 @@ public class DigitalObjectDiskCache {
         try {
             propfile.createNewFile();
         } catch (IOException e1) {
-            log.error("Failed to create new file. " + e1);
+            log.severe("Failed to create new file. " + e1);
         }
         try {
             prop.storeToXML(new FileOutputStream(propfile),
                     "Set of digital objects", "UTF-8");
         } catch (FileNotFoundException e) {
-            log.error("Could not store properties in file. " + e);
+            log.severe("Could not store properties in file. " + e);
         } catch (IOException e) {
-            log.error("Could not store properties in file. " + e);
+            log.severe("Could not store properties in file. " + e);
         }
         return sessionId;
     }
@@ -138,13 +136,13 @@ public class DigitalObjectDiskCache {
         try {
             prop.loadFromXML(new FileInputStream(propfile));
         } catch (InvalidPropertiesFormatException e) {
-            log.error("Could not load properties from file. " + e);
+            log.severe("Could not load properties from file. " + e);
             return null;
         } catch (FileNotFoundException e) {
-            log.error("Could not load properties from file. " + e);
+            log.severe("Could not load properties from file. " + e);
             return null;
         } catch (IOException e) {
-            log.error("Could not load properties from file. " + e);
+            log.severe("Could not load properties from file. " + e);
             return null;
         }
 

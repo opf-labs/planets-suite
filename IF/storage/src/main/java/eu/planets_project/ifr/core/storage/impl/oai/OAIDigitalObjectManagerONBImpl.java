@@ -90,7 +90,7 @@ public class OAIDigitalObjectManagerONBImpl extends AbstractOAIDigitalObjectMana
                 }
             }
         } catch (Exception ex) {
-            log.warn(ex.getMessage());
+            log.warning(ex.getMessage());
             return null;
         }
 

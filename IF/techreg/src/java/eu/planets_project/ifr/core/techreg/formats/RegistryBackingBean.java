@@ -7,9 +7,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.richfaces.component.html.HtmlDataTable;
 
 
@@ -20,7 +19,7 @@ import org.richfaces.component.html.HtmlDataTable;
  *
  */
 public class RegistryBackingBean {
-    private static Log log = LogFactory.getLog(RegistryBackingBean.class);
+    private static Logger log = Logger.getLogger(RegistryBackingBean.class.getName());
 
     FormatRegistryImpl ftr = null;
     
@@ -34,7 +33,7 @@ public class RegistryBackingBean {
      * Constructor, initialised the format registry.
      */
     public RegistryBackingBean() {
-    	log.debug("Instanciating the Format Registry.");
+    	log.fine("Instanciating the Format Registry.");
         ftr = (FormatRegistryImpl)FormatRegistryFactory.getFormatRegistry();
     }
     

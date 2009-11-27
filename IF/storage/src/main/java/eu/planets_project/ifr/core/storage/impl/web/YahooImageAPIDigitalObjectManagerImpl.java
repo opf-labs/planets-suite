@@ -8,6 +8,7 @@ import java.net.URLEncoder;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,8 +18,6 @@ import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -63,7 +62,7 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
     /**
      * Logger.
      */
-    private static Log _log = LogFactory.getLog(eu.planets_project.ifr.core.storage.impl.web.SimpleSRUDigitalObjectManagerImpl.class);
+    private static Logger log = Logger.getLogger(eu.planets_project.ifr.core.storage.impl.web.SimpleSRUDigitalObjectManagerImpl.class.getName());
 
 	/**
      * API base URL (incl. Yahoo App ID).
@@ -249,13 +248,13 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 				// Parse DOM
 		        return parseDom(dom);
 	    	} catch (UnsupportedEncodingException e) {
-	    		_log.error(e.getClass() + ": " + e.getMessage());
+	    		log.severe(e.getClass() + ": " + e.getMessage());
 	    	} catch (IOException e) {
-	    		_log.error(e.getClass() + ": " + e.getMessage());
+	    		log.severe(e.getClass() + ": " + e.getMessage());
 	    	} catch (SAXException e) {
-	    		_log.error(e.getClass() + ": " + e.getMessage());
+	    		log.severe(e.getClass() + ": " + e.getMessage());
 	    	} catch (ParserConfigurationException e) {
-	    		_log.error(e.getClass() + ": " + e.getMessage());
+	    		log.severe(e.getClass() + ": " + e.getMessage());
 	    	}
 	    	return 0;
 		}
@@ -270,7 +269,7 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 	        	try {
 	        		totalResultsAvailable = Integer.parseInt(((Element) root).getAttribute("totalResultsAvailable"));
 	        	} catch (Exception e) {
-	        		_log.error("Number of total results available not found");
+	        		log.severe("Number of total results available not found");
 	        	}
 	        }
 	        

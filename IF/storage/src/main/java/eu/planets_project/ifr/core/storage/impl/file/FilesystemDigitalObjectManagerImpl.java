@@ -11,14 +11,13 @@ import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Implementation of the DigitalObjectManager interface based upon a file system.
@@ -28,7 +27,7 @@ import java.util.List;
  */
 public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager {
 	/** The logger instance */
-    private static Log _log = LogFactory.getLog(FilesystemDigitalObjectManagerImpl.class);
+    private static Logger log = Logger.getLogger(FilesystemDigitalObjectManagerImpl.class.getName());
     
     /** The extension used for storing digital object metadata */
     protected final static String DO_EXTENSION = ".planets.do";
@@ -74,46 +73,46 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 		ArrayList<URI> retVal = null;
 
 		// First lets look at the passed URI, if it's null then we need to return the root 
-		FilesystemDigitalObjectManagerImpl._log.debug("Testing for null URI");
+		log.fine("Testing for null URI");
 		if (pdURI == null)
 		{
-			FilesystemDigitalObjectManagerImpl._log.debug("URI is empty so return root URI only");
+			log.fine("URI is empty so return root URI only");
 			retVal = new ArrayList<URI>();
 			try {
 				retVal.add( PDURI.formDataRegistryRootURI("localhost", "8080", this._name+"/") );
 			} catch (URISyntaxException e) {
-				FilesystemDigitalObjectManagerImpl._log.error("URI Syntax exception");
-				FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-				FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+				log.severe("URI Syntax exception");
+				log.severe(e.getMessage());
+				log.severe(e.getStackTrace().toString());
 				return null;
 			} 
 			return retVal; 
 		}
-		FilesystemDigitalObjectManagerImpl._log.debug("URI is NOT NULL");
+		log.fine("URI is NOT NULL");
 		PDURI realPdURI;
 		String fullPath = null;
 		try {
 			realPdURI = new PDURI(pdURI);
 			fullPath = this._root.getCanonicalPath() + File.separator + realPdURI.getDataRegistryPath();
 	        File searchRoot = new File(fullPath);
-	        FilesystemDigitalObjectManagerImpl._log.debug("Looking at: " + pdURI + " -> " + searchRoot.getCanonicalPath() );    
+	        log.fine("Looking at: " + pdURI + " -> " + searchRoot.getCanonicalPath() );    
 			retVal = this.listFileLocation( pdURI, searchRoot );
 			
 		} catch (URISyntaxException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("URI Syntax exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("URI Syntax exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			e.printStackTrace();
 			return null;
 		} catch (UnsupportedEncodingException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("Unsupported encoding exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("Unsupported encoding exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			return null;
 		} catch (IOException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("IO exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("IO exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			return null;
 		}
 
@@ -197,7 +196,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 					{
 							title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
 					}
-			    FilesystemDigitalObjectManagerImpl._log.debug("Add title: " + title);
+			    log.fine("Add title: " + title);
 												
 			    dob = new DigitalObject.Builder(fileData.toString()).title(title);
 			    DigitalObjectContent c = Content.byReference(dob.getContent().read());
@@ -215,25 +214,25 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			// Also turn the content reference into a real file stream:
 			retObj = dob.build();
 		} catch (UnsupportedEncodingException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("Unsupported encoding exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("Unsupported encoding exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			throw new DigitalObjectNotFoundException("Couldn't retrieve Digital Object due to unupported encoding error", e);
 		} catch (URISyntaxException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("URI Syntax exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("URI Syntax exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			e.printStackTrace();
 			throw new DigitalObjectNotFoundException("Couldn't retrieve Digital Object due to URI Syntax error", e);
 		} catch (FileNotFoundException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("File Not Found exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("File Not Found exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			throw new DigitalObjectNotFoundException("The DigitalObject was not found", e);
 		} catch (IOException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("IO exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("IO exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			throw new DigitalObjectNotFoundException("Couldn't retrieve Digital Object due to IO problem", e);
 		}
 		
@@ -265,8 +264,8 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			File doMetadata = new File(this._root.getCanonicalPath() + 
 					File.separator + path + FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
 			
-            _log.debug("Storing in binary in "+doBinary.getAbsolutePath());
-            _log.debug("And storing in metadata in "+doMetadata.getAbsolutePath());
+            log.fine("Storing in binary in "+doBinary.getAbsolutePath());
+            log.fine("And storing in metadata in "+doMetadata.getAbsolutePath());
 			
 			// Persist the object to a file
 			InputStream inStream = digitalObject.getContent().read();
@@ -290,19 +289,19 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			outStream.write(object.toXml().getBytes());
 			outStream.close();
 		} catch (UnsupportedEncodingException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("Unsupported encodeing exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("Unsupported encodeing exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			throw new DigitalObjectNotStoredException("Couldn't store Digital Object due to unupported encoding error", e);
 		} catch (URISyntaxException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("URI Syntax exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("URI Syntax exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			throw new DigitalObjectNotStoredException("Couldn't store Digital Object due to URI Syntax error", e);
 		} catch (IOException e) {
-			FilesystemDigitalObjectManagerImpl._log.error("IO exception");
-			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
-			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			log.severe("IO exception");
+			log.severe(e.getMessage());
+			log.severe(e.getStackTrace().toString());
 			throw new DigitalObjectNotStoredException("Couldn't store Digital Object due to IO problem", e);
 		}
 	}
@@ -375,31 +374,31 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 		// Ensure root is not null
 		if (root == null) {
 			String message = "Supplied root dir is null";
-			FilesystemDigitalObjectManagerImpl._log.error(message);
+			log.severe(message);
 			throw new IllegalArgumentException(message);
 		// first make sure it exists and is a directory
 		} else if (root.exists()) {
 			// OK root exists but it MUST be a directory
 			if (!root.isDirectory()) {
 				String message = root.getPath() + " is not a directory";
-				FilesystemDigitalObjectManagerImpl._log.error(message);
+				log.severe(message);
 				throw new IllegalArgumentException(message);
 			}
 		// It doesn't exist so lets create the directory
 		} else {
 			String message = "Directory " + root.getPath() + " doesn't exist";
-			FilesystemDigitalObjectManagerImpl._log.error(message);
+			log.severe(message);
 			throw new IllegalArgumentException(message);
 		}
 
 		// Name should not be null or empty
 		if (name == null) {
 			String message = "The supplied name should not be null";
-			FilesystemDigitalObjectManagerImpl._log.error(message);
+			log.severe(message);
 			throw new IllegalArgumentException(message);
 		} else if (name.length() < 1) {
 			String message = "The supplied name should not be empty";
-			FilesystemDigitalObjectManagerImpl._log.error(message);
+			log.severe(message);
 			throw new IllegalArgumentException(message);
 		}
 	}

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
@@ -28,8 +29,6 @@ import javax.persistence.Query;
 import javax.rmi.PortableRemoteObject;
 import javax.security.auth.Subject;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 import org.jboss.annotation.security.SecurityDomain;
@@ -60,7 +59,7 @@ import eu.planets_project.ifr.core.security.impl.model.UserImpl;
 @RemoteBinding(jndiBinding="planets-project.eu/UserManager/remote")
 @SecurityDomain("PlanetsRealm")
 public class UserManagerImpl implements UserManager {
-	private static Log log = LogFactory.getLog(UserManagerImpl.class);
+	private static Logger log = Logger.getLogger(UserManagerImpl.class.getName());
 
 	/**
 	 * This is the JPA entity manager declaration.
@@ -231,7 +230,7 @@ public class UserManagerImpl implements UserManager {
 			log.info("User "+caller.getName()+" saved User("+user.getUsername()+")");
 			manager.merge(user);
 		} else {
-			log.warn("User "+caller.getName()+" attempted to save User("+user.getUsername()+")");
+			log.warning("User "+caller.getName()+" attempted to save User("+user.getUsername()+")");
 		}
 	}
 
@@ -247,7 +246,7 @@ public class UserManagerImpl implements UserManager {
 			user = this.getUserByUsername(username);
 		} catch (UserNotFoundException e) {
 			log.info("UserNotFoundException");
-			log.warn(e.getMessage());
+			log.warning(e.getMessage());
 			return;
 		}
 
@@ -329,7 +328,7 @@ public class UserManagerImpl implements UserManager {
 					jndiContext.lookup("planets-project.eu/UserManager/remote"), UserManager.class);
 			return um;
 		}catch (NamingException e) {
-			log.error("Failure during lookup of the UserManager PortableRemoteObject: "+e.toString());
+			log.severe("Failure during lookup of the UserManager PortableRemoteObject: "+e.toString());
 			return null;
 		}
 	}

@@ -95,7 +95,7 @@ public class SimpleIdentifyService implements Identify {
     private IdentifyResult returnWithErrorMessage(String message) {
         ServiceReport rep = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, message);
         List<URI> type = null;
-        log.error(message);
+        log.severe(message);
         return new IdentifyResult(type, null, rep);
     }
 

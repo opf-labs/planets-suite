@@ -55,7 +55,7 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 				try {
 					namespaceURI = new URI(metadata.getNamespaceURI());
 				} catch (URISyntaxException e) {
-					log.warn("Error parsing namespace URI: " + metadata.getNamespaceURI() + " (should never happen...)");
+					log.warning("Error parsing namespace URI: " + metadata.getNamespaceURI() + " (should never happen...)");
 				}
 				
 				// DigitalObject title

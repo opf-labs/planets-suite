@@ -5,10 +5,7 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.logging.LogFactory;
-
-import org.apache.commons.logging.Log;
+import java.util.logging.Logger;
 
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.Header;
@@ -27,7 +24,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
  */
 public abstract class AbstractOAIDigitalObjectManagerImpl implements DigitalObjectManager {
 	
-    protected static final Log log = LogFactory.getLog(AbstractOAIDigitalObjectManagerImpl.class);
+    protected static final Logger log = Logger.getLogger(AbstractOAIDigitalObjectManagerImpl.class.getName());
 	
     /**
      * OAI-style date format.
@@ -124,11 +121,11 @@ public abstract class AbstractOAIDigitalObjectManagerImpl implements DigitalObje
 	    			try {
 	    				resultList.add(new URI(header.getIdentifier()));
 	    			} catch (URISyntaxException e) {
-	    				log.warn("Illegal identifier returned from " + baseURL + ": " + header.getIdentifier());
+	    				log.warning("Illegal identifier returned from " + baseURL + ": " + header.getIdentifier());
 	    			}
 	    		}
 	    	} catch (OAIException e) {
-	    		log.error(e.getMessage());
+	    		log.severe(e.getMessage());
 	    	}
 	        return resultList;
     	} else {

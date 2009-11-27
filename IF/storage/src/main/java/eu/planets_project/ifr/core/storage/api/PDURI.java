@@ -5,9 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -16,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PDURI {
 	/** The logger instance */
-    private static Log _log = LogFactory.getLog(PDURI.class);
+    private static Logger log = Logger.getLogger(PDURI.class.getName());
 	/** The name of the planets URI scheme */
 	private static final String PLANETS_SCHEME = "planets";
 	/** The path identifier for a Data Registry PLANETS URI */
@@ -38,29 +36,29 @@ public class PDURI {
 	 */
 	public PDURI(URI pdURI) throws URISyntaxException, UnsupportedEncodingException{
 		// Get the port, host and scheme from the supplied
-		PDURI._log.debug("parsing URI");
+		log.fine("parsing URI");
 		_port = pdURI.getPort();
 		 _host = pdURI.getHost();
 		_scheme = pdURI.getScheme();
 		_path = PDURI.stripSeparators(pdURI.normalize().getPath());
 		
-		PDURI._log.debug("splitting path :" + _path);
+		log.fine("splitting path :" + _path);
 		String[] pathParts = _path.split("/");
 		for (String _string : pathParts) {
-			PDURI._log.debug("pathpart :" + _string);
+			log.fine("pathpart :" + _string);
 		}
 		_registryTag = pathParts[0];
-		PDURI._log.debug("reg tag :" + _registryTag);
+		log.fine("reg tag :" + _registryTag);
 		_registryName = URLDecoder.decode(pathParts[1], "UTF-8");
-		PDURI._log.debug("reg name :" + _registryName);
-		PDURI._log.debug("path parts");
+		log.fine("reg name :" + _registryName);
+		log.fine("path parts");
 		_decodedPath = new String[pathParts.length - 2];
-		PDURI._log.debug("_decodedPath is an array " + _decodedPath.length + " long");
+		log.fine("_decodedPath is an array " + _decodedPath.length + " long");
 		for (int _loop = 0; _loop < _decodedPath.length; _loop++) {
-			PDURI._log.debug("Adding path part :" + pathParts[_loop]);
+			log.fine("Adding path part :" + pathParts[_loop]);
 			_decodedPath[_loop] = URLDecoder.decode(pathParts[_loop + 2],  "UTF-8");
 		}
-		PDURI._log.debug("Checking is a DR URI");
+		log.fine("Checking is a DR URI");
 		if (!this.isDataRegistryURI())
 			throw new URISyntaxException(pdURI.toString(), "Invalid PLANETS URI");
 
@@ -87,11 +85,11 @@ public class PDURI {
 	 */
 	public boolean isPlanetsURI() {
 		// Check for nulls
-		PDURI._log.debug("isPlanetsURI()");
+		log.fine("isPlanetsURI()");
 		if ((_host == null) | (_scheme == null)) {
 			return false;
 		}
-		PDURI._log.debug("isPlanetsURI() Checks");
+		log.fine("isPlanetsURI() Checks");
 		// Now perform the checks and return the result
 		return ((_port > -1) && (_host.length() > 0) && _scheme.equals(PLANETS_SCHEME));
 	}
@@ -107,9 +105,9 @@ public class PDURI {
 	 */
 	public boolean isDataRegistryURI() {
 		boolean _retVal = false;
-		PDURI._log.debug("isDataRegistryURI()");
+		log.fine("isDataRegistryURI()");
 		if (this.isPlanetsURI()) {
-			PDURI._log.debug("isDataRegistryURI() checks");
+			log.fine("isDataRegistryURI() checks");
 			_retVal = (this._registryTag.toLowerCase().equals(DATA_REG_PART));
 		}
 		return _retVal;
@@ -165,18 +163,18 @@ public class PDURI {
 	 * @throws UnsupportedEncodingException 
 	 */
 	public URI getURI() throws URISyntaxException, UnsupportedEncodingException {
-		PDURI._log.debug("PDURI.getURI()");
+		log.fine("PDURI.getURI()");
 		URI _retVal = null;
 		String _pathPart = "/" + _registryTag + "/" + URLEncoder.encode(_registryName,  "UTF-8");
-		PDURI._log.debug("PDURI.getURI() _pathPart initialised:" + _pathPart);
+		log.fine("PDURI.getURI() _pathPart initialised:" + _pathPart);
 		
 		for (String _string : this._decodedPath) {
-			PDURI._log.debug("In concat loop, adding:" + _string);
+			log.fine("In concat loop, adding:" + _string);
 			_pathPart = _pathPart.concat("/").concat(URLEncoder.encode(_string,  "UTF-8"));
-			PDURI._log.debug("_pathPart:" + _pathPart);
+			log.fine("_pathPart:" + _pathPart);
 		}
 		_retVal = new URI(PDURI.PLANETS_SCHEME, null, _host, _port, _pathPart, null, null);
-		PDURI._log.debug("New URI is:" + _retVal.toString());
+		log.fine("New URI is:" + _retVal.toString());
 		return _retVal;
 	}
 	
@@ -186,23 +184,23 @@ public class PDURI {
 	 * @throws URISyntaxException
 	 */
 	public void replaceDecodedPath(String path) throws URISyntaxException {
-		PDURI._log.debug("PDURI.replaceDecodedPath():" + path);
+		log.fine("PDURI.replaceDecodedPath():" + path);
 		path = PDURI.stripSeparators(path);
-		PDURI._log.debug("PDURI.replaceDecodedPath() striped path:" + path);
+		log.fine("PDURI.replaceDecodedPath() striped path:" + path);
 		String[] _parsedPath = null;
 		
 		if (path.indexOf("/") >= 0) {
 			_parsedPath = path.split("/");
-			PDURI._log.debug("separators present array is:");
+			log.fine("separators present array is:");
 		}
 		else {
-			PDURI._log.debug("no spearator present");
+			log.fine("no spearator present");
 			_parsedPath = new String[1];
 			_parsedPath[0] = path;
 		}
 		this._decodedPath = _parsedPath;
 		for (String _string : _parsedPath) {
-			PDURI._log.debug("ArrayItem:" + _string);
+			log.fine("ArrayItem:" + _string);
 		}
 	}
 	
@@ -213,12 +211,12 @@ public class PDURI {
 	 */
 	public String getDataRegistryPath() {
 		String _retVal = "";
-		PDURI._log.debug("_decodedPath has " + _decodedPath.length + " elements");
+		log.fine("_decodedPath has " + _decodedPath.length + " elements");
 		for (String _string : this._decodedPath) {
-			PDURI._log.debug("Adding another element :" + _string);
+			log.fine("Adding another element :" + _string);
 			_retVal = _retVal.concat("/").concat(_string);
 		}
-		PDURI._log.debug("returning :" + _retVal);
+		log.fine("returning :" + _retVal);
 		return _retVal;
 	}
 

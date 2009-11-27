@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -15,9 +16,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.security.api.services.RoleManager;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -38,7 +36,7 @@ import eu.planets_project.ifr.core.security.impl.services.UserManagerImpl;
  *
  */
 public class UserBackingBean {
-	private static Log log = LogFactory.getLog(UserBackingBean.class);
+	private static Logger log = Logger.getLogger(UserBackingBean.class.getName());
 	private enum Context { MYPROFILE, OTHERPROFILE, NEWUSER, LIST };
 
 	private Context _context;

@@ -101,14 +101,14 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
 		    					resultList.add(new URI(((Node) aNode).getText()));
 		    				}
 		    			} catch (URISyntaxException ue) {
-		    				log.warn("Error parsing record from " + baseURL + ": " + aNode.toString());
+		    				log.warning("Error parsing record from " + baseURL + ": " + aNode.toString());
 		    			}
 		    		}
 	    		} catch (JaxenException je) {
-    				log.warn("Error creating XPath expression (should not happen).");
+    				log.warning("Error creating XPath expression (should not happen).");
     			}
 	    	} catch (OAIException e) {
-	    		log.error(e.getMessage());
+	    		log.severe(e.getMessage());
 	    	}
 	        return resultList;
     	} else {

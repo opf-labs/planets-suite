@@ -1,8 +1,5 @@
 package eu.planets_project.ifr.core.storage.impl.blnewspaper;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
@@ -18,6 +15,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.logging.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,7 +39,7 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
     /**
      * Logger.
      */
-    private static Log _log = LogFactory.getLog(SimpleBLNewspaperDigitalObjectManagerImpl.class);
+    private static Logger log = Logger.getLogger(SimpleBLNewspaperDigitalObjectManagerImpl.class.getName());
     
     /**
      * Root URI on the file system
@@ -98,10 +96,10 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
             }
             // Attempt to convert to URI:
             root = ldd.toURI().normalize();
-            _log.debug("(init) Got local data dir for bl newspaper: " + root);
+            log.fine("(init) Got local data dir for bl newspaper: " + root);
             
         } catch (IOException e) {
-            _log.fatal("Exception: Reading JBoss.LocalDataDir from BackendResources.properties failed!"+e.toString());
+            log.severe("Exception: Reading JBoss.LocalDataDir from BackendResources.properties failed!"+e.toString());
             root = null;
         }
     }
@@ -144,7 +142,7 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 		} else if (pdURI.equals(root)) {
 			// Directory contents
 			File searchRoot = new File(root);
-			_log.info("Looking at: " + searchRoot.toString());	
+			log.info("Looking at: " + searchRoot.toString());	
 			
 			if (searchRoot.exists() && searchRoot.isDirectory()) {
 				// Filter to avoid XML metadata files
@@ -179,7 +177,7 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 	 */
     public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
 		// Get file reference
-		_log.info("retrieving: " + pdURI.toString());
+		log.info("retrieving: " + pdURI.toString());
 		File file = new File(pdURI);
 		if (!file.exists())
 			throw new DigitalObjectNotFoundException(file.getName() + " not found!");

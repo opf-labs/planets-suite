@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.security.impl.services;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
@@ -17,8 +18,6 @@ import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import javax.rmi.PortableRemoteObject;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 import org.jboss.annotation.security.SecurityDomain;
@@ -38,7 +37,7 @@ import eu.planets_project.ifr.core.security.api.services.RoleManager;
 @RemoteBinding(jndiBinding="planets-project.eu/RoleManager/remote")
 @SecurityDomain("PlanetsRealm")
 public class RoleManagerImpl implements RoleManager {
-	private static Log log = LogFactory.getLog(RoleManagerImpl.class);
+	private static Logger log = Logger.getLogger(RoleManagerImpl.class.getName());
 
 	/**
 	 * This is the JPA entity manager declaration.
@@ -101,7 +100,7 @@ public class RoleManagerImpl implements RoleManager {
 					jndiContext.lookup("planets-project.eu/RoleManager/remote"), RoleManager.class);
 			return rm;
 		}catch (NamingException e) {
-			log.error("Failure during lookup of the UserManager PortableRemoteObject: "+e.toString());
+			log.severe("Failure during lookup of the UserManager PortableRemoteObject: "+e.toString());
 			return null;
 		}
 	}

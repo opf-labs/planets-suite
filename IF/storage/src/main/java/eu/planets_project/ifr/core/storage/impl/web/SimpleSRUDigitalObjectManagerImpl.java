@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.jdom.Element;
 import org.jdom.Document;
@@ -19,8 +20,6 @@ import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
@@ -44,7 +43,7 @@ public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
     /**
      * Logger.
      */
-    private static Log _log = LogFactory.getLog(SimpleSRUDigitalObjectManagerImpl.class);
+    private static Logger log = Logger.getLogger(SimpleSRUDigitalObjectManagerImpl.class.getName());
     
 	/**
      * SRU endpoint base URL.
@@ -168,7 +167,7 @@ public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
 					resultList.add(aResult.uri);
 				}
     		} catch (UnsupportedEncodingException e) {
-    			_log.error(e.getMessage() + " (this should never happen");
+    			log.severe(e.getMessage() + " (this should never happen");
     		} catch (IOException e) {
     			throw new QueryValidationException("Error connecting to SRU endpoint: " + e.getMessage());
     		} catch (JDOMException e) {
@@ -206,7 +205,7 @@ public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
     				results.add(aResult);
     		}
     	} catch (JDOMException e) {
-    		_log.error(e.getMessage());
+    		log.severe(e.getMessage());
     	}
 
     	return results;

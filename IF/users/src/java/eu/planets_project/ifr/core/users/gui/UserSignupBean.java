@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
@@ -19,9 +20,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -39,7 +37,7 @@ import eu.planets_project.ifr.core.security.impl.services.UserManagerImpl;
  */
 public class UserSignupBean 
 {
-	private static Log log = LogFactory.getLog(UserSignupBean.class);
+	private static Logger log = Logger.getLogger(UserSignupBean.class.getName());
 	private static RoleManager roleManager = RoleManagerImpl.getPlanetsRoleManager();
 	private static UserManager userManager = UserManagerImpl.getPlanetsUserManager();
 	
@@ -144,7 +142,7 @@ public class UserSignupBean
 			
 		if (!cachedir.exists()) {
 			if (!cachedir.mkdirs()) {
-				log.error("failed to create caching dir: " + cachedir);
+				log.severe("failed to create caching dir: " + cachedir);
 				return false;
 			}
 		}

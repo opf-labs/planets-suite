@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.logging.Logger;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.PDURI;
@@ -53,7 +52,7 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
     /**
      * Logger.
      */
-    private static Log _log = LogFactory.getLog(BlueMarbleDigitalObjectManagerImpl.class);
+    private static Logger log = Logger.getLogger(BlueMarbleDigitalObjectManagerImpl.class.getName());
 	
     /**
      * HttpClient timeout in ms.
@@ -87,7 +86,7 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
     	try {
     		this.rootURI = new URI(MIRROR_BASE_URL);
     	} catch (URISyntaxException e) {
-    		_log.error("This should never happen: " + e.getMessage());
+    		log.severe("This should never happen: " + e.getMessage());
     	}
     	
     	// Set up HTTP client
@@ -155,7 +154,7 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
        				directoryCache.put(pdURI, topLvlDirs);
        				return topLvlDirs;
        	    	} catch (IOException e) {
-       	    		_log.error("Error scraping top-level directory from Blue Marble mirror");
+       	    		log.severe("Error scraping top-level directory from Blue Marble mirror");
        	    		return new ArrayList<URI>();
        	    	}
        		} else if (!(pdURI.toString().endsWith("png") || pdURI.toString().endsWith("jpg"))) {
@@ -170,7 +169,7 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
     				directoryCache.put(pdURI, subDirs);
     				return subDirs;
        			} catch (IOException e) {
-       				_log.error("Error scraping subdirectory '" + pdURI + "' from Blue Marble mirror");
+       				log.severe("Error scraping subdirectory '" + pdURI + "' from Blue Marble mirror");
        				return new ArrayList<URI>();
        			}
        		} else {
@@ -228,7 +227,7 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
 					dirs.add(new URI(MIRROR_BASE_URL + match.substring(match.indexOf('>') + 1)));
 				}
 			} catch (URISyntaxException e) {
-				_log.error("Error parsing Blue Marble dir: " + match);
+				log.severe("Error parsing Blue Marble dir: " + match);
 			}
 		}
 		return dirs;
@@ -246,7 +245,7 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
 				try {
 					images.add(new URI(baseURL + match));
 				} catch (URISyntaxException e) {
-					_log.error("Error parsing Blue Marble image dir: " + match);
+					log.severe("Error parsing Blue Marble image dir: " + match);
 				}
 			}
 		}

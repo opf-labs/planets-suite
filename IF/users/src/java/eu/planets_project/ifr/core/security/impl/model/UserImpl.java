@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,8 +29,6 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.Target;
 import org.hibernate.annotations.Type;
 import org.jboss.security.Util;
@@ -56,7 +55,7 @@ import org.jboss.security.Util;
 public class UserImpl implements User, Serializable {
     private static final long serialVersionUID = 3832626162173359411L;
 	@SuppressWarnings("unused")
-    private static Log log = LogFactory.getLog(UserImpl.class);
+    private static Logger log = Logger.getLogger(UserImpl.class.getName());
 
     private Long id;
     private String username; // required
