@@ -286,9 +286,9 @@ public class OdfValidatorResult {
 		return xmlComponents;
 	}
 	
-	public boolean set() {
-		return isOdfCompliant;
-	}
+//	public boolean set() {
+//		return isOdfCompliant;
+//	}
 
 	public boolean isOdfFile() {
 		if(odfVersion.equalsIgnoreCase("unknown") && !isOdfFile) {

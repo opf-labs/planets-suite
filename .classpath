@@ -103,6 +103,7 @@
 	<classpathentry kind="src" path="PP/xcl/src/java"/>
 	<classpathentry kind="src" path="PP/xcl/src/test/java"/>
 	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="lib" path="PC/odfvalidator/lib/jdom.jar" sourcepath="E:/JDOM/jdom-1.1.1.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
@@ -121,7 +122,7 @@
 	<classpathentry kind="lib" path="lib/standalone/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/ejb3-persistence.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jbossall-client.jar"/>
-	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar" sourcepath="E:/JDOM/jdom-1.1.1/jdom/src"/>
 	<classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar"/>

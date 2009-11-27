@@ -1,6 +1,8 @@
 package eu.planets_project.services.validation.odfvalidator.utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -9,11 +11,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import com.sun.org.apache.xerces.internal.util.EntityResolver2Wrapper;
 
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.utils.FileUtils;
@@ -175,57 +191,49 @@ public class CoreOdfValidator {
 	}
 
 	private static OdfValidatorResult validateMathML(File mathmlFile, File mathmlDtd, File mathmlSchema, OdfValidatorResult result) {
-		File dtdDest = new File(contentHandler.getCurrentXmlTmpDir(), mathmlDtd.getName());
-		FileUtils.copyFileTo(mathmlDtd, dtdDest);
+//		InputSource source = new InputSource(new FileInputStream(mathmlSchema));
+//		StreamSource source = new StreamSource(mathmlSchema);
+
+		SchemaFactory factory = 
+		    SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		
-		File cleanedMathML = contentHandler.removeMathMLDocTypeAndNS(mathmlFile);
-		StringBuffer warnings = new StringBuffer();
-		if(contentHandler.containsDocTypeDeclaration(mathmlFile)) {
-			result.setWarning(mathmlFile, "This files contains a DOCTYPE declaration, " +
-					"which has been removed before validation!" +
-					System.getProperty("line.separator") +
-					"Correct Namespace declaration has been added to enable validation against the MathMl 2.0 schema!"
-					+ System.getProperty("line.separator"));
-		}
+		Schema schema = null;
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		spf.setValidating(true);
+		spf.setNamespaceAware(true);
 		
-		URL schemaUrl = FileUtils.getUrlFromFile(mathmlSchema);
-		
-		SAXBuilder builder = new  SAXBuilder (false);
-		builder.setProperty ("http://apache.org/xml/properties/schema/external-schemaLocation", schemaUrl);
-		Document doc = null;
+		SAXParser parser;
 		try {
-			doc = builder.build(cleanedMathML);
-		} catch (JDOMException e) {
+			schema = factory.newSchema(mathmlSchema);
+			spf.setSchema(schema);
+			parser = spf.newSAXParser();
+			
+			File cleanedMathML = contentHandler.cleanUpXmlForValidation(mathmlFile);
+			
+			result.setWarning(mathmlFile, "Detected MathML v" + result.getMathMLVersion().replace("MathML:", "") + ": To enable validation against the " +
+					"MathML 2.0 Schema, DOCTYPE declaration is ignored!");
+			
+			
+			parser.parse(cleanedMathML, new DefaultHandler());
+		} catch (ParserConfigurationException e1) {
 			result.setValid(mathmlFile, false);
-			result.setError(mathmlFile, e.getLocalizedMessage());
-			log.error("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
-			log.error("Message: " + e.getLocalizedMessage());
+			result.setError(mathmlFile, e1.getMessage());
+			log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+			return result;
+		} catch (SAXException e1) {
+			result.setValid(mathmlFile, false);
+			result.setError(mathmlFile, e1.getMessage());
+			log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+			return result;
 		} catch (IOException e) {
-			e.printStackTrace();
+			result.setValid(mathmlFile, false);
+			result.setError(mathmlFile, e.getMessage());
+			log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+			return result;
 		}
 		
 		result.setValid(mathmlFile, true);
 		log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
-		log.warn("[CoreOdfValidator] validateMathML(): VALIDATION SKIPPED! This ODF file " +
-				"contains MathML and is at least wellformed.");
-		result.setWarning(mathmlFile, "VALIDATION SKIPPED! This ODF file " +
-				"contains MathML and is at least wellformed.");
-		
-//		ProcessRunner mathmlValidator = new ProcessRunner(getJingValidateCmd(cleanedMathML, mathmlSchema));
-//		mathmlValidator.run();
-//		String out = mathmlValidator.getProcessOutputAsString();
-//		String error = mathmlValidator.getProcessErrorAsString();
-//		
-//		if(out.equalsIgnoreCase("")) {
-//			result.setValid(mathmlFile, true);
-//			log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
-//		}
-//		else {
-//			result.setValid(mathmlFile, false);
-//			result.setError(mathmlFile, out);
-//			log.error("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
-//			log.error("Message: " + out);
-//		}
 		return result;
 	}
 	

@@ -31,12 +31,13 @@ public class OdfContentHandler {
 	public static String MACRO_DSIGS_XML = "macrosignatures.xml";
 	
 	private static final String MATHML_MIMETYPE = "application/vnd.oasis.opendocument.formula";
+	private static final String SXM_MATHML_MIMETYPE = "application/vnd.sun.xml.math";
 	
 //	private static List<File> xmlComponents = null;
 	private static List<String> manifestEntries = null;
 	private static List<String> missingFileEntries = null;
 	
-	private static HashMap<String, File> odfSubFiles = null;
+	private static HashMap<String, List<File>> odfSubFiles = null;
 	
 	private static File manifestXml = null;
 	
@@ -87,7 +88,7 @@ public class OdfContentHandler {
 		return xmlTmp;
 	}
 	
-	private HashMap<String, File> extractOdfSubFiles(File odfFile) {
+	private HashMap<String, List<File>> extractOdfSubFiles(File odfFile) {
 		String[] files = ZipUtils.getAllFragments(odfFile);
 		
 		// if there are no files contained, it's not an Odf file ;-)
@@ -95,10 +96,10 @@ public class OdfContentHandler {
 		if(files.length==0) {
 			log.error("[OdfContentHandler] extractOdfSubFiles(): The input file '" + odfFile.getName() + "' is NOT an ODF file! Sorry, returning with error!");
 			isNotODF = true;
-			return new HashMap<String, File>();
+			return new HashMap<String, List<File>>();
 		}
 		
-		HashMap<String, File> subFilesTmp = new HashMap<String, File>();
+		HashMap<String, List<File>> subFilesTmp = new HashMap<String, List<File>>();
 		for (String currentEntry : files) {
 			
 			if(currentEntry.endsWith(OdfContentHandler.MIMETYPE_XML)) {
@@ -108,44 +109,79 @@ public class OdfContentHandler {
 			
 			if(currentEntry.endsWith(OdfContentHandler.CONTENT_XML)) {
 				File tmpContent = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
-				subFilesTmp.put("content", tmpContent);
+				List<File> tmpList = subFilesTmp.get("content");
+				if(tmpList==null) {
+					tmpList = new ArrayList<File>();
+				}
+				tmpList.add(tmpContent);
+				subFilesTmp.put("content", tmpList);
 				continue;
 			}
 			
 			if(currentEntry.endsWith(OdfContentHandler.SETTINGS_XML)) {
 				File tmpSettings = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
-				subFilesTmp.put("settings", tmpSettings);
+				List<File> tmpList = subFilesTmp.get("settings");
+				if(tmpList==null) {
+					tmpList = new ArrayList<File>();
+				}
+				tmpList.add(tmpSettings);
+				subFilesTmp.put("settings", tmpList);
 				continue;
 			}
 			
 			if(currentEntry.endsWith(OdfContentHandler.STYLES_XML)) {
 				File tmpStyles = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
-				subFilesTmp.put("styles", tmpStyles);
+				List<File> tmpList = subFilesTmp.get("styles");
+				if(tmpList==null) {
+					tmpList = new ArrayList<File>();
+				}
+				tmpList.add(tmpStyles);
+				subFilesTmp.put("styles", tmpList);
 				continue;
 			}
 			
 			if(currentEntry.endsWith(OdfContentHandler.MANIFEST_XML)) {
 				File tmpManifest = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
-				subFilesTmp.put("manifest", tmpManifest);
+				List<File> tmpList = subFilesTmp.get("manifest");
+				if(tmpList==null) {
+					tmpList = new ArrayList<File>();
+				}
+				tmpList.add(tmpManifest);
+				subFilesTmp.put("manifest", tmpList);
 				continue;
 			}
 			
 			if(currentEntry.endsWith(OdfContentHandler.META_XML)) {
 				File tmpMeta = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
-				subFilesTmp.put("meta", tmpMeta);
+				List<File> tmpList = subFilesTmp.get("meta");
+				if(tmpList==null) {
+					tmpList = new ArrayList<File>();
+				}
+				tmpList.add(tmpMeta);
+				subFilesTmp.put("meta", tmpList);
 				continue;
 			}
 			
 			if(currentEntry.endsWith(OdfContentHandler.DOC_DSIGS_XML)) {
 				File tmpDocDsig = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
-				subFilesTmp.put("doc_dsigs", tmpDocDsig);
+				List<File> tmpList = subFilesTmp.get("doc_dsigs");
+				if(tmpList==null) {
+					tmpList = new ArrayList<File>();
+				}
+				tmpList.add(tmpDocDsig);
+				subFilesTmp.put("doc_dsigs", tmpList);
 				detectedDsigSubFiles = true;
 				continue;
 			}
 			
 			if(currentEntry.endsWith(OdfContentHandler.MACRO_DSIGS_XML)) {
 				File tmpMacroDsig = ZipUtils.getFileFrom(odfFile, currentEntry, xmlTmp);
-				subFilesTmp.put("macro_dsigs", tmpMacroDsig);
+				List<File> tmpList = subFilesTmp.get("macro_dsigs");
+				if(tmpList==null) {
+					tmpList = new ArrayList<File>();
+				}
+				tmpList.add(tmpMacroDsig);
+				subFilesTmp.put("macro_dsigs", tmpList);
 				detectedDsigSubFiles = true;
 				continue;
 			}
@@ -194,9 +230,10 @@ public class OdfContentHandler {
 	}
 	
 	
-	public File removeMathMLDocTypeAndNS(File mathmlXML) {
+	public File cleanUpXmlForValidation(File mathmlXML) {
 		String contentString = FileUtils.readTxtFileIntoString(mathmlXML);
 		contentString = contentString.replaceAll(">", ">" + System.getProperty("line.separator"));
+//		contentString = contentString.replaceAll("math:", "");
 		String[] lines = contentString.split(System.getProperty("line.separator"));
 		String docTypePattern = "<!DOCTYPE";
 		
@@ -209,10 +246,11 @@ public class OdfContentHandler {
 				lines[i]="";
 				continue;
 			}
-			if(lines[i].contains("xmlns:")) {
-				lines[i] = dest;
-				continue;
-			}
+//			if(lines[i].contains("xmlns:")) {
+//				lines[i] = dest;
+////				lines[i] = "<math>";
+//				continue;
+//			}
 		}
 		
 		StringBuffer content = new StringBuffer();
@@ -225,24 +263,14 @@ public class OdfContentHandler {
 		String finalStr = content.toString();
 		FileUtils.writeStringToFile(content.toString(), cleanedTmp);
 		
-//		SAXBuilder builder = new SAXBuilder();
-//		Document doc = null;
-//		try {
-//			doc = builder.build(new StringReader(contentString));
-//			Element root = doc.getRootElement();
-//			String rootContent = root.getTextTrim();
-//			
-//		} catch (JDOMException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		
 		return cleanedTmp;
 	}
 	
 	private String getOdfVersion(File odfSubFile) {
 		SAXBuilder builder = new SAXBuilder(false);
+		builder.setValidation(false);
+		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		builder.setFeature("http://xml.org/sax/features/validation", false);
 		Document doc = null;
 		try {
 			doc = builder.build(odfSubFile);
@@ -265,18 +293,23 @@ public class OdfContentHandler {
 	}
 
 	public List<File> getXmlComponents() {
-		List<File> subFiles = new ArrayList<File>(odfSubFiles.values());
+		List<File> subFiles = new ArrayList<File>();
+		Set<String> keys = odfSubFiles.keySet();
+		for (String string : keys) {
+			subFiles.addAll(odfSubFiles.get(string));
+		}
 		return subFiles;
 	}
 
-	private void getVersions(HashMap<String, File> odfSubFiles) {
+	private void getVersions(HashMap<String, List<File>> odfSubFiles) {
 		// read the Odf mimeType 
 		mimeType_string = getMimeType(mimetype_file);
 		
 		// if the mimetype indicates a MathML file, retrieve the MathML version for schema handling
 		// AND the ODF version for the other subfiles...
-		if(mimeType_string.equalsIgnoreCase(OdfContentHandler.MATHML_MIMETYPE)) {
-			mathMLVersion = getMathMLVersion(odfSubFiles.get("content"));
+		if(mimeType_string.equalsIgnoreCase(OdfContentHandler.MATHML_MIMETYPE) 
+				|| mimeType_string.equalsIgnoreCase(OdfContentHandler.SXM_MATHML_MIMETYPE)) {
+			mathMLVersion = getMathMLVersion(odfSubFiles.get("content").get(0));
 			
 			// And now check the version of the other files...
 			Set<String> keys = odfSubFiles.keySet();
@@ -285,14 +318,14 @@ public class OdfContentHandler {
 				if(string.equalsIgnoreCase("settings") 
 						|| string.equalsIgnoreCase("styles") 
 						|| string.equalsIgnoreCase("meta")) {
-					odfVersion = getOdfVersion(odfSubFiles.get(string));
+					odfVersion = getOdfVersion(odfSubFiles.get(string).get(0));
 					break;
 				}
 			}
 		}
 		// if we don't have a formula file here just retrieve the Odf version from 'content.xml' for schema handling
 		else {
-			odfVersion = getOdfVersion(odfSubFiles.get("content"));
+			odfVersion = getOdfVersion(odfSubFiles.get("content").get(0));
 		}
 	}
 
@@ -371,9 +404,9 @@ public class OdfContentHandler {
 	}
 	
 	private List<String> checkContainerConformity(File odfFile) {
-		mimeTypeVerified = verifyManifestMimeType(mimeType_string, odfSubFiles.get("manifest"));
+		mimeTypeVerified = verifyManifestMimeType(mimeType_string, odfSubFiles.get("manifest").get(0));
 		
-		manifestEntries = getManifestEntries(odfSubFiles.get("manifest"));
+		manifestEntries = getManifestEntries(odfSubFiles.get("manifest").get(0));
 		List<String> missingList = new ArrayList<String>();
 		if(!isNotODF) {
 			List<String> odfContent = ZipUtils.listZipEntries(odfFile);
@@ -395,6 +428,9 @@ public class OdfContentHandler {
 	private List<String> getManifestEntries(File manifestXml) {
 		List<String> manifestEntries = new ArrayList<String>(); 
 		SAXBuilder builder = new SAXBuilder();
+		builder.setValidation(false);
+		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		builder.setFeature("http://xml.org/sax/features/validation", false);
 		Document doc = null;
 		try {
 			doc = builder.build(manifestXml);
@@ -415,6 +451,9 @@ public class OdfContentHandler {
 
 	private boolean verifyManifestMimeType(String mimeType, File manifest) {
 		SAXBuilder builder = new SAXBuilder();
+		builder.setValidation(false);
+		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		builder.setFeature("http://xml.org/sax/features/validation", false);
 		Document doc = null;
 		String mediaType = null;
 		try {
