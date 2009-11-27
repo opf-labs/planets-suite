@@ -481,7 +481,7 @@ public final class FileUtils {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-		if (log.getLevel().intValue() >= Level.INFO.intValue()) {
+		if (log.isLoggable(Level.INFO)) {
             log.info("Wrote " + size + " bytes to " + target.getAbsolutePath());
         } else {
             System.out.println("Wrote " + size + " bytes to "

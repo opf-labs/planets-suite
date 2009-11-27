@@ -151,7 +151,7 @@ public class GenericMigrationWrapper {
 	final List<String> prCommand = commandBuilder.buildCommand(
 		migrationPath, toolParameters, temporaryFileMappings);
 
-	if (log.getLevel().intValue() >= Level.INFO.intValue()) {
+	if (log.isLoggable(Level.INFO)) {
 	    String fullCommandLine = "";
 	    for (String cmdfrag : prCommand) {
 		fullCommandLine += cmdfrag + " ";
