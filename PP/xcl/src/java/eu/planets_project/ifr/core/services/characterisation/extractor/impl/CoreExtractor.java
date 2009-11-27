@@ -5,8 +5,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -36,7 +35,7 @@ public class CoreExtractor {
     private String defaultInputFileName = "xcdlMigrateInput.bin";
     private String outputFileName;
     private String thisExtractorName;
-    private Log plogger;
+    private static Logger log = Logger.getLogger(CoreExtractor.class.getName());
     private static String NO_NORM_DATA_FLAG = "disableNormDataInXCDL";
     private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
     private static String OPTIONAL_XCEL_PARAM = "optionalXCELString";
@@ -47,8 +46,7 @@ public class CoreExtractor {
      * @param extractorName
      * @param logger
      */
-    public CoreExtractor(String extractorName, Log logger) {
-        this.plogger = logger;
+    public CoreExtractor(String extractorName) {
         thisExtractorName = extractorName;
         extractorWork = extractorName.toUpperCase();
     }
@@ -88,12 +86,12 @@ public class CoreExtractor {
             System.err
                     .println("EXTRACTOR_HOME is not set! Please create an system variable\n"
                             + "and point it to the Extractor installation folder!");
-            plogger
-                    .error("EXTRACTOR_HOME is not set! Please create an system variable\n"
+            log
+                    .severe("EXTRACTOR_HOME is not set! Please create an system variable\n"
                             + "and point it to the Extractor installation folder!");
         }
 
-        plogger.info("Starting " + thisExtractorName + " Service...");
+        log.info("Starting " + thisExtractorName + " Service...");
 
         List<String> extractor_arguments = null;
         
@@ -139,14 +137,14 @@ public class CoreExtractor {
 
 
         ProcessRunner shell = new ProcessRunner();
-        plogger.info("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
-        plogger.info("Configuring Commandline");
+        log.info("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
+        log.info("Configuring Commandline");
 
         extractor_arguments = new ArrayList<String>();
         extractor_arguments.add(EXTRACTOR_HOME + EXTRACTOR_TOOL);
         String srcFilePath = srcFile.getAbsolutePath().replace('\\', '/');
         // System.out.println("Src-file path: " + srcFilePath);
-        plogger.info("Input-Image file path: " + srcFilePath);
+        log.info("Input-Image file path: " + srcFilePath);
         extractor_arguments.add(srcFilePath);
 
         String outputFilePath = extractor_out_folder.getAbsolutePath()
@@ -157,7 +155,7 @@ public class CoreExtractor {
         if (xcelFile != null) {
             String xcelFilePath = xcelFile.getAbsolutePath().replace('\\', '/');
             // System.out.println("XCEL-file path: " + xcelFilePath);
-            plogger.info("Input-XCEL file path: " + xcelFilePath);
+            log.info("Input-XCEL file path: " + xcelFilePath);
             extractor_arguments.add(xcelFilePath);
             extractor_arguments.add(outputFilePath);
         } else {
@@ -172,34 +170,34 @@ public class CoreExtractor {
         // Got Parameters???
         if (parameters != null) {
             if (parameters.size() != 0) {
-                plogger.info("Got additional parameters: ");
+                log.info("Got additional parameters: ");
                 for (Iterator<Parameter> iterator = parameters.iterator(); iterator
                         .hasNext();) {
                     Parameter parameter = (Parameter) iterator.next();
                     String name = parameter.getName();
                     if (name.equalsIgnoreCase(OPTIONAL_XCEL_PARAM)) {
-                        plogger
+                        log
                                 .info("Optional XCEL passed! Using specified XCEL.");
                         continue;
                     }
 
                     if (name.equalsIgnoreCase(RAW_DATA_FLAG)) {
-                        plogger.info("Got Parameter: " + name + " = "
+                        log.info("Got Parameter: " + name + " = "
                                 + parameter.getValue());
-                        plogger
+                        log
                                 .info("Configuring Extractor to write RAW data!");
                         extractor_arguments.add(parameter.getValue());
                         continue;
                     }
 
                     else if (name.equalsIgnoreCase(NO_NORM_DATA_FLAG)) {
-                        plogger.info("Got Parameter: " + name + " = "
+                        log.info("Got Parameter: " + name + " = "
                                 + parameter.getValue());
-                        plogger.info("Configuring Extractor to skip NormData!");
+                        log.info("Configuring Extractor to skip NormData!");
                         extractor_arguments.add(parameter.getValue());
                         continue;
                     } else {
-                        plogger.warn("Invalid parameter: " + name + " = '"
+                        log.warning("Invalid parameter: " + name + " = '"
                                 + parameter.getValue()
                                 + "'. Ignoring parameter...!");
                         continue;
@@ -213,27 +211,27 @@ public class CoreExtractor {
             line = line + argument + " ";
         }
 
-        plogger.info("Setting command to: " + line);
+        log.info("Setting command to: " + line);
         shell.setCommand(extractor_arguments);
 
         shell.setStartingDir(new File(EXTRACTOR_HOME));
-        plogger.info("Setting starting Dir to: " + EXTRACTOR_HOME);
-        plogger.info("Starting Extractor tool...");
+        log.info("Setting starting Dir to: " + EXTRACTOR_HOME);
+        log.info("Starting Extractor tool...");
         shell.run();
         String processOutput = shell.getProcessOutputAsString();
         String processError = shell.getProcessErrorAsString();
-        plogger.info("Process Output: " + processOutput);
+        log.info("Process Output: " + processOutput);
         System.out.println("Process Output: "+processOutput);
         if( ! "".equals(processError ) ) {
-            plogger.error("Process Error: " + processError);
+            log.severe("Process Error: " + processError);
             System.err.println("Process Error: "+processError);
         }
 
-        plogger.info("Creating File to return...");
+        log.info("Creating File to return...");
 //        System.out.println("Output-file path: " + outputFilePath);
         File resultXCDL = new File(outputFilePath);
         if(!resultXCDL.exists()) {
-            plogger.error("File doesn't exist: " + resultXCDL.getAbsolutePath());
+            log.severe("File doesn't exist: " + resultXCDL.getAbsolutePath());
         	return null;
         }
         return resultXCDL;

@@ -8,13 +8,11 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -60,7 +58,7 @@ public final class XcdlCharacterise implements Characterise, Serializable {
     /**
      * the logger.
      */
-    public static final Log LOG = LogFactory.getLog(XcdlCharacterise.class);
+    private static final Logger log = Logger.getLogger(XcdlCharacterise.class.getName());
     /**
      * a max file size.
      */
@@ -73,7 +71,7 @@ public final class XcdlCharacterise implements Characterise, Serializable {
      */
     public CharacteriseResult characterise(final DigitalObject digitalObject, final List<Parameter> parameters) {
         String optionalFormatXCEL = null;
-        CoreExtractor coreExtractor = new CoreExtractor(XcdlCharacterise.NAME, LOG);
+        CoreExtractor coreExtractor = new CoreExtractor(XcdlCharacterise.NAME);
         File xcelFile = new File(XCDL_CHARACTERISE_TMP, FileUtils.randomizeFileName("xcel_input.xml"));
         File result = null;
 

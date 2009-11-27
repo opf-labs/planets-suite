@@ -4,13 +4,11 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -51,7 +49,7 @@ public final class XcdlMigrate implements Migrate {
     /**
      * the logger.
      */
-    public static final Log LOG = LogFactory.getLog(XcdlMigrate.class);
+    private static final Logger log = Logger.getLogger(XcdlMigrate.class.getName());
     
     public static FormatRegistry fReg = FormatRegistryFactory.getFormatRegistry(); 
     
@@ -122,7 +120,7 @@ public final class XcdlMigrate implements Migrate {
         if (!CoreExtractor.supported(inputFormat, parameters)) {
             return new MigrateResult(null, CoreExtractor.unsupportedInputFormatReport(inputFormat));
         }
-        LOG.info("Working on digital object: " + digitalObject);
+        log.info("Working on digital object: " + digitalObject);
 
         File xcelFile = new File(XCDL_MIGRATE_TMP, FileUtils.randomizeFileName("xcel_input.xml"));
 
@@ -130,7 +128,7 @@ public final class XcdlMigrate implements Migrate {
 
         String optionalFormatXCEL = null;
 
-        CoreExtractor coreExtractor = new CoreExtractor(XcdlMigrate.NAME, LOG);
+        CoreExtractor coreExtractor = new CoreExtractor(XcdlMigrate.NAME);
 
         File result = null;
 

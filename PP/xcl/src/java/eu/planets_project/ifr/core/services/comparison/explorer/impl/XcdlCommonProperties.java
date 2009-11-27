@@ -7,13 +7,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -42,7 +40,7 @@ import eu.planets_project.services.utils.ProcessRunner;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class XcdlCommonProperties implements CommonProperties {
     static final String NAME = "XcdlCommonProperties";
-    private static final Log LOG = LogFactory.getLog(XcdlCommonProperties.class);
+    private static final Logger log = Logger.getLogger(XcdlCommonProperties.class.getName());
     private static final String XCLTOOLS_HOME = System.getenv("XCLTOOLS_HOME") + File.separator;
     private static String XCLEXPLORER_HOME = (XCLTOOLS_HOME + File.separator + "XCLExplorer" + File.separator).replace(
             File.separatorChar + File.separator, File.separator);
@@ -119,16 +117,16 @@ public final class XcdlCommonProperties implements CommonProperties {
         List<String> command = Arrays.asList(XCLEXPLORER_HOME + XCLEXPLORER_TOOL, parameters);
         shell.setCommand(command);
         shell.setStartingDir(new File(XCLEXPLORER_HOME));
-        LOG.info("XCLTOOLS_HOME = " + XCLTOOLS_HOME);
-        LOG.info("XCLExplorer home dir: " + XCLEXPLORER_HOME);
-        LOG.info("Running: " + command);
+        log.info("XCLTOOLS_HOME = " + XCLTOOLS_HOME);
+        log.info("XCLExplorer home dir: " + XCLEXPLORER_HOME);
+        log.info("Running: " + command);
         shell.run();
         String processOutput = shell.getProcessOutputAsString();
         String processError = shell.getProcessErrorAsString();
-        LOG.info("Process Output: " + processOutput);
-        LOG.error("Process Error: " + processError);
+        log.info("Process Output: " + processOutput);
+        log.severe("Process Error: " + processError);
         String result = FileUtils.readTxtFileIntoString(new File(XCLEXPLORER_HOME + FPMTOOL_OUT));
-        LOG.info("Returning joint file format properties, starts with: "
+        log.info("Returning joint file format properties, starts with: "
                 + result.substring(0, Math.min(200, result.length())) + "...");
         return result;
     }

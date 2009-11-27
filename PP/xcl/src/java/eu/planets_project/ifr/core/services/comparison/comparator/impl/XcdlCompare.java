@@ -6,12 +6,11 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -62,7 +61,7 @@ public final class XcdlCompare implements Compare {
 
     private String xcdlFor(DigitalObject object) {
         // Try using the extractor to create an XCDL for the input file:
-        File xcdl = new CoreExtractor(getClass().getName(), LogFactory.getLog(getClass()))
+        File xcdl = new CoreExtractor(getClass().getName())
                 .extractXCDL(object, null, null, null);
         // Return either the extracted XCDL (if it exists) or assume the file is an XCDL:
         return xcdl != null && xcdl.exists()

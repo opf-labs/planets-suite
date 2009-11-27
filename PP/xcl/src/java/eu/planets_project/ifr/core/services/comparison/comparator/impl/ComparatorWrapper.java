@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -33,7 +31,7 @@ public final class ComparatorWrapper {
     /** The filename of the result file. */
     private static final String RESULT_FILENAME = "copra.xml";
     /** A planets logger. */
-    private static final Log LOG = LogFactory.getLog(ComparatorWrapper.class);
+    private static final Logger log = Logger.getLogger(ComparatorWrapper.class.getName());
     /** The home of the comparator command-line tool. */
     private static final String XCLTOOLS_HOME = System.getenv("XCLTOOLS_HOME") + File.separator;
     static final String COMPARATOR_HOME = (XCLTOOLS_HOME
@@ -81,8 +79,8 @@ public final class ComparatorWrapper {
                         : File.separator) + RESULT_FILENAME);
         String logged = read(COMPARATOR_HOME + LOG_TXT);
         /* Print some debugging info on the results: */
-        LOG.info("Comparator result: " + result);
-        LOG.debug("Comparator log: " + logged);
+        log.info("Comparator result: " + result);
+        log.fine("Comparator log: " + logged);
         /* Clean up after the work is done: */
         delete(tempXcdl);
         delete(tempXcdls.toArray(new File[] {}));
@@ -187,7 +185,7 @@ public final class ComparatorWrapper {
                     + COMPARATOR_HOME);
         }
         pr.setStartingDir(home);
-        LOG.info("Executing: " + commands);
+        log.info("Executing: " + commands);
         /* Before calling the command, check if the files exist: */
         if (!new File(tempXcdl.getAbsolutePath()).exists()) {
             throw new IllegalStateException("Temp files not accessible;");
@@ -199,8 +197,8 @@ public final class ComparatorWrapper {
         }
         pr.run();
         /* Print some debugging info on the call: */
-        LOG.info("Comparator call output: " + pr.getProcessOutputAsString());
-        LOG.info("Comparator call error: " + pr.getProcessErrorAsString());
+        log.info("Comparator call output: " + pr.getProcessOutputAsString());
+        log.info("Comparator call error: " + pr.getProcessErrorAsString());
     }
 
     /**
