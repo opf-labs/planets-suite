@@ -2,10 +2,10 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationException;
-import eu.planets_project.services.utils.PlanetsLogger;
 
 import java.net.URI;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Migration path containing all information necessary to execute a (chain of)
@@ -20,7 +20,7 @@ public class MigrationPath implements Cloneable {
     // implement new versions to support new
     // configuration file formats.
 
-    private PlanetsLogger log = PlanetsLogger.getLogger(MigrationPath.class);
+    private Logger log = Logger.getLogger(MigrationPath.class.getName());
 
     private URI sourceFormatURI;
     private URI destinationFormatURI;
@@ -161,9 +161,9 @@ public class MigrationPath implements Cloneable {
         final Set<String> validIdentifiers = getValidParameterNames(toolParameters);
 
         log.info("Found these valid identifiers");
-        log.info(validIdentifiers);
+        log.info(validIdentifiers.toString());
 
-        log.info(tempSourceFile);
+        log.info(tempSourceFile.toString());
         for (TempFile tempfile : tempFiles) {
             log.info("Adding tempfile " + tempfile.getCodename()
                     + " as valid identifier");

@@ -6,9 +6,7 @@ package eu.planets_project.ifr.core.common.conf;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.services.utils.FileUtils;
 
@@ -18,7 +16,7 @@ import eu.planets_project.services.utils.FileUtils;
  *
  */
 public class PlanetsServerConfig {
-    private static Log log = LogFactory.getLog(PlanetsServerConfig.class);
+    private static Logger log = Logger.getLogger(PlanetsServerConfig.class.getName());
     
     // Server properties:
     private static final String PLANETS_HOSTNAME = "planets.server.hostname";
@@ -37,7 +35,7 @@ public class PlanetsServerConfig {
                     "/eu/planets_project/ifr/core/common/conf/planets-server-config.properties" );
             props.load( stream );
         } catch( IOException e ) {
-            log.error("Server properties failed to load! :: "+e);
+            log.severe("Server properties failed to load! :: "+e);
             FileUtils.close(stream);
         }
         return props;

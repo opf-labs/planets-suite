@@ -2,12 +2,12 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
 import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.NoSuchPathException;
-import eu.planets_project.services.utils.PlanetsLogger;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Create migration paths from an XML config file.
@@ -18,8 +18,7 @@ import java.util.List;
 public class MigrationPaths {
 
 //TODO: Should implement an interface to allow implement new versions to support new configuration file formats.
-private PlanetsLogger log = PlanetsLogger
-        .getLogger(MigrationPaths.class);
+private Logger log = Logger.getLogger(MigrationPaths.class.getName());
 
 
     /**

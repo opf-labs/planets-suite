@@ -11,7 +11,6 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 import org.w3c.dom.Document;
 
@@ -21,11 +20,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class GenericMigrationWrapper {
 
-    private PlanetsLogger log = PlanetsLogger
-            .getLogger(GenericMigrationWrapper.class);
+    private Logger log = Logger.getLogger(GenericMigrationWrapper.class.getName());
 
 
     private MigrationPaths migrationPaths;
@@ -116,7 +115,7 @@ public class GenericMigrationWrapper {
 
         List<String> command = migrationPath.getCommandLine(toolParameters);
         log.info("Command line found: ");
-        log.info(command);
+        log.info(command.toString());
 
 
         InputStream processStandardInput = null;

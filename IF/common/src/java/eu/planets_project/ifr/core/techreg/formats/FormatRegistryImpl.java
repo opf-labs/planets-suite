@@ -11,13 +11,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
@@ -34,7 +33,7 @@ import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 @Remote(FormatRegistry.class)
 @RemoteBinding(jndiBinding = "planets-project.eu/FormatRegistry/remote")
 class FormatRegistryImpl implements FormatRegistry {
-    private static Log log = LogFactory.getLog(FormatRegistryImpl.class);
+    private static Logger log = Logger.getLogger(FormatRegistryImpl.class.getName());
 
     /**
      * Main index, 1-2-1 mapping the type URIs to the FileFormat objects.

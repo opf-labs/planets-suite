@@ -9,9 +9,7 @@ import java.net.URL;
 import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.HashSet;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
@@ -23,7 +21,7 @@ import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
  */
 class DroidFormatRegistry  {
     
-    private static Log log = LogFactory.getLog(DroidFormatRegistry.class);
+    private static Logger log = Logger.getLogger(DroidFormatRegistry.class.getName());
 
     private static final String INFO_PRONOM = "pronom/";
     
@@ -55,7 +53,7 @@ class DroidFormatRegistry  {
             // Opaque URL constructed using a Scheme Specific Part:
             puidURI = new URI("info", INFO_PRONOM + PUID, null );
         } catch (URISyntaxException e) {
-            log.error("Exception while constructing type URI: "+e);
+            log.severe("Exception while constructing type URI: "+e);
             puidURI = null;
         }
         return puidURI;

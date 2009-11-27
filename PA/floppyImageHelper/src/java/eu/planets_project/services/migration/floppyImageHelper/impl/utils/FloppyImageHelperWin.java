@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -24,7 +25,6 @@ import eu.planets_project.services.migration.floppyImageHelper.api.FloppyImageHe
 import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperService;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
 import eu.planets_project.services.utils.ZipResult;
 import eu.planets_project.services.utils.ZipUtils;
@@ -58,7 +58,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	
 	private static FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
 	
-    private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
+    private Logger log = Logger.getLogger(FloppyImageHelperWin.class.getName());
     
     private VirtualFloppyDrive vfd = new VirtualFloppyDrive();
 //    private Fat_Imgen vfd = new Fat_Imgen();

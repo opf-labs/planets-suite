@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
 /**
@@ -27,8 +27,7 @@ import eu.planets_project.services.utils.ProcessRunner;
  */
 class PRCommandBuilder {
 
-    private final PlanetsLogger log = PlanetsLogger
-	    .getLogger(PRCommandBuilder.class);
+    private final Logger log = Logger.getLogger(PRCommandBuilder.class.getName());
 
     /**
      * TODO: Revisit this documentation....
@@ -286,7 +285,7 @@ class PRCommandBuilder {
 		final String previousValue = identifierMap.put(parameter
 			.getName(), parameter.getValue());
 		if (previousValue != null) {
-		    log.warn(String.format("The parameter '%s' was specified"
+		    log.warning(String.format("The parameter '%s' was specified"
 			    + "by the caller while also specifying usage of "
 			    + "the preset '%s = %s'. The specified value: '%s'"
 			    + " has now been overwritten with the value: '%s'"

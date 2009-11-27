@@ -6,14 +6,12 @@ package eu.planets_project.ifr.core.security.common;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.logging.Logger;
 
 import org.apache.catalina.valves.ValveBase;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-//import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 //import eu.planets_project.ifr.core.storage.gui.login.LoginBean;
 
 /**
@@ -32,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class SingleSignOnPropagatorValve extends ValveBase {
     // A Planets Logger:
-    private static Log log = LogFactory.getLog(SingleSignOnPropagatorValve.class);
+    private static Logger log = Logger.getLogger(SingleSignOnPropagatorValve.class.getName());
     
     // The parameters that will store the username and password, usually j_username and j_password.
     private static String USER_PARAM = "josso_username";
@@ -53,7 +51,7 @@ public class SingleSignOnPropagatorValve extends ValveBase {
         // Is there a username/password combination going past?
         if( username != null && password != null ) {
             // Use it:
-            log.warn("Found user:"+username+" pass:"+password);
+            log.warning("Found user:"+username+" pass:"+password);
             hRequest.getSession().setAttribute("secret_password", password);
             /*
         FacesContext context = FacesContext.getCurrentInstance();
@@ -65,7 +63,7 @@ public class SingleSignOnPropagatorValve extends ValveBase {
         } else {
             password = (String) hRequest.getParameter("secret_password");
             if( password != null ) {
-                log.warn("Found secret_pass:"+password);
+                log.warning("Found secret_pass:"+password);
             }
         }
 
@@ -74,9 +72,9 @@ public class SingleSignOnPropagatorValve extends ValveBase {
 
         String stored_password = (String) hRequest.getParameter("secret_password");
         if( stored_password != null ) {
-            log.warn("Found secret_pass:"+stored_password);
+            log.warning("Found secret_pass:"+stored_password);
         } else if( username != null ){
-            log.warn("Could not find secret_pass:"+password);
+            log.warning("Could not find secret_pass:"+password);
             hRequest.getSession().setAttribute("secret_password", password);
         }
     }

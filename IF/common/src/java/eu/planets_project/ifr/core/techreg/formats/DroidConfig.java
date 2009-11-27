@@ -3,8 +3,7 @@
  */
 package eu.planets_project.ifr.core.techreg.formats;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 /**
  * Droid configuration settings.
@@ -12,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
  *
  */
 class DroidConfig {
-    private static Log log = LogFactory.getLog(DroidConfig.class);
+    private static Logger log = Logger.getLogger(DroidConfig.class.getName());
     
     /***/
     public static final String LOCAL = "PC/droid/src/resources/";

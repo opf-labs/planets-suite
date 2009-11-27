@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameter.Builder;
 import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationPathConfigException;
-import eu.planets_project.services.utils.PlanetsLogger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -14,6 +13,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Factory for construction and initialisation of <code>CliMigrationPaths</code>
@@ -25,8 +25,7 @@ import java.util.List;
  */
 public class MigrationPathsFactory {
 
-    private PlanetsLogger log = PlanetsLogger
-            .getLogger(MigrationPathsFactory.class);
+    private Logger log = Logger.getLogger(MigrationPathsFactory.class.getName());
 
     // TODO: We should create a schema for the configuration file and refer to
     // it in this javadoc. Also, this factory should check the specified config
@@ -422,7 +421,7 @@ public class MigrationPathsFactory {
 
             newPath.setSourceFormat(sourceFormatUri);
             newPath.setDestinationFormat(destinationFormatURI);
-            log.debug("Createing CliMigrationPath instance for the path: "
+            log.fine("Creating CliMigrationPath instance for the path: "
                       + sourceFomatURIs + " -> " + destinationFormatURI);
             paths.add(newPath);
         }

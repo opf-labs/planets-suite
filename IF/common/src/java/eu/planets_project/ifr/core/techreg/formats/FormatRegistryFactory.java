@@ -3,13 +3,10 @@
  */
 package eu.planets_project.ifr.core.techreg.formats;
 
+import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 
 
 /**
@@ -23,7 +20,7 @@ public final class FormatRegistryFactory {
     /** Enforce non-instantiability with a private constructor. */
     private FormatRegistryFactory() {}
 
-    private static Log log = LogFactory.getLog(FormatRegistryFactory.class);
+    private static Logger log = Logger.getLogger(FormatRegistryFactory.class.getName());
 
     /**
      * Hook up to an instance of the Planets format registry.

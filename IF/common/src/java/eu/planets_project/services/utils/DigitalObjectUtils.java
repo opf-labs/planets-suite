@@ -10,9 +10,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -27,7 +25,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 public final class DigitalObjectUtils {
     private DigitalObjectUtils() {/* Util classes are not instantiated */}
 
-    private static final Log LOG = LogFactory.getLog(DigitalObjectUtils.class);
+    private static final Logger log = Logger.getLogger(DigitalObjectUtils.class.getName());
 
     private final static FormatRegistry format = FormatRegistryFactory
             .getFormatRegistry();
@@ -144,16 +142,16 @@ public final class DigitalObjectUtils {
      */
     public static List<File> getDigitalObjectsAsFiles(final List<DigitalObject> listOfDigObjs, final File targetFolder) {
         List<File> containedFiles = new ArrayList<File>();
-        LOG.info("received list of dig obj with lengh: "+ listOfDigObjs.size());
+        log.info("received list of dig obj with lengh: "+ listOfDigObjs.size());
         if (listOfDigObjs.size() > 0) {
             for (DigitalObject currentDigObj : listOfDigObjs) {
                 String name = getFileNameFromDigObject(currentDigObj, null);
-                LOG.info("name of dig obj is: "+name);
+                log.info("name of dig obj is: "+name);
                 containedFiles.add(FileUtils.writeInputStreamToFile(
                         currentDigObj.getContent().read(), targetFolder, name));
             }
         }
-        LOG.info(String.format("Returning %s files", containedFiles.size()));
+        log.info(String.format("Returning %s files", containedFiles.size()));
         return containedFiles;
     }
 	
@@ -187,7 +185,7 @@ public final class DigitalObjectUtils {
      */
     public static DigitalObject getFragment(DigitalObject digOb, String fragment, boolean createByReference) {
     	if(!isZipType(digOb)) {
-    		LOG.error("The DigitalObject you have passed is NOT a Zip type DigOb. No Fragment could be retrieved!");
+    		log.severe("The DigitalObject you have passed is NOT a Zip type DigOb. No Fragment could be retrieved!");
     		return null;
     	}
     	// Do all the tmpFolder related stuff....
@@ -206,7 +204,7 @@ public final class DigitalObjectUtils {
     
     public static DigitalObject insertFragment(DigitalObject zipTypeDigOb, File fragmentFile, String targetPathInZip, boolean createByReference) {
 		if(!isZipType(zipTypeDigOb)) {
-			LOG.error("The DigitalObject you have passed is NOT a Zip type DigOb. No Fragment could be retrieved!");
+			log.severe("The DigitalObject you have passed is NOT a Zip type DigOb. No Fragment could be retrieved!");
 			return null;
 		}
 		
@@ -219,7 +217,7 @@ public final class DigitalObjectUtils {
     
     public static DigitalObject removeFragment(DigitalObject zipTypeDigOb, String targetPathInZip, boolean createByReference) {
 		if(!isZipType(zipTypeDigOb)) {
-			LOG.error("The DigitalObject you have passed is NOT a Zip type DigOb. No Fragment could be retrieved!");
+			log.severe("The DigitalObject you have passed is NOT a Zip type DigOb. No Fragment could be retrieved!");
 			return null;
 		}
 		
@@ -232,7 +230,7 @@ public final class DigitalObjectUtils {
 
 	public static List<String> listFragments(DigitalObject digOb) {
     	if(!isZipType(digOb)) {
-    		LOG.error("This DigitalObject is NOT a Zip-type DigOb! No Fragments to return, sorry!!!");
+    		log.severe("This DigitalObject is NOT a Zip-type DigOb! No Fragments to return, sorry!!!");
     		return null;
     	}
     	

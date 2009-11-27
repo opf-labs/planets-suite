@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -13,7 +14,6 @@ import org.w3c.dom.NodeList;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.ConfigurationException;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Tool;
-import eu.planets_project.services.utils.PlanetsLogger;
 
 
 /**
@@ -24,8 +24,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
  * To change this template use File | Settings | File Templates.
  */
 public class ServiceDescriptionFactory {
-    private PlanetsLogger log = PlanetsLogger
-            .getLogger(ServiceDescriptionFactory.class);
+    private Logger log = Logger.getLogger(ServiceDescriptionFactory.class.getName());
 
 
     public ServiceDescription getServiceDescription(

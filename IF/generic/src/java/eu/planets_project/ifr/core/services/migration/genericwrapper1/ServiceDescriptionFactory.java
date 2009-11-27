@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.ConfigurationException;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Tool;
-import eu.planets_project.services.utils.PlanetsLogger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -13,6 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Logger; 
 
 
 /**
@@ -23,8 +23,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ServiceDescriptionFactory {
-    private PlanetsLogger log = PlanetsLogger
-            .getLogger(ServiceDescriptionFactory.class);
+    private static Logger log = Logger.getLogger(ServiceDescriptionFactory.class.getName());
 
 
     public ServiceDescription getServiceDescription(

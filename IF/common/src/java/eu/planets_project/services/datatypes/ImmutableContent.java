@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -18,8 +19,6 @@ import javax.xml.bind.annotation.XmlMimeType;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingDataHandler;
 
@@ -38,7 +37,7 @@ import eu.planets_project.services.PlanetsServices;
  * instantiate content.
  */
 final class ImmutableContent implements DigitalObjectContent, Serializable {
-    private static Log log = LogFactory.getLog(ImmutableContent.class);
+    private static Logger log = Logger.getLogger(ImmutableContent.class.getName());
 
     private static final long serialVersionUID = 7135127983024589335L;
 

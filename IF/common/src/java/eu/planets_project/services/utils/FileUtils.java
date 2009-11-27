@@ -3,8 +3,6 @@ package eu.planets_project.services.utils;
 import eu.planets_project.services.datatypes.Checksum;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -12,6 +10,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Utilities for reading and writing data.
@@ -24,7 +24,7 @@ import java.util.Random;
  */
 public final class FileUtils {
 
-    private static Log log = LogFactory.getLog(FileUtils.class);
+    private static Logger log = Logger.getLogger(FileUtils.class.getName());
 
     private static final String SYSTEM_TEMP = System
             .getProperty("java.io.tmpdir");
@@ -481,7 +481,7 @@ public final class FileUtils {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        if (log.isInfoEnabled()) {
+		if (log.getLevel().intValue() >= Level.INFO.intValue()) {
             log.info("Wrote " + size + " bytes to " + target.getAbsolutePath());
         } else {
             System.out.println("Wrote " + size + " bytes to "
@@ -737,7 +737,7 @@ public final class FileUtils {
         long size = calculateSize(files);
         boolean filesToLarge = size > targetMediaSizeInBytes;
         if (filesToLarge) {
-            log.error("Attention: files size (" + size
+            log.severe("Attention: files size (" + size
                     + " bytes) too big for target medium ("
                     + targetMediaSizeInBytes + " bytes) !");
         } else {
@@ -993,11 +993,11 @@ public final class FileUtils {
 //			int fileCount = folder.list().length;
 			org.apache.commons.io.FileUtils.cleanDirectory(folder);
 			for (File file : filesToDelete) {
-				log.debug("[FileUtils] Deleted file: " + file.getName());
+				log.severe("[FileUtils] Deleted file: " + file.getName());
 			}
 			log.info("Deleted " + fileCount + " files in: " + folder.getAbsolutePath());
 		} catch (IOException e) {
-			log.warn("[FileUtils.deleteAllFilesInFolder()]: Couldn't delete all files! " + e.getMessage());
+			log.warning("[FileUtils.deleteAllFilesInFolder()]: Couldn't delete all files! " + e.getMessage());
 //			e.printStackTrace();
 		}
 		return (folder.list().length==0);

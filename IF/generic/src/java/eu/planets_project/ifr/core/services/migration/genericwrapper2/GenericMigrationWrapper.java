@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 
@@ -23,7 +25,6 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
 /**
@@ -32,8 +33,7 @@ import eu.planets_project.services.utils.ProcessRunner;
  */
 public class GenericMigrationWrapper {
 
-    private PlanetsLogger log = PlanetsLogger
-	    .getLogger(GenericMigrationWrapper.class);
+    private Logger log = Logger.getLogger(GenericMigrationWrapper.class.getName());
 
     private MigrationPaths migrationPaths;
     private final String toolIdentifier;
@@ -121,7 +121,7 @@ public class GenericMigrationWrapper {
 
 	// If called with null parameters, use an empty list instead
 	if (toolParameters == null) {
-	    log.warn("Called with null parameters. Assuming the caller ment"
+	    log.warning("Called with null parameters. Assuming the caller ment"
 		    + " to calle with an empty list.");
 	    toolParameters = new ArrayList<Parameter>();
 	}
@@ -151,7 +151,7 @@ public class GenericMigrationWrapper {
 	final List<String> prCommand = commandBuilder.buildCommand(
 		migrationPath, toolParameters, temporaryFileMappings);
 
-	if (log.isInfoEnabled()) {
+	if (log.getLevel().intValue() >= Level.INFO.intValue()) {
 	    String fullCommandLine = "";
 	    for (String cmdfrag : prCommand) {
 		fullCommandLine += cmdfrag + " ";

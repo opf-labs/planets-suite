@@ -4,10 +4,10 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.NoSuchPathException;
-import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * Create migration paths from an XML config file.
@@ -19,7 +19,7 @@ public class MigrationPaths {
 
 	// TODO: Should implement an interface to allow implement new versions to
 	// support new configuration file formats.
-	private PlanetsLogger log = PlanetsLogger.getLogger(MigrationPaths.class);
+	private Logger log = Logger.getLogger(MigrationPaths.class.getName());
 
 	/**
 	 * <code>PathKey</code> is a utility class used for keys for storage and

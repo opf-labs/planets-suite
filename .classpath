@@ -1,203 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="src" path="IF/admin/src/java" />
-    <classpathentry kind="src" path="IF/admin/src/test/java" />
-    <classpathentry kind="src" path="IF/common/src/java" />
-    <classpathentry kind="src" path="IF/common/src/test/java" />
-    <classpathentry kind="src" path="IF/fedora/src/java" />
-    <classpathentry kind="src" path="IF/fedora/test/java" />
-    <classpathentry kind="src" path="IF/generic/src/java" />
-    <classpathentry kind="src" path="IF/generic/test/java" />
-    <classpathentry kind="src" path="IF/servreg/src/main/java" />
-    <classpathentry kind="src" path="IF/servreg/src/test/java" />
-    <classpathentry kind="src" path="IF/simple/src/java" />
-    <classpathentry kind="src" path="IF/simple/src/resources" />
-    <classpathentry kind="src" path="IF/simple/src/test/java" />
-    <classpathentry kind="src" path="IF/storage/src/main/java" />
-    <classpathentry kind="src" path="IF/storage/src/test/java" />
-    <classpathentry kind="src" path="IF/techreg/src/java" />
-    <classpathentry kind="src" path="IF/techreg/src/test/java" />
-    <classpathentry kind="src" path="IF/users/src/java" />
-    <classpathentry kind="src" path="IF/users/src/test/java" />
-    <classpathentry kind="src" path="PA/abiword/src/java" />
-    <classpathentry kind="src" path="PA/abiword/test" />
-    <classpathentry kind="src" path="PA/avidemux/src/java" />
-    <classpathentry kind="src" path="PA/avidemux/test" />
-    <classpathentry kind="src" path="PA/dia/src/java" />
-    <classpathentry kind="src" path="PA/dia/test/java" />
-    <classpathentry kind="src" path="PA/dialogika/src/java" />
-    <classpathentry kind="src" path="PA/dialogika/test/java" />
-    <classpathentry kind="src" path="PA/dioscuri/resources" />
-    <classpathentry kind="src" path="PA/dioscuri/src/java" />
-    <classpathentry kind="src" path="PA/dioscuri/test/java" />
-    <classpathentry kind="src" path="PA/ffmpeg/src/java" />
-    <classpathentry kind="src" path="PA/floppyImageHelper/src/java" />
-    <classpathentry kind="src" path="PA/floppyImageHelper/src/test" />
-    <classpathentry kind="src" path="PA/ghostscript/src/java" />
-    <classpathentry kind="src" path="PA/ghostscript/test/java" />
-    <classpathentry kind="src" path="PA/gimp/src/java" />
-    <classpathentry kind="src" path="PA/gimp/test" />
-    <classpathentry kind="src" path="PA/graphicsmagick/src/java" />
-    <classpathentry kind="src" path="PA/graphicsmagick/src/test" />
-    <classpathentry kind="src" path="PA/grateview/src/java" />
-    <classpathentry kind="src" path="PA/grateview/src/test/java" />
-    <classpathentry kind="src" path="PA/imagemagick/src/java" />
-    <classpathentry kind="src" path="PA/imagemagick/test/java" />
-    <classpathentry kind="src" path="PA/inkscape/src/java" />
-    <classpathentry kind="src" path="PA/inkscape/test" />
-    <classpathentry kind="src" path="PA/jasper19/src/java" />
-    <classpathentry kind="src" path="PA/jasper19/test" />
-    <classpathentry kind="src" path="PA/java-se/src/java" />
-    <classpathentry kind="src" path="PA/java-se/test/java" />
-    <classpathentry kind="src" path="PA/jj2000/src/java" />
-    <classpathentry kind="src" path="PA/jj2000/src/test/java" />
-    <classpathentry kind="src" path="PA/jtidy/src/java" />
-    <classpathentry kind="src" path="PA/jtidy/src/resources" />
-    <classpathentry kind="src" path="PA/jtidy/test/java" />
-    <classpathentry kind="src" path="PA/mdb2siard/src/java" />
-    <classpathentry kind="src" path="PA/mdb2siard/test" />
-    <classpathentry kind="src" path="PA/msgtext/src/java" />
-    <classpathentry kind="src" path="PA/msgtext/test/java" />
-    <classpathentry kind="src" path="PA/netPBM/src/java" />
-    <classpathentry kind="src" path="PA/netPBM/test/java" />
-    <classpathentry kind="src" path="PA/openXML/src/main/java" />
-    <classpathentry kind="src" path="PA/openXML/src/test/java" />
-    <classpathentry kind="src" path="PA/openjpeg/src/java" />
-    <classpathentry kind="src" path="PA/openjpeg/test" />
-    <classpathentry kind="src" path="PA/pdf2pdfamaycomputer/src/java" />
-    <classpathentry kind="src" path="PA/pdf2pdfamaycomputer/test" />
-    <classpathentry kind="src" path="PA/pdf2ps/src/java" />
-    <classpathentry kind="src" path="PA/pdf2ps/test" />
-    <classpathentry kind="src" path="PA/pdfbox/src/java" />
-    <classpathentry kind="src" path="PA/pdfbox/test/java" />
-    <classpathentry kind="src" path="PA/ps2pdf/src/java" />
-    <classpathentry kind="src" path="PA/ps2pdf/test/java" />
-    <classpathentry kind="src" path="PA/sanselan/src/java" />
-    <classpathentry kind="src" path="PA/sanselan/test/java" />
-    <classpathentry kind="src" path="PA/shotgun/src" />
-    <classpathentry kind="src" path="PA/shotgun/src-test" />
-    <classpathentry kind="src" path="PA/sox/src/java" />
-    <classpathentry kind="src" path="PA/sox/src/resources" />
-    <classpathentry kind="src" path="PA/sox/test/java" />
-    <classpathentry kind="src" path="PA/uvc/src/java" />
-    <classpathentry kind="src" path="PA/uvc/test/java" />
-    <classpathentry kind="src" path="PA/xena/src/java" />
-    <classpathentry kind="src" path="PC/droid/src/java" />
-    <classpathentry kind="src" path="PC/droid/test/java" />
-    <classpathentry kind="src" path="PC/file/src/java" />
-    <classpathentry kind="src" path="PC/file/test/java" />
-    <classpathentry kind="src" path="PC/jhove/src/java" />
-    <classpathentry kind="src" path="PC/jhove/test/java" />
-    <classpathentry kind="src" path="PC/libtiff/src/java" />
-    <classpathentry kind="src" path="PC/libtiff/test/java" />
-    <classpathentry kind="src" path="PC/metadata/src/java" />
-    <classpathentry kind="src" path="PC/metadata/src/resources" />
-    <classpathentry kind="src" path="PC/metadata/src/test/java" />
-    <classpathentry kind="src" path="PC/odf-toolkit/src/main/java" />
-    <classpathentry kind="src" path="PC/odf-toolkit/src/test/java" />
-    <classpathentry kind="src" path="PC/odfvalidator/src/java" />
-    <classpathentry kind="src" path="PC/odfvalidator/src/resources" />
-    <classpathentry kind="src" path="PC/odfvalidator/test/java" />
-    <classpathentry kind="src" path="PC/pngcheck/src/java" />
-    <classpathentry kind="src" path="PC/pngcheck/test/java" />
-    <classpathentry kind="src" path="PP/xcl/src/java" />
-    <classpathentry kind="src" path="PP/xcl/src/test/java" />
-    <classpathentry kind="src" path="tests" />
-    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
-    <classpathentry kind="lib" path="lib/standalone/mail.jar" />
-    <classpathentry kind="lib" path="lib/junit-4.4.jar" />
-    <classpathentry kind="lib" path="lib/standalone/droid.jar" />
-    <classpathentry kind="lib" path="IF/techreg/lib/lucene-core-2.3.2.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar" />
-    <classpathentry kind="lib" path="PC/jhove/lib/jhove.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr181-api.jar" />
-    <classpathentry kind="lib" path="lib/standalone/commons-logging.jar" />
-    <classpathentry kind="lib" path="PC/jhove/lib/jhove-handler.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-api.jar" />
-    <classpathentry kind="lib" path="lib/standalone/log4j.jar" />
-    <classpathentry kind="lib" path="lib/endorsed/jaxb-api.jar" />
-    <classpathentry kind="lib" path="lib/endorsed/jsr173_api.jar" />
-    <classpathentry kind="lib" path="PC/libtiff/lib/jna.jar" />
-    <classpathentry kind="lib" path="lib/standalone/hibernate-annotations.jar" />
-    <classpathentry kind="lib" path="lib/standalone/ejb3-persistence.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbossall-client.jar" />
-    <classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar" />
-    <classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraConnector-0.2.2.jar" />
-    <classpathentry kind="lib" path="lib/endorsed/activation.jar" />
-    <classpathentry kind="lib" path="IF/storage/lib/dom4j-1.6.1.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jsf-api.jar" />
-    <classpathentry kind="lib" path="lib/standalone/Zip64File.jar" />
-    <classpathentry kind="lib" path="lib/standalone/el-api.jar" />
-    <classpathentry kind="lib" path="lib/standalone/richfaces-ui-3.2.1.GA.jar" />
-    <classpathentry kind="lib" path="lib/standalone/richfaces-api-3.2.1.GA.jar" />
-    <classpathentry kind="lib" path="lib/standalone/richfaces-impl-3.2.1.GA.jar" />
-    <classpathentry kind="lib" path="lib/standalone/commons-httpclient.jar" />
-    <classpathentry kind="lib" path="PA/imagemagick/lib/im4java.jar" />
-    <classpathentry kind="lib" path="PA/imagemagick/lib/jmagick.jar" />
-    <classpathentry kind="lib" path="lib/standalone/servlet-api.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbossweb.jar" />
-    <classpathentry kind="lib" path="PA/sanselan/lib/sanselan-0.94-incubator.jar" />
-    <classpathentry kind="lib" path="PA/pdfbox/lib/PDFBox-0.7.3.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jaxen.jar" />
-    <classpathentry kind="lib" path="IF/storage/lib/oai4j-0.6b1.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar" />
-    <classpathentry kind="lib" path="lib/standalone/commons-io-1.4.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar" sourcepath="E:/ODFValidator/SOURCE/src" />
-    <classpathentry kind="lib" path="lib/standalone/jsf-facelets.jar" />
-    <classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-rt.jar" />
-    <classpathentry kind="lib" path="IF/common/lib/mimepull.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/odfdom.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/isorelax-jaxp-bridge-1.0.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/isorelax.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/msv.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/relaxngDatatype.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/resolver.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/serializer.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/xercesImpl.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/xml-apis.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/xmlParserAPIs.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/xsdlib.jar" />
-    <classpathentry kind="lib" path="lib/standalone/velocity-1.4.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/stax-ex.jar" />
-    <classpathentry kind="lib" path="IF/storage/lib/jcr-1.0.jar" />
-    <classpathentry kind="lib" path="IF/storage/lib/jackrabbit-core-1.4.5.jar" />
-    <classpathentry kind="lib" path="IF/storage/lib/soap.jar" />
-    <classpathentry kind="lib" path="IF/common/lib/commons-lang-2.4.jar" />
-    <classpathentry kind="lib" path="lib/standalone/commons-collections-3.2.1.jar" />
-    <classpathentry kind="lib" path="lib/standalone/commons-configuration-1.6.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-api.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/slf4j-jdk14-1.5.2.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-codec-1.3.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/batik-all.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/mail-1.4.1.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/log4j-1.2.15.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/sunxacml-patched.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jai_codec.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/wsdl4j-1.5.1.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/java-getopt-1.0.11.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/mulgara-core-2.1.1.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/axis.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/openrdf-sesame-2.2.1-onejar.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/fedora-client-3.2.1.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-discovery.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/saxon9.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-dbcp-1.2.1.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jaxrpc-api-1.1.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/xercesImpl.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jai_core.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/slf4j-api-1.5.2.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-pool-1.2.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/xml-apis.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/activation-1.1.1.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jhbasic.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/saaj-api-1.3.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-logging.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-httpclient-3.1.jar" />
-    <classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/trippi-1.4.1-core.jar" />
-    <classpathentry kind="output" path="bin" />
+	<classpathentry kind="src" path="IF/admin/src/java"/>
+	<classpathentry kind="src" path="IF/admin/src/test/java"/>
+	<classpathentry kind="src" path="IF/common/src/java"/>
+	<classpathentry kind="src" path="IF/common/src/test/java"/>
+	<classpathentry kind="src" path="IF/fedora/src/java"/>
+	<classpathentry kind="src" path="IF/fedora/test/java"/>
+	<classpathentry kind="src" path="IF/generic/src/java"/>
+	<classpathentry kind="src" path="IF/generic/test/java"/>
+	<classpathentry kind="src" path="IF/servreg/src/main/java"/>
+	<classpathentry kind="src" path="IF/servreg/src/test/java"/>
+	<classpathentry kind="src" path="IF/simple/src/java"/>
+	<classpathentry kind="src" path="IF/simple/src/resources"/>
+	<classpathentry kind="src" path="IF/simple/src/test/java"/>
+	<classpathentry kind="src" path="IF/storage/src/main/java"/>
+	<classpathentry kind="src" path="IF/storage/src/test/java"/>
+	<classpathentry kind="src" path="IF/techreg/src/java"/>
+	<classpathentry kind="src" path="IF/techreg/src/test/java"/>
+	<classpathentry kind="src" path="IF/users/src/java"/>
+	<classpathentry kind="src" path="IF/users/src/test/java"/>
+	<classpathentry kind="src" path="PA/abiword/src/java"/>
+	<classpathentry kind="src" path="PA/abiword/test"/>
+	<classpathentry kind="src" path="PA/avidemux/src/java"/>
+	<classpathentry kind="src" path="PA/avidemux/test"/>
+	<classpathentry kind="src" path="PA/dia/src/java"/>
+	<classpathentry kind="src" path="PA/dia/test/java"/>
+	<classpathentry kind="src" path="PA/dialogika/src/java"/>
+	<classpathentry kind="src" path="PA/dialogika/test/java"/>
+	<classpathentry kind="src" path="PA/dioscuri/resources"/>
+	<classpathentry kind="src" path="PA/dioscuri/src/java"/>
+	<classpathentry kind="src" path="PA/dioscuri/test/java"/>
+	<classpathentry kind="src" path="PA/ffmpeg/src/java"/>
+	<classpathentry kind="src" path="PA/floppyImageHelper/src/java"/>
+	<classpathentry kind="src" path="PA/floppyImageHelper/src/test"/>
+	<classpathentry kind="src" path="PA/ghostscript/src/java"/>
+	<classpathentry kind="src" path="PA/ghostscript/test/java"/>
+	<classpathentry kind="src" path="PA/gimp/src/java"/>
+	<classpathentry kind="src" path="PA/gimp/test"/>
+	<classpathentry kind="src" path="PA/graphicsmagick/src/java"/>
+	<classpathentry kind="src" path="PA/graphicsmagick/src/test"/>
+	<classpathentry kind="src" path="PA/grateview/src/java"/>
+	<classpathentry kind="src" path="PA/grateview/src/test/java"/>
+	<classpathentry kind="src" path="PA/imagemagick/src/java"/>
+	<classpathentry kind="src" path="PA/imagemagick/test/java"/>
+	<classpathentry kind="src" path="PA/inkscape/src/java"/>
+	<classpathentry kind="src" path="PA/inkscape/test"/>
+	<classpathentry kind="src" path="PA/jasper19/src/java"/>
+	<classpathentry kind="src" path="PA/jasper19/test"/>
+	<classpathentry kind="src" path="PA/java-se/src/java"/>
+	<classpathentry kind="src" path="PA/java-se/test/java"/>
+	<classpathentry kind="src" path="PA/jj2000/src/java"/>
+	<classpathentry kind="src" path="PA/jj2000/src/test/java"/>
+	<classpathentry kind="src" path="PA/jtidy/src/java"/>
+	<classpathentry kind="src" path="PA/jtidy/src/resources"/>
+	<classpathentry kind="src" path="PA/jtidy/test/java"/>
+	<classpathentry kind="src" path="PA/mdb2siard/src/java"/>
+	<classpathentry kind="src" path="PA/mdb2siard/test"/>
+	<classpathentry kind="src" path="PA/msgtext/src/java"/>
+	<classpathentry kind="src" path="PA/msgtext/test/java"/>
+	<classpathentry kind="src" path="PA/netPBM/src/java"/>
+	<classpathentry kind="src" path="PA/netPBM/test/java"/>
+	<classpathentry kind="src" path="PA/openXML/src/main/java"/>
+	<classpathentry kind="src" path="PA/openXML/src/test/java"/>
+	<classpathentry kind="src" path="PA/openjpeg/src/java"/>
+	<classpathentry kind="src" path="PA/openjpeg/test"/>
+	<classpathentry kind="src" path="PA/pdf2pdfamaycomputer/src/java"/>
+	<classpathentry kind="src" path="PA/pdf2pdfamaycomputer/test"/>
+	<classpathentry kind="src" path="PA/pdf2ps/src/java"/>
+	<classpathentry kind="src" path="PA/pdf2ps/test"/>
+	<classpathentry kind="src" path="PA/pdfbox/src/java"/>
+	<classpathentry kind="src" path="PA/pdfbox/test/java"/>
+	<classpathentry kind="src" path="PA/ps2pdf/src/java"/>
+	<classpathentry kind="src" path="PA/ps2pdf/test/java"/>
+	<classpathentry kind="src" path="PA/sanselan/src/java"/>
+	<classpathentry kind="src" path="PA/sanselan/test/java"/>
+	<classpathentry kind="src" path="PA/shotgun/src"/>
+	<classpathentry kind="src" path="PA/shotgun/src-test"/>
+	<classpathentry kind="src" path="PA/sox/src/java"/>
+	<classpathentry kind="src" path="PA/sox/src/resources"/>
+	<classpathentry kind="src" path="PA/sox/test/java"/>
+	<classpathentry kind="src" path="PA/uvc/src/java"/>
+	<classpathentry kind="src" path="PA/uvc/test/java"/>
+	<classpathentry kind="src" path="PA/xena/src/java"/>
+	<classpathentry kind="src" path="PC/droid/src/java"/>
+	<classpathentry kind="src" path="PC/droid/test/java"/>
+	<classpathentry kind="src" path="PC/file/src/java"/>
+	<classpathentry kind="src" path="PC/file/test/java"/>
+	<classpathentry kind="src" path="PC/jhove/src/java"/>
+	<classpathentry kind="src" path="PC/jhove/test/java"/>
+	<classpathentry kind="src" path="PC/libtiff/src/java"/>
+	<classpathentry kind="src" path="PC/libtiff/test/java"/>
+	<classpathentry kind="src" path="PC/metadata/src/java"/>
+	<classpathentry kind="src" path="PC/metadata/src/resources"/>
+	<classpathentry kind="src" path="PC/metadata/src/test/java"/>
+	<classpathentry kind="src" path="PC/odf-toolkit/src/main/java"/>
+	<classpathentry kind="src" path="PC/odf-toolkit/src/test/java"/>
+	<classpathentry kind="src" path="PC/odfvalidator/src/java"/>
+	<classpathentry kind="src" path="PC/odfvalidator/src/resources"/>
+	<classpathentry kind="src" path="PC/odfvalidator/test/java"/>
+	<classpathentry kind="src" path="PC/pngcheck/src/java"/>
+	<classpathentry kind="src" path="PC/pngcheck/test/java"/>
+	<classpathentry kind="src" path="PP/xcl/src/java"/>
+	<classpathentry kind="src" path="PP/xcl/src/test/java"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/droid.jar"/>
+	<classpathentry kind="lib" path="IF/techreg/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/jhove.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr181-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/jhove-handler.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/endorsed/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/endorsed/jsr173_api.jar"/>
+	<classpathentry kind="lib" path="PC/libtiff/lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossall-client.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>
+	<classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar"/>
+	<classpathentry kind="lib" path="lib/endorsed/activation.jar"/>
+	<classpathentry kind="lib" path="IF/storage/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jsf-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/Zip64File.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/el-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/richfaces-ui-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/richfaces-api-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/richfaces-impl-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-httpclient.jar"/>
+	<classpathentry kind="lib" path="PA/imagemagick/lib/im4java.jar"/>
+	<classpathentry kind="lib" path="PA/imagemagick/lib/jmagick.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/servlet-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossweb.jar"/>
+	<classpathentry kind="lib" path="PA/sanselan/lib/sanselan-0.94-incubator.jar"/>
+	<classpathentry kind="lib" path="PA/pdfbox/lib/PDFBox-0.7.3.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
+	<classpathentry kind="lib" path="IF/storage/lib/oai4j-0.6b1.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar" sourcepath="E:/ODFValidator/SOURCE/src"/>
+	<classpathentry kind="lib" path="lib/standalone/jsf-facelets.jar"/>
+	<classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-rt.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/mimepull.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfdom.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/isorelax-jaxp-bridge-1.0.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/isorelax.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/msv.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/relaxngDatatype.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/resolver.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/serializer.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xmlParserAPIs.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/xsdlib.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/velocity-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/stax-ex.jar"/>
+	<classpathentry kind="lib" path="IF/storage/lib/jcr-1.0.jar"/>
+	<classpathentry kind="lib" path="IF/storage/lib/jackrabbit-core-1.4.5.jar"/>
+	<classpathentry kind="lib" path="IF/storage/lib/soap.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-configuration-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-api.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/slf4j-jdk14-1.5.2.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/batik-all.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/mail-1.4.1.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/sunxacml-patched.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jai_codec.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/wsdl4j-1.5.1.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/java-getopt-1.0.11.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/mulgara-core-2.1.1.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/axis.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/openrdf-sesame-2.2.1-onejar.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/fedora-client-3.2.1.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-discovery.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/saxon9.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-dbcp-1.2.1.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jaxrpc-api-1.1.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jai_core.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/slf4j-api-1.5.2.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/activation-1.1.1.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jhbasic.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/saaj-api-1.3.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/trippi-1.4.1-core.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
-

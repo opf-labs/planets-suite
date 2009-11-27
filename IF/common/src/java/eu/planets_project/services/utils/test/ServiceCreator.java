@@ -5,6 +5,7 @@ package eu.planets_project.services.utils.test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
@@ -12,9 +13,6 @@ import javax.xml.ws.Endpoint;
 import javax.xml.ws.Service;
 import javax.xml.ws.soap.MTOMFeature;
 import javax.xml.ws.soap.SOAPBinding;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.JAXWSProperties;
 
@@ -32,7 +30,7 @@ public final class ServiceCreator {
     private ServiceCreator() {
     }
 
-    private static Log log = LogFactory.getLog(ServiceCreator.class.getName());
+    private static Logger log = Logger.getLogger(ServiceCreator.class.getName());
 
     /**
      * Modes for creating a service implementation instance.
@@ -166,7 +164,7 @@ public final class ServiceCreator {
                 return Mode.LOCAL.create(qname, serviceImplementation, wsdlLoc);
             }
         } catch( Exception e ) {
-            log.fatal("Instanciation of test service failed! "+e);
+            log.severe("Instanciation of test service failed! "+e);
             e.printStackTrace();
             return null;
         }

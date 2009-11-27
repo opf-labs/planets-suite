@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * Migration path containing all information necessary to execute a (chain of)
@@ -23,8 +23,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
  */
 class MigrationPathImpl implements MigrationPath {
 
-    private PlanetsLogger log = PlanetsLogger
-	    .getLogger(MigrationPathImpl.class);
+    private Logger log = Logger.getLogger(MigrationPathImpl.class.getName());
 
     private ToolIOProfile toolInputProfile;
     private ToolIOProfile toolOutputProfile;

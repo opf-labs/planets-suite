@@ -13,9 +13,7 @@ package eu.planets_project.ifr.core.techreg.properties;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.services.datatypes.Property;
 
@@ -25,7 +23,7 @@ import eu.planets_project.services.datatypes.Property;
  */
 public class ServiceProperties {
     /** */
-    private static Log log = LogFactory.getLog(ServiceProperties.class);
+    private static Logger log = Logger.getLogger(ServiceProperties.class.getName());
     
     /** A standard environment identifier for the Java System.getProperties. */
     public static final URI ENV_JAVA_SYS_PROP = URI.create("planets:if/srv/java-system-properties");
@@ -67,7 +65,7 @@ public class ServiceProperties {
             return jspp;
         } catch ( IOException e ) {
             // Fail silently.
-            log.debug("IOException when storing server properties to XML. "+e);
+            log.fine("IOException when storing server properties to XML. "+e);
         }
         
         return null;
