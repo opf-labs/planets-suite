@@ -7,9 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -128,7 +127,7 @@ public class CliMigrationPathsFactory {
      */
     private static final String TEMP_FILE_ELEMENT = "tempfile";
 
-    private Log log = LogFactory.getLog(CliMigrationPathsFactory.class);
+    private static Logger log = Logger.getLogger(CliMigrationPathsFactory.class.getName());
 
     // TODO: We should create a schema for the configuration file and refer to
     // it in this javadoc. Also, this factory should check the specified config
@@ -534,7 +533,7 @@ public class CliMigrationPathsFactory {
             newPath.setSourceFormat(sourceFormatUri);
             newPath.setDestinationFormat(destinationFormatURI);
             newPath.setCommandLine(pathTemplate.getCommandLine());
-            log.debug("Createing CliMigrationPath instance for the path: "
+            log.fine("Creating CliMigrationPath instance for the path: "
                     + sourceFomatURIs + " -> " + destinationFormatURI);
             paths.add(newPath);
         }

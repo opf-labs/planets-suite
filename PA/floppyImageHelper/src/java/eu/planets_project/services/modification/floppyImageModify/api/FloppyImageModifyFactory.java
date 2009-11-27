@@ -1,8 +1,7 @@
 package eu.planets_project.services.modification.floppyImageModify.api;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModifyWin;
 
@@ -11,7 +10,7 @@ public final class FloppyImageModifyFactory {
     /** Enforce non-instantiability with a private constructor. */
     private FloppyImageModifyFactory() {}
     
-    private static Log log = LogFactory.getLog(FloppyImageModifyFactory.class);
+    private static Logger log = Logger.getLogger(FloppyImageModifyFactory.class.getName());
     
     private static String OS = System.getProperty("os.name").toLowerCase();
     private static String VERSION = System.getProperty("os.version");
@@ -31,7 +30,7 @@ public final class FloppyImageModifyFactory {
 			floppyModify = new FloppyImageModifyWin();
 			return floppyModify;
 		}
-		log.error("Sorry, your Operating System " + OS.toUpperCase() + " " + VERSION + " " + ARCHITECTURE +  " is not supported by this service!");
+		log.severe("Sorry, your Operating System " + OS.toUpperCase() + " " + VERSION + " " + ARCHITECTURE +  " is not supported by this service!");
 		return null;
 	}
 }

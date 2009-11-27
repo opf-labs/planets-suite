@@ -6,13 +6,11 @@ package eu.planets_project.services.modification.floppyImageModify.impl;
 import java.io.File;
 import java.net.URI;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -59,7 +57,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	
 	private String br = System.getProperty("line.separator");
 	
-    private Log log = LogFactory.getLog(this.getClass());
+    private static Logger log = Logger.getLogger(FloppyImageModifyWin.class.getName());
     
     private static FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
     
@@ -122,7 +120,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		}
 		
 		if(!inFormat.equalsIgnoreCase("IMA") && !inFormat.equalsIgnoreCase("IMG")) {
-			log.error("ERROR: Input file ' " + fileName + "' is NOT an '.ima' or '.img' file or is no floppy image at all." +
+			log.severe("ERROR: Input file ' " + fileName + "' is NOT an '.ima' or '.img' file or is no floppy image at all." +
 					"\nThis service is able to deal with ima/img files only!!!" +
 					"\nSorry, returning with error!");
 			return this.returnWithErrorMessage("ERROR: Input file ' " + fileName + "' is NOT an '.ima' or '.img' file or is no floppy image at all." +

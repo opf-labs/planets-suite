@@ -3,15 +3,13 @@ package eu.planets_project.services.migration.dia.impl;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.GenericMigrationWrapper;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
@@ -50,7 +48,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
     /** The unique class id */
     private static final long serialVersionUID = 4596228292063217306L;
 
-    private Log log = LogFactory.getLog(DiaMigrationService.class);
+    private Logger log = Logger.getLogger(DiaMigrationService.class.getName());
 
     /**
      * {@inheritDoc}
@@ -79,11 +77,10 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	    // performed by the generic wrapper. However, exceptions thrown by
 	    // the GenericWrapper constructor must be handled here.
 	} catch (Exception e) {
-	    log
-		    .error("Migration failed for object with title '"
+	    log.severe("Migration failed for object with title '"
 			    + digitalObject.getTitle()
 			    + "' from input format URI: " + inputFormat
-			    + " to output format URI: " + outputFormat, e);
+			    + " to output format URI: " + outputFormat+": "+e.getMessage());
 	    ServiceReport serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, e.toString());
 	    return new MigrateResult(null, serviceReport); // FIXME! Report failure in a
 						  // proper way.
@@ -108,8 +105,8 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	    return genericWrapper.describe();
 
 	} catch (Exception e) {
-	    log.error("Failed getting service description for service: "
-		    + this.getClass().getCanonicalName(), e);
+	    log.severe("Failed getting service description for service: "
+		    + this.getClass().getCanonicalName()+": "+e.getMessage());
 
 	    // FIXME! Report failure in a proper way. Should we return a service
 	    // description anyway? If so, then how?

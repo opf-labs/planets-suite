@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -16,8 +17,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.ws.BindingType;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 
 import eu.planets_project.services.PlanetsServices;
@@ -52,7 +51,7 @@ public final class GenericCLIMigrationWrapperTestService implements Migrate,
     /** The service name */
     static final String NAME = "GenericCLIMigrationWrapperTestService";
 
-    private Log log = LogFactory.getLog(GenericCLIMigrationWrapperTestService.class);
+    private Logger log = Logger.getLogger(GenericCLIMigrationWrapperTestService.class.getName());
 
     /**
      * {@inheritDoc}
@@ -90,11 +89,10 @@ public final class GenericCLIMigrationWrapperTestService implements Migrate,
             migrationResult = genericWrapper.migrate(digitalObject,
                     inputFormat, outputFormat, parameters);
         } catch (Exception e) {
-            log
-                    .error("Migration failed for object with title '"
+            log.severe("Migration failed for object with title '"
                             + digitalObject.getTitle()
                             + "' from input format URI: " + inputFormat
-                            + " to output format URI: " + outputFormat, e);
+                            + " to output format URI: " + outputFormat+": "+e.getMessage());
             return new MigrateResult(null, null); // FIXME! Report failure in a
             // proper way.
         }

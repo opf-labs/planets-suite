@@ -1,9 +1,6 @@
 package eu.planets_project.services.migration.floppyImageHelper.api;
 
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import java.util.logging.Logger;
 import eu.planets_project.services.migration.floppyImageHelper.impl.utils.UniversalFloppyImageHelper;
 
 public final class FloppyImageHelperFactory {
@@ -11,7 +8,7 @@ public final class FloppyImageHelperFactory {
     /** Enforce non-instantiability with a private constructor. */
     private FloppyImageHelperFactory() {}
     
-    private static Log log = LogFactory.getLog(FloppyImageHelperFactory.class);
+    private static Logger log = Logger.getLogger(FloppyImageHelperFactory.class.getName());
     
     private static String OS = System.getProperty("os.name").toLowerCase();
     private static String VERSION = System.getProperty("os.version");
@@ -38,7 +35,7 @@ public final class FloppyImageHelperFactory {
 			log.info("Created FloppyImageHelper instance of type: " + floppyHelper.getClass().getCanonicalName());
 			return floppyHelper;
 		}
-		log.error("Sorry, your Operating System " + OS.toUpperCase() + " " + VERSION + " " + ARCHITECTURE +  " is not supported by this service!");
+		log.severe("Sorry, your Operating System " + OS.toUpperCase() + " " + VERSION + " " + ARCHITECTURE +  " is not supported by this service!");
 		return null;
 	}
 }

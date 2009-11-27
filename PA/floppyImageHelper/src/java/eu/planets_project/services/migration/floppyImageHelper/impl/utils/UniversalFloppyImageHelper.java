@@ -4,9 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -60,7 +58,7 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
 	
 	private static FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
 	
-    private Log log = LogFactory.getLog(this.getClass());
+    private static Logger log = Logger.getLogger(UniversalFloppyImageHelper.class.getName());
     
     private Fat_Imgen fat_imgen = new Fat_Imgen();
     

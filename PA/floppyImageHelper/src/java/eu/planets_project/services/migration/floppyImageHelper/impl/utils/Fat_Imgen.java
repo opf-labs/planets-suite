@@ -6,9 +6,7 @@ package eu.planets_project.services.migration.floppyImageHelper.impl.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -40,7 +38,7 @@ public class Fat_Imgen {
 	
 	private static String br = System.getProperty("line.separator");
 	
-	private Log log = LogFactory.getLog(this.getClass());
+	private static Logger log = Logger.getLogger(Fat_Imgen.class.getName());
 	
 	public Fat_Imgen() {
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
@@ -57,7 +55,7 @@ public class Fat_Imgen {
 		
 		if(FileUtils.filesTooLargeForMedium(filesToInject, FLOPPY_SIZE)) {
 			process_error.append("Sorry! File compilation too large to be written to a Floppy (1.44 MB).");
-			log.error("Sorry! File compilation too large to be written to a Floppy (1.44 MB).");
+			log.severe("Sorry! File compilation too large to be written to a Floppy (1.44 MB).");
 			return this.returnWithError(process_error.toString());
 		}
 		
@@ -199,7 +197,7 @@ public class Fat_Imgen {
 
 	private boolean toolInstalledProperly() {
 		if(FLOPPY_IMAGE_TOOLS_HOME_PATH == null) {
-			log.error("FLOPPY_IMAGE_TOOLS_HOME = null! " +
+			log.severe("FLOPPY_IMAGE_TOOLS_HOME = null! " +
 					br + "Could not find floppy image tools! " +
 					br + "Please install the tool 'Fat_Imgen' on your system and point a System variable to the installation folder!" +
 					br + "Otherwise this service will carry on to refuse to do its work! (you can find the tool here: http://www.ohloh.net/p/fat_imgen/download)");
