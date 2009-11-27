@@ -93,7 +93,15 @@ public class S3DataManager implements DigitalObjectManager {
 		return null;
 	}
 
-	public boolean isWritable(URI pdURI) {
+    public URI storeAsNew(DigitalObject digitalObject) throws DigitalObjectNotStoredException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public URI updateExisting(URI uri, DigitalObject digitalObject) throws DigitalObjectNotStoredException, DigitalObjectNotFoundException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean isWritable(URI pdURI) {
 		// TODO Auto-generated method stub
 		return false;
 	}

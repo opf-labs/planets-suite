@@ -188,7 +188,13 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
 
     }
 
-    /* (non-Javadoc)
+    public URI storeAsNew(DigitalObject digitalObject) throws DigitalObjectNotStoredException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public URI updateExisting(URI uri, DigitalObject digitalObject) throws DigitalObjectNotStoredException, DigitalObjectNotFoundException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }/* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
      */
     public boolean isWritable(URI arg0) {
