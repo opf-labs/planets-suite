@@ -7,6 +7,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
@@ -52,7 +53,7 @@ public class OdfValidator implements Validate {
 	
 	public static final String NAME = "OdfValidator";
 	
-	private static Log log = LogFactory.getLog(OdfValidator.class);
+	private static Logger log = Logger.getLogger(OdfValidator.class.getName());
 	
 	private static FormatRegistry techReg = FormatRegistryFactory.getFormatRegistry();
 	

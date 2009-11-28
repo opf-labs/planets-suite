@@ -124,7 +124,7 @@ public class OdfValidatorTest {
 			DigitalObject testIn = new DigitalObject.Builder(Content.byReference(currentFile)).title(currentFile.getName()).build();
 			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(currentFile));
 			
-			ValidateResult vr = validator.validate(testIn, format, null);
+			ValidateResult vr = validator.validate(testIn, format, params);
 			
 			assertTrue("ValidateResult should not be NULL!", vr!=null);
 			System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());

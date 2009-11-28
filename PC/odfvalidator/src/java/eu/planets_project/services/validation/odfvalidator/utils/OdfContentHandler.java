@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,7 +60,7 @@ public class OdfContentHandler {
 	private static File ODF_VALIDATOR_TMP = null;
 	private static File xmlTmp = null;
 	
-	private static Log log = LogFactory.getLog(OdfContentHandler.class);
+	private static Logger log = Logger.getLogger(OdfContentHandler.class.getName());
 	
 	
 	/**
@@ -94,7 +95,7 @@ public class OdfContentHandler {
 		// if there are no files contained, it's not an Odf file ;-)
 		// return an empty list and say sorry...
 		if(files.length==0) {
-			log.error("[OdfContentHandler] extractOdfSubFiles(): The input file '" + odfFile.getName() + "' is NOT an ODF file! Sorry, returning with error!");
+			log.severe("[OdfContentHandler] extractOdfSubFiles(): The input file '" + odfFile.getName() + "' is NOT an ODF file! Sorry, returning with error!");
 			isNotODF = true;
 			return new HashMap<String, List<File>>();
 		}
@@ -376,7 +377,7 @@ public class OdfContentHandler {
 		}
 		
 		if(files.length==0) {
-			log.error("[OdfContentHandler] intialize(): The input file '" + odfFile.getName() + "' is NOT an ODF file! Sorry, returning with error!");
+			log.severe("[OdfContentHandler] intialize(): The input file '" + odfFile.getName() + "' is NOT an ODF file! Sorry, returning with error!");
 			isNotODF = true;
 			return odfXmlParts;
 		}
@@ -475,7 +476,7 @@ public class OdfContentHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		log.warn("Mismatch warning: 'META-INF/manifest.xml' mimetype should be: '" + mimeType + "', BUT is: '" + mediaType + "!");
+		log.warning("Mismatch warning: 'META-INF/manifest.xml' mimetype should be: '" + mimeType + "', BUT is: '" + mediaType + "!");
 		manifestMimeType = mediaType;
 		return false;
 	}

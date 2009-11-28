@@ -1,8 +1,6 @@
 package eu.planets_project.services.validation.odfvalidator.utils;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -10,29 +8,22 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.sun.org.apache.xerces.internal.util.EntityResolver2Wrapper;
-
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 
 public class CoreOdfValidator {
@@ -69,7 +60,7 @@ public class CoreOdfValidator {
 	private static final String JING_HOME = System.getenv("JING_HOME");
 	private static final String JING = "jing.jar";
 	
-	private static Log log = LogFactory.getLog(CoreOdfValidator.class);
+	private static Logger log = Logger.getLogger(CoreOdfValidator.class.getName());
 	
 	private static OdfValidatorResult result = null;
 	
@@ -184,8 +175,8 @@ public class CoreOdfValidator {
 		else {
 			result.setValid(odfSubFile, false);
 			result.setError(odfSubFile, out);
-			log.error("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
-			log.error("Message: " + out);
+			log.severe("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+			log.severe("Message: " + out);
 		}
 		return result;
 	}
@@ -340,13 +331,13 @@ public class CoreOdfValidator {
 						continue;
 					}
 					else {
-						log.warn("Strict user schema provided, but missing doc schema! Please provide the doc schema first, because it is referenced in the strict schema! Then try again, thanks!");
-						log.warn("Using default schemas instead!");
+						log.warning("Strict user schema provided, but missing doc schema! Please provide the doc schema first, because it is referenced in the strict schema! Then try again, thanks!");
+						log.warning("Using default schemas instead!");
 					}
 				}
 			}
 			if(STRICT_VALIDATION && USE_USER_DOC_SCHEMA && !USE_USER_DOC_STRICT_SCHEMA) {
-				log.warn("WARNING: You have enabled STRICT VALIDATION and passed only a not-strict user-doc-schema! Disabling STRICT_VALIDATION!");
+				log.warning("WARNING: You have enabled STRICT VALIDATION and passed only a not-strict user-doc-schema! Disabling STRICT_VALIDATION!");
 				STRICT_VALIDATION = false;
 			}
 		}
@@ -361,7 +352,7 @@ public class CoreOdfValidator {
 			try {
 				url = URI.create(parameterValue.substring(parameterValue.indexOf("=")+1)).toURL();
 			} catch (MalformedURLException e) {
-				log.error("No valid URL found in this Parameter!");
+				log.severe("No valid URL found in this Parameter!");
 				return null;
 			}
 		}

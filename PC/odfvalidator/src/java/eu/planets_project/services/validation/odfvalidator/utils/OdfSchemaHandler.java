@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,7 +50,7 @@ public class OdfSchemaHandler {
 	private static String SCHEMAS_NAME = "SCHEMAS";
 	private static boolean schemasProvided = false;
 	
-	private static Log log = LogFactory.getLog(OdfSchemaHandler.class);
+	private static Logger log = Logger.getLogger(OdfSchemaHandler.class.getName());
 	
 	public OdfSchemaHandler() {
 		ODF_SH_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), ODF_SH_TMP_NAME);
@@ -110,7 +111,7 @@ public class OdfSchemaHandler {
 			log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML 2 Schema file: " + schemaFiles.get(MATHML2_SCHEMA).getName());
 			return schemaFiles.get(MATHML2_SCHEMA);
 		}
-		log.error("Unable to retrieve MathML schema or DTD for this version!!!");
+		log.severe("Unable to retrieve MathML schema or DTD for this version!!!");
 		return null;
 	}
 	
@@ -142,7 +143,7 @@ public class OdfSchemaHandler {
 	public File createUserDocSchema(String version, String schemaContent) {
 		File userDocSchema = null;
 		if(schemaContent.equalsIgnoreCase("")|| schemaContent==null) {
-			log.warn("WARN: User schema not found! Received String is empty!");
+			log.warning("WARN: User schema not found! Received String is empty!");
 			log.info("Trying to lookup DEFAULT doc-schema...");
 			userDocSchema = retrieveOdfDocSchemaFile(version, false);
 		}
@@ -161,7 +162,7 @@ public class OdfSchemaHandler {
 			log.info("Reading content from URL (" + docSchemaURL.toString() + ")...please hang on!");
 			FileUtils.writeInputStreamToFile(docSchemaURL.openStream(), userDocSchema);
 		} catch (IOException e) {
-			log.error("ERROR: Could not open URL: " + docSchemaURL.toString() + "!");
+			log.severe("ERROR: Could not open URL: " + docSchemaURL.toString() + "!");
 			userDocSchema = retrieveOdfDocSchemaFile(version, false);
 		}
 		return userDocSchema;
@@ -171,7 +172,7 @@ public class OdfSchemaHandler {
 		File userDocStrictSchema = null;
 		if(schemaContent.equalsIgnoreCase("")
 				|| schemaContent==null) {
-			log.warn("WARN: User strict schema not found! Received String is empty!");
+			log.warning("WARN: User strict schema not found! Received String is empty!");
 			log.info("Trying to lookup DEFAULT doc-strict-schema...");
 			userDocStrictSchema = retrieveOdfDocSchemaFile(version, true);
 		}
@@ -196,7 +197,7 @@ public class OdfSchemaHandler {
 			schemaContent = new String(FileUtils.writeInputStreamToBinary(strictSchemaUrl.openStream()));
 			userDocStrictSchema = createUserDocStrictSchema(version, schemaContent, userDocSchema);
 		} catch (IOException e) {
-			log.error("Could not open URL: " + strictSchemaUrl.toString() + "!");
+			log.severe("Could not open URL: " + strictSchemaUrl.toString() + "!");
 			userDocStrictSchema = retrieveOdfDocSchemaFile(version, true);
 		}
 		return userDocStrictSchema;
@@ -215,7 +216,7 @@ public class OdfSchemaHandler {
 			log.info("Reading content from URL (" + manifestSchemaUrl.toString() + ")...please hang on!");
 			FileUtils.writeInputStreamToFile(manifestSchemaUrl.openStream(), userManifestSchema);
 		} catch (IOException e) {
-			log.error("ERROR: Could not open URL: " + manifestSchemaUrl.toString() + "!");
+			log.severe("ERROR: Could not open URL: " + manifestSchemaUrl.toString() + "!");
 			userManifestSchema = retrieveOdfDocSchemaFile(version, false);
 		}
 		return userManifestSchema;
@@ -230,10 +231,10 @@ public class OdfSchemaHandler {
 		boolean mathmlSchemasProvided = provideMathMLSchemas(MATHMLSCHEMAS_PROPERTIES);
 		
 		if(!odfSchemasProvided) {
-			log.error("ERROR: Unable to provide ODF schemas listed in '" + ODF_SCHEMA_LIST + "'!");
+			log.severe("ERROR: Unable to provide ODF schemas listed in '" + ODF_SCHEMA_LIST + "'!");
 		}
 		if(!mathmlSchemasProvided) {
-			log.error("ERROR: Unable to provide MathML schemas listed in '" + MATHMLSCHEMAS_PROPERTIES + "'!");
+			log.severe("ERROR: Unable to provide MathML schemas listed in '" + MATHMLSCHEMAS_PROPERTIES + "'!");
 		}
 		if(odfSchemasProvided && mathmlSchemasProvided) {
 			schemasProvided = true;
