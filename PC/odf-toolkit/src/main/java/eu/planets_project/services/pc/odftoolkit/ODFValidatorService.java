@@ -4,13 +4,11 @@ package eu.planets_project.services.pc.odftoolkit;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.jws.WebService;
 
 import odfvalidator.ODFValidatorWrapper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -35,7 +33,7 @@ public class ODFValidatorService implements Validate {
     public static final String NAME="ODFValidatorService";
     
     @SuppressWarnings("unused")
-	private static Log log = LogFactory.getLog(ODFValidatorService.class);
+	private static Logger log = Logger.getLogger(ODFValidatorService.class.getName());
     
     /**
      * @see eu.planets_project.services.validate.Validate#describe()

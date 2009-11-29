@@ -5,14 +5,12 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
@@ -43,7 +41,7 @@ import eu.planets_project.services.utils.ProcessRunner;
         endpointInterface = "eu.planets_project.services.identify.Identify" )
 public class FileIdentify implements Identify {
 	/** The logger */
-    private static Log _log = LogFactory.getLog(FileIdentify.class);
+    private static Logger log = Logger.getLogger(FileIdentify.class.getName());
 
 	/** The service name */
     public static final String NAME = "FileIdentify";
@@ -107,7 +105,7 @@ public class FileIdentify implements Identify {
         String mime = runner.getProcessOutputAsString().trim();
         // Let's check that it found the file, this should never happen but who knows
         if (mime.indexOf(FileServiceSetup.getProperties().getProperty("cygwin.message.nofile")) != -1) {
-        	FileIdentify._log.debug("File failed to find an error");
+        	FileIdentify.log.fine("File failed to find an error");
         	return this.returnWithErrorMessage(mime, 1);
         }
         
@@ -134,7 +132,7 @@ public class FileIdentify implements Identify {
     	// Create and empty service report and a null type list
         List<URI> type = null;
         // Log the message
-        FileIdentify._log.error(message);
+        FileIdentify.log.severe(message);
         // Set the error state and message in the service report
         ServiceReport rep = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, message);
         // Return a new IdentifyResult created from the ServiceReport and the null types

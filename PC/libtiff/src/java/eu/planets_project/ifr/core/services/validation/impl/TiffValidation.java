@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -12,9 +13,6 @@ import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
@@ -61,8 +59,7 @@ public class TiffValidation implements Validate, Serializable
 	 */
 	public static final String NAME = "TiffValidation";
 	
-	private static final Log LOG = 
-		LogFactory.getLog(TiffValidation.class);
+	private static final Logger log = Logger.getLogger(TiffValidation.class.getName());
 
 	private byte[] bytes;
 
@@ -153,10 +150,10 @@ public class TiffValidation implements Validate, Serializable
 		/* example how to read TIFF tags */
 		IntByReference iref = new IntByReference();
 		if(TiffLibrary.INSTANCE.TIFFGetField(tiff, TIFF_IMAGE_WIDTH, iref) != 0)
-			LOG.info("TIFF width " + iref.getValue());
+			log.info("TIFF width " + iref.getValue());
 
 		if(TiffLibrary.INSTANCE.TIFFGetField(tiff, TIFF_IMAGE_LENGTH, iref) != 0)
-			LOG.info("TIFF length " + iref.getValue());
+			log.info("TIFF length " + iref.getValue());
 
 		TiffLibrary.INSTANCE.TIFFClose(tiff);
 		return true;
@@ -465,7 +462,7 @@ public class TiffValidation implements Validate, Serializable
 	{
 		public void callback(String module, String fmt)
 		{
-			LOG.error(module + fmt);
+			log.severe(module + fmt);
 		}
 	}
 
@@ -473,7 +470,7 @@ public class TiffValidation implements Validate, Serializable
 	{
 		public void callback(String module, String fmt)
 		{
-			LOG.debug(module + fmt);
+			log.severe(module + fmt);
 		}
 	}
 }

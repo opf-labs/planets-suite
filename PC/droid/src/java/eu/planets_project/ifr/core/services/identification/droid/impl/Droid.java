@@ -8,13 +8,11 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
@@ -47,7 +45,7 @@ import eu.planets_project.services.utils.FileUtils;
 @StreamingAttachment(parseEagerly = true)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class Droid implements Identify, Serializable {
-    private static Log log = LogFactory.getLog(Droid.class);
+    private static Logger log = Logger.getLogger(Droid.class.getName());
 
     /**
      * The e number of ms. we want to wait in one waiting step for the
@@ -141,7 +139,7 @@ public final class Droid implements Identify, Serializable {
             controller.readSigFile(sigFileLocation);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("Failed to read sig file");
+            log.severe("Failed to read sig file");
         }
         log.info("Attempting to identify " + tempFile.getAbsolutePath());
         log.info("File is of length " + tempFile.length());

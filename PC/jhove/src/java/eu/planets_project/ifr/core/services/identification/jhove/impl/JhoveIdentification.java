@@ -9,13 +9,11 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -50,7 +48,7 @@ import eu.planets_project.services.utils.FileUtils;
 @StreamingAttachment(parseEagerly = true)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class JhoveIdentification implements Identify, Serializable {
-    private static Log log = LogFactory.getLog(JhoveIdentification.class);
+    private static Logger log = Logger.getLogger(JhoveIdentification.class.getName());
     /***/
     static final String NAME = "JhoveIdentification";
     /***/

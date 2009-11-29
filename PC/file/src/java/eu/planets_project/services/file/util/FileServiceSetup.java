@@ -6,9 +6,7 @@ package eu.planets_project.services.file.util;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 /**
  * This class handles the checking of the setup for the FileIdentify service.
@@ -21,7 +19,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class FileServiceSetup {
 	/** The logger */
-    private static Log _log = LogFactory.getLog(FileServiceSetup.class);
+    private static Logger log = Logger.getLogger(FileServiceSetup.class.getName());
     /** Properties file location and Properties holder */
 	private static final String PROPERTIES_PATH = "eu/planets_project/services/file/FileIdentify.properties";
 	/** Location of cygwin file.exe **/
@@ -83,7 +81,7 @@ public class FileServiceSetup {
 		} catch (IOException exp) {
 			// Hopefully this won't happen, it's unrecoverable if it does
 			// We'll log it and then set _propertes to null
-			FileServiceSetup._log.debug("IOException processing properties file", exp);
+			FileServiceSetup.log.fine("IOException processing properties file: "+ exp.getMessage());
 			FileServiceSetup._properties = null;
 		}
 	}

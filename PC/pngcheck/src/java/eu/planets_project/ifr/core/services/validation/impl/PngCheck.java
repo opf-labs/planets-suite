@@ -5,14 +5,12 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -50,8 +48,7 @@ public final class PngCheck implements Validate, Serializable {
             .create("info:pronom/fmt/11"), URI.create("info:pronom/fmt/12"),
             URI.create("info:pronom/fmt/13"));
     /***/
-    private static final Log LOG = LogFactory
-            .getLog(PngCheck.class);
+    private static final Logger log = Logger.getLogger(PngCheck.class.getName());
 
     /***/
     // private byte[] bytes;
@@ -74,12 +71,12 @@ public final class PngCheck implements Validate, Serializable {
         List<String> commands = Arrays.asList("pngcheck", tempFile
                 .getAbsolutePath());
         ProcessRunner pr = new ProcessRunner(commands);
-        LOG.debug("Executing: " + commands);
+        log.fine("Executing: " + commands);
         pr.run();
         /* Print some debugging info on the call: */
         String output = pr.getProcessOutputAsString();
-        LOG.debug("PngCheck call output: " + output);
-        LOG.debug("PngCheck call error: " + pr.getProcessErrorAsString());
+        log.fine("PngCheck call output: " + output);
+        log.fine("PngCheck call error: " + pr.getProcessErrorAsString());
         return output.contains("OK:");
     }
 
