@@ -250,7 +250,6 @@ public class OdfContentHandler {
 		}
 		
 		File cleanedTmp = new File(xmlTmp, FileUtils.randomizeFileName(mathmlXML.getName()));
-		String finalStr = content.toString();
 		FileUtils.writeStringToFile(content.toString(), cleanedTmp);
 		
 		return cleanedTmp;
@@ -282,7 +281,7 @@ public class OdfContentHandler {
 		return !isNotODF;
 	}
 
-	public List<File> getXmlComponents() {
+	public List<File> getOdfSubFiles() {
 		List<File> subFiles = new ArrayList<File>();
 		Set<String> keys = odfSubFiles.keySet();
 		for (String string : keys) {

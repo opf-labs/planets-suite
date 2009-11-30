@@ -200,6 +200,25 @@ public class OdfSchemaHandler {
 		return userDocStrictSchema;
 	}
 	
+	public File createUserDsigSchema(String schemaContent) {
+		File userDsigSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userDsigSchema.rng"));
+		FileUtils.writeStringToFile(schemaContent, userDsigSchema);
+		return userDsigSchema;
+	}
+	
+	public File createUserDsigSchemaFromUrl(String version, URL dsigSchemaUrl) {
+		File userDsigSchema = null;
+		try {
+			userDsigSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userDsigSchema.rng"));
+			log.info("Reading content from URL (" + dsigSchemaUrl.toString() + ")...please hang on!");
+			FileUtils.writeInputStreamToFile(dsigSchemaUrl.openStream(), userDsigSchema);
+		} catch (IOException e) {
+			log.severe("ERROR: Could not open URL: " + dsigSchemaUrl.toString() + "!");
+			userDsigSchema = retrieveDsigSchema(version);
+		}
+		return userDsigSchema;
+	}
+	
 	public File createUserManifestSchema(String schemaContent) {
 		File userManifestSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userManifestSchema.rng"));
 		FileUtils.writeStringToFile(schemaContent, userManifestSchema);

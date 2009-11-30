@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.XMLConstants;
@@ -25,14 +26,17 @@ import eu.planets_project.services.utils.ProcessRunner;
 
 public class CoreOdfValidator {
 	
+	
 	private static final String DOC_STRICT_SCHEMA_URL_MARKER = "doc-strict-schema-url=";
 	private static final String MANIFEST_SCHEMA_URL_MARKER = "manifest-schema-url=";
 	private static final String DOC_SCHEMA_URL_MARKER = "doc-schema-url=";
+	private static final String DSIG_SCHEMA_URL_MARKER = "dsig-schema-url=";
 	
+	private static final String USER_DSIG_SCHEMA_PARAM = "user-dsig-schema";
 	private static final String USER_DOC_STRICT_SCHEMA_PARAM = "user-doc-strict-schema";
 	private static final String USER_DOC_SCHEMA_PARAM = "user-doc-schema";
 	private static final String USER_MANIFEST_SCHEMA_PARAM = "user-manifest-schema";
-	private static String STRICT_PARAM_NAME = "strictValidation";
+	private static String STRICT_VALIDATION_PARAM = "strict-validation";
 	
 	private static final String FORMULA_MIMETYPE = "application/vnd.oasis.opendocument.formula";
 	
@@ -41,11 +45,13 @@ public class CoreOdfValidator {
 	private static boolean USE_USER_DOC_SCHEMA = false;
 	private static boolean USE_USER_DOC_STRICT_SCHEMA = false;
 	private static boolean USE_USER_MANIFEST_SCHEMA = false;
+	private static boolean USE_USER_DSIG_SCHEMA = false;
 	
 	// User schema files, if provided
 	private static File USER_DOC_SCHEMA = null;
 	private static File USER_DOC_STRICT_SCHEMA = null;
 	private static File USER_MANIFEST_SCHEMA = null;
+	private static File USER_DSIG_SCHEMA = null;
 	
 	private static HashMap<String, File> schemaList = new HashMap<String, File>();
 	
@@ -65,6 +71,7 @@ public class CoreOdfValidator {
 	
 	
 	public OdfValidatorResult validate(File odfFile, List<Parameter> parameters) {
+		log.setLevel(Level.INFO);
 		contentHandler = new OdfContentHandler(odfFile);
 		result = new OdfValidatorResult(odfFile);
 		
@@ -86,9 +93,9 @@ public class CoreOdfValidator {
 		}
 		
 		// list the contained subfiles in this ODF container, as not all sub files are mandatory!
-		List<File> xmlParts = new ArrayList<File>(contentHandler.getXmlComponents());
+		List<File> xmlParts = new ArrayList<File>(contentHandler.getOdfSubFiles());
 		// list them in the result
-		result.setXmlComponents(xmlParts);
+		result.setOdfSubFiles(xmlParts);
 		
 		// get the version of this ODF file and note in result
 		version = contentHandler.getOdfVersion();
@@ -124,35 +131,35 @@ public class CoreOdfValidator {
 		return result;
 	}
 	
-	private static OdfValidatorResult validateFile(File odfXmlComponent, OdfValidatorResult result) {
-		String name = odfXmlComponent.getName();
+	private static OdfValidatorResult validateFile(File odfSubFiles, OdfValidatorResult result) {
+		String name = odfSubFiles.getName();
 
 		// Do we have a FORMULA (MathML) file?		
 		if(name.equalsIgnoreCase(OdfContentHandler.CONTENT_XML)) {
 			if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)) {
-				result = validateMathML(odfXmlComponent, schemaHandler.retrieveMathML101Dtd(), schemaList.get("mathml"), result);
+				result = validateMathML(odfSubFiles, schemaList.get("mathml"), result);
 			}
 			else {
-				result = validateSubFile(odfXmlComponent, schemaList.get("doc"), result);
+				result = validateSubFile(odfSubFiles, schemaList.get("doc"), result);
 			}
 		}
 		
 		// do we have the manifest.xml file here? Then validate it against the manifest schema!
 		if(name.equalsIgnoreCase(OdfContentHandler.MANIFEST_XML)) {
-			result = validateSubFile(odfXmlComponent, schemaList.get("manifest"), result);
+			result = validateSubFile(odfSubFiles, schemaList.get("manifest"), result);
 		}
 		
 		// do we have a signature file here, then validate it against the dsig schema
 		if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2) && name.equalsIgnoreCase(OdfContentHandler.DOC_DSIGS_XML)
 				|| name.equalsIgnoreCase(OdfContentHandler.MACRO_DSIGS_XML)) {
-			result = validateSubFile(odfXmlComponent, schemaList.get("dsig"), result);
+			result = validateSubFile(odfSubFiles, schemaList.get("dsig"), result);
 		}
 		
 		// Or do we have a 'normal' ODF subfile (content.xml, settings.xml, styles.xml, meta.xml)?
 		if(name.equalsIgnoreCase(OdfContentHandler.SETTINGS_XML)
 				|| name.equalsIgnoreCase(OdfContentHandler.STYLES_XML)
 				|| name.equalsIgnoreCase(OdfContentHandler.META_XML)) {
-			result = validateSubFile(odfXmlComponent, schemaList.get("doc"), result);
+			result = validateSubFile(odfSubFiles, schemaList.get("doc"), result);
 		}
 		return result;
 	}
@@ -178,9 +185,7 @@ public class CoreOdfValidator {
 		return result;
 	}
 
-	private static OdfValidatorResult validateMathML(File mathmlFile, File mathmlDtd, File mathmlSchema, OdfValidatorResult result) {
-//		InputSource source = new InputSource(new FileInputStream(mathmlSchema));
-//		StreamSource source = new StreamSource(mathmlSchema);
+	private static OdfValidatorResult validateMathML(File mathmlFile, File mathmlSchema, OdfValidatorResult result) {
 
 		SchemaFactory factory = 
 		    SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -278,7 +283,22 @@ public class CoreOdfValidator {
 		if(parameters!=null && parameters.size()>0) {
 			for (Parameter parameter : parameters) {
 				String name = parameter.getName();
-				if(name.equalsIgnoreCase(STRICT_PARAM_NAME)) {
+				// Check if a custom user DSIG schema for validation is passed...
+				if(name.equalsIgnoreCase(USER_DSIG_SCHEMA_PARAM)) {
+					if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2)) {
+						String value = parameter.getValue();
+						URL dsig_schema_url = parseForURL(value);
+						if(dsig_schema_url!=null) {
+							USER_DSIG_SCHEMA = schemaHandler.createUserDsigSchemaFromUrl(version, dsig_schema_url);
+						}
+						else {
+							USER_DSIG_SCHEMA = schemaHandler.createUserDsigSchema(value);
+						}
+						USE_USER_DSIG_SCHEMA = true;
+						continue;
+					}
+				}
+				if(name.equalsIgnoreCase(STRICT_VALIDATION_PARAM)) {
 					if(!version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2)) {
 						STRICT_VALIDATION = Boolean.parseBoolean(parameter.getValue());
 					}
@@ -345,7 +365,8 @@ public class CoreOdfValidator {
 		URL url = null;
 		if(parameterValue.contains(DOC_SCHEMA_URL_MARKER) 
 				|| parameterValue.contains(MANIFEST_SCHEMA_URL_MARKER)
-				|| parameterValue.contains(DOC_STRICT_SCHEMA_URL_MARKER)) {
+				|| parameterValue.contains(DOC_STRICT_SCHEMA_URL_MARKER)
+				|| parameterValue.contains(DSIG_SCHEMA_URL_MARKER)) {
 			try {
 				url = URI.create(parameterValue.substring(parameterValue.indexOf("=")+1)).toURL();
 			} catch (MalformedURLException e) {

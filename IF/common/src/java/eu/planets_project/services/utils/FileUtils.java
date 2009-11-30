@@ -737,7 +737,7 @@ public final class FileUtils {
         long size = calculateSize(files);
         boolean filesToLarge = size > targetMediaSizeInBytes;
         if (filesToLarge) {
-            log.severe("Attention: files size (" + size
+            log.warning("Attention: files size (" + size
                     + " bytes) too big for target medium ("
                     + targetMediaSizeInBytes + " bytes) !");
         } else {
@@ -993,7 +993,7 @@ public final class FileUtils {
 //			int fileCount = folder.list().length;
 			org.apache.commons.io.FileUtils.cleanDirectory(folder);
 			for (File file : filesToDelete) {
-				log.severe("[FileUtils] Deleted file: " + file.getName());
+				log.info("[FileUtils] Deleted file: " + file.getName());
 			}
 			log.info("Deleted " + fileCount + " files in: " + folder.getAbsolutePath());
 		} catch (IOException e) {

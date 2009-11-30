@@ -406,7 +406,7 @@ public class OdfValidatorResult {
 		validatedList.put(odfXmlComponent, new Boolean(valid));
 	}
 
-	public void setXmlComponents(List<File> xmlParts) {
+	public void setOdfSubFiles(List<File> xmlParts) {
 		xmlComponents = xmlParts;
 	}
 	

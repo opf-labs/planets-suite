@@ -63,7 +63,8 @@ public class OdfValidator implements Validate {
 	    sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
 	    sd.description("This is an ODF Validator service. It uses the tool 'jing' to check all components of a ODF file for their validity." +
 	    		"It supports ODF 1.0, ODF 1.1 fully and ODF 1.2 in a preliminary state." + NEWLINE + 
-	    		"You can pass custom RelaxNG schema files to validate against. " + NEWLINE +
+	    		"'OpenOffice Math' files that contain MathML syntax are supported and validated against the MathML 2 schema file." + NEWLINE + 
+	    		"You can pass custom RelaxNG schema files to validate the regarding ODF subfiles against. " + NEWLINE +
 	    		"You have two ways of providing the custom RelaxNG schema: 1) You can pass the schema as a String or " +
 	    		"												   2) pass a URL where the schema can be retrieved." + NEWLINE + 
 	    		"If you don't pass a custom schema, the official ODF schemas are used for validation: " + NEWLINE +
@@ -72,12 +73,14 @@ public class OdfValidator implements Validate {
 	    		"---------------------------------------------------------" + NEWLINE +
 	    		"The schemas are retrieved automatically, depending on the version of the ODF input file.");
 	    sd.classname(this.getClass().getCanonicalName());
-	    sd.version("1.0");
+	    sd.version("2.0");
 	    sd.name(NAME);
 	    sd.type(Validate.class.getCanonicalName());
 	    List<Parameter> parameterList = new ArrayList<Parameter>();
 	    
-	    Parameter user_doc_schema_param = new Parameter.Builder("user-doc-schema", "[1) The RwlxNG-Schema read to a String / 2) a URL where the schema can be retrieved from.]")
+	    Parameter user_doc_schema_param = 
+	    	
+	    	new Parameter.Builder("user-doc-schema", "[1) The RwlxNG-Schema read to a String / 2) a URL where the schema can be retrieved from.]")
 	    									.type("String")
 	            							.description("1) You can pass a custom doc-schema file to validate against, read into a String." + NEWLINE + 
 	            										 "2) You can also pass a URL to load the schema. " + NEWLINE + 
@@ -88,7 +91,9 @@ public class OdfValidator implements Validate {
 	            							.build();
 	    parameterList.add(user_doc_schema_param);
 	    
-	    Parameter user_doc_strict_schema_param = new Parameter.Builder("user-doc-strict-schema", "[1) The Schema read to a String / 2) a URL where the schema can be retrieved from.]")
+	    Parameter user_doc_strict_schema_param = 
+	    	
+	    	new Parameter.Builder("user-doc-strict-schema", "[1) The Schema read to a String / 2) a URL where the schema can be retrieved from.]")
 											.type("String")
 											.description("1) You can pass a custom doc-strict-schema file to validate against, read into a String." + NEWLINE + 
 	            										 "2) You can also pass a URL to load the schema. " + NEWLINE + 
@@ -101,7 +106,9 @@ public class OdfValidator implements Validate {
 											.build();
 	    parameterList.add(user_doc_strict_schema_param);
 	    
-	    Parameter user_manifest_schema_param = new Parameter.Builder("user-manifest-schema", "[1) The Schema read to a String / 2) a URL where the schema can be retrieved from.]")
+	    Parameter user_manifest_schema_param = 
+	    	
+	    	new Parameter.Builder("user-manifest-schema", "[1) The Schema read to a String / 2) a URL where the schema can be retrieved from.]")
 											.type("String")
 											.description("1) You can pass a custom manifest-schema file to validate against, read into a String." + NEWLINE + 
 	            										 "2) You can also pass a URL to load the schema. " + NEWLINE + 
@@ -112,7 +119,22 @@ public class OdfValidator implements Validate {
 											.build();
 	    parameterList.add(user_manifest_schema_param);
 	    
-	    Parameter strict_validation_param = new Parameter.Builder("strictValidation", "true/false")
+	    Parameter user_dsig_schema_param = 
+	    	
+	    	new Parameter.Builder("user-dsig-schema", "[1) The Schema read to a String / 2) a URL where the schema can be retrieved from.]")
+											.type("String")
+											.description("1) You can pass a custom RNG dsig-schema file to validate against, read into a String." + NEWLINE + 
+	            										 "2) You can also pass a URL to load the schema. " + NEWLINE + 
+	            										 "To indicate this, please use 'dsig-schema-url=' marker. Please see the following example:" + NEWLINE +
+	            										 "EXAMPLE:" + NEWLINE +  
+	            										 "--------" + NEWLINE +
+	            										 "user-dsig-schema=dsig-schema-url=http://docs.oasis-open.org/office/v1.2/part3/cd01/OpenDocument-dsig-schema-v1.2-cd1.rng" + NEWLINE + 
+	            										 "The dsig-schema is used to validate all signatures attached to a document. Signing documents is possible since v1.2, so for all " +
+	            										 "files with a lower version this feature is not applicable!")
+											.build();
+	    parameterList.add(user_dsig_schema_param);
+	    
+	    Parameter strict_validation_param = new Parameter.Builder("strict-validation", "true/false")
 	    									.type("boolean")
 	    									.description("Enable STRICT Validation (i.e. validate against the strict-schema. Default is false/disabled." + NEWLINE + 
 	    											"PLEASE NOTE: 1) If you enable STRICT validation and pass a [user-doc-schema] without passing a [user-doc-strict-schema], STRICT validation will be disabled." + NEWLINE + 

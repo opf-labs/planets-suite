@@ -61,7 +61,7 @@ public class OdfValidatorTest {
 	FormatRegistry techReg = FormatRegistryFactory.getFormatRegistry();
 	
 	static List<Parameter> params = new ArrayList<Parameter>();
-	static List<Parameter> v11_Params = new ArrayList<Parameter>();
+	static List<Parameter> v12_params = new ArrayList<Parameter>();
 	static List<Parameter> v12_Params = new ArrayList<Parameter>();
 	
 	static File[] testFiles = null;
@@ -81,27 +81,9 @@ public class OdfValidatorTest {
 		Parameter strictValidation = new Parameter.Builder("strictValidation", "true").build();
 		params.add(strictValidation);
 		
-//		Parameter v11_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readTxtFileIntoString(v11UserDocSchema)).build();
-//		v11_Params.add(v11_user_doc_schema);
-		Parameter v11_user_doc_schema = new Parameter.Builder("user-doc-schema", "doc-schema-url=http://docs.oasis-open.org/office/v1.1/OS/OpenDocument-schema-v1.1.rng").build();
-		v11_Params.add(v11_user_doc_schema);
-//		Parameter v11_user_doc_strict_schema = new Parameter.Builder("user-doc-strict-schema", FileUtils.readTxtFileIntoString(v11UserDocStrictSchema)).build();
-//		v11_Params.add(v11_user_doc_strict_schema);
-//		Parameter v11_user_doc_strict_schema = new Parameter.Builder("user-doc-strict-schema", "doc-strict-schema-url=http://docs.oasis-open.org/office/v1.1/OS/OpenDocument-strict-schema-v1.1.rng").build();
-//		v11_Params.add(v11_user_doc_strict_schema);
-//		Parameter v11_user_manifest_schema = new Parameter.Builder("user-manifest-schema", FileUtils.readTxtFileIntoString(v11UserManifestSchema)).build();
-//		v11_Params.add(v11_user_manifest_schema);
-//		Parameter v11_strict_validation = new Parameter.Builder("strictValidation", "true").build();
-//		v11_Params.add(v11_strict_validation);
+		Parameter v12_user_dsig_schema = new Parameter.Builder("user-dsig-schema", "dsig-schema-url=http://docs.oasis-open.org/office/v1.2/part3/cd01/OpenDocument-dsig-schema-v1.2-cd1.rng").build();
+		v12_params.add(v12_user_dsig_schema);
 //		
-//		Parameter v12_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readTxtFileIntoString(v12UserDocSchema)).build();
-//		v12_Params.add(v12_user_doc_schema);
-////		Parameter v12_user_doc_strict_schema = new Parameter.Builder("user-doc-strict-schema", FileUtils.readTxtFileIntoString(v12UserDocSchema)).build();
-////		v12_Params.add(v12_user_doc_strict_schema);
-//		Parameter v12_strict_validation  = new Parameter.Builder("strictValidation", "true").build();
-//		v12_Params.add(v12_strict_validation);
-////		Parameter v12_user_manifest_schema = new Parameter.Builder("user-manifest-schema", FileUtils.readTxtFileIntoString(v11UserManifestSchema)).build();
-////		v12_Params.add(v12_user_manifest_schema);
 		validator = ServiceCreator.createTestService(Validate.QNAME, OdfValidator.class, WSDL);
 	}
 	
@@ -124,7 +106,7 @@ public class OdfValidatorTest {
 			DigitalObject testIn = new DigitalObject.Builder(Content.byReference(currentFile)).title(currentFile.getName()).build();
 			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(currentFile));
 			
-			ValidateResult vr = validator.validate(testIn, format, params);
+			ValidateResult vr = validator.validate(testIn, format, v12_params);
 			
 			assertTrue("ValidateResult should not be NULL!", vr!=null);
 			System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
