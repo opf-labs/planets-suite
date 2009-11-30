@@ -41,9 +41,14 @@ public class DiaMigrationServiceTest extends TestCase {
     private Migrate migrationService = null;
 
     /**
-     * File path to the test files used by this test class.
+     * File path to the dia test files used by this test class.
      */
-    private final File TEST_FILE_PATH = new File("PA/dia/test/resources/");
+    private final File DIA_TEST_FILE_PATH = new File("tests/test-files/images/vector/dia");
+
+    /**
+     * File path to the Xfig test files used by this test class.
+     */
+    private final File FIG_TEST_FILE_PATH = new File("tests/test-files/images/vector/fig");
 
     private Set<URI> inputFormatURIs;
 
@@ -83,7 +88,7 @@ public class DiaMigrationServiceTest extends TestCase {
 	/**
 	 * Full path to the Dia test file to use.
 	 */
-	final File diaTestFile = new File(TEST_FILE_PATH, diaTestFileName);
+	final File diaTestFile = new File(DIA_TEST_FILE_PATH, diaTestFileName);
 
 	final URI diaFormatURI = new URI("info:pronom/x-fmt/381"); // DIA URI
 	final URI svgFormatURI = new URI("info:pronom/fmt/92"); // SVG version
@@ -122,7 +127,7 @@ public class DiaMigrationServiceTest extends TestCase {
 	/**
 	 * Full path to the Fig test file to use.
 	 */
-	final File figTestFile = new File(TEST_FILE_PATH, figTestFileName);
+	final File figTestFile = new File(FIG_TEST_FILE_PATH, figTestFileName);
 
 	// Fig format URI
 	final URI diaFormatURI = new URI("info:planets/fmt/ext/fig");
