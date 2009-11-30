@@ -1,6 +1,7 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.io.BufferedReader;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,15 +33,11 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.xml.bind.JAXBException;
 
-import org.richfaces.component.html.HtmlInplaceSelect;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.security.api.model.User;
-import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
-import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services;
@@ -82,7 +79,7 @@ import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
  */
 public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 
-	private PlanetsLogger log = PlanetsLogger.getLogger(ExpTypeExecutablePP.class, "testbed-log4j.xml");
+	private Log log = LogFactory.getLog(ExpTypeExecutablePP.class);
 	private HashMap<String, String> serviceTypes;
 	private ArrayList<ServiceBean> serviceBeans;
 	//mapping of service IDs in the workflow XML to ServiceBeans

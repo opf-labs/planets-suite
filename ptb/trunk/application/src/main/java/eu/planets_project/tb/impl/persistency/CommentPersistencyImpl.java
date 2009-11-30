@@ -24,7 +24,7 @@ public class CommentPersistencyImpl implements CommentPersistencyRemote {
     @PersistenceContext(unitName="testbed", type=PersistenceContextType.TRANSACTION)
     private EntityManager manager;
 
-    // A logger for this:
+    // A Log for this:
     private Log log = LogFactory.getLog(CommentPersistencyImpl.class);   
     
     /**

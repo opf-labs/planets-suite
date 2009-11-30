@@ -5,13 +5,16 @@ package eu.planets_project.tb.gui.backing.exp;
 
 import java.util.Map;
 
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import eu.planets_project.services.utils.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
@@ -21,7 +24,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
  *
  */
 public class RemoveDigitalObjectActionListener implements ActionListener {
-    private PlanetsLogger log = PlanetsLogger.getLogger(RemoveDigitalObjectActionListener.class, "testbed-log4j.xml");
+    private Log log = LogFactory.getLog(RemoveDigitalObjectActionListener.class);
 
     @SuppressWarnings("unchecked")
     public void processAction(ActionEvent anEvent) throws AbortProcessingException {

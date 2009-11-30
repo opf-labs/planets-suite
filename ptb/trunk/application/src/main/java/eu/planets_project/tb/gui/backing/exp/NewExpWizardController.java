@@ -1,6 +1,5 @@
 package eu.planets_project.tb.gui.backing.exp;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
@@ -94,11 +93,15 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.richfaces.component.html.HtmlDataTable;
 
 public class NewExpWizardController{
     
-    private static PlanetsLogger log = PlanetsLogger.getLogger(NewExpWizardController.class, "testbed-log4j.xml");
+    private static Log log = LogFactory.getLog(NewExpWizardController.class);
+    
     public NewExpWizardController() {
     }
     

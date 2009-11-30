@@ -20,12 +20,13 @@ import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 @Stateless
 public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
 	
-    private static PlanetsLogger log = PlanetsLogger.getLogger(ExperimentPersistencyImpl.class);
+    private static Log log = LogFactory.getLog(ExperimentPersistencyImpl.class);
     
 	@PersistenceContext(unitName="testbed", type=PersistenceContextType.TRANSACTION)
 	private EntityManager manager;

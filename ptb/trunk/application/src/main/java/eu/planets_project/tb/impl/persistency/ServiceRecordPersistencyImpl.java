@@ -37,7 +37,7 @@ public class ServiceRecordPersistencyImpl implements ServiceRecordPersistencyRem
     @PersistenceContext(unitName="testbed", type=PersistenceContextType.TRANSACTION)
     private EntityManager manager;
 
-    // A logger for this:
+    // A Log for this:
     private Log log = LogFactory.getLog(ServiceRecordPersistencyImpl.class);   
     
     /**

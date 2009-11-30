@@ -19,8 +19,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.model.ExperimentApproval;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
@@ -69,7 +70,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
     
     @Transient
     @XmlTransient
-    private static Log log = PlanetsLogger.getLogger(ExperimentImpl.class, "testbed-log4j.xml");
+    private static Log log = LogFactory.getLog(ExperimentImpl.class);
 	
 	public ExperimentImpl(){
 		//the experiment's stages

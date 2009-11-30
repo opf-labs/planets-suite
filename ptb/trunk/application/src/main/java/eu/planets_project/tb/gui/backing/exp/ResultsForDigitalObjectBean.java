@@ -4,9 +4,12 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.util.List;
+
 import java.util.Vector;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -17,7 +20,7 @@ import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
  *
  */
 public class ResultsForDigitalObjectBean extends DigitalObjectBean {
-    private PlanetsLogger log = PlanetsLogger.getLogger(ResultsForDigitalObjectBean.class, "testbed-log4j.xml");
+    private Log log = LogFactory.getLog(ResultsForDigitalObjectBean.class);
 
     private List<ExecutionRecordImpl> executionRecords = new Vector<ExecutionRecordImpl>();
 

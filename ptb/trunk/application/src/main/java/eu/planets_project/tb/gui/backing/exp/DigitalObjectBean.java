@@ -2,14 +2,17 @@ package eu.planets_project.tb.gui.backing.exp;
 
 import java.io.FileNotFoundException;
 
-import eu.planets_project.services.utils.PlanetsLogger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 public class DigitalObjectBean {
 	
-	private PlanetsLogger log = PlanetsLogger.getLogger(ResultsForDigitalObjectBean.class, "testbed-log4j.xml");
+	private Log log = LogFactory.getLog(ResultsForDigitalObjectBean.class);
 	
 	private String digitalObject;
 	    

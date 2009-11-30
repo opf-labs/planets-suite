@@ -17,11 +17,12 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
@@ -65,7 +66,7 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	// This annotation specifies that the property or field is not persistent.
 	@Transient
     @XmlTransient
-	private static Log log = PlanetsLogger.getLogger(EvaluationTestbedServiceTemplateImpl.class,"testbed-log4j.xml");
+	private static Log log = LogFactory.getLog(EvaluationTestbedServiceTemplateImpl.class);
 	
 	/** */
 	public EvaluationTestbedServiceTemplateImpl(){

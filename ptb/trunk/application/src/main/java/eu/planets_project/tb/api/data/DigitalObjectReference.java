@@ -3,7 +3,10 @@ package eu.planets_project.tb.api.data;
 
 import java.net.URI;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
 
 /**
  * 
@@ -14,8 +17,8 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
  *
  */
 public class DigitalObjectReference {
-    // A logger for this:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectReference.class);
+    // A Log for this:
+    private static Log log = LogFactory.getLog(DigitalObjectReference.class);
     
     // The Planets URI to which this description refers.
     private URI puri = null;

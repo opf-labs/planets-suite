@@ -11,10 +11,8 @@
 package eu.planets_project.tb.impl.serialization;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -22,15 +20,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.jfree.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Comment;
-import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.CommentPersistencyRemote;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
-import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.CommentImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.persistency.CommentPersistencyImpl;
@@ -44,7 +39,7 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 @XmlRootElement(name = "ExperimentRecord", namespace = "http://www.planets-project.eu/testbed/experiment")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ExperimentRecord {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(ExperimentRecord.class);
+    private static Log log = LogFactory.getLog(ExperimentRecord.class);
 
     /* The Experiment */
     ExperimentImpl experiment;

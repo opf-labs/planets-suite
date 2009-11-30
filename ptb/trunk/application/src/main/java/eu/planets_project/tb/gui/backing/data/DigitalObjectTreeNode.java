@@ -3,8 +3,6 @@
  */
 package eu.planets_project.tb.gui.backing.data;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
@@ -18,8 +16,11 @@ import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.List;
 
+
 import javax.activation.MimetypesFileTypeMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 /**
@@ -33,7 +34,7 @@ import org.apache.myfaces.custom.tree2.TreeNodeBase;
 public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Serializable {
     static final long serialVersionUID = 82362318283823293l;
     
-    static private PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectTreeNode.class);
+    static private Log log = LogFactory.getLog(DigitalObjectTreeNode.class);
     
     private DigitalObjectMultiManager dsm;
     private DigitalObject dob_cache = null;

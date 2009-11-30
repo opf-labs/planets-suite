@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 
@@ -18,7 +20,7 @@ import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
  */
 public class MeasurementPropertyResultsBean {
 	
-	private static PlanetsLogger log = PlanetsLogger.getLogger(MeasurementPropertyResultsBean.class, "testbed-log4j.xml");
+	private static Log log = LogFactory.getLog(MeasurementPropertyResultsBean.class);
 	
 	public MeasurementPropertyResultsBean(String inputDigoRef, String mpropertyID,List<Calendar> allRunDates){
 		initResultsHM(allRunDates);

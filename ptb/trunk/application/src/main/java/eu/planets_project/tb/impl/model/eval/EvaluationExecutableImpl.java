@@ -7,8 +7,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.model.ExecutableImpl;
@@ -35,13 +36,13 @@ public class EvaluationExecutableImpl extends ExecutableImpl implements Evaluati
 	private EvaluationTestbedServiceTemplateImpl tbServiceTemplate;
 	private String sXCDLSource, sXCDLTarget, sXCDLComparison;
 	
-	//A logger for this - transient: it's not persisted with this entity
+	//A Log for this - transient: it's not persisted with this entity
     @Transient
     @XmlTransient
 	private static Log log;
     
 	public EvaluationExecutableImpl(TestbedServiceTemplate template) {
-		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
+		log = LogFactory.getLog(this.getClass());
 		//decouple this object
 		tbServiceTemplate = ((EvaluationTestbedServiceTemplateImpl)template).clone();
 		//sets the object's discriminator value to "experiment" and not "template"

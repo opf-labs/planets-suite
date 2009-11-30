@@ -5,11 +5,14 @@ package eu.planets_project.tb.gui.backing;
 
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+
+
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
@@ -22,7 +25,7 @@ public class PaginatingAllExperiments
     private static final long serialVersionUID = 2672142810059859813L;
 
     /** */
-    private static Log log = PlanetsLogger.getLogger(ListExp.class, "testbed-log4j.xml");
+    private static Log log = LogFactory.getLog(ListExp.class);
 
     /** */
     ExperimentPersistencyRemote ed = ExperimentPersistencyImpl.getInstance();

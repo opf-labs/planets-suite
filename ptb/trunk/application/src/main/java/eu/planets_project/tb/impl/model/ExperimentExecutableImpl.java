@@ -24,8 +24,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
@@ -91,10 +92,10 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 	private String batchExecutionSystemIdentifier="";
 	/** Information required for switching to WEE backend - End*/
 
-	//A logger for this - transient: it's not persisted with this entity
+	//A Log for this - transient: it's not persisted with this entity
     @Transient
     @XmlTransient
-	private static Log log = PlanetsLogger.getLogger(ExperimentExecutableImpl.class,"testbed-log4j.xml");
+	private static Log log = LogFactory.getLog(ExperimentExecutableImpl.class);
 	
 /*	
 	public ExperimentExecutableImpl(TestbedServiceTemplate template) {

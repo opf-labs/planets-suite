@@ -1,9 +1,9 @@
 package eu.planets_project.tb.impl.model.benchmark;
 
-//Planets Logger
+//Planets Log
 /*import org.apache.commons.logging.Log;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-private Log log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");*/
+import org.apache.commons.logging.Log;
+private Log log = LogFactory.getLog(this.getClass());*/
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;

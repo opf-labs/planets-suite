@@ -4,12 +4,16 @@
 package eu.planets_project.tb.gui.backing.data;
 
 import java.net.URI;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 
@@ -24,7 +28,7 @@ import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
  *
  */
 public class DigitalObjectRepositoryLister<E> implements List<E> {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectRepositoryLister.class);
+    private static Log log = LogFactory.getLog(DigitalObjectRepositoryLister.class);
     
     // The data sources are managed here:
     DigitalObjectMultiManager dsm = new DigitalObjectMultiManager();

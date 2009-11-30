@@ -14,9 +14,12 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.xml.soap.SOAPException;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl;
@@ -38,8 +41,8 @@ import eu.planets_project.tb.impl.system.TestbedStatelessAdminBean;
  */
 public class DigitalObjectMultiManager implements DigitalObjectManager {
 
-    // A logger:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectMultiManager.class);
+    // A Log:
+    private static Log log = LogFactory.getLog(DigitalObjectMultiManager.class);
 
     // The array of data source:
     private List<DataSource> dss;
@@ -230,18 +233,6 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
-     */
-    public void store(URI pdURI, DigitalObject digitalObject)
-            throws DigitalObjectNotStoredException {
-        DigitalObjectManager dm = findDom(pdURI);
-        if( dm == null ) {        
-            throw new DigitalObjectNotStoredException("Could not store the digital object at " + pdURI);
-        }
-        dm.store(pdURI, digitalObject);
-    }
-
-    /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
      */
     public boolean isWritable(URI pdURI) {
@@ -271,6 +262,44 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         DigitalObjectManager dm = findDom(pdURI);
         if( dm == null ) return null;
         return dm.list(pdURI, q);
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public void store(URI pdURI, DigitalObject digitalObject)
+            throws DigitalObjectNotStoredException {
+        DigitalObjectManager dm = findDom(pdURI);
+        if( dm == null ) {        
+            throw new DigitalObjectNotStoredException("Could not store the digital object at " + pdURI);
+        }
+        try {
+            dm.updateExisting(pdURI, digitalObject);
+        } catch (DigitalObjectNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public URI storeAsNew(DigitalObject arg0)
+            throws DigitalObjectNotStoredException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#updateExisting(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public URI updateExisting(URI arg0, DigitalObject arg1)
+            throws DigitalObjectNotStoredException,
+            DigitalObjectNotFoundException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 

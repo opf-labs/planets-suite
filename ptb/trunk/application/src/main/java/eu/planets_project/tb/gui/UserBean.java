@@ -1,12 +1,16 @@
 package eu.planets_project.tb.gui;
 
+import java.util.logging.Level;
+
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.ifr.core.security.api.services.UserManager.*;
@@ -18,7 +22,7 @@ import eu.planets_project.ifr.core.security.api.services.UserManager.*;
 
 public class UserBean 
 {
-    private static Log log = PlanetsLogger.getLogger(UserBean.class, "testbed-log4j.xml");
+    private static Log log = LogFactory.getLog(UserBean.class);
     private String firstname;
     private String lastname;
     private String email;

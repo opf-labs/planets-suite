@@ -10,10 +10,11 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import eu.planets_project.services.utils.PlanetsLogger;
+
 import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
 import eu.planets_project.tb.api.model.eval.Metric;
 import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
@@ -52,7 +53,7 @@ public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serial
 	public AutoEvaluationSettingsImpl() {};
 	
 	public AutoEvaluationSettingsImpl(TestbedServiceTemplate template){
-		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
+		log = LogFactory.getLog(this.getClass());
 		
 		this.evaluationService = ((EvaluationTestbedServiceTemplateImpl) template).clone();
 		

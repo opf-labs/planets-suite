@@ -17,7 +17,9 @@ import java.io.File;
 import java.io.OutputStream;
 import javax.imageio.ImageIO;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
@@ -27,7 +29,7 @@ import eu.planets_project.services.utils.FileUtils;
  */
 
 public class ImageThumbnail {
-    static private PlanetsLogger log = PlanetsLogger.getLogger(ImageThumbnail.class);
+    static private Log log = LogFactory.getLog(ImageThumbnail.class);
 
     /**
      * Create a reduced jpeg version of an image. The width/height ratio is

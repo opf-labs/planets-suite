@@ -72,7 +72,7 @@ public class DataHandlerImpl implements DataHandler {
     // A reference to the data manager itself:
     DigitalObjectMultiManager dommer = new DigitalObjectMultiManager();
 
-	// A logger for this:
+	// A Log for this:
     private Log log = LogFactory.getLog(DataHandlerImpl.class);
 	
     //This property isdefined within the BackendResources.properties

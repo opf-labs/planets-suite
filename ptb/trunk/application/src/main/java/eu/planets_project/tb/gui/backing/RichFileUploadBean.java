@@ -4,16 +4,17 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
@@ -24,7 +25,7 @@ import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
  */
 public class RichFileUploadBean {
   
-    private static PlanetsLogger log = PlanetsLogger.getLogger(RichFileUploadBean.class);
+    private static Log log = LogFactory.getLog(RichFileUploadBean.class);
     
     private DataHandler dh = new DataHandlerImpl();
     

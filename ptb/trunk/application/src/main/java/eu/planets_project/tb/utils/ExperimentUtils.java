@@ -9,9 +9,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import au.com.bytecode.opencsv.CSVWriter;
 
-import eu.planets_project.services.utils.PlanetsLogger;
+
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -26,7 +29,7 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
  */
 public class ExperimentUtils {
     /** */
-    private static PlanetsLogger log = PlanetsLogger.getLogger(ExperimentUtils.class);
+    private static Log log = LogFactory.getLog(ExperimentUtils.class);
 
     /** */
     public static enum DATA_FORMAT { CSV };

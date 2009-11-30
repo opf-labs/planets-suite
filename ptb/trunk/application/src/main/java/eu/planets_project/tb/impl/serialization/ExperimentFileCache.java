@@ -11,7 +11,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.UUID;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 
@@ -22,7 +24,7 @@ import eu.planets_project.tb.impl.model.ExperimentImpl;
  *
  */
 public class ExperimentFileCache {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(ExperimentFileCache.class);
+    private static Log log = LogFactory.getLog(ExperimentFileCache.class);
     
     private static File cachedir = null;
     private static String cacheExt = ".cache";

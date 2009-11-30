@@ -30,7 +30,7 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 	private String xmlRequestTemplate = "";
 	//Map<position i+"", localFileRef> to keep position of the fileRef's position
 	private Map<String,String> hmLocalFileRefs = new HashMap<String,String>();
-	//A logger for this:
+	//A Log for this:
     private Log log = LogFactory.getLog(ServiceRequestBuilderImpl.class);
     //DataHandler util class for e.g. base64 encoding
     DataHandler dh = new DataHandlerImpl();

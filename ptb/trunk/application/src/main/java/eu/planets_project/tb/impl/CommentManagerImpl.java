@@ -24,7 +24,7 @@ import eu.planets_project.tb.impl.model.CommentImpl;
  */
 public class CommentManagerImpl implements CommentManager {
     
-    // A logger for this:
+    // A Log for this:
     private Log log = LogFactory.getLog(CommentManagerImpl.class);
 
 	private static CommentManagerImpl instance;

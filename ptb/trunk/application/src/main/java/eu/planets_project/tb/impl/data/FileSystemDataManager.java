@@ -20,7 +20,9 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.xml.soap.SOAPException;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 
 
@@ -30,8 +32,8 @@ import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
  */
 public class FileSystemDataManager implements DataManagerLocal {
 
-    // A logger for this:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(FileSystemDataManager.class, "testbed-log4j.xml");
+    // A Log for this:
+    private static Log log = LogFactory.getLog(FileSystemDataManager.class);
     
     //These three properties are defined within the BackendResources.properties
     private URI localDataURI;

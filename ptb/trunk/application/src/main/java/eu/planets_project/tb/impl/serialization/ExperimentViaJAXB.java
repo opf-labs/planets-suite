@@ -17,7 +17,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
@@ -33,7 +35,7 @@ import eu.planets_project.tb.impl.model.ExperimentImpl;
  *
  */
 public class ExperimentViaJAXB {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(ExperimentViaJAXB.class);
+    private static Log log = LogFactory.getLog(ExperimentViaJAXB.class);
     
     /**
      * 

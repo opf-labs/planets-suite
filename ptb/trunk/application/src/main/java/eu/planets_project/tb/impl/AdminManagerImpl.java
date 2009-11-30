@@ -4,6 +4,7 @@
 package eu.planets_project.tb.impl;
 
 import java.io.StringWriter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
@@ -19,7 +22,7 @@ import org.apache.velocity.exception.VelocityException;
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
 import eu.planets_project.ifr.core.security.api.model.User;
-import eu.planets_project.services.utils.PlanetsLogger;
+
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
@@ -34,7 +37,7 @@ import eu.planets_project.tb.impl.system.BackendProperties;
  *
  */
 public class AdminManagerImpl implements AdminManager {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(AdminManagerImpl.class, "testbed-log4j.xml");
+    private static Log log = LogFactory.getLog(AdminManagerImpl.class);
 
 	private static AdminManagerImpl instance;
 	

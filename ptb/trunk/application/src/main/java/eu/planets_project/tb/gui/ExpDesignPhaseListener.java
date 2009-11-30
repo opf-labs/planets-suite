@@ -3,13 +3,16 @@
  */
 package eu.planets_project.tb.gui;
 
-import javax.faces.context.FacesContext;
 
+
+import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
@@ -22,7 +25,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 public class ExpDesignPhaseListener implements PhaseListener {
 
     static final long serialVersionUID = 237213472384324l;
-    private static PlanetsLogger log = PlanetsLogger.getLogger(ExpDesignPhaseListener.class, "testbed-log4j.xml");
+    private static Log log = LogFactory.getLog(ExpDesignPhaseListener.class);
 
     /* (non-Javadoc)
      * @see javax.faces.event.PhaseListener#afterPhase(javax.faces.event.PhaseEvent)

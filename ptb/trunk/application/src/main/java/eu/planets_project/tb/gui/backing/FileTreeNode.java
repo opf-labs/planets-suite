@@ -3,9 +3,12 @@
  */
 package eu.planets_project.tb.gui.backing;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import java.net.URI;
+
 import eu.planets_project.tb.api.data.DigitalObjectReference;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 /**
@@ -15,7 +18,7 @@ import org.apache.myfaces.custom.tree2.TreeNodeBase;
 public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     static final long serialVersionUID = 82362318283823293l;
     
-    static private PlanetsLogger log = PlanetsLogger.getLogger(FileTreeNode.class);
+    static private Log log = LogFactory.getLog(FileTreeNode.class);
     
     private DigitalObjectReference dob;
     private String displayName;

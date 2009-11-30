@@ -32,7 +32,8 @@ import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 
 import org.apache.commons.logging.Log;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -68,7 +69,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	
 	public BasicPropertiesImpl(){
 		
-		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
+		log = LogFactory.getLog(this.getClass());
 		initialiseVariables();
 	}
 

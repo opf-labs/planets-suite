@@ -1,17 +1,19 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.util.Calendar;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+
 import javax.faces.context.FacesContext;
 import javax.faces.component.html.HtmlDataTable;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
@@ -29,7 +31,7 @@ import eu.planets_project.ifr.core.security.api.model.User;
 
 public class ListExp extends SortableList {
     
-    private static Log log = PlanetsLogger.getLogger(ListExp.class, "testbed-log4j.xml");
+    private static Log log = LogFactory.getLog(ListExp.class);
 
     private List<Experiment> currExps;
 	private static final String DEFAULT_COLUMN = "startDate";

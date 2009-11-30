@@ -21,12 +21,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 
+
 import javax.activation.MimetypesFileTypeMap;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
@@ -35,8 +38,8 @@ import eu.planets_project.services.datatypes.DigitalObject;
  * TODO Remove a lot of reproduction of code and logic, c.f. DigitalObjectTreeNode etc etc.
  */
 public class DigitalObjectRefBean {
-    // A logger:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectRefBean.class);
+    // A Log:
+    private static Log log = LogFactory.getLog(DigitalObjectRefBean.class);
     
     String name;
     String id;

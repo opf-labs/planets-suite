@@ -4,20 +4,23 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.net.URI;
+
 import java.net.URL;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.apache.myfaces.custom.tree2.TreeModel;
 import org.apache.myfaces.custom.tree2.TreeModelBase;
 import org.apache.myfaces.custom.tree2.TreeNode;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.DigitalObjectReference;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -31,8 +34,8 @@ import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
  * 
  */
 public class FileBrowser {
-    // A logger for this:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(FileBrowser.class, "testbed-log4j.xml");
+    // A Log for this:
+    private static Log log = LogFactory.getLog(FileBrowser.class);
     
     // The Data Registry:
     private DigitalObjectDirectoryLister dr = new DigitalObjectDirectoryLister();

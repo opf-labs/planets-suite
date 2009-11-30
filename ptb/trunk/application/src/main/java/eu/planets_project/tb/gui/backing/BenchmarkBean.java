@@ -1,26 +1,19 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import javax.faces.model.SelectItem;
 
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
-import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Config;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-
 
 public class BenchmarkBean extends TreeNodeBase implements Serializable {
 
     static final long serialVersionUID = 2343216343436521112l;  
-    static private PlanetsLogger log = PlanetsLogger.getLogger(FileTreeNode.class);
+    static private Log log = LogFactory.getLog(FileTreeNode.class);
   	    
     //bm contains all data for populating the bmbean
     BenchmarkGoal bm;

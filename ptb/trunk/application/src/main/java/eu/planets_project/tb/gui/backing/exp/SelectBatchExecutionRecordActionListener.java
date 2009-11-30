@@ -9,7 +9,9 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -20,7 +22,7 @@ import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
  *
  */
 public class SelectBatchExecutionRecordActionListener implements ActionListener {
-    private PlanetsLogger log = PlanetsLogger.getLogger(SelectBatchExecutionRecordActionListener.class, "testbed-log4j.xml");
+    private Log log = LogFactory.getLog(SelectBatchExecutionRecordActionListener.class);
 
     public void processAction(ActionEvent anEvent) throws AbortProcessingException {
         log.info("Processing event. SelectBatch.");

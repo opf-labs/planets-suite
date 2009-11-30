@@ -6,7 +6,9 @@ package eu.planets_project.tb.impl.data;
 import java.net.URI;
 import java.util.List;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.tb.api.data.DigitalObjectReference;
 
@@ -21,7 +23,7 @@ import eu.planets_project.tb.api.data.DigitalObjectReference;
  *
  */
 public class DigitalObjectDirectoryLister {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectDirectoryLister.class);
+    private static Log log = LogFactory.getLog(DigitalObjectDirectoryLister.class);
     
     // The data sources are managed here:
     DigitalObjectManager dsm = new DigitalObjectMultiManager();

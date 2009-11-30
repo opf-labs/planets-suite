@@ -14,8 +14,9 @@ import javax.faces.context.FacesContext;
 
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
 import eu.planets_project.tb.gui.backing.exp.ExpBeanReqManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.CommentManagerImpl;
@@ -47,7 +48,7 @@ import eu.planets_project.tb.api.system.ServiceExecutionHandler;
 public class TestbedManagerImpl 
 	implements eu.planets_project.tb.api.TestbedManager, java.io.Serializable{
 
-    private static Log log = PlanetsLogger.getLogger(TestbedManagerImpl.class);
+    private static Log log = LogFactory.getLog(TestbedManagerImpl.class);
 	
 	private long lTestbedManagerID;
 	private static TestbedManagerImpl instance;

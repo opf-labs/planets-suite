@@ -26,8 +26,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
@@ -84,7 +85,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	private long lEntityID;
 	
 	public TestbedServiceTemplateImpl(){
-		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
+		log = LogFactory.getLog(this.getClass());
 		sServiceDescription = "";
 		sServiceEndpoint = "";
 		sServiceName = "";

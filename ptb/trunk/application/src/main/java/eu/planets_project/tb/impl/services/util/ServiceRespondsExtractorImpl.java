@@ -38,7 +38,7 @@ public class ServiceRespondsExtractorImpl implements ServiceRespondsExtractor{
 	//Map<Position,Value>
 	private Map<String,String> hmAllOutputs = new HashMap<String,String>();
 	private String sXPathToOutput ="";
-	//A logger for this - transient: it's not persisted with this entity
+	//A Log for this - transient: it's not persisted with this entity
     private Log log = LogFactory.getLog(ServiceRespondsExtractorImpl.class);
 	
     

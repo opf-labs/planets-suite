@@ -69,7 +69,7 @@ import org.w3c.dom.Document;
  */
 public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 
-	//A logger for this - transient: it's not persisted with this entity
+	//A Log for this - transient: it's not persisted with this entity
     private Log log = LogFactory.getLog(ServiceExecutionHandlerImpl.class);
     private String sOutputDir = "";
     //this will only be modified once, so therefore the relative position of its elements will not change

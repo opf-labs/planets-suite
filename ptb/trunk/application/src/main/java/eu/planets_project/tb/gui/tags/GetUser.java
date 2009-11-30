@@ -9,14 +9,16 @@ import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
 import org.apache.commons.logging.Log;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.IOException;
 import javax.el.ELException;
 import javax.faces.context.FacesContext;
 
 public final class GetUser extends TagHandler {
 
-	private static Log log = PlanetsLogger.getLogger(GetUser.class,"testbed-log4j.xml");
+	private static Log log = LogFactory.getLog(GetUser.class);
   
 
    /**

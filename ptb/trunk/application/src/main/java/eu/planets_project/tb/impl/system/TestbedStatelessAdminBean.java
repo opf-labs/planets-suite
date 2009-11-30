@@ -21,7 +21,9 @@ import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 import org.jboss.annotation.security.SecurityDomain;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.tb.api.system.TestbedStatelessAdmin;
 
@@ -56,8 +58,8 @@ import eu.planets_project.tb.api.system.TestbedStatelessAdmin;
 @RunAs("admin")
 public class TestbedStatelessAdminBean implements TestbedStatelessAdmin {
 
-    // A logger:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(TestbedStatelessAdminBean.class);
+    // A Log:
+    private static Log log = LogFactory.getLog(TestbedStatelessAdminBean.class);
 
     /**
      * Hook up to a local instance of the Planets Data Manager.

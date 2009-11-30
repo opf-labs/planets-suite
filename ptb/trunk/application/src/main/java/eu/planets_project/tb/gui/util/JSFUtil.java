@@ -1,6 +1,7 @@
 package eu.planets_project.tb.gui.util;
 
 import java.io.IOException;
+
 import java.util.Map;
 
 import javax.el.ELResolver;
@@ -9,8 +10,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
-
-import eu.planets_project.services.utils.PlanetsLogger;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -20,7 +20,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
 
 public class JSFUtil 
 {
-    private static Log log = PlanetsLogger.getLogger(JSFUtil.class);
+    private static Log log = LogFactory.getLog(JSFUtil.class);
   
     public static Object getManagedObject(String objectName)
   {

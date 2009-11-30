@@ -11,8 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
 
 /**
  * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
@@ -26,7 +27,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 public class PropertyEvaluationRecordImpl implements java.io.Serializable {
 	
 	@Transient @XmlTransient
-	private static Log log = PlanetsLogger.getLogger(PropertyEvaluationRecordImpl.class,"testbed-log4j.xml");
+	private static Log log = LogFactory.getLog(PropertyEvaluationRecordImpl.class);
 	private static final long serialVersionUID = -6342964354359585615L;
 	
 	private String propertyURI = new String();

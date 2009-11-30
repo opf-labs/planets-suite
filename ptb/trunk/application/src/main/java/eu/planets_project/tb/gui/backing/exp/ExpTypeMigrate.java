@@ -4,6 +4,7 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.io.ByteArrayOutputStream;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -22,7 +23,9 @@ import java.util.Vector;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 import eu.planets_project.services.characterise.Characterise;
@@ -44,7 +47,7 @@ import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
  *
  */
 public class ExpTypeMigrate extends ExpTypeBackingBean {
-    private PlanetsLogger log = PlanetsLogger.getLogger(ExpTypeMigrate.class, "testbed-log4j.xml");
+    private Log log = LogFactory.getLog(ExpTypeMigrate.class);
     
     /**
      * @return the identifyService

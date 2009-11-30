@@ -4,6 +4,8 @@
 package eu.planets_project.tb.gui.backing.admin;
 
 import java.io.File;
+
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +25,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
 
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
@@ -55,13 +58,14 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
@@ -92,8 +96,8 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
  *
  */
 public class RegisterTBServices{
-    // A logger:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(RegisterTBServices.class, "testbed-log4j.xml");
+    // A Log:
+    private static Log log = LogFactory.getLog(RegisterTBServices.class);
 	
 	//FacesContext
 	FacesContext facesContext = FacesContext.getCurrentInstance();

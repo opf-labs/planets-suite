@@ -4,14 +4,17 @@
 package eu.planets_project.tb.gui.backing.data;
 
 import java.net.URI;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javax.faces.event.ValueChangeEvent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.richfaces.event.DropEvent;
 
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
@@ -23,8 +26,8 @@ import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
  * 
  */
 public class DigitalObjectBrowser {
-    // A logger for this:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectBrowser.class);
+    // A Log for this:
+    private static Log log = LogFactory.getLog(DigitalObjectBrowser.class);
     
     // The Data Registry:
     private DigitalObjectRepositoryLister<DigitalObjectTreeNode> dr = null;

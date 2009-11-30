@@ -1,10 +1,14 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.util.Calendar;
+
+
 import java.util.HashMap;
 import java.util.List;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.gui.backing.exp.MeasurementPropertyResultsBean.RecordBean;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 
@@ -16,7 +20,7 @@ import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
  */
 public class EvaluationPropertyResultsBean extends MeasurementPropertyResultsBean{
 
-	private static PlanetsLogger log = PlanetsLogger.getLogger(EvaluationPropertyResultsBean.class, "testbed-log4j.xml");
+	private static Log log = LogFactory.getLog(EvaluationPropertyResultsBean.class);
 	private HashMap<Long,HashMap<String,EvalRecordBean>> evalresults = new HashMap<Long,HashMap<String,EvalRecordBean>>();
 	private String[] stageNames;
 	

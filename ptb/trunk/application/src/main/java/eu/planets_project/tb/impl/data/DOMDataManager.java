@@ -17,20 +17,23 @@ import java.util.List;
 
 import javax.xml.soap.SOAPException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.utils.PlanetsLogger;
+
 
 /**
  * @author AnJackson
  *
  */
 public class DOMDataManager implements DigitalObjectManager {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DOMDataManager.class);
+    private static Log log = LogFactory.getLog(DOMDataManager.class);
 
     private DataManagerLocal dataManager = null;
     
@@ -102,11 +105,24 @@ public class DOMDataManager implements DigitalObjectManager {
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(eu.planets_project.services.datatypes.DigitalObject)
      */
-    public void store(URI pdURI, DigitalObject digitalObject)
+    public URI storeAsNew(DigitalObject arg0)
             throws DigitalObjectNotStoredException {
-        throw new DigitalObjectNotStoredException("Could not store the digital object at " + pdURI);
+        throw new DigitalObjectNotStoredException("NOT YET IMPLEMENTED!");
+        // TODO Auto-generated method stub
+        //return null;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#updateExisting(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public URI updateExisting(URI arg0, DigitalObject arg1)
+            throws DigitalObjectNotStoredException,
+            DigitalObjectNotFoundException {
+        throw new DigitalObjectNotStoredException("NOT YET IMPLEMENTED!");
+        // TODO Auto-generated method stub
+        //return null;
     }
 
 }

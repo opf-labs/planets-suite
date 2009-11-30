@@ -4,7 +4,9 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
@@ -18,7 +20,7 @@ import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
  */
 public class WeeRemoteUtil {
 	
-	private PlanetsLogger log = PlanetsLogger.getLogger(WeeRemoteUtil.class, "testbed-log4j.xml");
+	private Log log = LogFactory.getLog(WeeRemoteUtil.class);
 	private WftRegistryService wftRegImp;
 	private WeeService weeService;
 	private ServiceRegistry registry;

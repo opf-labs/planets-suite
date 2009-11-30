@@ -32,7 +32,7 @@ public class CommentBacking implements java.io.Serializable {
     /** */
     private static final long serialVersionUID = 1283216316723l;
     
-    // A logger for this bean
+    // A Log for this bean
     private transient Log log = LogFactory.getLog(CommentBacking.class);
 
     // The currently-being-edited comment:

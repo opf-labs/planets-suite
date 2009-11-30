@@ -17,7 +17,7 @@ import eu.planets_project.tb.impl.CommentManagerImpl;
  *
  */
 public class ExperimentPhaseBean {
-    // The logger:
+    // The Log:
     private Log log = LogFactory.getLog(ExperimentPhaseBean.class);
     // The Experiment concerned:
     private ExperimentBean eb = null;

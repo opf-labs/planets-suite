@@ -4,6 +4,7 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.io.BufferedInputStream;
+
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -15,11 +16,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 
+
 import javax.activation.MimetypesFileTypeMap;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -31,7 +35,7 @@ import eu.planets_project.tb.impl.serialization.ExperimentFileCache;
  *
  */
 public class DownloadManager {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DownloadManager.class);
+    private static Log log = LogFactory.getLog(DownloadManager.class);
 
     /**
      * 

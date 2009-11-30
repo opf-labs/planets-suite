@@ -44,7 +44,7 @@ import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
  */
 public class XcdlCorpusDigitalObjectManagerImpl extends
         FilesystemDigitalObjectManagerImpl {
-    /** The logger instance */
+    /** The Log instance */
     private static Log _log = LogFactory.getLog(XcdlCorpusDigitalObjectManagerImpl.class);
     
     /** Sub-folder name where the binaries will be stored. */

@@ -3,9 +3,8 @@ package eu.planets_project.tb.api.model;
 import java.util.Calendar;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.tb.impl.model.ExperimentImpl;
 
 /**
  * @author alindley
@@ -37,7 +36,7 @@ public interface ExperimentPhase {
     public final String PHASENAME_EXPERIMENTEVALUATION= "Experiment Evaluation";
     public final String PHASENAME_EXPERIMENTFINALIZED = "Experiment Finalized";
 
-    public static final Log log = PlanetsLogger.getLogger(ExperimentPhase.class, "testbed-log4j.xml");
+    public static final Log log = LogFactory.getLog(ExperimentPhase.class);
 
 
 	/**

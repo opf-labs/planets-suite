@@ -10,7 +10,6 @@
  */
 package eu.planets_project.tb.impl.serialization;
 
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -27,9 +26,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.impl.model.CommentImpl;
 
 /**
  * @author AnJackson
@@ -44,7 +44,7 @@ public class ExperimentRecords {
     List<ExperimentRecord> experimentRecords = new ArrayList<ExperimentRecord>();
     
     @XmlTransient
-    private static PlanetsLogger log = PlanetsLogger.getLogger(ExperimentRecords.class);
+    private static Log log = LogFactory.getLog(ExperimentRecords.class);
 
     /* For JAXB */
     protected ExperimentRecords() {

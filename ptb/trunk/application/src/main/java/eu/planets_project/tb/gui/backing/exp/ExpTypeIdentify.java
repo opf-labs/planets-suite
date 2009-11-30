@@ -4,11 +4,14 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.net.URI;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
@@ -26,7 +29,7 @@ import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
  *
  */
 public class ExpTypeIdentify extends ExpTypeBackingBean {
-    private PlanetsLogger log = PlanetsLogger.getLogger(ExpTypeIdentify.class, "testbed-log4j.xml");
+    private Log log = LogFactory.getLog(ExpTypeIdentify.class);
     
     /**
      * @return the identifyService

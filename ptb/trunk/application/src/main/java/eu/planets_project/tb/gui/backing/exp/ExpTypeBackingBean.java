@@ -4,11 +4,14 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -32,7 +35,7 @@ import eu.planets_project.tb.impl.services.mockups.workflow.ViewerWorkflow;
  *
  */
 public abstract class ExpTypeBackingBean {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(ExpTypeBackingBean.class);
+    private static Log log = LogFactory.getLog(ExpTypeBackingBean.class);
 
     /** Allow the workflow to be cached during editing. */
     private ExperimentWorkflow ewfCache = null;
@@ -170,7 +173,7 @@ public abstract class ExpTypeBackingBean {
 						MeasurementImpl m = OntoPropertyUtil.createMeasurementFromOntologyProperty(ontoProp);
 						l.add(m);
 					} catch (Exception e) {
-						log.debug("error building Measurement from OntologyProperty: "+ontoProp,e);
+						log.error("error building Measurement from OntologyProperty: "+ontoProp + " :: " + e);
 					}
         		}
         		
