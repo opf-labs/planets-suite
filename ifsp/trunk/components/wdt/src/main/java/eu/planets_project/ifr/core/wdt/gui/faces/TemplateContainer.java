@@ -1,7 +1,9 @@
 package eu.planets_project.ifr.core.wdt.gui.faces;
 				
 import java.util.List;
+
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -13,9 +15,6 @@ import javax.faces.context.FacesContext;
 //import javax.faces.context.ExternalContext;
 import javax.faces.event.ActionEvent;
 
-import org.apache.commons.logging.Log;
-
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
 import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
@@ -32,7 +31,7 @@ public class TemplateContainer
 	//ServiceRegistryManager_Service service;
 	//does not inject...
 
-	private Log log = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
+	private Logger log = Logger.getLogger(this.getClass().getName());	
 	private List<WFTemplate> templates = null;
 	private WFTemplate currentTemplate = null;
 
@@ -76,7 +75,7 @@ public class TemplateContainer
 			UICommand link = (UICommand) event.getComponent();
 			currentTemplate = (WFTemplate) link.getValue(); 
 			String viewId = currentTemplate.getView();
-			log.debug("current view: "+viewId);
+			log.fine("current view: "+viewId);
 			/*BUG: move this to faces-config*/
 			JSFUtil.redirectToView("/displayView.xhtml");
 			//-- not shure if I need that
@@ -84,7 +83,7 @@ public class TemplateContainer
 			//wfBean.setView(viewId);
 			
 		} catch(Exception e) {
-			log.error("Error selecting WFTemplate View ", e);
+			log.severe("Error selecting WFTemplate View "+e);
 		}
 		return "displayView";
 	}
