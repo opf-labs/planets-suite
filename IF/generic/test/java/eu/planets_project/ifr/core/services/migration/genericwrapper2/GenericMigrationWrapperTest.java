@@ -6,6 +6,8 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,13 +29,13 @@ public class GenericMigrationWrapperTest {
     private final URI sourceFormatURI;
     private final URI destinationFormatURI;
     private GenericMigrationWrapper genericWrapper;
-    final List<Parameter> testParameters = new ArrayList<Parameter>();
+    private List<Parameter> testParameters;
 
     /**
      */
     public GenericMigrationWrapperTest() throws Exception {
-	sourceFormatURI = new URI("info:test/lowercase");
-	destinationFormatURI = new URI("info:test/uppercase");
+	sourceFormatURI = new URI("info:planets/fmt/ext/lowercase");
+	destinationFormatURI = new URI("info:planets/fmt/ext/uppercase");
     }
 
     @Before
@@ -41,9 +43,17 @@ public class GenericMigrationWrapperTest {
 
 	DocumentLocator documentLocator = new DocumentLocator(
 		"GenericWrapperConfigFileExample.xml");
-	genericWrapper = new GenericMigrationWrapper(documentLocator
-		.getDocument(), this.getClass().getCanonicalName());
 
+	final Configuration environmentConfiguration = new PropertiesConfiguration();
+	environmentConfiguration.addProperty("shellcommand", "sh");
+	environmentConfiguration.addProperty("shellcommandoption", "-c");
+	environmentConfiguration.addProperty("catcommand", "cat");
+	environmentConfiguration.addProperty("trcommand", "tr");
+	genericWrapper = new GenericMigrationWrapper(documentLocator
+		.getDocument(), environmentConfiguration, this.getClass()
+		.getCanonicalName());
+
+	testParameters = new ArrayList<Parameter>();
     }
 
     @After
@@ -52,14 +62,13 @@ public class GenericMigrationWrapperTest {
 
     @Test
     public void testDescribe() {
-	//FIXME! Make a meaningful implementation.
+	// FIXME! Make a meaningful implementation.
 	ServiceDescription sb = genericWrapper.describe();
     }
 
     @Test
     public void testMigrateUsingTempFiles() throws Exception {
 	testParameters.add(new Parameter("mode", "complete"));
-
 
 	MigrateResult migrationResult = genericWrapper.migrate(
 		getDigitalTestObject(), sourceFormatURI, destinationFormatURI,

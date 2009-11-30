@@ -33,6 +33,27 @@ public class DBMigrationPathFactoryTest {
     private static final String TEST_CONFIG_FILE = "GenericWrapperConfigFileExample.xml";
 
     private MigrationPathFactory migrationPathFactory;
+    private final HashMap<String, Parameter> environmentParameters;
+
+    public DBMigrationPathFactoryTest() {
+	environmentParameters = new HashMap<String, Parameter>();
+	Parameter.Builder parameterBuilder = new Parameter.Builder(
+		"shellcommand", "sh");
+	Parameter parameter = parameterBuilder.build();
+	environmentParameters.put(parameter.getName(), parameter);
+
+	parameterBuilder = new Parameter.Builder("shellcommandoption", "-c");
+	parameter = parameterBuilder.build();
+	environmentParameters.put(parameter.getName(), parameter);
+
+	parameterBuilder = new Parameter.Builder("catcommand", "cat");
+	parameter = parameterBuilder.build();
+	environmentParameters.put(parameter.getName(), parameter);
+
+	parameterBuilder = new Parameter.Builder("trcommand", "tr");
+	parameter = parameterBuilder.build();
+	environmentParameters.put(parameter.getName(), parameter);
+    }
 
     /**
      * @throws java.lang.Exception
@@ -183,12 +204,13 @@ public class DBMigrationPathFactoryTest {
 		"/tmp/bogusInterimFile"));
 
 	final List<String> expectedCommandFragments = new ArrayList<String>();
-	expectedCommandFragments.add("/bin/sh");
+	expectedCommandFragments.add("sh");
 	expectedCommandFragments.add("-c");
 	expectedCommandFragments
 		.add("cat -n /tmp/bogusTempSrcFile > /tmp/bogusInterimFile && tr '[:lower:]' '[:upper:]' /tmp/bogusInterimFile > /tmp/bogusTempDstFile");
 	commandLineTest(migrationPath, testParameters.values(),
-		testFileDeclarations, expectedCommandFragments);
+		environmentParameters.values(), testFileDeclarations,
+		expectedCommandFragments);
 
 	// Verify the tool presets.
 	ToolPresets toolPresets = migrationPath.getToolPresets();
@@ -278,10 +300,12 @@ public class DBMigrationPathFactoryTest {
      */
     private void commandLineTest(MigrationPath migrationPath,
 	    Collection<Parameter> toolParameters,
+	    Collection<Parameter> environmentParameters,
 	    Map<String, File> tempFileDeclarations,
 	    List<String> expectedCommandLine) throws MigrationException {
 
-	final PRCommandBuilder commandBuilder = new PRCommandBuilder();
+	final PRCommandBuilder commandBuilder = new PRCommandBuilder(
+		environmentParameters);
 	List<String> prCommand = commandBuilder.buildCommand(migrationPath,
 		toolParameters, tempFileDeclarations);
 

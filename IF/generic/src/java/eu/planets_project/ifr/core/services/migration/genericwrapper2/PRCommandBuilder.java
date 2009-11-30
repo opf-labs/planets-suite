@@ -29,6 +29,22 @@ class PRCommandBuilder {
 
     private final Logger log = Logger.getLogger(PRCommandBuilder.class.getName());
 
+    private final Collection<Parameter> environmentParameters;
+
+    /**
+     * Create a <code>PRCommandBuilder</code> for construction of commands,
+     * using the environment parameters specified by
+     * <code>environmentParameters</code>.
+     * 
+     * @param envrionmentParameters
+     *            A parameter collection containing environment information such as
+     *            absolute paths to executables used in the commands to be
+     *            built.
+     */
+    PRCommandBuilder(Collection<Parameter> environmentParameters) {
+	this.environmentParameters = environmentParameters;
+    }
+
     /**
      * TODO: Revisit this documentation....
      * 
@@ -45,7 +61,7 @@ class PRCommandBuilder {
      * @return
      * @throws MigrationException
      */
-    public List<String> buildCommand(MigrationPath migrationPath,
+    List<String> buildCommand(MigrationPath migrationPath,
 	    Collection<Parameter> toolParameters,
 	    Map<String, File> tempFileMappings) throws MigrationException {
 
@@ -60,7 +76,9 @@ class PRCommandBuilder {
 		commandLineIdentifiers, toolParameters);
 
 	// Overwrite any previous registered identifier mappings with a preset
-	// if a preset has been specified in the tool parameters.
+	// if a preset has been specified in the tool parameters or add settings
+	// from the default preset if no parameters were specified by the
+	// caller.
 	identifierMap = addPresetParameters(identifierMap, toolParameters,
 		migrationPath.getToolPresets());
 
@@ -181,7 +199,8 @@ class PRCommandBuilder {
 
     /**
      * Pick all key-value pairs from the parameters in
-     * <code>toolParameters</code> for each parameter which name exists in
+     * <code>toolParameters</code> and <code>environmentParameters</code> (given
+     * at construction time), for each parameter which name exists in
      * <code>relevantIdentifiers</code>.
      * 
      * @param relevantIdentifiers
@@ -198,6 +217,8 @@ class PRCommandBuilder {
 	    Set<String> relevantIdentifiers,
 	    Collection<Parameter> toolParameters) {
 
+	// Add all parameters from toolParameters that are listed in
+	// relevantIdentifiers.
 	final HashMap<String, String> parameterMappings = new HashMap<String, String>();
 	for (Parameter parameter : toolParameters) {
 	    if (relevantIdentifiers.contains(parameter.getName())) {
@@ -205,6 +226,16 @@ class PRCommandBuilder {
 			.put(parameter.getName(), parameter.getValue());
 	    }
 	}
+
+	// Add all parameters from the attribute environmentParameters that are
+	// listed in relevantIdentifiers.
+	for (Parameter environmentParameter : environmentParameters) {
+	    if (relevantIdentifiers.contains(environmentParameter.getName())) {
+		parameterMappings.put(environmentParameter.getName(),
+			environmentParameter.getValue());
+	    }
+	}
+
 	return parameterMappings;
     }
 

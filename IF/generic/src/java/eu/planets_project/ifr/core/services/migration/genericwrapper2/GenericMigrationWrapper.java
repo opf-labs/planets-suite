@@ -12,10 +12,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.configuration.Configuration;
 import org.w3c.dom.Document;
 
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationInitialisationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterBuilder;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -38,6 +40,7 @@ public class GenericMigrationWrapper {
     private MigrationPaths migrationPaths;
     private final String toolIdentifier;
     private final TemporaryFileFactory tempFileFactory;
+    private final List<Parameter> envrionmentParameters;
 
     private ServiceDescription serviceDescription; // TODO: Consider building
 
@@ -47,13 +50,16 @@ public class GenericMigrationWrapper {
     // TODO: It would probably be nice to pass a factory for creation of
     // temporary files on order to avoid a tight coupling with the Planets J2EE
     // way of creating such.
-    public GenericMigrationWrapper(Document configuration, String toolIdentifier)
+    public GenericMigrationWrapper(Document configuration,
+	    Configuration environmentSettings, String toolIdentifier)
 	    throws MigrationInitialisationException {
 
 	this.toolIdentifier = toolIdentifier; // TODO: Where should we use this
 	// information? Logging?
 	// ServiceDescription?
 	tempFileFactory = new J2EETempFileFactory(toolIdentifier);
+
+	envrionmentParameters = ParameterBuilder.buid(environmentSettings);
 
 	try {
 	    MigrationPathFactory pathsFactory = new DBMigrationPathFactory(
@@ -147,7 +153,7 @@ public class GenericMigrationWrapper {
 	}
 
 	// Create an executable command line for the process runner.
-	final PRCommandBuilder commandBuilder = new PRCommandBuilder();
+	final PRCommandBuilder commandBuilder = new PRCommandBuilder(envrionmentParameters);
 	final List<String> prCommand = commandBuilder.buildCommand(
 		migrationPath, toolParameters, temporaryFileMappings);
 
@@ -158,7 +164,7 @@ public class GenericMigrationWrapper {
 	    }
 	    log.info("Executing command line: " + fullCommandLine);
 	}
-	
+
 	// Execute the tool
 	final ProcessRunner toolProcessRunner = new ProcessRunner();
 	final boolean executionSuccessful = executeToolProcess(
