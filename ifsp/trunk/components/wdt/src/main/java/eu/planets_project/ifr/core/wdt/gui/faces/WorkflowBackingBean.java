@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.wdt.gui.faces;
 
 import java.io.BufferedInputStream;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,7 +58,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
@@ -75,8 +76,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class WorkflowBackingBean {
 
-	private Log logger = PlanetsLogger.getLogger(this.getClass(),
-			"resources/log/wdt-log4j.xml");
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	// The Data Registry:
 	private DigitalObjectDirectoryLister dr = new DigitalObjectDirectoryLister();
 
@@ -942,7 +942,7 @@ public class WorkflowBackingBean {
 	 *            the location to set
 	 */
 	public void setLocation(URI location) {
-		logger.debug("Setting location: " + location);
+		logger.fine("Setting location: " + location);
 		if (location != null)
 			this.location = location.normalize();
 		DigitalObjectReference[] dobs = dr.list(this.location);

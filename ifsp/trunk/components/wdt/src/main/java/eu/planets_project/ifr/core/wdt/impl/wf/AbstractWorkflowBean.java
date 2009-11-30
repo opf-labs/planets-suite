@@ -1,13 +1,12 @@
 package eu.planets_project.ifr.core.wdt.impl.wf;
 
 import java.util.List;
+
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.logging.Log;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
 
 
@@ -20,7 +19,7 @@ import eu.planets_project.ifr.core.wdt.impl.registry.Service;
 public abstract class AbstractWorkflowBean {
 
 	
-		private Log logger = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
+		private Logger logger = Logger.getLogger(this.getClass().getName());	
 		
 		//this will be a collection of data model instances
 		protected List<String> inputData = null;
@@ -30,12 +29,12 @@ public abstract class AbstractWorkflowBean {
     }
     
     public void addInputData(String pdm) {
-    	logger.debug("Experiment Input Data - added: " + pdm);
+    	logger.fine("Experiment Input Data - added: " + pdm);
     	inputData.add(pdm);    	
     }
     
 		public void resetInputData() {
-			logger.debug("trying to reset input data");    	
+			logger.fine("trying to reset input data");    	
 			inputData = new ArrayList<String>();
 		}    
     
@@ -45,7 +44,7 @@ public abstract class AbstractWorkflowBean {
     
     protected List<SelectItem> toSelectItem(List<Service> services) {   
     	List<SelectItem> ret = new ArrayList<SelectItem>();    	
-    	logger.debug("toSelectItem services: "+services);
+    	logger.fine("toSelectItem services: "+services);
     	for(int i=0; i<services.size(); i++ ) {
     		Service service = services.get(i);
     		//value must be a string - that seems to be a bug
@@ -68,7 +67,7 @@ public abstract class AbstractWorkflowBean {
 		* Planets Service Interface
 		*/
 		public String invokeService(String pdm) {
-			logger.debug("charakterization workflow started with input: "+pdm);
+			logger.fine("charakterization workflow started with input: "+pdm);
 			this.addInputData(pdm);
 			this.invokeService();
 			return pdm;		

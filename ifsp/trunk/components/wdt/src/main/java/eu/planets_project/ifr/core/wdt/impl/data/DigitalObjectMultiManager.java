@@ -1,14 +1,15 @@
 package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.net.URI;
+
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
@@ -28,7 +29,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
  */
 public class DigitalObjectMultiManager implements DigitalObjectManager {
     // A logger:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectMultiManager.class);
+    private static Logger log = Logger.getLogger(DigitalObjectMultiManager.class.getName());
 
     // A simple class to wrap a DR with it's base URI:
     private class DataSource {
@@ -102,7 +103,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
                 jndiContext.lookup("planets-project.eu/DataManager/local");
             return um;
         }catch (NamingException e) {
-            log.error("Failure during lookup of the local DataManager: "+e.toString());
+            log.severe("Failure during lookup of the local DataManager: "+e.toString());
             return null;
         }
     }

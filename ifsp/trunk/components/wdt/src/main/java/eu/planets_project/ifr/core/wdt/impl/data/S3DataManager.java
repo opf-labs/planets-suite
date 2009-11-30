@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.jets3t.service.S3Service;
 import org.jets3t.service.S3ServiceException;
@@ -18,7 +19,6 @@ import org.jets3t.service.model.S3Bucket;
 import org.jets3t.service.model.S3Object;
 import org.jets3t.service.security.AWSCredentials;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
@@ -35,7 +35,7 @@ public class S3DataManager implements DigitalObjectManager {
     public static final String AWS_S3_ENDPOINT = "awsS3Endpoint";
 
     // A logger for this:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(S3DataManager.class);
+    private static Logger log = Logger.getLogger(S3DataManager.class.getName());
 
     private static AWSCredentials awsCredentials;
     private static URI localDataURI;
@@ -56,26 +56,24 @@ public class S3DataManager implements DigitalObjectManager {
       	Jets3tProperties props = Jets3tProperties.getInstance(jets3tPStream, "jets3t.properties");
       	props.loadAndReplaceProperties(jets3tPStream, "jets3t.properties");
       } catch (Exception e) {
-      	log.error("unable to load: "+ "jets3t.properties");
-      	log.error(""+e);
+      	log.severe("unable to load: "+ "jets3t.properties");
+      	log.severe(""+e);
       }
       
     	try {
     		awsCredentials = loadAWSCredentials();
     		
     	} catch (IOException ex) {
-				log.error("IO exception - unable to load " + SAMPLES_PROPERTIES_NAME);
-				log.error(ex.getMessage());
-				log.error(ex.getStackTrace());
+				log.severe("IO exception - unable to load " + SAMPLES_PROPERTIES_NAME);
+				log.severe(ex.getMessage());
     	}
     	if (awsCredentials!=null) {
 	    	try {
 				s3Service = new RestS3Service(awsCredentials);				
-				log.error("S3 service https only : "+s3Service.isHttpsOnly());
+				log.severe("S3 service https only : "+s3Service.isHttpsOnly());
 			} catch (S3ServiceException e) {
-				log.error("S3 service exception - unable to connect with given credentials.");
-				log.error(e.getMessage());
-				log.error(e.getStackTrace());
+				log.severe("S3 service exception - unable to connect with given credentials.");
+				log.severe(e.getMessage());
 			}
     	}
 		if (s3Service!=null) {
@@ -83,7 +81,7 @@ public class S3DataManager implements DigitalObjectManager {
 				planetsBucket = s3Service.getBucket(bucket);
 			} catch (S3ServiceException e) {
 				e.printStackTrace();
-				log.error("S3DataManager: unable to load planets bucket: " + bucket);
+				log.severe("S3DataManager: unable to load planets bucket: " + bucket);
 			}
 		}
     }
@@ -115,11 +113,11 @@ public class S3DataManager implements DigitalObjectManager {
 		}
 		String path = pdURI.getPath();
 		if (!path.startsWith(new String("/"+bucket))) {
-			log.error("S3DataManager URI Exception: does not refer to configured planets bucket: " + pdURI);
+			log.severe("S3DataManager URI Exception: does not refer to configured planets bucket: " + pdURI);
 			return null;
 		}
 		if (planetsBucket==null) {
-			log.error("S3DataManager: unable to load planets bucket: " + bucket);
+			log.severe("S3DataManager: unable to load planets bucket: " + bucket);
 			return null;
 		}
 		ArrayList<URI> aldo = new ArrayList<URI>();
@@ -197,8 +195,7 @@ public class S3DataManager implements DigitalObjectManager {
 		try {
 			dobURL = pdURI.toURL();
 		} catch (MalformedURLException e) {
-			log.error("\nSelected digital object has an invalid URL!");
-			log.error(e.getStackTrace());
+			log.severe("\nSelected digital object has an invalid URL!");
 		}
 		DigitalObject o = new DigitalObject.Builder(Content
 				.byReference(dobURL)).build();
@@ -258,9 +255,8 @@ public class S3DataManager implements DigitalObjectManager {
         try {
 			localDataURI = new URI(uriString);
 		} catch (URISyntaxException e) {
-			log.error("URI syntax exception - unable to form URI from " + uriString);
-			log.error(e.getMessage());
-			log.error(e.getStackTrace());
+			log.severe("URI syntax exception - unable to form URI from " + uriString);
+			log.severe(e.getMessage());
 		}
         
         return awsCredentials;        

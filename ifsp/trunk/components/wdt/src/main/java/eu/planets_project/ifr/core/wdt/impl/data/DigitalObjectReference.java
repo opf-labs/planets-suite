@@ -1,9 +1,9 @@
 package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import java.net.URISyntaxException;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -15,7 +15,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
  */
 public class DigitalObjectReference {
     // A logger for this:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectReference.class);
+    private static Logger log = Logger.getLogger(DigitalObjectReference.class.getName());
     
     // The Planets URI to which this description refers.
     private URI puri = null;

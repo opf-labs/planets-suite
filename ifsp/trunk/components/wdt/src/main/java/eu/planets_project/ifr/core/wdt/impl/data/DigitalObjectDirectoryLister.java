@@ -1,9 +1,10 @@
 package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.net.URI;
-import java.util.List;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import java.util.List;
+import java.util.logging.Logger;
+
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 
 /**
@@ -17,7 +18,7 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
  *
  */
 public class DigitalObjectDirectoryLister {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectDirectoryLister.class);
+    private static Logger log = Logger.getLogger(DigitalObjectDirectoryLister.class.getName());
     
     // The data sources are managed here:
     DigitalObjectManager dsm = new DigitalObjectMultiManager();

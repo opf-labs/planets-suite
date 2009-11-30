@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,14 +19,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.jcr.LoginException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.xml.soap.SOAPException;
 
-
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
@@ -42,7 +42,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 public class FileSystemDataManager implements DigitalObjectManager {
 
     // A logger for this:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(FileSystemDataManager.class, "testbed-log4j.xml");
+    private static Logger log = Logger.getLogger(FileSystemDataManager.class.getName());
     
     //These three properties are defined within the BackendResources.properties
     private URI localDataURI;
@@ -98,10 +98,10 @@ public class FileSystemDataManager implements DigitalObjectManager {
             }
             // Attempt to convert to URI:
             localDataURI = ldd.toURI().normalize();
-            log.debug("(init) Got local data dir: " + localDataURI);
+            log.fine("(init) Got local data dir: " + localDataURI);
             
         } catch (IOException e) {
-            log.fatal("Exception: Reading JBoss.LocalDataDir from BackendResources.properties failed!"+e.toString());
+            log.severe("Exception: Reading JBoss.LocalDataDir from BackendResources.properties failed!"+e.toString());
             localDataURI = null;
         }
         
@@ -140,7 +140,7 @@ public class FileSystemDataManager implements DigitalObjectManager {
     public List<URI> list(URI pdURI) {
         // Set up the uri, coping with null etc
         pdURI = checkURI(pdURI);
-        log.debug("Listing "+pdURI);
+        log.fine("Listing "+pdURI);
         ArrayList<URI> aldo = new ArrayList<URI>();
         File pf = new File(pdURI);
         if( pf.isFile() ) {
@@ -198,8 +198,7 @@ public class FileSystemDataManager implements DigitalObjectManager {
 					
     			dobURL = pdURI.toURL();
     		} catch (MalformedURLException e) {
-    			log.error("\nSelected digital object has an invalid URL!");
-    			log.error(e.getStackTrace());
+    			log.severe("\nSelected digital object has an invalid URL!");
     		}
     		// Create DigitalObject from file reference
   		  retObj = new DigitalObject.Builder(Content.byReference(dobURL))
@@ -290,7 +289,7 @@ public class FileSystemDataManager implements DigitalObjectManager {
             bin = new byte[(int)f.length()];
             fin.read(bin);
         } catch( IOException e ) {
-            log.error("Failed to list DR URI." + e);
+            log.severe("Failed to list DR URI." + e);
             bin = null;
             throw new SOAPException(e);
         }
