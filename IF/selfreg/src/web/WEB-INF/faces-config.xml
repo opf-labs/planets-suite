@@ -13,6 +13,12 @@
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <managed-bean-name>UserSignupBean</managed-bean-name>
+        <managed-bean-class>eu.planets_project.ifr.gui.selfreg.UserSignupBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
 	<converter>
 		<converter-id>DateTimeConverter</converter-id>
 		<converter-class>javax.faces.convert.DateTimeConverter</converter-class>

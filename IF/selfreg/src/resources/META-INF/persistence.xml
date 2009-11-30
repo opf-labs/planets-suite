@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence>
+   <persistence-unit name="planetsSelfReg" transaction-type="RESOURCE_LOCAL">
+      <non-jta-data-source>java:/DerbyDS</non-jta-data-source>
+      <class>eu.planets_project.ifr.core.security.impl.model.SelfUserImpl</class>
+      <class>eu.planets_project.ifr.core.security.impl.model.SelfRoleImpl</class>
+      <class>eu.planets_project.ifr.core.security.impl.model.SelfAddressImpl</class>
+      <properties>
+         <property name="hibernate.hbm2ddl.auto" value="update"/>
+      </properties>
+   </persistence-unit>
+</persistence>

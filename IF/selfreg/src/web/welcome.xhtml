@@ -7,14 +7,18 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:t="http://myfaces.apache.org/tomahawk">
 <body>
-
   <ui:composition template="/WEB-INF/planets/page-template.xhtml">
     <ui:param name="pagetitle" value="Planets IF Self Registration"/>
     <ui:param name="extraCSS" value="css/selfreg.css" />
     
     <div id="srContent">
-		<h2>Planets IF Self Registration</h2>
-        <h:graphicImage id="construct" value="/images/under-construction.gif" />
+	    <h1><h:outputText value="Signup as new PLANETS user."/></h1>
+	    <p>Please fill out the following form and click the submit button.</p>
+		<h:form id="UserSignupForm" styleClass="userform">
+			<ui:include src="/WEB-INF/templates/user-signup.xhtml"/>
+			<h:commandButton value="Sign-up" action="#{UserSignupBean.signup}" styleClass="button" />
+			<h:commandButton value="Cancel" action="#{UserSignupBean.cancel}" styleClass="button" />
+		</h:form>
     </div>
     
   </ui:composition>
