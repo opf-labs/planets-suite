@@ -194,6 +194,7 @@ public class FileSystemDataManager implements DataManagerLocal {
         try {
             fo = new FileOutputStream( new File( pdURI ));
         } catch ( FileNotFoundException e ) {
+            log.error("Store failed! "+e);
             throw new PathNotFoundException(pdURI.toString());
         }
         
@@ -204,6 +205,7 @@ public class FileSystemDataManager implements DataManagerLocal {
                 fo.write(b);
             }
         } catch (IOException e) {
+            log.error("Store failed! "+e);
             throw new RepositoryException("Could not write to file " + pdURI);
         }
     }

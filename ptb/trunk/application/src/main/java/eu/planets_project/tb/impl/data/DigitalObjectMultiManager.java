@@ -265,41 +265,42 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
      */
-    public void store(URI pdURI, DigitalObject digitalObject)
+    public URI storeAsNew(URI pdURI, DigitalObject digitalObject)
             throws DigitalObjectNotStoredException {
         DigitalObjectManager dm = findDom(pdURI);
         if( dm == null ) {        
             throw new DigitalObjectNotStoredException("Could not store the digital object at " + pdURI);
         }
-        try {
-            dm.updateExisting(pdURI, digitalObject);
-        } catch (DigitalObjectNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        return dm.storeAsNew(pdURI, digitalObject);
     }
 
 
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(eu.planets_project.services.datatypes.DigitalObject)
      */
-    public URI storeAsNew(DigitalObject arg0)
+    public URI storeAsNew(DigitalObject digitalObject)
             throws DigitalObjectNotStoredException {
-        // TODO Auto-generated method stub
-        return null;
+        DigitalObjectManager dm = this.getDefaultStorageSpace().getDom();
+        if( dm == null ) {        
+            throw new DigitalObjectNotStoredException("Could not store the digital object");
+        }
+        return dm.storeAsNew(digitalObject);
     }
 
 
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#updateExisting(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
      */
-    public URI updateExisting(URI arg0, DigitalObject arg1)
+    public URI updateExisting(URI pdURI, DigitalObject digitalObject)
             throws DigitalObjectNotStoredException,
             DigitalObjectNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
+        DigitalObjectManager dm = findDom(pdURI);
+        if( dm == null ) {        
+            throw new DigitalObjectNotFoundException("Could not store the digital object at " + pdURI);
+        }
+        return dm.updateExisting(pdURI, digitalObject);
     }
 
 

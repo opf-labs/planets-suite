@@ -259,12 +259,14 @@ public class DataHandlerImpl implements DataHandler {
         log.info("Attempting to store at: "+dobUri);
         
         try {
-            this.storeDigitalObject(dobUri, dob);
+            dobUri = this.storeDigitalObject(dobUri, dob);
         } catch (DigitalObjectNotStoredException e) {
-            // TODO Auto-generated catch block
+            log.error("Store failed! "+e);
             e.printStackTrace();
             return null;
         }
+        
+        log.info("Was store at: "+dobUri);
         
         return dobUri;
     }
@@ -272,8 +274,8 @@ public class DataHandlerImpl implements DataHandler {
         return this.storeDigitalObject(dob, null);
     }
     
-    private void storeDigitalObject( URI domUri, DigitalObject dob ) throws DigitalObjectNotStoredException {
-        dommer.store(domUri, dob);
+    private URI storeDigitalObject( URI domUri, DigitalObject dob ) throws DigitalObjectNotStoredException {
+        return dommer.storeAsNew(domUri, dob);
     }
 
 

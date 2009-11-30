@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.Content;
@@ -102,6 +103,16 @@ public class DOMDataManager implements DigitalObjectManager {
         dob.permanentUri( pdURI );
         dob.title( pdURI.getPath().substring( pdURI.getPath().lastIndexOf('/')+1) );
         return dob.build();
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public URI storeAsNew(URI arg0, DigitalObject arg1)
+            throws DigitalObjectNotStoredException {
+        throw new DigitalObjectNotStoredException("NOT YET IMPLEMENTED!");
+        // TODO Auto-generated method stub
+        //return null;
     }
 
     /* (non-Javadoc)

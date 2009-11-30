@@ -200,10 +200,10 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
         return null;
     }
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     * @see eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
      */
     @Override
-    public void store(URI pdURI, DigitalObject digitalObject)
+    public URI storeAsNew(URI pdURI, DigitalObject digitalObject)
             throws DigitalObjectNotStoredException {
         // The Corpora should not be modified directly at present.
 //        super.store(pdURI, digitalObject);
