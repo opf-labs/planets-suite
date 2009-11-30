@@ -145,7 +145,7 @@ public class WorkflowBackingBean {
 			errorMessageString.add("Unable to retrieve Workflow Services.");
 		}
 
-		registry = ServiceRegistryFactory.getRegistry();
+		registry = ServiceRegistryFactory.getServiceRegistry();
 
 		builder = new SAXBuilder();
 
