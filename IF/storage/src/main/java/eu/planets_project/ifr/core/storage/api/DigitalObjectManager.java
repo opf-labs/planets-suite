@@ -19,10 +19,23 @@ public interface DigitalObjectManager {
      * Persist a DigitalObject to the Data Registry as a new object
      *
      * @param digitalObject The object to store
+     * @return the pdURI where the object was stored.
      * @throws DigitalObjectNotStoredException  if the storing somehow failed
      */
-
     public URI storeAsNew(DigitalObject digitalObject) throws DigitalObjectNotStoredException;
+    
+    /**
+     * Persist a DigitalObject to the Data Registry as a new object, at the suggested location.
+     * 
+     * If a particular implementation does not permit the caller to dictate the store layout, the URI may be overridden.
+     * Consequently, the returned URI should be retained as the object reference, not the passed one.
+     *
+     * @param pdURI The suggested location where the object is to be stored
+     * @param digitalObject The object to store
+     * @return the pdURI where the object was stored.
+     * @throws DigitalObjectNotStoredException  if the storing somehow failed
+     */
+    public URI storeAsNew( URI pdURI, DigitalObject digitalObject ) throws DigitalObjectNotStoredException;
 
     /**
      * Updates an existing object in the repository to contain the given digital object. The repository might create a

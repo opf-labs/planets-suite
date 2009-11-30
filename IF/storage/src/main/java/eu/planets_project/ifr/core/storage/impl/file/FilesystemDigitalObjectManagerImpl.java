@@ -6,6 +6,7 @@ package eu.planets_project.ifr.core.storage.impl.file;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 
 import eu.planets_project.ifr.core.storage.api.PDURI;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
@@ -17,6 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -244,7 +246,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	 * @param digitalObject the object
 	 * @throws DigitalObjectNotStoredException
 	 */
-	public void store(URI pdURI, DigitalObject digitalObject)
+	private void store(URI pdURI, DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException {
 		try {
 		       if( digitalObject.getTitle() == null ) {
@@ -316,12 +318,41 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
         return null;
     }
 
+    
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew()
+     */
     public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        URI pdURI;
+        try {
+            pdURI = PDURI.formDataRegistryRootURI("localhost", "8080", this._name+"/").resolve(UUID.randomUUID().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            throw new DigitalObjectNotStoredException("Failed to autogenerate a suitable URI for this item.");
+        }
+        this.store(pdURI, digitalObject);
+        return pdURI;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public URI storeAsNew(URI pdURI, DigitalObject digitalObject)
+            throws DigitalObjectNotStoredException {
+        this.store(pdURI, digitalObject);
+        return pdURI;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#updateExisting()
+     */
     public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        // FIXME This should only work if the location exists already.
+        this.store(pdURI, digitalObject);
+        return pdURI;
     }
 
     /**

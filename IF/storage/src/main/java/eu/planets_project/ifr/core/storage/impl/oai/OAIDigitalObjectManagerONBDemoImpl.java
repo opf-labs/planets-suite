@@ -15,6 +15,7 @@ import org.jaxen.dom4j.Dom4jXPath;
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.OaiPmhServer;
 import se.kb.oai.pmh.RecordsList;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryDateRange;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
@@ -164,13 +165,17 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
 		
 		System.out.println("done.");
 	}
+	
+    public URI storeAsNew(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
+        throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
+    }
+    
     public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
     }
 
     public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
     }
-
     
 }

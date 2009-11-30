@@ -47,6 +47,9 @@ public class FedoraObjectManager implements DigitalObjectManager{
     }
 
 
+    public URI storeAsNew( URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
+        return this.storeAsNew(digitalObject);
+    }
 
     public URI storeAsNew(DigitalObject digitalObject) throws DigitalObjectNotStoredException {
 

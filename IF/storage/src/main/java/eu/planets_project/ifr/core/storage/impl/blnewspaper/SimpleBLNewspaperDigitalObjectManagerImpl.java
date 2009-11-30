@@ -106,18 +106,18 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 	
 	/**
 	 * {@inheritDoc}
-	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
 	 */
-	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
+	public URI storeAsNew(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
 		throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
 	}
 
     public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
     }
 
     public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
     }
 
     /**

@@ -103,9 +103,9 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
 	
 	/**
 	 * {@inheritDoc}
-	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
 	 */
-	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
+	public URI storeAsNew(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
 		throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
 	}
 

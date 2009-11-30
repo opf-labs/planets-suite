@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryString;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
@@ -76,20 +77,16 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
      */
     private static final int TIMEOUT = 10000;
 	
-	/**
-	 * {@inheritDoc}
-	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
-	 */
-	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
-		throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");		
-	}
-
+    public URI storeAsNew(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
+        throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
+    }
+    
     public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
     }
 
     public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
     }
 
     /**
