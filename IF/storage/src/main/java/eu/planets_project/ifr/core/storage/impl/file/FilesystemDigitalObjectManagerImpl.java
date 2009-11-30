@@ -191,18 +191,23 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			        fileData.append(buf, 0, numRead);
 			    }
 			    reader.close();
-			    // Add title to the dob
-      		String title = null;
-          title = fullPath;
-					if(title.contains(".") && title.contains("/")) 
-					{
-							title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
-					}
-			    log.fine("Add title: " + title);
-												
-			    dob = new DigitalObject.Builder(fileData.toString()).title(title);
-			    DigitalObjectContent c = Content.byReference(dob.getContent().read());
-			    dob.content(c);
+			    // Re-create the digital object metadata.
+                dob = new DigitalObject.Builder(fileData.toString());
+                // And add the content:
+                DigitalObjectContent c = Content.byReference(dob.getContent().read());
+                dob.content(c);
+                // If there is no title, add title to the dob.
+                // TODO Not sane behaviour - if an object has been stored with no title, then that should remain the case.  The 'filename' is already in the URI, where it belongs.
+                if( dob.getTitle() == null ) {
+                    String title = null;
+                    title = fullPath;
+                    if(title.contains(".") && title.contains("/")) 
+                    {
+                        title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
+                    }
+                    dob.title(title);
+                    log.fine("Add title: " + title);
+                }
 			} else {
 			    // Files without an associated metadata file are patched in like this:
 			    File binFile = new File( this._root.getCanonicalPath() + File.separator + ( new PDURI(pdURI).getDataRegistryPath() ) );
