@@ -32,7 +32,6 @@ public class OdfContentHandler {
 	private static final String MATHML_MIMETYPE = "application/vnd.oasis.opendocument.formula";
 	private static final String SXM_MATHML_MIMETYPE = "application/vnd.sun.xml.math";
 	
-//	private static List<File> xmlComponents = null;
 	private static List<String> manifestEntries = null;
 	private static List<String> missingFileEntries = null;
 	
@@ -70,14 +69,12 @@ public class OdfContentHandler {
 		FileUtils.deleteAllFilesInFolder(ODF_VALIDATOR_TMP);
 		xmlTmp = FileUtils.createFolderInWorkFolder(ODF_VALIDATOR_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
 		
-		// 1) get all Odf sub files from zp container
+		// 1) get all Odf sub files from zip container
 		odfSubFiles = extractOdfSubFiles(odfFile);
 		
 		if(!isNotODF) {
 			
 			getVersions(odfSubFiles);
-			
-//			cleanUpContent(odfSubFiles);
 			
 			missingFileEntries = checkContainerConformity(odfFile);
 		}
@@ -232,7 +229,6 @@ public class OdfContentHandler {
 	public File cleanUpXmlForValidation(File mathmlXML) {
 		String contentString = FileUtils.readTxtFileIntoString(mathmlXML);
 		contentString = contentString.replaceAll(">", ">" + System.getProperty("line.separator"));
-//		contentString = contentString.replaceAll("math:", "");
 		String[] lines = contentString.split(System.getProperty("line.separator"));
 		String docTypePattern = "<!DOCTYPE";
 		
@@ -245,11 +241,6 @@ public class OdfContentHandler {
 				lines[i]="";
 				continue;
 			}
-//			if(lines[i].contains("xmlns:")) {
-//				lines[i] = dest;
-////				lines[i] = "<math>";
-//				continue;
-//			}
 		}
 		
 		StringBuffer content = new StringBuffer();
@@ -353,9 +344,6 @@ public class OdfContentHandler {
 		return missingFileEntries;
 	}
 
-//	public List<String> getManifestEntries() {
-//		return manifestEntries;
-//	}
 
 	private List<File> initialize(File odfFile) {
 		List<File> odfXmlParts = new ArrayList<File>(); 
@@ -402,6 +390,7 @@ public class OdfContentHandler {
 		return odfXmlParts;
 	}
 	
+	
 	private List<String> checkContainerConformity(File odfFile) {
 		mimeTypeVerified = verifyManifestMimeType(mimeType_string, odfSubFiles.get("manifest").get(0));
 		
@@ -423,6 +412,7 @@ public class OdfContentHandler {
 		}
 		return missingList;
 	}
+	
 	
 	private List<String> getManifestEntries(File manifestXml) {
 		List<String> manifestEntries = new ArrayList<String>(); 
@@ -447,6 +437,7 @@ public class OdfContentHandler {
 		}
 		return manifestEntries;
 	}
+	
 
 	private boolean verifyManifestMimeType(String mimeType, File manifest) {
 		SAXBuilder builder = new SAXBuilder();

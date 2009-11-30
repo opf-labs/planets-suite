@@ -105,6 +105,8 @@
 	<classpathentry kind="src" path="PP/xcl/src/java"/>
 	<classpathentry kind="src" path="PP/xcl/src/test/java"/>
 	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="src" path="PA/kakadu/test"/>
+	<classpathentry kind="src" path="PA/kakadu/src/java"/>
 	<classpathentry kind="lib" path="PC/odfvalidator/lib/jdom.jar" sourcepath="E:/JDOM/jdom-1.1.1.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>

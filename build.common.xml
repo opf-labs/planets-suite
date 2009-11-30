@@ -332,6 +332,9 @@
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
+      	<include name="**/*.rng"/>
+      	<include name="**/*.xsd"/>
+      	<include name="**/*.dtd"/>
         <include name="import.sql"/>
         <include name="seam.properties"/>
         <include name="META-INF/persistence.xml"/>
@@ -654,6 +657,9 @@
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
+    	<include name="**/*.rng"/>
+      	<include name="**/*.xsd"/>
+      	<include name="**/*.dtd"/>
       </fileset>
     </copy>
     
@@ -692,6 +698,9 @@
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
+    	<include name="**/*.rng"/>
+      	<include name="**/*.xsd"/>
+      	<include name="**/*.dtd"/>
       </fileset>
     </copy>
     
@@ -708,6 +717,7 @@
         <fileset dir="${ear.lib.dir}">
           <include name="**/*.jar"/>
           <exclude name="lib-jee/*.jar"/>
+        	
         </fileset>
       </copy>
         </then>
