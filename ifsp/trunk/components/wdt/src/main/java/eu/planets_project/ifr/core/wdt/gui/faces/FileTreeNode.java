@@ -1,7 +1,7 @@
 package eu.planets_project.ifr.core.wdt.gui.faces;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import java.net.URI;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectReference;
 
@@ -14,7 +14,7 @@ import org.apache.myfaces.custom.tree2.TreeNodeBase;
 public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     static final long serialVersionUID = 82362318283823295l;
     
-    static private PlanetsLogger log = PlanetsLogger.getLogger(FileTreeNode.class);
+    static private Logger log = Logger.getLogger(FileTreeNode.class.getName());
     
     private DigitalObjectReference dob;
     private String displayName;

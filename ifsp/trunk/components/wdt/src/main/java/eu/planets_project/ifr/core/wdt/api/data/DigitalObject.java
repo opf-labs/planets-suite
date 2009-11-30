@@ -7,7 +7,7 @@ package eu.planets_project.ifr.core.wdt.api.data;
 
 import java.net.URI;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import java.util.logging.Logger;
 
 /**
  * @author AnJackson
@@ -15,7 +15,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
  */
 public class DigitalObject {
     // A logger for this:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObject.class);
+    private static Logger log = Logger.getLogger(DigitalObject.class.getName());
     
     // The Planets URI to which this description refers.
     private URI puri = null;

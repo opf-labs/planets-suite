@@ -1,8 +1,7 @@
 package eu.planets_project.ifr.core.wdt.gui.faces; 
 
-import org.apache.commons.logging.Log;
+import java.util.logging.Logger;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 import eu.planets_project.ifr.core.wdt.gui.faces.TemplateContainer;
 import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
@@ -15,7 +14,7 @@ import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
  	*/
 public class CurrentWorkflowBean implements WorkflowBean {
 	
-	private Log logger = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
+	private Logger logger = Logger.getLogger(this.getClass().getName());	
 
 	public CurrentWorkflowBean() {
 	}

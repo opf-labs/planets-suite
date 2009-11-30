@@ -1,8 +1,7 @@
 package eu.planets_project.ifr.core.wdt.gui.faces;
 
-import org.apache.commons.logging.Log;
+import java.util.logging.Logger;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.wdt.gui.faces.CurrentWorkflowBean;
 import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 
@@ -12,28 +11,28 @@ import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 	*/
 	public class BeanExecutor {
 		
-		private Log logger = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
+		private Logger logger = Logger.getLogger(this.getClass().getName());	
 		
 		private CurrentWorkflowBean wfBean = (CurrentWorkflowBean) JSFUtil.getManagedObject("currentWorkflowBean");	
 		
 		//start a new runnable to detach from browser session
 		//startup listener
 		public String invokeService() {
-			logger.debug("beanExecutor: invokeService called");
+			logger.fine("beanExecutor: invokeService called");
 			String ret = wfBean.invokeService();
 			return ret;
 		}
 		
 		//remove input files from bean
 		public String resetInputData() {
-			logger.debug("beanExecutor: resetInputData called");
+			logger.fine("beanExecutor: resetInputData called");
 			if(wfBean != null) wfBean.resetInputData();			
 			return "resetInputData";
 		}
 		
 		//remove input files from bean
 		public String resetWorkflow() {
-			logger.debug("beanExecutor: resetWorkflow called");
+			logger.fine("beanExecutor: resetWorkflow called");
 			JSFUtil.invalidateSession();
 			return "invalidated";
 		}

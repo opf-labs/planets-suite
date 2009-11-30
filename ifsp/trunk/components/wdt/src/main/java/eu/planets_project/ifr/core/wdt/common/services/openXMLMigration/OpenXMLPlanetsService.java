@@ -1,8 +1,8 @@
 package eu.planets_project.ifr.core.wdt.common.services.openXMLMigration;
 
-import org.apache.commons.logging.Log;
+import java.util.logging.Logger;
+
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * Adapter Class
@@ -10,7 +10,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
  */
 public class OpenXMLPlanetsService implements eu.planets_project.ifr.core.common.api.L2PlanetsService
 {
-	private Log log = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
+	private Logger log = Logger.getLogger(this.getClass().getName());	
 	private OpenXMLMigration oXML = null;
 	
 	public OpenXMLPlanetsService (OpenXMLMigration oXML) {
@@ -21,7 +21,7 @@ public class OpenXMLPlanetsService implements eu.planets_project.ifr.core.common
 		try {
 			return oXML.convertFileRef(pdm);
     } catch(Exception e) {
-    	log.error(e);
+    	log.severe(e.toString());
     	return null;
     }
 	}
