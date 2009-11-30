@@ -239,11 +239,10 @@ public class FileSystemDataManager implements DigitalObjectManager {
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#store(java.net.URI, java.io.InputStream)
      * TODO This should perhaps use a bigger buffer.
      * TODO We should check whether these stream objects store the whole file in memory. Memory requirements too high?
      */
-    public void store(URI pdURI, InputStream stream) throws LoginException,
+    public URI store(URI pdURI, InputStream stream) throws LoginException,
             RepositoryException, URISyntaxException {
 
         // Prepare the output stream:
@@ -263,6 +262,7 @@ public class FileSystemDataManager implements DigitalObjectManager {
         } catch (IOException e) {
             throw new RepositoryException("Could not write to file " + pdURI);
         }
+        return pdURI;
     }
 
     /*
@@ -325,5 +325,14 @@ public class FileSystemDataManager implements DigitalObjectManager {
 		// TODO Auto-generated method stub
 		
 	}
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public URI storeAsNew(URI pdURI, DigitalObject digitalObject)
+            throws DigitalObjectNotStoredException {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }

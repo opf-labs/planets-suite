@@ -179,7 +179,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
      */
-    public void store(URI pdURI, DigitalObject digitalObject)
+    public URI storeAsNew(URI pdURI, DigitalObject digitalObject)
             throws DigitalObjectNotStoredException {
         // FIXME Implement storage case for the DOBMAN.
 //        How to fix this?

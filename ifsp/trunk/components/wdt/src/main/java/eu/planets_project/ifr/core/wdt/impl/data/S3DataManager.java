@@ -202,11 +202,6 @@ public class S3DataManager implements DigitalObjectManager {
 		return o;
 	}
 
-	public void store(URI pdURI, DigitalObject digitalObject)
-			throws DigitalObjectNotStoredException {
-		// TODO Auto-generated method stub
-
-	}
 	
     public URI getRootURI() {
         return localDataURI;
@@ -261,5 +256,15 @@ public class S3DataManager implements DigitalObjectManager {
         
         return awsCredentials;        
     }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public URI storeAsNew(URI pdURI, DigitalObject digitalObject)
+            throws DigitalObjectNotStoredException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
 
 }
