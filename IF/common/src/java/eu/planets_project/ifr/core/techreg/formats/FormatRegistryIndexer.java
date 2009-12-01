@@ -63,7 +63,6 @@ class FormatRegistryIndexer {
             iwriter.addDocument( formatToDocument(fmt) );
             closeWriter(iwriter);
         } catch ( IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -124,10 +123,8 @@ class FormatRegistryIndexer {
             }
             isearcher.close();
         } catch ( IOException e ) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch ( ParseException e ) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -141,7 +138,6 @@ class FormatRegistryIndexer {
         try {
             directory.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

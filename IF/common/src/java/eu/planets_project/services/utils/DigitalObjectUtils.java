@@ -37,9 +37,7 @@ public final class DigitalObjectUtils {
     /**
      * @return The total size, in bytes, of the bytestream contained or referred
      *         to by this Digital Object. Does not include the size of any
-     *         associated metadata, or the Java objects etc. Recursive method
-     *         for computing the total size. TODO A badly-formed DigitalObject
-     *         could cause this method to recurse forever. Can that be stopped?
+     *         associated metadata, or the Java objects etc.
      */
     public static long getContentSize(final DigitalObject dob) {
         long bytes = 0;
@@ -77,9 +75,7 @@ public final class DigitalObjectUtils {
      * resources. (Value) resources always to be embedded.<br/>
      * - Unpacking a DOIP and getting N CDOs out, optionally embedding binaries,
      * using ZipInputStreams, or unpacking into Files?<br/>
-     * FIXME DO must know if it has a parent in order to be able to look things
-     * up?<br/>
-     * FIXME Should DO use URI internally got Content.reference, to allow
+     * TODO Should DO use URI internally got Content.reference, to allow
      * relative resolution?
      */
     public static void main(String args[]) {

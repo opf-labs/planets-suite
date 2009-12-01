@@ -20,12 +20,6 @@ import java.util.List;
  * can be filled in by the caller.
  * </p>
  * <p>
- * TODO Should some space be left in this item for a more extensible system,
- * such as name-value pairs implementing [subject, predicate, object] triples?
- * The subject is clearly the Event, so use 'dc.creator', 'dc.terms.isPartOf',
- * 'planets.process.info' etc?
- * </p>
- * <p>
  * The ProcessLog should usually be returned by the called Service, and allows
  * the Service to pass back some information about what happened.
  *</p>
@@ -34,6 +28,10 @@ import java.util.List;
  *</p>
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
+/* TODO Should some space be left in this item for a more extensible system,
+ * such as name-value pairs implementing [subject, predicate, object] triples?
+ * The subject is clearly the Event, so use 'dc.creator', 'dc.terms.isPartOf',
+ * 'planets.process.info' etc? */
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
 public final class Event {
 
@@ -53,11 +51,13 @@ public final class Event {
      * The total duration of this event, i.e. the wall-clock execution time (in
      * seconds) since the start date and time.
      * <p>
-     * TODO Please not that this is an addition to the CDM. Rationale: It is
-     * useful to record this information for runtime-estimation. Perhaps this is
-     * not the place for it though? Only really known to the caller, so maybe
-     * this does not belong here.
+     * Please note that this is an addition to the CDM. Rationale: It is
+     * useful to record this information for runtime-estimation.
      * </p>
+     */
+    /*
+     * TODO: Perhaps this is not the place for it though? Only really known to the caller, 
+     * so maybe this does not belong here.
      */
     @XmlAttribute
     private double duration;

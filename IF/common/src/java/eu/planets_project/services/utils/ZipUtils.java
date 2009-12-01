@@ -83,7 +83,7 @@ public class ZipUtils {
 	 * @param srcFolder the folder containing the files to be written to the zip
 	 * @param destFolder the folder to write the Zip file to
 	 * @param zipName the name the zip file should have. If no zipName is passed, the name of the folder will be used.
-	 * @param compress TODO
+	 * @param compress has no effect TODO implement compression
 	 * @return a ZipResult, containing the zip as a file and the created checksum (MD5)
 	 */
 	public static ZipResult createZipAndCheck(File srcFolder, File destFolder, String zipName, boolean compress) {

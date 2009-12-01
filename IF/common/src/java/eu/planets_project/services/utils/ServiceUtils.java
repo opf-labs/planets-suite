@@ -151,7 +151,8 @@ public class ServiceUtils {
      * Add or Update automatically generated list of JVM/OS properties.
      * Embeds information about the service environment inside the service description 
      * as a property called 'planets:if/srv/java-system-properties'
-     * 
+     */
+    /*
      * TODO Upgrade this idea to some standardised form for platform/environment/software stacks.
      */
     public static Property createServerDescriptionProperty() {
