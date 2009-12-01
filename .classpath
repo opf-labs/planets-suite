@@ -116,10 +116,8 @@
 	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove.jar"/>
 	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr181-api.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-handler.jar"/>
 	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-api.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/log4j.jar"/>
 	<classpathentry kind="lib" path="lib/endorsed/jaxb-api.jar"/>
 	<classpathentry kind="lib" path="lib/endorsed/jsr173_api.jar"/>
 	<classpathentry kind="lib" path="PC/libtiff/lib/jna.jar"/>
@@ -178,7 +176,6 @@
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/batik-all.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/mail-1.4.1.jar"/>
-	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/sunxacml-patched.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jai_codec.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/wsdl4j-1.5.1.jar"/>
@@ -199,7 +196,6 @@
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/activation-1.1.1.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/jhbasic.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/saaj-api-1.3.jar"/>
-	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/trippi-1.4.1-core.jar"/>
 	<classpathentry kind="output" path="bin"/>

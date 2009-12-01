@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.annotation.security.RunAs;
@@ -30,8 +31,6 @@ import javax.persistence.Persistence;
 import javax.rmi.PortableRemoteObject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
@@ -49,7 +48,7 @@ import eu.planets_project.ifr.core.security.impl.services.SelfRegistrationManage
  */
 public class UserSignupBean 
 {
-	private static Log log = LogFactory.getLog(UserSignupBean.class);
+	private static Logger log = LogFactory.getLog(UserSignupBean.class.getName());
 	
 	
 	private SelfRegistrationManager selfRegManager = new SelfRegistrationManagerImpl();
