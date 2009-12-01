@@ -131,7 +131,6 @@ final class ImmutableDigitalObject implements DigitalObject, Serializable {
              * using Content.byValue:
              */
             InputStream inputStream = getContent().read();
-            // TODO this check should probably occur in ImmutableContent's constructor instead
             if (inputStream == null) {
                 throw new IllegalStateException("Could not read content from: " + getContent());
             }

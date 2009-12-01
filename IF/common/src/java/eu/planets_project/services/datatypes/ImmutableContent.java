@@ -70,6 +70,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
      * @param value The content value
      */
     ImmutableContent(final byte[] value) {
+        if (value == null) throw new IllegalArgumentException("Byte array parameter must not be null!");
         this.length = value.length;
         this.bytes = value;
         log.info("Created Content from byte array: " + this.length + " bytes in length.");
@@ -79,6 +80,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
      * @param reference The content reference, as a file.
      */
     ImmutableContent(final File reference) {
+        if (reference == null) throw new IllegalArgumentException("File parameter must not be null!");
         FileDataSource ds = new FileDataSource(reference);
         ds.setFileTypeMap(FileTypeMap.getDefaultFileTypeMap());
         DataHandler dh = new DataHandler(ds);
@@ -91,6 +93,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
      * @param reference The content, passed as an explicit reference.
      */
     ImmutableContent(final URL reference) {
+        if (reference == null) throw new IllegalArgumentException("URL parameter must not be null!");
         this.length = -1;
         this.reference = reference;
         log.info("Created Content from URL: " + reference);
@@ -208,7 +211,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
             } else if (this.bytes != null && that.bytes != null) {
                 return IOUtils
                         .contentEquals(new ByteArrayInputStream(this.bytes), new ByteArrayInputStream(that.bytes));
-            } else if(this.reference != null && that.reference != null) {
+            } else if (this.reference != null && that.reference != null) {
                 return this.reference.toString().equals(that.reference.toString());
             }
         } catch (IOException e) {
