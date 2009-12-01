@@ -105,7 +105,7 @@ public class CoreOdfValidator {
 		// get the mimetype of this ODF file
 		mimeType = contentHandler.getMimeType();
 		// if this is a formula file, get the version of the embedded MathML
-		if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)) {
+		if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE) || contentHandler.containsEmbeddedMathML()) {
 			result.setMathMLVersion(contentHandler.getMathMLVersion()); // and set it in the result
 		}
 		// set the mimetype
@@ -132,35 +132,35 @@ public class CoreOdfValidator {
 		return result;
 	}
 	
-	private static OdfValidatorResult validateFile(File odfSubFiles, OdfValidatorResult result) {
-		String name = odfSubFiles.getName();
+	private static OdfValidatorResult validateFile(File odfSubFile, OdfValidatorResult result) {
+		String name = odfSubFile.getName();
 
 		// Do we have a FORMULA (MathML) file?		
 		if(name.equalsIgnoreCase(OdfContentHandler.CONTENT_XML)) {
-			if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)) {
-				result = validateMathML(odfSubFiles, schemaList.get("mathml"), result);
+			if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE) || contentHandler.subFileContainsMathML(odfSubFile)) {
+				result = validateMathML(odfSubFile, schemaList.get("mathml"), result);
 			}
 			else {
-				result = validateSubFile(odfSubFiles, schemaList.get("doc"), result);
+				result = validateSubFile(odfSubFile, schemaList.get("doc"), result);
 			}
 		}
 		
 		// do we have the manifest.xml file here? Then validate it against the manifest schema!
 		if(name.equalsIgnoreCase(OdfContentHandler.MANIFEST_XML)) {
-			result = validateSubFile(odfSubFiles, schemaList.get("manifest"), result);
+			result = validateSubFile(odfSubFile, schemaList.get("manifest"), result);
 		}
 		
 		// do we have a signature file here, then validate it against the dsig schema
 		if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2) && name.equalsIgnoreCase(OdfContentHandler.DOC_DSIGS_XML)
 				|| name.equalsIgnoreCase(OdfContentHandler.MACRO_DSIGS_XML)) {
-			result = validateSubFile(odfSubFiles, schemaList.get("dsig"), result);
+			result = validateSubFile(odfSubFile, schemaList.get("dsig"), result);
 		}
 		
 		// Or do we have a 'normal' ODF subfile (content.xml, settings.xml, styles.xml, meta.xml)?
 		if(name.equalsIgnoreCase(OdfContentHandler.SETTINGS_XML)
 				|| name.equalsIgnoreCase(OdfContentHandler.STYLES_XML)
 				|| name.equalsIgnoreCase(OdfContentHandler.META_XML)) {
-			result = validateSubFile(odfSubFiles, schemaList.get("doc"), result);
+			result = validateSubFile(odfSubFile, schemaList.get("doc"), result);
 		}
 		return result;
 	}
@@ -219,8 +219,13 @@ public class CoreOdfValidator {
 			
 			File cleanedMathML = contentHandler.cleanUpXmlForValidation(mathmlFile);
 			
-			result.setWarning(mathmlFile, "Detected MathML v" + result.getMathMLVersion().replace("MathML:", "") + ": To enable validation against the " +
-					"MathML 2.0 Schema, DOCTYPE declaration is ignored!");
+			if(contentHandler.containsDocTypeDeclaration()) {
+				result.setWarning(mathmlFile, "Detected MathML version = '" + result.getMathMLVersion() + "': To enable validation against the " +
+						"MathML 2.0 Schema, DOCTYPE declaration is ignored!");
+			}
+			else {
+				result.setWarning(mathmlFile, "Detected MathML version = '" + result.getMathMLVersion() + "': Using MathML 2.0 schema for validation");
+			}
 			
 			
 			parser.parse(cleanedMathML, new DefaultHandler());
@@ -259,8 +264,9 @@ public class CoreOdfValidator {
 	}
 	
 	private void collectSchemas() {
-		if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)) {
-			schemaList.put("mathml", schemaHandler.retrieveMathMLSchemaOrDtdFile(result.getMathMLVersion()));
+		if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)
+				|| contentHandler.containsEmbeddedMathML()) {
+			schemaList.put("mathml", schemaHandler.retrieveMathMLSchema());
 			result.setMathMLSchema(schemaList.get("mathml"));
 		}
 		

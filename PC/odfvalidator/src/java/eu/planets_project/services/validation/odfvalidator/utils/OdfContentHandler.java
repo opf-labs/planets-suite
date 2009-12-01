@@ -47,6 +47,10 @@ public class OdfContentHandler {
 	
 	private boolean detectedDsigSubFiles = false;
 	
+	private boolean containsEmdeddedMathML = false;
+	
+	private boolean containsMathMLDoctype = false;
+	
 	private String manifestMimeType = null;
 	
 	private boolean isNotODF = false;
@@ -72,12 +76,40 @@ public class OdfContentHandler {
 		// 1) get all Odf sub files from zip container
 		odfSubFiles = extractOdfSubFiles(odfFile);
 		
+		containsEmdeddedMathML = checkForEmbeddedMathML(odfSubFiles);
+		
+		containsMathMLDoctype = checkForMathMLDoctype(odfSubFiles);
+		
 		if(!isNotODF) {
 			
 			getVersions(odfSubFiles);
 			
 			missingFileEntries = checkContainerConformity(odfFile);
 		}
+	}
+	
+	private boolean checkForMathMLDoctype(HashMap<String, List<File>> odfSubFiles) { 
+		List<File> subFiles = getOdfSubFiles();
+		HashMap<File, Boolean> doctypeContainingFiles = new HashMap<File, Boolean>();
+		for (File file : subFiles) {
+			boolean docTypeContained = containsDocTypeDeclaration(file);
+			doctypeContainingFiles.put(file, Boolean.valueOf(docTypeContained));
+		}
+		
+		return doctypeContainingFiles.containsValue(Boolean.TRUE);
+	}
+	
+	
+	private boolean checkForEmbeddedMathML(HashMap<String, List<File>> odfSubFiles) {
+		List<File> subFiles = getOdfSubFiles();
+		HashMap<File, Boolean> mathMLContainingFiles = new HashMap<File, Boolean>();
+		
+		for (File file : subFiles) {
+			boolean mathMLEmbedded = subFileContainsMathML(file);
+			mathMLContainingFiles.put(file, Boolean.valueOf(mathMLEmbedded));
+		}
+		
+		return mathMLContainingFiles.containsValue(Boolean.TRUE);
 	}
 	
 	public File getCurrentXmlTmpDir() {
@@ -219,7 +251,11 @@ public class OdfContentHandler {
 		return version;
 	}
 	
-	public boolean containsDocTypeDeclaration(File mathmlXml) {
+	public boolean containsDocTypeDeclaration() {
+		return containsMathMLDoctype;
+	}
+	
+	private boolean containsDocTypeDeclaration(File mathmlXml) {
 		String contentString = FileUtils.readTxtFileIntoString(mathmlXml);
 		String docTypePattern = "<!DOCTYPE";
 		return contentString.contains(docTypePattern);
@@ -280,6 +316,20 @@ public class OdfContentHandler {
 	public boolean isOdfFile() {
 		return !isNotODF;
 	}
+	
+	public boolean subFileContainsMathML(File odfSubfile) {
+		String content = FileUtils.readTxtFileIntoString(odfSubfile);
+		if(content.contains("xmlns=\"http://www.w3.org/1998/Math/MathML\"")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean containsEmbeddedMathML() {
+		return containsEmdeddedMathML;
+	}
 
 	public List<File> getOdfSubFiles() {
 		List<File> subFiles = new ArrayList<File>();
@@ -323,7 +373,12 @@ public class OdfContentHandler {
 	}
 	
 	public String getMathMLVersion() {
-		return mathMLVersion;
+		if(mathMLVersion!=null) {
+			return mathMLVersion;
+		}
+		else {
+			return "unknown";
+		}
 	}
 	
 	public String getMimeType() {

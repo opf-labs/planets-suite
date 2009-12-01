@@ -97,19 +97,9 @@ public class OdfSchemaHandler {
 		return schemaFiles.get(MATH101_DTD);
 	}
 	
-	public File retrieveMathMLSchemaOrDtdFile(String mathMLVersion) {
-		if(mathMLVersion.equalsIgnoreCase(MATHML_v101)) {
-//			log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML v1.01 DTD file: " + schemaFiles.get(MATHML2_SCHEMA).getName());
-			log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML 2 Schema file: " + schemaFiles.get(MATHML2_SCHEMA).getName());
-//			return schemaFiles.get(MATH101_DTD);
-			return schemaFiles.get(MATHML2_SCHEMA);
-		}
-		if(mathMLVersion.equalsIgnoreCase(MATHML_v2)) {
-			log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML 2 Schema file: " + schemaFiles.get(MATHML2_SCHEMA).getName());
-			return schemaFiles.get(MATHML2_SCHEMA);
-		}
-		log.severe("Unable to retrieve MathML schema or DTD for this version!!!");
-		return null;
+	public File retrieveMathMLSchema() {
+		log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML 2 Schema file: " + schemaFiles.get(MATHML2_SCHEMA).getName());
+		return schemaFiles.get(MATHML2_SCHEMA);
 	}
 	
 	public File retrieveDsigSchema(String version) {

@@ -109,7 +109,7 @@ public class OdfValidatorTest {
 			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(currentFile));
 //			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v11_drawing));
 			
-			ValidateResult vr = validator.validate(testIn, format, v12_params);
+			ValidateResult vr = validator.validate(testIn, format, null);
 			
 			assertTrue("ValidateResult should not be NULL!", vr!=null);
 			System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());

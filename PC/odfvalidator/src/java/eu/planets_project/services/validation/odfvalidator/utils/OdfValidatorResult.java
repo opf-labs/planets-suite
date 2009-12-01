@@ -278,9 +278,15 @@ public class OdfValidatorResult {
 		if(!this.documentIsValid()) {
 			buf.append("---------- Error Messages ----------" + NEWLINE);
 			for (File invalidComponent : invalidComponents) {
-				String componentName = invalidComponent.getParent() + File.separator + invalidComponent.getName();
+				String componentName = invalidComponent.getName();
+				String parentName = invalidComponent.getParentFile().getName();
+				if(!parentName.contains("XML_CONTENT_") 
+						&& !parentName.contains("META-INF")
+						&& !parentName.contains("ODFVALIDATOR_INPUT")) {
+					componentName = parentName + "/" + componentName;
+				}
 				String error = errorList.get(invalidComponent);
-				buf.append("[ERROR " + componentName + "] = " + error + NEWLINE);
+				buf.append("[ERROR '" + componentName + "'] = " + error + NEWLINE);
 			}
 		}
 		buf.append(NEWLINE);

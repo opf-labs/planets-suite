@@ -168,7 +168,7 @@ public class OdfValidator implements Validate {
 		
 		String name = DigitalObjectUtils.getFileNameFromDigObject(digitalObject, format);
 		
-		File odfValidatorTmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODFVALIADTOR_INPUT");
+		File odfValidatorTmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODFVALIDATOR_INPUT");
 		
 		File inputOdfFile = new File(odfValidatorTmp, FileUtils.randomizeFileName(name));
 		FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), inputOdfFile); 
