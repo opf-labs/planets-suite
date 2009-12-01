@@ -150,7 +150,7 @@ public class SimpleMigrateTemplate extends WorkflowTemplateHelper implements Wor
         log.info("STEP 2: Migrating ...");
         // URI migrateFromURI = new URI(migrateFrom);
 
-				InputStream streamContent = digO.getContent().read();
+				InputStream streamContent = digO.getContent().getInputStream();
 				byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
 				//ImmutableContent content = new ImmutableContent(byteContent);
 				DigitalObjectContent content = Content.byValue(byteContent);
