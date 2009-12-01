@@ -32,7 +32,7 @@ public class DigitalObjectUtilsTest {
 		assertTrue("DigitalObject should NOT be NULL!", result!=null);
 		printDigOb(result);
 		File resultFile = new File(work_folder, result.getTitle());
-		FileUtils.writeInputStreamToFile(result.getContent().read(), resultFile);
+		FileUtils.writeInputStreamToFile(result.getContent().getInputStream(), resultFile);
 		System.out.println("Result size: " + resultFile.length());
 	}
 	
@@ -98,7 +98,7 @@ public class DigitalObjectUtilsTest {
 		DigitalObject result = DigitalObjectUtils.createZipTypeDigitalObject(removeZip, "removeFragmentTest.zip", false, false, true);
 		printDigOb(result);
 		DigitalObject removeResult = DigitalObjectUtils.removeFragment(result, new String("insertedFiles\\images\\laptop.gif"), false);
-		FileUtils.writeInputStreamToFile(removeResult.getContent().read(), new File(work_folder, removeResult.getTitle()));
+		FileUtils.writeInputStreamToFile(removeResult.getContent().getInputStream(), new File(work_folder, removeResult.getTitle()));
 		printDigOb(removeResult);
 	}
 	

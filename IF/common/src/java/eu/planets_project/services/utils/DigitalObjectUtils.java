@@ -44,7 +44,7 @@ public final class DigitalObjectUtils {
         // Get the size at this level, if set:
         byte[] buf = new byte[1024];
         if (dob.getContent() != null) {
-            InputStream inputStream = dob.getContent().read();
+            InputStream inputStream = dob.getContent().getInputStream();
             int length = 0;
             try {
                 while ((inputStream != null)
@@ -103,7 +103,7 @@ public final class DigitalObjectUtils {
 	 */
 	public static File getAsTmpFile(final DigitalObject digitalObject) {
 	    File inputFile = FileUtils.getTempFile("digital-object-content", "bin");
-	    FileUtils.writeInputStreamToFile(digitalObject.getContent().read(),
+	    FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(),
 	            inputFile);
 	    return inputFile;
 	}
@@ -124,7 +124,7 @@ public final class DigitalObjectUtils {
 			}
 		}
 		File contentFile = new File(destFolder, FileUtils.randomizeFileName(fileName));
-		FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), contentFile);
+		FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), contentFile);
 		return contentFile;
 	}
 	
@@ -144,7 +144,7 @@ public final class DigitalObjectUtils {
                 String name = getFileNameFromDigObject(currentDigObj, null);
                 log.info("name of dig obj is: "+name);
                 containedFiles.add(FileUtils.writeInputStreamToFile(
-                        currentDigObj.getContent().read(), targetFolder, name));
+                        currentDigObj.getContent().getInputStream(), targetFolder, name));
             }
         }
         log.info(String.format("Returning %s files", containedFiles.size()));
@@ -459,7 +459,7 @@ public final class DigitalObjectUtils {
 		
 		File zip = new File(tmpFolder, getFileNameFromDigObject(digOb, null));
 		
-		FileUtils.writeInputStreamToFile(digOb.getContent().read(), zip);
+		FileUtils.writeInputStreamToFile(digOb.getContent().getInputStream(), zip);
 		
 		return zip;
 	}

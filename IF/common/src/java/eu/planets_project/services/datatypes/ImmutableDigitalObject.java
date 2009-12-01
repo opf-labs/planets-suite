@@ -130,7 +130,7 @@ final class ImmutableDigitalObject implements DigitalObject, Serializable {
              * serialization for these cases, we create a copy of the digital object and create the same content, but
              * using Content.byValue:
              */
-            InputStream inputStream = getContent().read();
+            InputStream inputStream = getContent().getInputStream();
             if (inputStream == null) {
                 throw new IllegalStateException("Could not read content from: " + getContent());
             }

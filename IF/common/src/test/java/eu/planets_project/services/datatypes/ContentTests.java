@@ -72,7 +72,7 @@ public final class ContentTests {
 
     private void test(DigitalObjectContent object) {
         Assert.assertEquals("Original content and wrapped content should be equal", content,
-                read(object.read()));
+                read(object.getInputStream()));
     }
 
     @Test

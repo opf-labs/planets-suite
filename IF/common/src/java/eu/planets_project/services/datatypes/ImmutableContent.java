@@ -116,9 +116,9 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.services.datatypes.DigitalObjectContent#read()
+     * @see eu.planets_project.services.datatypes.DigitalObjectContent#getInputStream()
      */
-    public InputStream read() {
+    public InputStream getInputStream() {
         try {
             if (dataHandler != null) {
                 log.info("Opening dataHandler stream of type: " + dataHandler.getContentType());
@@ -142,7 +142,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
 
     /**
      * @return The reference, if any (might be null). Clients should not use this method to access the actual data, but
-     *         {@link #read()} or {@link #getValue()}, which will always return the actual content, no matter how it was
+     *         {@link #getInputStream()} or {@link #getValue()}, which will always return the actual content, no matter how it was
      *         created (by value or by reference).
      */
     public URL getReference() {
