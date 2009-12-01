@@ -65,7 +65,7 @@ public final class XcdlComparePropertiesTests {
         DigitalObject second = new DigitalObject.Builder(Content.byValue(data2)).build();
         /* The actual config file: */
         DigitalObject configDigitalObject = new DigitalObject.Builder(Content.byValue(configData)).build();
-        byte[] configBytes = FileUtils.writeInputStreamToBinary(configDigitalObject.getContent().read());
+        byte[] configBytes = FileUtils.writeInputStreamToBinary(configDigitalObject.getContent().getInputStream());
         File configFile = FileUtils.writeByteArrayToTempFile(configBytes);
         /* We now convert both into the formats we need using our service: */
         List<Parameter> configProps = new ArrayList<Parameter>(new ComparatorConfigParser(configFile).getProperties());

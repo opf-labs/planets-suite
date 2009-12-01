@@ -270,7 +270,7 @@ public class XcdlMigrateTests {
 
             File formatFolder = FileUtils.createFolderInWorkFolder(testOutFolder, extension);
 
-            File result = FileUtils.writeInputStreamToFile(doOut.getContent().read(), formatFolder, "xcdlMigrateTest_"
+            File result = FileUtils.writeInputStreamToFile(doOut.getContent().getInputStream(), formatFolder, "xcdlMigrateTest_"
                     + extension + ".xcdl");
 
             System.out.println("Resulting file size: " + result.length() + " KB.");

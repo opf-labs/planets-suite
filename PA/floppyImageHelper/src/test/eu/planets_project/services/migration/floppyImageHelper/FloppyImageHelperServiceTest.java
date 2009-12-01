@@ -113,7 +113,7 @@ public class FloppyImageHelperServiceTest {
 		assertTrue("Resulting DigitalObject should NOT be NULL!!!", migrateResult.getDigitalObject()!=null);
 		DigitalObject resultDigObj = migrateResult.getDigitalObject();
 		RESULT_FILE = new File(OUT_DIR, resultDigObj.getTitle());
-		FileUtils.writeInputStreamToFile(resultDigObj.getContent().read(), RESULT_FILE);
+		FileUtils.writeInputStreamToFile(resultDigObj.getContent().getInputStream(), RESULT_FILE);
 	}
 	
 	
@@ -130,7 +130,7 @@ public class FloppyImageHelperServiceTest {
 		assertTrue("Resulting DigitalObject should NOT be NULL!!!", migrateResult.getDigitalObject()!=null);
 		DigitalObject resultDigObj = migrateResult.getDigitalObject();
 		File resultFile = new File(OUT_DIR, resultDigObj.getTitle());
-		FileUtils.writeInputStreamToFile(resultDigObj.getContent().read(), resultFile);
+		FileUtils.writeInputStreamToFile(resultDigObj.getContent().getInputStream(), resultFile);
 		DigitalObjectContent resultContent = resultDigObj.getContent();
 //		long resultChecksum = Long.parseLong(resultContent.getChecksum().getValue());
 		ZipUtils.checkAndUnzipTo(resultFile, OUT_DIR, resultContent.getChecksum());

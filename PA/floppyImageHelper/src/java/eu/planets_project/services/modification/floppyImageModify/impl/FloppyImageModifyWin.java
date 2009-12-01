@@ -128,7 +128,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 					"\nSorry, returning with error!", null);
 		}
 		
-		File originalImageFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), TEMP_FOLDER, fileName);
+		File originalImageFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), TEMP_FOLDER, fileName);
 		
 		FloppyHelperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile);
 		

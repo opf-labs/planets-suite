@@ -78,7 +78,7 @@ public class FileIdentify implements Identify {
         }
 
         // Get binary data from digital object
-        byte[] binary = FileUtils.writeInputStreamToBinary(digitalObject.getContent().read());
+        byte[] binary = FileUtils.writeInputStreamToBinary(digitalObject.getContent().getInputStream());
        
         // write binary array to temporary file
         File tmpInFile = FileUtils.writeByteArrayToTempFile(binary);

@@ -143,7 +143,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 			fileName = FileUtils.randomizeFileName(fileName);  
 		}
 		
-		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), TEMP_FOLDER, fileName);
+		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), TEMP_FOLDER, fileName);
 		
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
 			ZipResult zippedResult = FloppyImageHelperUnix.extractFilesFromFloppyImage(inputFile);

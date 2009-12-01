@@ -101,7 +101,7 @@ public class FloppyImageModifyTest {
 		assertTrue("Resulting DigitalObject should not be NULL", digObjres!=null);
 		System.out.println("DigitalObject: " + digObjres);
 		File out = new File(OUT_DIR, digObjres.getTitle());
-		FileUtils.writeInputStreamToFile(digObjres.getContent().read(), out);
+		FileUtils.writeInputStreamToFile(digObjres.getContent().getInputStream(), out);
 		System.out.println("Please find the floppy image here: " + out.getAbsolutePath());
 	}
 }

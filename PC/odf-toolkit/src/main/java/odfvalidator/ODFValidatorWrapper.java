@@ -300,7 +300,7 @@ public class ODFValidatorWrapper {
             
             // NOTE that the validator does not return 'valid', but 'hasErrors'.
             //aValidator.validate(aOut, aFileNames, aExcludeRegExp, nMode, bRecursive, aFilterFileName );
-            boolean hasErrors = aValidator.validateStream(aOut, dob.getContent().read(), aBaseURI , nMode, null);
+            boolean hasErrors = aValidator.validateStream(aOut, dob.getContent().getInputStream(), aBaseURI , nMode, null);
             System.out.println("hasErrors: "+hasErrors);
             
             ofThisFormat = !hasErrors;

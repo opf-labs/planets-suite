@@ -79,7 +79,7 @@ public final class Droid implements Identify, Serializable {
      */
     public IdentifyResult identify(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
-        InputStream stream = digitalObject.getContent().read();
+        InputStream stream = digitalObject.getContent().getInputStream();
         File file = FileUtils.writeInputStreamToTmpFile(stream, "droid-temp",
                 "bin");
         List<URI> types = identifyOneBinary(file);

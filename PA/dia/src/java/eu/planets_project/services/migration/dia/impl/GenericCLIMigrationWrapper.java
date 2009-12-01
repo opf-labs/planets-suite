@@ -88,7 +88,7 @@ public class GenericCLIMigrationWrapper {
             } else {
                 // The tool can handle input and output from stdin/stdout.
 
-                processStandardInput = sourceObject.getContent().read();
+                processStandardInput = sourceObject.getContent().getInputStream();
             }
 
             ServiceReport serviceReport = executeToolProcess(toolProcessRunner,
@@ -203,7 +203,7 @@ public class GenericCLIMigrationWrapper {
                 "source");
 
         // Write the digital object to the temporary source file.
-        FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
+        FileUtils.writeInputStreamToFile(sourceObject.getContent().getInputStream(),
                 sourceTempFile);
 
         return sourceTempFile;

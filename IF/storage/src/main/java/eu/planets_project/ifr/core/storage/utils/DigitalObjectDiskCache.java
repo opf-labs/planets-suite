@@ -45,7 +45,7 @@ public class DigitalObjectDiskCache {
         }
 
         log.info("write " + dob.getTitle());
-        FileUtils.writeInputStreamToFile(dob.getContent().read(), cachedir, sessionId);
+        FileUtils.writeInputStreamToFile(dob.getContent().getInputStream(), cachedir, sessionId);
         
         // Also store the XML:
         String xmlfile = dob.toXml();

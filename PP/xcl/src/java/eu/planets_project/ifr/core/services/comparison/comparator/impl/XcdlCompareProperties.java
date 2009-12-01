@@ -116,7 +116,7 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @see eu.planets_project.services.compare.CompareCharacteriseResults#convertInput(eu.planets_project.services.datatypes.DigitalObject)
      */
     public CharacteriseResult convertInput(final DigitalObject inputFile) {
-        CharacteriseResult props = new XcdlParser(inputFile.getContent().read()).getCharacteriseResult();
+        CharacteriseResult props = new XcdlParser(inputFile.getContent().getInputStream()).getCharacteriseResult();
         if (props.getProperties().size() == 0) {
             throw new IllegalStateException("Could not parse any properties from: " + inputFile);
         }
@@ -128,7 +128,7 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @see eu.planets_project.services.compare.Compare#convert(eu.planets_project.services.datatypes.DigitalObject)
      */
     public List<Parameter> convertConfig(final DigitalObject configFile) {
-        return new ComparatorConfigParser(configFile.getContent().read()).getProperties();
+        return new ComparatorConfigParser(configFile.getContent().getInputStream()).getProperties();
     }
 
 }

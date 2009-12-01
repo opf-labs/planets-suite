@@ -42,9 +42,9 @@ public class FedoraObjectManagerTest extends TestCase {
         assertEquals(storedObject.getTitle(),object.getTitle());
         assertEquals(storedObject.getFormat(),object.getFormat());
         assertEquals(storedObject.getMetadata().get(0).getContent().trim(),object.getMetadata().get(0).getContent().trim());
-        BufferedReader storedStream = new BufferedReader(new InputStreamReader(storedObject.getContent().read()));
+        BufferedReader storedStream = new BufferedReader(new InputStreamReader(storedObject.getContent().getInputStream()));
 
-        BufferedReader newStream = new BufferedReader(new InputStreamReader(object.getContent().read()));
+        BufferedReader newStream = new BufferedReader(new InputStreamReader(object.getContent().getInputStream()));
         while (storedStream.ready() && newStream.ready()){
             assertEquals(storedStream.readLine(),newStream.readLine());
         }
@@ -68,9 +68,9 @@ public class FedoraObjectManagerTest extends TestCase {
         assertEquals(restoredObject.getTitle(),object2.getTitle());
         assertEquals(restoredObject.getFormat(),object2.getFormat());
         assertEquals(restoredObject.getMetadata().get(0).getContent().trim(),object2.getMetadata().get(0).getContent().trim());
-        BufferedReader restoredStream = new BufferedReader(new InputStreamReader(restoredObject.getContent().read()));
+        BufferedReader restoredStream = new BufferedReader(new InputStreamReader(restoredObject.getContent().getInputStream()));
 
-        BufferedReader newStream2 = new BufferedReader(new InputStreamReader(object2.getContent().read()));
+        BufferedReader newStream2 = new BufferedReader(new InputStreamReader(object2.getContent().getInputStream()));
         while (restoredStream.ready() && newStream2.ready()){
             assertEquals(restoredStream.readLine(),newStream2.readLine());
         }

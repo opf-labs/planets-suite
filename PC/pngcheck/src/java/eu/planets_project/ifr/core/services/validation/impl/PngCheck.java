@@ -117,7 +117,7 @@ public final class PngCheck implements Validate, Serializable {
     public ValidateResult validate(final DigitalObject digitalObject,
             final URI format, final List<Parameter> parameters) {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
-                .getContent().read(), "pngcheck-temp", "bin");
+                .getContent().getInputStream(), "pngcheck-temp", "bin");
         boolean valid = basicValidateOneBinary(file, format);
         ValidateResult result = new ValidateResult.Builder(format,
                 new ServiceReport(Type.INFO, Status.SUCCESS, "OK"))

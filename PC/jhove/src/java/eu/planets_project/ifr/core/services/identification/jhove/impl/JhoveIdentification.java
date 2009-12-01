@@ -77,7 +77,7 @@ public final class JhoveIdentification implements Identify, Serializable {
     public IdentifyResult identify(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
-                .getContent().read(), "jhove-temp", "bin");
+                .getContent().getInputStream(), "jhove-temp", "bin");
         List<URI> types = identifyOneBinary(file);
         log.info("JHOVE Identification, got types: " + types);
         ServiceReport report;

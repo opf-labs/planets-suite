@@ -121,7 +121,7 @@ public class GenericMigrationWrapper {
         InputStream processStandardInput = null;
         if (!migrationPath.useTempSourceFile()) {
             //serve the file on standard input
-            processStandardInput = sourceObject.getContent().read();
+            processStandardInput = sourceObject.getContent().getInputStream();
         } else {
             //fine, is alreade written
         }
@@ -223,7 +223,7 @@ public class GenericMigrationWrapper {
                                       File workfolder) throws IOException {
         TempFile sourcetempfile = migrationPath.getTempSourceFile();
         File realtemp = createTemp(workfolder,sourcetempfile);
-        FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),realtemp);
+        FileUtils.writeInputStreamToFile(sourceObject.getContent().getInputStream(),realtemp);
         sourcetempfile.setFile(realtemp);
     }
 

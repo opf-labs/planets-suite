@@ -82,7 +82,7 @@ public final class MetadataExtractor implements Characterise {
      */
     public CharacteriseResult characterise(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
-        InputStream stream = digitalObject.getContent().read();
+        InputStream stream = digitalObject.getContent().getInputStream();
         byte[] binary = FileUtils.writeInputStreamToBinary(stream);
         String resultString = basicCharacteriseOneBinary(binary);
         List<Property> props = readProperties(resultString);

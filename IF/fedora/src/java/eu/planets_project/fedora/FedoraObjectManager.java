@@ -168,7 +168,7 @@ public class FedoraObjectManager implements DigitalObjectManager{
         Datastream filedatastream = planetsDatastreamObject.getFiledatastream();
         URI formatURI = digitalObject.getFormat();
         try {
-            fedora.modifyDatastream(pid,filedatastream.getName(),digitalObject.getContent().read(),formatURI);
+            fedora.modifyDatastream(pid,filedatastream.getName(),digitalObject.getContent().getInputStream(),formatURI);
         } catch (FedoraConnectionException e) {
             //TODO rollback
             throw new DigitalObjectNotStoredException(e);

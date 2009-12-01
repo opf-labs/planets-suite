@@ -105,7 +105,7 @@ public final class XcdlCompare implements Compare {
         if (digitalObject == null) {
             throw new IllegalArgumentException("Digital object is null!");
         }
-        InputStream stream = digitalObject.getContent().read();
+        InputStream stream = digitalObject.getContent().getInputStream();
         String xcdl = new String(FileUtils.writeInputStreamToBinary(stream));
         if (!xcdl.toLowerCase().contains("<xcdl")) {
             throw new IllegalArgumentException("Digital object given is no XCDL: " + xcdl);
@@ -137,7 +137,7 @@ public final class XcdlCompare implements Compare {
      * @see eu.planets_project.services.compare.Compare#convert(eu.planets_project.services.datatypes.DigitalObject)
      */
     public List<Parameter> convert(final DigitalObject configFile) {
-        InputStream inputStream = configFile.getContent().read();
+        InputStream inputStream = configFile.getContent().getInputStream();
         return new ComparatorConfigParser(inputStream).getProperties();
     }
 }

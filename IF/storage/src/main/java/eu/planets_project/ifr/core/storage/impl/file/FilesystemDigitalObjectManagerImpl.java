@@ -194,7 +194,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			    // Re-create the digital object metadata.
                 dob = new DigitalObject.Builder(fileData.toString());
                 // And add the content:
-                DigitalObjectContent c = Content.byReference(dob.getContent().read());
+                DigitalObjectContent c = Content.byReference(dob.getContent().getInputStream());
                 dob.content(c);
                 // If there is no title, add title to the dob.
                 // TODO Not sane behaviour - if an object has been stored with no title, then that should remain the case.  The 'filename' is already in the URI, where it belongs.
@@ -275,7 +275,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
             log.fine("And storing in metadata in "+doMetadata.getAbsolutePath());
 			
 			// Persist the object to a file
-			InputStream inStream = digitalObject.getContent().read();
+			InputStream inStream = digitalObject.getContent().getInputStream();
 			OutputStream binStream = new FileOutputStream(doBinary);
 			byte[] buf = new byte[1024];
 			int len;

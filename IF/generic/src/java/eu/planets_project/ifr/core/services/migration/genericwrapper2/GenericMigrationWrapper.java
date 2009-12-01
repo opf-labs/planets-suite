@@ -142,13 +142,13 @@ public class GenericMigrationWrapper {
 	if (inputIOProfile.usePipedIO()) {
 
 	    // Serve the digital object through standard input
-	    standardInputStream = sourceObject.getContent().read();
+	    standardInputStream = sourceObject.getContent().getInputStream();
 	} else {
 
 	    // Serve the digital object through a temporary input file.
 	    File inputTempFile = temporaryFileMappings.get(inputIOProfile
 		    .getCommandLineFileLabel());
-	    FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
+	    FileUtils.writeInputStreamToFile(sourceObject.getContent().getInputStream(),
 		    inputTempFile);
 	}
 

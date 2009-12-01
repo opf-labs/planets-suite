@@ -136,7 +136,7 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
 			fileName = DEFAULT_INPUT_NAME + "." + inFormat;
 		}
 		
-		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), TEMP_FOLDER, fileName);
+		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), TEMP_FOLDER, fileName);
 		
 		File imageFile = null;
 		

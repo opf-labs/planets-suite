@@ -127,7 +127,7 @@ public class CoreExtractor {
 		outputFileName = getOutputFileName(inputFileName, format.createExtensionUri("xcdl"));
         
         File srcFile = new File(extractor_in_folder, inputFileName);
-		FileUtils.writeInputStreamToFile(input.getContent().read(), srcFile);
+		FileUtils.writeInputStreamToFile(input.getContent().getInputStream(), srcFile);
 
 //            srcFile = new File(extractor_in_folder, "extractor_image_in.bin");
 //            FileOutputStream fos = new FileOutputStream(srcFile);
