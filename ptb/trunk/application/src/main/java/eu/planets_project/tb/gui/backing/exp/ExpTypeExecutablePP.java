@@ -381,7 +381,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
     private String helperReadDigoToString(String fileRef) throws IOException, DigitalObjectNotFoundException, URISyntaxException{
     	DigitalObjectMultiManager digoManager = new DigitalObjectMultiManager();
 		DigitalObject xmlTemplateDigo = digoManager.retrieve(new URI(fileRef));
-	    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(xmlTemplateDigo.getContent().read()));
+	    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(xmlTemplateDigo.getContent().getInputStream()));
         StringBuilder stringBuilder = new StringBuilder();
         String line = null;
 

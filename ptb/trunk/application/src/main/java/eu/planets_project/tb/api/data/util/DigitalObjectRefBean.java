@@ -128,7 +128,7 @@ public class DigitalObjectRefBean {
             }
         // Digital Object case:
         if( this.getDigitalObject() != null && this.getDigitalObject().getContent() != null ) 
-            return this.getDigitalObject().getContent().read();
+            return this.getDigitalObject().getContent().getInputStream();
         return null;
         
     }
@@ -169,7 +169,7 @@ public class DigitalObjectRefBean {
             return this.getDigitalObject().getContent().length();
         } else {
             try {
-                return this.getDigitalObject().getContent().read().available();
+                return this.getDigitalObject().getContent().getInputStream().available();
             } catch (IOException e) {
                 e.printStackTrace();
                 return -1;

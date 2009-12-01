@@ -527,7 +527,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             // Take the digital object, put it in a temp file, and give it a sensible name, using the new format extension.
             File doTmp = File.createTempFile("migrateResult", ".tmp");
             doTmp.deleteOnExit();
-            FileUtils.writeInputStreamToFile(migrated.getDigitalObject().getContent().read(), doTmp);
+            FileUtils.writeInputStreamToFile(migrated.getDigitalObject().getContent().getInputStream(), doTmp);
             DigitalObject.Builder newdob = new DigitalObject.Builder(migrated.getDigitalObject());
             newdob.content( Content.byReference(doTmp) );
             // FIXME The above need to be a full recursive storage operation!

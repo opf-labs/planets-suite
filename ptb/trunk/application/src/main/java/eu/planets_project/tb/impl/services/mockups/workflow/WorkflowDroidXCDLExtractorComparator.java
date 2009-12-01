@@ -240,7 +240,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
                     new DigitalObject.Builder(Content.byValue(array))
                             .build(), null, null, null).getDigitalObject();
             byte[] results = FileUtils.writeInputStreamToBinary(digitalObject
-                    .getContent().read());
+                    .getContent().getInputStream());
 			String xcdl = new String(results,"UTF-8");
 			
 			if(xcdl==null){

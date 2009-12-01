@@ -136,7 +136,7 @@ public class XCDLService implements Characterise {
 
         List<MeasurementRecordImpl> list;
         try {
-            list = XCDLParser.parseXCDL(migrateResult.getDigitalObject().getContent().read());
+            list = XCDLParser.parseXCDL(migrateResult.getDigitalObject().getContent().getInputStream());
         } catch (Exception e) {
             e.printStackTrace();
             list = null;
