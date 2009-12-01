@@ -80,7 +80,7 @@ public class OdfValidator implements Validate {
 	    
 	    Parameter user_doc_schema_param = 
 	    	
-	    	new Parameter.Builder("user-doc-schema", "[1) The RwlxNG-Schema read to a String / 2) a URL where the schema can be retrieved from.]")
+	    	new Parameter.Builder("user-doc-schema", "[1) The RelaxNG-Schema read to a String / 2) a URL where the schema can be retrieved from.]")
 	    									.type("String")
 	            							.description("1) You can pass a custom doc-schema file to validate against, read into a String." + NEWLINE + 
 	            										 "2) You can also pass a URL to load the schema. " + NEWLINE + 
@@ -93,7 +93,7 @@ public class OdfValidator implements Validate {
 	    
 	    Parameter user_doc_strict_schema_param = 
 	    	
-	    	new Parameter.Builder("user-doc-strict-schema", "[1) The Schema read to a String / 2) a URL where the schema can be retrieved from.]")
+	    	new Parameter.Builder("user-doc-strict-schema", "[1) The RelaxNG-Schema read to a String / 2) a URL where the schema can be retrieved from.]")
 											.type("String")
 											.description("1) You can pass a custom doc-strict-schema file to validate against, read into a String." + NEWLINE + 
 	            										 "2) You can also pass a URL to load the schema. " + NEWLINE + 
@@ -108,7 +108,7 @@ public class OdfValidator implements Validate {
 	    
 	    Parameter user_manifest_schema_param = 
 	    	
-	    	new Parameter.Builder("user-manifest-schema", "[1) The Schema read to a String / 2) a URL where the schema can be retrieved from.]")
+	    	new Parameter.Builder("user-manifest-schema", "[1) The RelaxNG-Schema read to a String / 2) a URL where the schema can be retrieved from.]")
 											.type("String")
 											.description("1) You can pass a custom manifest-schema file to validate against, read into a String." + NEWLINE + 
 	            										 "2) You can also pass a URL to load the schema. " + NEWLINE + 
@@ -121,7 +121,7 @@ public class OdfValidator implements Validate {
 	    
 	    Parameter user_dsig_schema_param = 
 	    	
-	    	new Parameter.Builder("user-dsig-schema", "[1) The Schema read to a String / 2) a URL where the schema can be retrieved from.]")
+	    	new Parameter.Builder("user-dsig-schema", "[1) The RelaxNG-Schema read to a String / 2) a URL where the schema can be retrieved from.]")
 											.type("String")
 											.description("1) You can pass a custom RNG dsig-schema file to validate against, read into a String." + NEWLINE + 
 	            										 "2) You can also pass a URL to load the schema. " + NEWLINE + 

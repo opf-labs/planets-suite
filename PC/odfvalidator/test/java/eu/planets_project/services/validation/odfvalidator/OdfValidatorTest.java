@@ -62,7 +62,6 @@ public class OdfValidatorTest {
 	
 	static List<Parameter> params = new ArrayList<Parameter>();
 	static List<Parameter> v12_params = new ArrayList<Parameter>();
-	static List<Parameter> v12_Params = new ArrayList<Parameter>();
 	
 	static File[] testFiles = null;
 	
@@ -81,8 +80,10 @@ public class OdfValidatorTest {
 		Parameter strictValidation = new Parameter.Builder("strictValidation", "true").build();
 		params.add(strictValidation);
 		
-		Parameter v12_user_dsig_schema = new Parameter.Builder("user-dsig-schema", "dsig-schema-url=http://docs.oasis-open.org/office/v1.2/part3/cd01/OpenDocument-dsig-schema-v1.2-cd1.rng").build();
-		v12_params.add(v12_user_dsig_schema);
+		Parameter v12_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readTxtFileIntoString(v12UserDocSchema)).build();
+		Parameter v12_user_manifest_schema = new Parameter.Builder("user-manifest-schema", FileUtils.readTxtFileIntoString(v12UserManifestSchema)).build();
+		v12_params.add(v12_user_doc_schema);
+		v12_params.add(v12_user_manifest_schema);
 //		
 		validator = ServiceCreator.createTestService(Validate.QNAME, OdfValidator.class, WSDL);
 	}
@@ -99,7 +100,7 @@ public class OdfValidatorTest {
 	public void testOdfValidate() {
 		
 		for (File currentFile : testFiles) {
-			if(currentFile.isHidden() /*|| !currentFile.getName().contains("testSaveEmbeddedDoc")*/) {
+			if(currentFile.isHidden() /*|| !currentFile.getName().contains("Complex_matrix_short.odt")*/) {
 				continue;
 			}
 			printTestTitle("Testing validation against default schemas: " + currentFile.getName());

@@ -132,6 +132,19 @@ public class CoreOdfValidator {
 		return result;
 	}
 	
+	private static String checkParentName(File subFile) {
+		String parentName = subFile.getParentFile().getName();
+		if(!parentName.contains("XML_CONTENT_") 
+				&& !parentName.contains("META-INF")
+				&& !parentName.contains("ODFVALIDATOR_INPUT")) {
+			return parentName + "/";
+		}
+		else {
+			return "";
+		}
+		
+	}
+	
 	private static OdfValidatorResult validateFile(File odfSubFile, OdfValidatorResult result) {
 		String name = odfSubFile.getName();
 
@@ -175,27 +188,13 @@ public class CoreOdfValidator {
 	
 		if(out.equalsIgnoreCase("")) {
 			result.setValid(odfSubFile, true);
-			String parentName = odfSubFile.getParentFile().getName();
-			if(!parentName.contains(contentHandler.getCurrentXmlTmpDir().getName()) && 
-					! parentName.contains("META-INF")) {
-				log.info("'" + parentName + "/" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
-			}
-			else {
-				log.info("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
-			}
+			log.info("'" + checkParentName(odfSubFile) + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
 			
 		}
 		else {
 			result.setValid(odfSubFile, false);
-			String parentName = odfSubFile.getParentFile().getName();
 			result.setError(odfSubFile, out);
-			if(!parentName.contains(contentHandler.getCurrentXmlTmpDir().getName()) && 
-					! parentName.contains("META-INF")) {
-				log.info("'" + parentName + "/" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
-			}
-			else {
-				log.info("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
-			}
+			log.info("'" + checkParentName(odfSubFile) + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
 			log.info("Message: " + out);
 		}
 		return result;
@@ -232,22 +231,22 @@ public class CoreOdfValidator {
 		} catch (ParserConfigurationException e1) {
 			result.setValid(mathmlFile, false);
 			result.setError(mathmlFile, e1.getMessage());
-			log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+			log.info("'" + checkParentName(mathmlFile) + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
 			return result;
 		} catch (SAXException e1) {
 			result.setValid(mathmlFile, false);
 			result.setError(mathmlFile, e1.getMessage());
-			log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+			log.info("'" + checkParentName(mathmlFile) + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
 			return result;
 		} catch (IOException e) {
 			result.setValid(mathmlFile, false);
 			result.setError(mathmlFile, e.getMessage());
-			log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+			log.info("'" + checkParentName(mathmlFile) + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
 			return result;
 		}
 		
 		result.setValid(mathmlFile, true);
-		log.info("'" + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+			log.info("'" + checkParentName(mathmlFile) + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
 		return result;
 	}
 	

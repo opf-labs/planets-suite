@@ -250,13 +250,7 @@ public class OdfValidatorResult {
 		}
 		buf.append("---------- Odf Component Validity ----------" + NEWLINE);
 		for (File component : xmlComponents) {
-			String parentName = component.getParentFile().getName();
-			if(!parentName.contains("XML_CONTENT_") && !parentName.contains("META-INF")) {
-				buf.append("['" + component.getParentFile().getName() + "/" + component.getName() + "' is valid] = " + componentIsValid(component) + NEWLINE);
-			}
-			else {
-				buf.append("['" + component.getName() + "' is valid] = " + componentIsValid(component) + NEWLINE);
-			}
+				buf.append("['" + checkParentName(component) + component.getName() + "' is valid] = " + componentIsValid(component) + NEWLINE);
 		}
 		buf.append("---------- Document Odf Conformance ----------" + NEWLINE);
 		buf.append("[isOdfCompliant()] = " + this.isOdfCompliant + NEWLINE);
@@ -278,17 +272,7 @@ public class OdfValidatorResult {
 		if(!this.documentIsValid()) {
 			buf.append("---------- Error Messages ----------" + NEWLINE);
 			for (File invalidComponent : invalidComponents) {
-				String componentName = invalidComponent.getName();
-				String parentName = invalidComponent.getParentFile().getName();
-				if(!parentName.contains("XML_CONTENT_") 
-						&& !parentName.contains("META-INF")
-						&& !parentName.contains("ODFVALIDATOR_INPUT")) {
-					componentName = parentName + "/" + componentName;
-				}
-				List<String> errors = errorList.get(invalidComponent);
-				for (String error : errors) {
-					buf.append("[ERROR '" + componentName + "'] = " + error + NEWLINE);
-				}
+				buf.append(getErrors(invalidComponent));
 				
 			}
 		}
@@ -369,19 +353,36 @@ public class OdfValidatorResult {
 		invalidComponents.add(file);
 	}
 	
+	private static String checkParentName(File subFile) {
+		String parentName = subFile.getParentFile().getName();
+		if(!parentName.contains("XML_CONTENT_") 
+				&& !parentName.contains("META-INF")
+				&& !parentName.contains("ODFVALIDATOR_INPUT")) {
+			return parentName + "/";
+		}
+		else {
+			return "";
+		}
+	}
+	
 	public String getWarnings(File file) {
 		List<String> warnings = warningList.get(file);
 		StringBuffer buf = new StringBuffer();
 		int i=1;
-		String parentName = file.getParentFile().getName();
-		if(!parentName.contains("XML_CONTENT_") 
-				&& !parentName.contains("META-INF")) {
-			buf.append("[Warnings] '" + parentName + "/" + file.getName() + "':" + NEWLINE);
-		}
-		else {
-			buf.append("[Warnings] '" + file.getName() + "':" + NEWLINE);
-		}
+		buf.append("[Warnings] '" + checkParentName(file) + file.getName() + "':" + NEWLINE);
 		for (String string : warnings) {
+			buf.append(i + ") " + string + NEWLINE);
+			i++;
+		}
+		return buf.toString();
+	}
+	
+	public String getErrors(File file) {
+		List<String> errors = errorList.get(file);
+		StringBuffer buf = new StringBuffer();
+		int i=1;
+		buf.append("[Errors] '" + checkParentName(file) + file.getName() + "':" + NEWLINE);
+		for (String string : errors) {
 			buf.append(i + ") " + string + NEWLINE);
 			i++;
 		}
