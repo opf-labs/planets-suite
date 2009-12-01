@@ -48,7 +48,7 @@ import eu.planets_project.ifr.core.security.impl.services.SelfRegistrationManage
  */
 public class UserSignupBean 
 {
-	private static Logger log = LogFactory.getLog(UserSignupBean.class.getName());
+	private static Logger log = Logger.getLogger(UserSignupBean.class.getName());
 	
 	
 	private SelfRegistrationManager selfRegManager = new SelfRegistrationManagerImpl();
@@ -160,7 +160,7 @@ public class UserSignupBean
 			
 		if (!cachedir.exists()) {
 			if (!cachedir.mkdirs()) {
-				log.error("failed to create caching dir: " + cachedir);
+				log.severe("failed to create caching dir: " + cachedir);
 				return false;
 			}
 		}
