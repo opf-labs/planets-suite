@@ -250,7 +250,13 @@ public class OdfValidatorResult {
 		}
 		buf.append("---------- Odf Component Validity ----------" + NEWLINE);
 		for (File component : xmlComponents) {
-			buf.append("['" + component.getName() + "' is valid] = " + componentIsValid(component) + NEWLINE);
+			String parentName = component.getParentFile().getName();
+			if(!parentName.contains("XML_CONTENT_") && !parentName.contains("META-INF")) {
+				buf.append("['" + component.getParentFile().getName() + "/" + component.getName() + "' is valid] = " + componentIsValid(component) + NEWLINE);
+			}
+			else {
+				buf.append("['" + component.getName() + "' is valid] = " + componentIsValid(component) + NEWLINE);
+			}
 		}
 		buf.append("---------- Document Odf Conformance ----------" + NEWLINE);
 		buf.append("[isOdfCompliant()] = " + this.isOdfCompliant + NEWLINE);
@@ -272,7 +278,7 @@ public class OdfValidatorResult {
 		if(!this.documentIsValid()) {
 			buf.append("---------- Error Messages ----------" + NEWLINE);
 			for (File invalidComponent : invalidComponents) {
-				String componentName = invalidComponent.getName();
+				String componentName = invalidComponent.getParent() + File.separator + invalidComponent.getName();
 				String error = errorList.get(invalidComponent);
 				buf.append("[ERROR " + componentName + "] = " + error + NEWLINE);
 			}
@@ -353,7 +359,14 @@ public class OdfValidatorResult {
 		List<String> warnings = warningList.get(file);
 		StringBuffer buf = new StringBuffer();
 		int i=1;
-		buf.append("Warnings for '" + file.getName() + "':" + NEWLINE);
+		String parentName = file.getParentFile().getName();
+		if(!parentName.contains("XML_CONTENT_") 
+				&& !parentName.contains("META-INF")) {
+			buf.append("[Warnings] '" + parentName + "/" + file.getName() + "':" + NEWLINE);
+		}
+		else {
+			buf.append("[Warnings] '" + file.getName() + "':" + NEWLINE);
+		}
 		for (String string : warnings) {
 			buf.append(i + ") " + string + NEWLINE);
 			i++;

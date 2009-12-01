@@ -104,7 +104,10 @@ public class OdfValidatorTest {
 			}
 			printTestTitle("Testing validation against default schemas: " + currentFile.getName());
 			DigitalObject testIn = new DigitalObject.Builder(Content.byReference(currentFile)).title(currentFile.getName()).build();
+//			DigitalObject testIn = new DigitalObject.Builder(Content.byReference(v11_drawing)).title(v11_drawing.getName()).build();
+			
 			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(currentFile));
+//			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v11_drawing));
 			
 			ValidateResult vr = validator.validate(testIn, format, v12_params);
 			

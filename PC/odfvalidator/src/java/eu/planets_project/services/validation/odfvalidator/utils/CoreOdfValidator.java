@@ -18,6 +18,7 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.mulgara.itql.node.TMinus;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -174,12 +175,27 @@ public class CoreOdfValidator {
 	
 		if(out.equalsIgnoreCase("")) {
 			result.setValid(odfSubFile, true);
-			log.info("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+			String parentName = odfSubFile.getParentFile().getName();
+			if(!parentName.contains(contentHandler.getCurrentXmlTmpDir().getName()) && 
+					! parentName.contains("META-INF")) {
+				log.info("'" + parentName + "/" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+			}
+			else {
+				log.info("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+			}
+			
 		}
 		else {
 			result.setValid(odfSubFile, false);
+			String parentName = odfSubFile.getParentFile().getName();
 			result.setError(odfSubFile, out);
-			log.severe("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+			if(!parentName.contains(contentHandler.getCurrentXmlTmpDir().getName()) && 
+					! parentName.contains("META-INF")) {
+				log.severe("'" + parentName + "/" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+			}
+			else {
+				log.severe("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+			}
 			log.severe("Message: " + out);
 		}
 		return result;
