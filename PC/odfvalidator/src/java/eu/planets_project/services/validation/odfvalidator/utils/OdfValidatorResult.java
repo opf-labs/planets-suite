@@ -40,7 +40,7 @@ public class OdfValidatorResult {
 	
 	private List<File> xmlComponents = new ArrayList<File>();
 	private HashMap<File, Boolean> validatedList = new HashMap<File, Boolean>();
-	private HashMap<File, String> errorList = new HashMap<File, String>();
+	private HashMap<File, List<String>> errorList = new HashMap<File, List<String>>();
 	private HashMap<File, List<String>> warningList = new HashMap<File, List<String>>();
 	private List<File> invalidComponents = new ArrayList<File>();
 	private List<String> missingManifestEntries = new ArrayList<String>();
@@ -285,8 +285,11 @@ public class OdfValidatorResult {
 						&& !parentName.contains("ODFVALIDATOR_INPUT")) {
 					componentName = parentName + "/" + componentName;
 				}
-				String error = errorList.get(invalidComponent);
-				buf.append("[ERROR '" + componentName + "'] = " + error + NEWLINE);
+				List<String> errors = errorList.get(invalidComponent);
+				for (String error : errors) {
+					buf.append("[ERROR '" + componentName + "'] = " + error + NEWLINE);
+				}
+				
 			}
 		}
 		buf.append(NEWLINE);
@@ -357,7 +360,12 @@ public class OdfValidatorResult {
 	}
 
 	public void setError(File file, String errorMessage) {
-		errorList.put(file, errorMessage);
+		List<String> errors = errorList.get(file);
+		if(errors==null) {
+			errors = new ArrayList<String>();
+		}
+		errors.add(errorMessage);
+		errorList.put(file, errors);
 		invalidComponents.add(file);
 	}
 	

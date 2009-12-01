@@ -191,12 +191,12 @@ public class CoreOdfValidator {
 			result.setError(odfSubFile, out);
 			if(!parentName.contains(contentHandler.getCurrentXmlTmpDir().getName()) && 
 					! parentName.contains("META-INF")) {
-				log.severe("'" + parentName + "/" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+				log.info("'" + parentName + "/" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
 			}
 			else {
-				log.severe("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
+				log.info("'" + odfSubFile.getName() + "' is valid: " + result.componentIsValid(odfSubFile));
 			}
-			log.severe("Message: " + out);
+			log.info("Message: " + out);
 		}
 		return result;
 	}
