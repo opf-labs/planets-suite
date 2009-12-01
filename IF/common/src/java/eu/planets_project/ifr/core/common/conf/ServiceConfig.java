@@ -1,11 +1,16 @@
 package eu.planets_project.ifr.core.common.conf;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
-
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import java.util.Properties;
+import java.util.Map.Entry;
 
 /**
  * Factory for obtaining configuration parameters. Configuration files
@@ -41,13 +46,10 @@ import org.apache.commons.configuration.PropertiesConfiguration;
  * {@link NoSuchElementException}
  * will be thrown.
  * 
- * The underlying implementation is provided by Jakarta's commons-configuration. For
- * more details of the Configuration returned see:
- * {@link Configuration}
- * 
  * @author Ian Radford
  */
 public final class ServiceConfig {
+
 	static final String BASE_DIR_PROPERTY = "config.dir";
 	private ServiceConfig() {
 		// This should never be called - we're just a factory with static methods
@@ -88,15 +90,86 @@ public final class ServiceConfig {
 			/*
 			 * Parse properties file and return appropriate Configuration instance
 			 */
-			PropertiesConfiguration configuration = new PropertiesConfiguration(properties);
+			Properties configuration = new Properties();
+			try {
+				configuration.load(new FileReader(properties));
+			} catch (FileNotFoundException e) {
+				// This shouldn't happen as we've previously checked...
+				throw new ConfigurationException("Configuration file missing: " + filename, e);
+			} catch (IOException e) {
+				throw new ConfigurationException("Error reading configuration file: " + filename, e);
+			}
 			/*
-			 * Change default behaviour so that Object type properties will throw an exception
-			 * rather than returning null if not found.
+			 * Return a local implementation of the Configuration interface
+			 * from the loaded properties.
 			 */
-			configuration.setThrowExceptionOnMissing(true);
-			return configuration;
+			return new ConfigurationImpl(configuration);
 		} else {
 			throw new ConfigurationException("Can't find properties files at: " + filename);
 		}
+	}
+
+	private static final class ConfigurationImpl implements Configuration {
+		private Map<String, String> properties = new HashMap<String, String>();
+
+		public ConfigurationImpl(Properties configuration) {
+			try {
+				for (Entry<Object, Object> entry: configuration.entrySet()) {
+					properties.put((String)entry.getKey(), (String)entry.getValue());
+				}
+			} catch (Exception e) {
+				throw new ConfigurationException("Error processing properties", e);
+			}
+		}
+
+		public int getInteger(String key) {
+			try {
+				return Integer.valueOf(getString(key));
+			} catch (NumberFormatException nfe) {
+				throw new ConversionException("Bad number format for: " + key, nfe);
+			}
+		}
+
+		public int getInteger(String key, int defaultValue) {
+			try {
+				return getInteger(key);
+			} catch (NoSuchElementException nse) {
+				return defaultValue;
+			}
+		}
+
+		public String getString(String key) {
+			String value = properties.get(key);
+			if (value != null) {
+				return value;
+			} else {
+				throw new NoSuchElementException("No such property: " + key);
+			}
+		}
+
+		public String getString(String key, String defaultValue) {
+			try {
+				return getString(key);
+			} catch (NoSuchElementException nse) {
+				return defaultValue;
+			}
+		}
+
+		public URI getURI(String key) {
+			try {
+				return new URI(getString(key));
+			} catch (URISyntaxException e) {
+				throw new ConversionException("Bad URI format for: " + key, e);
+			}
+		}
+
+		public URI getURI(String key, URI defaultValue) {
+			try {
+				return getURI(key);
+			} catch (NoSuchElementException nse) {
+				return defaultValue;
+			}
+		}
+
 	}
 }

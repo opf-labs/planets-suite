@@ -5,11 +5,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.ConversionException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,6 +56,26 @@ public class ServiceConfigTest {
 		assertEquals("testString", config.getString("testValidString"));
 	}
 
+	@Test(expected=NoSuchElementException.class)
+	// Properties files can only have simple keys. This doesn't work!
+	public void testGetConfigurationClassComplexKey1() throws ConfigurationException {
+		Configuration config = ServiceConfig.getConfiguration(getClass());
+		assertEquals("five", config.getString("http://one.two/three?four"));
+	}
+
+	@Test(expected=NoSuchElementException.class)
+	// Properties files can only have simple keys. This doesn't work!
+	public void testGetConfigurationClassComplexKey2() throws ConfigurationException {
+		Configuration config = ServiceConfig.getConfiguration(getClass());
+		assertEquals("six", config.getString("http://one.two/three?four=five"));
+	}
+
+	@Test
+	public void testGetConfigurationClassComplexValue() throws ConfigurationException {
+		Configuration config = ServiceConfig.getConfiguration(getClass());
+		assertEquals("http://one.two/three?four=five", config.getString("complex"));
+	}
+
 	@Test
 	public void testGetConfigurationClassDefaultString() throws ConfigurationException {
 		Configuration config = ServiceConfig.getConfiguration(getClass());
@@ -73,27 +92,53 @@ public class ServiceConfigTest {
 	@Test(expected=NoSuchElementException.class)
 	public void testGetConfigurationClassNoDefaultPrimitive() throws ConfigurationException {
 		Configuration config = ServiceConfig.getConfiguration(getClass());
-		int value = config.getInt("testMissingPrimitive");
+		int value = config.getInteger("testMissingPrimitive");
 		fail("expected NoSuchElementException to have been thrown. Got: " + value);
 	}
 
 	@Test
 	public void testGetConfigurationClassDefaultPrimitive() throws ConfigurationException {
 		Configuration config = ServiceConfig.getConfiguration(getClass());
-		int value = config.getInt("testMissingPrimitive", 1234);
+		int value = config.getInteger("testMissingPrimitive", 1234);
 		assertEquals(1234, value);
 	}
 
 	@Test
 	public void testGetConfigurationClassValidNumber() throws ConfigurationException {
 		Configuration config = ServiceConfig.getConfiguration(getClass());
-		assertEquals(1234, config.getInt("testValidNumber"));
+		assertEquals(1234, config.getInteger("testValidNumber"));
 	}
 
 	@Test(expected=ConversionException.class)
 	public void testGetConfigurationClassBadParseNumber() throws ConfigurationException {
 		Configuration config = ServiceConfig.getConfiguration(getClass());
-		config.getInt("testBadParseNumber");
+		config.getInteger("testBadParseNumber");
+		fail("expected ConfigurationException to have been thrown");
+	}
+
+	@Test(expected=NoSuchElementException.class)
+	public void testGetConfigurationClassMissingURI() throws ConfigurationException, URISyntaxException {
+		Configuration config = ServiceConfig.getConfiguration(getClass());
+		assertEquals(new URI("file:///opt/jboss"), config.getURI("uriXX"));
+	}
+
+	@Test
+	public void testGetConfigurationClassValidURI() throws ConfigurationException, URISyntaxException {
+		Configuration config = ServiceConfig.getConfiguration(getClass());
+		assertEquals(new URI("file:///opt/jboss"), config.getURI("uri"));
+	}
+
+	@Test
+	public void testGetConfigurationClassDefaultURI() throws ConfigurationException, URISyntaxException {
+		Configuration config = ServiceConfig.getConfiguration(getClass());
+		URI defaultURI = new URI("file:///opt/jboss");
+		assertEquals(defaultURI, config.getURI("uriXX", defaultURI));
+	}
+
+	@Test(expected=ConversionException.class)
+	public void testGetConfigurationClassBadParseURI() throws ConfigurationException {
+		Configuration config = ServiceConfig.getConfiguration(getClass());
+		config.getURI("badUri");
 		fail("expected ConfigurationException to have been thrown");
 	}
 
