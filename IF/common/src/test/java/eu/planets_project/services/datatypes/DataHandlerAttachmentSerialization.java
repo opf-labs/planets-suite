@@ -16,7 +16,7 @@ import org.junit.Test;
 /**
  * Test class for experimenting with different settings to make JAXB work with @XmlAttachmentRef.
  * <p/>
- * If this test would pass with the @XmlAttachmentRef, the copying work-around in {@link ImmutableDigitalObject#toXml()}
+ * If this test would pass with the @XmlAttachmentRef, the copying work-around in ImmutableDigitalObject#toXml()
  * would no longer be required.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */

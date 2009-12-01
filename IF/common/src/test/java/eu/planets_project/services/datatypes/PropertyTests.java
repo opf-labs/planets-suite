@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests for the {@link #Property} class.
+ * Tests for the {@link Property} class.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class PropertyTests {

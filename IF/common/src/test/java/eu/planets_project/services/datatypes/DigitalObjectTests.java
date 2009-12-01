@@ -27,7 +27,7 @@ import eu.planets_project.services.utils.DigitalObjectUtils;
 /**
  * Tests for digital objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
- * @see ImmutableDigitalObject
+ * @see DigitalObject
  */
 public final class DigitalObjectTests {
 

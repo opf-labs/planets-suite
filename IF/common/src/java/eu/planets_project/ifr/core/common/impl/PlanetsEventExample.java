@@ -33,17 +33,17 @@ public class PlanetsEventExample implements PlanetsEvent
 	}
 
 	/**
-	 * Access unique event id.
-	 * @return
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.common.api.PlanetsEvent#getId()
 	 */
 	public int getId()
 	{
 		return id;
 	}
 
-	/** 
-	 * Get event's human readable message as String.
-	 * @return
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.common.api.PlanetsEvent#getMessage()
 	 */
 	public String getMessage()
 	{
@@ -51,8 +51,8 @@ public class PlanetsEventExample implements PlanetsEvent
 	}
 
 	/**
-	 * toString()
-	 * @return
+	 * {@inheritDoc}
+	 * @see java.lang.Object#toString()
 	 */
 	public String toString()
 	{

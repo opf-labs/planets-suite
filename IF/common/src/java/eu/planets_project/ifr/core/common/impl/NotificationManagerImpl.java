@@ -26,7 +26,7 @@ public class NotificationManagerImpl implements NotificationManager
 	/**
 	 * Factory method for retrieving a NotificationManager instance.
 	 *
-	 * @return
+	 * @return A NotificationManager instance
 	 */
 	public static NotificationManager getInstance()
 	{	
@@ -109,7 +109,7 @@ public class NotificationManagerImpl implements NotificationManager
 	 *
 	 * @param sub
 	 * @param active
-	 * @return 
+	 * @return The resulting Planets events
 	 */
 	public PlanetsEvent[] setSubscriberActive(EventSubscriber sub, boolean active)
 	{

@@ -10,20 +10,18 @@ package eu.planets_project.ifr.core.common.api;
 public interface PlanetsEvent
 {
 	/**
-         * Access unique event id.
-         * @return
+         * @return The unique event id
          */
 	int getId();	
 
 	/** 
-	 * Get event's human readable message as String.
-	 * @return
+	 * @return The event's human readable message as String
 	 */
 	public String getMessage();
 
+	
 	/**
- 	 * toString()
- 	 * @return
- 	 */
+	 * @return A string representation of this event
+	 */
 	public String toString();	
 }

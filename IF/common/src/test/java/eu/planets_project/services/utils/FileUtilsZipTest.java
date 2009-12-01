@@ -41,7 +41,7 @@ public class FileUtilsZipTest {
 
     /**
      * Test method for
-     * {@link eu.planets_project.services.utils.FileUtils#extractFilesFromZip(java.io.File)}
+     * {@link eu.planets_project.services.utils.FileUtils#extractFilesFromZip(java.io.File, java.io.File)}
      * .
      */
     @Test
@@ -79,7 +79,7 @@ public class FileUtilsZipTest {
 
     /**
      * Test method for
-     * {@link eu.planets_project.services.utils.FileUtils#extractFilesFromZip(java.io.File)}
+     * {@link eu.planets_project.services.utils.FileUtils#extractFilesFromZip(java.io.File, java.io.File)}
      * .
      */
     @Test

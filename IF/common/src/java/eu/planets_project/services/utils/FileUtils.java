@@ -163,7 +163,7 @@ public final class FileUtils {
      * Convenience method that creates a URL from a file in a proper (i.e. not deprecated) way, using the toURI().toURL() way. 
      * Hiding the Exception, so you don't have to put it in a try-catch block.
      * @param file
-     * @return
+     * @return The URL for the given file
      */
     public static URL getUrlFromFile(File file) {
 		try {

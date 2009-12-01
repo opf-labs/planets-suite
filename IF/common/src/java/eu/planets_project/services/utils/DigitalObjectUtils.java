@@ -158,7 +158,7 @@ public final class DigitalObjectUtils {
 	 * @param createByReference Create the Content of the DO by reference or by value
 	 * @param withChecksum Create a checksum for the zip file to create
 	 * @param compress compress the content of the zip file
-	 * @return
+	 * @return The digital object representing the zipped files
 	 */
 	public static DigitalObject createZipTypeDigitalObject(File zip_Or_Folder, String destZipName, boolean createByReference, boolean withChecksum, boolean compress) {
 		if(zip_Or_Folder.isFile() && ZipUtils.isZipFile(zip_Or_Folder)) {

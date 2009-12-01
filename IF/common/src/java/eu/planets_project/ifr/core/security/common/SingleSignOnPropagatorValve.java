@@ -21,11 +21,9 @@ import org.apache.catalina.connector.Response;
  * It needs to be there in order to be picked up during the initialisation of a servlet, before it's jars have been loaded.
  * It may be of general use, in setting up the DR session.
  * 
- * See the SingleSignOn Valve of inspiration:
- * @see "http://svn.apache.org/repos/asf/tomcat/container/tc5.5.x/catalina/src/share/org/apache/catalina/authenticator/SingleSignOn.java"
+ * See the SingleSignOn Valve of inspiration: {@link "http://svn.apache.org/repos/asf/tomcat/container/tc5.5.x/catalina/src/share/org/apache/catalina/authenticator/SingleSignOn.java"}
  * 
- * The OpenID login would be another example of code where we can propagate the login:
- * @see eu.planets_project.ifr.core.security.common.OpenIDLoginAction
+ * The OpenID login would be another example of code where we can propagate the login: OpenIDLoginAction in IF/security
  * 
  */
 public class SingleSignOnPropagatorValve extends ValveBase {

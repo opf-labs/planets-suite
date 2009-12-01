@@ -102,17 +102,6 @@ public final class Metadata implements Serializable {
 
     /**
      * {@inheritDoc}
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(final Metadata other) {
-        if (this.type.equals(other.type)) {
-            return this.content.compareTo(other.content);
-        }
-        return this.type.compareTo(other.type);
-    }
-
-    /**
-     * {@inheritDoc}
      * @see java.lang.Object#hashCode()
      */
     @Override

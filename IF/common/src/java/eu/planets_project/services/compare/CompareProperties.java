@@ -21,8 +21,8 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 
 /**
- * Comparison of CharacteriseResult objects (the output of the {@link Characterise}
- * interface).
+ * Comparison of CharacteriseResult objects (the output of the Characterise interface).
+ * @see eu.planets_project.services.characterise.Characterise
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @WebService(name = CompareProperties.NAME, targetNamespace = PlanetsServices.NS)
@@ -76,7 +76,7 @@ public interface CompareProperties extends PlanetsService {
     /**
      * Convert a tool-specific configuration file to the generic format of a
      * list of properties. Use this method to pass your configuration file as
-     * the last argument to {@link #compare(List, List, List)}.
+     * the last argument to {@link #compare(CharacteriseResult, CharacteriseResult, List)}.
      * @param configFile The tool-specific configuration file
      * @return A list of parameters containing the configuration values
      */

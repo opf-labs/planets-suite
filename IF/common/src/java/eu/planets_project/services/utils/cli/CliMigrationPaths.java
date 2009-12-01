@@ -97,7 +97,7 @@ public class CliMigrationPaths {
     /**
      * @param sourceFormat
      * @param destinationFormat
-     * @return
+     * @return A migration path from sourceFormat to destinationFormat
      */
     public CliMigrationPath findMigrationPath(URI sourceFormat,
 	    URI destinationFormat) {

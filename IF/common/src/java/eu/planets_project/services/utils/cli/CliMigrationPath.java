@@ -53,7 +53,7 @@ public class CliMigrationPath {
 
 
     /**
-     * @return
+     * @return Not yet implemented
      */
     public boolean useTempSourceFile() {
 	// TODO Auto-generated method stub
@@ -62,7 +62,7 @@ public class CliMigrationPath {
 
 
     /**
-     * @return
+     * @return Not yet implemented
      */
     public boolean useTempDestinationFile() {
 	// TODO Auto-generated method stub
@@ -72,7 +72,7 @@ public class CliMigrationPath {
 
     /**
      * @param toolParameters
-     * @return
+     * @return The command line
      */
     public String getConmmandLine(List<Parameter> toolParameters) {
 	// TODO Auto-generated method stub

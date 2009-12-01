@@ -8,7 +8,7 @@ import org.junit.Test;
 import eu.planets_project.services.utils.test.FileAccess;
 
 /**
- * Tests for the {@link #FileAccess} class.
+ * Tests for the {@link FileAccess} class.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public class FileAccessTests {

@@ -31,7 +31,7 @@ public interface NotificationManager
 	 *
 	 * @param sub
 	 * @param active
-	 * @return 
+	 * @return The resulting Planets events
 	 */
 	public PlanetsEvent[] setSubscriberActive(EventSubscriber sub, boolean active);
 

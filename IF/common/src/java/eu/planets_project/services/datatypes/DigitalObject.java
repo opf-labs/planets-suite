@@ -27,9 +27,7 @@ import java.util.List;
  * {@code DigitalObject o = new DigitalObject.Builder(xml).build();}
  * <p/>
  * For usage examples, see the tests in {@link DigitalObjectTests} and web
- * service sample usage in
- * {@link eu.planets_project.ifr.core.simple.impl.PassThruMigrationService#migrate}
- * (pserv/IF/simple).
+ * service sample usage in pserv/IF/simple.
  * @author Fabian Steeg
  */
 @XmlJavaTypeAdapter(DigitalObject.Adapter.class)

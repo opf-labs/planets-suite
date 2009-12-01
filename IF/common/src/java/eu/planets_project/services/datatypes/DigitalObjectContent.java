@@ -40,7 +40,7 @@ public interface DigitalObjectContent {
      * checksum set.
      * @param checksum the checksum to set
      * @return A copy of this content, with the given Checksum set
-     * @see Content#getChecksum()
+     * @see DigitalObjectContent#getChecksum()
      */
     DigitalObjectContent withChecksum(Checksum checksum);
 
