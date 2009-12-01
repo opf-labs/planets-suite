@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.security.impl.services;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
@@ -26,8 +27,6 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 import org.jboss.annotation.security.SecurityDomain;
@@ -42,7 +41,7 @@ import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotFoun
 import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotValidException;
 
 public class SelfRegistrationManagerImpl implements SelfRegistrationManager {
-	private static Log log = LogFactory.getLog(SelfRegistrationManagerImpl.class);
+	private static Logger log = Logger.getLogger(SelfRegistrationManagerImpl.class.getName());
 
 	/**
 	 * This is the JPA entity manager declaration.
@@ -105,7 +104,7 @@ public class SelfRegistrationManagerImpl implements SelfRegistrationManager {
 			log.info("User ID = " + user.getId().toString());
 			log.info("User name = " + user.getUsername());
 		} catch (Exception e) {
-			log.info(e);
+			log.info(e.getClass().getName()+": "+e.getMessage());
 		}
 		return user;
 	}
