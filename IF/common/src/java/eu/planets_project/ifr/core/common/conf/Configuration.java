@@ -60,5 +60,9 @@ public interface Configuration {
 	 * @throws ConversionException If the String value of the property cannot be converted to a URI
 	 */
 	URI getURI(String key, URI defaultValue);
-	Iterator getKeys();
+	/**
+	 * Get an iterator over all the keys in the configuration
+	 * @return An iterator for a collection of the keys configured
+	 */
+	Iterator<String> getKeys();
 }
