@@ -12,9 +12,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.configuration.Configuration;
 import org.w3c.dom.Document;
 
+import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationInitialisationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterBuilder;

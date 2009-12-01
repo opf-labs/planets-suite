@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.common.conf;
 
 import java.net.URI;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -59,4 +60,5 @@ public interface Configuration {
 	 * @throws ConversionException If the String value of the property cannot be converted to a URI
 	 */
 	URI getURI(String key, URI defaultValue);
+	Iterator getKeys();
 }

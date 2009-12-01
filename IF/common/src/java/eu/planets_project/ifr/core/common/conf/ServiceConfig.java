@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
@@ -169,6 +170,10 @@ public final class ServiceConfig {
 			} catch (NoSuchElementException nse) {
 				return defaultValue;
 			}
+		}
+
+		public Iterator<String> getKeys() {
+			return properties.keySet().iterator();
 		}
 
 	}

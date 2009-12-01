@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
-
+import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.services.datatypes.Parameter;
 
 /**

@@ -12,8 +12,7 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 
-import org.apache.commons.configuration.Configuration;
-
+import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.GenericMigrationWrapper;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;

@@ -1148,20 +1148,20 @@ public class DOJCRManager {
 	    	{
 	            _log.info("store content. ");
 	            // Check - is it content by value (InputStream != null) or by reference  (InputStream = null)
-				InputStream streamContent = digitalObject.getContent().read();
+//				InputStream streamContent = digitalObject.getContent().read();
 				if (includeContent)
 				{
-		            if (streamContent != null)
+//		            if (streamContent != null)
 		            {
 					    _log.info("store content by value.");	
 //					    int is = streamContent.read();
 //					    _log.info("is: " + is);
-					    storeContent
-					       ( streamContent
-					       , uri.toString().concat( DOJCRConstants.JCR_PATH_SEPARATOR 
-					    		                  + DOJCRConstants.DOJCR
-					    		                  + insertNodeIndexToPath(doNode.getIndex()))
-					       );
+//					    storeContent
+//					       ( streamContent
+//					       , uri.toString().concat( DOJCRConstants.JCR_PATH_SEPARATOR 
+//					    		                  + DOJCRConstants.DOJCR
+//					    		                  + insertNodeIndexToPath(doNode.getIndex()))
+//					       );
 		            }
 //		            else
 //		            {
