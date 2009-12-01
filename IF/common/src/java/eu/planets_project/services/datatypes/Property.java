@@ -129,47 +129,6 @@ public final class Property {
     }
 
     /**
-     * {@inheritDoc}
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        /*
-         * Our defaults plus the fact that we are immutable guarantee that no attribute can ever be null, so we can skip
-         * the tedious null checks here. FIXME: not true, only the builder checks this, not the one constructor...
-         */
-        result = prime * result + description.hashCode();
-        result = prime * result + name.hashCode();
-        result = prime * result + type.hashCode();
-        result = prime * result + unit.hashCode();
-        result = prime * result + uri.hashCode();
-        result = prime * result + value.hashCode();
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (!(obj instanceof Property)) {
-            return false;
-        }
-        /* We know we have an instance of Property now, so casting is safe. */
-        Property that = (Property) obj;
-        /*
-         * Our defaults plus the fact that we are immutable guarantee that no attribute can ever be null, so we can skip
-         * the tedious null checks here. FIXME: not true, only the builder checks this, not the one constructor...
-         */
-        return this.uri.equals(that.uri) && this.name.equals(that.name) && this.value.equals(that.value)
-                && this.type.equals(that.type) && this.unit.equals(that.unit)
-                && this.description.equals(that.description);
-    }
-
-    /**
      * Builder to create property instances with optional attributes.
      * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
      */
@@ -245,6 +204,84 @@ public final class Property {
         public Property build() {
             return new Property(this);
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (description == null ? 0 : description.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (type == null ? 0 : type.hashCode());
+        result = prime * result + (unit == null ? 0 : unit.hashCode());
+        result = prime * result + (uri == null ? 0 : uri.hashCode());
+        result = prime * result + (value == null ? 0 : value.hashCode());
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Property other = (Property) obj;
+        if (description == null) {
+            if (other.description != null) {
+                return false;
+            }
+        } else if (!description.equals(other.description)) {
+            return false;
+        }
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        if (type == null) {
+            if (other.type != null) {
+                return false;
+            }
+        } else if (!type.equals(other.type)) {
+            return false;
+        }
+        if (unit == null) {
+            if (other.unit != null) {
+                return false;
+            }
+        } else if (!unit.equals(other.unit)) {
+            return false;
+        }
+        if (uri == null) {
+            if (other.uri != null) {
+                return false;
+            }
+        } else if (!uri.equals(other.uri)) {
+            return false;
+        }
+        if (value == null) {
+            if (other.value != null) {
+                return false;
+            }
+        } else if (!value.equals(other.value)) {
+            return false;
+        }
+        return true;
     }
 
     /**
