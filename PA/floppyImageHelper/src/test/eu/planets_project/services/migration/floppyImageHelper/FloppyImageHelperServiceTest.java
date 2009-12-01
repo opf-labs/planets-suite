@@ -7,9 +7,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -65,7 +65,7 @@ public class FloppyImageHelperServiceTest {
 //        System.setProperty("pserv.test.port", "8080");
         
 		// Config the logger:	
-        Logger.getRootLogger().setLevel( Level.INFO );
+        Logger.getLogger(FloppyImageHelperService.class.getName()).setLevel( Level.INFO );
         OUT_DIR = FileUtils.createWorkFolderInSysTemp(OUT_DIR_NAME); 
         FLOPPY_IMAGE_HELPER = ServiceCreator.createTestService(Migrate.QNAME, FloppyImageHelperService.class, WSDL);
         

@@ -4,8 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -78,7 +77,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 	private static String PROCESS_ERROR = null;
 	private static String PROCESS_OUT = null;
 	
-	private static Logger log = Logger.getLogger(FloppyImageHelperUnix.class);
+	private static Logger log = Logger.getLogger(FloppyImageHelperUnix.class.getName());
 	private static int LOOP_DEV_MAX = 5;
 	
 	private static FormatRegistry formatReg = FormatRegistryFactory.getFormatRegistry();
@@ -198,7 +197,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		if(!image.exists()) 
 		{
-			log.error("Image: " + image.getAbsolutePath() + "not found");
+			log.severe("Image: " + image.getAbsolutePath() + "not found");
 			return null;
 		}
 	
@@ -230,7 +229,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		if(FileUtils.filesTooLargeForMedium(files, FLOPPY_SIZE)) 
 		{
-			log.error("Sorry! File set too large to be written to a Floppy (1.44 MB).");
+			log.severe("Sorry! File set too large to be written to a Floppy (1.44 MB).");
 			return null;
 		}
 			
@@ -239,7 +238,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		createFloppy(image);
 		if(!image.exists()) 
 		{
-			log.error("Creating image failed");
+			log.severe("Creating image failed");
 			return null;
 		}
 	
@@ -250,7 +249,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		mountlabel = mount(loopdev);
 		if(mountlabel == null)
 		{
-			log.error("mount failed");
+			log.severe("mount failed");
 			unbindLoop(loopdev);
 			return null;
 		}
@@ -327,8 +326,8 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		if(cmd.getReturnCode() != 0)
 		{
-			log.error("dd: " + cmd.getProcessOutputAsString());	
-			log.error("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
+			log.severe("dd: " + cmd.getProcessOutputAsString());	
+			log.severe("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
 			return null;
 		}
 
@@ -360,8 +359,8 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		if(cmd.getReturnCode() != 0)
 		{
-			log.error("/dev/loop" + i + " not writeable");	
-			log.error("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
+			log.severe("/dev/loop" + i + " not writeable");	
+			log.severe("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
 			return false;
 		}
 
@@ -394,7 +393,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		
 		if(loopdev > LOOP_DEV_MAX)
 		{
-			log.error("no suitable loop dev found");
+			log.severe("no suitable loop dev found");
 			return -1;
 		}
 
@@ -406,8 +405,8 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		if(cmd.getReturnCode() != 0)
 		{
-			log.error("losetup " + cmd.getProcessOutputAsString());
-			log.error("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
+			log.severe("losetup " + cmd.getProcessOutputAsString());
+			log.severe("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
 			return -1;
 		}
 		return loopdev;
@@ -427,8 +426,8 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		if(cmd.getReturnCode() != 0)
 		{
-			log.error("losetup unbind" + cmd.getProcessOutputAsString());
-			log.error("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
+			log.severe("losetup unbind" + cmd.getProcessOutputAsString());
+			log.severe("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
 			return false;
 		}
 		return true;
@@ -448,8 +447,8 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		cmd.run();
 		if(cmd.getReturnCode() != 0)
 		{
-			log.error("pmount " + cmd.getProcessOutputAsString());
-			log.error("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
+			log.severe("pmount " + cmd.getProcessOutputAsString());
+			log.severe("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
 			return null;
 		}
 		return mountlabel;
@@ -467,8 +466,8 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		cmd.run();
 		if(cmd.getReturnCode() != 0)
 		{
-			log.error("pumount " + cmd.getProcessOutputAsString());
-			log.error("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
+			log.severe("pumount " + cmd.getProcessOutputAsString());
+			log.severe("err: " + cmd.getProcessErrorAsString() + "(" + cmd.getReturnCode() + ")");
 			return false;
 		}
 		return true;
