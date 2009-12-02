@@ -1,8 +1,8 @@
 package eu.planets_project.ifr.core.common.conf;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -93,7 +93,7 @@ public final class ServiceConfig {
 			 */
 			Properties configuration = new Properties();
 			try {
-				configuration.load(new FileReader(properties));
+				configuration.load(new FileInputStream(properties));
 			} catch (FileNotFoundException e) {
 				// This shouldn't happen as we've previously checked...
 				throw new ConfigurationException("Configuration file missing: " + filename, e);
