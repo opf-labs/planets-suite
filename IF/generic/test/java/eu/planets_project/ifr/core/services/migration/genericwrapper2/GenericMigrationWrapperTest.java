@@ -3,15 +3,16 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import junit.framework.Assert;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.planets_project.ifr.core.common.conf.Configuration;
+import eu.planets_project.ifr.core.common.conf.TestConfiguration;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -43,12 +44,13 @@ public class GenericMigrationWrapperTest {
 
 	DocumentLocator documentLocator = new DocumentLocator(
 		"GenericWrapperConfigFileExample.xml");
-
-	final Configuration environmentConfiguration = new PropertiesConfiguration();
-	environmentConfiguration.addProperty("shellcommand", "sh");
-	environmentConfiguration.addProperty("shellcommandoption", "-c");
-	environmentConfiguration.addProperty("catcommand", "cat");
-	environmentConfiguration.addProperty("trcommand", "tr");
+	Properties props = new Properties();
+	props.setProperty("shellcommand", "sh");
+	props.setProperty("shellcommandoption", "-c");
+	props.setProperty("catcommand", "cat");
+	props.setProperty("trcommand", "tr");
+	final Configuration environmentConfiguration = new TestConfiguration(props);
+	
 	genericWrapper = new GenericMigrationWrapper(documentLocator
 		.getDocument(), environmentConfiguration, this.getClass()
 		.getCanonicalName());
