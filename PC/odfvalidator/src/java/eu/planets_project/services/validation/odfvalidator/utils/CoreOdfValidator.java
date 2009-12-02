@@ -55,7 +55,7 @@ public class CoreOdfValidator {
 	
 	private static HashMap<String, File> schemaList = new HashMap<String, File>();
 	
-	private static OdfSchemaHandler schemaHandler = new OdfSchemaHandler();
+	private static OdfSchemaHandler schemaHandler = OdfSchemaHandlerFactory.getSchemaHandlerInstance();
 	private static OdfContentHandler contentHandler = null;
 	
 	private static String version = null;
@@ -265,7 +265,7 @@ public class CoreOdfValidator {
 	private void collectSchemas() {
 		if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)
 				|| contentHandler.containsEmbeddedMathML()) {
-			schemaList.put("mathml", schemaHandler.retrieveMathMLSchema());
+			schemaList.put("mathml", schemaHandler.getMathMLSchema());
 			result.setMathMLSchema(schemaList.get("mathml"));
 		}
 		
@@ -281,7 +281,7 @@ public class CoreOdfValidator {
 			}
 		}
 		else {
-			schemaList.put("doc", schemaHandler.retrieveOdfDocSchemaFile(version, STRICT_VALIDATION));
+			schemaList.put("doc", schemaHandler.getDocumentSchema(version, STRICT_VALIDATION));
 			result.setDocumentSchema(schemaList.get("doc"));
 		}
 		if(USE_USER_MANIFEST_SCHEMA) {
@@ -289,12 +289,12 @@ public class CoreOdfValidator {
 			result.setManifestSchema(USER_MANIFEST_SCHEMA);
 		}
 		else {
-			schemaList.put("manifest", schemaHandler.retrieveOdfManifestSchemaFile(version));
+			schemaList.put("manifest", schemaHandler.getManifestSchema(version));
 			result.setManifestSchema(schemaList.get("manifest"));
 		}
 		if(contentHandler.containsDsigSubFiles()) {
 			if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2)) {
-				schemaList.put("dsig", schemaHandler.retrieveDsigSchema(version));
+				schemaList.put("dsig", schemaHandler.getDsigSchema(version));
 				result.setDsigSchema(schemaList.get("dsig"));
 			}
 		}

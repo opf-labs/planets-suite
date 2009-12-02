@@ -190,6 +190,7 @@ public class OdfValidator implements Validate {
 			.ofThisFormat(result.isOdfFile())
 			.validInRegardToThisFormat(result.documentIsValid()).build();
 		}
+		FileUtils.deleteAllFilesInFolder(odfValidatorTmp);
 		return vr;
 	}
 	

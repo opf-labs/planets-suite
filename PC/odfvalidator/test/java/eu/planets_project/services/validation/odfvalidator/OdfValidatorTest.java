@@ -100,10 +100,11 @@ public class OdfValidatorTest {
 	public void testOdfValidate() {
 		
 		for (File currentFile : testFiles) {
-			if(currentFile.isHidden() /*|| !currentFile.getName().contains("Complex_matrix_short.odt")*/) {
+			// ignore the .svn folder ;-)
+			if(currentFile.isHidden() /*|| !currentFile.getName().contains("presentation")*/) {
 				continue;
 			}
-			printTestTitle("Testing validation against default schemas: " + currentFile.getName());
+			printTestTitle("Testing OdfValidator with input file: " + currentFile.getName());
 			DigitalObject testIn = new DigitalObject.Builder(Content.byReference(currentFile)).title(currentFile.getName()).build();
 			
 			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(currentFile));
@@ -111,8 +112,6 @@ public class OdfValidatorTest {
 			ValidateResult vr = validator.validate(testIn, format, null);
 			
 			assertTrue("ValidateResult should not be NULL!", vr!=null);
-			System.out.println("[ValidateResult] Input file is ODF file = " + vr.isOfThisFormat());
-			System.out.println("[ValidateResult] Input file is VALID ODF file = " + vr.isValidInRegardToThisFormat());
 			ServiceReport sr = vr.getReport();
 			System.out.println(sr);
 		}

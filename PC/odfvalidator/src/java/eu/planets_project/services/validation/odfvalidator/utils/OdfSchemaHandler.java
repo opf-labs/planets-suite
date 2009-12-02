@@ -4,17 +4,23 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import eu.planets_project.services.utils.FileUtils;
 
 public class OdfSchemaHandler {
 	
+	
 	public static final String ODF_v1_0 = "ODF:1.0";
 	public static final String ODF_v1_1 = "ODF:1.1";
 	public static final String ODF_v1_2 = "ODF:1.2";
 	public static final String MATHML_v101 = "MATHML:1.01";
 	public static final String MATHML_v2 = "MATHML:2.0";
+	
+	// The path to the schema files
+	private static final String ODF_SCHEMAS_PATH = "schemas/odf/";
+	private static final String MATHML_SCHEMAS_PATH = "schemas/mathml/";
 	
 	// Manifest Schemas
 	private static String v10_MANIFEST_SCHEMA = "v10_MANIFEST_SCHEMA";
@@ -31,7 +37,6 @@ public class OdfSchemaHandler {
 	private static String v11_STRICT_DOC_SCHEMA = "v11_STRICT_DOC_SCHEMA";
 	private static String v12_DSIG_SCHEMA = "v12_DSIG_SCHEMA";
 	private static final String MATHML2_SCHEMA = "MATHML2_SCHEMA";
-	private static final String MATH101_DTD = "MATH101_DTD";
 	
 	private static final String INCLUDE_HREF = "<include href=\"";
 	
@@ -45,18 +50,19 @@ public class OdfSchemaHandler {
 	
 	private static File SCHEMAS = null;
 	private static String SCHEMAS_NAME = "SCHEMAS";
-	private static boolean schemasProvided = false;
 	
 	private static Logger log = Logger.getLogger(OdfSchemaHandler.class.getName());
 	
 	public OdfSchemaHandler() {
+		log.setLevel(Level.INFO);
 		ODF_SH_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), ODF_SH_TMP_NAME);
 		SCHEMAS = FileUtils.createFolderInWorkFolder(ODF_SH_TMP, SCHEMAS_NAME);
-		FileUtils.deleteAllFilesInFolder(SCHEMAS);
+//		FileUtils.deleteAllFilesInFolder(SCHEMAS);
 		boolean provided = provideSchemas();
+		log.info("All schemas provided = " + provided);
 	}
-
-	public File retrieveOdfDocSchemaFile(String version, boolean strictValidation) {
+	
+	public File getDocumentSchema(String version, boolean strictValidation) {
 		if(!version.equalsIgnoreCase(ODF_v1_2) && strictValidation) {
 			log.info("Strict Validation enabled!");
 			if(version.equalsIgnoreCase(ODF_v1_0)) {
@@ -92,17 +98,12 @@ public class OdfSchemaHandler {
 		return null;
 	}
 	
-	public File retrieveMathML101Dtd() {
-//		log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML v1.01 DTD file: " + schemaFiles.get(MATH101_DTD).getName());
-		return schemaFiles.get(MATH101_DTD);
-	}
-	
-	public File retrieveMathMLSchema() {
+	public File getMathMLSchema() {
 		log.info("[OdfSchemaHandler] retrieveMathMLSchemaFile(): using MathML 2 Schema file: " + schemaFiles.get(MATHML2_SCHEMA).getName());
 		return schemaFiles.get(MATHML2_SCHEMA);
 	}
 	
-	public File retrieveDsigSchema(String version) {
+	public File getDsigSchema(String version) {
 		return schemaFiles.get(v12_DSIG_SCHEMA);
 	}
 	
@@ -110,7 +111,7 @@ public class OdfSchemaHandler {
 		return SCHEMAS;
 	}
 
-	public File retrieveOdfManifestSchemaFile(String version) {
+	public File getManifestSchema(String version) {
 		if(version.equalsIgnoreCase(ODF_v1_0)) {
 			log.info("[OdfSchemaHandler] retrieveOdfManifestSchemaFile(): using Manifest Schema file: " + schemaFiles.get(v10_MANIFEST_SCHEMA).getName());
 			return schemaFiles.get(v10_MANIFEST_SCHEMA);
@@ -132,7 +133,7 @@ public class OdfSchemaHandler {
 		if(schemaContent.equalsIgnoreCase("")|| schemaContent==null) {
 			log.warning("WARN: User schema not found! Received String is empty!");
 			log.info("Trying to lookup DEFAULT doc-schema...");
-			userDocSchema = retrieveOdfDocSchemaFile(version, false);
+			userDocSchema = getDocumentSchema(version, false);
 		}
 		else {
 			userDocSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userDocSchema.rng"));
@@ -150,7 +151,7 @@ public class OdfSchemaHandler {
 			FileUtils.writeInputStreamToFile(docSchemaURL.openStream(), userDocSchema);
 		} catch (IOException e) {
 			log.severe("ERROR: Could not open URL: " + docSchemaURL.toString() + "!");
-			userDocSchema = retrieveOdfDocSchemaFile(version, false);
+			userDocSchema = getDocumentSchema(version, false);
 		}
 		return userDocSchema;
 	}
@@ -161,7 +162,7 @@ public class OdfSchemaHandler {
 				|| schemaContent==null) {
 			log.warning("WARN: User strict schema not found! Received String is empty!");
 			log.info("Trying to lookup DEFAULT doc-strict-schema...");
-			userDocStrictSchema = retrieveOdfDocSchemaFile(version, true);
+			userDocStrictSchema = getDocumentSchema(version, true);
 		}
 		else {
 			if(schemaContent.contains(INCLUDE_HREF)) {
@@ -185,7 +186,7 @@ public class OdfSchemaHandler {
 			userDocStrictSchema = createUserDocStrictSchema(version, schemaContent, userDocSchema);
 		} catch (IOException e) {
 			log.severe("Could not open URL: " + strictSchemaUrl.toString() + "!");
-			userDocStrictSchema = retrieveOdfDocSchemaFile(version, true);
+			userDocStrictSchema = getDocumentSchema(version, true);
 		}
 		return userDocStrictSchema;
 	}
@@ -204,7 +205,7 @@ public class OdfSchemaHandler {
 			FileUtils.writeInputStreamToFile(dsigSchemaUrl.openStream(), userDsigSchema);
 		} catch (IOException e) {
 			log.severe("ERROR: Could not open URL: " + dsigSchemaUrl.toString() + "!");
-			userDsigSchema = retrieveDsigSchema(version);
+			userDsigSchema = getDsigSchema(version);
 		}
 		return userDsigSchema;
 	}
@@ -223,15 +224,12 @@ public class OdfSchemaHandler {
 			FileUtils.writeInputStreamToFile(manifestSchemaUrl.openStream(), userManifestSchema);
 		} catch (IOException e) {
 			log.severe("ERROR: Could not open URL: " + manifestSchemaUrl.toString() + "!");
-			userManifestSchema = retrieveOdfDocSchemaFile(version, false);
+			userManifestSchema = getDocumentSchema(version, false);
 		}
 		return userManifestSchema;
 	}
 
 	public boolean provideSchemas(){
-		if(schemasProvided) {
-			return true;
-		}
 		boolean odfSchemasProvided = provideOdfSchemas(ODF_SCHEMA_LIST);
 		
 		boolean mathmlSchemasProvided = provideMathMLSchemas(MATHMLSCHEMAS_PROPERTIES);
@@ -243,11 +241,9 @@ public class OdfSchemaHandler {
 			log.severe("ERROR: Unable to provide MathML schemas listed in '" + MATHMLSCHEMAS_PROPERTIES + "'!");
 		}
 		if(odfSchemasProvided && mathmlSchemasProvided) {
-			schemasProvided = true;
 			return true;
 		}
 		else {
-			schemasProvided = false;
 			return false;
 		}
 	}
@@ -259,12 +255,6 @@ public class OdfSchemaHandler {
 		boolean[] success = new boolean[entryCount];
 		int i=0;
 		for (String currentEntry : entries) {
-//			if(currentEntry.equalsIgnoreCase("mmlents.zip")) {
-//				File entZip = new File(SCHEMAS, "mmlents.zip");
-//				FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream("schemas/mathml/" + currentEntry.trim()), entZip);
-//				ZipUtils.unzipTo(entZip, SCHEMAS);
-//				continue;
-//			}
 			String[] parts = currentEntry.split("/");
 			String parent = parts[0];
 			String name = parts[1];
@@ -273,7 +263,9 @@ public class OdfSchemaHandler {
 				FileUtils.createFolderInWorkFolder(SCHEMAS, parent);
 			}
 			File schema = new File(parentDir, name);
-			FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream("schemas/mathml/" + parent + "/" + name), schema);
+			if(!schema.exists()) {
+				FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + parent + "/" + name), schema);
+			}
 			success[i] = schema.exists();
 			i++;
 		}
@@ -304,11 +296,13 @@ public class OdfSchemaHandler {
 			String label = labelsAndValues[0].trim();
 			String name = labelsAndValues[1].trim();
 			File schema = new File(SCHEMAS, name);
-			if(label.equalsIgnoreCase("MATHML2_SCHEMA") || label.equalsIgnoreCase("MATH101_DTD")) {
-				FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream("schemas/mathml/" + name), schema);
-			}
-			else {
-				FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream("schemas/odf/" + name), schema);
+			if(!schema.exists()) {
+				if(label.equalsIgnoreCase(MATHML2_SCHEMA)) {
+					FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + name), schema);
+				}
+				else {
+					FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(ODF_SCHEMAS_PATH + name), schema);
+				}
 			}
 			schemaFiles.put(label, schema);
 			success[i] = schema.exists();
@@ -323,11 +317,9 @@ public class OdfSchemaHandler {
 		}
 		
 		if(count==entries.length) {
-//			schemasProvided = true;
 			return true;
 		}
 		else {
-//			schemasProvided = false;
 			return false;
 		}
 	}

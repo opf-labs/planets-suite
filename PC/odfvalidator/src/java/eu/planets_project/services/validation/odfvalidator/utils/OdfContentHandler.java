@@ -71,7 +71,7 @@ public class OdfContentHandler {
 	 */
 	public OdfContentHandler(File odfFile) {
 		ODF_VALIDATOR_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_CONTENT_HANDLER");
-		FileUtils.deleteAllFilesInFolder(ODF_VALIDATOR_TMP);
+//		FileUtils.deleteAllFilesInFolder(ODF_VALIDATOR_TMP);
 		xmlTmp = FileUtils.createFolderInWorkFolder(ODF_VALIDATOR_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
 		
 		// 1) get all Odf sub files from zip container
