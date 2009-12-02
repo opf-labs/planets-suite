@@ -15,27 +15,16 @@ import eu.planets_project.services.utils.FileUtils;
 public class OdfValidatorResult {
 	
 	private static final String DSIG_LABEL = "dsig";
-
 	private static final String USER_DSIG_LABEL = "user_dsig";
-
 	private static final String DOC_LABEL = "doc";
-
 	private static final String USER_DOC_LABEL = "userDoc";
-
 	private static final String MATHML_LABEL = "mathML";
-
 	private static final String USER_MATHML_LABEL = "userMathML";
-
 	private static final String MANIFEST_LABEL = "manifest";
-
 	private static final String USER_MANIFEST_LABEL = "userManifest";
-
 	private static final String STRICT_LABEL = "strict";
-
 	private static final String USER_STRICT_LABEL = "userStrict";
-
 	private boolean isOdfFile = false;
-	
 	private File odfInputFile = null;
 	
 	private List<File> xmlComponents = new ArrayList<File>();
@@ -47,15 +36,11 @@ public class OdfValidatorResult {
 	private HashMap<String, File> schemaFiles = new HashMap<String, File>();
 	
 	private boolean isOdfCompliant = false;
-	
 	private boolean usedStrictValidation = false;
-	
 	private String odfVersion = "unknown";
-	
 	private String mathMLVersion = "unknown";
-	
 	private String mimeType = "unknown";
-	
+	private String odfGenerator = "unknown";
 	private String NEWLINE = System.getProperty("line.separator");
 	
 	public OdfValidatorResult(File odfInputFile) {
@@ -65,6 +50,14 @@ public class OdfValidatorResult {
 	public boolean componentIsValid(File odfXmlComponent) {
 		Boolean valid = validatedList.get(odfXmlComponent);
 		return valid.booleanValue();
+	}
+	
+	public void setOdfGenerator(String generator) {
+		this.odfGenerator = generator;
+	}
+	
+	public String getOdfGenerator() {
+		return odfGenerator;
 	}
 
 	public boolean documentIsValid() {
@@ -235,23 +228,15 @@ public class OdfValidatorResult {
 		buf.append(NEWLINE);
 		buf.append(NEWLINE);
 		buf.append("========== Validation Results ==========" + NEWLINE);
-		buf.append("---------- General Information ----------" + NEWLINE);
-		buf.append("[getOdfInputFile()] = " + odfInputFile.getName() + NEWLINE);
-		buf.append("[getMimeType()] = " + this.getMimeType() + NEWLINE);
-		buf.append("[getOdfVersion()] = " + this.getOdfVersion() + NEWLINE);
-		if(!mathMLVersion.equalsIgnoreCase("unknown")) {
-			buf.append("[getMathMLVersion()] = " + this.getMathMLVersion() + NEWLINE);
-		}
-		buf.append("[usedStrictValidation()] = " + this.usedStrictValidation() + NEWLINE);
-		buf.append("---------- Used Schemas ----------" + NEWLINE);
-		List<String> schemaNames = getSchemaNames();
-		for (String schemaName : schemaNames) {
-			buf.append(schemaName + NEWLINE);
-		}
-		buf.append("---------- Odf Component Validity ----------" + NEWLINE);
+		buf.append("---------- Document Validity ----------" + NEWLINE);
+		buf.append("[documentIsValid()] = " + this.documentIsValid() + NEWLINE);
+		buf.append("[IsOdfFile()] = " + this.isOdfFile + NEWLINE);
+		buf.append(NEWLINE);
+		buf.append("---------- Odf Sub File Validity ----------" + NEWLINE);
 		for (File component : xmlComponents) {
 				buf.append("['" + checkParentName(component) + component.getName() + "' is valid] = " + componentIsValid(component) + NEWLINE);
 		}
+		buf.append(NEWLINE);
 		buf.append("---------- Document Odf Conformance ----------" + NEWLINE);
 		buf.append("[isOdfCompliant()] = " + this.isOdfCompliant + NEWLINE);
 		if(!this.isOdfCompliant) {
@@ -259,24 +244,39 @@ public class OdfValidatorResult {
 				buf.append("[Missing Manifest entry] = " + currentEntry);
 			}
 		}
-		buf.append("---------- Document Validity ----------" + NEWLINE);
-		buf.append("[IsOdfFile()] = " + this.isOdfFile + NEWLINE);
-		buf.append("[documentIsValid()] = " + this.documentIsValid() + NEWLINE);
+		buf.append(NEWLINE);
+		buf.append("---------- General Information ----------" + NEWLINE);
+		buf.append("[getOdfInputFile()] = " + odfInputFile.getName() + NEWLINE);
+		buf.append("[getOdfGenerator()] = " + this.getOdfGenerator() + NEWLINE);
+		buf.append("[getMimeType()] = " + this.getMimeType() + NEWLINE);
+		buf.append("[getOdfVersion()] = " + this.getOdfVersion() + NEWLINE);
+		if(!mathMLVersion.equalsIgnoreCase("unknown")) {
+			buf.append("[getMathMLVersion()] = " + this.getMathMLVersion() + NEWLINE);
+		}
+		buf.append("[usedStrictValidation()] = " + this.usedStrictValidation() + NEWLINE);
+		buf.append(NEWLINE);
+		buf.append("---------- Used Schemas ----------" + NEWLINE);
+		List<String> schemaNames = getSchemaNames();
+		for (String schemaName : schemaNames) {
+			buf.append(schemaName + NEWLINE);
+		}
+		buf.append(NEWLINE);
 		if(warningList.size()>0) {
-			buf.append("---------- Warning Messages ----------" + NEWLINE);
+			buf.append("---------- Warnings ----------" + NEWLINE);
 			Set<File> files = warningList.keySet();
 			for (File file : files) {
 				buf.append(getWarnings(file));
 			}
+			buf.append(NEWLINE);
 		}
 		if(!this.documentIsValid()) {
-			buf.append("---------- Error Messages ----------" + NEWLINE);
+			buf.append("---------- Errors ----------" + NEWLINE);
 			for (File invalidComponent : invalidComponents) {
 				buf.append(getErrors(invalidComponent));
-				
 			}
+			buf.append(NEWLINE);
 		}
-		buf.append(NEWLINE);
+		buf.append("========== Validation Results End ==========");
 		buf.append(NEWLINE);
 		return buf.toString();
 	}
@@ -383,7 +383,7 @@ public class OdfValidatorResult {
 		int i=1;
 		buf.append("[Errors] '" + checkParentName(file) + file.getName() + "':" + NEWLINE);
 		for (String string : errors) {
-			buf.append(i + ") " + string + NEWLINE);
+			buf.append(i + ") " + string.trim() + NEWLINE);
 			i++;
 		}
 		return buf.toString();

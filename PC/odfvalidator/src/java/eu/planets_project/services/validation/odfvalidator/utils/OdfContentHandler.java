@@ -62,6 +62,7 @@ public class OdfContentHandler {
 	private static File xmlTmp = null;
 	
 	private static Logger log = Logger.getLogger(OdfContentHandler.class.getName());
+	private String generator = null;
 	
 	
 	/**
@@ -76,6 +77,8 @@ public class OdfContentHandler {
 		// 1) get all Odf sub files from zip container
 		odfSubFiles = extractOdfSubFiles(odfFile);
 		
+		generator = getGenerator(odfSubFiles);
+		
 		containsEmdeddedMathML = checkForEmbeddedMathML(odfSubFiles);
 		
 		containsMathMLDoctype = checkForMathMLDoctype(odfSubFiles);
@@ -86,6 +89,37 @@ public class OdfContentHandler {
 			
 			missingFileEntries = checkContainerConformity(odfFile);
 		}
+	}
+	
+	private String getGenerator(HashMap<String, List<File>> odfSubFiles) {
+		if(odfSubFiles.containsKey("meta")) {
+			SAXBuilder builder = new SAXBuilder(false);
+			builder.setValidation(false);
+			builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			builder.setFeature("http://xml.org/sax/features/validation", false);
+			Document doc = null;
+			try {
+				doc = builder.build(odfSubFiles.get("meta").get(0));
+				Element root = doc.getRootElement();
+				Namespace meta_ns = root.getNamespace("meta");
+				Namespace office_ns = root.getNamespace("office");
+				Element office = root.getChild("meta", office_ns);
+				Element generator = office.getChild("generator", meta_ns);
+				String generatorStr = generator.getTextTrim();
+				return generatorStr;
+			} catch (JDOMException e) {
+				return "unknown";
+			} catch (IOException e) {
+				return "unknown";
+			}
+		}
+		else {
+			return "unknown";
+		}
+	}
+	
+	public String getOdfGenerator() {
+		return generator;
 	}
 	
 	private boolean checkForMathMLDoctype(HashMap<String, List<File>> odfSubFiles) { 

@@ -18,7 +18,6 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.mulgara.itql.node.TMinus;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -75,6 +74,7 @@ public class CoreOdfValidator {
 		log.setLevel(Level.INFO);
 		contentHandler = new OdfContentHandler(odfFile);
 		result = new OdfValidatorResult(odfFile);
+		result.setOdfGenerator(contentHandler.getOdfGenerator());
 		
 		// check if the input file is an ODF file at all
 		if(!contentHandler.isOdfFile()) {

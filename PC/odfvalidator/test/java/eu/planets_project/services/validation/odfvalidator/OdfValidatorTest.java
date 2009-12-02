@@ -77,7 +77,7 @@ public class OdfValidatorTest {
 		File testFolder = new File("tests/test-files/documents/test_odt/odf_toolkit_test_files");
 		testFiles = testFolder.listFiles();
 		
-		Parameter strictValidation = new Parameter.Builder("strictValidation", "true").build();
+		Parameter strictValidation = new Parameter.Builder("strict-validation", "true").build();
 		params.add(strictValidation);
 		
 		Parameter v12_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readTxtFileIntoString(v12UserDocSchema)).build();
@@ -105,10 +105,8 @@ public class OdfValidatorTest {
 			}
 			printTestTitle("Testing validation against default schemas: " + currentFile.getName());
 			DigitalObject testIn = new DigitalObject.Builder(Content.byReference(currentFile)).title(currentFile.getName()).build();
-//			DigitalObject testIn = new DigitalObject.Builder(Content.byReference(v11_drawing)).title(v11_drawing.getName()).build();
 			
 			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(currentFile));
-//			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(v11_drawing));
 			
 			ValidateResult vr = validator.validate(testIn, format, null);
 			
