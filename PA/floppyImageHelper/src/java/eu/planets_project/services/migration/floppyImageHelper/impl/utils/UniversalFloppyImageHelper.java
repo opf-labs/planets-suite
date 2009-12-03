@@ -56,8 +56,6 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
 	
 	private String br = System.getProperty("line.separator");
 	
-	private static FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
-	
     private static Logger log = Logger.getLogger(UniversalFloppyImageHelper.class.getName());
     
     private Fat_Imgen fat_imgen = new Fat_Imgen();
@@ -76,6 +74,7 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
 	 * @see eu.planets_project.services.migration.floppyImageHelper.FloppyImageHelper#describe()
 	 */
     public ServiceDescription describe() {
+        FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
         ServiceDescription.Builder sd = new ServiceDescription.Builder(FloppyImageHelperService.NAME, Migrate.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
         sd.description("This service is a wrapper for the 'Fat_Imgen' Commandline tool." + br +
@@ -111,6 +110,7 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
 	 */
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 			URI outputFormat, List<Parameter> parameters) {
+	    FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
 		
 		FloppyHelperResult fat_imgen_result = null;
         String inFormat = format.getFirstExtension(inputFormat).toUpperCase();
