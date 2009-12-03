@@ -599,6 +599,8 @@ public class ZipUtils {
 			Zip64File zip64File = new Zip64File(zip);
 			List<FileEntry> entries = zip64File.getListFileEntries();
 			
+//			zip64File.close();
+			
 			if(entries.size() > 0) {
 				for (FileEntry fileEntry : entries) {
 					List<String> parents = getParents(fileEntry);

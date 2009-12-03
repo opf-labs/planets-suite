@@ -25,7 +25,7 @@ public class OdfValidatorResult {
 	private static final String STRICT_LABEL = "strict";
 	private static final String USER_STRICT_LABEL = "userStrict";
 	private boolean isOdfFile = false;
-	private File odfInputFile = null;
+	private String odfInputFileName = null;
 	
 	private List<File> xmlComponents = new ArrayList<File>();
 	private HashMap<File, Boolean> validatedList = new HashMap<File, Boolean>();
@@ -44,8 +44,8 @@ public class OdfValidatorResult {
 	private String odfGenerator = "unknown";
 	private String NEWLINE = System.getProperty("line.separator");
 	
-	public OdfValidatorResult(File odfInputFile) {
-		this.odfInputFile = odfInputFile;
+	public OdfValidatorResult(String odfInputFileName) {
+		this.odfInputFileName = odfInputFileName;
 	}
 	
 	public boolean componentIsValid(File odfXmlComponent) {
@@ -90,8 +90,8 @@ public class OdfValidatorResult {
 		return mimeType;
 	}
 	
-	public File getOdfInputFile() {
-		return this.odfInputFile;
+	public String getOdfInputFileName() {
+		return this.odfInputFileName;
 	}
 
 	public String getOdfVersion() {
@@ -256,7 +256,7 @@ public class OdfValidatorResult {
 		}
 		buf.append(NEWLINE);
 		buf.append("---------- General Information ----------" + NEWLINE);
-		buf.append("[Input File] = " + odfInputFile.getName() + NEWLINE);
+		buf.append("[Input File] = " + odfInputFileName + NEWLINE);
 		buf.append("[ODF Generator] = " + this.getOdfGenerator() + NEWLINE);
 		buf.append("[MimeType] = " + this.getMimeType() + NEWLINE);
 		buf.append("[ODF Version] = " + this.getOdfVersion() + NEWLINE);
@@ -420,8 +420,8 @@ public class OdfValidatorResult {
 		this.missingManifestEntries = missingManifestEntries;
 	}
 	
-	public void setOdfInputFile(File odfInputFile) {
-		this.odfInputFile = odfInputFile;
+	public void setOdfInputFileName(String odfInputFileName) {
+		this.odfInputFileName = odfInputFileName;
 	}
 
 	public void setOdfVersion(String odfVersion) {

@@ -76,7 +76,7 @@ public class CoreOdfValidator {
 	public OdfValidatorResult validate(File odfFile, List<Parameter> parameters) {
 		log.setLevel(Level.INFO);
 		contentHandler = new OdfContentHandler(odfFile);
-		result = new OdfValidatorResult(odfFile);
+		result = new OdfValidatorResult(odfFile.getName());
 		result.setOdfGenerator(contentHandler.getOdfGenerator());
 		
 		// check if the input file is an ODF file at all
@@ -261,7 +261,7 @@ public class CoreOdfValidator {
 		}
 		
 		result.setValid(mathmlFile, true);
-			log.info("'" + checkParentName(mathmlFile) + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
+		log.info("'" + checkParentName(mathmlFile) + mathmlFile.getName() + "' is valid: " + result.componentIsValid(mathmlFile));
 		return result;
 	}
 	

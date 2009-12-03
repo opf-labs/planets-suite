@@ -169,9 +169,11 @@ public class OdfValidator implements Validate {
 		String name = DigitalObjectUtils.getFileNameFromDigObject(digitalObject, format);
 		
 		File odfValidatorTmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODFVALIDATOR_INPUT");
-		
+		FileUtils.deleteAllFilesInFolder(odfValidatorTmp);
+				
 		File inputOdfFile = new File(odfValidatorTmp, FileUtils.randomizeFileName(name));
-		FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), inputOdfFile); 
+		FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), inputOdfFile);
+		inputOdfFile.deleteOnExit();
 		
 		CoreOdfValidator odfValidator = new CoreOdfValidator();
 		
@@ -190,7 +192,6 @@ public class OdfValidator implements Validate {
 			.ofThisFormat(result.isOdfFile())
 			.validInRegardToThisFormat(result.documentIsValid()).build();
 		}
-		FileUtils.deleteAllFilesInFolder(odfValidatorTmp);
 		return vr;
 	}
 	

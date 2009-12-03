@@ -93,6 +93,8 @@ public class OdfContentHandler {
 			
 			missingFileEntries = checkContainerConformity(odfFile);
 			
+			boolean deleted = odfFile.delete();
+			
 			allNamespacesCorrect = validateNamespaces(odfSubFiles);
 		}
 	}

@@ -380,17 +380,6 @@ public final class FileUtils {
 			e1.printStackTrace();
 		}
 		return file;
-//        File result = new File(destination);
-//        try {
-//            BufferedWriter writer = new BufferedWriter(new FileWriter(result),
-//                    BUFFER);
-//            writer.write(content);
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
     }
 
     /**
@@ -406,19 +395,9 @@ public final class FileUtils {
 			e.printStackTrace();
 		}
 		return target;
-    	
-//        try {
-//            BufferedWriter writer = new BufferedWriter(new FileWriter(target),
-//                    BUFFER);
-//            writer.write(content);
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return target;
     }
 
+    
     /**
      * @param inputStream The stream to write to a byte array
      * @return The byte array created from the stream
@@ -431,18 +410,6 @@ public final class FileUtils {
 			e.printStackTrace();
 		}
 		return array;
-//        ByteArrayOutputStream boStream = new ByteArrayOutputStream();
-//        long size = writeInputStreamToOutputStream(inputStream, boStream);
-//        try {
-//            boStream.flush();
-//            boStream.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        if (size > 0) {
-//            return boStream.toByteArray();
-//        }
-//        return null;
     }
 
     /**
@@ -464,23 +431,6 @@ public final class FileUtils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//        BufferedOutputStream bos = null;
-//        FileOutputStream fileOut = null;
-//        try {
-//            fileOut = new FileOutputStream(target);
-//            bos = new BufferedOutputStream(fileOut);
-//        } catch (FileNotFoundException e1) {
-//            e1.printStackTrace();
-//        }
-//        long size = writeInputStreamToOutputStream(stream, bos);
-//        try {
-//            if (bos != null) {
-//                bos.flush();
-//                bos.close();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 		if (log.isLoggable(Level.INFO)) {
             log.info("Wrote " + size + " bytes to " + target.getAbsolutePath());
         } else {
@@ -944,42 +894,6 @@ public final class FileUtils {
 	}
 	
 	
-//	/**
-//	 * This method deletes all the content in a folder, without the need of
-//	 * passing it a PlanetsLogger instance!
-//	 * @param workFolder the folder you wish to delete. All contained folders
-//	 *        will be deleted recursively
-//	 * @return true, if all folders were deleted and false, if not.
-//	 */
-//	private static boolean deleteTempFiles(final File workFolder, boolean deleteFolder) {
-//	    if (workFolder.isDirectory()) {
-//	        File[] entries = workFolder.listFiles();
-//	        for (int i = 0; i < entries.length; i++) {
-//	            File current = entries[i];
-//	            boolean deleteTempFiles = deleteTempFiles(current);
-//	            if (!deleteTempFiles) {
-//	                return false;
-//	            } else {
-//	                log.info("Deleted: " + current);
-//	            }
-//	        }
-//	        if(deleteFolder) {
-//	        	return workFolder.delete() ? true : false;
-//	        }
-//	        else {
-//	        	return true;
-//	        }
-//	    }
-//	    if(deleteFolder) {
-//	    	return workFolder.delete() ? true : false;
-//	    } 
-//	    else {
-//	    	return true;
-//	    }
-//	}
-	
-	
-	
 	/**
 	 * Deletes all files in 'folder' without deleting 'folder' itself.
 	 * 
@@ -987,14 +901,15 @@ public final class FileUtils {
 	 * @return true, if all files has been deleted.
 	 */
 	public static boolean deleteAllFilesInFolder(final File folder) {
+		log.setLevel(Level.INFO);
 		try {
-			List<File> filesToDelete = listAllFilesAndFolders(folder, new ArrayList<File>());
-			int fileCount = filesToDelete.size();
-//			int fileCount = folder.list().length;
+//			List<File> filesToDelete = listAllFilesAndFolders(folder, new ArrayList<File>());
+//			int fileCount = filesToDelete.size();
+			int fileCount = folder.list().length;
 			org.apache.commons.io.FileUtils.cleanDirectory(folder);
-			for (File file : filesToDelete) {
-				log.info("[FileUtils] Deleted file: " + file.getName());
-			}
+//			for (File file : filesToDelete) {
+//				log.info("[FileUtils] Deleted file: " + file.getName());
+//			}
 			log.info("Deleted " + fileCount + " files in: " + folder.getAbsolutePath());
 		} catch (IOException e) {
 			log.warning("[FileUtils.deleteAllFilesInFolder()]: Couldn't delete all files! " + e.getMessage());
