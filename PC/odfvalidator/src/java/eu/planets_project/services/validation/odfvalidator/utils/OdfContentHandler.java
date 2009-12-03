@@ -3,6 +3,7 @@ package eu.planets_project.services.validation.odfvalidator.utils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,7 @@ public class OdfContentHandler {
 	
 	private static List<String> manifestEntries = null;
 	private static List<String> missingFileEntries = null;
+	private static HashMap<File, String> nsWarningList = null;
 	
 	private static HashMap<String, List<File>> odfSubFiles = null;
 	
@@ -63,6 +65,7 @@ public class OdfContentHandler {
 	
 	private static Logger log = Logger.getLogger(OdfContentHandler.class.getName());
 	private String generator = null;
+	private boolean allNamespacesCorrect = false;
 	
 	
 	/**
@@ -70,6 +73,7 @@ public class OdfContentHandler {
 	 * @param odfFile the odf file to validate
 	 */
 	public OdfContentHandler(File odfFile) {
+		nsWarningList = new HashMap<File, String>();
 		ODF_VALIDATOR_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_CONTENT_HANDLER");
 //		FileUtils.deleteAllFilesInFolder(ODF_VALIDATOR_TMP);
 		xmlTmp = FileUtils.createFolderInWorkFolder(ODF_VALIDATOR_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
@@ -88,7 +92,86 @@ public class OdfContentHandler {
 			getVersions(odfSubFiles);
 			
 			missingFileEntries = checkContainerConformity(odfFile);
+			
+			allNamespacesCorrect = validateNamespaces(odfSubFiles);
 		}
+	}
+	
+	public boolean allNamespacesCorrect() {
+		return allNamespacesCorrect;
+	}
+	
+	public HashMap<File, String> getNsWarnings () {
+		return nsWarningList;
+	}
+	
+	private boolean validateNamespaces(HashMap<String, List<File>> odfSubFiles) {
+		Set<String> entries = odfSubFiles.keySet();
+		List<File> allFiles = new ArrayList<File>();
+		// get all included sub files
+		for (String entry : entries) {
+			allFiles.addAll(odfSubFiles.get(entry));
+		}
+		
+		List<Boolean> success = new ArrayList<Boolean>();
+		for (File file : allFiles) {
+			 success.add(Boolean.valueOf(checkNamespaces(file, odfVersion)));
+		}
+		return !success.contains(Boolean.FALSE);
+	}
+	
+	private boolean checkNamespaces(File odfSubFile, String version) {
+		SAXBuilder builder = new SAXBuilder(false);
+		builder.setValidation(false);
+		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		builder.setFeature("http://xml.org/sax/features/validation", false);
+		Document doc = null;
+		List<Namespace> namespaces = new ArrayList<Namespace>();
+		try {
+			doc = builder.build(odfSubFile);
+			Element root = doc.getRootElement();
+			namespaces.add(root.getNamespace());
+			namespaces.addAll(root.getAdditionalNamespaces());
+			for (Namespace namespace : namespaces) {
+				String prefix = namespace.getPrefix();
+				String value = namespace.getURI();
+				if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_0)) {
+					if(OdfSchemaHandler.v10_namespaces.containsKey(prefix)) {
+						String testValue = OdfSchemaHandler.v10_namespaces.get(prefix);
+						if(!testValue.equalsIgnoreCase(value)) {
+							nsWarningList.put(odfSubFile, "[WARNING] ODF v1.0 Namespace incorrect: Prefix '" + prefix + "'" +
+									" should be mapped to '" + testValue + " but actually points to '" + value + "' !!!");
+						}
+					}
+					continue;
+				}
+				if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_1)) {
+					if(OdfSchemaHandler.v11_namespaces.containsKey(prefix)) {
+						String testValue = OdfSchemaHandler.v11_namespaces.get(prefix);
+						if(!testValue.equalsIgnoreCase(value)) {
+							nsWarningList.put(odfSubFile, "[WARNING] ODF v1.1 Namespace incorrect: Prefix '" + prefix + "'" +
+									" should be mapped to '" + testValue + " but actually points to '" + value + "' !!!");
+						}
+					}
+					continue;
+				}
+				if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2)) {
+					if(OdfSchemaHandler.v12_namespaces.containsKey(prefix)) {
+						String testValue = OdfSchemaHandler.v12_namespaces.get(prefix);
+						if(!testValue.equalsIgnoreCase(value)) {
+							nsWarningList.put(odfSubFile, "[WARNING] ODF v1.2 Namespace incorrect: Prefix '" + prefix + "'" +
+									" should be mapped to '" + testValue + " but actually points to '" + value + "' !!!");
+						}
+					}
+					continue;
+				}
+			}
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return nsWarningList.size()==0;
 	}
 	
 	private String getGenerator(HashMap<String, List<File>> odfSubFiles) {

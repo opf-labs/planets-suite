@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -128,6 +129,15 @@ public class CoreOdfValidator {
 		if(STRICT_VALIDATION) {
 			result.setUsedStrictValidation(STRICT_VALIDATION);
 		}
+		
+		if(!contentHandler.allNamespacesCorrect()) {
+			Set<File> filesWithWarnings = contentHandler.getNsWarnings().keySet();
+			
+			for (File file : filesWithWarnings) {
+				result.setWarning(file, contentHandler.getNsWarnings().get(file));
+			}
+		}
+		
 		reset();
 		return result;
 	}

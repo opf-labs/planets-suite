@@ -12,6 +12,7 @@ import eu.planets_project.services.utils.FileUtils;
 public class OdfSchemaHandler {
 	
 	
+	
 	public static final String ODF_v1_0 = "ODF:1.0";
 	public static final String ODF_v1_1 = "ODF:1.1";
 	public static final String ODF_v1_2 = "ODF:1.2";
@@ -19,8 +20,8 @@ public class OdfSchemaHandler {
 	public static final String MATHML_v2 = "MATHML:2.0";
 	
 	// The path to the schema files
-	private static final String ODF_SCHEMAS_PATH = "schemas/odf/";
-	private static final String MATHML_SCHEMAS_PATH = "schemas/mathml/";
+	private static final String ODF_SCHEMAS_PATH = "schemas" + File.separator + "odf" + File.separator;
+	private static final String MATHML_SCHEMAS_PATH = "schemas" + File.separator + "mathml" + File.separator;
 	
 	// Manifest Schemas
 	private static String v10_MANIFEST_SCHEMA = "v10_MANIFEST_SCHEMA";
@@ -38,12 +39,17 @@ public class OdfSchemaHandler {
 	private static String v12_DSIG_SCHEMA = "v12_DSIG_SCHEMA";
 	private static final String MATHML2_SCHEMA = "MATHML2_SCHEMA";
 	
+	public static HashMap<String, String> v10_namespaces = null;
+	public static HashMap<String, String> v11_namespaces = null;
+	public static HashMap<String, String> v12_namespaces = null;
+	
 	private static final String INCLUDE_HREF = "<include href=\"";
 	
 	private static HashMap<String, File> schemaFiles = new HashMap<String, File>();
 	
-	private String ODF_SCHEMA_LIST = "schema_list.properties";
+	private static final String ODF_SCHEMA_LIST = "schema_list.properties";
 	private static final String MATHMLSCHEMAS_PROPERTIES = "mathmlschemas.properties";
+	private static final String NAMESPACES_PROPERTIES_NAME = "namespaces.properties";
 	
 	private static File ODF_SH_TMP = null;
 	private static String ODF_SH_TMP_NAME = "ODF_SCHEMA_HANDLER";
@@ -59,7 +65,9 @@ public class OdfSchemaHandler {
 		SCHEMAS = FileUtils.createFolderInWorkFolder(ODF_SH_TMP, SCHEMAS_NAME);
 //		FileUtils.deleteAllFilesInFolder(SCHEMAS);
 		boolean provided = provideSchemas();
+		boolean ns_provided = prepareNamespaceTables(NAMESPACES_PROPERTIES_NAME);
 		log.info("All schemas provided = " + provided);
+		log.info("Prepared Namespace lookup tables: " + ns_provided);
 	}
 	
 	public File getDocumentSchema(String version, boolean strictValidation) {
@@ -228,7 +236,7 @@ public class OdfSchemaHandler {
 		}
 		return userManifestSchema;
 	}
-
+	
 	public boolean provideSchemas(){
 		boolean odfSchemasProvided = provideOdfSchemas(ODF_SCHEMA_LIST);
 		
@@ -248,6 +256,53 @@ public class OdfSchemaHandler {
 		}
 	}
 	
+	private boolean prepareNamespaceTables(String namespacePropertiesFileName) {
+		String namespaces = new String(FileUtils.writeInputStreamToBinary(this.getClass().getResourceAsStream(namespacePropertiesFileName))).trim();
+		String[] versionedNamespaces = namespaces.split("####");
+		
+		for (String currentPart : versionedNamespaces) {
+			currentPart = currentPart.trim();
+			if(currentPart.contains("v1.0")) {
+				if(v10_namespaces==null) {
+					v10_namespaces = new HashMap<String, String>();
+				}
+				String[] nsPairs = currentPart.split(System.getProperty("line.separator")); 
+				for (int i=1;i<nsPairs.length;i++) {
+					String[] lineParts = nsPairs[i].split("=");
+					String name = lineParts[0];
+					String value = lineParts[1];
+					v10_namespaces.put(name, value);
+				}
+			}
+			if(currentPart.contains("v1.1")) {
+				if(v11_namespaces==null) {
+					v11_namespaces = new HashMap<String, String>();
+				}
+				String[] nsPairs = currentPart.split(System.getProperty("line.separator")); 
+				for (int i=1;i<nsPairs.length;i++) {
+					String[] lineParts = nsPairs[i].split("=");
+					String name = lineParts[0];
+					String value = lineParts[1];
+					v11_namespaces.put(name, value);
+				}
+			}
+			if(currentPart.contains("v1.2")) {
+				if(v12_namespaces==null) {
+					v12_namespaces = new HashMap<String, String>();
+				}
+				String[] nsPairs = currentPart.split(System.getProperty("line.separator")); 
+				for (int i=1;i<nsPairs.length;i++) {
+					String[] lineParts = nsPairs[i].split("=");
+					String name = lineParts[0];
+					String value = lineParts[1];
+					v12_namespaces.put(name, value);
+				}
+			}			
+		}
+		return true;
+	}
+
+	
 	private boolean provideMathMLSchemas(String mathmlSchemaListName) {
 		String mathmlSchemaList = new String(FileUtils.writeInputStreamToBinary(this.getClass().getResourceAsStream(mathmlSchemaListName)));
 		String[] entries = mathmlSchemaList.split(System.getProperty("line.separator"));
@@ -264,7 +319,7 @@ public class OdfSchemaHandler {
 			}
 			File schema = new File(parentDir, name);
 			if(!schema.exists()) {
-				FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + parent + "/" + name), schema);
+				FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + parent + File.separator + name), schema);
 			}
 			success[i] = schema.exists();
 			i++;
