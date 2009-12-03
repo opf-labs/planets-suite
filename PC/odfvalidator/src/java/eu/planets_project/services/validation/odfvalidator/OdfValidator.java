@@ -144,7 +144,7 @@ public class OdfValidator implements Validate {
 	    
 	    sd.parameters(parameterList);
 	
-	    sd.tool(Tool.create(null, "Jing", "20090818", null, "http://www.thaiopensource.com/relaxng/jing.html"));
+	    sd.tool(Tool.create(null, "Jing", CoreOdfValidator.getToolVersion(), null, "http://www.thaiopensource.com/relaxng/jing.html"));
 	    List<URI> inputList = new ArrayList<URI>();
 	    inputList.add(techReg.createExtensionUri("odt"));
 	    inputList.add(techReg.createExtensionUri("ods"));

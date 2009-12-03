@@ -71,6 +71,8 @@ public class CoreOdfValidator {
 	private static String mimeType = null;
 	
 	
+	
+	
 	public OdfValidatorResult validate(File odfFile, List<Parameter> parameters) {
 		log.setLevel(Level.INFO);
 		contentHandler = new OdfContentHandler(odfFile);
@@ -130,9 +132,12 @@ public class CoreOdfValidator {
 			result.setUsedStrictValidation(STRICT_VALIDATION);
 		}
 		
+		// check if all used Namespaces are correct.
 		if(!contentHandler.allNamespacesCorrect()) {
+			result.setAllNamespacesCorrect(contentHandler.allNamespacesCorrect());
 			Set<File> filesWithWarnings = contentHandler.getNsWarnings().keySet();
 			
+			// note the warnings for each erroneous namespace in the result:
 			for (File file : filesWithWarnings) {
 				result.setWarning(file, contentHandler.getNsWarnings().get(file));
 			}
@@ -272,6 +277,14 @@ public class CoreOdfValidator {
 		return cmd;
 	}
 	
+	private static ArrayList<String> getJingVersionCmd() {
+		ArrayList<String> cmd = new ArrayList<String>();
+		cmd.add("java");
+		cmd.add("-jar");
+		cmd.add(JING_HOME + File.separator + JING);
+		return cmd;
+	}
+	
 	private void collectSchemas() {
 		if(mimeType.equalsIgnoreCase(FORMULA_MIMETYPE)
 				|| contentHandler.containsEmbeddedMathML()) {
@@ -304,16 +317,24 @@ public class CoreOdfValidator {
 		}
 		if(contentHandler.containsDsigSubFiles()) {
 			if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2)) {
-				schemaList.put("dsig", schemaHandler.getDsigSchema(version));
-				result.setDsigSchema(schemaList.get("dsig"));
+				if(USE_USER_DSIG_SCHEMA) {
+					schemaList.put("dsig", USER_DSIG_SCHEMA);
+					result.setDsigSchema(USER_DSIG_SCHEMA);
+				}
+				else {
+					schemaList.put("dsig", schemaHandler.getDsigSchema(version));
+					result.setDsigSchema(schemaList.get("dsig"));
+				}
 			}
 		}
+		
 	}
 
 	private static void parseParameters(List<Parameter> parameters) {
 		if(parameters!=null && parameters.size()>0) {
 			for (Parameter parameter : parameters) {
 				String name = parameter.getName();
+				
 				// Check if a custom user DSIG schema for validation is passed...
 				if(name.equalsIgnoreCase(USER_DSIG_SCHEMA_PARAM)) {
 					if(version.equalsIgnoreCase(OdfSchemaHandler.ODF_v1_2)) {
@@ -407,15 +428,33 @@ public class CoreOdfValidator {
 		}
 		return url;
 	}
-
+	
+	public static String getToolVersion() {
+		ProcessRunner cmd = new ProcessRunner(getJingVersionCmd());
+		cmd.run();
+		String out = cmd.getProcessOutputAsString();
+		if(!out.equalsIgnoreCase("") && out!=null) {
+			String[] parts = out.split("\n");
+			String version = parts[0];
+			String[] lineParts = version.split(" ");
+			version = lineParts[2];
+			return version;
+		}
+		else {
+			return "unknown";
+		}
+	}
+	
 	private void reset() {
 		STRICT_VALIDATION = false;
 		USE_USER_DOC_SCHEMA = false;
 		USE_USER_DOC_STRICT_SCHEMA = false;
 		USE_USER_MANIFEST_SCHEMA = false;
+		USE_USER_DSIG_SCHEMA = false;
 		USER_DOC_SCHEMA = null;
 		USER_DOC_STRICT_SCHEMA = null;
 		USER_MANIFEST_SCHEMA = null;
+		USER_DSIG_SCHEMA = null;
 		mimeType = null;
 	}
 }
