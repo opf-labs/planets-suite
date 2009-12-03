@@ -51,7 +51,7 @@ import java.util.Map.Entry;
  */
 public final class ServiceConfig {
 
-	static final String BASE_DIR_PROPERTY = "config.dir";
+	static final String BASE_DIR_PROPERTY = "eu.planets-project.config.dir";
 	private ServiceConfig() {
 		// This should never be called - we're just a factory with static methods
 	}
