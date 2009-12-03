@@ -16,158 +16,109 @@
 <!-- START Automated Results -->
 <a4j:region id="regionAutoMResults" renderRegionOnly="true">
 
-	<p>These are the results the Testbed has automatically measured and recorded for your experiment.</p>
-
     <h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
     
-<!--  Execution Log -->
+    <!-- ********************  -->
+    
+	<fieldset>
+      <legend>Overall Experiment Execution Results</legend>
 
-     <rich:dataTable value="#{ExpTypeMigrate.migrateResults}" 
-         var="res" styleClass="tbTable" reRender="dolist_ds" rows="10" width="100%">
-        <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
+     <rich:dataTable value="#{ExperimentBean.experimentDigitalObjectResults}" 
+         var="res" styleClass="tbTable" reRender="dolist_ds" rows="50" width="100%">
+        <rich:column sortBy="#{res.digitalObjectName}">
           <f:facet name="header">Digital Object</f:facet>
-          <!-- 
           <h:outputLink value="#{res.downloadURL}" styleClass="inTableIcon">
             <t:graphicImage value="/graphics/go-down.png" alt="Download..."/>
           </h:outputLink>
-          <h:commandLink title="View Results.">
-              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectedDigitalObjectActionListener"/>
-                 <h:outputText value="#{res.digitalObjectName}"/>
-          </h:commandLink>
-           -->
-          <h:outputLink value="#{res.downloadURL}">
-             <h:outputText value="#{res.digitalObjectName}"/>
-          </h:outputLink>
-        </rich:column>
-        <rich:column>
-          <f:facet name="header">Results</f:facet>
+          <h:panelGroup>
+               <h:outputText value="#{res.digitalObjectName}" styleClass="link" id="link"/>
+               <rich:componentControl for="exp_do_result_inspector" attachTo="link" operation="show" event="onclick"/>
+          </h:panelGroup>
           
-         <a4j:repeat value="#{res.migrations}" var="mdo">
-          
-         <h:outputLink value="#{mdo.digitalObjectDownloadURL}">
-           <h:outputText value="#{mdo.digitalObjectResult}"/>
-         </h:outputLink>
-         <br/>
-
-         </a4j:repeat>
-          
-
+     <rich:modalPanel id="exp_do_result_inspector" width="600" height="400" autosized="true">
+         <f:facet name="header">#{res.digitalObjectName}</f:facet>
+         <f:facet name="controls">
+            <h:panelGroup>
+               <h:graphicImage value="/graphics/close.png" styleClass="hidelink" id="hidelink"/>
+                <rich:componentControl for="exp_do_result_inspector" attachTo="hidelink" operation="hide" event="onclick"/>
+            </h:panelGroup>
+        </f:facet>
+        <div style="overflow: auto !important; width: 600px; height: 400px;">
+    <ui:include src="/WEB-INF/templates/fragments/exp_do_result_inspector.xhtml">
+       <ui:param name="dor" value="#{res}" />
+    </ui:include>
+        </div>
+     </rich:modalPanel>
           
         </rich:column>
+        <rich:column style="text-align: center;">
+          <f:facet name="header">Execution</f:facet>
+          <h:graphicImage value="/graphics/ose-tick.png" title="Executed" rendered="#{res.hasExecuted}"/>
+          <h:graphicImage value="/graphics/ose-error-passive.png" title="Not Executed" rendered="#{!res.hasExecuted}"/>
+        </rich:column>        
+        <rich:column style="text-align: center;">
+          <f:facet name="header">Execution Started</f:facet>
+            <h:outputText value="#{res.executionRecord.startDate.time}">
+                <f:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </rich:column>        
+        <rich:column style="text-align: center;">
+          <f:facet name="header">Execution Ended</f:facet>
+            <h:outputText value="#{res.executionRecord.endDate.time}">
+                <f:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </rich:column>
+        
+        <rich:column style="text-align: center;">
+          <f:facet name="header">Success</f:facet>
+          <h:graphicImage value="/graphics/ose-tick.png" title="Execution Succeeded" rendered="#{res.hasResult}"/>
+          <h:graphicImage value="/graphics/ose-error.png" title="Execution Failed" rendered="#{!res.hasResult}"/>
+        </rich:column>
+        
+        <rich:column style="text-align: center;">
+          <f:facet name="header">Report</f:facet>
+          <h:panelGroup>
+               <h:outputText value="View Report." styleClass="link" id="replink"/>
+               <rich:componentControl for="exp_do_result_inspector" attachTo="replink" operation="show" event="onclick"/>
+          </h:panelGroup>
+        </rich:column>
+        
         <f:facet name="footer">
           <rich:datascroller id="dolist_ds" renderIfSinglePage="false"></rich:datascroller>
         </f:facet>
      </rich:dataTable>
-            
-<!--  Execution Log -->
-
-<h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="doListColumn,expDesignColumn">
-            <rich:panel styleClass="expExecLogPanel">
-                
-     <rich:dataTable id="batchExecRecordsTable" value="#{NewExp_Controller.experimentExecutable.batchExecutionRecords}" 
-         var="batch" styleClass="tbTable" reRender="exelog_ds" rows="10" rowKeyVar="counter">
-      <rich:column sortBy="#{batch.endDate}" sortOrder="DESCENDING">
-        <f:facet name="header">Execution Date</f:facet>
-        <a4j:commandLink reRender="execResultsDetailPanel,batchExecRecordsTable">
-          	<f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
-        	<h:outputText value="#{batch.startDate.time}" styleClass="#{ ( ExperimentBean.selectedBatchExecutionRecord.startDate.time eq batch.startDate.time ) ? 'isSelected' : 'isNotSelected'}" >
-          		<f:convertDateTime type="both" dateStyle="short"/>
-        	</h:outputText>
-        </a4j:commandLink>
-      </rich:column>
-      <rich:column>
-        <f:facet name="header">Execution Success</f:facet>
-        <a4j:commandLink reRender="execResultsDetailPanel,batchExecRecordsTable">
-          <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
-          <h:outputText value="#{batch.batchRunSucceeded}"/>
-        </a4j:commandLink>
-      </rich:column>
-      
-      <f:facet name="footer">
-         <rich:datascroller id="exelog_ds" renderIfSinglePage="false"></rich:datascroller>
-      </f:facet>
-      
-    </rich:dataTable>
     
-    </rich:panel>
-    <rich:panel id="execResultsDetailPanel" styleClass="expMeasurementPanel">
-                <f:facet name="header">
-                Execution Results In Detail
-                </f:facet>
-                
-         <h:panelGroup rendered="#{ExperimentBean.selectedBatchExecutionRecord != null}">
-         
-         <a4j:repeat value="#{ExperimentBean.selectedBatchExecutionRecord.runs}" var="run" rowKeyVar="count">
-         <rich:simpleTogglePanel label="data entry: #{count+1} - #{run.digitalObjectSource}" opened="#{count>0 ? false : true}" switchType="client">
-
-         <a4j:repeat value="#{run.stages}" var="stage">
-        
-          <rich:dataTable value="#{stage.measuredObservables}" var="m" styleClass="tbTable">
-                <f:facet name="header">#{stage.stage}</f:facet>
-            <rich:column>
-              <f:facet name="header">Measurement</f:facet>
-              
-                <!--  Full property definitions is available:  -->
-                <h:panelGroup rendered="#{m.name != null}">
-                  <t:graphicImage value="/graphics/help.gif" style="float: right; padding: 1px 5px;"/>
-                  <h:outputText value="#{m.name}"/>
-                </h:panelGroup>
-                <rich:toolTip showDelay="500" rendered="#{m.name != null}">
-                  <h:outputText value="#{m.description}"/>
-                  <h:panelGroup rendered="#{m.identifier != null}">
-                    <br/><i><h:outputText value="(URI: #{m.identifier})"/></i>
-                  </h:panelGroup>
-                </rich:toolTip>
-                
-                <!-- Otherwise, just show the property ID: -->
-                <h:panelGroup rendered="#{m.name == null}">
-                  <i><h:outputText value="#{m.identifier}"/></i>
-                </h:panelGroup>
-                
-            </rich:column>
-            <rich:column>
-              <f:facet name="header">Value</f:facet>
-              <h:outputText value="#{m.value}"/><h:outputText value=" [#{m.unit}]" rendered="#{m.unitDefined}"/>
-            </rich:column>
-          </rich:dataTable>
-          
-         </a4j:repeat>
-         
-         </rich:simpleTogglePanel>
-         <br/>
-         </a4j:repeat>
-         
-         </h:panelGroup>
-         
-         <h:panelGroup rendered="#{ExperimentBean.selectedBatchExecutionRecord == null}">
-         <p>Please select a batch execution time (on the left) to see the batch results.</p>
-         </h:panelGroup>
-                
-    </rich:panel>
+    </fieldset>
     
-    </h:panelGrid>
-
+    <!-- ********************  -->
+    
+    <fieldset>
+      <legend>Download Raw Results</legend>
     <p>         
         <h:outputLink value="/testbed/reader/results.jsp">
           <f:param name="eid" value="#{ExperimentBean.experiment.entityID}"/>
           <h:outputText value="Click here to download data from all runs, in CSV format..."/>
         </h:outputLink>
     </p>
+    </fieldset>
 
-    <!-- Graphs -->
+    <!-- ********************  -->
     
+    <fieldset>
+      <legend>Performance Analysis</legend>
+    <!-- Graphs -->
             <p>
             Runtime statistics here. e.g. execution time of each service/stage, versus (exec, type, size).
             </p>
             <p>
             <img src="#{ExperimentBean.servicePlotImageUrl}" />
             </p>
+    </fieldset>
         
-	</h:panelGroup>
+  </h:panelGroup>
 
 </a4j:region>
-<!-- END Automated Results -->
-
+<!-- END Results -->
 
 </h:panelGroup>
 </a4j:outputPanel>

@@ -207,6 +207,7 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
 	@Override
 	public boolean isExperimentBeanType() {
 		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		if( expBean == null ) return false;
 		log.info("Checking "+expBean.getEtype()+" eq "+AdminManagerImpl.IDENTIFY+" : "+AdminManagerImpl.IDENTIFY.equals(expBean.getEtype()));
 		if( AdminManagerImpl.IDENTIFY.equals(expBean.getEtype()) ) return true;
 		return false;

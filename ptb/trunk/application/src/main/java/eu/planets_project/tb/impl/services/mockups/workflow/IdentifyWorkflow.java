@@ -223,7 +223,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
             if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
                 recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
                 collectIdentifyResults(recs, identify, dob);
-                wr.setReport(identify.getReport());
+                wr.logReport(identify.getReport());
                 return wr;
             }
         } catch( Exception e ) {
@@ -241,7 +241,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
             String info = identify.getReport().toString();
             sr = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, info);
         }
-        wr.setReport(sr);
+        wr.logReport(sr);
 
         return wr;
     }
@@ -259,7 +259,6 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
             recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, ident.getMethod().name() ));
         }
         // Store the size:
-        // FIXME: This method has now been added to the Digital Object.  Change it here to dob.getContentSize();
         recs.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+getContentSize(dob) ) );
         return;
     }

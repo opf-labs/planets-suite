@@ -18,22 +18,6 @@
         <ui:include src="/WEB-INF/templates/header.xhtml">
             <ui:param name="page" value="new_exp" />
         </ui:include>
-        <script type="text/javascript">
-            var valid_extensions = /(.jpg|.jpeg|.gif)$/i;
-
-            function checkExtension(fld) {
-                if (valid_extensions.test(fld.value)) return true;
-                alert('The selected file is of the wrong type.');
-                fld.select();
-                fld.focus();
-                return false;
-            }
-        </script>   
-        <!-- css popup javascript -->
-        <script type="text/javascript"
-            src="${facesContext.externalContext.requestContextPath}/js/csspopup/csspopup.js">
-        </script>   
-
     </ui:define>
 
     <ui:define name="content" rendered="#{ExperimentBean != null}">

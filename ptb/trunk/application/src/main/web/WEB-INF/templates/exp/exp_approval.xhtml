@@ -11,6 +11,8 @@
 <body>
   <ui:composition rendered="#{ExperimentBean != null}">
 
+<fieldset>
+<legend>#{res['approve_exp.evaluation']}</legend>
 
     <!--  Title, containing the status or result: -->    
     <h3 class="main">
@@ -35,8 +37,6 @@
     
     <h:panelGroup rendered="#{ExperimentBean.experiment.approved}">
 <p><b>Your experiment has been approved for execution.</b></p>
-<fieldset>
-<legend>#{res['approve_exp.evaluation']}</legend>
 
 <h:panelGroup rendered="#{ExperimentBean.experiment.experimentApproval.explanation != '' }">
 <p>
@@ -50,7 +50,6 @@
 <br/>
 <h:outputText value="#{res['approve_exp.decision']}" /> by <b><h:outputText value="#{ExperimentBean.experiment.usernameOfApprover}" /></b>.
 </p>
-</fieldset>
 
     </h:panelGroup>
 
@@ -82,6 +81,7 @@ Please modify your experiment:<br/>
 </p>
     </h:panelGroup>
     
+</fieldset>
       
   </ui:composition>
 </body>

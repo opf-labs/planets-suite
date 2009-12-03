@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:t="http://myfaces.apache.org/tomahawk"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"> <body> <ui:composition
+  rendered="#{dor != null}">
+
+  <!-- ****************** -->
+  <h2>Input</h2>
+
+  <h:outputLink value="#{dor.downloadURL}">
+    <h:outputText value="#{dor.digitalObjectName}" />
+    <t:graphicImage value="/graphics/go-down.png" alt="Download..." style="padding-left: 0.5em;"/>
+  </h:outputLink>
+
+  <!-- ****************** -->
+  <h2>Measurements</h2>
+
+  <rich:dataTable value="#{dor.resultsByStage}" var="sr"
+    styleClass="tbTable" rendered="#{dor.hasExecutionRecord}">
+    <rich:column>
+      <f:facet name="header">Stage</f:facet>
+      <h:outputText value="#{sr.stage.stage}" />
+    </rich:column>
+    <rich:column>
+      <f:facet name="header">Measurement</f:facet>
+
+      <!--  Full property definitions is available:  -->
+      <h:panelGroup rendered="#{sr.measurement.name != null}">
+        <t:graphicImage value="/graphics/help.gif"
+          style="float: right; padding: 1px 5px;" />
+        <h:outputText value="#{sr.measurement.name}" />
+      </h:panelGroup>
+      <rich:toolTip showDelay="500"
+        rendered="#{sr.measurement.name != null}">
+        <h:outputText value="#{sr.measurement.description}" />
+        <h:panelGroup rendered="#{sr.measurement.identifier != null}">
+          <br />
+          <i><h:outputText
+            value="(URI: #{sr.measurement.identifier})" /></i>
+        </h:panelGroup>
+      </rich:toolTip>
+
+      <!-- Otherwise, just show the property ID: -->
+      <h:panelGroup rendered="#{sr.measurement.name == null}">
+        <i><h:outputText value="#{sr.measurement.identifier}" /></i>
+      </h:panelGroup>
+
+    </rich:column>
+    <rich:column>
+      <f:facet name="header">Value</f:facet>
+      <h:outputText value="#{sr.measurement.value}" />
+      <h:outputText value=" [#{sr.measurement.unit}]"
+        rendered="#{sr.measurement.unitDefined}" />
+    </rich:column>
+  </rich:dataTable>
+
+  <h:outputText value="No measurements taken."
+    rendered="#{!dor.hasExecutionRecord}" />
+
+  <!-- ****************** -->
+  <h2>Output</h2>
+
+  <h:outputText
+    value="Result of type: #{dor.executionRecord.resultType}"
+    rendered="#{dor.hasExecutionRecord}" />
+  <h:outputText value="No result." rendered="#{!dor.hasExecutionRecord}" />
+
+  <!-- This is the migration case:
+
+         <a4j:repeat value=" # {res.migrations}" var="mdo">
+          
+         <h:outputLink value=" # {mdo.digitalObjectDownloadURL}">
+           <h:outputText value=" # {mdo.digitalObjectResult}"/>
+         </h:outputLink>
+         <br/>
+
+         </a4j:repeat>
+ -->
+
+  <!-- ****************** -->
+  <h2>Execution Report Log</h2>
+
+  <a4j:repeat var="log" value="#{dor.reportLog}">
+    <p style="font-family: monospace;"> <h:outputText value="#{log}" />
+    </p>
+  </a4j:repeat>
+
+  <!-- ****************** -->
+  <h2>Batch Report Log</h2>
+  <pre> #{dor.batchReport} </pre>
+
+
+</ui:composition> </body> </html>

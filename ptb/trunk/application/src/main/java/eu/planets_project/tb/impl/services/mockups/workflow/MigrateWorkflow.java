@@ -434,7 +434,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     public WorkflowResult execute( DigitalObject dob ) {
         // Initialise the result:
         WorkflowResult wr = new WorkflowResult();
-
+        
         // Pre-migrate characterise
         ExecutionStageRecordImpl preStage = new ExecutionStageRecordImpl(STAGE_PRE_MIGRATE);
         try {
@@ -459,7 +459,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             // Create a ServiceReport from the exception.
             // URGENT can we distinguish tool and install error here?
             ServiceReport sr = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, e.toString());
-            wr.setReport(sr);
+            wr.logReport(sr);
             log.error("Migration failed! "+e);
             e.printStackTrace();
             return wr;
@@ -512,12 +512,14 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         } catch( Exception e ) {
             success = false;
             e.printStackTrace();
-            throw new Exception ("Service Invocation Failed! : " + e );
+            throw new Exception ("Service Invocation Failed! : " + e.getMessage() );
         }
         msAfter = System.currentTimeMillis();
         
         // Compute the run time.
         stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
+        // Add the object size:
+        stage_m.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
 
         // Now record
         if( success && migrated.getDigitalObject() != null ) {
@@ -544,7 +546,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             }
             wr.setResult(newdob.build());
             wr.setResultType(WorkflowResult.RESULT_DIGITAL_OBJECT);
-            wr.setReport(migrated.getReport());
+            wr.logReport(migrated.getReport());
             log.info("Migration succeeded.");
             return;
         }
@@ -554,8 +556,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Build in a 'service failed' property, i.e. the call worked, but no result.
         stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
 
-        // FIXME Really, need to be able to ADD a report, so the full set is known.
-        wr.setReport(migrated.getReport());
+        // ADD a report, so the full set is known.
+        wr.logReport(migrated.getReport());
         
         // FIXME Should now throw an Exception, as the WF cannot proceed?
         throw new Exception("Migration failed.  No Digital Object was created. "+migrated.getReport().getMessage());
@@ -587,6 +589,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             List<Parameter> parameterList = new ArrayList<Parameter>();
             parameterList.add(new Parameter("disableNormDataInXCDL","-n"));
             result = dp.characterise(dob, parameterList);
+            wr.logReport(result.getReport());
         } catch( Exception e ) {
             log.error("Characterisation failed with exception: "+e);
             e.printStackTrace();
@@ -609,6 +612,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         // Compute the run time.
         stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
+        // Add the object size:
+        stage_m.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
 
         // Record results:
         if( success ) {
@@ -649,6 +654,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         try {
             log.info("Identifying "+dob);
             result = identify.identify(dob,null);
+            wr.logReport(result.getReport());
         } catch( Exception e ) {
             log.error("Identification failed with exception: "+e);
             e.printStackTrace();
@@ -671,6 +677,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         // Compute the run time.
         stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
+        // Add the object size:
+        stage_m.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
         
         // Record results:
         if( success ) {

@@ -56,7 +56,13 @@
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
        <ui:param name="ReadOnly" value="true" />
     </ui:include>
-    
+
+    <!-- Comments -->    
+    <h2 class="main">Comments</h2>
+    <ui:include src="/WEB-INF/templates/comment_template.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+    </ui:include>
+            
 </h:form>
 
 	<!-- ************************************************************************** -->

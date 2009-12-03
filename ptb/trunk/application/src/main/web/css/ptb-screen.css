@@ -142,13 +142,14 @@ list-style-type:square;
 div.clear {
 clear:both;
 }
-a {
+a, .link {
 color:#006699;
 text-decoration:none;
 }
-a:hover, active {
+a:hover, a:active, .link:hover {
 color:#000000;
 text-decoration:underline;
+cursor: pointer;
 }
 #subnav {
 background-color:#BFDEEB;
@@ -424,7 +425,8 @@ font-weight:bold;
 padding:0.2em;
 }
 fieldset {
-width:600px;
+/* width:800px;*/
+margin: 1em 2em;
 }
 fieldset fieldset {
 width:auto;
@@ -616,7 +618,6 @@ color:red;
 .commentFormWrap fieldset {
 border:1px solid #AAAAAA;
 clear:both;
-margin:2em 0pt;
 }
 .commentFormWrap legend {
 color:#444444;
@@ -936,6 +937,7 @@ width:100%;
   width: 100%;
   margin: 0;
 }
+/*
 .expRunStatusPanel {
   display: block;
   border: 1px solid #579EC2;
@@ -953,6 +955,7 @@ width:100%;
   margin: 0 auto;
   margin-top: 4px;
 }
+*/
 #executedResults .tbTable {
   width: 100%;
 }

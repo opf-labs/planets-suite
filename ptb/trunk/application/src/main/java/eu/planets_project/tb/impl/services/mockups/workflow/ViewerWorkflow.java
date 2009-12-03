@@ -124,6 +124,9 @@ public class ViewerWorkflow implements ExperimentWorkflow {
             log.info("Executing workflow on DigitalObject, title: " + dob.getTitle() );
         }
         
+        // Prepare the result:
+        WorkflowResult wr = new WorkflowResult();
+        
         // Add into a list.
         List<DigitalObject> digitalObjects = new ArrayList<DigitalObject>();
         digitalObjects.add(dob);
@@ -131,20 +134,18 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         // Invoke the service, timing it along the way:
         boolean success = true;
         String exceptionReport = "";
-        CreateViewResult identify = null;
+        CreateViewResult view = null;
         long msBefore = 0, msAfter = 0;
         msBefore = System.currentTimeMillis();
         try {
-            identify = viewMaker.createView(digitalObjects, null);
+            view = viewMaker.createView(digitalObjects, null);
+            wr.logReport(view.getReport());
         } catch( Exception e ) {
             success = false;
             exceptionReport = "<p>Service Invocation Failed!<br/>" + e + "</p>";
         }
         msAfter = System.currentTimeMillis();
 
-        // Now prepare the result:
-        WorkflowResult wr = new WorkflowResult();
-        
         // Record this one-stage experiment:
         ExecutionStageRecordImpl idStage = new ExecutionStageRecordImpl(STAGE_CREATEVIEW);
         wr.getStages().add( idStage );
@@ -157,13 +158,12 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         
         // Now record
         try {
-            if( success && identify.getViewURL() != null ) {
+            if( success && view.getViewURL() != null ) {
                 recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
-                collectCreateViewResults(recs, identify, dob);
+                collectCreateViewResults(recs, view, dob);
                 wr.setMainEndpoint(serviceEndpoint);
-                wr.setResult(identify);
+                wr.setResult(view);
                 wr.setResultType( WorkflowResult.RESULT_CREATEVIEW_RESULT );
-                wr.setReport(identify.getReport());
                 return wr;
             }
         } catch( Exception e ) {
@@ -177,11 +177,11 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         // TODO can we distinguish tool and install error here?
         ServiceReport sr = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
                 "No info");
-        if (identify != null && identify.getReport() != null) {
-            String info = identify.getReport().toString();
+        if (view != null && view.getReport() != null) {
+            String info = view.getReport().toString();
             sr = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, info);
         }
-        wr.setReport(sr);
+        wr.logReport(sr);
 
         return wr;
     }

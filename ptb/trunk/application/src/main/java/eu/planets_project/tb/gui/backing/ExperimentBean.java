@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -606,10 +607,24 @@ public class ExperimentBean {
      */
     public List<ResultsForDigitalObjectBean> getExperimentDigitalObjectResults() {
         List<ResultsForDigitalObjectBean> results = new Vector<ResultsForDigitalObjectBean>();
+        Collection<String> runOnes = new HashSet<String>();
         // Populate using the results:
+        List<BatchExecutionRecordImpl> records = getExperiment().getExperimentExecutable().getBatchExecutionRecords();
+        if( records != null && records.size() > 0 ) {
+            BatchExecutionRecordImpl batch = records.get(0);
+            for( ExecutionRecordImpl exr : batch.getRuns() ) {
+                ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(exr.getDigitalObjectReferenceCopy());
+                results.add(res);
+                // Collate successes:
+                runOnes.add(exr.getDigitalObjectReferenceCopy());
+            }
+        }
+        // Patch in any input files which are not represented. 
         for( String file : getExperimentInputData().values() ) {
-            ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(file);
-            results.add(res);
+            if( ! runOnes.contains(file) ) {
+                ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(file);
+                results.add(res);
+            }
         }
 
         // Now return the results:
@@ -1581,9 +1596,12 @@ public class ExperimentBean {
      * @return the selectedBatchExecutionRecord
      */
     public BatchExecutionRecordImpl getSelectedBatchExecutionRecord() {
-        log.info("Getting exec record: "+selectedBatchExecutionRecord);
-        if( selectedExecutionRecord != null )
+        if( selectedExecutionRecord != null ) {
             log.info("Getting exec record: "+selectedBatchExecutionRecord.getRuns().size());
+        } else {
+            this.selectedBatchExecutionRecord = this.exp.getExperimentExecutable().getBatchExecutionRecords().get(0);
+        }
+        log.info("Getting exec record: "+selectedBatchExecutionRecord);
         return selectedBatchExecutionRecord;
     }
 

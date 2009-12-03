@@ -145,9 +145,10 @@ public class WEEBatchExperimentTestbedUpdater {
 						}
 						Calendar start = new GregorianCalendar();
 						start.setTimeInMillis(wfResultItem.getStartTime());
+                        execRecord.setStartDate(start);
 						Calendar end = new GregorianCalendar();
 						end.setTimeInMillis(wfResultItem.getEndTime());
-						execRecord.setEndDate(end);
+                        execRecord.setEndDate(end);
 					}
 				}
 

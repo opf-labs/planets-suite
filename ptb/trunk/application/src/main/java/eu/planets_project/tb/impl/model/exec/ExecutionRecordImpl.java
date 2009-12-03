@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
@@ -144,8 +145,8 @@ public class ExecutionRecordImpl implements Serializable {
     private String resultType;
     private String result;
     
-    // The 'Report'
-    private String report;
+    // The 'Report Log'
+    private List<String> reportLog = new Vector<String>();
 
     /**
      * @return the id
@@ -291,15 +292,15 @@ public class ExecutionRecordImpl implements Serializable {
     /**
      * @return the report
      */
-    public String getReport() {
-        return report;
+    public List<String> getReportLog() {
+        return reportLog;
     }
 
     /**
      * @param report the report to set
      */
-    public void setReport(String report) {
-        this.report = report;
+    public void setReportLog(List<String> report) {
+        this.reportLog = report;
     }
     
     /**

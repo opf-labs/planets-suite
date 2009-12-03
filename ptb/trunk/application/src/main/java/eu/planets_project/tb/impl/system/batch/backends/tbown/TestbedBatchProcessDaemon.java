@@ -83,6 +83,7 @@ public class TestbedBatchProcessDaemon extends Thread {
             
             // Process each in turn:
             for( String filename : job.getDigitalObjects() ) {
+                Calendar start = Calendar.getInstance();
                 log.info("Running job: "+(i+1)+"/"+total);
                 DigitalObject dob = dh.get(filename).getDigitalObject();
                 WorkflowResult wfr = null;
@@ -97,8 +98,12 @@ public class TestbedBatchProcessDaemon extends Thread {
                 
                 // Report:
                 if( wfr != null ) {
-                    if( wfr.getReport() != null ) {
-                        log.info("Got report: " + wfr.getReport().toString());
+                    // Patch in the start and end dates:
+                    wfr.setStartDate(start);
+                    wfr.setEndDate( Calendar.getInstance());
+                    // Inspect the report:
+                    if( wfr.getReportLog() != null ) {
+                        log.info("Got report: " + wfr.getReportLog());
                     }
                     // Is there a result?
                     if( wfr.getResult() != null ) {
@@ -106,7 +111,6 @@ public class TestbedBatchProcessDaemon extends Thread {
                     }
                 }
 
-                
                 // Store results in the database:
                 this.storeWorkflowResults(job, wfr, dob, filename, batch, exp );
                 

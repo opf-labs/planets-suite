@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.view.CreateViewResult;
 import eu.planets_project.tb.api.data.util.DataHandler;
@@ -46,9 +47,13 @@ public class WorkflowResult {
     
     Object result;
     
-    ServiceReport report;
+    List<String> reportLog = new Vector<String>();
     
     URL mainEndpoint;
+    
+    Calendar startDate;
+    
+    Calendar endDate;
     
     /** */
     public WorkflowResult() {}
@@ -104,18 +109,26 @@ public class WorkflowResult {
     /**
      * @return the report
      */
-    public ServiceReport getReport() {
-        return report;
+    public List<String> getReportLog() {
+        return reportLog;
     }
-
 
     /**
-     * @param report the report to set
+     * @param report
+     *            the report to set
      */
-    public void setReport(ServiceReport report) {
-        this.report = report;
+    public void logReport(ServiceReport report) {
+        if (report == null)
+            return;
+        // Log the issue:
+        reportLog.add(String.format("%s: %s (%s)", report.getType(), report
+                .getMessage(), report.getStatus()));
+        // Append properties if any are set:
+        for (Property p : report.getProperties()) {
+            reportLog.add(" - " + p.toString());
+        }
     }
-    
+
     /**
      * @return the mainEndpoint
      */
@@ -129,6 +142,38 @@ public class WorkflowResult {
      */
     public void setMainEndpoint(URL mainEndpoint) {
         this.mainEndpoint = mainEndpoint;
+    }
+    
+    
+    /**
+     * @return the startDate
+     */
+    public Calendar getStartDate() {
+        return startDate;
+    }
+
+
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Calendar startDate) {
+        this.startDate = startDate;
+    }
+
+
+    /**
+     * @return the endDate
+     */
+    public Calendar getEndDate() {
+        return endDate;
+    }
+
+
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Calendar endDate) {
+        this.endDate = endDate;
     }
 
 
@@ -147,8 +192,11 @@ public class WorkflowResult {
             } catch (FileNotFoundException e) {
                 rec.setDigitalObjectSource(filename);
             }
-            // FIXME Set this in the job somewhere:
-            rec.setEndDate(Calendar.getInstance());
+            // Populate the exec record:
+            rec.setStartDate(wfr.getStartDate());
+            rec.setEndDate(wfr.getEndDate());
+            rec.setReportLog(wfr.getReportLog());
+            // And the stages.
             List<ExecutionStageRecordImpl> stages = rec.getStages();
             
             if( wfr != null && wfr.getStages() != null ) {
