@@ -248,7 +248,7 @@ public class OdfValidatorResult {
 		buf.append(NEWLINE);
 		buf.append("---------- Odf Compliance ----------" + NEWLINE);
 		buf.append("[Document is ODF compliant] = " + this.isOdfCompliant + NEWLINE);
-		buf.append("[All Namespaces validated] = " + this.allNamespacesCorrect() + NEWLINE);
+		buf.append("[All Namespaces valid] = " + this.allNamespacesCorrect() + NEWLINE);
 		if(!this.isOdfCompliant) {
 			for (String currentEntry : missingManifestEntries) {
 				buf.append("[Missing Manifest entry] = " + currentEntry);
