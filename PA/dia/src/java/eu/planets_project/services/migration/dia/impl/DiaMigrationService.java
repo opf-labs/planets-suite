@@ -64,7 +64,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	MigrateResult migrationResult;
 	try {
 	    final Configuration runtimeConfiguration = ServiceConfig
-		    .getConfiguration(this.getClass());
+		    .getConfiguration("pserv-pa-dia");
 
 	    // TODO: Is this the correct way to obtain the canonical name? Is it
 	    // the correct canonical name?
@@ -101,7 +101,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	final DocumentLocator documentLocator = new DocumentLocator(configfile);
 	try {
 	    final Configuration runtimeConfiguration = ServiceConfig
-		    .getConfiguration(this.getClass());
+		    .getConfiguration("pserv-pa-dia");
 
 	    // TODO: Is this the correct way to obtain the canonical name? Is it
 	    // the correct canonical name?

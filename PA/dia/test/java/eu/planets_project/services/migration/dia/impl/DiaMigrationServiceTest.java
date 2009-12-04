@@ -59,7 +59,7 @@ public class DiaMigrationServiceTest extends TestCase {
      */
     @Override
     public void setUp() throws Exception {
-	System.setProperty("config.dir", "PA/dia/src/resources");
+	System.setProperty("eu.planets-project.config.dir", "PA/dia/test/resources/conf");
 	migrationService = ServiceCreator.createTestService(Migrate.QNAME,
 		DiaMigrationService.class, wsdlLocation);
 	initialiseInputFormatURIs();
@@ -109,6 +109,7 @@ public class DiaMigrationServiceTest extends TestCase {
 
 	final ServiceReport serviceReport = migrationResult.getReport();
 	final ServiceReport.Status migrationStatus = serviceReport.getStatus();
+	System.out.println("@%^@%^@%@$#%:  " + serviceReport.getMessage());
 	assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
     }
 
