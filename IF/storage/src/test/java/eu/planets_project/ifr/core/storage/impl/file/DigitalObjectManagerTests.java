@@ -116,7 +116,7 @@ public class DigitalObjectManagerTests {
         {
 			// Then retrieve it and check it's the same
 			DigitalObject retObject = _dom.retrieve(pdURI);
-			URI newPurl = new File("IF/storage/src/test/resources/testroot/test_word.doc").toURI();
+			URI newPurl = new File("IF/storage/src/test/resources/testdata/test_word.doc").toURI();
 			DigitalObjectContent c2 = Content.byReference(newPurl.toURL().openStream());
 			DigitalObject expectedObject = new DigitalObject.Builder(c2).permanentUri(newPurl).title("test_word.doc.planets").build(); 
 			assertEquals("Retrieve Digital Object doesn't match that stored", expectedObject, retObject);
@@ -195,7 +195,7 @@ public class DigitalObjectManagerTests {
 	@Test
 	public final void testNullName() throws URISyntaxException, MalformedURLException {
 		try {
-			File rootDir = new File("IF/storage/src/test/resources/testroot");
+			File rootDir = new File("IF/storage/src/test/resources/testdata");
 			// Not doing too much here, just setting up a bad instance and catching the exception
 			FilesystemDigitalObjectManagerImpl.getInstance(null, rootDir);
 		} catch (IllegalArgumentException e) {
@@ -212,7 +212,7 @@ public class DigitalObjectManagerTests {
 	@Test
 	public final void testEmptyName() throws URISyntaxException, MalformedURLException {
 		try {
-			File rootDir = new File("IF/storage/src/test/resources/testroot");
+			File rootDir = new File("IF/storage/src/test/resources/testdata");
 			// Not doing too much here, just setting up a bad instance and catching the exception
 			FilesystemDigitalObjectManagerImpl.getInstance("", rootDir);
 		} catch (IllegalArgumentException e) {
