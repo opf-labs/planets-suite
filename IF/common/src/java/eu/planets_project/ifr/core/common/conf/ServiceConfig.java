@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 /**
  * Factory for obtaining configuration parameters. Configuration files
@@ -50,6 +51,7 @@ import java.util.Map.Entry;
  * @author Ian Radford
  */
 public final class ServiceConfig {
+	private static Logger _log = Logger.getLogger(ServiceConfig.class.getName()); 
 
 	static final String BASE_DIR_PROPERTY = "eu.planets-project.config.dir";
 	private ServiceConfig() {
@@ -66,6 +68,8 @@ public final class ServiceConfig {
 	 */
 	public static Configuration getConfiguration(Class<?> clazz) throws ConfigurationException {
 		String className = clazz.getName();
+		_log.info("ServiceConfig.getConfiguration(Class clazz)");
+		_log.info("Class name is " + className);
 		return getConfiguration(className);
 	}
 	
@@ -81,13 +85,19 @@ public final class ServiceConfig {
 		/*
 		 * Determine the absolute filename of the properties file.
 		 */
+		_log.info("ServiceConfig.getConfiguration(String basename)");
 		String baseDirectory = System.getProperty(BASE_DIR_PROPERTY);
+		_log.info("baseDirectory = " + baseDirectory);
 		String filename = baseDirectory + File.separatorChar + basename + ".properties";
+		_log.info("filename = " + filename);
 		/*
 		 * Check that the file exists
 		 */
 		File properties = new File(filename);
+		_log.info("Checking that properties exist");
+		_log.info("File loc:" + properties.getAbsolutePath());
 		if (properties.exists()) {
+			_log.info("Properties file found");
 			/*
 			 * Parse properties file and return appropriate Configuration instance
 			 */
@@ -105,9 +115,9 @@ public final class ServiceConfig {
 			 * from the loaded properties.
 			 */
 			return new ConfigurationImpl(configuration);
-		} else {
-			throw new ConfigurationException("Can't find properties files at: " + filename);
 		}
+		_log.info("Properties file doesn't exist at " + filename);
+		throw new ConfigurationException("Can't find properties files at: " + filename);
 	}
 
 	private static final class ConfigurationImpl implements Configuration {
@@ -116,7 +126,7 @@ public final class ServiceConfig {
 		public ConfigurationImpl(Properties configuration) {
 			try {
 				for (Entry<Object, Object> entry: configuration.entrySet()) {
-					properties.put((String)entry.getKey(), (String)entry.getValue());
+					this.properties.put((String)entry.getKey(), (String)entry.getValue());
 				}
 			} catch (Exception e) {
 				throw new ConfigurationException("Error processing properties", e);
@@ -140,12 +150,11 @@ public final class ServiceConfig {
 		}
 
 		public String getString(String key) {
-			String value = properties.get(key);
+			String value = this.properties.get(key);
 			if (value != null) {
 				return value;
-			} else {
-				throw new NoSuchElementException("No such property: " + key);
 			}
+			throw new NoSuchElementException("No such property: " + key);
 		}
 
 		public String getString(String key, String defaultValue) {
@@ -173,7 +182,7 @@ public final class ServiceConfig {
 		}
 
 		public Iterator<String> getKeys() {
-			return properties.keySet().iterator();
+			return this.properties.keySet().iterator();
 		}
 
 	}
