@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 /**
  * Factory for obtaining configuration parameters. Configuration files
  * are "properties" files, stored in a common directory which is defined
- * by the system property "config.dir"
+ * by the system property "eu.planets-project.config.dir"
  * 
  * Generally, configuration is expected to be performed in a manner analogous
  * to log4j. For example:
