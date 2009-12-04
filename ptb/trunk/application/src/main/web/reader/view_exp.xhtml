@@ -41,20 +41,33 @@
           <b><h:outputText value="#{res['expList.colHeader.currentStage']}" /></b><br/>
           <h:outputText value="#{ExperimentBean.currentPhaseName}" />
         </p>
+        </div>
         
-<h:form>
- <p>
+ <h:form>
+    <!-- Persist the experiment ID through POST, if any. -->    
+    <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}"/>
+
+ <h3 class="leftcol">#{res['browse_exp.pageTitle']}</h3>
+  <div class="innertube">
+ <p style="text-align: center;">
   <h:commandButton value="#{res['reader_exp.buttonStage6']}"
    action="goToBrowseExperiments" />
  </p>
- <p>
+ </div>
+ 
+ <h:panelGroup rendered="#{UserBean.userid == ExperimentBean.experiment.experimentSetup.basicProperties.experimenter}">
+ <h3 class="leftcol">#{res['approve_exp.reEdit']}</h3>
+  <div class="innertube">
+ <p style="text-align: center;">
   <h:commandButton value="#{res['reader_exp.goToEditor']}"
-   action="goToStage1" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}"/>
+   action="#{ExperimentBean.redirectToCurrentStage}" />
  </p>
-</h:form>            
+ </div>
+ </h:panelGroup>
                         
-		</div>
-        </div>
+ </h:form>
+ 
+	</div>
 
 
 	</ui:define>

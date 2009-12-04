@@ -24,13 +24,7 @@
 <div id="maincol">
 <div class="innertubemain">
    <p>Click on an experiment's name to open it.  Click on a column heading to change the ordering of the table.</p>
-   <p>If you see a notepad icon (<img src="../graphics/accessories-text-editor.png" alt="edit" title="edit" />) beside the experiment name click on this to jump into the experiment edit pages.</p>
 <a4j:form>
-	<a4j:status>
-   		<f:facet name="start">
-    		<h:graphicImage  value="/graphics/spinner.gif"/>
-        </f:facet>
-    </a4j:status>
 
 	<h:commandButton action="#{ListExp_Backing.exportAllExperimentsAction}" value="Export All" rendered="#{UserBean.admin}"/>
 
@@ -59,19 +53,28 @@
                     <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
                 	<rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="ajax">
 	               		<rich:menuItem id="contextViewExp" action="#{ListExp_Backing.readerExperimentAction}">
+                            <f:facet name="icon"><t:graphicImage value="/graphics/iconLeaf.gif"/></f:facet>
 							<b>view</b> experiment
 						</rich:menuItem>
 						<rich:menuItem id="contextEditExp" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}" action="#{ListExp_Backing.editExperimentAction}">
+                            <f:facet name="icon"><t:graphicImage value="/graphics/accessories-text-editor.png"/></f:facet>
 							<b>edit</b> experiment
 						</rich:menuItem>
-						<rich:menuItem id="contextSaveAs" action="#{NewExp_Controller.commandSaveAs}">
+						<rich:menuItem id="contextSaveAs" action="#{ListExp_Backing.commandSaveExperimentAs}">
+                            <f:facet name="icon"><t:graphicImage value="/graphics/edit-copy.png"/></f:facet>
 							<b>save configuration as</b> new experiment
 						</rich:menuItem>
-						<rich:menuItem id="contextExportExp" action="#{ListExp_Backing.exportMyExperimentAction}">
+						<rich:menuItem id="contextExportExp" action="#{ListExp_Backing.exportExperimentAction}">
+                            <f:facet name="icon"><t:graphicImage value="/graphics/go-down.png"/></f:facet>
 							<b>export</b> experiment
 						</rich:menuItem>
 	          		</rich:contextMenu>
                 </h:outputLink>
+                <!-- Use menu instead...
+                <h:commandLink action="# {ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
+                    <t:graphicImage value="/graphics/accessories-text-editor.png" alt="edit"/>
+                </h:commandLink>
+                 -->
         </t:column>
         <t:column>
 	        <f:facet name="header">
@@ -107,9 +110,6 @@
 	    	      #{res['expList.colHeader.currentStage']}
 		  </t:commandSortHeader>
 			</f:facet>		      
-                <h:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
-                    <t:graphicImage value="/graphics/accessories-text-editor.png" alt="edit" styleClass="expEditIcon"/>
-                </h:commandLink>
             <h:outputText value="#{exp.currentPhase.phaseName}" />
         </t:column>
         <t:column>

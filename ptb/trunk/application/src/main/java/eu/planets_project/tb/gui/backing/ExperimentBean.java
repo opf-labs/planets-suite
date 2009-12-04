@@ -63,6 +63,7 @@ import eu.planets_project.tb.gui.backing.exp.EvaluationPropertyResultsBean;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.gui.backing.exp.MeasurementPropertyResultsBean;
+import eu.planets_project.tb.gui.backing.exp.NewExpWizardController;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.backing.exp.EvaluationPropertyResultsBean.EvalRecordBean;
 import eu.planets_project.tb.gui.backing.exp.view.EmulationInspector;
@@ -405,7 +406,17 @@ public class ExperimentBean {
         this.ereportBody = exp.getExperimentEvaluation().getExperimentReport().getBodyText();
     }
     //END OF FILL METHOD
-    
+
+    /**
+     */
+    public String redirectToCurrentStage() {
+        int i = this.getExperiment().getCurrentPhaseIndex();
+        log.info("Issued re-direct to stage "+i+" for eid "+exp.getEntityID());
+        NewExpWizardController.redirectToExpStage(exp.getEntityID(), i);
+        return "success";
+    }
+
+
     public Map<String,BenchmarkBean> getExperimentBenchmarks() {
 		return experimentBenchmarks;    	
     }
@@ -643,7 +654,7 @@ public class ExperimentBean {
     	if(!this.inputData.values().contains(localFileRef)){
     		this.inputData.put(key, localFileRef);
     		this.exp.getExperimentExecutable().addInputData(localFileRef);
-    		this.persistExperiment();
+    		this.updateExperiment();
     		// Also add to UI component:
     		UIComponent panel = this.getPanelAddedFiles();
     		this.helperCreateRemoveFileElement(panel, localFileRef, key);
@@ -968,7 +979,7 @@ public class ExperimentBean {
         log.info("Setting experiment types to: "+type);
         try {
             this.exp.getExperimentSetup().setExperimentType(type);
-            this.persistExperiment();
+            this.updateExperiment();
         } catch (InvalidInputException e) {
             e.printStackTrace();
         }
@@ -1823,7 +1834,14 @@ public class ExperimentBean {
         return true;
     }
     
-    public void persistExperiment() {
+    public long persistExperiment() {
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        long eid = testbedMan.registerExperiment(this.getExperiment());
+        log.info("Created experiment eid = "+eid);
+        return eid;
+    }
+    
+    public void updateExperiment() {
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         testbedMan.updateExperiment(this.getExperiment());
     }

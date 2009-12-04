@@ -43,7 +43,7 @@ public class ExpTypeViewer extends ExpTypeBackingBean {
         log.info("Setting the Viewer service to: "+viewerService);
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(ViewerWorkflow.PARAM_SERVICE, viewerService);
-        expBean.persistExperiment();
+        expBean.updateExperiment();
     }
 
     /* (non-Javadoc)

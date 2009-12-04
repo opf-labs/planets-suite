@@ -65,11 +65,6 @@
   <h:panelGroup id="wfConfigPanelGroup" rendered="#{(ExpTypeExecutablePP.XMLConfigFileProvided) and (ExpTypeExecutablePP.validXMLConfig) and (ExpTypeExecutablePP.templateAvailableInWftRegistry)}">
   	<fieldset>
   	  <a4j:region id="regionWFMetadata" renderRegionOnly="true">
-  	    <a4j:status>
-            <f:facet name="start">
-                <h:graphicImage  value="/graphics/spinner.gif"/>
-            </f:facet>
-        </a4j:status>
 	   	<legend>You have selected to use the following workflow</legend>
 	    <rich:panel id="panelWFMetadata">
 		    <p><h:outputText value="workflow class: " style="font-weight:bold;"/><h:outputText value="#{ExpTypeExecutablePP.weeXMLConfig.template.clazz}"/></p>
@@ -83,11 +78,6 @@
 		</rich:panel>
 	  </a4j:region>	
 	  <a4j:region id="regioneditWFPanel" selfRendered="true" immediate="true">	
-	  	<a4j:status>
-            <f:facet name="start">
-                <h:graphicImage  value="/graphics/spinner.gif"/>
-            </f:facet>
-    	</a4j:status>
 		<!-- Selection of service endpoints and parameters -->  	
   		<rich:panel id="editWFServicesPanel">
         	<f:facet name="header">Edit Service Details</f:facet>

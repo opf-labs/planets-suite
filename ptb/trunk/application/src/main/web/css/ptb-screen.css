@@ -756,20 +756,23 @@ width:100%;
 .rich-table-subheadercell{
 	color: #FFFFFF;
 }
-.statusSearching {
-  display: block;
-  width: 24px;
-  height: 24px;
-  margin: 5px auto;
-  background: transparent url('/techreg/images/loader-tr-sml.gif') no-repeat;
-}
-
+.statusBusy {
+ display: block;
+ position: fixed;
+ top: 0px;
+ left: 0px; 
+ bottom: 0px; 
+ right: 0px;
+ width: 100%; height: 100%;
+ background: #111111 url(../graphics/spinner-black.gif) no-repeat center;
+ opacity: .7; filter: alpha(opacity=70); /* opacity: partly transparent */
+ z-index: 10000;
+ text-align: center;
+ padding: 10px;
+ font: normal 16px Tahoma, Geneva, sans-serif;
+}/* #666666 looked quite good, but needs a mid-grey spinner gif. */
 .statusDone {
-  display: block;
-  width: 24px;
-  height: 24px;
-  margin: 5px auto;
-  background-image: none;
+  display: none;
 }
 
 /* Service Browser */

@@ -298,18 +298,22 @@
 		<navigation-case>
 			<from-outcome>viewExperimentReport</from-outcome>
 			<to-view-id>/reader/view_exp.xhtml</to-view-id>
+            <redirect/>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>viewExperimentExeManager</from-outcome>
 			<to-view-id>/admin/manage_exp.xhtml</to-view-id>
+			<redirect/>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>addComment</from-outcome>
 			<to-view-id>/edit_comment.xhtml</to-view-id>
+            <redirect/>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>browseForData</from-outcome>
 			<to-view-id>/exp/browse_data.xhtml</to-view-id>
+            <redirect/>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>configAutoEvalSer</from-outcome>
@@ -322,6 +326,7 @@
   <navigation-case>
    <from-outcome>success</from-outcome>
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -382,6 +387,7 @@
   <navigation-case>
    <from-outcome>expDeleted</from-outcome>
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
  </navigation-rule>
  

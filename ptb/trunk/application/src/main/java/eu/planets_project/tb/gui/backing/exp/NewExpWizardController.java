@@ -829,10 +829,8 @@ public class NewExpWizardController{
      * Attempts to make a copy of the current experiment and return user to stage 1
      * of the "new" experiment
      */
-    private String commandSaveExperimentAs() {
-        // FIXME This only save-as-es the ExperimentBean in the session! When invoked from menu, it's different!
+    public static String commandSaveExperimentAs( ExperimentBean oldExpBean ) {
         log.info("Attempting to save this experiment as a new experiment.");
-        ExperimentBean oldExpBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         
         // Create a deep copy via the XML serialisation system:
         Experiment exp = ExperimentViaJAXB.deepCopy( (ExperimentImpl)oldExpBean.getExperiment() );
@@ -858,16 +856,27 @@ public class NewExpWizardController{
         // Make the current user the owner:
         UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
         newExpBean.setUserData(user);
-        newExpBean.persistExperiment();
+        long eid = newExpBean.persistExperiment();
         
         log.info("commandSaveExperimentAs: ExpBean: "+oldExpBean.getEname()+" saved as "+newExpBean.getEname());
 
-        // Test hard redirect:
-        NewExpWizardController.redirectToExpStage(exp.getEntityID(), 1);
+        // Hard redirect:
+        NewExpWizardController.redirectToExpStage(eid, 1);
         
         // Return generic result, to avoid JSF navigation taking over.
         return "success";
         //return "goToStage1";
+    }
+
+    /**
+     * @param selectedExperiment
+     * @return
+     */
+    public static String commandSaveExperimentAs( Experiment selectedExperiment ) {
+        log.info("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
+        ExperimentBean expBean = new ExperimentBean();
+        expBean.fill(selectedExperiment);
+        return commandSaveExperimentAs(expBean);
     }
     
     /**
@@ -878,6 +887,7 @@ public class NewExpWizardController{
         if( i < 1 || i > 6 ) i = 1;
         JSFUtil.redirect("/exp/exp_stage"+i+".faces?eid="+eid);
     }
+    
 
     private String commandSaveExperimentAndGoto(int stage, String destination ) {
         String result = commandSaveExperiment( stage );
@@ -894,7 +904,9 @@ public class NewExpWizardController{
     }
     */
     public String commandSaveAs() {
-        return this.commandSaveExperimentAs();
+        // This only save-as-es the ExperimentBean in the session! When invoked from menu, it's different!
+        ExperimentBean oldExpBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        return this.commandSaveExperimentAs(oldExpBean);
     }
     
     public String commandSaveStage1() {

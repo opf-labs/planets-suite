@@ -49,13 +49,6 @@
 	            		<a4j:commandButton id="expandButton" value="expand" action="#{OntologyDnDBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
 	            			<f:param value="expand" name="collapsexpand"/>
 	            		</a4j:commandButton>
-	            		<a4j:status for="settings">
-	                		<f:facet name="start">
-	                    		<h:graphicImage  value="/graphics/spinner.gif"/>
-	                		</f:facet>
-	                		<f:facet name="stop">
-	                		</f:facet>
-	            		</a4j:status>
             			<br/> 		
 	            		<p>
 	            		<h:outputText value="tree-context menu (slow!): "/>

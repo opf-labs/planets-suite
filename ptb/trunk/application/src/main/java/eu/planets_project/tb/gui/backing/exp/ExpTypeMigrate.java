@@ -67,7 +67,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         log.info("Setting the Migrate service to: "+identifyService);
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(MigrateWorkflow.PARAM_SERVICE, identifyService);
-        expBean.persistExperiment();
+        expBean.updateExperiment();
     }
     
     private boolean isServiceSet() {
@@ -241,7 +241,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
         p.put(MigrateWorkflow.PARAM_PRE_SERVICE_TYPE, decodeOpFromCharPar(service) );
         p.put(MigrateWorkflow.PARAM_PRE_SERVICE, decodeEndpointFromCharPar(service) );
-        expBean.persistExperiment();
+        expBean.updateExperiment();
     }
 
     /**
@@ -266,7 +266,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
         p.put(MigrateWorkflow.PARAM_POST_SERVICE_TYPE, decodeOpFromCharPar(service) );
         p.put(MigrateWorkflow.PARAM_POST_SERVICE, decodeEndpointFromCharPar(service) );
-        expBean.persistExperiment();
+        expBean.updateExperiment();
     }
 
     /**
@@ -310,7 +310,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     public void setInputFormat( String inputFormat) {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(MigrateWorkflow.PARAM_FROM, inputFormat );
-        expBean.persistExperiment();
+        expBean.updateExperiment();
     }
     
     private boolean isInputSet() {
@@ -349,7 +349,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     public void setOutputFormat( String format) {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(MigrateWorkflow.PARAM_TO, format );
-        expBean.persistExperiment();
+        expBean.updateExperiment();
     }
 
     private boolean isOutputSet() {

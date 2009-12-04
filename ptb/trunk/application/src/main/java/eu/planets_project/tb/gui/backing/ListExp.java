@@ -263,12 +263,18 @@ public class ListExp extends SortableList {
 	      //return "editExp";
 	    }
 	    
-	    public String exportMyExperimentAction() {
+        public String exportExperimentAction() {
+            Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
+            DownloadManager dm = (DownloadManager)JSFUtil.getManagedObject("DownloadManager");
+            return dm.downloadExperiment( (ExperimentImpl)selectedExperiment );
+        }
+        
+        public String exportMyExperimentAction() {
             Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
-	        DownloadManager dm = (DownloadManager)JSFUtil.getManagedObject("DownloadManager");
-	        return dm.downloadExperiment( (ExperimentImpl)selectedExperiment );
-	    }
-	    
+            DownloadManager dm = (DownloadManager)JSFUtil.getManagedObject("DownloadManager");
+            return dm.downloadExperiment( (ExperimentImpl)selectedExperiment );
+        }
+        
 	    public String exportAllExperimentsAction() {
 	    	log.debug("Exporting all experiments");
 	    	TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
@@ -281,20 +287,24 @@ public class ListExp extends SortableList {
         {
         
           Experiment selectedExperiment = (Experiment) this.getToAppExp_data().getRowData();
-          ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          //ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          JSFUtil.redirect("/admin/manage_exp.faces?eid="+selectedExperiment.getEntityID());
           
           // go to edit page
-          return "viewExperimentExeManager";
+          return "success";
+          //return "viewExperimentExeManager";
         }
         
         public String viewExperimentToExecute()
         {
         
           Experiment selectedExperiment = (Experiment) this.getToExecExp_data().getRowData();
-          ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          //ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          JSFUtil.redirect("/admin/manage_exp.faces?eid="+selectedExperiment.getEntityID());
                   
           // go to edit page
-          return "viewExperimentExeManager";
+          return "success";
+          //return "viewExperimentExeManager";
         }
         
         public String adminApproveExperiment() {
@@ -322,6 +332,23 @@ public class ListExp extends SortableList {
           return "success";
           //return "viewExp";
         }
+        
+        /**
+         * Saves and experiment as a new one.
+         * @return
+         */
+        public String commandSaveExperimentAs() {
+            Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
+            NewExpWizardController.commandSaveExperimentAs(selectedExperiment);
+            return "success";
+        }
+        
+        public String commandSaveMyExperimentAs() {
+            Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
+            NewExpWizardController.commandSaveExperimentAs(selectedExperiment);
+            return "success";
+        }
+        
 	    
         public String readerExperimentLinkAction() {
             

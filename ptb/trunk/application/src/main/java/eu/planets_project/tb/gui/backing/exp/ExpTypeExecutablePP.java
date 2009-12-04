@@ -194,7 +194,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
         expExecutable.setWEEWorkflowConfig(this.buildWorkflowConfFromCurrentConfiguration());
         //specify which batch processing system WEE or TB/Local we want to use for this experiment
         expExecutable.setBatchSystemIdentifier(BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
-        expBean.persistExperiment();
+        expBean.updateExperiment();
 	}
 	
 	

@@ -29,12 +29,6 @@
             <p>The following services are currently available for experimentation in the Testbed.  Click on a service name to find out more about it.</p>
     <h:form>
     
-      <a4j:status>
-        <f:facet name="start">
-          <h:graphicImage value="/graphics/spinner.gif" style="float: right;"/>
-        </f:facet>
-      </a4j:status>
- 
       <rich:dataTable id="serviceListTable" value="#{ServiceBrowser.allServiceRecordsByName}" var="sd"
          styleClass="tbTable" sortMode="single"><!-- reRender="services_ds"  -->
         
