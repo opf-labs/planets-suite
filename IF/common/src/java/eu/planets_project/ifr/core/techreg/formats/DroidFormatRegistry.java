@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
+import eu.planets_project.ifr.core.common.conf.ServiceConfig;
+
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
 import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
@@ -121,12 +123,12 @@ class DroidFormatRegistry  {
      * @return the DROID analysis controller
      */
     public static AnalysisController getController() {
-        // Determine the config directory:
-        String sigFileLocation = DroidConfig.configFolder();
+        // Determine the signature file:
+        String sigFile = ServiceConfig.getConfiguration("pserv-if-common").getString("droid.signature.file");
         // Here we start using the Droid API:
         AnalysisController controller = new AnalysisController();
         try {
-            controller.readSigFile(sigFileLocation);
+            controller.readSigFile(sigFile);
         } catch (Exception e) {
             e.printStackTrace();
             
