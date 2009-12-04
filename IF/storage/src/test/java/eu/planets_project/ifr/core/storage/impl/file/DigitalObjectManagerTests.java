@@ -59,7 +59,7 @@ public class DigitalObjectManagerTests {
 	@After
 	public void tearDown() throws Exception {
 		// Clear out the test repository directory
-		DigitalObjectManagerTests.deleteDir(new File("IF/storage/src/test/resources/testroot"));
+		DigitalObjectManagerTests.deleteDir(new File("IF/storage/src/test/resources/testdata"));
 	}
 
 	/**
