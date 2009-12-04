@@ -70,7 +70,12 @@ public final class MigrationPath {
      * @return A copy of the parameters
      */
     public List<Parameter> getParameters() {
-        return new ArrayList<Parameter>(parameters);
+    	List<Parameter> listparm = null;
+    	if (parameters == null)
+  		  listparm = new ArrayList<Parameter>(); // empty list
+    	else
+          listparm = new ArrayList<Parameter>(parameters);
+    	return listparm;
     }
 
     /**
@@ -94,10 +99,11 @@ public final class MigrationPath {
      */
     public static List<MigrationPath> constructPaths(Set<URI> inputFormats,
             Set<URI> outputFormats) {
+    	List<MigrationPath> paths = null;
         if (inputFormats == null || outputFormats == null) {
-            return new ArrayList<MigrationPath>();
+            paths = new ArrayList<MigrationPath>(); // empty list
         } else {
-            List<MigrationPath> paths = new ArrayList<MigrationPath>(
+        	paths = new ArrayList<MigrationPath>(
                     inputFormats.size() * outputFormats.size());
             for (URI in : inputFormats) {
                 for (URI out : outputFormats) {
@@ -106,8 +112,8 @@ public final class MigrationPath {
                     }
                 }
             }
-            return paths;
         }
+        return paths;
     }
 
     /**
