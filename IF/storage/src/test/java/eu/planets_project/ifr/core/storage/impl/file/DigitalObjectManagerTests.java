@@ -41,7 +41,7 @@ public class DigitalObjectManagerTests {
 	@Before
 	public void setUp() throws Exception {
 		// Set up directory for file based instance if it doesn't exist
-		File rootDir = new File("IF/storage/src/test/resources/testroot");
+		File rootDir = new File("IF/storage/src/test/resources/testdata");
 		if (!rootDir.exists()){
 			boolean mkdir = rootDir.mkdir();
 			if(!mkdir&&!rootDir.exists()){
@@ -59,7 +59,7 @@ public class DigitalObjectManagerTests {
 	@After
 	public void tearDown() throws Exception {
 		// Clear out the test repository directory
-		DigitalObjectManagerTests.deleteDir(new File("IF/storage/src/test/resources/testdata"));
+		// DigitalObjectManagerTests.deleteDir(new File("IF/storage/src/test/resources/testdata"));
 	}
 
 	/**
