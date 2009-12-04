@@ -93,18 +93,6 @@
     <!-- ********************  -->
     
     <fieldset>
-      <legend>Download Raw Results</legend>
-    <p>         
-        <h:outputLink value="/testbed/reader/results.jsp">
-          <f:param name="eid" value="#{ExperimentBean.experiment.entityID}"/>
-          <h:outputText value="Click here to download data from all runs, in CSV format..."/>
-        </h:outputLink>
-    </p>
-    </fieldset>
-
-    <!-- ********************  -->
-    
-    <fieldset>
       <legend>Performance Analysis</legend>
     <!-- Graphs -->
             <p>
@@ -115,6 +103,18 @@
             </p>
     </fieldset>
         
+    <!-- ********************  -->
+    
+    <fieldset>
+      <legend>Download Raw Results</legend>
+    <p>         
+        <h:outputLink value="/testbed/reader/results.jsp">
+          <f:param name="eid" value="#{ExperimentBean.experiment.entityID}"/>
+          <h:outputText value="Click here to download data from all runs, in CSV format..."/>
+        </h:outputLink>
+    </p>
+    </fieldset>
+
   </h:panelGroup>
 
 </a4j:region>

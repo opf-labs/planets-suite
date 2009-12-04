@@ -853,27 +853,28 @@ public class NewExpWizardController{
         ExperimentImpl.resetToEditingStage(exp);
         
         // Place new experiment bean into session:
-        ExperimentBean newExpBean = ExpBeanReqManager.putExperimentIntoSessionExperimentBean(exp);
+        ExperimentBean newExpBean = ExperimentInspector.putExperimentIntoRequestExperimentBean(exp);
         
         // Make the current user the owner:
         UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
         newExpBean.setUserData(user);
+        newExpBean.persistExperiment();
         
         log.info("commandSaveExperimentAs: ExpBean: "+oldExpBean.getEname()+" saved as "+newExpBean.getEname());
 
         // Test hard redirect:
-        //NewExpWizardController.redirectToExpStage(exp.getEntityID(), 1);
+        NewExpWizardController.redirectToExpStage(exp.getEntityID(), 1);
         
         // Return generic result, to avoid JSF navigation taking over.
-        //return "success";
-        return "goToStage1";
+        return "success";
+        //return "goToStage1";
     }
     
     /**
      * @param entityID
      * @param i
      */
-    private static void redirectToExpStage(long eid, int i) {
+    public static void redirectToExpStage(long eid, int i) {
         if( i < 1 || i > 6 ) i = 1;
         JSFUtil.redirect("/exp/exp_stage"+i+".faces?eid="+eid);
     }
@@ -1451,7 +1452,7 @@ public class NewExpWizardController{
           Experiment exp = epr.findExperiment(expBean.getExperiment().getEntityID());
           expBean.setExperiment(exp);
           // Only updates the exp itself, as only the BG data might have changed.
-//          ExpBeanReqManager.putExperimentIntoSessionExperimentBean( exp );
+          //ExperimentInspector.putExperimentIntoSessionExperimentBean( exp );
 	  }
 	  
 	  /*

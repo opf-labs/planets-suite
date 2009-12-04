@@ -93,10 +93,6 @@
             <h:outputText value="#{exp.experimentExecutable.numberOfInputs}" />
         </t:column>
         <t:column>
-            <f:facet name="header">Runs</f:facet>
-            <h:outputText value="#{exp.experimentExecutable.numBatchExecutionRecords}" />
-        </t:column>
-        <t:column>
             <f:facet name="header">
               <t:commandSortHeader id="sortHeader_startDate" columnName="startDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
                   #{res['expList.colHeader.startDate']}

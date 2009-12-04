@@ -19,7 +19,8 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.gui.UserBean;
-import eu.planets_project.tb.gui.backing.exp.ExpBeanReqManager;
+import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
+import eu.planets_project.tb.gui.backing.exp.NewExpWizardController;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
 import eu.planets_project.tb.impl.AdminManagerImpl;
@@ -248,15 +249,18 @@ public class ListExp extends SortableList {
 	    private String editExperimentAction(Experiment selectedExperiment) {
 	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 	      
-          ExpBeanReqManager.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          //ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
 	      
 	      // Abort and go to View page if this is an old experiment:
 	      if( AdminManagerImpl.isExperimentDeprecated( selectedExperiment ) ) {
-	          return "viewExp";
+	          JSFUtil.redirect("/reader/view_exp.faces?eid="+selectedExperiment.getEntityID());
+	      } else {
+	          NewExpWizardController.redirectToExpStage(selectedExperiment.getEntityID(), 1);
 	      }
 	      
 	      // go to edit page
-	      return "editExp";
+	      return "success";
+	      //return "editExp";
 	    }
 	    
 	    public String exportMyExperimentAction() {
@@ -277,7 +281,7 @@ public class ListExp extends SortableList {
         {
         
           Experiment selectedExperiment = (Experiment) this.getToAppExp_data().getRowData();
-          ExpBeanReqManager.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
           
           // go to edit page
           return "viewExperimentExeManager";
@@ -287,7 +291,7 @@ public class ListExp extends SortableList {
         {
         
           Experiment selectedExperiment = (Experiment) this.getToExecExp_data().getRowData();
-          ExpBeanReqManager.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
                   
           // go to edit page
           return "viewExperimentExeManager";
@@ -311,10 +315,12 @@ public class ListExp extends SortableList {
           Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
           System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 
-          ExpBeanReqManager.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          //ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          JSFUtil.redirect("/reader/view_exp.faces?eid="+selectedExperiment.getEntityID());
                   
           // go to edit page
-          return "viewExp";
+          return "success";
+          //return "viewExp";
         }
 	    
         public String readerExperimentLinkAction() {
@@ -328,10 +334,12 @@ public class ListExp extends SortableList {
             Experiment selectedExperiment = testbedMan.getExperiment(Long.parseLong(linkEid));
             System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 
-            ExpBeanReqManager.putExperimentIntoSessionExperimentBean(selectedExperiment);
+            //ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
+            JSFUtil.redirect("/reader/view_exp.faces?eid="+selectedExperiment.getEntityID());
                     
             // go to edit page
-            return "viewExp";            
+            return "success";
+            //return "viewExp";            
         }
             
 //            public void chooseView()
@@ -352,7 +360,7 @@ public class ListExp extends SortableList {
 	      Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
 	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 	      
-          ExpBeanReqManager.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          ExperimentInspector.putExperimentIntoSessionExperimentBean(selectedExperiment);
               
             //go to page for confirming deletion
             return "selectDelete";

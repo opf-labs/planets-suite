@@ -10,14 +10,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.faces.context.FacesContext;
-
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.commons.logging.Log;
-import eu.planets_project.tb.gui.backing.exp.ExpBeanReqManager;
+import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
@@ -213,7 +209,8 @@ public class TestbedManagerImpl
 		    edao.updateExperiment(experiment);
 			ExperimentImpl exp = (ExperimentImpl)edao.findExperiment(experiment.getEntityID());
 		    // Also update the Experiment backing bean to reflect the changes:
-            ExpBeanReqManager.putExperimentIntoSessionExperimentBean( exp );
+			// FIXME Is this required?
+			ExperimentInspector.putExperimentIntoSessionExperimentBean( exp );
             
           //End Transaction
 		} else {

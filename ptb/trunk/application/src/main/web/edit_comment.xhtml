@@ -89,7 +89,7 @@ ni.appendChild(newdiv);
             <fieldset><legend>#{res['new_exp.legendGeneral']}</legend>
 
             <p><h:outputText value="#{res['new_exp.expName']}"
-                styleClass="readerLabel" /> #{ExperimentBean.ename}</p>
+                styleClass="readerLabel" /> #{ExperimentInspector.experimentBean.ename}</p>
             <div class="clear"></div>
             <p><h:outputText value="#{res['new_exp.expSummary']}"
                 styleClass="readerLabel" /> #{ExperimentBean.esummary}</p>
@@ -118,8 +118,10 @@ ni.appendChild(newdiv);
         </div>
         </t:div>
         </h:panelGroup>
-
+        
       <h:form id="commentForm">
+          <!-- Persist the experiment ID through POST, if any. -->    
+          <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}"/>
 
           <h:messages errorClass="errorMessage" infoClass="infoMessage"/>
           <h:outputLabel value="#{res['comment.title']}" for="title" ><span style='color:red;font-weight:bold;'> *</span></h:outputLabel>

@@ -15,8 +15,12 @@
     
       <!-- TODO Add comment list and forms etc etc. -->
       <div class="commentFormWrap">
-      <a4j:form id="commentForm">
-
+      <h:form id="commentForm">
+      
+        <!-- Persist the experiment ID through POST, if any. -->    
+        <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}" />
+        
+        <!--  The comment form -->
         <fieldset>
         <legend>#{res['comment.commentsOn']} '#{ExperimentBean.ename}' </legend>
 
@@ -78,7 +82,7 @@
         </t:tree2>
         
         </fieldset>
-      </a4j:form>
+      </h:form>
       
      </div>
      

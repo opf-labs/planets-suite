@@ -643,6 +643,7 @@ public class ExperimentBean {
     	if(!this.inputData.values().contains(localFileRef)){
     		this.inputData.put(key, localFileRef);
     		this.exp.getExperimentExecutable().addInputData(localFileRef);
+    		this.persistExperiment();
     		// Also add to UI component:
     		UIComponent panel = this.getPanelAddedFiles();
     		this.helperCreateRemoveFileElement(panel, localFileRef, key);
@@ -967,6 +968,7 @@ public class ExperimentBean {
         log.info("Setting experiment types to: "+type);
         try {
             this.exp.getExperimentSetup().setExperimentType(type);
+            this.persistExperiment();
         } catch (InvalidInputException e) {
             e.printStackTrace();
         }
@@ -1819,6 +1821,11 @@ public class ExperimentBean {
         }
         log.debug("Created experiment if necessary, now passing it back.");    
         return true;
+    }
+    
+    public void persistExperiment() {
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        testbedMan.updateExperiment(this.getExperiment());
     }
     
     private String selDigORefStep5OverviewTable = null;

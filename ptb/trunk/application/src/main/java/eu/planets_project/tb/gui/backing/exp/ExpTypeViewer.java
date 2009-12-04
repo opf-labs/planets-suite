@@ -43,6 +43,7 @@ public class ExpTypeViewer extends ExpTypeBackingBean {
         log.info("Setting the Viewer service to: "+viewerService);
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(ViewerWorkflow.PARAM_SERVICE, viewerService);
+        expBean.persistExperiment();
     }
 
     /* (non-Javadoc)
@@ -149,6 +150,7 @@ public class ExpTypeViewer extends ExpTypeBackingBean {
 	@Override
 	public boolean isExperimentBeanType() {
 		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        if( expBean == null ) return false;
 		if( AdminManagerImpl.EMULATE.equals(expBean.getEtype()) ) return true;
 		return false;
 	}

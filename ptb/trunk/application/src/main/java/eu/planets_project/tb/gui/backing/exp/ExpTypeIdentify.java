@@ -48,6 +48,7 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
         log.info("Setting the Identify service to: "+identifyService);
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(IdentifyWorkflow.PARAM_SERVICE, identifyService);
+        expBean.persistExperiment();
     }
 
     /* (non-Javadoc)

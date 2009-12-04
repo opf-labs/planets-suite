@@ -1,91 +1,116 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:c="http://java.sun.com/jsp/jstl/core"	
-    xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:t="http://myfaces.apache.org/tomahawk">
-<body>
-  <ui:composition>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:t="http://myfaces.apache.org/tomahawk">
+	<body>
+		<ui:composition>
 
-        <h3 class="leftcol">#{res['new_exp.progress']}</h3>
-        <div class="innertube">
-            <h:form>
-            <ul class="exp">
-            
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 1}">
-                    <li class="#{ExperimentPhase == 1 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage1"
-                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 1 ? 'exp_done' : 'exp' }">
-                            <t:outputText value="#{res['new_exp.stage1']}" />
-                    </h:commandLink></li>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 1)}">
-                    <li class="exp_nd">#{res['new_exp.stage1']}</li>
-                </h:panelGroup>
+			<h3 class="leftcol">#{res['new_exp.progress']}</h3>
+			<div class="innertube">
+				<h:form>
+					<ul class="exp">
 
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 2}">
-                    <li class="#{ExperimentPhase == 2 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage2"
-                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 2 ? 'exp_done' : 'exp' }">
-                            <t:outputText value="#{res['new_exp.stage2']}" />
-                    </h:commandLink></li>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 2)}">
-                    <li class="exp_nd">#{res['new_exp.stage2']}</li>
-                </h:panelGroup>
+						<h:panelGroup
+							rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 1}">
+							<li class="#{ExperimentPhase == 1 ? 'exp_sel' : 'exp' }">
+								<h:outputLink value="#{facesContext.externalContext.requestContextPath}/exp/exp_stage1.faces"
+                                    styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 1 ? 'exp_done' : 'exp' }">
+									<f:param name="eid" value="#{ExperimentInspector.experimentId}" />
+									<t:outputText value="#{res['new_exp.stage1']}" />
+								</h:outputLink>
+							</li>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 1)}">
+							<li class="exp_nd">#{res['new_exp.stage1']}</li>
+						</h:panelGroup>
 
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 3}">
-                    <li class="#{ExperimentPhase == 3 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage3"
-                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 3 ? 'exp_done' : 'exp' }">
-                            <t:outputText value="#{res['new_exp.stage3']}" />
-                    </h:commandLink></li>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 3)}">
-                    <li class="exp_nd">#{res['new_exp.stage3']}</li>
-                </h:panelGroup>
+						<h:panelGroup
+							rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 2}">
+							<li class="#{ExperimentPhase == 2 ? 'exp_sel' : 'exp' }">
+                                <h:outputLink value="#{facesContext.externalContext.requestContextPath}/exp/exp_stage2.faces"
+									styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 2 ? 'exp_done' : 'exp' }">
+                                    <f:param name="eid" value="#{ExperimentInspector.experimentId}" />
+									<t:outputText value="#{res['new_exp.stage2']}" />
+                                </h:outputLink>
+							</li>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 2)}">
+							<li class="exp_nd">#{res['new_exp.stage2']}</li>
+						</h:panelGroup>
 
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 4}">
-                    <li class="#{ExperimentPhase == 4 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage4"
-                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 4 ? 'exp_done' : 'exp' }">
-                            <t:outputText value="#{res['new_exp.stage4']}" />
-                    </h:commandLink></li>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 4)}">
-                    <li class="exp_nd">#{res['new_exp.stage4']}</li>
-                </h:panelGroup>
-                
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 5}">
-                    <li class="#{ExperimentPhase == 5 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage5"
-                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 5 ? 'exp_done' : 'exp' }">
-                            <t:outputText value="#{res['new_exp.stage5']}" />
-                    </h:commandLink></li>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 5)}">
-                    <li class="exp_nd">#{res['new_exp.stage5']}</li>
-                </h:panelGroup>
+						<h:panelGroup
+							rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 3}">
+							<li class="#{ExperimentPhase == 3 ? 'exp_sel' : 'exp' }">
+                                <h:outputLink value="#{facesContext.externalContext.requestContextPath}/exp/exp_stage3.faces"
+									styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 3 ? 'exp_done' : 'exp' }">
+                                    <f:param name="eid" value="#{ExperimentInspector.experimentId}" />
+									<t:outputText value="#{res['new_exp.stage3']}" />
+                                </h:outputLink>
+							</li>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 3)}">
+							<li class="exp_nd">#{res['new_exp.stage3']}</li>
+						</h:panelGroup>
 
-                
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 6}">
-                    <li class="#{ExperimentPhase == 6 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage6"
-                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 6 ? 'exp_done' : 'exp' }">
-                            <t:outputText value="#{res['new_exp.stage6']}" />
-                    </h:commandLink></li>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 6)}">
-                    <li class="exp_nd">#{res['new_exp.stage6']}</li>
-                </h:panelGroup>
-                
-            </ul>
-          </h:form>
-        </div>
+						<h:panelGroup
+							rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 4}">
+							<li class="#{ExperimentPhase == 4 ? 'exp_sel' : 'exp' }">
+                                <h:outputLink value="#{facesContext.externalContext.requestContextPath}/exp/exp_stage4.faces"
+									styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 4 ? 'exp_done' : 'exp' }">
+                                    <f:param name="eid" value="#{ExperimentInspector.experimentId}" />
+									<t:outputText value="#{res['new_exp.stage4']}" />
+                                </h:outputLink>
+							</li>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 4)}">
+							<li class="exp_nd">#{res['new_exp.stage4']}</li>
+						</h:panelGroup>
 
-<!-- 
-        <h3 class="leftcol">#{res['new_exp.progress']}</h3>
-        <div class="innertube">
-          <p></p>
-        </div>
- -->
-        
-  </ui:composition>
-</body>
+						<h:panelGroup
+							rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 5}">
+							<li class="#{ExperimentPhase == 5 ? 'exp_sel' : 'exp' }">
+                                <h:outputLink value="#{facesContext.externalContext.requestContextPath}/exp/exp_stage5.faces"
+									styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 5 ? 'exp_done' : 'exp' }">
+                                    <f:param name="eid" value="#{ExperimentInspector.experimentId}" />
+									<t:outputText value="#{res['new_exp.stage5']}" />
+                                </h:outputLink>
+							</li>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 5)}">
+							<li class="exp_nd">#{res['new_exp.stage5']}</li>
+						</h:panelGroup>
+
+
+						<h:panelGroup
+							rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 6}">
+							<li class="#{ExperimentPhase == 6 ? 'exp_sel' : 'exp' }">
+                                <h:outputLink value="#{facesContext.externalContext.requestContextPath}/exp/exp_stage6.faces"
+									styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 6 ? 'exp_done' : 'exp' }">
+                                    <f:param name="eid" value="#{ExperimentInspector.experimentId}" />
+									<t:outputText value="#{res['new_exp.stage6']}" />
+                                </h:outputLink>
+							</li>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 6)}">
+							<li class="exp_nd">#{res['new_exp.stage6']}</li>
+						</h:panelGroup>
+
+					</ul>
+				</h:form>
+			</div>
+
+			<!--
+				<h3 class="leftcol">#{res['new_exp.progress']}</h3> <div
+				class="innertube"> <p></p> </div>
+			-->
+
+		</ui:composition>
+	</body>
 </html>

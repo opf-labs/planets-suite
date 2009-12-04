@@ -1,111 +1,146 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:c="http://java.sun.com/jstl/core" 
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:a4j="http://richfaces.org/a4j"
-    xmlns:rich="http://richfaces.org/rich">
-<body>
-  <ui:composition rendered="#{ExperimentBean != null}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+	<body>
+		<ui:composition rendered="#{ExperimentBean != null}">
 
-<fieldset>
-<legend>Execute Experiment</legend>
+			<fieldset>
+				<legend>Execute Experiment</legend>
 
-<h:panelGroup class="expRunStatusPanel" rendered="#{NewExp_Controller.executeExperimentProgress != 9999 and !ReadOnly}">
-    <a4j:outputPanel id="progressPanel">
-      <h:panelGroup styleClass="#{NewExp_Controller.experimentExecutable.executionRunning ? 'expRunStatusRun' : 'expRunStatusWait' }">
-      <h:outputText value="Executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times." 
-          rendered="#{not NewExp_Controller.experimentExecutable.executionRunning}" styleClass="statusMessage"/>
-      <rich:progressBar value="#{NewExp_Controller.executeExperimentProgress}"
-          interval="1000" label="#{NewExp_Controller.executeExperimentProgress} %"
-          enabled="#{NewExp_Controller.experimentExecutable.executionRunning}" minValue="-1" maxValue="100" styleClass="expRunStatusRun"
-          reRenderAfterComplete="progressPanel,runExperimentForm" reRender="runExperimentForm,progressPanel">
-      </rich:progressBar>
-      </h:panelGroup>
-    </a4j:outputPanel>
-    </h:panelGroup>
-    	
-<a4j:outputPanel id="runExperimentForm" rendered="#{!ReadOnly}">
-    <h:panelGroup rendered="#{not NewExp_Controller.experimentExecutable.executionCompleted}">
-    
-                   <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
-                        <p>Your experiment has been setup and approved successfully - you may now <b>run the experiment</b>: </p>
-                       <p>
-                       
-					   </p>    
-					    
-                <h:commandButton id="executeExperimentButton" value="#{res['exp_stage5.button.run']}" 
-                action="#{NewExp_Controller.executeExperiment}" disabled="#{(NewExp_Controller.experimentExecutable.executionRunning) or (ExperimentBean.experiment.currentPhaseIndex gt 5)}"
-                style="font-size: larger; font-weight: bold; color: green;">
-                </h:commandButton>                        
-                    </h:panelGroup>
-                   <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
-                        <p><br/><br/>If you have made an error, and wish to make further alterations before running your experiment, you can go back to the editing stage:</p>
-                        <h:commandButton value="#{res['button.edit']}"
-                        action="#{NewExp_Controller.unsubmitAndEdit}"/>
-                    </h:panelGroup>
-    </h:panelGroup>
+				<h:panelGroup class="expRunStatusPanel"
+					rendered="#{NewExp_Controller.executeExperimentProgress != 9999 and !ReadOnly}">
+					<a4j:outputPanel id="progressPanel">
+						<h:panelGroup
+							styleClass="#{NewExp_Controller.experimentExecutable.executionRunning ? 'expRunStatusRun' : 'expRunStatusWait' }">
+							<h:outputText
+								value="Executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times."
+								rendered="#{not NewExp_Controller.experimentExecutable.executionRunning}"
+								styleClass="statusMessage" />
+							<rich:progressBar
+								value="#{NewExp_Controller.executeExperimentProgress}" interval="1000"
+								label="#{NewExp_Controller.executeExperimentProgress} %"
+								enabled="#{NewExp_Controller.experimentExecutable.executionRunning}"
+								minValue="-1" maxValue="100" styleClass="expRunStatusRun"
+								reRenderAfterComplete="progressPanel,runExperimentForm"
+								reRender="runExperimentForm,progressPanel">
+							</rich:progressBar>
+						</h:panelGroup>
+					</a4j:outputPanel>
+				</h:panelGroup>
 
-     <h:panelGroup rendered="#{! NewExp_Controller.experimentExecutable.executionRunning}" >
-         <h:commandButton action="#{NewExp_Controller.executeExperimentStart}"
-                      value="Re-run this experiment to collect more data." 
-                      rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }" disabled="#{ExperimentBean.experiment.currentPhaseIndex gt 5}"/>
-        <h:commandButton value="Refresh This Page"
-                            action="goToStage3" />
-     </h:panelGroup>
-     <h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.executionRunning}" >
-                        <p>
-                            Your experiment is currently being executed. Depending on the intensity of your experiment this may take some time.
-                            <br/>
-                            <h:commandButton value="Refresh This Page"
-                            action="goToStage3" />
-                        </p>
-     </h:panelGroup>
+				<a4j:outputPanel id="runExperimentForm" rendered="#{!ReadOnly}">
+					<h:panelGroup
+						rendered="#{not NewExp_Controller.experimentExecutable.executionCompleted}">
 
-        <p>
-        The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects.
+						<h:panelGroup
+							rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
+							<p>
+								Your experiment has been setup and approved successfully - you
+								may now
+								<b>run the experiment</b>
+								:
+							</p>
+							<p>
+
+							</p>
+
+							<h:commandButton id="executeExperimentButton"
+								value="#{res['exp_stage5.button.run']}" action="#{NewExp_Controller.executeExperiment}"
+								disabled="#{(NewExp_Controller.experimentExecutable.executionRunning) or (ExperimentBean.experiment.currentPhaseIndex gt 5)}"
+								style="font-size: larger; font-weight: bold; color: green;">
+							</h:commandButton>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
+							<p>
+								<br />
+								<br />
+								If you have made an error, and wish to make further alterations
+								before running your experiment, you can go back to the editing
+								stage:
+							</p>
+							<h:commandButton value="#{res['button.edit']}"
+								action="#{NewExp_Controller.unsubmitAndEdit}" />
+						</h:panelGroup>
+					</h:panelGroup>
+
+					<h:panelGroup
+						rendered="#{! NewExp_Controller.experimentExecutable.executionRunning}">
+						<h:commandButton action="#{NewExp_Controller.executeExperimentStart}"
+							value="Re-run this experiment to collect more data."
+							rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }"
+							disabled="#{ExperimentBean.experiment.currentPhaseIndex gt 5}" />
+						<h:commandButton value="Refresh This Page" action="goToStage3" />
+					</h:panelGroup>
+					<h:panelGroup
+						rendered="#{NewExp_Controller.experimentExecutable.executionRunning}">
+						<p>
+							Your experiment is currently being executed. Depending on the
+							intensity of your experiment this may take some time.
+							<br />
+							<h:commandButton value="Refresh This Page"
+								action="goToStage3" />
+						</p>
+					</h:panelGroup>
+
+					<p>
+						The experiment has been executed
+						#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords}
+						times on #{NewExp_Controller.experimentExecutable.numberOfInputs}
+						digital objects.
         </p>
-     
-     
-</a4j:outputPanel>
-        
-  
-<!-- ******************  -->
-
-        
-
-    <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (NewExp_Controller.experimentExecutable.executionCompleted))}">
-                <p>Experiment execution took place with the following details:</p>
-                <div class="box">
-                <!--  display some statistics -->
-                <h3 class="box">#{res['exp_stage5.statistics']}</h3>
-                <p class="box">
-                    <b>#{res['exp_stage5.started']} </b>#{NewExp_Controller.experimentExecutable.executionStartDate.time}<br />
-                    <b>#{res['exp_stage5.ended']} </b>#{NewExp_Controller.experimentExecutable.executionEndDate.time}<br />
-                    <b>#{res['exp_stage5.nrOfInput']} </b>#{ExperimentBean.numberOfOutput}<br />
-                    <b>#{res['exp_stage5.nrOfOutput']} </b>#{ExperimentBean.numberOfInputFiles}<br />
-                    <b>#{res['exp_stage5.success']} </b>#{NewExp_Controller.experimentExecutable.executionSuccess}<br />
-                </p>
-                </div>
-    </h:panelGroup>
 
 
-<!-- ******************  -->
+				</a4j:outputPanel>
 
-    <rich:simpleTogglePanel label="Admin Options"
-        opened="false" switchType="client"> <!-- rendered="#{UserBean.admin}" -->
-        <p>
-            <h:commandButton
-                value="Click to reset this experiment, removing all execution results."
-                action="#{NewExp_Controller.commandResetAfterFailure}" />
-        </p>
-    </rich:simpleTogglePanel>
-    
-</fieldset>
 
-  </ui:composition>
-</body>
+				<!-- ******************  -->
+
+
+
+				<h:panelGroup
+					rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (NewExp_Controller.experimentExecutable.executionCompleted))}">
+					<p>Experiment execution took place with the following details:</p>
+					<div class="box">
+						<!--  display some statistics -->
+						<h3 class="box">#{res['exp_stage5.statistics']}</h3>
+						<p class="box">
+							<b>#{res['exp_stage5.started']} </b>
+							#{NewExp_Controller.experimentExecutable.executionStartDate.time}
+							<br />
+							<b>#{res['exp_stage5.ended']} </b>
+							#{NewExp_Controller.experimentExecutable.executionEndDate.time}
+							<br />
+							<b>#{res['exp_stage5.nrOfInput']} </b>
+							#{ExperimentBean.numberOfOutput}
+							<br />
+							<b>#{res['exp_stage5.nrOfOutput']} </b>
+							#{ExperimentBean.numberOfInputFiles}
+							<br />
+							<b>#{res['exp_stage5.success']} </b>
+							#{NewExp_Controller.experimentExecutable.executionSuccess}
+							<br />
+						</p>
+					</div>
+				</h:panelGroup>
+
+
+				<!-- ******************  -->
+
+				<rich:simpleTogglePanel label="Admin Options"
+					opened="false" switchType="client"> <!-- rendered="#{UserBean.admin}" -->
+					<p>
+						<h:commandButton
+							value="Click to reset this experiment, removing all execution results."
+							action="#{NewExp_Controller.commandResetAfterFailure}" />
+					</p>
+				</rich:simpleTogglePanel>
+
+			</fieldset>
+
+		</ui:composition>
+	</body>
 </html>

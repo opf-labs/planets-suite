@@ -23,7 +23,10 @@
 		<div id="mainwrapper">
 			<div id="maincol">
 				<div class="innertubemain">        
+
 <h:form>
+    <!-- Persist the experiment ID through POST, if any. -->    
+    <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}"/>
 
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
        <ui:param name="ExperimentPhase" value="3" />

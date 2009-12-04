@@ -7,7 +7,7 @@ import eu.planets_project.tb.gui.backing.admin.RegisterTBServices;
 import eu.planets_project.tb.gui.backing.admin.ManagerTBServices;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.backing.exp.AutoBMGoalEvalUserConfigBean;
-import eu.planets_project.tb.gui.backing.exp.ExpBeanReqManager;
+import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +27,7 @@ public class Manager {
     }
     
     public String initExperimentAction() {
-        ExpBeanReqManager.putExperimentIntoSessionExperimentBean( null );
+        //ExperimentInspector.putExperimentIntoSessionExperimentBean( null );
 	    
 		return "success";
     }

@@ -12,6 +12,8 @@
   <ui:composition rendered="#{ExperimentBean != null}">  
 
 <h:form>
+    <!-- Persist the experiment ID through POST, if any. -->    
+    <input type="hidden" name="eid" value="#{ExperimentBean.experiment.entityID}" />
 
 	<h1 class="main">#{ExperimentInspector.experimentBean.ename}</h1>
 

@@ -7,7 +7,7 @@
     xmlns:c="http://java.sun.com/jstl/core">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
-	<ui:define name="title">
+  <ui:define name="title">
         #{res.title} - #{res['new_exp.expName']} #{ExperimentInspector.experimentBean.ename}
   </ui:define>
 
@@ -22,9 +22,9 @@
 		<div id="maincol">
 		<div class="innertubemain">
     
-
     <ui:include src="/WEB-INF/templates/exp_overview.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="eid" value="#{ExperimentInspector.experimentId}" />
     </ui:include>
 
 		</div>

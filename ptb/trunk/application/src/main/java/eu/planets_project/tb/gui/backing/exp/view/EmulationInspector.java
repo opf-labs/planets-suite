@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.faces.context.FacesContext;
 import javax.xml.ws.Service;
 
 import org.apache.commons.logging.Log;
@@ -17,6 +18,9 @@ import eu.planets_project.services.view.CreateView;
 import eu.planets_project.services.view.ViewStatus;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
@@ -201,4 +205,5 @@ public class EmulationInspector {
     public boolean isViewUnknown() {
         return this.viewStatus.equals(ViewStatus.Status.UNKNOWN);
     }
+
 }

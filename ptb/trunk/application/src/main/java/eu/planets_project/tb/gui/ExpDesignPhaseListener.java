@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
 /**
@@ -32,28 +33,32 @@ public class ExpDesignPhaseListener implements PhaseListener {
      */
     public void afterPhase(PhaseEvent arg0) {
         FacesContext context = arg0.getFacesContext();
-        /* Experimental support for pushing the ExperimentBean in from the session.
-        ExpBeanReqManager ebr = new ExpBeanReqManager();
-        ebr.setEid( (String) context.getExternalContext().getRequestParameterMap().get("eid") );
-        */
+        /* Support for pushing the ExperimentBean in the request. */
+        ExperimentInspector ei = (ExperimentInspector)JSFUtil.getManagedObject("ExperimentInspector");
+        ei.getExperimentId();
+        // Check if there is an ExperimentBean in the session.
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         
         if( context == null  || context.getViewRoot() == null ) return;
         String viewId = context.getViewRoot().getViewId();
         // log.debug("ViewID: "+viewId);
         if( viewId.startsWith("/exp/exp_stage") ) {
-            ExpDesignPhaseListener.redirectIfRequired(context, "my_experiments");
+            // Force reset if this is not stage 1, and there is no DB-backing for the bean:
+            if( ! viewId.startsWith("/exp/exp_stage1") ) {
+                if( expBean != null && expBean.getExperiment() == null ) expBean = null;
+                if( expBean != null && expBean.getExperiment() != null && expBean.getExperiment().getEntityID() == -1 ) expBean = null;
+            }
+            ExpDesignPhaseListener.redirectIfRequired(context, "my_experiments", expBean );
         }
         if( viewId.startsWith("/reader/exp_stage") ||
             viewId.startsWith("/admin/manage_exp")  ||
             viewId.startsWith("/admin/exp_delete") ) {
-            ExpDesignPhaseListener.redirectIfRequired(context, "browse_experiments");
+            ExpDesignPhaseListener.redirectIfRequired(context, "browse_experiments", expBean );
         }
 
     }
     
-    private static void redirectIfRequired(FacesContext context, String newView ) {
-        // Check if there is an ExperimentBean in the session.
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    private static void redirectIfRequired(FacesContext context, String newView, ExperimentBean expBean ) {
         // Redirect to experiment list if not.
         if( expBean == null ) {
             log.debug("ExperimentBean == null! Redirecting.");

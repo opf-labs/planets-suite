@@ -67,6 +67,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         log.info("Setting the Migrate service to: "+identifyService);
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(MigrateWorkflow.PARAM_SERVICE, identifyService);
+        expBean.persistExperiment();
     }
     
     private boolean isServiceSet() {
@@ -240,6 +241,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
         p.put(MigrateWorkflow.PARAM_PRE_SERVICE_TYPE, decodeOpFromCharPar(service) );
         p.put(MigrateWorkflow.PARAM_PRE_SERVICE, decodeEndpointFromCharPar(service) );
+        expBean.persistExperiment();
     }
 
     /**
@@ -264,6 +266,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
         p.put(MigrateWorkflow.PARAM_POST_SERVICE_TYPE, decodeOpFromCharPar(service) );
         p.put(MigrateWorkflow.PARAM_POST_SERVICE, decodeEndpointFromCharPar(service) );
+        expBean.persistExperiment();
     }
 
     /**
@@ -307,6 +310,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     public void setInputFormat( String inputFormat) {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(MigrateWorkflow.PARAM_FROM, inputFormat );
+        expBean.persistExperiment();
     }
     
     private boolean isInputSet() {
@@ -345,6 +349,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     public void setOutputFormat( String format) {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(MigrateWorkflow.PARAM_TO, format );
+        expBean.persistExperiment();
     }
 
     private boolean isOutputSet() {
@@ -639,7 +644,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
 	@Override
 	public boolean isExperimentBeanType() {
 		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-		if( AdminManagerImpl.MIGRATE.equals(expBean.getEtype()) ) return true;
+		if( expBean != null && AdminManagerImpl.MIGRATE.equals(expBean.getEtype()) ) return true;
 		return false;
 	}
 }
