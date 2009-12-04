@@ -887,7 +887,17 @@ public class NewExpWizardController{
         if( i < 1 || i > 6 ) i = 1;
         JSFUtil.redirect("/exp/exp_stage"+i+".faces?eid="+eid);
     }
-    
+
+    /**
+     * 
+     * @param exp
+     */
+    public static void redirectToCurrentStage( Experiment exp ) {
+        int i = exp.getCurrentPhaseIndex();
+        if( i == 6 ) i = 5;
+        log.info("Issued re-direct to stage "+i+" for eid "+exp.getEntityID());
+        NewExpWizardController.redirectToExpStage(exp.getEntityID(), i);
+    }    
 
     private String commandSaveExperimentAndGoto(int stage, String destination ) {
         String result = commandSaveExperiment( stage );

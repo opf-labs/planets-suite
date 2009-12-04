@@ -255,7 +255,7 @@ public class ListExp extends SortableList {
 	      if( AdminManagerImpl.isExperimentDeprecated( selectedExperiment ) ) {
 	          JSFUtil.redirect("/reader/view_exp.faces?eid="+selectedExperiment.getEntityID());
 	      } else {
-	          NewExpWizardController.redirectToExpStage(selectedExperiment.getEntityID(), 1);
+	          NewExpWizardController.redirectToCurrentStage(selectedExperiment);
 	      }
 	      
 	      // go to edit page

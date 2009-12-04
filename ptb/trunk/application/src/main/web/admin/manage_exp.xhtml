@@ -63,7 +63,10 @@
         <div class="innertube">
         
         <p style="text-align: center;">
-        <h:form rendered="#{ExperimentBean.experiment.awaitingApproval}">
+<h:form rendered="#{ExperimentBean.experiment.awaitingApproval}">
+    <!-- Persist the experiment ID through POST, if any. -->    
+    <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}"/>
+        
           <div style="text-align: center;">
             <b><h:outputText value="#{res['approve_exp.explanation']}" />:</b>
             <br/>
@@ -77,7 +80,7 @@
                         action="#{ListExp_Backing.adminDenyExperiment}" 
                         rendered="#{ExperimentBean.currentStage eq 4}" />
           </div>
-        </h:form>
+</h:form>
         <!--  Otherwise, just show what happened in judgement: -->
         <h:panelGroup rendered="#{ExperimentBean.experiment.approved}">
             <br/>

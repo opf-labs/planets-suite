@@ -410,13 +410,10 @@ public class ExperimentBean {
     /**
      */
     public String redirectToCurrentStage() {
-        int i = this.getExperiment().getCurrentPhaseIndex();
-        log.info("Issued re-direct to stage "+i+" for eid "+exp.getEntityID());
-        NewExpWizardController.redirectToExpStage(exp.getEntityID(), i);
+        NewExpWizardController.redirectToCurrentStage(this.exp);
         return "success";
     }
-
-
+    
     public Map<String,BenchmarkBean> getExperimentBenchmarks() {
 		return experimentBenchmarks;    	
     }
