@@ -55,6 +55,7 @@ public class OdfSchemaHandler {
 	private static String ODF_SH_TMP_NAME = "ODF_SCHEMA_HANDLER";
 	
 	private static File SCHEMAS = null;
+	private static File MATHML_SCHEMAS = null;
 	private static String SCHEMAS_NAME = "SCHEMAS";
 	
 	private static Logger log = Logger.getLogger(OdfSchemaHandler.class.getName());
@@ -63,6 +64,7 @@ public class OdfSchemaHandler {
 		log.setLevel(Level.INFO);
 		ODF_SH_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), ODF_SH_TMP_NAME);
 		SCHEMAS = FileUtils.createFolderInWorkFolder(ODF_SH_TMP, SCHEMAS_NAME);
+		MATHML_SCHEMAS = FileUtils.createFolderInWorkFolder(SCHEMAS, "mathml");
 //		FileUtils.deleteAllFilesInFolder(SCHEMAS);
 		boolean provided = provideSchemas();
 		boolean ns_provided = prepareNamespaceTables(NAMESPACES_PROPERTIES_NAME);
@@ -313,9 +315,9 @@ public class OdfSchemaHandler {
 			String[] parts = currentEntry.split("/");
 			String parent = parts[0].trim();
 			String name = parts[1].trim();
-			File parentDir = new File(SCHEMAS, parent);
+			File parentDir = new File(MATHML_SCHEMAS, parent);
 			if(!parentDir.exists()) {
-				FileUtils.createFolderInWorkFolder(SCHEMAS, parent);
+				FileUtils.createFolderInWorkFolder(MATHML_SCHEMAS, parent);
 			}
 			File schema = new File(parentDir, name);
 			if(!schema.exists()) {
@@ -350,12 +352,17 @@ public class OdfSchemaHandler {
 			String[] labelsAndValues = currentEntry.split("=");
 			String label = labelsAndValues[0].trim();
 			String name = labelsAndValues[1].trim();
-			File schema = new File(SCHEMAS, name);
-			if(!schema.exists()) {
-				if(label.equalsIgnoreCase(MATHML2_SCHEMA)) {
+			File schema = null;
+			if(label.equalsIgnoreCase(MATHML2_SCHEMA)) {
+				File MATH_FOLDER = FileUtils.createFolderInWorkFolder(SCHEMAS, "mathml");
+				schema = new File(MATH_FOLDER, name);
+				if(!schema.exists()) {
 					FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + name), schema);
 				}
-				else {
+			}
+			else {
+				schema = new File(SCHEMAS, name);
+				if(!schema.exists()) {
 					FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(ODF_SCHEMAS_PATH + name), schema);
 				}
 			}
