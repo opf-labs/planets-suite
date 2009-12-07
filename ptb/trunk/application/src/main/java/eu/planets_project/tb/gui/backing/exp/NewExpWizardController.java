@@ -1609,9 +1609,9 @@ public class NewExpWizardController{
     	Experiment exp = expBean.getExperiment();
     	//exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
     	//exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
-    	exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
+    	//exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
         testbedMan.updateExperiment(exp);
-    	return "completeExperiment";
+    	return "goToStage6";
     }
     
     public String loadReaderStage2() {

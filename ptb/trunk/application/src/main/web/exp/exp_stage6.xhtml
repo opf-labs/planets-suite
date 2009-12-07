@@ -34,34 +34,17 @@
        <ui:param name="PlaceBandAsHeader" value="true" />
     </ui:include>
 
-</h:form>
+<!-- ************************************** -->
 
     <ui:include src="/WEB-INF/templates/exp/exp_evaluation.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
        <ui:param name="ReadOnly" value="#{false}" />
     </ui:include>
 
-<!-- ************** Evaluate Experiment *************  -->
-
-    <!-- Manual evaluation: -->
-    <ui:include src="/WEB-INF/templates/exp_stage6_manual_evaluation.xhtml"/>
-      
-      
-<!-- ****************************** OLD EXPERIMENTS TB v0.5 INFORMATION**************************** -->
-<c:if test="#{ExperimentBean.oldExperiment}">
-	<ui:include src="/WEB-INF/templates/old-exps/stage6_evaluate_old.xhtml">
-		<ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-	</ui:include>	
-</c:if>
-<!-- *************** END OLD BMGOAL EXPERIMENT EVALUATION TB v0.5 ****************** -->
-
-<h:form>
-    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
-       <ui:param name="ExperimentPhase" value="6" />
-       <ui:param name="PlaceBandAsHeader" value="false" />
-    </ui:include>
-</h:form>
+<!-- ************************************** -->
         
+</h:form>
+
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
        <ui:param name="ExperimentPhase" value="6" />

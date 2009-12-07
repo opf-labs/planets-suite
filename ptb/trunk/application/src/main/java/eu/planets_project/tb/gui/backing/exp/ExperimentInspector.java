@@ -126,7 +126,6 @@ public class ExperimentInspector {
      * @param exp
      * @return
      */
-    @Deprecated
     public static ExperimentBean putExperimentIntoSessionExperimentBean( Experiment exp ) {
         ExperimentBean expBean = new ExperimentBean();
         if( exp != null ) expBean.fill(exp);

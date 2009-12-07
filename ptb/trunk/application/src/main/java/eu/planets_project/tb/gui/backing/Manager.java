@@ -27,8 +27,7 @@ public class Manager {
     }
     
     public String initExperimentAction() {
-        //ExperimentInspector.putExperimentIntoSessionExperimentBean( null );
-	    
+        ExperimentInspector.putExperimentIntoSessionExperimentBean( null );
 		return "success";
     }
     

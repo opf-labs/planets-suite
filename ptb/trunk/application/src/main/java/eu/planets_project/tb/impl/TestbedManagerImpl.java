@@ -210,7 +210,7 @@ public class TestbedManagerImpl
 			ExperimentImpl exp = (ExperimentImpl)edao.findExperiment(experiment.getEntityID());
 		    // Also update the Experiment backing bean to reflect the changes:
 			// FIXME Is this required?
-			ExperimentInspector.putExperimentIntoSessionExperimentBean( exp );
+			//ExperimentInspector.putExperimentIntoSessionExperimentBean( exp );
             
           //End Transaction
 		} else {

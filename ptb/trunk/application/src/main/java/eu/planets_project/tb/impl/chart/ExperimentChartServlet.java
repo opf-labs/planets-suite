@@ -460,7 +460,7 @@ public class ExperimentChartServlet extends HttpServlet {
         public String generateToolTip(CategoryDataset dataset, int row,
                 int column) {
             String toolTip = super.generateToolTip(dataset, row, column);
-            toolTip = super.generateColumnLabel(dataset, column)+" "+super.generateRowLabel(dataset, row)+" in " + dataset.getValue(row, column) + "s";
+            toolTip = super.generateColumnLabel(dataset, column)+" - "+super.generateRowLabel(dataset, row)+" in " + dataset.getValue(row, column) + "s";
             return toolTip;
         }
         

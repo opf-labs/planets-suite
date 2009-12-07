@@ -11,6 +11,36 @@
 <body>
   <ui:composition rendered="#{ExperimentBean != null}">
   
+  <fieldset>
+             <legend>#{res['exp_stage6.report']}</legend>
+           <p>
+               <h:outputLabel value="#{res['exp_stage6.reportTitle']}" for="repTitle" ></h:outputLabel>
+               
+               <h:inputText required="false" id="repTitle" value="#{ExperimentBean.reportHeader}" size="82" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}"  rendered="#{!ReadOnly}"/>
+               <h:message for="repTitle" errorClass="errorMessage" infoClass="infoMessage" rendered="#{!ReadOnly}"/>
+               
+               <h:outputText value="#{ExperimentBean.reportHeader}" rendered="#{ReadOnly}"/>
+           </p>
+
+           
+           <p>
+               <h:outputLabel value="#{res['exp_stage6.reportBody']}" for="repBody" ></h:outputLabel>
+               
+               <h:inputTextarea rows="10" cols="80" required="false" id="repBody" value="#{ExperimentBean.reportBody}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}"  rendered="#{!ReadOnly}"/>
+               <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage" rendered="#{!ReadOnly}"/>
+               
+               <h:outputText value="#{ExperimentBean.reportBody}" rendered="#{ReadOnly}"/>
+           </p>
+
+
+            <p><h:commandButton value="#{res['exp_stage6.button']}"
+                action="#{NewExp_Controller.saveEvaluation}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" rendered="#{!ReadOnly}"/></p>
+                
+            <p><h:commandButton value="#{res['exp_stage6.finalize']}"
+                action="#{NewExp_Controller.finalizeExperiment}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" rendered="#{!ReadOnly}"/></p>
+                
+  </fieldset>
+  
   </ui:composition>
 </body>
 </html>
