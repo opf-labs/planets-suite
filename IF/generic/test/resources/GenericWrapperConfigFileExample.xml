@@ -601,7 +601,7 @@
 							"toolinput", "tempfiles" and "tooloutput" sections.
 						-->
 
-                        <![CDATA[#catcommand #param1 #tempSource > #myInterimFile && #trcommand #param2 #myInterimFile > #tempDestination]]>
+                        <![CDATA[#catcommand #param1 #tempSource > #myInterimFile && #catcommand #myInterimFile | #trcommand #param2 > #tempDestination]]>
 					</parameter>
 				</commandparameters>
 			</commandline>

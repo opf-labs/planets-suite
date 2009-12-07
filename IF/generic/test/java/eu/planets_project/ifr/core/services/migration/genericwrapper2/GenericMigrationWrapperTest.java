@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import junit.framework.Assert;
 
@@ -12,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
-import eu.planets_project.ifr.core.common.conf.TestConfiguration;
+import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -42,15 +41,14 @@ public class GenericMigrationWrapperTest {
     @Before
     public void setUp() throws Exception {
 
+	System.setProperty("eu.planets-project.config.dir",
+		"IF/generic/test/resources/conf");
+	final Configuration environmentConfiguration = ServiceConfig
+		.getConfiguration("genericwrapper2_GenericMigrationWrapperTest");
+
 	DocumentLocator documentLocator = new DocumentLocator(
 		"GenericWrapperConfigFileExample.xml");
-	Properties props = new Properties();
-	props.setProperty("shellcommand", "sh");
-	props.setProperty("shellcommandoption", "-c");
-	props.setProperty("catcommand", "cat");
-	props.setProperty("trcommand", "tr");
-	final Configuration environmentConfiguration = new TestConfiguration(props);
-	
+
 	genericWrapper = new GenericMigrationWrapper(documentLocator
 		.getDocument(), environmentConfiguration, this.getClass()
 		.getCanonicalName());

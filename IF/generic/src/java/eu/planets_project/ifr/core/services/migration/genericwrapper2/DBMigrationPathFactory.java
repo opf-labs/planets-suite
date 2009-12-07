@@ -274,6 +274,7 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	}
     }
 
+    // TODO: Javadoc!
     private ToolPresets getToolPresets(Node pathNode, String presetsElementName)
 	    throws MigrationPathConfigException {
 
@@ -332,11 +333,12 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	}
     }
 
+    // TODO: Javadoc!
     private Collection<PresetSetting> getPresetSettings(Node presetNode)
 	    throws MigrationPathConfigException {
 
 	final XPath pathsXPath = xPathFactory.newXPath();
-	Collection<PresetSetting> presetSettings = new ArrayList<PresetSetting>();
+	final Collection<PresetSetting> presetSettings = new ArrayList<PresetSetting>();
 
 	try {
 	    final NodeList presetSettingNodes = (NodeList) pathsXPath.evaluate(
@@ -357,8 +359,7 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 				    + settingsNode.getNodeName());
 		}
 
-		Collection<Parameter> parameters = getToolParameters(
-			presetNode, "settings");
+		Collection<Parameter> parameters = getSettingsParameters(settingsNode);
 
 		final Node descriptionNode = (Node) pathsXPath.evaluate(
 			"description", settingsNode, XPathConstants.NODE);
@@ -380,12 +381,13 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
     }
 
+    // TODO: Javadoc!
     private Collection<Parameter> getToolParameters(Node pathNode,
 	    String nameOfElementContainingParameters)
 	    throws MigrationPathConfigException {
 
 	final XPath pathsXPath = xPathFactory.newXPath();
-	Collection<Parameter> toolParameters = new ArrayList<Parameter>();
+	final Collection<Parameter> toolParameters = new ArrayList<Parameter>();
 
 	try {
 	    final NodeList parameterNodes = (NodeList) pathsXPath.evaluate(
@@ -427,6 +429,46 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 			    + nameOfElementContainingParameters
 			    + "' element in the '" + pathNode.getNodeName()
 			    + "' element.", xpee);
+	}
+    }
+
+    // TODO: Javadoc!
+    private Collection<Parameter> getSettingsParameters(Node settingsNode)
+	    throws MigrationPathConfigException {
+
+	final XPath pathsXPath = xPathFactory.newXPath();
+	final Collection<Parameter> settingsParameters = new ArrayList<Parameter>();
+
+	try {
+	    final NodeList parameterNodes = (NodeList) pathsXPath.evaluate(
+		    "parameter", settingsNode, XPathConstants.NODESET);
+
+	    for (int parameterIndex = 0; parameterIndex < parameterNodes
+		    .getLength(); parameterIndex++) {
+
+		final Node parameterNode = parameterNodes.item(parameterIndex);
+
+		final String parameterName = getAttributeValue(parameterNode,
+			"name");
+		if (parameterName == null) {
+		    throw new MigrationPathConfigException(
+			    "No \"name\" attribute declared in node: "
+				    + parameterNode.getNodeName());
+		}
+
+		final String parameterValue = parameterNode.getTextContent()
+			.trim();
+		final Builder parameterBuilder = new Builder(parameterName,
+			parameterValue);
+
+		settingsParameters.add(parameterBuilder.build());
+	    }
+
+	    return settingsParameters;
+	} catch (XPathExpressionException xpee) {
+	    throw new MigrationPathConfigException(
+		    "Failed reading settings parameter elements from the '"
+			    + settingsNode.getNodeName() + "' element.", xpee);
 	}
     }
 

@@ -109,7 +109,6 @@ public class DiaMigrationServiceTest extends TestCase {
 
 	final ServiceReport serviceReport = migrationResult.getReport();
 	final ServiceReport.Status migrationStatus = serviceReport.getStatus();
-	System.out.println("@%^@%^@%@$#%:  " + serviceReport.getMessage());
 	assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
     }
 

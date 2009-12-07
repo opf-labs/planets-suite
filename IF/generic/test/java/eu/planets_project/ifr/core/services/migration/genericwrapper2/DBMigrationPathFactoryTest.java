@@ -207,7 +207,7 @@ public class DBMigrationPathFactoryTest {
 	expectedCommandFragments.add("sh");
 	expectedCommandFragments.add("-c");
 	expectedCommandFragments
-		.add("cat -n /tmp/bogusTempSrcFile > /tmp/bogusInterimFile && tr '[:lower:]' '[:upper:]' /tmp/bogusInterimFile > /tmp/bogusTempDstFile");
+		.add("cat -n /tmp/bogusTempSrcFile > /tmp/bogusInterimFile && cat /tmp/bogusInterimFile | tr '[:lower:]' '[:upper:]' > /tmp/bogusTempDstFile");
 	commandLineTest(migrationPath, testParameters.values(),
 		environmentParameters.values(), testFileDeclarations,
 		expectedCommandFragments);
