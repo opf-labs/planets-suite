@@ -20,7 +20,7 @@ public interface DigitalObjectContent {
      *         actual value (if this is value content) or a stream for reading
      *         the reference (if this is a reference content)
      */
-    InputStream getInputStream();
+    public InputStream getInputStream();
 
     /**
      * @return The checksum for this content
