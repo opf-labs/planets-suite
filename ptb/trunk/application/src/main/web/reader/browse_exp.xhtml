@@ -26,8 +26,6 @@
    <p>Click on an experiment's name to open it.  Click on a column heading to change the ordering of the table.</p>
 <a4j:form>
 
-	<h:commandButton action="#{ListExp_Backing.exportAllExperimentsAction}" value="Export All" rendered="#{UserBean.admin}"/>
-
     <t:dataTable id="dataTable_allExp"
                  styleClass="tbTable"
                  var="exp"
@@ -162,9 +160,10 @@
         </t:dataScroller>
 
     </h:panelGrid>
-    
-    
-    
+
+    <!-- Admin options -->    
+    <h:commandButton action="#{ListExp_Backing.exportAllExperimentsAction}" value="Export All" rendered="#{UserBean.admin}"/>
+
 </a4j:form>
     <p>&#160;</p>
     <p>&#160;</p>
