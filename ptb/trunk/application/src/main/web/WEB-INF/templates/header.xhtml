@@ -21,31 +21,6 @@
           <img src="${facesContext.externalContext.requestContextPath}/graphics/planets-testbed.gif" alt="PLANETS: Testbed" title="PLANETS: Testbed" style="margin: 6px 0 0 10px;"/>
         </h:outputLink>
 	</div>
-	<div id="gelinks">
-		<div id="geleft"> &#160;</div>
-		<h:form>
-			<ui:fragment id="help">
-				<div id="geright">
-					<p class="glinks"> 
-						<a href="/testbed/public/help.faces">
-						<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" style="padding-left: 2px; padding-right: 2px;" />
-						<h:outputText value="#{res['welcome.help']}"/>
-						</a>
-					</p>		
-				</div>
-			</ui:fragment>
-			<ui:fragment id="userHeader">
-				<div id="geright">
-					<p class="glinks"> 
-						<a href="/testbed/public/about.faces">
-						<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_info.gif"  style="padding-left: 2px; padding-right: 2px;" />
-						<h:outputText value="#{res['welcome.about']}"/>
-						</a>
-					</p>		
-				</div>
-			</ui:fragment>
-		</h:form>
-	</div>
 
 	<div class="clear"></div>
 <h:form styleClass="hidden">
@@ -70,42 +45,27 @@
 			</c:if>
 			
 <!-- start of experimenter tabs -->						
-			<c:if test="${page == 'new_exp'}">
+			<c:if test="${page == 'experiments' || page == 'new_exp' || page == 'import_exp' || page == 'my_exp' || page == 'browse_exp' || page == 'search_exp'}">
 				<li id="current">
-				<h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_new.gif" class="toolbar"/>
-					<h:outputText value="#{res['new_exp.pageTitle']}"/>
+				<h:commandLink action="experiments" rendered="#{UserBean.reader}">
+					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" class="toolbar"/>
+					<h:outputText value="#{res['experiments.pageTitle']}"/>
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'new_exp' and UserBean.experimenter == true}">
+			<c:if test="${page != 'experiments' and page != 'new_exp' and page != 'import_exp' and page != 'my_exp' and page != 'browse_exp' and page != 'search_exp' }">
                             <li>
-                                <h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}">
-                                    <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_new.gif" class="toolbar"/>
-                                    <h:outputText value="#{res['new_exp.pageTitle']}"/>
+                                <h:commandLink action="experiments" rendered="#{UserBean.reader}">
+                                    <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" class="toolbar"/>
+                                    <h:outputText value="#{res['experiments.pageTitle']}"/>
                                 </h:commandLink>
                             </li>
 			
 			</c:if>
-			<c:if test="${page == 'my_exp' || page == 'import_exp'}">
-				<li id="current">
-				<h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_my.gif" class="toolbar"/>
-					<h:outputText value="#{res['my_exp.pageTitle']}"/>
-				</h:commandLink>
-				</li>
-			</c:if>
-			<c:if test="${page != 'my_exp' and page != 'import_exp' and UserBean.experimenter == true}">
-				<li>
-				<h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_my.gif" class="toolbar"/>
-					<h:outputText value="#{res['my_exp.pageTitle']}"/>
-				</h:commandLink>
-			</li>
-			</c:if>
+
 <!-- end of experimenter tabs -->			
 			
-			<!-- tab is selected (current) and highlighted-->
+			<!-- tab is selected (current) and highlighted
 			<c:if test="${page == 'browse_exp'}">
 				<li id="current">
 					<h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
@@ -114,7 +74,7 @@
 					</h:commandLink>
 				</li>
 			</c:if>
-			<!-- tab is not selected (current) but just displayed-->
+
 			<c:if test="${page != 'browse_exp' and UserBean.reader == true}">
 				<li>
 					<h:commandLink action="browse_experiments"  rendered="#{UserBean.reader}">
@@ -123,6 +83,7 @@
 					</h:commandLink>
 				</li>
 			</c:if>
+			-->
 			
 			<c:if test="${page == 'browse_services'}">
 				<li id="current">
@@ -154,23 +115,6 @@
 				<h:commandLink action="browse_data" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_data.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_data.pageTitle']}"/>
-				</h:commandLink>
-			</li>
-			</c:if>
-
-			<c:if test="${page == 'browse_ontology'}">
-				<li id="current">
-				<h:commandLink action="browse_ontology" rendered="#{UserBean.reader}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_ontology.gif" class="toolbar"/>
-					<h:outputText value="#{res['browse_ontology.pageTitle']}"/>
-				</h:commandLink>
-				</li>
-			</c:if>
-			<c:if test="${page != 'browse_ontology' and UserBean.reader == true}">
-				<li>
-				<h:commandLink action="browse_ontology" rendered="#{UserBean.reader}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_ontology.gif" class="toolbar"/>
-					<h:outputText value="#{res['browse_ontology.pageTitle']}"/>
 				</h:commandLink>
 			</li>
 			</c:if>
@@ -228,7 +172,45 @@
 			</c:if>
       
 <!-- end of experimenter tabs -->
-			
+
+			<!-- tab is selected (current) and highlighted-->
+			<c:if test="${page == 'about'}">
+				<li id="current">
+					<h:commandLink action="about">
+						<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_info.gif" alt="" title="" />
+						 #{res['welcome.about']}
+					</h:commandLink>
+				</li>
+			</c:if>
+			<!-- tab is not selected (current) but just displayed-->
+			<c:if test="${page != 'about'}">
+				<li>
+					<h:commandLink action="about">
+						<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_info.gif" alt="" title="" />
+						 #{res['welcome.about']}
+					</h:commandLink>
+				</li>
+			</c:if>
+
+			<!-- tab is selected (current) and highlighted-->
+			<c:if test="${page == 'help'}">
+				<li id="current">
+					<h:commandLink action="help">
+						<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" alt="" title="" />
+						 #{res['welcome.help']}
+					</h:commandLink>
+				</li>
+			</c:if>
+			<!-- tab is not selected (current) but just displayed-->
+			<c:if test="${page != 'help'}">
+				<li>
+					<h:commandLink action="help">
+						<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" alt="" title="" />
+						 #{res['welcome.help']}
+					</h:commandLink>
+				</li>
+			</c:if>
+						
 				
 		</ul>
 	</div>

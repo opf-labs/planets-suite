@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+	  xmlns:c="http://java.sun.com/jstl/core">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+        #{res.title} - #{res['experiments.pageTitle']}
+  </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/templates/header.xhtml">
+			<ui:param name="page" value="experiments"/>
+		</ui:include>
+	</ui:define>
+
+	<ui:define name="content">
+
+	<div id="mainwrapper">
+	<div id="maincol">
+	<div class="innertubemain">
+
+	<div class="clear"></div>
+	<p>Intro paragraph about experiments here</p>
+  
+<div align="center">
+		<h:form>
+		<p>
+		<c:if test="${UserBean.experimenter == true}">
+		      <h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}"><img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_new_exp.png" title="#{res['new_exp.pageTitle']}" alt="#{res['new_exp.pageTitle']}" style="margin:5px 5px 5px 5px;"/></h:commandLink> 
+			<h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
+					<img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_my_exps.png" title="#{res['my_exp.pageTitle']}" alt="#{res['my_exp.pageTitle']}" style="margin:5px 5px 5px 5px;"/></h:commandLink> 
+		</c:if>
+				<h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
+						 <img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_browse_exps.png" title="#{res['browse_exp.pageTitle']}" alt="#{res['browse_exp.pageTitle']}" style="margin:5px 5px 5px 5px;"/>
+					</h:commandLink> 
+      <a href="#"><img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_search_exps.png" title="#{res['search_exp.pageTitle']}" alt="#{res['search_exp.pageTitle']}" style="margin:5px 5px 5px 5px;"/></a> 
+	  </p>
+	   </h:form>
+</div>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+  
+	</div>
+	</div>
+	</div>
+	
+	
+	<div id="leftcol">
+<ui:include src="/WEB-INF/templates/exp_pagenav.xhtml"/>
+	</div>
+
+	</ui:define>
+
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

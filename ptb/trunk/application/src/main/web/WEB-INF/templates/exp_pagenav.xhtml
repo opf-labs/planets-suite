@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    
+<body>
+  <ui:composition>
+
+    <h3 class="leftcol">Experiment Pages</h3>
+    <div class="innertube">
+    
+		<h:form>
+		<ul class="leftcol">
+		<c:if test="${UserBean.experimenter == true}">
+		      <li><h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}"><h:outputText value="#{res['new_exp.pageTitle']}"/></h:commandLink></li>
+			<li><h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
+					<h:outputText value="#{res['my_exp.pageTitle']}"/></h:commandLink></li>
+		</c:if>
+      <li>					<h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
+						 #{res['browse_exp.pageTitle']}
+					</h:commandLink></li>
+      <li><a href="#">Search Experiments</a></li>
+	  </ul>
+	   </h:form>
+        </div>
+  </ui:composition>
+</body>
+</html>
