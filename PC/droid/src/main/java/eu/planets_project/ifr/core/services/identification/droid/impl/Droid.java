@@ -20,6 +20,8 @@ import uk.gov.nationalarchives.droid.IdentificationFile;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
+import eu.planets_project.ifr.core.common.conf.Configuration;
+import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -62,7 +64,9 @@ public final class Droid implements Identify, Serializable {
     /***/
     static final String NAME = "Droid";
     /***/
-    static final String LOCAL = "PC/droid/src/resources/";
+    private static final String LOCAL_SIGFILE = "PC/droid/test/resources/";
+    /****/
+    private static final String LOCAL_CONFIG = "PC/droid/test/resources/conf/";
     /***/
     private static final String SIG = "DROID_SignatureFile_Planets.xml";
     /***/
@@ -89,14 +93,14 @@ public final class Droid implements Identify, Serializable {
                     "No identification result for: " + file);
         } else {
             report = new ServiceReport(Type.INFO, Status.SUCCESS,
-                    classificationText);
+                    this.classificationText);
         }
         IdentifyResult.Method method = null;
         if (AnalysisController.FILE_CLASSIFICATION_POSITIVE_TEXT
-                .equals(classificationText)) {
+                .equals(this.classificationText)) {
             method = IdentifyResult.Method.MAGIC;
         } else if (AnalysisController.FILE_CLASSIFICATION_TENTATIVE_TEXT
-                .equals(classificationText)) {
+                .equals(this.classificationText)) {
             method = IdentifyResult.Method.EXTENSION;
         }
         IdentifyResult result = new IdentifyResult(types, method, report);
@@ -132,7 +136,7 @@ public final class Droid implements Identify, Serializable {
      */
     private List<URI> identifyOneBinary(final File tempFile) {
         // Determine the config directory:
-        String sigFileLocation = configFolder();
+        String sigFileLocation = sigFileFolder();
         // Here we start using the Droid API:
         AnalysisController controller = new AnalysisController();
         try {
@@ -165,7 +169,7 @@ public final class Droid implements Identify, Serializable {
                 e.printStackTrace();
             }
             List<URI> result = Arrays.asList(uris);
-            classificationText = file.getClassificationText();
+            this.classificationText = file.getClassificationText();
             return result;
         }
         return null;
@@ -220,12 +224,14 @@ public final class Droid implements Identify, Serializable {
      *         when running a unit test) returns the project directory to
      *         retrieve the concepts file
      */
-    private static String configFolder() {
-        String deployedJBossHome = System.getProperty(JBOSS_HOME_DIR_KEY);
-        String sigFileFolder = (deployedJBossHome != null ? deployedJBossHome
-                + CONF : LOCAL);
-        String sigFileLocation = sigFileFolder + SIG;
-        return sigFileLocation;
+    private static String sigFileFolder() {
+    	log.info("Droid.sigFileFolder()");
+        String sigFileLocation = null;
+    	Configuration conf = ServiceConfig.getConfiguration("Droid");
+    	sigFileLocation = conf.getString("droid.sigfile.location") +
+    		File.separator + conf.getString("droid.sigfile.name");
+    	log.info("Opening signature file: " + sigFileLocation);
+    	return sigFileLocation;
     }
 
 }
