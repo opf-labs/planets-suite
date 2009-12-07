@@ -1,6 +1,9 @@
 package eu.planets_project.tb.gui.backing;
 
+import java.awt.GradientPaint;
+import java.awt.RenderingHints;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,9 +33,17 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jfree.chart.ChartRenderingInfo;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.entity.StandardEntityCollection;
+import org.jfree.chart.servlet.ServletUtilities;
+
 import com.googlecode.charts4j.AxisLabels;
 import com.googlecode.charts4j.AxisLabelsFactory;
 import com.googlecode.charts4j.Color;
@@ -71,6 +82,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.chart.ExperimentChartServlet;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
@@ -1643,112 +1655,6 @@ public class ExperimentBean {
     }
 
     /**
-     * 
-     * @return
-     */
-    public String getServicePlotImageUrl() {
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        // Lists to store the data in:
-        List<Double> x = new ArrayList<Double>(), y = new ArrayList<Double>(), p = new ArrayList<Double>();
-        // Check there is enough data.
-//        log.info("Looking for data in batches: "+expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords().size());
-        // Grab the service timing data.
-        double xrange[] = new double[2]; 
-        double yrange[] = new double[2];
-        for( BatchExecutionRecordImpl batch : expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords() ) {
-//        log.info("Found batch... "+batch);
-        int i = 1;
-        for( ExecutionRecordImpl exr : batch.getRuns() ) {
-//            log.info("Found Record... "+exr+" stages: "+exr.getStages());
-            if( exr != null && exr.getStages() != null ) {
-            for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
-//                log.info("Found Stage... "+exsr);
-                for( MeasurementRecordImpl m : exsr.getMeasurements() ) {
-//                    log.info("Looking at result for property "+m.getIdentifier());
-                    // FIXME This should be a proper lookup, or something!
-                    if( m.getIdentifier().toString().equals( TecRegMockup.URIServicePropertyRoot+"wallclock"  )) {
-                        Double xi = new Double(i);
-                        Double yi = new Double(m.getValue());
-                        x.add( xi );
-                        y.add( yi );
-                        p.add(new Double(100.0));
-                        if( i == 1 ) {
-                            xrange[0] = xi.doubleValue();
-                            xrange[1] = xi.doubleValue();
-                            yrange[0] = yi.doubleValue();
-                            yrange[1] = yi.doubleValue();
-                        } else {
-                            if( xrange[0] > xi.doubleValue() ) xrange[0] = xi.doubleValue();
-                            if( xrange[1] < xi.doubleValue() ) xrange[1] = xi.doubleValue();
-                            if( yrange[0] > yi.doubleValue() ) yrange[0] = yi.doubleValue();
-                            if( yrange[1] < yi.doubleValue() ) yrange[1] = yi.doubleValue();
-                        }
-                        log.info("Added point "+xi+", "+yi+" to the plot.");
-                    }
-                }
-            }
-            }
-            // Increment, for the next run.
-            i++;
-        }
-        }
-        // FIXME This should auto-scale to and cope with a single data point.
-        if( y.size() <= 1 ) return "";
-        // Re-scale the data:
-        Data d1, d2;
-        try {
-            d1 = DataUtil.scale(x);
-        } catch ( IllegalArgumentException e ) {
-            log.error("Could not scale "+x);
-            return "";
-        }
-        try {
-            d2 = DataUtil.scale(y);
-        } catch ( IllegalArgumentException e ) {
-            log.error("Could not scale "+y);
-            return "";
-        }
-        Data pointSizes = Data.newData(p);
-        // Plot it.
-        ScatterPlotData data = Plots.newScatterPlotData(d1, d2, pointSizes);
-        data.setLegend("Service Execution Times");
-        
-        Color diamondColor = Color.newColor("0000AA");
-        data.addShapeMarkers(Shape.CIRCLE, diamondColor, 8);
-        data.setColor(diamondColor);
-        ScatterPlot chart = GCharts.newScatterPlot(data);
-        //LineChart chart = GCharts.newLineChart(Plots.newLine(d2, Color.BLUE, "Service Execution Time"));
-        chart.setSize(800, 300);
-        //chart.setGrid(20, 20, 3, 2);
-        log.info("Got x range: "+xrange[0]+", "+xrange[1]);
-        log.info("Got y range: "+yrange[0]+", "+yrange[1]);
-        
-        chart.addXAxisLabels( this.makeAxisLabels(xrange) );
-        chart.addXAxisLabels( AxisLabelsFactory.newAxisLabels("Digital Object Number", 50.0 ) );
-
-        chart.addYAxisLabels( this.makeAxisLabels(yrange));
-        chart.addYAxisLabels( AxisLabelsFactory.newAxisLabels("Time (s)", 50.0 ));
-        
-        //chart.setTitle("Scatter Plot", WHITE, 16);
-        //chart.setBackgroundFill(Fills.newSolidFill(Color.newColor("2F3E3E")));
-        //LinearGradientFill fill = Fills.newLinearGradientFill(0, Color.newColor("3783DB"), 100);
-        //fill.addColorAndOffset(Color.newColor("9BD8F5"), 0);
-        //chart.setAreaFill(fill);
-        return chart.toURLString();    
-    }
-    
-    private AxisLabels makeAxisLabels( double a[] ) {
-        List<String> xLs = new ArrayList<String>();
-        xLs.add(""+a[0]);
-        xLs.add(""+a[1]);
-        List<Double> xLp = new ArrayList<Double>();
-        xLp.add(0.0);
-        xLp.add(100.0);
-        return AxisLabelsFactory.newAxisLabels(xLs, xLp);
-        
-    }
-
-    /**
      * @return
      */
     public List<ExperimentStageBean> getStages() {
@@ -2320,4 +2226,37 @@ public class ExperimentBean {
         return simpleTreeDndBean;
     }
    
+
+    /* ----------------- Chart stuff ------------------- */
+
+   JFreeChart chart = null;
+   String graphId = null;
+   String graphImageMap = null;
+   String graphUrl = null ;
+   
+   public String getResultChartUrl() {
+       ExperimentChartServlet ec = new ExperimentChartServlet();
+       chart = ec.createWallclockChart( ""+this.getExperiment().getEntityID() );
+       // Pick into the session...
+       HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+       HttpSession session = request.getSession();
+       //  Write the chart image to the temporary directory
+       ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+       try {
+        this.graphId = ServletUtilities.saveChartAsPNG(chart, 600, 500, info, session);
+        this.graphImageMap = ChartUtilities.getImageMap(graphId, info);
+        this.graphUrl = request.getContextPath() + "/servlet/DisplayChart?filename=" + graphId;
+        return this.graphUrl;
+    } catch (IOException e) {
+        log.error("Failure while generating graph: "+e);
+        e.printStackTrace();
+        return null;
+    }
+   }
+   public String getResultChartImageMap() {
+       return this.graphImageMap;
+   }
+   public String getResultChartIdentifier() {
+       return this.graphId;
+   }
 }

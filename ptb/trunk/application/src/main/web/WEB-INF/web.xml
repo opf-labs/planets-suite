@@ -163,8 +163,14 @@
         <servlet-class>eu.planets_project.tb.impl.chart.ExperimentChartServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-	
+	<servlet>
+		<servlet-name>DisplayChart</servlet-name>
+		<servlet-class>
+			org.jfree.chart.servlet.DisplayChart
+		</servlet-class>
+	</servlet>
 
+	
 	<servlet-mapping>
 		<servlet-name>local_default</servlet-name>
 		<url-pattern>/</url-pattern>
@@ -176,6 +182,10 @@
     <servlet-mapping>
         <servlet-name>Chart Servlet</servlet-name>
         <url-pattern>/reader/chartserver</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisplayChart</servlet-name>
+        <url-pattern>/servlet/DisplayChart</url-pattern>
     </servlet-mapping>
 
 

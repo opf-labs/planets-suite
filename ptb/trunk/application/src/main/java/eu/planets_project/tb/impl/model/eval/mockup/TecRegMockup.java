@@ -8,6 +8,8 @@ import java.util.Map;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 
 /**
+ * FIXME This should really be some kind of shared resource, of course.
+ * 
  * @author lindleyA
  * A quick mockup implementation of a technical registry which is able to return registered
  * values for unique parameter names e.g. 
@@ -41,17 +43,14 @@ public class TecRegMockup {
     private static HashMap<URI,MeasurementImpl> observables;
     static {
         // Set up the properties:
-        try {
-            // Testbed Service properties.
-            PROP_SERVICE_SUCCESS = new URI( TecRegMockup.URIServicePropertyRoot+"success" );
-            PROP_SERVICE_TIME = new URI( TecRegMockup.URIServicePropertyRoot+"wallclock" );
-            // Testbed Digital Object Properties
-            PROP_DO_FORMAT = new URI( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/format" );
-            PROP_DO_SIZE = new URI( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/size" );
-        } catch (URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        
+        // Testbed Service properties.
+        PROP_SERVICE_SUCCESS = URI.create( TecRegMockup.URIServicePropertyRoot+"success" );
+        PROP_SERVICE_TIME = URI.create( TecRegMockup.URIServicePropertyRoot+"wallclock" );
+        
+        // Testbed Digital Object Properties
+        PROP_DO_FORMAT = URI.create( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/format" );
+        PROP_DO_SIZE = URI.create( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/size" );
         
         //  Set up the hash map:
         observables = new HashMap<URI,MeasurementImpl>();

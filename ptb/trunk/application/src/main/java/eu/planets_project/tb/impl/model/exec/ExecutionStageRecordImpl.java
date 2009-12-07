@@ -33,6 +33,7 @@ import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -247,6 +248,33 @@ public class ExecutionStageRecordImpl implements Serializable {
     
     public void addManualMeasurement(MeasurementRecordImpl record){
     	this.manualMeasurements.add(record);
+    }
+    
+    /**
+     * @return
+     */
+    public boolean isMarkedAsSuccessful() {
+        for( MeasurementRecordImpl m : getMeasurements() ) {
+            if( m.getIdentifier().equals( TecRegMockup.PROP_SERVICE_SUCCESS.toString() ) ) {
+                boolean result = Boolean.parseBoolean( m.getValue() );
+                if( result == true ) return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @param propUri
+     * @return
+     */
+    public Double getDoubleMeasurement( URI propUri ) {
+        if( propUri == null ) return null;
+        for( MeasurementRecordImpl m : getMeasurements() ) {
+            if( m.getIdentifier().equals( propUri.toString()  )) {
+                return Double.parseDouble(m.getValue());
+            }
+        }
+        return null;
     }
 
     

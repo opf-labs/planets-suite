@@ -5,12 +5,16 @@ package eu.planets_project.tb.impl.chart;
 
 import java.awt.Color;
 import java.awt.GradientPaint;
+import java.awt.Paint;
+import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,25 +24,62 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGraphics2DIOException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.LegendItem;
+import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.LogAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.TickUnit;
+import org.jfree.chart.entity.CategoryItemEntity;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
+import org.jfree.chart.labels.StandardXYToolTipGenerator;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.chart.urls.StandardCategoryURLGenerator;
+import org.jfree.chart.util.LogFormat;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.date.MonthConstants;
+import org.jfree.ui.RectangleInsets;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+
+import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
+import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
 public class ExperimentChartServlet extends HttpServlet {
+    /** */
+    private static Log log = LogFactory.getLog(ExperimentChartServlet.class);
 
     /**
      * 
@@ -68,6 +109,7 @@ public class ExperimentChartServlet extends HttpServlet {
         try {
             String type = request.getParameter("type");
             String format = request.getParameter("format");
+            String eid = request.getParameter("eid");
             
             JFreeChart chart = null;
             if ( "pie".equalsIgnoreCase(type) ) {
@@ -78,29 +120,26 @@ public class ExperimentChartServlet extends HttpServlet {
             }
             else if ( "time".equalsIgnoreCase(type) ) {
                 chart = createTimeSeriesChart();
+            }
+            else if ( "exp".equalsIgnoreCase(type) ) {
+                chart = createXYChart(eid);
+            }
+            else if ( "wall".equalsIgnoreCase(type) ) {
+                chart = createWallclockChart(eid);
             } else {
                 chart = null;
             }
-            
+            // Render
             if (chart != null) {
-                
-                // Remove the border, as the SVG renderer has problems with the text overflowing.
-                chart.getLegend().setBorder(0.0, 0.0, 0.0, 0.0);
-                // Set a gradient fill, fading towards the top:
-                final GradientPaint gp0 = new GradientPaint(
-                        0.0f, 0.0f, new Color(216, 216, 216), 
-                        0.0f, 0.0f, Color.white
-                    );
-                chart.getPlot().setBackgroundPaint( gp0 );
-                //chart.getPlot().setDomainGridlinePaint(Color.white);
-                //chart.getPlot().setRangeGridlinePaint(Color.white);
-                
                 if( "svg".equalsIgnoreCase(format) ) {
                     response.setContentType("image/svg+xml");
-                    writeChartAsSVG(out, chart, 400, 300);
+                    writeChartAsSVG(out, chart, 600, 500);
                 } else {
                     response.setContentType("image/png");
-                    ChartUtilities.writeChartAsPNG(out, chart, 400, 300);
+                    // force aliasing of the rendered content..
+                    chart.getRenderingHints().put( RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON );
+                    ChartUtilities.writeChartAsPNG(out, chart, 600, 500);
                 }
             }
         }
@@ -210,6 +249,7 @@ public class ExperimentChartServlet extends HttpServlet {
             series.add(current, Math.random() * 100);
             current = (Day) current.next();
         }
+        
         XYDataset data = new TimeSeriesCollection(series);
 
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
@@ -221,6 +261,243 @@ public class ExperimentChartServlet extends HttpServlet {
 
     }
     
+    /**
+     * Creates a sample dataset.
+     *
+     * @return A sample dataset.
+     */
+    private static XYDataset createDataset() {
+        XYSeries series = new XYSeries("Random Data");
+        series.add(1.0, 500.2);
+        series.add(5.0, 694.1);
+        series.add(4.0, 100.0);
+        series.add(12.5, 734.4);
+        series.add(17.3, 453.2);
+        series.add(21.2, 500.2);
+        series.add(21.9, null);
+        series.add(25.6, 734.4);
+        series.add(30.0, 453.2);
+        return new XYSeriesCollection(series);
+    }
+    
+    public JFreeChart createXYChart(String expId) {
+        ExperimentPersistencyRemote edao = ExperimentPersistencyImpl.getInstance();
+        long eid = Long.parseLong(expId);
+        log.info("Building experiment chart for eid = "+eid);
+        Experiment exp = edao.findExperiment(eid);
+
+        final String expName = exp.getExperimentSetup().getBasicProperties().getExperimentName();
+        final XYSeries series = new XYSeries(expName);
+
+        for( BatchExecutionRecordImpl batch : exp.getExperimentExecutable().getBatchExecutionRecords() ) {
+            int i = 1;
+            for( ExecutionRecordImpl exr : batch.getRuns() ) {
+                //log.info("Found Record... "+exr+" stages: "+exr.getStages());
+                if( exr != null && exr.getStages() != null ) {
+                    // Look up the object, so we can get the name.
+                    DigitalObjectRefBean dh = new DataHandlerImpl().get(exr.getDigitalObjectReferenceCopy());
+                    String dobName = "Object "+i;
+                    if( dh != null ) dobName = dh.getName();
+
+                    for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
+                        Double time = exsr.getDoubleMeasurement( TecRegMockup.PROP_SERVICE_TIME );
+                        Double size = exsr.getDoubleMeasurement(TecRegMockup.PROP_DO_SIZE);
+                        // Look for timing:
+                        if( time != null && size != null && size.doubleValue() > 0.0 && time.doubleValue() > 0.0 ) {
+                            series.add(size, time);
+                            /*
+                            if( exsr.isMarkedAsSuccessful() ) {
+                                dataset.addValue( time, "Succeded", dobName);
+                            } else {
+                                dataset.addValue( time, "Failed", dobName);
+                            }
+                            */
+                        }
+                    }
+                }
+                // Increment, for the next run.
+                i++;
+            }
+        }
+        // Create the chart.
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                null, "Size [bytes]", "Time [s]", new XYSeriesCollection(series), PlotOrientation.VERTICAL, true, true, false
+        );
+        
+        XYPlot plot = (XYPlot) chart.getPlot();
+        LogAxis xAxis = new LogAxis("Size [bytes]");
+        // Set the base appropriately:
+        xAxis.setBase(1024.0);
+//        xAxis.setTickUnit( new NumberTickUnit(128.0) );
+//        xAxis.getTickUnit().getMinorTickCount();
+        // FIXME This should really be a KB/MB/etc number formatter...
+        xAxis.setNumberFormatOverride(new LogFormat(1024.0, "1024", true));
+//        LogAxis yAxis = new LogAxis("Y");
+//        yAxis.setNumberFormatOverride(new LogFormat(10.0, "10", true));
+        plot.setDomainAxis(xAxis);
+//        plot.setRangeAxis(yAxis);
+        
+        // Add some tool-tips
+        plot.getRenderer().setBaseToolTipGenerator( new StandardXYToolTipGenerator() );
+        
+        return chart;
+        
+    }
+    
+    public JFreeChart createWallclockChart(String expId) {
+        ExperimentPersistencyRemote edao = ExperimentPersistencyImpl.getInstance();
+        long eid = Long.parseLong(expId);
+        log.info("Building experiment chart for eid = "+eid);
+        Experiment exp = edao.findExperiment(eid);
+
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        final String expName = exp.getExperimentSetup().getBasicProperties().getExperimentName();
+
+        for( BatchExecutionRecordImpl batch : exp.getExperimentExecutable().getBatchExecutionRecords() ) {
+            int i = 1;
+            for( ExecutionRecordImpl exr : batch.getRuns() ) {
+                //log.info("Found Record... "+exr+" stages: "+exr.getStages());
+                if( exr != null && exr.getStages() != null ) {
+                    // Look up the object, so we can get the name.
+                    DigitalObjectRefBean dh = new DataHandlerImpl().get(exr.getDigitalObjectReferenceCopy());
+                    String dobName = "Object "+i;
+                    if( dh != null ) dobName = dh.getName();
+
+                    for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
+                        Double time = exsr.getDoubleMeasurement( TecRegMockup.PROP_SERVICE_TIME );
+                        // Look for timing:
+                        if( time != null ) {
+                            if( exsr.isMarkedAsSuccessful() ) {
+                                dataset.addValue( time, "Succeeded", dobName);
+                            } else {
+                                dataset.addValue( time, "Failed", dobName);
+                            }
+                        }
+                    }
+                }
+                // Increment, for the next run.
+                i++;
+            }
+        }
+        int si = dataset.getRowIndex("Succeeded");
+        int ri = dataset.getRowIndex("Failed");
+
+        // Create the chart.
+        JFreeChart chart = ChartFactory.createStackedBarChart(
+                null, "Digital Object", "Time [s]", dataset, PlotOrientation.VERTICAL, true, true, false
+        );
+
+        // set the background color for the chart...
+        chart.setBackgroundPaint(Color.white);
+
+        // get a reference to the plot for further customisation...
+        final CategoryPlot plot = chart.getCategoryPlot();
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setDomainGridlinePaint(Color.gray);
+        plot.setRangeGridlinePaint(Color.gray);
+
+        // set the range axis to display integers only...
+        //final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        //rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+        // disable bar outlines...
+        final BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        renderer.setDrawBarOutline(true);
+        renderer.setShadowVisible(false);
+        renderer.setBarPainter(new StandardBarPainter());
+
+        // set up gradient paints for series...
+        final GradientPaint gp0 = new GradientPaint(
+                0.0f, 0.0f, Color.green, 
+                0.0f, 0.0f, new Color(0.0f, 0.9f, 0.0f)
+        );
+        final GradientPaint gp1 = new GradientPaint(
+                0.0f, 0.0f, Color.red, 
+                0.0f, 0.0f, new Color(0.9f, 0.0f, 0.0f)
+        );
+        renderer.setSeriesPaint(si, gp0);
+        renderer.setSeriesPaint(ri, gp1);
+        
+        // Set the tooltips...
+        //renderer.setBaseItemURLGenerator(new StandardCategoryURLGenerator("xy_chart.jsp","series","section"));
+        renderer.setBaseToolTipGenerator(new MeasurementToolTipGenerator());
+
+        final CategoryAxis domainAxis = plot.getDomainAxis();
+        domainAxis.setCategoryLabelPositions(
+                CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 4.0)
+        );
+        
+
+        // More settings
+        chart.getRenderingHints().put( RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON );
+        // Remove the border, as the SVG renderer has problems with the text overflowing.
+        chart.getLegend().setBorder(0.0, 0.0, 0.0, 0.0);
+        // Remove the padding between the axes and the plot:
+        chart.getPlot().setInsets(new RectangleInsets(0.0, 0.0, 0.0, 0.0));
+        // Set a gradient fill, fading towards the top:
+        final GradientPaint gpb0 = new GradientPaint(
+                0.0f, 0.0f, new Color(245, 245, 245), 
+                0.0f, 0.0f, Color.white
+            );
+        chart.getPlot().setBackgroundPaint( gpb0 );
+
+
+        return chart;
+    }
+    
+    static class MeasurementToolTipGenerator extends StandardCategoryToolTipGenerator {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 5318030018610824973L;
+
+        /* (non-Javadoc)
+         * @see org.jfree.chart.labels.StandardCategoryToolTipGenerator#generateToolTip(org.jfree.data.category.CategoryDataset, int, int)
+         */
+        @Override
+        public String generateToolTip(CategoryDataset dataset, int row,
+                int column) {
+            String toolTip = super.generateToolTip(dataset, row, column);
+            toolTip = super.generateColumnLabel(dataset, column)+" "+super.generateRowLabel(dataset, row)+" in " + dataset.getValue(row, column) + "s";
+            return toolTip;
+        }
+        
+    }
+    
+    /**
+     * A custom renderer that returns a different color for each item in a
+     * single series.
+     */
+    static class CustomRenderer extends BarRenderer {
+
+        /** The colors. */
+        private Paint[] colors;
+
+        /**
+         * Creates a new renderer.
+         *
+         * @param colors  the colors.
+         */
+        public CustomRenderer(Paint[] colors) {
+            this.colors = colors;
+        }
+
+        /**
+         * Returns the paint for an item.  Overrides the default behaviour
+         * inherited from AbstractSeriesRenderer.
+         *
+         * @param row  the series.
+         * @param column  the category.
+         *
+         * @return The item color.
+         */
+        public Paint getItemPaint(int row, int column) {
+            return this.colors[column % this.colors.length];
+        }
+    }
+
     public static void writeChartAsSVG( OutputStream outstream, JFreeChart chart, int width, int height ) 
             throws UnsupportedEncodingException, SVGGraphics2DIOException {
         

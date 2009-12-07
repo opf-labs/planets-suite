@@ -91,17 +91,16 @@
     </fieldset>
     
     <!-- ********************  -->
-    
-    <fieldset>
-      <legend>Performance Analysis</legend>
-    <!-- Graphs -->
-            <p>
-            Runtime statistics here. e.g. execution time of each service/stage, versus (exec, type, size).
-            </p>
-            <p>
-            <img src="#{ExperimentBean.servicePlotImageUrl}" />
-            </p>
-    </fieldset>
+
+	<fieldset>
+		<legend>Performance Analysis</legend>
+		<p>
+			<img src="#{ExperimentBean.resultChartUrl}" width="600" height="500"
+				border="0" usemap="##{ExperimentBean.resultChartIdentifier}" />
+		</p>
+		<h:outputText escape="false"
+			value="#{ExperimentBean.resultChartImageMap}" />
+	</fieldset>
         
     <!-- ********************  -->
     
