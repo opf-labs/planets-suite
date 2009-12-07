@@ -87,6 +87,11 @@ public final class ServiceConfig {
 		 */
 		_log.info("ServiceConfig.getConfiguration(String basename)");
 		String baseDirectory = System.getProperty(BASE_DIR_PROPERTY);
+        if (baseDirectory == null) {
+            _log.warning(String.format("System property %s is not set, looking for file in current directory...",
+                    BASE_DIR_PROPERTY));
+            baseDirectory = ".";
+        }
 		_log.info("baseDirectory = " + baseDirectory);
 		String filename = baseDirectory + File.separatorChar + basename + ".properties";
 		_log.info("filename = " + filename);

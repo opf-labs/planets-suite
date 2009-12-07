@@ -127,7 +127,8 @@ class DroidFormatRegistry  {
             controller.readSigFile(DroidConfig.getSigFileLocation());
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            /* No point in failing later, we can't go on here: */
+            throw new IllegalStateException("Could not instantiate AnalysisController: " + e.getMessage(), e);
         }
         return controller;
     }
