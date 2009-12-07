@@ -75,6 +75,7 @@ public class CoreOdfValidator {
 	
 	public OdfValidatorResult validate(File odfFile, List<Parameter> parameters) {
 		log.setLevel(Level.INFO);
+		log.info("JING installation detected: " + JING_HOME);
 		contentHandler = new OdfContentHandler(odfFile);
 		result = new OdfValidatorResult(odfFile.getName());
 		result.setOdfGenerator(contentHandler.getOdfGenerator());
