@@ -56,6 +56,7 @@ public class OdfSchemaHandler {
 	
 	private static File SCHEMAS = null;
 	private static File MATHML_SCHEMAS = null;
+	private static File ODF_SCHEMAS = null;
 	private static String SCHEMAS_NAME = "SCHEMAS";
 	
 	private static Logger log = Logger.getLogger(OdfSchemaHandler.class.getName());
@@ -64,6 +65,7 @@ public class OdfSchemaHandler {
 		log.setLevel(Level.INFO);
 		ODF_SH_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), ODF_SH_TMP_NAME);
 		SCHEMAS = FileUtils.createFolderInWorkFolder(ODF_SH_TMP, SCHEMAS_NAME);
+		ODF_SCHEMAS = FileUtils.createFolderInWorkFolder(SCHEMAS, "odf");
 		MATHML_SCHEMAS = FileUtils.createFolderInWorkFolder(SCHEMAS, "mathml");
 //		FileUtils.deleteAllFilesInFolder(SCHEMAS);
 		boolean provided = provideSchemas();
@@ -360,7 +362,7 @@ public class OdfSchemaHandler {
 				}
 			}
 			else {
-				schema = new File(SCHEMAS, name);
+				schema = new File(ODF_SCHEMAS, name);
 				if(!schema.exists()) {
 					FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(ODF_SCHEMAS_PATH + name), schema);
 				}

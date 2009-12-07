@@ -60,7 +60,7 @@ public class OdfContentHandler {
 	private String odfVersion = null;
 	private String mathMLVersion = null;
 	
-	private static File ODF_VALIDATOR_TMP = null;
+	private static File CONTENT_HANDLER_TMP = null;
 	private static File xmlTmp = null;
 	
 	private static Logger log = Logger.getLogger(OdfContentHandler.class.getName());
@@ -74,9 +74,9 @@ public class OdfContentHandler {
 	 */
 	public OdfContentHandler(File odfFile) {
 		nsWarningList = new HashMap<File, String>();
-		ODF_VALIDATOR_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_CONTENT_HANDLER");
-//		FileUtils.deleteAllFilesInFolder(ODF_VALIDATOR_TMP);
-		xmlTmp = FileUtils.createFolderInWorkFolder(ODF_VALIDATOR_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
+		CONTENT_HANDLER_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_CONTENT_HANDLER");
+		FileUtils.deleteAllFilesInFolder(CONTENT_HANDLER_TMP);
+		xmlTmp = FileUtils.createFolderInWorkFolder(CONTENT_HANDLER_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
 		
 		// 1) get all Odf sub files from zip container
 		odfSubFiles = extractOdfSubFiles(odfFile);
@@ -365,6 +365,9 @@ public class OdfContentHandler {
 				version = "MathML:" + version.substring(0, version.lastIndexOf("//"));
 				break;
 			}
+			else {
+				version = "MathML:unknown";
+			}
 		}
 		log.info("[OdfContentHandler] getMathMLVersion(): Found MathML version = " + version);
 		return version;
@@ -465,9 +468,11 @@ public class OdfContentHandler {
 		
 		// if the mimetype indicates a MathML file, retrieve the MathML version for schema handling
 		// AND the ODF version for the other subfiles...
-		if(mimeType_string.equalsIgnoreCase(OdfContentHandler.MATHML_MIMETYPE) 
-				|| mimeType_string.equalsIgnoreCase(OdfContentHandler.SXM_MATHML_MIMETYPE)) {
-			mathMLVersion = getMathMLVersion(odfSubFiles.get("content").get(0));
+		if(mimeType_string.equalsIgnoreCase(OdfContentHandler.MATHML_MIMETYPE)
+				|| this.containsMathMLDoctype
+				|| this.containsEmdeddedMathML) {
+				
+			mathMLVersion = getMathMLVersion(odfSubFiles.get("content").get(0)); 
 			
 			// And now check the version of the other files...
 			Set<String> keys = odfSubFiles.keySet();
@@ -520,8 +525,8 @@ public class OdfContentHandler {
 
 	private List<File> initialize(File odfFile) {
 		List<File> odfXmlParts = new ArrayList<File>(); 
-		ODF_VALIDATOR_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_VALIDATOR_TMP");
-		File xmlTmp = FileUtils.createFolderInWorkFolder(ODF_VALIDATOR_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
+		CONTENT_HANDLER_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_VALIDATOR_TMP");
+		File xmlTmp = FileUtils.createFolderInWorkFolder(CONTENT_HANDLER_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
 		FileUtils.deleteAllFilesInFolder(xmlTmp);
 		
 		String[] files = ZipUtils.getAllFragments(odfFile);
