@@ -24,23 +24,24 @@
   
   <property environment="env"/>
 
-  <property name="build.dir" value="${appDir}/build"/>
-  <property name="build.classes.dir" value="${build.dir}/classes"/>
-  <property name="build.test.classes.dir" value="${build.dir}/test"/>
-  <property name="build.api.classes.dir" value="${build.dir}/api"/>
-  <property name="war.build.dir" value="${appDir}/build/war"/>
-  <property name="ear.build.dir" value="${appDir}/build/ear"/>
+  <property name="build.dir" location="${appDir}/build"/>
+  <property name="build.classes.dir" location="${build.dir}/classes"/>
+  <property name="build.test.classes.dir" location="${build.dir}/test"/>
+  <property name="build.test.conf" location="${pserv.root.dir}/test/config"/>
+  <property name="build.api.classes.dir" location="${build.dir}/api"/>
+  <property name="war.build.dir" location="${appDir}/build/war"/>
+  <property name="ear.build.dir" location="${appDir}/build/ear"/>
 
   <property name="war.base.name" value="pserv-${appName}.war"/>
   <property name="ear.base.name" value="pserv-${appName}.ear"/>
   <property name="jar.base.name" value="pserv-${appName}.jar"/>
   <property name="api.base.name" value="pserv-${appName}-api.jar"/>
 
-  <property name="test.dir" value="${appDir}/../test/java"/>
-  <property name="client.config" value="${appDir}/../test/client-config"/>
+  <property name="test.dir" location="${appDir}/../test/java"/>
+  <property name="client.config" location="${appDir}/../test/client-config"/>
     
-  <property name="reports.dir" value="${pserv.root.dir}/tests/reports"/>
-  <property name="summary.dir" value="${pserv.root.dir}/tests/summary"/>
+  <property name="reports.dir" location="${pserv.root.dir}/tests/reports"/>
+  <property name="summary.dir" location="${pserv.root.dir}/tests/summary"/>
 
 
   <if>
@@ -489,6 +490,7 @@
     <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
+      <sysproperty key="eu.planets-project.config.dir" value="${build.test.conf}"/>
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
@@ -511,10 +513,12 @@
   
   <target name="test:standalone" description="executes the included JUnit tests in a standalone content (no I.F.)" depends="test:src-defined,compile:tests" if="test.standalone">
     <echo message="TEST:STANDALONE: Testing the service code using a standalone server."/>
+  	<!-- Set the test config directory if the property is not set -->
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
+        <sysproperty key="eu.planets-project.config.dir" value="${build.test.conf}"/>
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
@@ -559,6 +563,7 @@
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
+      <sysproperty key="eu.planets-project.config.dir" value="${build.test.conf}"/>
       <!--
       <sysproperty key="file.encoding" value="utf-8"/>
       <sysproperty key="line.separator" value="\n"/>
