@@ -123,12 +123,12 @@ class DroidFormatRegistry  {
      * @return the DROID analysis controller
      */
     public static AnalysisController getController() {
-        // Determine the signature file:
-        String sigFile = ServiceConfig.getConfiguration("pserv-if-common").getString("droid.signature.file");
+        // Determine the config directory:
+        String sigFileLocation = DroidConfig.configFolder();
         // Here we start using the Droid API:
         AnalysisController controller = new AnalysisController();
         try {
-            controller.readSigFile(sigFile);
+            controller.readSigFile(sigFileLocation);
         } catch (Exception e) {
             e.printStackTrace();
             
