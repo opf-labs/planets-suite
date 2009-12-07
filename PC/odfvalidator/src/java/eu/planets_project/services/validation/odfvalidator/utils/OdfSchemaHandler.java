@@ -311,8 +311,8 @@ public class OdfSchemaHandler {
 		int i=0;
 		for (String currentEntry : entries) {
 			String[] parts = currentEntry.split("/");
-			String parent = parts[0];
-			String name = parts[1];
+			String parent = parts[0].trim();
+			String name = parts[1].trim();
 			File parentDir = new File(SCHEMAS, parent);
 			if(!parentDir.exists()) {
 				FileUtils.createFolderInWorkFolder(SCHEMAS, parent);
