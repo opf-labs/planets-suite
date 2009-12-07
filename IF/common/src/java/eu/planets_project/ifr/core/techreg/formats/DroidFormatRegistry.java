@@ -124,7 +124,7 @@ class DroidFormatRegistry  {
     public static AnalysisController getController() {
         AnalysisController controller = new AnalysisController();
         try {
-            controller.readSigFile(DroidConfig.signatureFileLocation());
+            controller.readSigFile(DroidConfig.getSigFileLocation());
         } catch (Exception e) {
             e.printStackTrace();
             return null;

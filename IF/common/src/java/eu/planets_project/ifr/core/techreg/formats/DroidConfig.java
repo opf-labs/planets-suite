@@ -26,7 +26,7 @@ class DroidConfig {
      * @return The location of the DROID signature file taken from the
      * 		   Droid configuration properties file
      */
-    public static String configFolder() {
+    public static String getSigFileLocation() {
     	// String to hold the location
         String sigFileLocation = null;
         // Get the configuration object from the ServiceConfig util
