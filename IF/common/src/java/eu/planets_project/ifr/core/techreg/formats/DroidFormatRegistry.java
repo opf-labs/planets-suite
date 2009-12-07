@@ -119,19 +119,14 @@ class DroidFormatRegistry  {
     }
     
     /**
-     * 
-     * @return the DROID analysis controller
+     * @return the DROID analysis controller or null, if reading the signature file failed
      */
     public static AnalysisController getController() {
-        // Determine the config directory:
-        String sigFileLocation = DroidConfig.configFolder();
-        // Here we start using the Droid API:
         AnalysisController controller = new AnalysisController();
         try {
-            controller.readSigFile(sigFileLocation);
+            controller.readSigFile(DroidConfig.signatureFileLocation());
         } catch (Exception e) {
             e.printStackTrace();
-            
             return null;
         }
         return controller;

@@ -14,25 +14,23 @@ class DroidConfig {
     private static Logger log = Logger.getLogger(DroidConfig.class.getName());
     
     /***/
-    public static final String LOCAL = "PC/droid/src/resources/";
+    static final String LOCAL = "PC/droid/src/resources/";
     /***/
-    public static final String SIG = "DROID_SignatureFile_Planets.xml";
+    static final String SIG = "DROID_SignatureFile_Planets.xml";
     /***/
-    public static final String CONF = "/server/default/data/";
+    static final String CONF = "/server/default/data/";
     /***/
-    public static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
+    static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
 
     /**
-     * @return If running in JBoss, returns the deployment directory, else (like
-     *         when running a unit test) returns the project directory to
-     *         retrieve the concepts file
+     * @return The DROID signature file location. If running in JBoss, from the deployment directory, else (like when
+     *         running a unit test) from the project directory
      */
-    public static String configFolder() {
+    static String signatureFileLocation() {
         String deployedJBossHome = System.getProperty(JBOSS_HOME_DIR_KEY);
-        String sigFileFolder = (deployedJBossHome != null ? deployedJBossHome
-                + CONF : LOCAL);
+        String sigFileFolder = (deployedJBossHome != null ? deployedJBossHome + CONF : LOCAL);
         String sigFileLocation = sigFileFolder + SIG;
-        log.info("Opening signature file: "+sigFileLocation);
+        log.info("Opening signature file: " + sigFileLocation);
         return sigFileLocation;
     }
 
