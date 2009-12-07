@@ -271,8 +271,8 @@ public class OdfSchemaHandler {
 				String[] nsPairs = currentPart.split(System.getProperty("line.separator")); 
 				for (int i=1;i<nsPairs.length;i++) {
 					String[] lineParts = nsPairs[i].split("=");
-					String name = lineParts[0];
-					String value = lineParts[1];
+					String name = lineParts[0].trim();
+					String value = lineParts[1].trim();
 					v10_namespaces.put(name, value);
 				}
 			}
@@ -283,8 +283,8 @@ public class OdfSchemaHandler {
 				String[] nsPairs = currentPart.split(System.getProperty("line.separator")); 
 				for (int i=1;i<nsPairs.length;i++) {
 					String[] lineParts = nsPairs[i].split("=");
-					String name = lineParts[0];
-					String value = lineParts[1];
+					String name = lineParts[0].trim();
+					String value = lineParts[1].trim();
 					v11_namespaces.put(name, value);
 				}
 			}
@@ -295,8 +295,8 @@ public class OdfSchemaHandler {
 				String[] nsPairs = currentPart.split(System.getProperty("line.separator")); 
 				for (int i=1;i<nsPairs.length;i++) {
 					String[] lineParts = nsPairs[i].split("=");
-					String name = lineParts[0];
-					String value = lineParts[1];
+					String name = lineParts[0].trim();
+					String value = lineParts[1].trim();
 					v12_namespaces.put(name, value);
 				}
 			}			
@@ -354,8 +354,7 @@ public class OdfSchemaHandler {
 			String name = labelsAndValues[1].trim();
 			File schema = null;
 			if(label.equalsIgnoreCase(MATHML2_SCHEMA)) {
-				File MATH_FOLDER = FileUtils.createFolderInWorkFolder(SCHEMAS, "mathml");
-				schema = new File(MATH_FOLDER, name);
+				schema = new File(MATHML_SCHEMAS, name);
 				if(!schema.exists()) {
 					FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + name), schema);
 				}
