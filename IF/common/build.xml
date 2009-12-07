@@ -5,16 +5,21 @@
 <!-- ======================================================================= -->
 <project name="if-common" default="compile:common" basedir=".">
     <property name="appName" value="${ant.project.name}"/>
-    <property name="appDir" value="."/>
-    <property name="src.dir" value="${appDir}/src/java"/>
-    <property name="lib.dir" value="${appDir}/lib"/>
-    <property name="src.resources" value="${appDir}/src/resources"/>
-    <property name="src.web" value="${appDir}/src/web"/>
-    <property name="test.src.dir" value="${appDir}/src/test/java"/>
+    <property name="appDir" location="."/>
+    <property name="src.dir" location="${appDir}/src/java"/>
+    <property name="lib.dir" location="${appDir}/lib"/>
+    <property name="src.resources" location="${appDir}/src/resources"/>
+    <property name="src.web" location="${appDir}/src/web"/>
+	<property name="src.config" location="${appDir}/src/config" />
+	<property name="src.config.properties" value="Common.properties" />
+    <property name="test.src.dir" location="${appDir}/src/test/java"/>
+	<property name="test.resources" location="${appDir}/src/test/resources" />
+	<property name="test.config" location="${appDir}/src/test/config" />
+	<property name="test.config.properties" value="Common.properties" />
 	<property name="pserv.app.deploy.mode" value="pure-java" />
 	<property name="pserv.app.build.type" value="jar" />
-    <property name="test.local" value="" />
-    <property name="pserv.root.dir" value="../.." />
+    <property name="pserv.root.dir" location="../.." />
+	<property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
     <import file="${pserv.root.dir}/build.common.xml"/>
 
     <!-- update the server configuration -->
@@ -57,8 +62,27 @@
     </target>
 	
     <!-- Unit testing definitions -->
-    <property name="test.src.dir" value="${appDir}/test/java" />
+    <property name="test.src.dir" location="${appDir}/src/test/java" />
 	<property name="test.local" value="" />
 	<property name="test.standalone" value="" />
     <property name="test.server" value="" />
+
+	<!-- OK, this is the config stuff -->
+	<!-- First copy the test config file from test config area to pserv/test/config -->
+	<echo message="COPYING ${test.config}/${test.config.properties} TO ${pserv.test.config}/${test.config.properties}"></echo>
+	<copy file="${test.config}/${test.config.properties}" tofile="${pserv.test.config}/${test.config.properties}" overwrite="true" />
+
+	<!-- THIS IS THE LIVE DROID SIG FILE, test use of the V16 sig file -->
+	<!-- Copy the config file into the server config directory -->
+	<property file="${pserv.root.dir}/build.properties"/>
+	<echo message="COPYING ${src.config.properties}.template TO ${src.config.properties}" />
+	<copy file="${src.config}/${src.config.properties}.template" tofile="${src.config}/${src.config.properties}" overwrite="true"/>
+    <replace file="${src.config}/${src.config.properties}">
+      <replacefilter token="@planets.server.conf@" value="${if_server.conf}" />
+    </replace>
+	<property file="${src.config}/${src.config.properties}"  />
+	<echo message="COPYING ${src.resources}/DROID_SignatureFile_V16.xml TO ${droid.sigfile.location}/${droid.sigfile.name}"></echo>
+    <copy file="${src.resources}/DROID_SignatureFile_V16.xml" tofile="${droid.sigfile.location}/${droid.sigfile.name}" overwrite="true" />
+	<echo message="COPYING ${src.config}/${src.config.properties} TO ${if_server.conf}/${src.config.properties}"></echo>
+	<copy file="${src.config}/${src.config.properties}" tofile="${if_server.conf}/${src.config.properties}" overwrite="true" />
 </project>
