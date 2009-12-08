@@ -21,7 +21,7 @@ public class MigrationPathsTest {
     /**
      * Full file path to the test configuration file used by this test class.
      */
-    private static final String TEST_CONFIGURATION_FILE_NAME = "IF/generic/test/resources/genericWrapperTempSrcDstConfig.xml";
+    private static final String TEST_CONFIGURATION_FILE_NAME = "IF/generic/test/resources/deprecatedGenericWrapperV1ExampleConfigFile.xml";
     private final MigrationPaths migrationPathsToTest;
 
     public MigrationPathsTest() throws Exception {
@@ -64,8 +64,8 @@ public class MigrationPathsTest {
         // Verify that the opposite path does not exist in the configuration.
         genericGetInstanceFailCheck(destinationFormat, sourceFormat);
 
-        sourceFormat = new URI("info:test/foo");
-        destinationFormat = new URI("info:test/bar");
+        sourceFormat = new URI("info:pronom/x-fmt/406");
+        destinationFormat = new URI("info:pronom/fmt/18");
         migrationPathsToTest.getMigrationPath(sourceFormat, destinationFormat);
 
         // Verify that the opposite path does not exist in the configuration.

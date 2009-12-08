@@ -35,6 +35,9 @@
      <property name="test.local" value="" />
      <property name="test.server" value="" />
 
+	<!-- Specify the location of the configuration for ServiceConfig -->
+	<property name="build.test.conf" location="${appDir}/test/config" />
+
      <!-- Reference to the main build file -->
      <property name="pserv.root.dir" value="../.." />
      <import file="${pserv.root.dir}/build.common.xml"/>

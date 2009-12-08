@@ -41,8 +41,6 @@ public class GenericMigrationWrapperTest {
     @Before
     public void setUp() throws Exception {
 
-	System.setProperty("eu.planets-project.config.dir",
-		"IF/generic/test/resources/conf");
 	final Configuration environmentConfiguration = ServiceConfig
 		.getConfiguration("genericwrapper2_GenericMigrationWrapperTest");
 

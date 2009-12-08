@@ -20,33 +20,37 @@ import java.util.List;
  */
 public class GenericMigrationWrapperTest {
 
+    // FIXME! This test is rather useless, however, generic wrapper V1 is deprecated anyway.
+    
     /**
      * File path to the test files used by this test class.
      */
     private static final File TEST_FILE_PATH = new File(
-            "IF/generic/test/resources/");
+	    "tests/test-files/images/vector/dia");
 
     private static final String TEST_FILE_NAME = "Arrows_doublestraight_arrow2.dia";
 
     private final URI sourceFormatURI;
     private final URI destinationFormatURI;
     private GenericMigrationWrapper genericWrapper;
-final List<Parameter> testParameters = new ArrayList<Parameter>();
+    final List<Parameter> testParameters = new ArrayList<Parameter>();
+
     /**
      */
     public GenericMigrationWrapperTest() throws Exception {
-        sourceFormatURI = new URI("info:test/lowercase");
-        destinationFormatURI = new URI("info:test/uppercase");
+	sourceFormatURI = new URI("info:test/lowercase");
+	destinationFormatURI = new URI("info:test/uppercase");
     }
 
     @Before
     public void setUp() throws Exception {
 
-        testParameters.add(new Parameter("mode", "complete"));
+	testParameters.add(new Parameter("mode", "complete"));
 
-        DocumentLocator documentLocator = new DocumentLocator("exampleConfigfile.xml");
-         genericWrapper = new GenericMigrationWrapper(
-                documentLocator.getDocument(), this.getClass().getCanonicalName());
+	DocumentLocator documentLocator = new DocumentLocator(
+		"deprecatedGenericWrapperV1ExampleConfigFile.xml");
+	genericWrapper = new GenericMigrationWrapper(documentLocator
+		.getDocument(), this.getClass().getCanonicalName());
 
     }
 
@@ -55,30 +59,29 @@ final List<Parameter> testParameters = new ArrayList<Parameter>();
     }
 
     @Test
-    public void testDescribe(){
-        ServiceDescription sb = genericWrapper.describe();
+    public void testDescribe() {
+	ServiceDescription sb = genericWrapper.describe();
     }
 
     @Test
     public void testMigrateUsingTempFiles() throws Exception {
 
+	MigrateResult migrationResult = genericWrapper.migrate(
+		getDigitalTestObject(), sourceFormatURI, destinationFormatURI,
+		testParameters);
 
-        MigrateResult migrationResult = genericWrapper.migrate(
-                getDigitalTestObject(), sourceFormatURI, destinationFormatURI,
-                testParameters);
-
-        Assert.assertEquals(ServiceReport.Status.SUCCESS, migrationResult
-                .getReport().getStatus());
+	Assert.assertEquals(ServiceReport.Status.SUCCESS, migrationResult
+		.getReport().getStatus());
     }
 
     private DigitalObject getDigitalTestObject() {
-        final File diaTestFile = new File(TEST_FILE_PATH, TEST_FILE_NAME);
+	final File diaTestFile = new File(TEST_FILE_PATH, TEST_FILE_NAME);
 
-        DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
-                Content.byValue(diaTestFile));
-        digitalObjectBuilder.format(sourceFormatURI);
-        digitalObjectBuilder.title(TEST_FILE_NAME);
-        return digitalObjectBuilder.build();
+	DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
+		Content.byValue(diaTestFile));
+	digitalObjectBuilder.format(sourceFormatURI);
+	digitalObjectBuilder.title(TEST_FILE_NAME);
+	return digitalObjectBuilder.build();
 
     }
 }

@@ -43,12 +43,14 @@ public class DiaMigrationServiceTest extends TestCase {
     /**
      * File path to the dia test files used by this test class.
      */
-    private final File DIA_TEST_FILE_PATH = new File("tests/test-files/images/vector/dia");
+    private final File DIA_TEST_FILE_PATH = new File(
+	    "tests/test-files/images/vector/dia");
 
     /**
      * File path to the Xfig test files used by this test class.
      */
-    private final File FIG_TEST_FILE_PATH = new File("tests/test-files/images/vector/fig");
+    private final File FIG_TEST_FILE_PATH = new File(
+	    "tests/test-files/images/vector/fig");
 
     private Set<URI> inputFormatURIs;
 
@@ -59,7 +61,6 @@ public class DiaMigrationServiceTest extends TestCase {
      */
     @Override
     public void setUp() throws Exception {
-	System.setProperty("eu.planets-project.config.dir", "PA/dia/test/resources/conf");
 	migrationService = ServiceCreator.createTestService(Migrate.QNAME,
 		DiaMigrationService.class, wsdlLocation);
 	initialiseInputFormatURIs();
@@ -90,9 +91,13 @@ public class DiaMigrationServiceTest extends TestCase {
 	 */
 	final File diaTestFile = new File(DIA_TEST_FILE_PATH, diaTestFileName);
 
-	final URI diaFormatURI = new URI("info:pronom/x-fmt/381"); // DIA URI
-	final URI svgFormatURI = new URI("info:pronom/fmt/92"); // SVG version
-								// 1.1
+	// Dia file format URI
+	final URI diaFormatURI = new URI("info:pronom/x-fmt/381");
+
+	// SVG version 1.1 format URI
+	final URI svgFormatURI = new URI("info:pronom/fmt/92");
+
+	// TODO: Verify that Dia is indeed producing a SVG version 1.1 file!
 
 	DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
 		Content.byValue(diaTestFile));
@@ -110,6 +115,9 @@ public class DiaMigrationServiceTest extends TestCase {
 	final ServiceReport serviceReport = migrationResult.getReport();
 	final ServiceReport.Status migrationStatus = serviceReport.getStatus();
 	assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
+
+	// TODO: Can we make some meaningful tests on the output from
+	// migrationResult.getDigitalObject()?
     }
 
     /**
@@ -135,6 +143,8 @@ public class DiaMigrationServiceTest extends TestCase {
 	// SVG version 1.1 format URI
 	final URI svgFormatURI = new URI("info:pronom/fmt/92");
 
+	// TODO: Verify that Dia is indeed producing a SVG version 1.1 file!
+
 	final DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
 		Content.byValue(figTestFile));
 	digitalObjectBuilder.format(diaFormatURI);
@@ -148,7 +158,16 @@ public class DiaMigrationServiceTest extends TestCase {
 	final ServiceReport serviceReport = migrationResult.getReport();
 	final ServiceReport.Status migrationStatus = serviceReport.getStatus();
 	assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
+
+	// TODO: Can we make some meaningful tests on the output from
+	// migrationResult.getDigitalObject()?
     }
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !! Warning! You may turn blind if you look at the code below this line.!!
+    // !!                                                                     !!
+    // !! Please leave it, I'll clean up later - Thomas (SB)                  !!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     /**
      * Test method for
@@ -159,6 +178,12 @@ public class DiaMigrationServiceTest extends TestCase {
     /*
      * public void testDescribe() throws Exception { ServiceDescription
      * diaServiceDescription = migrationService.describe();
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
      * 
      * 
      * assertNotNull("The migration service does not provide author information."
@@ -175,6 +200,12 @@ public class DiaMigrationServiceTest extends TestCase {
      * assertNotNull("The migration service does not provide a name.",
      * diaServiceDescription.getName()); //
      * verifyMigrationPaths(diaServiceDescription.getPaths());
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
      * 
      * 
      * assertNotNull("The migration service does not provide a list of properties."

@@ -66,8 +66,6 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	    final Configuration runtimeConfiguration = ServiceConfig
 		    .getConfiguration("pserv-pa-dia");
 
-	    // TODO: Is this the correct way to obtain the canonical name? Is it
-	    // the correct canonical name?
 	    GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
 		    documentLocator.getDocument(), runtimeConfiguration,
 		    DiaMigrationService.class.getCanonicalName());
@@ -79,15 +77,18 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	    // performed by the generic wrapper. However, exceptions thrown by
 	    // the GenericWrapper constructor must be handled here.
 	} catch (Exception e) {
-	    log.log(Level.SEVERE, "Migration failed for object with title '"
-			    + digitalObject.getTitle()
-			    + "' from input format URI: " + inputFormat
-			    + " to output format URI: " + outputFormat, e);
+	    log
+		    .log(Level.SEVERE,
+			    "Migration failed for object with title '"
+				    + digitalObject.getTitle()
+				    + "' from input format URI: " + inputFormat
+				    + " to output format URI: " + outputFormat,
+			    e);
 	    ServiceReport serviceReport = new ServiceReport(Type.ERROR,
 		    Status.TOOL_ERROR, e.toString());
-	    return new MigrateResult(null, serviceReport); // FIXME! Report
-	    // failure in a
-	    // proper way.
+
+	    // FIXME! Report failure in a proper way.
+	    return new MigrateResult(null, serviceReport);
 	}
 
 	return migrationResult;
@@ -97,6 +98,10 @@ public final class DiaMigrationService implements Migrate, Serializable {
      * @see eu.planets_project.services.migrate.Migrate#describe()
      */
     public ServiceDescription describe() {
+
+	// DO NOT GET INSPIRED BY THIS METHOD, YET!
+	// The generic wrapper does not yet properly implement the describe()
+	// method, thus, you cannot implement your own using that.
 
 	final DocumentLocator documentLocator = new DocumentLocator(configfile);
 	try {
@@ -112,8 +117,9 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	    return genericWrapper.describe();
 
 	} catch (Exception e) {
-	    log.log(Level.SEVERE,"Failed getting service description for service: "
-		    + this.getClass().getCanonicalName(), e);
+	    log.log(Level.SEVERE,
+		    "Failed getting service description for service: "
+			    + this.getClass().getCanonicalName(), e);
 
 	    // FIXME! Report failure in a proper way. Should we return a service
 	    // description anyway? If so, then how?
@@ -141,12 +147,12 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	// .toArray(new MigrationPath[] {}));
 	// // serviceDescriptionBuilder.furtherInfo(null);
 	// // serviceDescriptionBuilder.identifier(null);
-	//
+	//	
 	// // serviceDescriptionBuilder.inputFormats(null);
 	// // serviceDescriptionBuilder.instructions(null);
 	// // serviceDescriptionBuilder.name(null);
 	// // serviceDescriptionBuilder.parameters(null);
-	//
+	//	
 	// // serviceDescriptionBuilder.paths(new
 	// //
 	// GenericCLIMigrationWrapper(configfile).getMigrationPaths().getAsPlanetsPaths());
@@ -155,11 +161,10 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	// // serviceDescriptionBuilder.tool(null);
 	// // serviceDescriptionBuilder.type(null);
 	// // serviceDescriptionBuilder.version(null);
-	//
+	//	
 	// return serviceDescriptionBuilder.build();
 	// } catch (Exception e) {
 	// throw new Error("Failed building migration path information.", e);
 	// }
     }
-
 }

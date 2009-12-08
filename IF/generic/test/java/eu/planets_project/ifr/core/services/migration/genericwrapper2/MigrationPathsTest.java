@@ -21,7 +21,7 @@ public class MigrationPathsTest {
     /**
      * Full file path to the test configuration file used by this test class.
      */
-    private static final String TEST_CONFIGURATION_FILE_NAME = "IF/generic/test/resources/genericWrapperTempSrcDstConfig.xml";
+    private static final String TEST_CONFIGURATION_FILE_NAME = "IF/generic/test/resources/GenericWrapperConfigFileExample.xml";
     private final MigrationPaths migrationPathsToTest;
 
     public MigrationPathsTest() throws Exception {
