@@ -3,18 +3,14 @@
  */
 package eu.planets_project.services.utils.test;
 
+import static eu.planets_project.services.utils.ServiceUtils.createService;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
-import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Endpoint;
-import javax.xml.ws.Service;
-import javax.xml.ws.soap.MTOMFeature;
-import javax.xml.ws.soap.SOAPBinding;
-
-import com.sun.xml.ws.developer.JAXWSProperties;
 
 /**
  * Service creation utilities for use when using testing.
@@ -76,7 +72,7 @@ public final class ServiceCreator {
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
-                return createFor(qname, impl, url);
+                return createService(qname, impl, url);
             }
         },
         /** Use a running server. */
@@ -93,7 +89,7 @@ public final class ServiceCreator {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                return createFor(qname, impl, url);
+                return createService(qname, impl, url);
             }
         };
         /**
@@ -105,22 +101,7 @@ public final class ServiceCreator {
          */
         abstract <T> T create(QName qname, Class<T> impl, String wsdl);
         
-        public static <T> T createFor(QName qname, Class<T> impl, URL url) {
-            log.info("INIT: Creating the proxied service class.");
-            Service service = Service.create(url, qname);
-            @SuppressWarnings("unchecked")
-            T ids = (T) service.getPort(impl.getInterfaces()[0], new MTOMFeature());
-            ((BindingProvider)ids).getRequestContext().put(JAXWSProperties.HTTP_CLIENT_STREAMING_CHUNK_SIZE, 8096); //enables streaming
-            SOAPBinding binding = (SOAPBinding) ((BindingProvider)ids).getBinding();
-            binding.setMTOMEnabled(true);
-            log.info("INIT: Created proxy class for service "
-                    + service.getServiceName());
-            System.out.println("INIT: Created proxy class for service "
-                    + service.getServiceName());
-            log.info("INIT: MTOM enabled for Service: " + binding.isMTOMEnabled());
-            System.out.println("INIT: MTOM enabled for Service: " + binding.isMTOMEnabled());
-            return ids;
-        }
+        
     }
 
     /**

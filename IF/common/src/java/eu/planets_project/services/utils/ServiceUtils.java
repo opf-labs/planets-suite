@@ -3,17 +3,32 @@
  */
 package eu.planets_project.services.utils;
 
-import eu.planets_project.services.datatypes.MigrationPath;
-import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.datatypes.ServiceReport.Status;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.util.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
+
+import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.Service;
+import javax.xml.ws.soap.MTOMFeature;
+import javax.xml.ws.soap.SOAPBinding;
+
+import com.sun.xml.ws.developer.JAXWSProperties;
+
+import eu.planets_project.services.datatypes.MigrationPath;
+import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 
 /**
  * A class to hold some utility functions for Planets Service developers.
@@ -22,6 +37,9 @@ import java.util.logging.Logger;
  *
  */
 public class ServiceUtils {
+    
+    private ServiceUtils(){ /* Enforce non-instantiability for this util class */ }
+    
     /** */
     private static Logger log = Logger.getLogger(ServiceUtils.class.getName());
 
@@ -169,6 +187,27 @@ public class ServiceUtils {
         }
         
         return null;
+    }
+    
+    /**
+     * @param <T> The type of the implementation class to instantiate
+     * @param interfaceName The QName of the service interface, e.g. Migrate.QNAME
+     * @param implementationClass The class of the instance to create, e.g. JTidy.class
+     * @param wsdlLocation The full URL of the WSDL for the service to create
+     * @return An instance of T, representing the service running at the given URL
+     */
+    public static <T> T createService(QName interfaceName, Class<T> implementationClass, URL wsdlLocation) {
+        log.info("INIT: Creating the proxied service class.");
+        Service service = Service.create(wsdlLocation, interfaceName);
+        /* Enable streaming, if supported by the service: */
+        @SuppressWarnings("unchecked") T ids = (T) service.getPort(implementationClass.getInterfaces()[0],
+                new MTOMFeature());
+        ((BindingProvider) ids).getRequestContext().put(JAXWSProperties.HTTP_CLIENT_STREAMING_CHUNK_SIZE, 8096);
+        SOAPBinding binding = (SOAPBinding) ((BindingProvider) ids).getBinding();
+        binding.setMTOMEnabled(true);
+        log.info("INIT: Created proxy class for service " + service.getServiceName());
+        log.info("INIT: MTOM enabled for Service: " + binding.isMTOMEnabled());
+        return ids;
     }
 
 }
