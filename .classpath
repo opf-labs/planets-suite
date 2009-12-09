@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="IF/admin/src/java"/>
+	<classpathentry kind="src" path="IF/generic/src/main/java"/>
 	<classpathentry kind="src" path="PA/dia/src/main/java"/>
 	<classpathentry kind="src" path="IF/admin/src/test/java"/>
 	<classpathentry kind="src" path="IF/common/src/java"/>
 	<classpathentry kind="src" path="IF/common/src/test/java"/>
 	<classpathentry kind="src" path="IF/fedora/src/java"/>
 	<classpathentry kind="src" path="IF/fedora/test/java"/>
-	<classpathentry kind="src" path="IF/generic/src/java"/>
 	<classpathentry kind="src" path="IF/generic/test/java"/>
 	<classpathentry kind="src" path="IF/selfreg/src/main/java"/>
 	<classpathentry kind="src" path="IF/selfreg/src/test/java"/>
