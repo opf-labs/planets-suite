@@ -87,7 +87,7 @@ public class GenericMigration implements Migrate, Serializable {
         Map<String, String> toolParams = mp.get(params.get("tool-name"));
         try {
             File inputFile = FileUtils.writeInputStreamToTmpFile(dob
-                    .getContent().read(), "generic-input", "tmp");
+                    .getContent().getInputStream(), "generic-input", "tmp");
 
             File outputFile = File.createTempFile("generic-output", "tmp");
             FileUtils.delete(outputFile);
