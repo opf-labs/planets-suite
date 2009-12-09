@@ -5,34 +5,73 @@
 <!-- ======================================================================= -->
 
 <project name="pa-dia" default="deploy" basedir=".">
-    <!-- Define the project name and directory, based on the project name specified above. -->
-    <property name="appName" value="${ant.project.name}"/>
-    <property name="appDir" value="."/>
-	
 
-    <!-- Specify the build type: ejb, war or ear. -->
-    <property name="pserv.app.build.type" value="war"/>
+	<!-- Specify configuration for this project -->
+	<property name="appName" value="${ant.project.name}" />
+	<property name="appDir" location="." />
 
-    <!-- Specify how this application should be deployed -->
-    <!--<property name="pserv.app.deploy.mode" value="ejb" />-->
+	<!-- Specify the build type: ejb, war or ear. -->
+	<property name="pserv.app.build.type" value="ejb" />
 
-    <!-- Specify the source directories for this component -->
-    <property name="src.dir" value="${appDir}/src/java"/>
-    <property name="lib.dir" value="${appDir}/lib"/>
-    <property name="src.resources" value="${appDir}/src/resources"/>
-    <property name="src.web" value="${appDir}/src/web"/>
+	<!-- Specify if this application requires further software to be installed -->
+	<property name="pserv.app.deploy.mode" value="pure-java" />
 
-    <!-- Unit testing definitions -->
-    <property name="test.src.dir" value="${appDir}/test/java" />
-    <property name="test.local" value="" />
-    <property name="test.server" value="" />
+	<property name="src.dir" location="${appDir}/src/main/java" />
+	<property name="lib.dir" location="${appDir}/lib" />
+	<property name="src.resources" location="${appDir}/src/main/resources" />
+	<property name="src.config" location="${appDir}/src/main/config" />
+	<property name="src.config.properties" value="pserv-pa-dia.properties" />
+
+	<property name="test.src.dir" location="${appDir}/test/java" />
+	<property name="test.resources" location="${appDir}/test/resources" />
+	<property name="test.config" location="${appDir}/test/config" />
+	<property name="test.config.properties" value="pserv-pa-dia.properties" />
+	<property name="test.local" value="" />
 	<property name="test.standalone" value="" />
+	<property name="test.server" value="" />
 
-	<!-- Specify the location of the configuration for ServiceConfig -->
-	<property name="build.test.conf" location="${appDir}/test/config" />
+	<!-- Include the build targets etc -->
+	<property name="pserv.root.dir" location="../.." />
+	<property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
+	<import file="${pserv.root.dir}/build.common.xml" />
 
-    <!-- Reference to the main build file -->
-    <property name="pserv.root.dir" value="../.." />
-    <import file="${pserv.root.dir}/build.common.xml"/>
+	<!-- OK, this is the Dia config stuff, this may be fun -->
+	<!-- First copy the test config file from test config area to pserv/test/config -->
+	<echo message="COPYING ${test.config}/${test.config.properties} TO ${pserv.test.config}/${test.config.properties}">
+	</echo>
+	<copy file="${test.config}/${test.config.properties}" tofile="${pserv.test.config}/${test.config.properties}" overwrite="true" />
 
+	<!-- We want the build properties file to get the config directory value -->
+	<property file="${pserv.root.dir}/build.properties" />
+
+	<!-- Now copy the config template to the properties name -->
+	<!-- It makes no sense to attempt to auto configure the Dia properties. They depend on various installation directories.
+
+	<echo message="COPYING ${src.config.properties}.template TO ${src.config}/${src.config.properties}" />
+	<copy file="${src.config}/${src.config.properties}.template" tofile="${src.config}/${src.config.properties}" overwrite="true" />
+	-->
+	<!-- Substitute the conf directory value from the build properties -->
+	<!--
+	<replace file="${src.config}/${src.config.properties}">
+		<replacefilter token="@planets.server.conf@" value="${if_server.conf}" />
+	</replace>
+	-->
+
+	<!-- Copy the configuration template from src/main/config area to user config dir to indicate that it must be adapted to the systetm running the server -->
+	<echo message="COPYING ${src.config}/${src.config.properties}.template TO ${if_server.conf}/${src.config.properties}.template">
+	</echo>
+	<copy file="${src.config}/${src.config.properties}.template" tofile="${if_server.conf}/${src.config.properties}.template" overwrite="true" />
+
+	<!-- Droid stuff below..... kill it some day -->
+	<!-- THIS IS THE LIVE DROID SIG FILE, test use of the V16 sig file -->
+	<!-- Using vars (from ant contrib) so that the same name properties can be used in the test
+		 config file and the live config file.  These are a little "naughty" but ant properties
+		 wouldn't get the job done -->
+	<!--
+	<var name="${droid.sigfile.location}" file="${src.config}/${src.config.properties}" />
+	<var name="${droid.sigfile.name}" file="${src.config}/${src.config.properties}" />
+	<echo message="COPYING ${src.resources}/DROID_SignatureFile_V16.xml TO ${droid.sigfile.location}/${droid.sigfile.name}">
+	</echo>
+	<copy file="${src.resources}/DROID_SignatureFile_V16.xml" tofile="${droid.sigfile.location}/${droid.sigfile.name}" overwrite="true" />
+-->
 </project>
