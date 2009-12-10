@@ -15,20 +15,20 @@ import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Tool;
 
-
 /**
- * Created by IntelliJ IDEA.
- * User: pko
- * Date: Aug 4, 2009
- * Time: 1:30:12 PM
- * To change this template use File | Settings | File Templates.
+ * @author Pelle Kofod &lt;pko@statsbiblioteket.dk&gt;
+ * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class ServiceDescriptionFactory {
+class ServiceDescriptionFactory {
     private Logger log = Logger.getLogger(ServiceDescriptionFactory.class.getName());
 
+    private final Document configuration;
 
-    public ServiceDescription getServiceDescription(
-            Document configuration,
+    ServiceDescriptionFactory(Document wrapperConfiguration) {
+	configuration = wrapperConfiguration;
+    }
+    
+    ServiceDescription getServiceDescription(            
             List<eu.planets_project.services.datatypes.MigrationPath> paths, String canonicalName)
             throws ConfigurationException {
 

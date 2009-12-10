@@ -35,7 +35,8 @@ import eu.planets_project.services.utils.ProcessRunner;
  */
 public class GenericMigrationWrapper {
 
-    private Logger log = Logger.getLogger(GenericMigrationWrapper.class.getName());
+    private Logger log = Logger.getLogger(GenericMigrationWrapper.class
+	    .getName());
 
     private MigrationPaths migrationPaths;
     private final String toolIdentifier;
@@ -65,11 +66,12 @@ public class GenericMigrationWrapper {
 	    MigrationPathFactory pathsFactory = new DBMigrationPathFactory(
 		    configuration);
 	    migrationPaths = pathsFactory.getAllMigrationPaths();
-	    ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory();
-	    List<eu.planets_project.services.datatypes.MigrationPath> planetsPaths = convertToPlanetsPaths(migrationPaths
+	    final ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory(
+		    configuration);
+	    final List<eu.planets_project.services.datatypes.MigrationPath> planetsPaths = convertToPlanetsPaths(migrationPaths
 		    .getAllMigrationPaths());
 	    serviceDescription = serviceFactory.getServiceDescription(
-		    configuration, planetsPaths, toolIdentifier);
+		    planetsPaths, toolIdentifier);
 	} catch (Exception e) {
 	    throw new MigrationInitialisationException(
 		    "Failed initialising migration path data from the configuration document: "
@@ -148,12 +150,13 @@ public class GenericMigrationWrapper {
 	    // Serve the digital object through a temporary input file.
 	    File inputTempFile = temporaryFileMappings.get(inputIOProfile
 		    .getCommandLineFileLabel());
-	    FileUtils.writeInputStreamToFile(sourceObject.getContent().getInputStream(),
-		    inputTempFile);
+	    FileUtils.writeInputStreamToFile(sourceObject.getContent()
+		    .getInputStream(), inputTempFile);
 	}
 
 	// Create an executable command line for the process runner.
-	final PRCommandBuilder commandBuilder = new PRCommandBuilder(envrionmentParameters);
+	final PRCommandBuilder commandBuilder = new PRCommandBuilder(
+		envrionmentParameters);
 	final List<String> prCommand = commandBuilder.buildCommand(
 		migrationPath, toolParameters, temporaryFileMappings);
 

@@ -44,7 +44,7 @@ public class GenericMigrationWrapperTest {
 	final Configuration environmentConfiguration = ServiceConfig
 		.getConfiguration("genericwrapper2_GenericMigrationWrapperTest");
 
-	DocumentLocator documentLocator = new DocumentLocator(
+	final DocumentLocator documentLocator = new DocumentLocator(
 		"GenericWrapperConfigFileExample.xml");
 
 	genericWrapper = new GenericMigrationWrapper(documentLocator
