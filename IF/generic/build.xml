@@ -12,9 +12,6 @@
 	<!-- Specify the build type: ejb, war or ear. -->
 	<property name="pserv.app.build.type" value="ejb" />
 
-	<!-- Specify if this application requires further software to be installed -->
-	<property name="pserv.app.deploy.mode" value="pure-java" />
-
 	<property name="src.dir" location="${appDir}/src/main/java" />
 	<property name="lib.dir" location="${appDir}/lib" />
 	<property name="src.resources" location="${appDir}/src/main/resources" />
