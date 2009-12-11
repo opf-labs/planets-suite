@@ -21,7 +21,7 @@ public interface Configuration {
 	/**
 	 * Get the value of a property with a given key. If it doesn't exist, return the default value
 	 * @param key Determines which property to get the value for.
-	 * @param default Returned if the key is not found.
+	 * @param defaultValue Returned if the key is not found.
 	 * @return The value matching the given key (or the default if no value found).
 	 */
 	String getString(String key, String defaultValue);
@@ -37,7 +37,7 @@ public interface Configuration {
 	/**
 	 * Get the value of a property with a given key. If it doesn't exist, return the default value.
 	 * @param key Determines which property to get the value for.
-	 * @param default Returned if the key is not found.
+	 * @param defaultValue Returned if the key is not found.
 	 * @return The value matching the given key (or the default if no value found).
 	 * @throws ConversionException If the String value of the property cannot be converted to an 'int'
 	 */
@@ -54,7 +54,7 @@ public interface Configuration {
 	/**
 	 * Get the value of a property with a given key as a URI. If it doesn't exist, return the default value.
 	 * @param key Determines which property to get the value for.
-	 * @param default Returned if the key is not found.
+	 * @param defaultValue Returned if the key is not found.
 	 * @return The value matching the given key, converted to a URI
 	 * @throws NoSuchElementException If the given key is not in the properties file.
 	 * @throws ConversionException If the String value of the property cannot be converted to a URI

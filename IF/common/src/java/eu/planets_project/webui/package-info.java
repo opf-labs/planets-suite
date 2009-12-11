@@ -1,3 +1,3 @@
-/** UI-related Planets IF classes */
+/** UI-related Planets IF classes. */
 package eu.planets_project.webui;
 

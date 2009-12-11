@@ -247,7 +247,7 @@ public class PlanetsServiceEndpoint {
     //==========================================================================
 	
     /**
-     * @return
+     * @return "success", if successful
      */
     public String updateDescription() {
         log.info("update: "+this.getLocation());
@@ -293,7 +293,7 @@ public class PlanetsServiceEndpoint {
     }
     
     /**
-     * @return
+     * @return "success", if successful
      */
     public String deregisterService() {
         this.removeFromServiceRegistry();
@@ -307,7 +307,7 @@ public class PlanetsServiceEndpoint {
     }
 
     /**
-     * @return
+     * @return "success", if successful
      */
     public String registerService() {
         if( this.getDescription() != null ) {

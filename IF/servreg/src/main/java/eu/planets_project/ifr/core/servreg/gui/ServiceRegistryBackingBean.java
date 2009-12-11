@@ -57,7 +57,7 @@ public class ServiceRegistryBackingBean {
     }
     
     /**
-     * @return
+     * @return The registered endpoints
      */
     public  List<PlanetsServiceEndpoint> getRegisteredServices() {
         if( this.services == null ) {
@@ -68,7 +68,7 @@ public class ServiceRegistryBackingBean {
     
     /**
      * @param objectName
-     * @return
+     * @return The resolved object or null
      */
     public static Object getManagedObject(String objectName)
     {

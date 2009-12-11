@@ -43,7 +43,7 @@ public final class RemoteServiceRegistry implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.servreg.api.ServiceRegistry#query(eu.planets_project.services.datatypes.ServiceDescription)
+     * @see ServiceRegistry#query(ServiceDescription)
      */
     public List<ServiceDescription> query(final ServiceDescription example) {
         return registry.query(example);
@@ -51,8 +51,7 @@ public final class RemoteServiceRegistry implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.servreg.api.ServiceRegistry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription,
-     *      eu.planets_project.ifr.core.registry.impl.Query.MatchingMode)
+     * @see eu.planets_project.ifr.core.servreg.api.ServiceRegistry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription, eu.planets_project.ifr.core.servreg.api.MatchingMode)
      */
     public List<ServiceDescription> queryWithMode(final ServiceDescription example, final MatchingMode mode) {
         return registry.queryWithMode(example, mode);
@@ -73,7 +72,7 @@ public final class RemoteServiceRegistry implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.servreg.api.ServiceRegistry#delete(eu.planets_project.services.datatypes.ServiceDescription)
+     * @see ServiceRegistry#delete(ServiceDescription)
      */
     public Response delete(final ServiceDescription example) {
         return registry.delete(example);
@@ -81,7 +80,7 @@ public final class RemoteServiceRegistry implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.servreg.api.ServiceRegistry#clear()
+     * @see ServiceRegistry#clear()
      */
     public Response clear() {
         return registry.clear();
