@@ -9,12 +9,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 
-import eu.planets_project.ifr.core.common.api.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
@@ -109,12 +109,12 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 	 */
 	private JcrDigitalObjectManagerImpl() {
 		try {
-			//TODO _log.info("JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl()");
+			_log.log(Level.INFO, "JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl()");
 			jcrManager = new DOJCRManager(DIGITAL_OBJECT_REPOSITORY_NAME, _log);
 			initRootDir();
 		} catch (Exception _exp) {
 			String _message = "JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl() Cannot load resources";
-			//TODO _log.info(_message, _exp);
+			_log.log(Level.INFO, _message, _exp);
 		}
 	}
 
@@ -128,11 +128,11 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 	 */
 	public JcrDigitalObjectManagerImpl(Repository repository) {
 		try {
-			//TODO _log.info("JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl(repository)");
+			_log.log(Level.INFO, "JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl(repository)");
 			jcrManager = new DOJCRManager(repository, _log);
 		} catch (Exception _exp) {
 			String _message = "JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl() Cannot load resources";
-			//TODO _log.info(_message, _exp);
+			_log.log(Level.INFO, _message, _exp);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 			throws ItemNotFoundException, RepositoryException,
 			URISyntaxException 
     {
-		//TODO _log.info("JcrDigitalObjectManagerImpl.retrieveContent()");
+		_log.log(Level.INFO, "JcrDigitalObjectManagerImpl.retrieveContent()");
 		DigitalObjectContent resultContent = null;
 		try {
 			resultContent = Content.byValue(jcrManager.retrieveContent(pdURI));
@@ -177,7 +177,7 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 			throws ItemNotFoundException, RepositoryException,
 			URISyntaxException, DigitalObjectNotFoundException 
     {
-		//TODO _log.info("JcrDigitalObjectManagerImpl.retrieveContentAsStream()");
+		_log.log(Level.INFO, "JcrDigitalObjectManagerImpl.retrieveContentAsStream()");
 		return jcrManager.retrieveContentAsStream(pdURI);		
 	}
 
@@ -234,7 +234,7 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 		try {
 			res = jcrManager.removeDigitalObject(permanentURI);
 		} catch (Exception _exp) {
-			//TODO _log.info("Couldn't remove Digital Object: " + _exp.getMessage());
+			_log.log(Level.INFO, "Couldn't remove Digital Object: " + _exp.getMessage(), _exp);
 			res = DOJCRConstants.RESULT_ERROR;
 			throw new DigitalObjectNotRemovedException("Couldn't remove Digital Object", _exp);
 		}
@@ -253,7 +253,7 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 		try {
 			res = jcrManager.removeAll();
 		} catch (Exception _exp) {
-			//TODO _log.info("Couldn't remove all digital objects: " + _exp.getMessage());
+			_log.log(Level.INFO, "Couldn't remove all digital objects: " + _exp.getMessage(), _exp);
 			res = DOJCRConstants.RESULT_ERROR;
 			throw new DigitalObjectNotRemovedException("Couldn't remove all digital objects", _exp);
 		}
@@ -272,7 +272,7 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 		try {
 			retObj = jcrManager.retrieveDigitalObjectDefinition(pdURI, includeContent);
 		} catch (Exception _exp) {
-			//TODO _log.info("Couldn't retrieve Digital Object: " + _exp.getMessage());
+			_log.log(Level.INFO, "Couldn't retrieve Digital Object: " + _exp.getMessage(), _exp);
 			throw new DigitalObjectNotFoundException("Couldn't retrieve Digital Object", _exp);
 		}
 		return retObj;
@@ -296,7 +296,7 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 		try {
 			retObj = jcrManager.updateDigitalObject(newObject, includeContent);
 		} catch (Exception _exp) {
-			//TODO _log.info("Couldn't update Digital Object: " + _exp.getMessage());
+			_log.log(Level.INFO, "Couldn't update Digital Object: " + _exp.getMessage(), _exp);
 			throw new DigitalObjectUpdateException("Couldn't update Digital Object", _exp);
 		}
 		return retObj;
@@ -316,10 +316,10 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 		try {
 
 			DigitalObject dobj = store(pdURI, digitalObject, true);
-			//TODO _log.info(dobj.toXml());	
+			_log.log(Level.INFO, dobj.toXml());	
 			
 		} catch (Exception _exp) {
-			//TODO _log.info("Couldn't store Digital Object: ",_exp);
+			_log.log(Level.INFO, "Couldn't store Digital Object: ",_exp);
 			throw new DigitalObjectNotStoredException("Couldn't store Digital Object", _exp);
 		}
 	}
@@ -359,7 +359,7 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 			//call store
 			res = jcrManager.storeDigitalObjectDefinition(uri, digoUpdated, includeContent);
 		} catch (Exception _exp) {
-			//TODO _log.info("Couldn't store Digital Object: ",_exp);
+			_log.log(Level.INFO, "Couldn't store Digital Object: ",_exp);
 			throw new DigitalObjectNotStoredException("Couldn't store Digital Object", _exp);
 		}
 		return res;
