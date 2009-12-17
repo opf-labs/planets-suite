@@ -17,6 +17,7 @@ import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.ifr.core.storage.impl.blnewspaper.SimpleBLNewspaperDigitalObjectManagerImpl;
 import eu.planets_project.ifr.core.storage.impl.oai.OAIDigitalObjectManagerONBDemoImpl;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
 
 /**
  * This class manages all of the Data Registries known to the Workflow Workbench.
@@ -30,6 +31,12 @@ import eu.planets_project.services.datatypes.DigitalObject;
 public class DigitalObjectMultiManager implements DigitalObjectManager {
     // A logger:
     private static Logger log = Logger.getLogger(DigitalObjectMultiManager.class.getName());
+
+    // Data manager types
+	public static final int DIGITAL_OBJECT_DATA_MANAGER = 3;
+	
+	// Max count of data manager types
+	public static final int MAX_COUNT_DATA_MANAGER = 4;
 
     // A simple class to wrap a DR with it's base URI:
     private class DataSource {
@@ -45,7 +52,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      */
     public DigitalObjectMultiManager() {
         // Allocate the data sources:
-        dss = new DataSource[3];
+    	dss = new DataSource[MAX_COUNT_DATA_MANAGER];
         
         // The File System Data Registry:
         DigitalObjectManager fsdm = new FileSystemDataManager();
@@ -65,6 +72,12 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         dss[2].dm = bln;
         dss[2].uri = ((SimpleBLNewspaperDigitalObjectManagerImpl)bln).getRootURI().normalize();
    
+        // The Digital Object Data Registry:
+        DigitalObjectManager dodm = JcrDigitalObjectManagerImpl.getInstance();
+        dss[DIGITAL_OBJECT_DATA_MANAGER] = new DataSource();
+        dss[DIGITAL_OBJECT_DATA_MANAGER].dm = dodm;
+        dss[DIGITAL_OBJECT_DATA_MANAGER].uri = ((JcrDigitalObjectManagerImpl)dodm).getRootURI().normalize();
+        
         // The ONB OAI DigitalObjectManager
         /* This OAI source is no longer available, so disable this
         DigitalObjectManager onb = new OAIDigitalObjectManagerONBDemoImpl();

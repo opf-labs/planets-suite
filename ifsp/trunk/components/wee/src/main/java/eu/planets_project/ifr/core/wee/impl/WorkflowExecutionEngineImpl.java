@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.ejb.MessageDrivenContext;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -62,6 +64,7 @@ import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 					@ActivationConfigProperty(propertyName="destination", propertyValue="queue/wfExecQueue"),
         			@ActivationConfigProperty(propertyName="maxSession", propertyValue="1")
 				})
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class WorkflowExecutionEngineImpl implements MessageListener {
 	private static final Log log = LogFactory.getLog(WorkflowExecutionEngineImpl.class);
     @Resource

@@ -43,7 +43,7 @@ public class DigitalObjectDirectoryLister {
         DigitalObjectReference[] dobs = new DigitalObjectReference[childs.size()];
         for( int i = 0; i < childs.size(); i ++ ) {
             // Create a DOB from the URI:
-            dobs[i] = new DigitalObjectReference( childs.get(i) );
+        	 dobs[i] = new DigitalObjectReference( childs.get(i), dsm );
             
             // Mark that DigitalObject as a Directory if listing it returns NULL:
             List<URI> grandchilds = dsm.list(childs.get(i));

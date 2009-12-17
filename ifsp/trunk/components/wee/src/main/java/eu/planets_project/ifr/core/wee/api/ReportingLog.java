@@ -70,8 +70,24 @@ public final class ReportingLog implements Log {
      * @param backingLog The backing log
      */
     public ReportingLog(final Logger backingLog) {
-        this.backingLog = backingLog;
-        this.reporter = new WorkflowReporter();
+        this(backingLog,null);
+    }
+    
+    /**
+     * The backing log - allows to hand over the workflow's uuid to identify the output folder
+     * @param backingLog
+     * @param workflowUUID
+     */
+    public ReportingLog(final Logger backingLog, String workflowUUID) {
+    	this.backingLog = backingLog;
+        if(workflowUUID!=null){
+        	//check if we've got a workflowUUID to init the reporter
+        	this.reporter = new WorkflowReporter(workflowUUID);
+        }
+        else{
+        	//else: use the default init
+        	this.reporter = new WorkflowReporter();
+        }
         this.logFile = new File(reporter.reportOutputFolder, "wf-log.txt");
         try {
             backingLog.addAppender(new FileAppender(new SimpleLayout(), logFile.getAbsolutePath()));
@@ -79,7 +95,6 @@ public final class ReportingLog implements Log {
             e.printStackTrace();
         }
     }
-
 
     /**
      * @return The report assembled during logging
@@ -271,7 +286,15 @@ public final class ReportingLog implements Log {
         return new File(reporter.reportOutputFolder);
     }
     
-		public String getTime() {
+    /**
+     * @see ReportingLog#getResultsId()
+     */
+    @Deprecated
+	public String getTime() {
     	return reporter.getTime();
+    }
+    
+    public String getResultsId(){
+    	return reporter.getResultsId();
     }
 }

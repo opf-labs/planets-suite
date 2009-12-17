@@ -218,7 +218,13 @@ public class S3DataManager implements DigitalObjectManager {
      */
     public AWSCredentials loadAWSCredentials() throws IOException {
 
-        Properties testProperties = new Properties();        
+    	Properties testProperties = new Properties(); 
+        
+        //test if file exists
+        if(this.getClass().getResourceAsStream(SAMPLES_PROPERTIES_NAME)==null){
+        	throw new RuntimeException("Unable to load test properties file from classpath: " 
+                    + SAMPLES_PROPERTIES_NAME);
+        }        
         testProperties.load(this.getClass().getResourceAsStream(SAMPLES_PROPERTIES_NAME));
         
         if (testProperties == null) {

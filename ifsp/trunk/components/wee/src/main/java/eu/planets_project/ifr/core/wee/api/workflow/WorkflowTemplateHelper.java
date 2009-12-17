@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -12,13 +13,31 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+
+import eu.planets_project.ifr.common.conf.PlanetsServerConfig;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
+import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
+import eu.planets_project.ifr.core.wee.api.ReportingLog;
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.services.PlanetsService;
+import eu.planets_project.services.datatypes.Agent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
+import eu.planets_project.services.datatypes.Event;
+import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.utils.DigitalObjectUtils;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 
 /**
  * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
@@ -33,7 +52,11 @@ public abstract class WorkflowTemplateHelper implements Serializable {
 	private static final long serialVersionUID = -9043319482888030134L;
 	private Map<PlanetsService, ServiceCallConfigs> serviceInvocationConfigs = new HashMap<PlanetsService, ServiceCallConfigs>();
     private List<DigitalObject> data = new ArrayList<DigitalObject>();
-
+    private UUID wfInstanceUUID = null;
+    //FIXME: change this to DigitalObjectManager after the interface has been updated
+    private JcrDigitalObjectManagerImpl dom = (JcrDigitalObjectManagerImpl)JcrDigitalObjectManagerImpl.getInstance();
+    private WorkflowContext wfContext = null;
+    
     /*
      * All services with a Planets interface can be used within a given
      * worklowTemplate
@@ -128,6 +151,22 @@ public abstract class WorkflowTemplateHelper implements Serializable {
 
     /*
      * (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#setWorkflowContext(WorkflowContext)
+     */
+	public void setWorkflowContext(WorkflowContext wfContext){
+		this.wfContext = wfContext;
+	}
+	
+    /*
+     * (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getWorkflowContext()
+     */
+	public WorkflowContext getWorkflowContext(){
+		return this.wfContext;
+	}
+	
+    /*
+     * (non-Javadoc)
      * @see
      * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getData()
      */
@@ -196,9 +235,94 @@ public abstract class WorkflowTemplateHelper implements Serializable {
      * @return
      * @throws URISyntaxException
      */
-    public String getHostAuthority() throws URISyntaxException{
+    public static String getHostAuthority() throws URISyntaxException{
     	String authority = PlanetsServerConfig.getHostname() + ":" + PlanetsServerConfig.getPort();
         return authority;
     }
 
+    private WorkflowResult wfResult = null;
+    private void setWFResult(WorkflowResult wfResult){
+    	wfResult = new WorkflowResult();
+    }
+    
+    /**
+     * @see WorkflowTemplate#getWFResult()
+     */
+    public WorkflowResult getWFResult(){
+    	if(wfResult==null)
+    		wfResult = new WorkflowResult(this.getWorkflowReportingLogger());
+    	return wfResult;
+    }
+    
+    /**
+     * @see WorkflowTemplate#addWFResultItem(WorkflowResultItem)
+     */
+    public void addWFResultItem(WorkflowResultItem wfResultItem){
+    	this.getWFResult().addWorkflowResultItem(wfResultItem);
+    }
+    
+    private ReportingLog wfLogger;
+    public ReportingLog getWorkflowReportingLogger(){
+    	if(wfLogger==null)
+    		wfLogger = new ReportingLog(Logger.getLogger(WorkflowResult.class),this.getWorklowInstanceID()+"");
+    	return wfLogger;
+    }
+    
+    /**
+     * A reference to the WOrkflowInstance's UUID
+     * @param id
+     */
+    public void setWorkflowInstanceID(UUID id){
+    	this.wfInstanceUUID = id;
+    }
+    
+    public UUID getWorklowInstanceID(){
+    	return this.wfInstanceUUID;
+    }
+    
+    /**
+     * 
+     * @see WorkflowTemplate#storeDigitalObjectInJCR(DigitalObject)
+     * @return
+     */
+    public DigitalObject storeDigitalObjectInJCR(DigitalObject digoToStore) {
+    	//decode upon the location where to store the data
+    	URI PERMANENT_URI_PATH;
+		if(getWorklowInstanceID()==null){
+			PERMANENT_URI_PATH = URI.create("/weedata/");
+		}
+		else{
+			//group all information for a workflow execution by it's UUID
+			PERMANENT_URI_PATH = URI.create("/weedata/"+getWorklowInstanceID());
+		}
+		
+		DigitalObject resDo;
+		try {
+			// store and retrieve content
+			resDo = dom.store(PERMANENT_URI_PATH, digoToStore, true);
+			this.getWorkflowReportingLogger().debug("Stored Digital Object "+digoToStore.getTitle()+" for node: "+PERMANENT_URI_PATH+" in JCR repository. Received permanent URI: "+resDo.getPermanentUri()+" content reference: "+resDo.getContent().toString());
+		} catch (DigitalObjectNotStoredException e) {
+			this.getWorkflowReportingLogger().debug("Error storing Digital Object "+digoToStore.getPermanentUri()+" for node: "+PERMANENT_URI_PATH+" in JCR repository",e);
+			//return the original digo
+			resDo = digoToStore;
+		}
+		return resDo;
+    }
+    
+    
+    /**
+     * Returns the Agent of the batch processor the template is currently executed by.
+     * @return
+     */
+    public Agent getWEEAgent(){
+    	if(agentWEE==null)
+    		agentWEE = new Agent("Planets-WEE-v1.0", "The Planets Workflow Execution Engine", "planets://workflow/processor");
+    	return agentWEE;
+    }
+    
+    Agent agentWEE = null;
+    public void setWEEAgent(Agent agent){
+    	//FIXME: AL: this should actually be provided by the WEE at runtime
+    	this.agentWEE = agent;
+    }
 }

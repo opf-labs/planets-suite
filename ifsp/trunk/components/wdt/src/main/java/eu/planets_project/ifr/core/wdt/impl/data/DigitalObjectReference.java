@@ -1,9 +1,11 @@
 package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.net.URI;
-
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
+
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DOJCRManager;
 
 /**
  * 
@@ -23,6 +25,29 @@ public class DigitalObjectReference {
     // The nature of this item, directory or file:
     private boolean directory = false;
     
+    // The digital object manager to retrieve additional digital object properties from JCR
+    private DigitalObjectManager dom;
+    
+    // Constructor from URI:
+    public DigitalObjectReference( URI puri ) {
+    	this.puri = puri;
+    }
+
+    /**
+     * Constructor with permanent URI and digital object manager
+     * 
+     * @param puri
+     *        This is a permanent URI of the digital object
+     * @param _dom
+     *        This is a digital object manager used to retrieve additional 
+     *        digital object properities
+     */
+    public DigitalObjectReference( URI puri, DigitalObjectManager _dom ) 
+    {
+    	this.puri = puri;
+    	dom = _dom;
+    }
+    
     // Constructor from URI:
     public DigitalObjectReference( URI puri ) {
     	this.puri = puri;
@@ -41,6 +66,7 @@ public class DigitalObjectReference {
     	if ((puri != null) && (puri.toString().indexOf("jboss-web.deployer/ROOT.war/bl-newspaper/WO1") > -1)) {
     		String url = puri.toString();
         	System.out.println("URL before: " + url);
+        	// FIXME
         	url = "http://ubuntu.planets-project.arcs.ac.at/" + url.substring(url.indexOf("bl-newspaper"));
         	System.out.println("URL after: " + url);
         	try {
@@ -50,7 +76,17 @@ public class DigitalObjectReference {
         	}
         	return puri;
     	} else {
+        	if ((puri != null) && (puri.toString().indexOf(DOJCRConstants.DOJCR) > -1)) 
+        	{
+            	try {
+            		return new URI(DOJCRManager.getResolverPath() + puri.toString());
+            	} catch (URISyntaxException e) {
+            		log.debug("SHOULD NEVER HAPPEN!");
+            	}
+            	return puri;
+        	} else {
     		return puri;
+        	}
     	}
     }
 
@@ -96,6 +132,20 @@ public class DigitalObjectReference {
         	path = puri.getPath();
         }
         
+        if (puri.toString().indexOf(DOJCRManager.PERMANENT_URI) > -1) 
+        {
+        	// Special treatment for digital object presentation
+        	if (dom != null)
+        	{
+        		try {
+        		   String title = dom.retrieve(puri).getTitle();
+               	   path = path.concat("_" + title);
+        		} catch (Exception e) {
+                   log.debug("DigitalObjectReference title not found. " + e.getMessage());
+        		}
+        	}
+        } 
+
         if( path == null ) return "";
         
         // Trim any trailing slash:
@@ -106,6 +156,7 @@ public class DigitalObjectReference {
         // Return the portion up to the last slash:
         return path.substring( path.lastIndexOf('/') + 1 );
     }
+
 
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()

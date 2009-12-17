@@ -14,12 +14,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
+
+
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
+import eu.planets_project.services.datatypes.Checksum;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
@@ -86,7 +91,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 	static{
 		try{
 			//FIXME: this information should come from the data section of the configuration file
-			configForImages = new URL("http://ubuntu.planets-project.arcs.ac.at/cocoImage.xml");
+			configForImages = new URL("http://testbed.planets-project.eu/planets-testbed/cocoImage_20112009_al.xml");
 			CONFIG = new DigitalObject.Builder(
 			            Content.byReference(configForImages)).build();
 		}catch(Exception e){
@@ -115,7 +120,6 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
     	//init the log...
         wfResult = new WorkflowResult();
         int count = 0;
-        List<DigitalObject> objects = new ArrayList<DigitalObject>();
         try {
         	//get the digital objects and iterate one by one
             for (DigitalObject dgoA : this.getData()) {
@@ -383,7 +387,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 	    //2. store the data as file
         byte[] buf = new byte[1024];
         int len;
-        InputStream in = digo.getContent().getInputStream();
+        InputStream in = digo.getContent().read();
         while ((len = in.read(buf)) > 0) {
             out.write(buf, 0, len);
         }

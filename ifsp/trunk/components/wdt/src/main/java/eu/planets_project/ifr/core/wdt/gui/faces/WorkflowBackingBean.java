@@ -1,7 +1,6 @@
 package eu.planets_project.ifr.core.wdt.gui.faces;
 
 import java.io.BufferedInputStream;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,17 +32,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.imageio.spi.ServiceRegistry;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.XMLConstants;
+import javax.xml.soap.DetailEntry;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.apache.commons.logging.Log;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.apache.myfaces.custom.tree2.TreeModel;
 import org.apache.myfaces.custom.tree2.TreeModelBase;
@@ -58,16 +58,16 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
-import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
-import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectReference;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Event;
+import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
@@ -102,6 +102,7 @@ public class WorkflowBackingBean {
 	private String parameterName = "";
 	private String parameterValue = "";
 	private ArrayList<DigitalObjectReference> selectedObjects;
+	private ArrayList<DetailEntry> detailEntries;
 	private ArrayList<DigitalObject> digObjs;
 	private ArrayList<ServiceBean> serviceBeans;
 	// This hash maps simple service names (e.g. "Identify") to QNames
@@ -656,6 +657,175 @@ public class WorkflowBackingBean {
 	}
 
 	/**
+	 * This method fills the digital object details in the list.
+	 * 
+	 * @param o
+	 *        This is a digital object selected from the objects tree
+	 */
+	public void fillDetails(DigitalObject o) 
+	{
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_TITLE, o.getTitle()));
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_PERMANENT_URI, o
+						.getPermanentUri().toString()));
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_FORMAT_URI, o
+						.getFormat().toString()));
+		
+		// fill meta data
+		Iterator<Metadata> iterMetadata = o.getMetadata().iterator();
+		while (iterMetadata.hasNext()) {
+			Metadata metadata = iterMetadata.next();
+			if (metadata != null)
+				fillMetadata(metadata);
+		}
+		
+		// fill events
+		Iterator<Event> iterEvents = o.getEvents().iterator();
+		while (iterEvents.hasNext()) {
+			Event event = iterEvents.next();
+			if (event != null)
+				fillEvent(event);
+		}						
+	}
+	
+	/**
+	 * This method fills the digital object event properties in the details list.
+	 * 
+	 * @param event
+	 *        This is a digital object event
+	 */
+	public void fillProperties(Event event) {
+		Iterator<eu.planets_project.services.datatypes.Property> iterProperties = event
+				.getProperties().iterator();
+		while (iterProperties.hasNext()) {
+			eu.planets_project.services.datatypes.Property property = iterProperties
+					.next();
+			detailEntries.add(new DetailEntry(
+					DOJCRConstants.PREMIS_EVENT_PROPERTY_URI, property
+							.getUri().toString()));
+			detailEntries.add(new DetailEntry(
+					DOJCRConstants.PREMIS_EVENT_PROPERTY_NAME, property
+							.getName()));
+			detailEntries.add(new DetailEntry(
+					DOJCRConstants.PREMIS_EVENT_PROPERTY_VALUE, property
+							.getValue()));
+			detailEntries.add(new DetailEntry(
+					DOJCRConstants.PREMIS_EVENT_PROPERTY_DESCRIPTION, property
+							.getDescription()));
+			detailEntries.add(new DetailEntry(
+					DOJCRConstants.PREMIS_EVENT_PROPERTY_UNIT, property
+							.getUnit()));
+			detailEntries.add(new DetailEntry(
+					DOJCRConstants.PREMIS_EVENT_PROPERTY_TYPE, property
+							.getType()));
+		}
+	}
+	
+	/**
+	 * This method fills the digital object metadata in the details list.
+	 * 
+	 * @param metadata
+	 *        This is a digital object metadata
+	 */
+	public void fillMetadata(Metadata metadata) {
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_METADATA_TYPE, metadata
+						.getType().toString()));
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_METADATA_CONTENT, metadata
+						.getContent()));
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_METADATA_NAME, metadata
+						.getName()));
+	}
+	
+	/**
+	 * This method fills the digital object event agent in the details list.
+	 * 
+	 * @param agent
+	 *        This is a digital object event agent
+	 */
+	public void fillAgent(Agent agent) {
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_EVENT_AGENT_ID,
+				agent.getId()));
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_EVENT_AGENT_NAME,
+				agent.getName()));
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_EVENT_AGENT_TYPE,
+				agent.getType()));
+	}
+	
+	/**
+	 * This method fills the digital object events in the details list.
+	 * 
+	 * @param event
+	 *        This is a digital object event 
+	 */
+	public void fillEvent(Event event) {
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_EVENT_SUMMARY, event
+						.getSummary()));
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_EVENT_DATETIME, event
+						.getDatetime()));
+		detailEntries.add(new DetailEntry(
+				DOJCRConstants.PREMIS_EVENT_DURATION,
+				Double.toString(event.getDuration())));
+		
+		// fill agent
+		Agent agent = event.getAgent();
+		if (agent != null)
+			fillAgent(agent);
+
+		// fill properties
+		if (event.getProperties() != null)
+			fillProperties(event);
+	}
+	
+	/**
+	 * This method represents the details of particular digital object.
+	 */
+	public String showDetails() 
+	{
+		this.currentTab = "selectObjectsTab";
+		errorMessageString.clear();
+		if (currentItems != null) {
+			// Add each of the selected items to the experiment:
+			for (FileTreeNode dob : currentItems) {
+				// Only include selected items that are eligible:
+				if (dob.isSelectable() && dob.isSelected()) 
+				{
+					URI dobURI = dob.getUri();
+					DigitalObject o = null;
+					try {
+						o = dr.getDataManager(dobURI).retrieve(dobURI);
+					} catch (DigitalObjectNotFoundException e) {
+						errorMessageString
+								.add("\nUnable to retrieve selected digital object!");
+						e.printStackTrace();
+					}
+					if (o != null) {
+						fillDetails(o);
+					} else {
+						errorMessageString
+								.add("\nRetrieved digital object is null for URI: "
+										+ dobURI);
+					}
+				}
+			}
+			// Clear any selection:
+			selectNone();
+			return "back";
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Controller that removed all selected items from the workflow.
 	 */
 	public String clearObjects() {
@@ -663,6 +833,15 @@ public class WorkflowBackingBean {
 		selectedObjects.clear();
 		digObjs.clear();
 		inputDataSelected = false;
+		return "back";
+	}
+	
+	/**
+	 * Controller that removes all details entries from the detailEntries list.
+	 */
+	public String clearDetails() {
+		this.currentTab = "selectObjectsTab";
+		detailEntries.clear();
 		return "back";
 	}
 
@@ -721,6 +900,16 @@ public class WorkflowBackingBean {
 		return selectedObjects;
 	}
 
+	/**
+	 * This method returns a list of details for selected digital object.
+	 * 
+	 * @return detailEntries
+	 *         This is a list of digital object detail entries
+	 */
+	public List<DetailEntry> getDetails() {
+		return detailEntries;
+	}
+	
 	/**
 	 * @return workflowLoaded
 	 */

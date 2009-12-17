@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.ifr.core.wee.api.workflow.ServiceCallConfigs;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowContext;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
@@ -116,6 +117,9 @@ public class WorkflowFactory{
 		WorkflowTemplate wft = (WorkflowTemplate)Class.forName(QName).newInstance();
 		log.debug("WorkflowFactory: "+QName+" loaded, compiled and classloaded");
 		
+		//reset the WorkflowContext
+		workflowContext =null;
+		
 		//2a)use java reflection API to determine the list of used services within the workflowTemplate
 		List<Field> declaredServices = getDeclaredWFServices(wft);
 		
@@ -134,6 +138,7 @@ public class WorkflowFactory{
 				}
 			}	
 		}
+		
 		//check if no configuration was found for initializing the service
 		if(iCount!=declaredServices.size()){
 			String err = "The provided Workflow configuration is not suitable for the given workflow "+wft.getClass().getCanonicalName() +"1..n service configurations missing";
@@ -145,8 +150,13 @@ public class WorkflowFactory{
 		//3) Init the data the worklow will execute upon
 		wft.setData(digos);
 		
+		//hand over the WorkflowContext
+		wft.setWorkflowContext(getOrInitWFContext());
+		
 		//4) Build the WorkflowInstance
 		WorkflowInstance wfi = new WorkflowInstanceImpl(wft);
+		//provide the template with a reference to the wfi's UUID e.g. relevant for logging, storing, ...
+		wft.setWorkflowInstanceID(wfi.getWorkflowID());
 		
 		return wfi;
 	}
@@ -216,6 +226,8 @@ public class WorkflowFactory{
 			if(serviceConf.getParameters()!=null){
 				setServiceParameters(wft, planetsService, serviceConf.getParameters());
 			}
+		//3) set service specific WorkflowContext information
+			getOrInitWFContext().putContextObject(planetsService, WorkflowContext.Property_ServiceEndpoint, serviceConf.getEndpoint());
 	}
 	
 	/**
@@ -232,6 +244,15 @@ public class WorkflowFactory{
 			}
 		}
 		wft.setServiceCallConfigs(planetsService, serCallConf);
+	}
+	
+	
+	private static WorkflowContext workflowContext = null;
+	private static WorkflowContext getOrInitWFContext(){
+		if(workflowContext==null){
+			workflowContext = new WorkflowContext();
+		}
+		return workflowContext;
 	}
 	
 	/**

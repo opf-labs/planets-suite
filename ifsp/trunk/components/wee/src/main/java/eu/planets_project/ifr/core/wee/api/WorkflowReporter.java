@@ -19,7 +19,8 @@ final class WorkflowReporter {
     private static final String TEMPLATE = "ReportTemplate.html";
     private static final String CONTENT_MARKER = "###CONTENT###";
     private static final String LOCAL = "components/wee/src/main/resources/";
-    private static final String WEE_DATA = "/planets-ftp/gen";
+    //private static final String WEE_DATA = "/planets-ftp/gen";
+    private static final String WEE_DATA = "/server/default/deploy/jboss-web.deployer/ROOT.war/wee-gen";
     private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
     private static final String JBOSS_HOME = System.getProperty(JBOSS_HOME_DIR_KEY);
     private static final String ENTRY =
@@ -29,29 +30,36 @@ final class WorkflowReporter {
             + "%s" // third insert: the content (a template again, see below)
             + "</td></tr></table></fieldset>";
     private static final String CONTENT = "<b>%s: </b>%s<br/> ";
-    private long time = initTime();
+    private String folderID = "";
     String reportOutputFolder = initOutputFolder();
     private StringBuilder builder = new StringBuilder();
 
     /**
      * Create a new reporter. This sets a new ID for the report outputs to a
-     * folder corresponding to that ID.
+     * folder corresponding to that ID. 
+     * If no workflow ID available: generate ID by timestamp
      */
     public WorkflowReporter() {
-        this.time = initTime();
+        this.folderID = getTimeStamp();
+        this.reportOutputFolder = initOutputFolder();
+    }
+    
+    /**
+     * Uses the workflow's UUID as ID to generate the output directory
+     * @see WorkflowReporter#WorkflowReporter()
+     * @param workflowUUID
+     */
+    public WorkflowReporter(String workflowUUID){
+    	this.folderID = workflowUUID;
         this.reportOutputFolder = initOutputFolder();
     }
 
-    private long initTime() {
-        return System.currentTimeMillis();
-    }
-    
-    public String getTime() {
-    	return ""+time;
+    private String getTimeStamp() {
+        return System.currentTimeMillis()+"";
     }
 
     private String initOutputFolder() {
-        return (JBOSS_HOME != null ? JBOSS_HOME + WEE_DATA : LOCAL) + "/id-" + time;
+        return (JBOSS_HOME != null ? JBOSS_HOME + WEE_DATA : LOCAL) + "/id-" + folderID;
     }
 
     /**
@@ -113,6 +121,22 @@ final class WorkflowReporter {
             builder.append(String.format(CONTENT, parameter.getName(), parameter.getValue()));
         }
         return builder.toString();
+    }
+    
+    /**
+     * @see WorkflowReporter#getResultsId() 
+     */
+    @Deprecated
+    public String getTime(){
+    	return this.folderID;
+    }
+    
+    /**
+     * Identifier for the workflow reporter's output. (formerly used as getTime()
+     * @return
+     */
+    public String getResultsId(){
+    	return this.folderID;
     }
     
 }

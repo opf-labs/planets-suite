@@ -180,7 +180,7 @@
     </rich:tab>
         
         <rich:tab id="selectObjectsTab" name="selectObjectsTab" label="Select Digital Objects">
-        	<h:panelGrid columns="2">
+        	<h:panelGrid columns="3">
         		<rich:panel>
 		            <f:facet name="header">
 		                <h:outputText value="Data Registry Browser"/>
@@ -234,9 +234,12 @@
 							<h:commandButton action="#{theWorkflow.selectAll}" value="Select All"/>
 							<h:commandButton action="#{theWorkflow.selectNone}" value="Select None"/>
 						</h:panelGroup>
-						<h:panelGroup>
-							<h:commandButton action="#{theWorkflow.addToWorkflow}" value="Add to Workflow"/>
-						</h:panelGroup>
+                  <h:panelGroup>
+                     <h:commandButton action="#{theWorkflow.addToWorkflow}" value="Add to Workflow"/>
+                  </h:panelGroup>
+                  <h:panelGroup>
+                     <h:commandButton action="#{theWorkflow.showDetails}" value="Details"/>
+                  </h:panelGroup>
 					</h:form>
 				</rich:panel>
 				<rich:panel>
@@ -256,6 +259,38 @@
 					</h:panelGroup>				
 				  </h:form> 
 				</rich:panel>
+            <rich:panel>
+              <h:form id="detailsForm">
+                 <rich:dataTable id="details" 
+                    onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+                    onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+                    value="#{theWorkflow.details}" var="dod" >
+                    <f:facet name="header">
+                        <rich:columnGroup>
+                            <rich:column colspan="2">
+                                <h:outputText value="Digital Object Details" />
+                            </rich:column>
+                            <rich:column breakBefore="true">
+                                <h:outputText value="Property" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Value" />
+                            </rich:column>
+                        </rich:columnGroup>
+                    </f:facet>               
+                    <rich:column>
+                     <h:outputText value="#{dod.name}" />
+                    </rich:column>
+                    <rich:column>
+                     <h:outputText value="#{dod.value}" />
+                    </rich:column>     
+
+                </rich:dataTable>
+               <h:panelGroup>
+                  <h:commandButton action="#{theWorkflow.clearDetails}" value="Clear Details"/>
+               </h:panelGroup>            
+              </h:form> 
+            </rich:panel>
 			</h:panelGrid>
         </rich:tab>
         

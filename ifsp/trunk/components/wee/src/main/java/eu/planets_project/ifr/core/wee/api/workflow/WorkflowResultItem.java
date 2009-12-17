@@ -13,9 +13,12 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
+import eu.planets_project.ifr.core.wee.api.ReportingLog;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -28,7 +31,7 @@ public class WorkflowResultItem implements Serializable{
 
 	@Transient
     @XmlTransient
-    private static final Log logger = LogFactory.getLog(WorkflowResultItem.class);
+    private static Log logger = LogFactory.getLog(WorkflowResultItem.class);
 	
 	public static final String GENERAL_WORKFLOW_ACTION = "general workflow action";
     public static final String SERVICE_ACTION_MIGRATION = "migration";
@@ -50,6 +53,7 @@ public class WorkflowResultItem implements Serializable{
     private List<String> logInfo;
     private ServiceReport serReport;
     private String serviceEndpoint;
+    private ServiceDescription serviceDescription;
     //a list of the actually called serviceParameters
     private List<Parameter> serParams;
     //the inputDigitalObject reference on which the execute was called. This can be different from the digoIn.
@@ -73,11 +77,25 @@ public class WorkflowResultItem implements Serializable{
      * @param endTime
      */
     public WorkflowResultItem(String serviceActionIdentifier, long startTime){
-    	this(null,serviceActionIdentifier,startTime,-1);
+    	this(null,serviceActionIdentifier,startTime,-1,null);
+    }
+    /**
+     * Allows to pass a specific logger.
+     * @see WorkflowResultItem#WorkflowResultItem(String, long)
+     */
+    public WorkflowResultItem(String serviceActionIdentifier, long startTime, ReportingLog logger){
+    	this(null,serviceActionIdentifier,startTime,-1,logger);
     }
     
     public WorkflowResultItem(String serviceActionIdentifier, long startTime, long endTime){
-    	this(null,serviceActionIdentifier,startTime,endTime);
+    	this(null,serviceActionIdentifier,startTime,endTime,null);
+    }
+    /**
+     * Allows to pass a specific logger.
+     * @see WorkflowResultItem#WorkflowResultItem(String, long, long)
+     */
+    public WorkflowResultItem(String serviceActionIdentifier, long startTime, long endTime,ReportingLog logger){
+    	this(null,serviceActionIdentifier,startTime,endTime,logger);
     }
 	
     /**
@@ -88,11 +106,31 @@ public class WorkflowResultItem implements Serializable{
      * @param endTime
      */
     public WorkflowResultItem(DigitalObject aboutDigo, String serviceActionIdentifier, long startTime){
-    	this(aboutDigo,serviceActionIdentifier,startTime,-1);
+    	this(aboutDigo,serviceActionIdentifier,startTime,-1,null);
+    }
+    /**
+     * Allows to pass a specific logger.
+     * @see WorkflowResultItem#WorkflowResultItem(DigitalObject, String, long)
+     */
+    public WorkflowResultItem(DigitalObject aboutDigo, String serviceActionIdentifier, long startTime,ReportingLog logger){
+    	this(aboutDigo,serviceActionIdentifier,startTime,-1,logger);
     }
     
+    /**
+     * Allows to pass a specific logger.
+     * @see WorkflowResultItem#WorkflowResultItem(DigitalObject, String, long, long)
+     */
 	public WorkflowResultItem(DigitalObject aboutDigo,String serviceActionIdentifier, long startTime, long endTime){
+		this(aboutDigo,serviceActionIdentifier,startTime,endTime,null);
+	}
+	public WorkflowResultItem(DigitalObject aboutDigo,String serviceActionIdentifier, long startTime, long endTime,ReportingLog logger){
 		this();
+		if(logger!=null){
+			this.logger = logger;
+		}
+		else{
+	    	logger = new ReportingLog(Logger.getLogger(WorkflowResultItem.class));
+		}
 		if(aboutDigo==null){
 			aboutExecutionDigoDifferentThanInputDigo = false;
 		}
@@ -105,13 +143,26 @@ public class WorkflowResultItem implements Serializable{
 		this.setEndTime(endTime);
 	}
 	
+	/**
+	 * Use a custom logger to report this item.
+	 * @param logger
+	 */
+	public void setReportingLog(ReportingLog logger){
+		this.logger = logger;
+	}
+	
 	
 	public void setInputDigitalObject(DigitalObject inDigo){
 		if(inDigo!=null){
 			this.digoIn = inDigo.toXml();
 			if(!aboutExecutionDigoDifferentThanInputDigo){
 				this.setAboutExecutionDigoRef(inDigo.getPermanentUri());
-				logger.info("setInputDigitalObject: "+inDigo.toXml());
+			}
+			if(digoIn.length()>3000){
+				logger.info("setInputDigitalObject: "+inDigo.toString()+" \n details: \n "+digoIn.subSequence(0, 1500)+"\n [...] \n"+digoIn.subSequence(digoIn.length()-1500, digoIn.length()));
+			}
+			else{
+				logger.info("setInputDigitalObject: "+inDigo.toString()+" \n details: \n "+digoIn);
 			}
 		}
 	}
@@ -120,7 +171,12 @@ public class WorkflowResultItem implements Serializable{
 		if(outDigo!=null){
 			this.digoOut = outDigo.toXml();
 			this.addLogInfo("Successfully added OutputDigitalObject");
-			logger.info("setOutputDigitalObject: "+outDigo.toXml());
+			if(digoOut.length()>3000){
+				logger.info("setOutputDigitalObject: "+outDigo.toString()+" \n details: \n "+digoOut.subSequence(0, 1500)+"\n [...] \n"+digoOut.subSequence(digoOut.length()-1500, digoOut.length()));
+			}
+			else{
+				logger.info("setOutputDigitalObject: "+outDigo.toString()+" \n details: \n "+digoOut);
+			}
 		}
 	}
 	
@@ -241,6 +297,17 @@ public class WorkflowResultItem implements Serializable{
 		if(serviceEndpoint!=null){
 			this.serviceEndpoint = serviceEndpoint.toExternalForm();
 			logger.info("setServiceEndpoint: "+serviceEndpoint);
+		}
+	}
+	
+	public ServiceDescription getServiceDescription(){
+		return serviceDescription;
+	}
+	
+	public void setServiceDescription(ServiceDescription serDescr){
+		if(serDescr!=null){
+			logger.info("setServiceDescription "+serDescr.toString());
+			this.serviceDescription = serDescr;
 		}
 	}
 	

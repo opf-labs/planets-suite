@@ -8,10 +8,15 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.log4j.Logger;
+
+import eu.planets_project.ifr.core.wee.api.ReportingLog;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
@@ -29,19 +34,28 @@ import eu.planets_project.services.datatypes.DigitalObject;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WorkflowResult implements Serializable {
 
-    /** Generated. */
+	@Transient
+    @XmlTransient
     private static final long serialVersionUID = -7804803563573452403L;
+    @Transient
+    @XmlTransient
+    private static ReportingLog logger;
 
+    //@SuppressWarnings("unused")
     // For JAXB - even if empty
     public WorkflowResult() {
+    	this(null);
+    }
+    
+    public WorkflowResult(ReportingLog wfLogger){
+    	if(wfLogger!=null){
+    		logger = wfLogger;
+    	}else{
+    		logger = new ReportingLog(Logger.getLogger(WorkflowResult.class));
+    	}
     	this.startTime = System.currentTimeMillis();
     	resultItems = new LinkedList<WorkflowResultItem>();
     }
-
-    // TODO Needs to be defined
-    // digital objects with result data or registry pointers
-    // metadata on execution time, etc.
-    // events
 
     private List<URL> results;
     private URL log;
@@ -49,8 +63,7 @@ public class WorkflowResult implements Serializable {
     private List<WorkflowResultItem> resultItems;
     private long startTime=-1;
     private long endTime=-1;
-    @SuppressWarnings("unused")
-	private String partialResults;
+    //private String partialResults;
 
     /**
      * @param report The location of the report
@@ -63,6 +76,14 @@ public class WorkflowResult implements Serializable {
         this.log = log;
         this.results = results;
     }
+    
+    /**
+	 * Use a custom logger to report this - otherwise use default log.
+	 * @param logger
+	 */
+	public void setReportingLog(ReportingLog logger){
+		this.logger = logger;
+	}
 
     /**
      * {@inheritDoc}
@@ -102,6 +123,7 @@ public class WorkflowResult implements Serializable {
      * @return the log
      */
     public void setLog(URL log) {
+    	logger.info("WorkflowLogURL: "+report);
         this.log = log;
     }
 
@@ -113,6 +135,7 @@ public class WorkflowResult implements Serializable {
     }
     
     public void setReport(URL report) {
+    	logger.info("WorkflowReport: "+report);
         this.report = report;
     }
     
@@ -121,6 +144,7 @@ public class WorkflowResult implements Serializable {
      * @param millis
      */
     public void setStartTime(long millis){
+    	logger.info("WorkflowStartTime: "+millis);
     	this.startTime = millis;
     }
     
@@ -130,6 +154,7 @@ public class WorkflowResult implements Serializable {
      * @param millis
      */
     public void setEndTime(long millis){
+    	logger.info("WorkflowEndTime: "+millis);
     	this.endTime = millis;
     }
     
@@ -181,7 +206,7 @@ public class WorkflowResult implements Serializable {
 	 * @param logInfo - any additional logInformation for this step
 	 */
 	public void addMigrationWorkflowResultItem(DigitalObject inputDigo, DigitalObject outputDigo, long startTime, long endTime, String logInfo){
-		WorkflowResultItem item = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_MIGRATION,startTime,endTime);
+		WorkflowResultItem item = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_MIGRATION,startTime,endTime,logger);
 		item.setInputDigitalObject(inputDigo);
 		if(outputDigo!=null){
 			item.setOutputDigitalObject(outputDigo);
@@ -198,7 +223,7 @@ public class WorkflowResult implements Serializable {
 	 * @param logInfo - any additional logInformation for this step
 	 */
 	public void addIdentificationWorkflowResultItem(DigitalObject inputDigo, List<String> identifier, long startTime, long endTime, String logInfo){
-		WorkflowResultItem item = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_IDENTIFICATION,startTime,endTime);
+		WorkflowResultItem item = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_IDENTIFICATION,startTime,endTime,logger);
 		item.setInputDigitalObject(inputDigo);
 		if((identifier!=null)&&(identifier.size()>0)){
 			item.setExtractedInformation(identifier);
@@ -215,7 +240,7 @@ public class WorkflowResult implements Serializable {
 	 * @param logInfo - any additional logInformation for this step
 	 */
 	public void addCharacterisationWorkflowResultItem(DigitalObject inputDigo, List<String> characterisation, long startTime, long endTime, String logInfo){
-		WorkflowResultItem item = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_CHARACTERISATION,startTime,endTime);
+		WorkflowResultItem item = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_CHARACTERISATION,startTime,endTime,logger);
 		item.setInputDigitalObject(inputDigo);
 		if((characterisation!=null)&&(characterisation.size()>0)){
 			item.setExtractedInformation(characterisation);
