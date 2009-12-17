@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jcr.ItemNotFoundException;
@@ -33,7 +34,6 @@ import javax.jcr.version.VersionException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import eu.planets_project.ifr.core.common.api.PlanetsLogger;
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotRemovedException;
@@ -105,7 +105,7 @@ public class DOJCRManager {
     /**
      * Logger for planets
      */
-    private Logger _log = null;
+	private static Logger _log = Logger.getLogger(DOJCRManager.class.getName());
     
 	/**
 	 * Constructor for DOJCRManager, connects to repository and initialises object.
@@ -122,19 +122,19 @@ public class DOJCRManager {
     {
 		try {
 			_log = logger;
-			//TODO _log.debug("DOJCRManager constructor");
+			_log.log(Level.INFO, "DOJCRManager constructor");
 
 		    InitialContext ctx = new InitialContext();
-			//TODO _log.debug("DOJCRManager constructor after ctx");
+			_log.log(Level.INFO, "DOJCRManager constructor after ctx");
 
 			// JNDI Lookup of the repository
 			System.out.println("DOJCRManager constructor after load");
 	        this.repository = (Repository)ctx.lookup(repositoryName);
-			//TODO _log.debug("DOJCRManager call getSession() repository: " + repository.toString());
+			_log.log(Level.INFO, "DOJCRManager call getSession() repository: " + repository.toString());
 	        this.initialiseRepository();
-			//TODO _log.debug("DOJCRManager after call initialiseRepository()");
+			_log.log(Level.INFO, "DOJCRManager after call initialiseRepository()");
 		} catch (Exception _exp) {
-			//TODO _log.debug("Error by repository creation: " + _exp.getMessage());
+			_log.log(Level.INFO, "Error by repository creation: " + _exp.getMessage());
 		}
     }
 
@@ -153,14 +153,14 @@ public class DOJCRManager {
     {
 		try {
 			_log = logger;
-			//TODO _log.debug("***********************************************");
-			//TODO _log.debug("DOJCRManager constructor with repository object");
+			_log.log(Level.INFO, "***********************************************");
+			_log.log(Level.INFO, "DOJCRManager constructor with repository object");
 
 	        this.repository = _repository;
-			//TODO _log.debug("DOJCRManager call getSession() repository: " + repository.toString());
+			_log.log(Level.INFO, "DOJCRManager call getSession() repository: " + repository.toString());
 	        this.initialiseRepository();
 		} catch (Exception _exp) {
-			//TODO _log.debug("Error by repository creation: " + _exp.getMessage());
+			_log.log(Level.INFO, "Error by repository creation: " + _exp.getMessage(), _exp);
 		}
     }
 
@@ -171,14 +171,14 @@ public class DOJCRManager {
      */
     private void getSession() throws LoginException, RepositoryException 
     {
-		//TODO _log.debug("DOJCRManager getSession() repository class: " + repository.getClass().getName());
+		_log.log(Level.INFO, "DOJCRManager getSession() repository class: " + repository.getClass().getName());
         try 
         {
           session = repository.login(new SimpleCredentials(USERNAME, PASSWORD.toCharArray()));
         }
         catch (Exception e)
         {
-        	//TODO _log.debug("DOJCRManager getSession() error: " + e.getMessage());
+        	_log.log(Level.INFO, "DOJCRManager getSession() error: " + e.getMessage(), e);
         }
     }
 
@@ -208,7 +208,7 @@ public class DOJCRManager {
     {
     	if (!repository.getClass().getName().contains(TRANSIENT_CLASS))
     	{
- 		   //TODO _log.debug("session logout.");
+ 		   _log.log(Level.INFO, "session logout.");
 		   session.logout();
     	}
     }
@@ -236,9 +236,9 @@ public class DOJCRManager {
 	    		   (PLANETS_NAMESPACE_PREFIX, PLANETS_NAMESPACE_URI);
     		}
     	} catch (LoginException _exp) {
-			//TODO _log.debug("initialiseRepository LoginException: " + _exp.getMessage());
+			_log.log(Level.INFO, "initialiseRepository LoginException: " + _exp.getMessage(), _exp);
     	} catch (RepositoryException _exp) {
-			//TODO _log.debug("initialiseRepository RepositoryException: " + _exp.getMessage());
+			_log.log(Level.INFO, "initialiseRepository RepositoryException: " + _exp.getMessage(), _exp);
     	} finally {
     		closeSession();
     	}
@@ -256,38 +256,38 @@ public class DOJCRManager {
     private Node createDocumentNode(String path) throws IOException, RepositoryException 
     {
 		// Carve the path into an array around the separator character
-//		//TODO _log.debug("splitting path array");
+//		_log.log(Level.INFO, "splitting path array");
 		String[] _pathArray = path.split(DOJCRConstants.JCR_PATH_SEPARATOR);
 
 		// Get the root node for the workspace
-//		//TODO _log.debug("getting root node");
+//		_log.log(Level.INFO, "getting root node");
 		Node _node = session.getRootNode();
 		
 		// Now loop through the path array and navigate the path, creating the nt:folder nodes that don't exist
 		// We save the last part of the path as this is the name and is hence an nt:file node
-//		//TODO _log.debug("iterating through " + _pathArray.length + " elements");
+//		_log.log(Level.INFO, "iterating through " + _pathArray.length + " elements");
 		for (int _loop = 1; _loop < _pathArray.length - 1; _loop++) {
 			// Check to see if the current node has a child matching the next path part
-//			//TODO _log.debug("element " + _loop);
-//			//TODO _log.debug("element is called:" + _pathArray[_loop]);
+//			_log.log(Level.INFO, "element " + _loop);
+//			_log.log(Level.INFO, "element is called:" + _pathArray[_loop]);
 			if (!_node.hasNode(_pathArray[_loop])) {
 				// If it doesn't then create the nt:folder node and set _node to the newly created node
-//				//TODO _log.debug("adding:" + _pathArray[_loop]);
+//				_log.log(Level.INFO, "adding:" + _pathArray[_loop]);
 				_node = _node.addNode(_pathArray[_loop]);
-//				//TODO _log.debug("finished the add call");
+//				_log.log(Level.INFO, "finished the add call");
 			} else {
 				// Else if it exists get it and set _node to the retrieved node
-//				//TODO _log.debug("getting:" + _pathArray[_loop]);
+//				_log.log(Level.INFO, "getting:" + _pathArray[_loop]);
 				_node = _node.getNode(_pathArray[_loop]);
 			}
 		}
 		
 		// We're at the end of the loop so this is the final part of the path which is the name of the file node
 		// First get the last part of the path array and check to see if the node exists
-		//TODO _log.debug("at last node now called:" + _pathArray[_pathArray.length - 1]);
+		_log.log(Level.INFO, "at last node now called:" + _pathArray[_pathArray.length - 1]);
 		if (!_node.hasNode(_pathArray[_pathArray.length - 1])) 
 		{
-			//TODO _log.debug("throwing file exists exception");
+			_log.log(Level.INFO, "throwing file exists exception");
 		}
 		// If not then create it
 		_node = _node.addNode(_pathArray[_pathArray.length - 1]);
@@ -304,7 +304,7 @@ public class DOJCRManager {
      */
     private Node createResourceNode(String path) throws RepositoryException 
     {
-		//TODO _log.debug("createResourceNode() path: " + path);
+		_log.log(Level.INFO, "createResourceNode() path: " + path);
     	
 		// Carve the path into an array around the separator character
 		String[] _pathArray = path.split(DOJCRConstants.JCR_PATH_SEPARATOR);
@@ -312,7 +312,7 @@ public class DOJCRManager {
 		// Get the current node for the workspace
 		Node _node = openNode(path);
 
-		//TODO _log.debug("createResourceNode() node evaluated.");
+		_log.log(Level.INFO, "createResourceNode() node evaluated.");
 		dumpNode(_node);
 		// We're at the end of the loop so this is the final part of the path which is the name of the file node
 		// First get the last part of the path array and check to see if the node exists
@@ -326,11 +326,11 @@ public class DOJCRManager {
 			_node = _node.addNode(DOJCRConstants.JCR_CONTENT,
 								  DOJCRConstants.NT_RESOURCE);
 			dumpNode(_node);
-	      	//TODO _log.debug("createResourceNode() add new node path: " + _node.getPath());
+	      	_log.log(Level.INFO, "createResourceNode() add new node path: " + _node.getPath());
 		}
 		else {
 			// If the node already existed then throw a file exists exception as the JCR is write once
-	      	//TODO _log.debug("createResourceNode() file exists node path: " + _node.getPath());
+	      	_log.log(Level.INFO, "createResourceNode() file exists node path: " + _node.getPath());
 			throw new RuntimeException("File exists");
 		}
 
@@ -340,7 +340,7 @@ public class DOJCRManager {
         // Finally the mimetype property to a default
       	_node.setProperty(DOJCRConstants.JCR_MIMETYPE, DOJCRConstants.DOJCR_PROPERTY_DEFAULT_MIMETYPE);
 
-      	//TODO _log.debug("createResourceNode() node path: " + _node.getPath());
+      	_log.log(Level.INFO, "createResourceNode() node path: " + _node.getPath());
 		dumpNode(_node);
 		
 		return _node;
@@ -384,7 +384,7 @@ public class DOJCRManager {
     {
 		// Carve the path into an array around the separator character
 		String[] _pathArray = path.split(DOJCRConstants.JCR_PATH_SEPARATOR);
-//		//TODO _log.debug("path length: " + _pathArray.length);
+//		_log.log(Level.INFO, "path length: " + _pathArray.length);
 
 		// Get the root node for the workspace
 		Node _node = session.getRootNode();
@@ -395,16 +395,16 @@ public class DOJCRManager {
 			// Check to see if the current node has a child matching the next path part
 			if (!_node.hasNode(_pathArray[_loop])) {
 				// If it doesn't then create the nt:folder node and set _node to the newly created node
-//				//TODO _log.debug("create nt:folder node: " + _pathArray[_loop]);
+//				_log.log(Level.INFO, "create nt:folder node: " + _pathArray[_loop]);
 				_node = _node.addNode(_pathArray[_loop], DOJCRConstants.NT_FOLDER);
 			} else {
 				// Else if it exists get it and set _node to the retrieved node
-//				//TODO _log.debug("get existing nt:folder node: " + _pathArray[_loop]);
+//				_log.log(Level.INFO, "get existing nt:folder node: " + _pathArray[_loop]);
 				_node = _node.getNode(_pathArray[_loop]);
 			}
 		}
 		
-//      	//TODO _log.debug("openNode() node path: " + _node.getPath());
+//      	_log.log(Level.INFO, "openNode() node path: " + _node.getPath());
       	dumpNode(_node);
 
         return _node;
@@ -422,7 +422,7 @@ public class DOJCRManager {
     {
 		// Carve the path into an array around the separator character
 		String[] _pathArray = path.split(DOJCRConstants.JCR_PATH_SEPARATOR);
-		//TODO _log.debug("path length: " + _pathArray.length);
+		_log.log(Level.INFO, "path length: " + _pathArray.length);
 
 		// Get the root node for the workspace
 		Node _node = session.getRootNode();
@@ -432,17 +432,17 @@ public class DOJCRManager {
 			// Check to see if the current node has a child matching the next path part
 			if (!_node.hasNode(_pathArray[_loop])) {
 				// If it doesn't then do nothing
-				//TODO _log.debug("retrieveDigitalObjectNode() error - not found nt:folder node: " + 
-						   //_pathArray[_loop]);
+				_log.log(Level.INFO, "retrieveDigitalObjectNode() error - not found nt:folder node: " + 
+						   _pathArray[_loop]);
 			} else {
 				// Else if it exists get it and set _node to the retrieved node
-				//TODO _log.debug("retrieveDigitalObjectNode() get existing nt:folder node: " + 
-						   //_pathArray[_loop]);
+				_log.log(Level.INFO, "retrieveDigitalObjectNode() get existing nt:folder node: " + 
+						   _pathArray[_loop]);
 				_node = _node.getNode(_pathArray[_loop]);
 			}
 		}
 		
-      	//TODO _log.debug("retrieveDigitalObjectNode() node path: " + _node.getPath());
+      	_log.log(Level.INFO, "retrieveDigitalObjectNode() node path: " + _node.getPath());
 
         return _node;
     }
@@ -472,14 +472,14 @@ public class DOJCRManager {
 				   storeMetadata(metadataObj, currentNode);
 				} catch (Exception e)
 				{
-					//TODO _log.debug("storeMetadataList() error: " + e.getMessage());
+					_log.log(Level.INFO, "storeMetadataList() error: " + e.getMessage(), e);
 		        	res = DOJCRConstants.RESULT_ERROR;
 				}
 			}
         }
         else
         {
-        	//TODO _log.debug("storeMetadataList()  list is empty.");
+        	_log.log(Level.INFO, "storeMetadataList()  list is empty.");
         	res = DOJCRConstants.RESULT_LIST_EMPTY;
         }
         
@@ -510,14 +510,14 @@ public class DOJCRManager {
 				   storeEvent(eventsObj, currentNode);
 				} catch (Exception e)
 				{
-					//TODO _log.debug("storeEventList() error: " + e.getMessage());
+					_log.log(Level.INFO, "storeEventList() error: " + e.getMessage(), e);
 		        	res = DOJCRConstants.RESULT_ERROR;
 				}
 			}
         }
         else
         {
-        	//TODO _log.debug("storeEventList() list is empty.");
+        	_log.log(Level.INFO, "storeEventList() list is empty.");
         	res = DOJCRConstants.RESULT_LIST_EMPTY;
         }
         
@@ -544,11 +544,11 @@ public class DOJCRManager {
                 NodeIterator entries = currentNode.getNodes(DOJCRConstants.DOJCR_EVENTS);
                 if (entries != null)
                 {
-                   //TODO _log.debug("updateEvents entries size: " + entries.getSize());
+                   _log.log(Level.INFO, "updateEvents entries size: " + entries.getSize());
                 }
                 else
                 {
-             	   //TODO _log.debug("updateEvents size is null");
+             	   _log.log(Level.INFO, "updateEvents size is null");
                 }
                 
                 while (entries.hasNext()) 
@@ -556,17 +556,17 @@ public class DOJCRManager {
                     Node node = entries.nextNode();
                     if (node != null)
                     {
-                       //TODO _log.debug("updateEvents node path: " + node.getPath());
+                       _log.log(Level.INFO, "updateEvents node path: " + node.getPath());
                        node.remove();
                     }
                     else
                     {
-                 	  //TODO _log.debug("updateEvents node is null");
+                 	  _log.log(Level.INFO, "updateEvents node is null");
                     }
                 }
         	} catch (Exception e)
         	{
-        	   //TODO _log.debug("updateEvents() error: " + e.getMessage());
+        	   _log.log(Level.INFO, "updateEvents() error: " + e.getMessage(), e);
          	   throw new DigitalObjectUpdateException(
         			   "updateEvents() error: " + e.getMessage());
         	}
@@ -597,11 +597,11 @@ public class DOJCRManager {
                 NodeIterator entries = currentNode.getNodes(DOJCRConstants.DOJCR_METADATA);
                 if (entries != null)
                 {
-                   //TODO _log.debug("updateMetadata entries size: " + entries.getSize());
+                   _log.log(Level.INFO, "updateMetadata entries size: " + entries.getSize());
                 }
                 else
                 {
-             	   //TODO _log.debug("updateMetadata size is null");
+             	   _log.log(Level.INFO, "updateMetadata size is null");
                 }
                 
                 while (entries.hasNext()) 
@@ -609,17 +609,17 @@ public class DOJCRManager {
                     Node node = entries.nextNode();
                     if (node != null)
                     {
-                       //TODO _log.debug("updateMetadata node path: " + node.getPath());
+                       _log.log(Level.INFO, "updateMetadata node path: " + node.getPath());
                        node.remove();
                     }
                     else
                     {
-                 	  //TODO _log.debug("updateMetadata node is null");
+                 	  _log.log(Level.INFO, "updateMetadata node is null");
                     }
                 }
         	} catch (Exception e)
         	{
-        	   //TODO _log.debug("updateMetadata() error: " + e.getMessage());
+        	   _log.log(Level.INFO, "updateMetadata() error: " + e.getMessage(), e);
          	   throw new DigitalObjectUpdateException(
         			   "updateMetadata() error: " + e.getMessage());
         	}
@@ -657,14 +657,14 @@ public class DOJCRManager {
 				   storeProperty(propertyObj, eventNode);
 				} catch (Exception e)
 				{
-					//TODO _log.debug("storePropertyList() error: " + e.getMessage());
+					_log.log(Level.INFO, "storePropertyList() error: " + e.getMessage(), e);
 		        	res = DOJCRConstants.RESULT_ERROR;
 				}
 			}
         }
         else
         {
-        	//TODO _log.debug("storePropertyList() list is empty.");
+        	_log.log(Level.INFO, "storePropertyList() list is empty.");
         	res = DOJCRConstants.RESULT_LIST_EMPTY;
         }
         
@@ -690,7 +690,7 @@ public class DOJCRManager {
     	try {
     		Node metadataNode = currentNode.addNode(DOJCRConstants.DOJCR_METADATA);
     		dumpNode(metadataNode);
-    		//TODO _log.debug("Creating node for the Metadata. path: " + metadataNode.getPath());
+    		_log.log(Level.INFO, "Creating node for the Metadata. path: " + metadataNode.getPath());
 	    	
 	    	// Add the specific node properties from the metadata properties
 	    	if (metadataObj.getType() != null)
@@ -702,12 +702,12 @@ public class DOJCRManager {
 	    	if (metadataObj.getName() != null)
 	    		metadataNode.setProperty( DOJCRConstants.DOJCR_METADATA_NAME
 	    				                , metadataObj.getName());
-    		//TODO _log.debug("metadataObj.getName(): " + metadataObj.getName() + 
-    				   //", content: " + metadataObj.getContent());
+    		_log.log(Level.INFO, "metadataObj.getName(): " + metadataObj.getName() + 
+    				   ", content: " + metadataObj.getContent());
 	    	session.save();
     	} catch (Exception e)
     	{
-    		//TODO _log.debug("storeMetadata error: " + e.getMessage());
+    		_log.log(Level.INFO, "storeMetadata error: " + e.getMessage(), e);
     	}
     	return res;
     }
@@ -731,7 +731,7 @@ public class DOJCRManager {
     	try {
     		Node eventsNode = currentNode.addNode(DOJCRConstants.DOJCR_EVENTS);
     		dumpNode(eventsNode);
-	    	//TODO _log.debug("Creating node for the Event. path: " + eventsNode.getPath());
+	    	_log.log(Level.INFO, "Creating node for the Event. path: " + eventsNode.getPath());
 	    	// Add the specific node properties from the events properties
 	    	if (eventsObj.getSummary() != null)
 	    		eventsNode.setProperty( DOJCRConstants.DOJCR_EVENTS_SUMMARY
@@ -755,12 +755,12 @@ public class DOJCRManager {
     	        res = storePropertyList(eventsObj.getProperties(), eventsNode);
         	    if (res != DOJCRConstants.RESULT_OK)
     	        {
-    	        	//TODO _log.debug("Error in storePropertyList");
+    	        	_log.log(Level.INFO, "Error in storePropertyList");
     	        }
 	    	}
     	} catch (Exception e)
     	{
-    		//TODO _log.debug("storeEvent error: " + e.getMessage());
+    		_log.log(Level.INFO, "storeEvent error: " + e.getMessage(), e);
     	}
     	return res;
     }
@@ -804,7 +804,7 @@ public class DOJCRManager {
 	    				                , propertyObj.getType());
     	} catch (Exception e)
     	{
-    		//TODO _log.debug("storeProperty error: " + e.getMessage());
+    		_log.log(Level.INFO, "storeProperty error: " + e.getMessage(), e);
     	}
     	return res;
     }
@@ -827,11 +827,11 @@ public class DOJCRManager {
            NodeIterator entries = currentNode.getNodes(DOJCRConstants.DOJCR_METADATA);
            if (entries != null)
            {
-              //TODO _log.debug("retrieveMetadataList entries size: " + entries.getSize());
+              _log.log(Level.INFO, "retrieveMetadataList entries size: " + entries.getSize());
            }
            else
            {
-        	   //TODO _log.debug("retrieveMetadataList size is null");
+        	   _log.log(Level.INFO, "retrieveMetadataList size is null");
            }
            
            while (entries.hasNext()) 
@@ -839,11 +839,11 @@ public class DOJCRManager {
                Node node = entries.nextNode();
                if (node != null)
                {
-                  //TODO _log.debug("retrieveMetadataList node path: " + node.getPath());
+                  _log.log(Level.INFO, "retrieveMetadataList node path: " + node.getPath());
                }
                else
                {
-            	  //TODO _log.debug("retrieveMetadataList node is null");
+            	  _log.log(Level.INFO, "retrieveMetadataList node is null");
                }
                Metadata metadataObj = retrieveMetadata(node);
                _retVal.add(metadataObj);
@@ -851,7 +851,7 @@ public class DOJCRManager {
 
 		} catch (Exception e)
 		{
-			//TODO _log.debug("retrieveMetadataList() error: " + e.getMessage());
+			_log.log(Level.INFO, "retrieveMetadataList() error: " + e.getMessage(), e);
 		}
         
     	return _retVal;
@@ -882,7 +882,7 @@ public class DOJCRManager {
 
 		} catch (Exception e)
 		{
-			//TODO _log.debug("retrieveEventList() error: " + e.getMessage());
+			_log.log(Level.INFO, "retrieveEventList() error: " + e.getMessage(), e);
 		}
         
     	return _retVal;
@@ -913,7 +913,7 @@ public class DOJCRManager {
 
 		} catch (Exception e)
 		{
-			//TODO _log.debug("retrievePropertyList() error: " + e.getMessage());
+			_log.log(Level.INFO, "retrievePropertyList() error: " + e.getMessage(), e);
 		}
         
     	return _retVal;
@@ -945,7 +945,7 @@ public class DOJCRManager {
 	    	_retVal.toString();
     	} catch (Exception e)
     	{
-    		//TODO _log.debug("retrieveMetadata error: " + e.getMessage());
+    		_log.log(Level.INFO, "retrieveMetadata error: " + e.getMessage(), e);
     	}
     	
     	return _retVal;
@@ -982,7 +982,7 @@ public class DOJCRManager {
 		    res.toString();
     	} catch (Exception e)
     	{
-    		//TODO _log.debug("retrieveEvent error: " + e.getMessage());
+    		_log.log(Level.INFO, "retrieveEvent error: " + e.getMessage(), e);
     	}
     	
     	return res;
@@ -1021,7 +1021,7 @@ public class DOJCRManager {
 		    res.toString();
     	} catch (Exception e)
     	{
-    		//TODO _log.debug("retrieveProperty error: " + e.getMessage());
+    		_log.log(Level.INFO, "retrieveProperty error: " + e.getMessage(), e);
     	}
     	
     	return res;
@@ -1057,7 +1057,7 @@ public class DOJCRManager {
 	    	res.toString();
 		} catch (Exception e)
 		{
-			//TODO _log.debug("retrieveAgent() error: " + e.getMessage());
+			_log.log(Level.INFO, "retrieveAgent() error: " + e.getMessage(), e);
 		}
         
     	return res;
@@ -1116,11 +1116,11 @@ public class DOJCRManager {
 			{
 				res = res + "isNew" + "; ";
 			}
-    	//TODO _log.debug("[NODE] " + res);
+    	_log.log(Level.INFO, "[NODE] " + res);
     	}
 		catch (Exception e)
 		{
-			//TODO _log.debug("dumpNode() error: " + e.getMessage());
+			_log.log(Level.INFO, "dumpNode() error: " + e.getMessage(), e);
 		}
     }
     
@@ -1135,7 +1135,7 @@ public class DOJCRManager {
      */
     public void storeStringValue(Node node, String value, String constant)
     {
-		//TODO _log.debug("storeStringValue() value: " + value + ", constant: " + constant);
+		_log.log(Level.INFO, "storeStringValue() value: " + value + ", constant: " + constant);
 		if (value != null) 
 		{
             try {
@@ -1163,7 +1163,7 @@ public class DOJCRManager {
     public int storeContent(InputStream streamContent, String path)
     {
     	int res = DOJCRConstants.RESULT_OK;
-		//TODO _log.debug("storeContent() path: " + path);
+		_log.log(Level.INFO, "storeContent() path: " + path);
 	    Value contentData;
 		try {
 			contentData = session.getValueFactory().createValue(streamContent);
@@ -1190,7 +1190,7 @@ public class DOJCRManager {
     public int updateContent(InputStream streamContent, String path)
     {
     	int res = DOJCRConstants.RESULT_OK;
-		//TODO _log.debug("updateContent() path: " + path);
+		_log.log(Level.INFO, "updateContent() path: " + path);
 	    Value contentData;
 		try {
 			contentData = session.getValueFactory().createValue(streamContent);
@@ -1240,11 +1240,11 @@ public class DOJCRManager {
   	    	switch (res)
   	    	{
       	    	case DOJCRConstants.RESULT_LIST_EMPTY:
-      	        	//TODO _log.debug("List is empty.");
+      	        	_log.log(Level.INFO, "List is empty.");
       	        	break;
       	    		
       	    	default:
-      	        	//TODO _log.debug("Error occured.");
+      	        	_log.log(Level.INFO, "Error occured.");
       	        	break;      	    		
   	    	}
 	    }
@@ -1271,11 +1271,11 @@ public class DOJCRManager {
     {
 		DigitalObject resVal = digitalObject;
     	try {    			    		
-			//TODO _log.debug("storeDigitalObjectDefinition()" + digitalObject.toString());
+			_log.log(Level.INFO, "storeDigitalObjectDefinition()" + digitalObject.toString());
     		openSession();
 
     		uri = URI.create(PERMANENT_URI + uri.toString());
-			//TODO _log.debug("storeDigitalObjectDefinition() uri: " + uri.toString());
+			_log.log(Level.INFO, "storeDigitalObjectDefinition() uri: " + uri.toString());
             Node doNode = createDocumentNode
                   (uri.toString().concat(DOJCRConstants.JCR_PATH_SEPARATOR + DOJCRConstants.DOJCR));
 	    	dumpNode(doNode);
@@ -1285,10 +1285,10 @@ public class DOJCRManager {
             	path = doNode.getPath().substring
             	      (0, doNode.getPath().indexOf(DOJCRConstants.NODE_INDEX_BEGIN)); 
             }
-	    	//TODO _log.debug("+++ path: " + path);
+	    	_log.log(Level.INFO, "+++ path: " + path);
 	    	URI permanentUri = URI.create(path + DOJCRConstants.JCR_PATH_SEPARATOR + doNode.getIndex());
-			//TODO _log.debug("storeDigitalObjectDefinition() calculated permanentUri: " + 
-					   //permanentUri.toString());
+			_log.log(Level.INFO, "storeDigitalObjectDefinition() calculated permanentUri: " + 
+					   permanentUri.toString());
 	        storeStringValue(doNode, digitalObject.getTitle(), DOJCRConstants.DOJCR_TITLE);
 	        if (permanentUri != null)
 	           storeStringValue(doNode, permanentUri.toString(), DOJCRConstants.DOJCR_PERMANENT_URI);
@@ -1311,11 +1311,11 @@ public class DOJCRManager {
 	    	
 	        if (digitalObject.getContent() != null) 
 	    	{
-	            //TODO _log.debug("store content.");
+	            _log.log(Level.INFO, "store content.");
 				if (includeContent)
 				{
 					long contentLen = digitalObject.getContent().length();
-				    //TODO _log.debug("contentLen: " + contentLen);			    
+				    _log.log(Level.INFO, "contentLen: " + contentLen);			    
 				    storeContent
 				       ( digitalObject.getContent().getInputStream()
 				       , uri.toString().concat
@@ -1331,14 +1331,14 @@ public class DOJCRManager {
   	        checkResult (storeEventsList(digitalObject.getEvents(), doNode));
 	    	session.save();
 
-            //TODO _log.debug("storing permanentUri: " + permanentUri.toString());
+            _log.log(Level.INFO, "storing permanentUri: " + permanentUri.toString());
     		/*try {
-                //TODO _log.debug("storing digitalObject.content: " + digitalObject.getContent().read().read());
+                _log.log(Level.INFO, "storing digitalObject.content: " + digitalObject.getContent().read().read());
     		} catch (IOException e) {
     			e.printStackTrace();
     		}	*/
     		if (digitalObject.getTitle() != null) {
-               //TODO _log.debug("storing digitalObject.title: " + digitalObject.getTitle());
+               _log.log(Level.INFO, "storing digitalObject.title: " + digitalObject.getTitle());
     		}
             
 	    	DigitalObject.Builder b = new DigitalObject.Builder(
@@ -1353,10 +1353,10 @@ public class DOJCRManager {
 		    if (digitalObject.getEvents() != null) 
 		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
             resVal = b.build();
-            //TODO _log.debug("storing completed. ");
+            _log.log(Level.INFO, "storing completed. ");
             resVal.toString();
     	} catch (Exception e) {
-    		//TODO _log.debug("storeDigitalObjectDefinition() error: " + e.getMessage());    		
+    		_log.log(Level.INFO, "storeDigitalObjectDefinition() error: " + e.getMessage(), e);    		
 			throw new DigitalObjectNotStoredException("storeDigitalObjectDefinition() error: ", e);
     	} finally {
     		closeSession();
@@ -1385,7 +1385,7 @@ public class DOJCRManager {
      	    Node node = findNodeByPermanentUri(permanentUri);
      	    node.remove();
     	} catch (Exception e) {
-    		//TODO _log.debug("removeDigitalObject() error: " + e.getMessage()); 
+    		_log.log(Level.INFO, "removeDigitalObject() error: " + e.getMessage(), e); 
     		res = DOJCRConstants.RESULT_ERROR;
 			throw new DigitalObjectNotRemovedException("removeDigitalObject() error: ", e);
     	} finally {
@@ -1409,7 +1409,7 @@ public class DOJCRManager {
     		openSession();
     		session.getRootNode().getNode(PLANETS_NAMESPACE_PREFIX).remove();
     	} catch (Exception e) {
-    		//TODO _log.debug("removeAll() error: " + e.getMessage()); 
+    		_log.log(Level.INFO, "removeAll() error: " + e.getMessage(), e); 
     		res = DOJCRConstants.RESULT_ERROR;
 			throw new DigitalObjectNotRemovedException("removeAll() error: ", e);
     	} finally {
@@ -1433,8 +1433,8 @@ public class DOJCRManager {
         try {
 			if (node.hasProperty(name))
 			{
-			   //TODO _log.debug("retrieveDigitalObjectDefinition() " + name + ": " + 
-					   //node.getProperty(name).getString());
+			   _log.log(Level.INFO, "retrieveDigitalObjectDefinition() " + name + ": " + 
+					   node.getProperty(name).getString());
 			   Property _prop = node.getProperty(name);
 			   res = _prop.getString();
 			}
@@ -1472,7 +1472,7 @@ public class DOJCRManager {
     {
        DigitalObjectContent resultContent = null;
     	
-   	   //TODO _log.debug("Create DO with content by reference");     	   	  
+   	   _log.log(Level.INFO, "Create DO with content by reference");     	   	  
 	   URI contentResolverUri = URI.create(getResolverPath() + permanentUri);
 	   resultContent = Content.byReference(contentResolverUri.toURL());
 
@@ -1504,7 +1504,7 @@ public class DOJCRManager {
 	   
  	   if (includeContent)
 	   {
-          //TODO _log.debug("evaluateContent() retrieve content.");
+          _log.log(Level.INFO, "evaluateContent() retrieve content.");
           dumpNode(node);
            Node contentNode = retrieveDigitalObjectNode
                ( node.getPath()
@@ -1523,28 +1523,28 @@ public class DOJCRManager {
 			 ByteArrayOutputStream out = new ByteArrayOutputStream();
 			 byte[] buf = new byte[BUFFER_SIZE];
 			 int len;
-//			 //TODO _log.debug("##### inputstream available: " + contentStream.available());
+//			 _log.log(Level.INFO, "##### inputstream available: " + contentStream.available());
 			 while ((len = contentStream.read(buf)) > 0) 
 			 {
-//				//TODO _log.debug("##### buf length: " + len + ", out.len: " + out.size());
+//				_log.log(Level.INFO, "##### buf length: " + len + ", out.len: " + out.size());
 				if (out.size() > MAX_SIZE)
 				{
-					//TODO _log.debug("File size is larger then " + MAX_SIZE);
+					_log.log(Level.INFO, "File size is larger then " + MAX_SIZE);
 					out.close();
 		            contentStream.close();
 					throw new DigitalObjectTooLargeException("File size is larger then " + MAX_SIZE);
 				}
 			    out.write(buf, 0, len);
 			 }
-//			 //TODO _log.debug("##### buf length: " + len + ", out.len: " + out.size());
+//			 _log.log(Level.INFO, "##### buf length: " + len + ", out.len: " + out.size());
 			 byte[] byteContent = out.toByteArray();
-             //TODO _log.debug("evaluateContent() byteContent.length: " + byteContent.length);
+             _log.log(Level.INFO, "evaluateContent() byteContent.length: " + byteContent.length);
              resultContent = Content.byValue(byteContent);
 			 out.close();
              contentStream.close();
           } catch (Exception e)
           {
-        	 //TODO _log.debug("contentStream.close():  " + e.getMessage());
+        	 _log.log(Level.INFO, "contentStream.close():  " + e.getMessage(), e);
           }
 	   }
  	   else
@@ -1574,7 +1574,7 @@ public class DOJCRManager {
     {
        InputStream contentStream = null;
 	   
-      //TODO _log.debug("evaluateContentAsSteam() retrieve content stream.");
+      _log.log(Level.INFO, "evaluateContentAsSteam() retrieve content stream.");
       dumpNode(node);
        Node contentNode = retrieveDigitalObjectNode
            ( node.getPath()
@@ -1604,12 +1604,12 @@ public class DOJCRManager {
     {
     	Node node = null;
     	try {
-        //TODO _log.debug("findNodeByPermanentUri() permanentUri: " + permanentUri.toString());
+        _log.log(Level.INFO, "findNodeByPermanentUri() permanentUri: " + permanentUri.toString());
 
         // Carve the permanent URI into an array around the separator character
 		String[] _pathArray = permanentUri.toString().split(DOJCRConstants.JCR_PATH_SEPARATOR);
         String digitalObjectIndex = _pathArray[_pathArray.length - 1];
-		//TODO _log.debug("findNodeByPermanentUri() digitalObjectIndex: " + digitalObjectIndex);
+		_log.log(Level.INFO, "findNodeByPermanentUri() digitalObjectIndex: " + digitalObjectIndex);
 
         node = openNode
               ( permanentUri.toString().replace
@@ -1620,7 +1620,7 @@ public class DOJCRManager {
         			  )
         	  );
     	} catch (Exception e) {
- 		   //TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
+ 		   _log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + e.getMessage(), e);
  	       throw new DigitalObjectNotFoundException(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
      	}
 
@@ -1661,9 +1661,9 @@ public class DOJCRManager {
 		   if (metaList != null) b.metadata(metaList);
 		   if (eventList != null) b.events(eventList);
            _retVal = b.build();
-           //TODO _log.debug("fillDigitalObject() retrieve completed. " + _retVal.toString());
+           _log.log(Level.INFO, "fillDigitalObject() retrieve completed. " + _retVal.toString());
     	} catch (Exception e) {
- 		   //TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
+ 		   _log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + e.getMessage(), e);
  	       throw new DigitalObjectNotFoundException(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
     	}
     	
@@ -1738,7 +1738,7 @@ public class DOJCRManager {
 	           if (!newObject.getContent().equals(content))
 	           {
 				  long contentLen = newObject.getContent().length();
-				  //TODO _log.debug("contentLen: " + contentLen);	
+				  _log.log(Level.INFO, "contentLen: " + contentLen);	
 				  //if persistent content is empty - store new content else update with new content
 				  if (content != null)
 				  {
@@ -1761,7 +1761,7 @@ public class DOJCRManager {
 	       node.save();
        } catch (Exception e)
        {
-    	   //TODO _log.debug("updateDigitalObjectParameters() error: " + e.getMessage());
+    	   _log.log(Level.INFO, "updateDigitalObjectParameters() error: " + e.getMessage(), e);
     	   throw new DigitalObjectUpdateException(
     			   "updateDigitalObjectParameters() error: " + e.getMessage());
        }
@@ -1827,26 +1827,26 @@ public class DOJCRManager {
 	    	   int updateRes = updateDigitalObjectParameters(node, includeContent, newObject);
 	    	   if (updateRes != DOJCRConstants.RESULT_OK)
 	    	   {
-	    		   //TODO _log.debug("Could not update digital object. Result: " + updateRes);
+	    		   _log.log(Level.INFO, "Could not update digital object. Result: " + updateRes);
 	    		   throw new DigitalObjectUpdateException(
 	    				   "Could not update digital object. Result: " + updateRes);
 	    	   }
     	   }
 	       DigitalObjectContent content = evaluateContent(node, includeContent, permanentUri.toString());
 	       _retVal = fillDigitalObject(node, content);
-           //TODO _log.debug("retrieveDigitalObjectDefinition() retrieve completed. " + _retVal.toString());
+           _log.log(Level.INFO, "retrieveDigitalObjectDefinition() retrieve completed. " + _retVal.toString());
     	} catch (DigitalObjectTooLargeException tle) {
- 		   //TODO _log.debug(DIGITAL_OBJECT_TOO_LARGE + tle.getMessage());
+ 		   _log.log(Level.INFO, DIGITAL_OBJECT_TOO_LARGE + tle.getMessage(), tle);
  	    	try {
 	 		   DigitalObjectContent content = 
 	 			   evaluateContentByReference(permanentUri.toString());
 		       _retVal = fillDigitalObject(node, content);
  	    	} catch (MalformedURLException e) {
- 	 		   //TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + " MalformedURLException: " + e.getMessage());
+ 	 		   _log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + " MalformedURLException: " + e.getMessage(), e);
  	 	       throw new DigitalObjectNotFoundException(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
  	     	} 
     	} catch (Exception e) {
- 		   //TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
+ 		   _log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + e.getMessage(), e);
  	       throw new DigitalObjectNotFoundException(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
      	} finally {
     		closeSession();
@@ -1871,14 +1871,14 @@ public class DOJCRManager {
           throws ItemNotFoundException, RepositoryException, 
                  URISyntaxException, DigitalObjectNotFoundException 
     {
-    	//TODO _log.debug("DOJCRManager.retrieveContentAsStream()");
+    	_log.log(Level.INFO, "DOJCRManager.retrieveContentAsStream()");
     	InputStream _retVal = null;
     	try {
     	   openSession();
      	   Node node = findNodeByPermanentUri(permanentUri);
            _retVal = evaluateContentAsStream(node, permanentUri.toString());
     	} catch (Exception e) {
- 		   //TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
+ 		   _log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + e.getMessage(), e);
  	       throw new DigitalObjectNotFoundException(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
     	} finally {
     		closeSession();
@@ -1903,14 +1903,14 @@ public class DOJCRManager {
           throws ItemNotFoundException, RepositoryException, 
                  URISyntaxException, DigitalObjectNotFoundException 
     {
-    	//TODO _log.debug("DOJCRManager.retrieveContent()");
+    	_log.log(Level.INFO, "DOJCRManager.retrieveContent()");
     	InputStream _retVal = null;
     	try {
     	   openSession();
      	   Node node = findNodeByPermanentUri(permanentUri);
            _retVal = evaluateContent(node, true, permanentUri.toString()).getInputStream();
     	} catch (Exception e) {
- 		   //TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
+ 		   _log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + e.getMessage(), e);
  	       throw new DigitalObjectNotFoundException(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
     	} finally {
     		closeSession();
@@ -2006,7 +2006,7 @@ public class DOJCRManager {
     public ArrayList<URI> list(URI pathUri) 
     {
     	String path = pathUri.toString();
-    	//TODO _log.debug("DOJCRManager.list() start path: " + path + "path length: " + path.length());
+    	_log.log(Level.INFO, "DOJCRManager.list() start path: " + path + "path length: " + path.length());
     	ArrayList<URI> _list = new ArrayList<URI>(0);
     	try {
     		// Get a repository session
@@ -2019,7 +2019,7 @@ public class DOJCRManager {
         	{ // digital object node exists in the path
        		   if (path.length() > digitalObjectNodeIndex + DOJCRConstants.DOJCR.length())
        		   {
-            	   //TODO _log.debug("DOJCRManager() list() path is too deep. Return null array.");
+            	   _log.log(Level.INFO, "DOJCRManager() list() path is too deep. Return null array.");
        			   return null;
        		   }
         	}
@@ -2051,8 +2051,8 @@ public class DOJCRManager {
     public ArrayList<DigitalObject> listDigitalObject(URI pathUri) 
     {
     	String path = pathUri.toString();
-    	//TODO _log.debug("DOJCRManager.list() of digital objects. start path: " + 
-    			//path + "path length: " + path.length());
+    	_log.log(Level.INFO, "DOJCRManager.list() of digital objects. start path: " + 
+    			path + "path length: " + path.length());
     	ArrayList<DigitalObject> _list = new ArrayList<DigitalObject>(0);
     	try {
     		// Get a repository session
@@ -2065,7 +2065,7 @@ public class DOJCRManager {
         	{ // digital object node exists in the path
        		   if (path.length() > digitalObjectNodeIndex + DOJCRConstants.DOJCR.length())
        		   {
-            	   //TODO _log.debug("DOJCRManager.listDigitalObject() path is too deep. Return null array.");
+            	   _log.log(Level.INFO, "DOJCRManager.listDigitalObject() path is too deep. Return null array.");
        			   return null;
        		   }
         	}
@@ -2075,16 +2075,16 @@ public class DOJCRManager {
     			try {
     			   findDigitalObjects(_node, _list);
     	    	} catch (DigitalObjectNotFoundException e) {
-      	  		   //TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
+      	  		   _log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + e.getMessage(), e);
 		    	} catch (DigitalObjectUpdateException e) {
-	  	  		   //TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + e.getMessage());
+	  	  		   _log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + e.getMessage(), e);
 	  	     	}     			   
     		}
     	} catch (LoginException _exp) {
-	  		//TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + _exp.getMessage());    		
+	  		_log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + _exp.getMessage(), _exp);    		
     		throw new RuntimeException(_exp);
     	} catch (RepositoryException _exp) {
-	  		//TODO _log.debug(DIGITAL_OBJECT_NOT_FOUND + _exp.getMessage());    		
+	  		_log.log(Level.INFO, DIGITAL_OBJECT_NOT_FOUND + _exp.getMessage(), _exp);    		
     		throw new RuntimeException(_exp);
     	} finally {
     		if( session != null ) 
