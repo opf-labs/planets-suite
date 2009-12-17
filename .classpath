@@ -197,5 +197,13 @@
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/saaj-api-1.3.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="IF/fedora/lib/FedoraClient/lib/trippi-1.4.1-core.jar"/>
+	<classpathentry kind="lib" path="lib/jackrabbit/jackrabbit-api-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jackrabbit/jackrabbit-core-1.4.5.jar"/>
+	<classpathentry kind="lib" path="lib/jackrabbit/jackrabbit-jcr-commons-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jackrabbit/jackrabbit-spi-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jackrabbit/jackrabbit-spi-commons-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jackrabbit/jackrabbit-text-extractors-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jackrabbit/slf4j-api-1.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackrabbit/slf4j-log4j12-1.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

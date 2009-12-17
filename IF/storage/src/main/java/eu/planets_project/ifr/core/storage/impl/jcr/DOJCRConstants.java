@@ -12,8 +12,9 @@ public class DOJCRConstants
 	/**
 	 * Function results 
 	 */
-	public static final int RESULT_OK     = 1;	
-	public static final int RESULT_ERROR  = 0;
+	public static final int RESULT_ERROR       = -1;
+	public static final int RESULT_OK          = 1;	
+	public static final int RESULT_LIST_EMPTY  = 2;
 	
 	/**
 	 * Title of the digital object 
@@ -156,9 +157,15 @@ public class DOJCRConstants
 	public static final String DOJCR_PROPERTY_DEFAULT_MIMETYPE = "application/octet-stream";
 
 	/**
-	 * Name of the jcr:mimeType property
+	 * JCR path separator character
 	 */
 	public static final String JCR_PATH_SEPARATOR = "/";
+	
+	/**
+	 * JCR path node index braces
+	 */
+	public static final String NODE_INDEX_BEGIN = "[";
+	public static final String NODE_INDEX_END = "]";
 	
 	/**
 	 * Defaults for the storing of binary data in JCR
@@ -172,4 +179,25 @@ public class DOJCRConstants
 	public static final String JCR_DATA = "jcr:data";
 	
 
+	/**
+	 * Defines for PREMIS standard
+	 */
+	public static final String PREMIS_TITLE = "PREMIS_TITLE";
+	public static final String PREMIS_PERMANENT_URI = "PREMIS_PERMANENT_URI";
+	public static final String PREMIS_FORMAT_URI = "PREMIS_FORMAT_URI";
+	public static final String PREMIS_METADATA_TYPE = "PREMIS_METADATA_TYPE";
+	public static final String PREMIS_METADATA_CONTENT = "PREMIS_METADATA_CONTENT";
+	public static final String PREMIS_METADATA_NAME = "PREMIS_METADATA_NAME";
+	public static final String PREMIS_EVENT_SUMMARY = "PREMIS_EVENT_SUMMARY";
+	public static final String PREMIS_EVENT_DATETIME = "PREMIS_EVENT_DATETIME";
+	public static final String PREMIS_EVENT_DURATION = "PREMIS_EVENT_DURATION";
+	public static final String PREMIS_EVENT_AGENT_ID = "PREMIS_EVENT_AGENT_ID";
+	public static final String PREMIS_EVENT_AGENT_NAME = "PREMIS_EVENT_AGENT_NAME";
+	public static final String PREMIS_EVENT_AGENT_TYPE = "PREMIS_EVENT_AGENT_TYPE";
+	public static final String PREMIS_EVENT_PROPERTY_URI = "PREMIS_EVENT_PROPERTY_URI";
+	public static final String PREMIS_EVENT_PROPERTY_NAME = "PREMIS_EVENT_PROPERTY_NAME";
+	public static final String PREMIS_EVENT_PROPERTY_VALUE = "PREMIS_EVENT_PROPERTY_VALUE";
+	public static final String PREMIS_EVENT_PROPERTY_DESCRIPTION = "PREMIS_EVENT_PROPERTY_DESCRIPTION";
+	public static final String PREMIS_EVENT_PROPERTY_UNIT = "PREMIS_EVENT_PROPERTY_UNIT";
+	public static final String PREMIS_EVENT_PROPERTY_TYPE = "PREMIS_EVENT_PROPERTY_TYPE";
 }

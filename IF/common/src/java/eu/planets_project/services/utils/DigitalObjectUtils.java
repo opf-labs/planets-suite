@@ -17,6 +17,9 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Checksum;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
+import eu.planets_project.services.datatypes.Event;
+import eu.planets_project.services.datatypes.Metadata;
 
 /**
  * Utils for handling digital objects.
@@ -489,5 +492,257 @@ public final class DigitalObjectUtils {
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * This method changes the content value in digital object and returns changed
+	 * digital object with new content and permanent URI values. 
+	 * 
+	 * @param digitalObject
+	 *        This is a digital object to be updated
+	 * @param newContent
+	 *        This is a new digital object content
+	 * @param newPermanentUri
+	 *        This is a new digital object permanent URI
+	 * @return changed digital object with new content and permanent URI values
+	 */
+	public static DigitalObject changeContentAndPermanentUri
+	      ( DigitalObject digitalObject
+	      , DigitalObjectContent newContent
+	      , URI newPermanentUri
+	      )
+    {
+		DigitalObject res = null;
+		
+    	if (digitalObject != null && newContent != null && newPermanentUri != null)
+    	{
+    		res = changeContent(digitalObject, newContent);
+    		res = changePermanentUri(res, newPermanentUri);
+    	}
+		return res;
+	}
+	
+	/**
+	 * This method changes the content value in digital object and returns changed
+	 * digital object with new content value. 
+	 * 
+	 * @param digitalObject
+	 *        This is a digital object to be updated
+	 * @param newContent
+	 *        This is a new digital object content
+	 * @return changed digital object with new content value
+	 */
+	public static DigitalObject changeContent(DigitalObject digitalObject, DigitalObjectContent newContent)
+    {
+		DigitalObject res = null;
+		
+    	if (digitalObject != null && newContent != null)
+    	{
+	    	DigitalObject.Builder b = new DigitalObject.Builder(newContent);
+		    if (digitalObject.getTitle() != null) b.title(digitalObject.getTitle());
+		    if (digitalObject.getPermanentUri() != null) b.permanentUri(digitalObject.getPermanentUri());
+		    if (digitalObject.getFormat() != null) b.format(digitalObject.getFormat());
+		    if (digitalObject.getManifestationOf() != null) 
+		    	b.manifestationOf(digitalObject.getManifestationOf());
+		    if (digitalObject.getMetadata() != null) 
+		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
+		    if (digitalObject.getEvents() != null) 
+		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
+            res = b.build();
+    	}
+		return res;
+	}
+    
+	/**
+	 * This method changes the content value in digital object and returns changed
+	 * digital object with new content value. 
+	 * 
+	 * @param digitalObject
+	 *        This is a digital object to be updated
+	 * @param newContent
+	 *        This is a new digital object content
+	 * @return changed digital object with new content value
+	 */
+	public static DigitalObject addEvent(DigitalObject digitalObject, Event newEvent)
+    {
+		DigitalObject res = null;
+		
+    	if (digitalObject != null && newEvent != null)
+    	{
+	    	DigitalObject.Builder b = new DigitalObject.Builder(digitalObject.getContent());
+		    if (digitalObject.getTitle() != null) b.title(digitalObject.getTitle());
+		    if (digitalObject.getPermanentUri() != null) b.permanentUri(digitalObject.getPermanentUri());
+		    if (digitalObject.getFormat() != null) b.format(digitalObject.getFormat());
+		    if (digitalObject.getManifestationOf() != null) 
+		    	b.manifestationOf(digitalObject.getManifestationOf());
+		    if (digitalObject.getMetadata() != null) 
+		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
+		    if (digitalObject.getEvents() != null)
+		    {
+				List<Event> eventList = digitalObject.getEvents();
+				eventList.add(newEvent);
+		    	b.events((Event[]) eventList.toArray(new Event[0]));
+		    }
+            res = b.build();
+    	}
+		return res;
+	}
+	
+	/**
+	 * This method changes the permanent URI value in digital object and returns changed
+	 * digital object with new permanent URI value. 
+	 * 
+	 * @param digitalObject
+	 *        This is a digital object to be updated
+	 * @param newPermanentUri
+	 *        This is a new digital object permanent URI
+	 * @return changed digital object with new permanent URI value
+	 */
+	public static DigitalObject changePermanentUri(DigitalObject digitalObject, URI newPermanentUri)
+    {
+		DigitalObject res = null;
+		
+    	if (digitalObject != null && newPermanentUri != null)
+    	{
+	    	DigitalObject.Builder b = new DigitalObject.Builder(digitalObject.getContent());
+		    if (digitalObject.getTitle() != null) b.title(digitalObject.getTitle());
+		    if (newPermanentUri != null) b.permanentUri(newPermanentUri);
+		    if (digitalObject.getFormat() != null) b.format(digitalObject.getFormat());
+		    if (digitalObject.getManifestationOf() != null) 
+		    	b.manifestationOf(digitalObject.getManifestationOf());
+		    if (digitalObject.getMetadata() != null) 
+		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
+		    if (digitalObject.getEvents() != null) 
+		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
+            res = b.build();
+    	}
+		return res;
+	}
+
+	/**
+	 * This method changes the format URI value in digital object and returns changed
+	 * digital object with new format URI value. 
+	 * 
+	 * @param digitalObject
+	 *        This is a digital object to be updated
+	 * @param newFormat
+	 *        This is a new digital object format URI
+	 * @return changed digital object with new format URI value
+	 */
+	public static DigitalObject changeFormat(DigitalObject digitalObject, URI newFormat)
+    {
+		DigitalObject res = null;
+		
+    	if (digitalObject != null && newFormat != null)
+    	{
+	    	DigitalObject.Builder b = new DigitalObject.Builder(digitalObject.getContent());
+		    if (digitalObject.getTitle() != null) b.title(digitalObject.getTitle());
+		    if (digitalObject.getPermanentUri() != null) b.permanentUri(digitalObject.getPermanentUri());
+		    if (newFormat != null) b.format(newFormat);
+		    if (digitalObject.getManifestationOf() != null) 
+		    	b.manifestationOf(digitalObject.getManifestationOf());
+		    if (digitalObject.getMetadata() != null) 
+		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
+		    if (digitalObject.getEvents() != null) 
+		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
+            res = b.build();
+    	}
+		return res;
+	}
+	
+	/**
+	 * This method changes the title value in digital object and returns changed
+	 * digital object with new title value. 
+	 * 
+	 * @param digitalObject
+	 *        This is a digital object to be updated
+	 * @param newTitle
+	 *        This is a new digital object title 
+	 * @return changed digital object with new title value
+	 */
+	public static DigitalObject changeTitle(DigitalObject digitalObject, String newTitle)
+    {
+		DigitalObject res = null;
+		
+    	if (digitalObject != null && newTitle != null)
+    	{
+	    	DigitalObject.Builder b = new DigitalObject.Builder(digitalObject.getContent());
+		    if (newTitle != null) b.title(newTitle);
+		    if (digitalObject.getPermanentUri() != null) b.permanentUri(digitalObject.getPermanentUri());
+		    if (digitalObject.getFormat() != null) b.format(digitalObject.getFormat());
+		    if (digitalObject.getManifestationOf() != null) 
+		    	b.manifestationOf(digitalObject.getManifestationOf());
+		    if (digitalObject.getMetadata() != null) 
+		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
+		    if (digitalObject.getEvents() != null) 
+		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
+            res = b.build();
+    	}
+		return res;
+	}
+	
+	/**
+	 * This method returns event by summary
+	 * 
+	 * in the targetObj
+	 * @param initObj
+	 *        The initial digital object
+	 * @param summary
+	 *        Event property we are looking for
+	 * @return res
+	 *         The found event for particular summary
+	 */
+	public static Event getEventBySummary(DigitalObject initObj, String summary)
+	{
+		Event res = null;
+		
+		if (summary != null && initObj != null)
+		{		
+			// search for the right event 
+			for(Event event : initObj.getEvents()) 
+			{
+				if (event != null)
+				{
+					if(event.getSummary().equals(summary))
+					{
+					    res = event;
+					}
+				}
+			}			
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * This method evaluates if particular digital object contains an ingest event
+	 * 
+	 * @param obj
+	 *        The digital object
+	 * @param summary
+	 *        The summary of the event
+	 * @return res
+	 *        Returns true if digital object contains ingest event otherwise false
+	 */
+	public static boolean hasEvent(DigitalObject obj, String summary)
+	{
+		boolean res = false;
+		
+		if (obj != null && summary != null)
+		{		
+			// search for the right event 
+			for(Event event : obj.getEvents()) 
+			{
+				if (event != null)
+				{
+				if(event.getSummary().equals(summary))
+				{
+				    res = true;
+				}
+				}
+			}			
+		}
+		
+		return res;
 	}
 }

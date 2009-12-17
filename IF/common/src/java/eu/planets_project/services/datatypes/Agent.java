@@ -116,4 +116,15 @@ public final class Agent {
         }
         return true;
     }
+    
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#toString()
+     */
+    public String toString() 
+    {
+        return String.format(
+        		"Agent: id '%s', name '%s', type '%s';"
+        		, id, name, type);
+    }    
 }

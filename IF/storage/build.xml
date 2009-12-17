@@ -10,6 +10,10 @@
 	<property name="appName" value="${ant.project.name}" />
 	<property name="appDir" value="." />
 
+
+	<!-- Include server classpath. -->
+        <property name="use.if.classpath" value="true"/>
+
 	<!-- Specify the build type: ejb, war or ear. -->
     <property name="pserv.app.build.type" value="ear"/>
 
