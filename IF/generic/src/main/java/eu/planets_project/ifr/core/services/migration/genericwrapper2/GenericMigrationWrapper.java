@@ -67,11 +67,8 @@ public class GenericMigrationWrapper {
 		    configuration);
 	    migrationPaths = pathsFactory.getAllMigrationPaths();
 	    final ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory(
-		    configuration);
-	    final List<eu.planets_project.services.datatypes.MigrationPath> planetsPaths = convertToPlanetsPaths(migrationPaths
-		    .getAllMigrationPaths());
-	    serviceDescription = serviceFactory.getServiceDescription(
-		    planetsPaths, toolIdentifier);
+		    toolIdentifier, configuration);
+	    serviceDescription = serviceFactory.getServiceDescription();
 	} catch (Exception e) {
 	    throw new MigrationInitialisationException(
 		    "Failed initialising migration path data from the configuration document: "
@@ -465,62 +462,6 @@ public class GenericMigrationWrapper {
     // }
     // }
 
-    /**
-     * TODO: This should go into a utility class.
-     * 
-     * Convert a collection of generic wrapper migration paths to a PLANETS
-     * <code>MigrationPath</code> instances. During this conversion any presets
-     * of the generic wrapper migration paths will be converted to a PLANETS
-     * parameters and a list of valid values and their descriptions will be
-     * appended to the description of the (preset) parameter.
-     * 
-     * @param genericWrapperMigrationPaths
-     *            A collection of generic wrapper <code>MigrationPath</code>
-     *            instances to convert.
-     * @return a <code>List</code> of
-     *         <code>eu.planets_project.services.datatypes.MigrationPath</code>
-     *         created from the generic wrapper migration paths.
-     */
-    private List<eu.planets_project.services.datatypes.MigrationPath> convertToPlanetsPaths(
-	    Collection<MigrationPath> genericWrapperMigrationPaths) {
-
-	final ArrayList<eu.planets_project.services.datatypes.MigrationPath> planetsPaths = new ArrayList<eu.planets_project.services.datatypes.MigrationPath>();
-	for (MigrationPath migrationPath : genericWrapperMigrationPaths) {
-
-	    List<Parameter> planetsParameters = new ArrayList<Parameter>();
-	    planetsParameters.addAll(migrationPath.getToolParameters());
-
-	    // Add a parameter for each preset (category)
-	    final ToolPresets toolPresets = migrationPath.getToolPresets();
-	    final Collection<Preset> presets = toolPresets.getAllToolPresets();
-	    for (Preset preset : presets) {
-
-		Parameter.Builder parameterBuilder = new Parameter.Builder(
-			preset.getName(), null);
-
-		// Append a description of the valid values for the preset
-		// parameter.
-		String usageDescription = "\n\nValid values : Description\n";
-
-		for (PresetSetting presetSetting : preset.getAllSettings()) {
-
-		    usageDescription += "\n" + presetSetting.getName() + " : "
-			    + presetSetting.getDescription();
-		}
-
-		parameterBuilder.description(preset.getDescription()
-			+ usageDescription);
-
-		planetsParameters.add(parameterBuilder.build());
-	    }
-	    planetsPaths
-		    .add(new eu.planets_project.services.datatypes.MigrationPath(
-			    migrationPath.getSourceFormat(), migrationPath
-				    .getDestinationFormat(), planetsParameters));
-	}
-
-	return planetsPaths;
-    }
 
     private boolean executeToolProcess(ProcessRunner toolProcessRunner,
 	    List<String> command, InputStream processStandardInput) {
