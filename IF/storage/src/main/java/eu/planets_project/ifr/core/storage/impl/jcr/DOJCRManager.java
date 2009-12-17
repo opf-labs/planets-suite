@@ -1440,13 +1440,13 @@ public class DOJCRManager {
 			}
 		} catch (ValueFormatException e) {
 			e.printStackTrace();
-			//TODO _log.error(e.getMessage());
+			_log.log(Level.INFO, e.getMessage(), e);
 		} catch (PathNotFoundException e) {
 			e.printStackTrace();
-			//TODO _log.error(e.getMessage());
+			_log.log(Level.INFO, e.getMessage(), e);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
-			//TODO _log.error(e.getMessage());
+			_log.log(Level.INFO, e.getMessage(), e);
 		}
         return res;
     }
