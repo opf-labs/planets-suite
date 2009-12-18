@@ -77,13 +77,12 @@
       <!-- Stage 5: Analyse Results -->
       <c:if test="#{ExperimentPhase == 5}">
          <h:commandButton value="#{res['exp_stage5.button.proceed']}"
-                action="#{NewExp_Controller.proceedToStep6Evaluation}" rendered="#{ExperimentBean.currentStage lt 7}"/>
+                action="goToStage6" rendered="#{ExperimentBean.currentStage lt 7}"/>
       	 <h:commandButton value="#{res['reader_exp.buttonStage5']}"
        		action="goToStage6" rendered="#{ExperimentBean.currentStage gt 6}"/>
       </c:if>
       <!-- Stage 6 : Evaluate Experiment-->
       <c:if test="#{ExperimentPhase == 6}">
-      <h:commandButton value="refresh page" action="goToStage6" rendered="#{ExperimentBean.currentStage lt 7}"/>
       <h:commandButton value="#{res['exp_stage6.finalize']}"
                 action="#{NewExp_Controller.finalizeExperiment}" rendered="#{ExperimentBean.currentStage lt 7}"/>
                 

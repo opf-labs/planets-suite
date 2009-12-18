@@ -4,18 +4,26 @@
 package eu.planets_project.tb.impl.model.exec;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
+import java.util.Set;
 
-import javax.persistence.Embeddable;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 
@@ -24,35 +32,47 @@ import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
  * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andrew Lindley</a>
  * Contains all execution records over all input digital objects
  */
-@Embeddable
+@Entity
 @XmlRootElement(name = "BatchExecutionRecord")
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class BatchExecutionRecordImpl implements Serializable {
     /** */
     private static final long serialVersionUID = -6230965529849585615L;
+    private static Log log = LogFactory.getLog(BatchExecutionRecordImpl.class);
 
-    //    @Id
-//    @GeneratedValue
+    @Id
+    @GeneratedValue
     @XmlTransient
     private long id;
     
     /** The experiment this belongs to */
-//    @ManyToOne
-//    private ExperimentExecutableImpl experimentExecutable;
+    @ManyToOne
+    private ExperimentExecutableImpl executable;
     
     // The date of this invocation:
-    private Calendar startDate;   
+    private Calendar startDate;
     private Calendar endDate;
     // Did the workflow execution succeed?
     private boolean batchRunSucceeded;
     
-    /** The sequence of stages of this experiment. */
-//    @OneToMany
-    private Vector<ExecutionRecordImpl> runs = new Vector<ExecutionRecordImpl>();
-    //private List<ExecutionRecordImpl> runs;
+    /** The sequence of invocations of this experiment, for each digital object input */
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="batch", fetch=FetchType.EAGER)
+    private Set<ExecutionRecordImpl> runs = new HashSet<ExecutionRecordImpl>();
     
     //a batch execution record containing log, etc. information for the entire execution
+    @OneToOne(cascade=CascadeType.ALL)
     private BatchWorkflowResultLogImpl wfEngineExecutionResultLog;
+    
+    /** For JAXB */
+    @SuppressWarnings("unused")
+    private BatchExecutionRecordImpl() {
+    }
+    
+    public BatchExecutionRecordImpl( ExperimentExecutableImpl executable ) {
+        log.info("Constructing Batch ExecutionRecords == "+executable);
+        if( executable != null ) log.info("Constructing Batch ExecutionRecords ID == "+ executable.getId());
+        this.executable = executable;
+    }
     
     /**
      * @return the id
@@ -66,6 +86,20 @@ public class BatchExecutionRecordImpl implements Serializable {
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * @return the executable
+     */
+    public ExperimentExecutableImpl getExecutable() {
+        return executable;
+    }
+
+    /**
+     * @param executable the executable to set
+     */
+    public void setExecutable(ExperimentExecutableImpl executable) {
+        this.executable = executable;
     }
 
     /**
@@ -113,7 +147,7 @@ public class BatchExecutionRecordImpl implements Serializable {
     /**
      * @return the runs
      */
-    public List<ExecutionRecordImpl> getRuns() {
+    public Set<ExecutionRecordImpl> getRuns() {
         return runs;
     }
 
@@ -121,7 +155,7 @@ public class BatchExecutionRecordImpl implements Serializable {
      * @param runs the runs to set
      */
     public void setRuns(List<ExecutionRecordImpl> runs) {
-        this.runs = new Vector<ExecutionRecordImpl>(runs);
+        this.runs = new HashSet<ExecutionRecordImpl>(runs);
     }
 
 	/**

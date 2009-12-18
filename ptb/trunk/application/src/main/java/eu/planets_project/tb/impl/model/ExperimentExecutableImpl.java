@@ -7,10 +7,12 @@ import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
 
@@ -61,7 +63,7 @@ import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
 @SuppressWarnings("serial")
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class ExperimentExecutableImpl extends ExecutableImpl implements ExperimentExecutable, java.io.Serializable{
+public class ExperimentExecutableImpl extends ExecutableImpl implements ExperimentExecutable, java.io.Serializable {
 
     /** A hashmap for the parameters */
     private HashMap<String,String> parameters = new HashMap<String,String>();
@@ -76,9 +78,8 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
     private HashMap<String,Vector<String>> manualProperties = new HashMap<String, Vector<String>>();
 
     /** The log of executed experiment results */
-//    @OneToMany(mappedBy="experimentExecutable")
-    private Vector<BatchExecutionRecordImpl> executionRecords = new Vector<BatchExecutionRecordImpl>();
-    //private List<BatchExecutionRecordImpl> executionRecords;
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="executable", fetch=FetchType.EAGER)
+    private Set<BatchExecutionRecordImpl> executionRecords = new HashSet<BatchExecutionRecordImpl>();
     
     /** The workflow-type is also stored here. */
     private String workflowType;
@@ -188,8 +189,8 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
     /**
      * @return the executionRecords
      */
-    public List<BatchExecutionRecordImpl> getBatchExecutionRecords() {
-        return executionRecords;
+    public Set<BatchExecutionRecordImpl> getBatchExecutionRecords() {
+        return this.executionRecords;
     }
     
     
@@ -199,8 +200,10 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
      */
     public int getNumBatchExecutionRecords() {
         if( this.getBatchExecutionRecords() == null ) {
+            log.info("Batch ExecutionRecords == null");
             return 0;
         } else {
+            log.info("Batch ExecutionRecords #"+this.getBatchExecutionRecords().size());
             return this.getBatchExecutionRecords().size();
         }
     }
@@ -209,7 +212,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
      * @param executionRecords the executionRecords to set
      */
     public void setBatchExecutionRecords(List<BatchExecutionRecordImpl> executionRecords) {
-        this.executionRecords = new Vector<BatchExecutionRecordImpl>(executionRecords);
+        this.executionRecords = new HashSet<BatchExecutionRecordImpl>(executionRecords);
     }
 
     /* (non-Javadoc)

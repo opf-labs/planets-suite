@@ -14,13 +14,9 @@ import java.util.Vector;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-//import javax.persistence.OneToMany;
-//import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,8 +28,8 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -60,8 +56,8 @@ public class ExecutionStageRecordImpl implements Serializable {
     private URL endpoint;
 
     /** The record of the service description at this time */
-    @ManyToOne
-    private ServiceRecordImpl serviceRecord;
+    @ManyToOne(cascade=CascadeType.ALL)
+    protected ServiceRecordImpl serviceRecord;
     
     // The set of measured properties.
     private Vector<MeasurementRecordImpl> measurements = new Vector<MeasurementRecordImpl>();
@@ -188,7 +184,7 @@ public class ExecutionStageRecordImpl implements Serializable {
                     //log.info("Comparing '"+m.getIdentifier() +"' to '"+mr.getIdentifier()+"', "+m.getName());
                     if( m.getIdentifier() != null && mr.getIdentifier() != null &&
                             m.getIdentifier().toString().equals( mr.getIdentifier() ) ) {
-                        new_m = new MeasurementImpl(m);
+                        new_m = m.clone();
                         new_m.setValue( mr.getValue() );
                     }
                 }
@@ -196,14 +192,7 @@ public class ExecutionStageRecordImpl implements Serializable {
             
             // If that doesn't work, generate manually:
             if( new_m == null && mr.getIdentifier() != null ) {
-                try {
-                    new_m = new MeasurementImpl();
-                    new_m.setIdentifier( new URI( mr.getIdentifier() ) );
-                    new_m.setValue( mr.getValue() );
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                    new_m = null;
-                }
+                new_m = new MeasurementImpl(null,mr);
             }
             
             // Add to the results:

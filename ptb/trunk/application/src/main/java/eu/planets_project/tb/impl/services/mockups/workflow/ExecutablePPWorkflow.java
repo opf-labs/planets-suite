@@ -9,8 +9,8 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /*
  * TODO These Workflow classes should not be required anymore (?) after moving to wee and changing observables

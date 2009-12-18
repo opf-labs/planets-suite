@@ -14,9 +14,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -76,6 +79,10 @@ public class ServiceRecordImpl implements Serializable {
     
     /** List of experiment IDs that saw this service record. */
     HashSet<Long> experimentIds = new HashSet<Long>();
+    
+    /** The service invocation records */
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="serviceRecord", fetch=FetchType.EAGER)
+    private Set<InvocationRecordImpl> invocations = new HashSet<InvocationRecordImpl>();
     
     
     /** Also cache the expanded service description */
@@ -446,6 +453,19 @@ public class ServiceRecordImpl implements Serializable {
         }
         return exps;
     }
-    
 
+    /**
+     * @return the invocations
+     */
+    public Set<InvocationRecordImpl> getInvocations() {
+        return invocations;
+    }
+
+    /**
+     * @param invocations the invocations to set
+     */
+    public void setInvocations(Set<InvocationRecordImpl> invocations) {
+        this.invocations = invocations;
+    }
+    
 }

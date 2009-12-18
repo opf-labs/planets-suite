@@ -28,6 +28,7 @@ import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.BatchWorkflowResultLogImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
@@ -84,7 +85,7 @@ public class WEEBatchExperimentTestbedUpdater {
 			return;
 		}
 		//create a BatchExecutionRecord
-		BatchExecutionRecordImpl batchRecord = new BatchExecutionRecordImpl();
+		BatchExecutionRecordImpl batchRecord = new BatchExecutionRecordImpl( (ExperimentExecutableImpl) exp.getExperimentExecutable() );
 		//startTime
 		Calendar c1 = new GregorianCalendar();
 		c1.setTimeInMillis(weeWFResult.getStartTime());
@@ -118,7 +119,7 @@ public class WEEBatchExperimentTestbedUpdater {
 		//FIXME AL: We still need to crate empty executionRecords for the items that weren't processed by the wee (e.g. expSetup.getInputData and compare to the log)
 		for(URI inputDigoURI : structuredResults.keySet()){
 			int actionCounter = 0;
-			ExecutionRecordImpl execRecord = new ExecutionRecordImpl();
+			ExecutionRecordImpl execRecord = new ExecutionRecordImpl(batchRecord);
 			//the input Digo for all this information is about
 			execRecord.setDigitalObjectReferenceCopy(inputDigoURI+"");
 			Properties p = new Properties();
@@ -182,7 +183,7 @@ public class WEEBatchExperimentTestbedUpdater {
 	 */
 	public void processNotify_WorkflowFailed(long expID,String failureReason){
 		Experiment exp = testbedMan.getExperiment(expID);
-		BatchExecutionRecordImpl batchRecord = new BatchExecutionRecordImpl();
+		BatchExecutionRecordImpl batchRecord = new BatchExecutionRecordImpl((ExperimentExecutableImpl)exp.getExperimentExecutable());
 		batchRecord.setBatchRunSucceeded(false);
 		
 		this.helperUpdateExpWithBatchRecord(exp, batchRecord);

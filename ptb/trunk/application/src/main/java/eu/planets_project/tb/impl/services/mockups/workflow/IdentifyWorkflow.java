@@ -24,10 +24,10 @@ import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.AdminManagerImpl;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
 /**
@@ -81,12 +81,12 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         }
         
         // Set up properties:
-        MEASURE_IDENTIFY_FORMAT = new MeasurementImpl(
+        MEASURE_IDENTIFY_FORMAT = MeasurementImpl.create(
                 PROP_IDENTIFY_FORMAT, 
                 "The format of the Digital Object", "",
                 "The format of a Digital Object, specified as a Planets Format URI.", 
                 null, MeasurementImpl.TYPE_DIGITALOBJECT);
-        MEASURE_IDENTIFY_METHOD = new MeasurementImpl(
+        MEASURE_IDENTIFY_METHOD = MeasurementImpl.create(
                 PROP_IDENTIFY_METHOD, 
                 "The identification method.", "",
                 "The method the service used to identify the digital object.", 

@@ -26,8 +26,6 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.tags.DefaultServiceTagHandler;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.CommentManagerImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 
 /**
  * @author Andrew Lindley, ARC

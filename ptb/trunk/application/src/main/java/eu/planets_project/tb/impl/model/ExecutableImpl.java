@@ -11,17 +11,21 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.model.Executable;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 
 @MappedSuperclass
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class ExecutableImpl implements Executable, java.io.Serializable{
 
-	@Id
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -4597976985263796879L;
+
+    @Id
 	@GeneratedValue
     @XmlTransient
 	private long id;
+	
 	private boolean bExecutionStarted = false;
 	private boolean bExecutionEnded = false;
 	private boolean bExecutionSuccess = false;
@@ -173,5 +177,12 @@ public abstract class ExecutableImpl implements Executable, java.io.Serializable
     public void setBatchSystemIdentifier(String batchQueueIdentifier) {
         this.batchQueueIdentifier = batchQueueIdentifier;
     }
-    
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
 }

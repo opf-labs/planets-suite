@@ -13,7 +13,6 @@ import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.model.ExecutableImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 
 /**

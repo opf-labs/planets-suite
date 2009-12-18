@@ -8,8 +8,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
  * Contains for a measurement propertyID all MeasurementResults over all execution runs in a way the

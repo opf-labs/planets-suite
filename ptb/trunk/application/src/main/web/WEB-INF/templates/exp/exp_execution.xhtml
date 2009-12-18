@@ -73,7 +73,7 @@
 							value="Re-run this experiment to collect more data."
 							rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }"
 							disabled="#{ExperimentBean.experiment.currentPhaseIndex gt 5}" />
-						<h:commandButton value="Refresh This Page" action="goToStage3" />
+						<h:commandButton value="Refresh This Page" action="success" />
 					</h:panelGroup>
 					<h:panelGroup
 						rendered="#{NewExp_Controller.experimentExecutable.executionRunning}">
@@ -82,7 +82,7 @@
 							intensity of your experiment this may take some time.
 							<br />
 							<h:commandButton value="Refresh This Page"
-								action="goToStage3" />
+								action="success" />
 						</p>
 					</h:panelGroup>
 

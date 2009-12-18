@@ -1,11 +1,10 @@
 package eu.planets_project.tb.impl.model.eval.mockup;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
  * FIXME This should really be some kind of shared resource, of course.
@@ -57,7 +56,7 @@ public class TecRegMockup {
         // The service succeeded
         observables.put( 
                 PROP_SERVICE_SUCCESS,
-                new MeasurementImpl(
+                MeasurementImpl.create(
                         PROP_SERVICE_SUCCESS, 
                         "Service succeeded", "",
                         "Did this service execute successfully?  Returns true/false.", 
@@ -66,7 +65,7 @@ public class TecRegMockup {
         // The service time
         observables.put( 
                 PROP_SERVICE_TIME,
-                new MeasurementImpl(
+                MeasurementImpl.create(
                         PROP_SERVICE_TIME, 
                         "Service execution time", "seconds",
                         "The wall-clock time taken to execute the service, in seconds.", 
@@ -76,7 +75,7 @@ public class TecRegMockup {
         // The measured type
         observables.put( 
                 PROP_DO_FORMAT,
-                new MeasurementImpl(
+                MeasurementImpl.create(
                         PROP_DO_FORMAT, 
                         "The format of the Digital Object", "",
                         "The format of a Digital Object, specified as a Planets Format URI.", 
@@ -86,7 +85,7 @@ public class TecRegMockup {
         // The size
         observables.put( 
                 PROP_DO_SIZE,
-                new MeasurementImpl(
+                MeasurementImpl.create(
                         PROP_DO_SIZE, 
                         "The size of the Digital Object", "bytes",
                         "The total size of a particular Digital Object.", 
@@ -236,7 +235,7 @@ public class TecRegMockup {
      * @return
      */
     public static MeasurementImpl getObservable( URI observable ) {
-        return new MeasurementImpl(observables.get(observable));
+        return new MeasurementImpl(null, observables.get(observable));
     }
     
     /**
@@ -246,7 +245,7 @@ public class TecRegMockup {
      */
     @Deprecated
     public static MeasurementImpl getObservable( URI observable, String stage ) {
-        MeasurementImpl m = new MeasurementImpl(observables.get(observable));
+        MeasurementImpl m = new MeasurementImpl(null, observables.get(observable));
         m.setStage(stage);
         return m;
     }

@@ -13,6 +13,7 @@ import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
@@ -159,10 +160,11 @@ public class TestbedBatchProcessDaemon extends Thread {
      * @return
      */
     private BatchExecutionRecordImpl createExperimentBatch(TestbedBatchJob job, Experiment exp) {
-        BatchExecutionRecordImpl batch = new BatchExecutionRecordImpl();
-        exp.getExperimentExecutable().getBatchExecutionRecords().add(batch);
+        BatchExecutionRecordImpl batch = new BatchExecutionRecordImpl((ExperimentExecutableImpl) exp.getExperimentExecutable());
         batch.setStartDate(job.getStartDate());
-        edao.updateExperiment(exp);
+        log.info("Adding results of job "+job.getExpID()+" ("+job.getStatus()+") to experiment "+exp.getEntityID()+".");
+        exp.getExperimentExecutable().getBatchExecutionRecords().add(batch);
+        //FIXME edao.updateExperiment(exp);
         
         return batch;
     }
@@ -201,7 +203,7 @@ public class TestbedBatchProcessDaemon extends Thread {
             DigitalObject dob, String filename, BatchExecutionRecordImpl batch, Experiment exp ) {
         // Update the experiment from the job:
         WorkflowResult.recordWorkflowResultToExperiment( exp.getEntityID(), wfr, filename, batch, exp );
-        edao.updateExperiment(exp);
+        //FIXME edao.updateExperiment(exp);
     }
 
 }

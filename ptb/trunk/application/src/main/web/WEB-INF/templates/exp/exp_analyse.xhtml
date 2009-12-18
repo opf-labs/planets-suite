@@ -11,7 +11,6 @@
 <body>
   <ui:composition rendered="#{ExperimentBean != null}">
   
-  
         <c:if test="#{ExperimentBean.etype == 'identify'}">
         
         <ui:include src="/WEB-INF/templates/exp-types/stage5_identify_result.xhtml">
@@ -47,12 +46,12 @@
         </c:if>
 
   
+  TEST #{ExperimentBean.experiment.allMeasurements}
+  
   <!-- Manual evaluation: -->
   <!-- 
   <ui:include src="/WEB-INF/templates/exp_stage5_manual_properties.xhtml"/>
    -->
-  
-
   
   </ui:composition>
 </body>

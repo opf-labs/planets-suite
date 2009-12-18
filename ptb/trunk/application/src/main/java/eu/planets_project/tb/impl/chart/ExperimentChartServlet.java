@@ -352,6 +352,9 @@ public class ExperimentChartServlet extends HttpServlet {
 
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         final String expName = exp.getExperimentSetup().getBasicProperties().getExperimentName();
+        
+        boolean hasSuccesses = false;
+        boolean hasFails = false;
 
         for( BatchExecutionRecordImpl batch : exp.getExperimentExecutable().getBatchExecutionRecords() ) {
             int i = 1;
@@ -369,8 +372,10 @@ public class ExperimentChartServlet extends HttpServlet {
                         if( time != null ) {
                             if( exsr.isMarkedAsSuccessful() ) {
                                 dataset.addValue( time, "Succeeded", dobName);
+                                hasSuccesses = true;
                             } else {
                                 dataset.addValue( time, "Failed", dobName);
+                                hasFails = true;
                             }
                         }
                     }
@@ -415,8 +420,8 @@ public class ExperimentChartServlet extends HttpServlet {
                 0.0f, 0.0f, Color.red, 
                 0.0f, 0.0f, new Color(0.9f, 0.0f, 0.0f)
         );
-        renderer.setSeriesPaint(si, gp0);
-        renderer.setSeriesPaint(ri, gp1);
+        if( hasSuccesses ) renderer.setSeriesPaint(si, gp0);
+        if( hasFails ) renderer.setSeriesPaint(ri, gp1);
         
         // Set the tooltips...
         //renderer.setBaseItemURLGenerator(new StandardCategoryURLGenerator("xy_chart.jsp","series","section"));

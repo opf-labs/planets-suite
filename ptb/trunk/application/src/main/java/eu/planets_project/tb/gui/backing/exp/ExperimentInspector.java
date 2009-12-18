@@ -132,7 +132,7 @@ public class ExperimentInspector {
         //Store selected Experiment Row accessible later as #{Experiment} 
         FacesContext ctx = FacesContext.getCurrentInstance();
         ctx.getExternalContext().getSessionMap().put(EXP_BEAN_IN_SESSION_DEPRECATED, expBean);
-        // FIXME This overrides the experimental behaviour and returns to the default logic.
+        // This overrides the experimental behaviour and returns to the default logic.
         ctx.getExternalContext().getSessionMap().put(EXP_BEAN_IN_REQUEST, expBean);
         updateExpTypeBeanForExperimentInSession();
         return expBean;

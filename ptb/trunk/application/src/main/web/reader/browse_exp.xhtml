@@ -161,9 +161,6 @@
 
     </h:panelGrid>
 
-    <!-- Admin options -->    
-    <h:commandButton action="#{ListExp_Backing.exportAllExperimentsAction}" value="Export All" rendered="#{UserBean.admin}"/>
-
 </a4j:form>
     <p>&#160;</p>
     <p>&#160;</p>
@@ -213,6 +210,18 @@
 <div class="innertube">
   <p class="center">There are currently #{ListExp_Backing.numAllExperiments} experiments in the Testbed.</p>
 </div>
+
+<h:panelGroup rendered="#{UserBean.admin}">
+<h3 class="leftcol">Admin</h3>
+<div class="innertube">
+    <h:form>
+    <p class="center">
+    <!-- Admin options -->    
+    <h:commandButton action="#{ListExp_Backing.exportAllExperimentsAction}" value="Export All"/>
+    </p>
+    </h:form>
+</div>
+</h:panelGroup>
 
 </div>
   </ui:define>

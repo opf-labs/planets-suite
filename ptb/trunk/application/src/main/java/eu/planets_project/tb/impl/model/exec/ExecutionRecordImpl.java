@@ -15,11 +15,19 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -32,9 +40,13 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 
 /**
@@ -42,7 +54,7 @@ import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
  * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andrew Lindley</a>
  * This class deals with all aspects of execution for a given inputDigitalObjct record
  */
-@Embeddable
+@Entity
 @XmlRootElement(name = "ExecutionRecord")
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExecutionRecordImpl implements Serializable {
@@ -72,9 +84,6 @@ public class ExecutionRecordImpl implements Serializable {
     /** If the execution did not have any output other than the measurements */
     public static final String RESULT_MEASUREMENTS_ONLY = "MeasurmentsOnly";
     
-    /** The Digest/fixity algorithm to use. If you change this, all files will appear to have 'changed'. */
-    public static final String FIXITY_ALG = "MD5";
-    
     /** wee batch engine related properties **/
     public static final String WFResult_LOG = "wfresult.log";
     public static final String WFResult_ActionIdentifier = "wfresult.actionidentifier";
@@ -84,44 +93,15 @@ public class ExecutionRecordImpl implements Serializable {
     public static final String WFResult_ActionEndTime = "wfresult.actionEndTime";
     public static final String WFResult_ServiceEndpoint = "wfresult.serviceEndpoint";
     public static final String WFResult_ServiceReport = "wfresult.serviceReport";
-    
-    /**
-     * Computes the MD5 hash of an input stream.
-     * @param in The input stream to hash.
-     * @return The MD% hash, encoded as a hex string.
-     */
-    public static String computeFixity( InputStream in ) {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance( FIXITY_ALG );
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return "";
-        }
-        // Go through the input stream and digest.
-        byte buf[] = new byte[8192];
-        int n;
-        try {
-            while ((n = in.read(buf)) > 0) {
-                md.update(buf, 0, n);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
-        byte hash[] = md.digest();
-        return new String( Hex.encodeHex(hash) );
- 
-    }
 
-    //    @Id
-//    @GeneratedValue
+    @Id
+    @GeneratedValue
     @XmlTransient
     private long id;
     
     /** The experiment this belongs to */
-//    @ManyToOne
-//    private ExperimentExecutableImpl experimentExecutable;
+    @ManyToOne
+    private BatchExecutionRecordImpl batch;
     
     // The source Digital Object - original URL.
     private String digitalObjectSource;
@@ -140,14 +120,27 @@ public class ExecutionRecordImpl implements Serializable {
     
     /** The sequence of stages of this experiment. */
     private Vector<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
+    
+    /** The service invocation records */
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="execution", fetch=FetchType.EAGER)
+    private Set<InvocationRecordImpl> serviceCalls = new HashSet<InvocationRecordImpl>();
    
     // The 'Result'
     private String resultType;
     private String result;
     
-    // The 'Report Log'
-    private List<String> reportLog = new Vector<String>();
+    // The 'Report Log' for this digital object
+    private Vector<String> reportLog = new Vector<String>();
 
+    /** For JAXB */
+    @SuppressWarnings("unused")
+    private ExecutionRecordImpl() {
+    }
+    
+    public ExecutionRecordImpl( BatchExecutionRecordImpl batch ) {
+        this.batch = batch; 
+    }
+    
     /**
      * @return the id
      */
@@ -221,7 +214,7 @@ public class ExecutionRecordImpl implements Serializable {
     /**
      * @return the stages
      */
-    public List<ExecutionStageRecordImpl> getStages() {
+    public Vector<ExecutionStageRecordImpl> getStages() {
         //if( stages == null ) stages = new Vector<ExecutionStageRecordImpl>();
         return stages;
     }
@@ -300,7 +293,7 @@ public class ExecutionRecordImpl implements Serializable {
      * @param report the report to set
      */
     public void setReportLog(List<String> report) {
-        this.reportLog = report;
+        this.reportLog = new Vector<String>(report);
     }
     
     /**
@@ -365,5 +358,68 @@ public class ExecutionRecordImpl implements Serializable {
         this.setResult(storeKey);
         this.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
     }
-    
+ 
+    /**
+     * @return the measurements
+     */
+    private Set<MeasurementImpl> getMeasurements() {
+        /*
+            log.info("me: " + me.getAgentType()+ " " + me.getMeasurements().size() );
+            for(MeasurementImpl m : me.getMeasurements() ) {
+                log.info("m: "+m.toString());
+            }
+            */
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+//        if( this.measurementEvents.size() == 2 ) {
+        /*
+            // Empty:
+            for( MeasurementEventImpl mev : this.measurementEvents ) {
+                mev.setExperiment(null);
+            }
+            testbedMan.updateExperiment(this);
+            */
+            // Counter intuitively, this order is required, as we are relying on the Cascase to update the fields,
+            // and we need to delete the back references before we delete the forward-references.
+        //this.measurementEvents.clear();
+            // Now add anew:
+            //MeasurementEventImpl mev = new MeasurementEventImpl();
+            log.info("Making a MEV...");
+                log.info("Got batch: "+batch);
+                for( ExecutionRecordImpl exr : batch.getRuns() ) {
+                    log.info("Got batch: "+exr);
+                    if( exr != null && exr.getStages() != null ) {
+                        log.info("Got Stages: "+exr.getStages());
+                        for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
+                            InvocationRecordImpl iri = new InvocationRecordImpl( exsr.getServiceRecord() );
+                            iri.setExecution(exr);
+                            log.info("Got Stage: "+exsr.getStage());
+                            for( MeasurementRecordImpl mr : exsr.getMeasurements() ) {
+                                log.info("Got measurement: "+mr);
+                                // Set the back-reference, or retrieval fails:
+                                MeasurementImpl m2 = new MeasurementImpl(iri);
+                                log.info("Looking at "+mr.getIdentifier());
+                                iri.getMeasurements().add(m2);
+                            }
+                            this.serviceCalls.add(iri);
+                        }
+                }
+            }
+                /*
+            mev.setAgentType(AGENT_TYPE.WORKFLOW);
+            mev.setStage(MEASUREMENT_STAGE.EXECUTION);
+            mev.setExperiment(this);
+            this.measurementEvents.add(mev);
+            testbedMan.updateExperiment(this);
+            */
+//        }
+        return null;
+    }
+
+    /**
+     * @return the serviceCalls
+     */
+    public Set<InvocationRecordImpl> getServiceCalls() {
+        return serviceCalls;
+    }
+
 }

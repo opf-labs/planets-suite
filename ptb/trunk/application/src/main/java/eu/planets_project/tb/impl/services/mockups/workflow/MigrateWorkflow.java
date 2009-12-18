@@ -38,10 +38,10 @@ import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
@@ -253,7 +253,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
                 for( Property p : measurableProperties ) {
                     MeasurementImpl m = this.createMeasurementFromProperty(p);
                     if( ! meas.containsKey( m.getIdentifier() ) ) {
-                        meas.put(m.getIdentifier(), m);
+                        meas.put(m.getIdentifierUri(), m);
                     }
                 }
             }
@@ -272,7 +272,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
      * @return
      */
     private MeasurementImpl createMeasurementFromProperty( Property p ) {
-        MeasurementImpl m = new MeasurementImpl();
+        MeasurementImpl m = new MeasurementImpl(null);
         
         if( p == null ) return m;
         

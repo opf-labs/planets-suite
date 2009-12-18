@@ -5,10 +5,14 @@ package eu.planets_project.tb.utils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -99,4 +103,35 @@ public class ExperimentUtils {
 
     }
     
+    /** The Digest/fixity algorithm to use. If you change this, all files will appear to have 'changed'. */
+    public static final String FIXITY_ALG = "MD5";
+    
+    /**
+     * Computes the MD5 hash of an input stream.
+     * @param in The input stream to hash.
+     * @return The MD% hash, encoded as a hex string.
+     */
+    public static String computeFixity( InputStream in ) {
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance( FIXITY_ALG );
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "";
+        }
+        // Go through the input stream and digest.
+        byte buf[] = new byte[8192];
+        int n;
+        try {
+            while ((n = in.read(buf)) > 0) {
+                md.update(buf, 0, n);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+        byte hash[] = md.digest();
+        return new String( Hex.encodeHex(hash) );
+ 
+    }
 }

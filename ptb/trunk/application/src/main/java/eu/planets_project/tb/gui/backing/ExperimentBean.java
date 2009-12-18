@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
 
@@ -89,13 +90,13 @@ import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.PropertyRunEvaluationRecordImpl;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
@@ -626,13 +627,17 @@ public class ExperimentBean {
      * @return
      */
     public List<ResultsForDigitalObjectBean> getExperimentDigitalObjectResults() {
+        log.info("Looking for results...");
         List<ResultsForDigitalObjectBean> results = new Vector<ResultsForDigitalObjectBean>();
         Collection<String> runOnes = new HashSet<String>();
         // Populate using the results:
-        List<BatchExecutionRecordImpl> records = getExperiment().getExperimentExecutable().getBatchExecutionRecords();
+        Set<BatchExecutionRecordImpl> records = getExperiment().getExperimentExecutable().getBatchExecutionRecords();
+        log.info("Found batch list: "+records);
         if( records != null && records.size() > 0 ) {
-            BatchExecutionRecordImpl batch = records.get(0);
+            log.info("Found batches: "+records.size());
+            BatchExecutionRecordImpl batch = records.iterator().next();
             for( ExecutionRecordImpl exr : batch.getRuns() ) {
+                log.info("Found result: "+exr.getResultType());
                 ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(exr.getDigitalObjectReferenceCopy());
                 results.add(res);
                 // Collate successes:
@@ -641,6 +646,7 @@ public class ExperimentBean {
         }
         // Patch in any input files which are not represented. 
         for( String file : getExperimentInputData().values() ) {
+            log.info("Checking for results for "+file);
             if( ! runOnes.contains(file) ) {
                 ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(file);
                 results.add(res);
@@ -1621,7 +1627,7 @@ public class ExperimentBean {
         if( selectedExecutionRecord != null ) {
             log.info("Getting exec record: "+selectedBatchExecutionRecord.getRuns().size());
         } else {
-            this.selectedBatchExecutionRecord = this.exp.getExperimentExecutable().getBatchExecutionRecords().get(0);
+            this.selectedBatchExecutionRecord = this.exp.getExperimentExecutable().getBatchExecutionRecords().iterator().next();
         }
         log.info("Getting exec record: "+selectedBatchExecutionRecord);
         return selectedBatchExecutionRecord;
@@ -2111,7 +2117,7 @@ public class ExperimentBean {
     		String stageName = it.next();
     		for(MeasurementImpl m : helperBuildAutoPropertyAuthority().get(stageName)){
     			if((m.getIdentifier()+"").equals(propertyID)){
-    				return new MeasurementImpl(m);
+    				return m.clone();
     			}
     		}
     	}
@@ -2129,7 +2135,7 @@ public class ExperimentBean {
 		    			Vector<MeasurementImpl> propIDs = new Vector<MeasurementImpl>();
 		    			for(MeasurementImpl measurement : stage.getMeasuredObservables()){
 		    				//copy to avaid any cross refs and add copy for authority
-		    				MeasurementImpl m = new MeasurementImpl(measurement);
+		    				MeasurementImpl m = measurement.clone();
 		    				propIDs.add(m);
 		    			}
 		    			ret.put(stage.getStage(), propIDs);
@@ -2235,23 +2241,23 @@ public class ExperimentBean {
    String graphUrl = null ;
    
    public String getResultChartUrl() {
-       ExperimentChartServlet ec = new ExperimentChartServlet();
-       chart = ec.createWallclockChart( ""+this.getExperiment().getEntityID() );
-       // Pick into the session...
-       HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-       HttpSession session = request.getSession();
-       //  Write the chart image to the temporary directory
-       ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
        try {
-        this.graphId = ServletUtilities.saveChartAsPNG(chart, 600, 500, info, session);
-        this.graphImageMap = ChartUtilities.getImageMap(graphId, info);
-        this.graphUrl = request.getContextPath() + "/servlet/DisplayChart?filename=" + graphId;
-        return this.graphUrl;
-    } catch (IOException e) {
-        log.error("Failure while generating graph: "+e);
-        e.printStackTrace();
-        return null;
-    }
+           ExperimentChartServlet ec = new ExperimentChartServlet();
+           chart = ec.createWallclockChart( ""+this.getExperiment().getEntityID() );
+           // Pick into the session...
+           HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+           HttpSession session = request.getSession();
+           //  Write the chart image to the temporary directory
+           ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+           this.graphId = ServletUtilities.saveChartAsPNG(chart, 600, 500, info, session);
+           this.graphImageMap = ChartUtilities.getImageMap(graphId, info);
+           this.graphUrl = request.getContextPath() + "/servlet/DisplayChart?filename=" + graphId;
+           return this.graphUrl;
+       } catch ( Exception e ) {
+           log.error("Failure while generating graph: "+e);
+           e.printStackTrace();
+           return null;
+       }
    }
    public String getResultChartImageMap() {
        return this.graphImageMap;

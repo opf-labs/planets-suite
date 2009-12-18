@@ -34,7 +34,7 @@ import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 

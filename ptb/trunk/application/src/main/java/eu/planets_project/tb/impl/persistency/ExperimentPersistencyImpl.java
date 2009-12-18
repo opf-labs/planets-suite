@@ -2,6 +2,7 @@ package eu.planets_project.tb.impl.persistency;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.naming.Context;
@@ -53,6 +54,7 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
 
 	public void updateExperiment(Experiment experiment) {
         log.info("Updating experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
+        log.info("Experiment currently has "+experiment.getExperimentExecutable().getNumBatchExecutionRecords()+" batch exec records");
 		manager.merge(experiment);
         log.info("Updated experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
 	}
@@ -196,14 +198,13 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
     }
 	
     
-    @SuppressWarnings("unchecked")
     public List<ServiceRecordImpl> getServiceRecords() {
         List<ServiceRecordImpl> list = new ArrayList<ServiceRecordImpl>();
 //        Query query = manager.createQuery("SELECT s.serviceRecord FROM ExperimentImpl AS e INNER JOIN e.executable.executionRecords AS x INNER JOIN x.runs AS r INNER JOIN r.stages AS s");
         List<Experiment> experiments = this.queryAllExperiments();
         for( Experiment exp : experiments ) {
             if( exp.getExperimentExecutable() != null && exp.getExperimentExecutable().getBatchExecutionRecords() != null ) {
-                List<BatchExecutionRecordImpl> batches = exp.getExperimentExecutable().getBatchExecutionRecords();
+                Set<BatchExecutionRecordImpl> batches = exp.getExperimentExecutable().getBatchExecutionRecords();
                 for( BatchExecutionRecordImpl batch : batches ) {
                     if( batch != null && batch.getRuns() != null ) {
                         for( ExecutionRecordImpl run : batch.getRuns() ) {

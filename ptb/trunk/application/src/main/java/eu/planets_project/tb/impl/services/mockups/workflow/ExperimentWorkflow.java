@@ -8,7 +8,7 @@ import java.util.List;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

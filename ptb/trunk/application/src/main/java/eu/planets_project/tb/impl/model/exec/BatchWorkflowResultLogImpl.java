@@ -2,6 +2,9 @@ package eu.planets_project.tb.impl.model.exec;
 
 import java.io.Serializable;
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,13 +26,21 @@ import org.apache.commons.logging.Log;
  * which describes a way of combining JAXB and Serializable
  *
  */
-@Embeddable
-//@Entity
+@Entity
 @XmlRootElement(name = "BatchWorkflowResultLog")
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class BatchWorkflowResultLogImpl implements Serializable{
+public class BatchWorkflowResultLogImpl implements Serializable {
 	
-	@Transient @XmlTransient
+	/** */
+    private static final long serialVersionUID = -6364553755666036646L;
+
+    @Id
+    @GeneratedValue
+    @XmlTransient
+    private long id;
+
+    @Transient
+	@XmlTransient
 	private static Log log = LogFactory.getLog(BatchWorkflowResultLogImpl.class);
 	
 	//keeps a JAXB serialized String containing the WorkflowResultLog
@@ -39,7 +50,6 @@ public class BatchWorkflowResultLogImpl implements Serializable{
 	//keep even if empty - JPA requires it.
 	public BatchWorkflowResultLogImpl(){
 	}
-
 
 	/**
 	 * @see getWorkflowResult for a unmarshalled object

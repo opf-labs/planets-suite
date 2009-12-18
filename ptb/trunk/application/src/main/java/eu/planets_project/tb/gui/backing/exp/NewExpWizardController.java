@@ -46,12 +46,12 @@ import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
@@ -834,6 +834,7 @@ public class NewExpWizardController{
         
         // Create a deep copy via the XML serialisation system:
         Experiment exp = ExperimentViaJAXB.deepCopy( (ExperimentImpl)oldExpBean.getExperiment() );
+        if( exp == null ) return "failure";
         
         // Modify Start Date and name
         exp.setStartDate( Calendar.getInstance() );

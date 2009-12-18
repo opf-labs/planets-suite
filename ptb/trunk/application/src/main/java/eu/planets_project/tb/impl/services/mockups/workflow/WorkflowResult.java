@@ -185,7 +185,7 @@ public class WorkflowResult {
             BatchExecutionRecordImpl batch, Experiment exp ) {
         DataHandler dh = new DataHandlerImpl();
         try {
-            ExecutionRecordImpl rec = new ExecutionRecordImpl();
+            ExecutionRecordImpl rec = new ExecutionRecordImpl(batch);
             rec.setDigitalObjectReferenceCopy(filename);
             try {
                 rec.setDigitalObjectSource(dh.get(filename).getName());
@@ -197,7 +197,7 @@ public class WorkflowResult {
             rec.setEndDate(wfr.getEndDate());
             rec.setReportLog(wfr.getReportLog());
             // And the stages.
-            List<ExecutionStageRecordImpl> stages = rec.getStages();
+            Vector<ExecutionStageRecordImpl> stages = rec.getStages();
             
             if( wfr != null && wfr.getStages() != null ) {
                 // Examine the result:

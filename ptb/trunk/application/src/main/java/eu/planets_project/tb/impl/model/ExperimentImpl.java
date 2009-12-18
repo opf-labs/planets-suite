@@ -3,39 +3,34 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.commons.logging.Log;
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentApproval;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
-import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.impl.AdminManagerImpl;
-import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
-import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
-import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
-import eu.planets_project.tb.impl.model.ExperimentPhaseImpl;
-import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
  * @author alindley
@@ -44,23 +39,27 @@ import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 @Entity
 @XmlRootElement(name = "Experiment", namespace = "http://www.planets-project.eu/testbed/experiment")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"version", "expSetup", "executable" , "expApproval", "expExecution", "expEvaluation" })
+@XmlType(propOrder={"version", "expSetup", "executable" , "expApproval", "expExecution", "expEvaluation", "measurements" })
 public class ExperimentImpl extends ExperimentPhaseImpl
 		implements Experiment, java.io.Serializable {
     
     // The version of this ExperimentImpl, used for load/store, not for the DB.
     @Transient
-    public int version = 1;
+    public int version = 2;
     
     //the EntityID and it's setter and getters are inherited from ExperimentPhase
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentEvaluationImpl expEvaluation;
+	
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentApprovalImpl expApproval;
+	
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentExecutionImpl expExecution;
+	
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentSetupImpl expSetup;
+	
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentExecutableImpl executable;
     //get's instantiated within the experimentSetup phase
@@ -314,6 +313,21 @@ public class ExperimentImpl extends ExperimentPhaseImpl
         if( this.getExperimentApproval().getApprovalUsersIDs().size() == 0 ) return null;
         return this.getExperimentApproval().getApprovalUsersIDs().get(0);
     }
+    
+    /**
+     * @return
+     */
+    public Set<MeasurementImpl> getAllMeasurements() {
+        Set<MeasurementImpl> mi = new HashSet<MeasurementImpl>();
+        for( BatchExecutionRecordImpl b : this.getExperimentExecutable().getBatchExecutionRecords() ) {
+            for( ExecutionRecordImpl run : b.getRuns() ) {
+                for( InvocationRecordImpl iri : run.getServiceCalls() ) {
+                    mi.addAll(iri.getMeasurements());
+                }
+            }
+        }
+        return mi;
+    }
 
     /* ------------------------------------------------------------ */
     
@@ -323,7 +337,10 @@ public class ExperimentImpl extends ExperimentPhaseImpl
     public static void resetToApprovedStage( Experiment exp ) {
     	log.info("Resetting experiment to 'Approved': "+exp.getExperimentSetup().getBasicProperties().getExperimentName());
     	// Wipe any results
-    	exp.getExperimentExecutable().getBatchExecutionRecords().clear();
+        for( BatchExecutionRecordImpl b : exp.getExperimentExecutable().getBatchExecutionRecords() ) {
+            b.setExecutable(null);
+        }
+    	//exp.getExperimentExecutable().getBatchExecutionRecords().clear();
     	exp.getExperimentExecutable().setBatchExecutionIdentifier(null);
     	// Set the state
         exp.getExperimentExecutable().setExecutableInvoked(false);

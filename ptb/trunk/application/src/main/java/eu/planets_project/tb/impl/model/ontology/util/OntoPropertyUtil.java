@@ -7,8 +7,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 
 /**
@@ -28,7 +28,7 @@ public class OntoPropertyUtil {
      * @return
      */
     public static MeasurementImpl createMeasurementFromOntologyProperty(OntologyProperty p) throws Exception{
-    	 MeasurementImpl m = new MeasurementImpl();
+    	 MeasurementImpl m = new MeasurementImpl(null);
     	 if( p == null ) throw new Exception("invalid OntologyProperty: null");
     	 String propURI = p.getURI();
     	 // Invent a uri if required - shouldn't be the case:
