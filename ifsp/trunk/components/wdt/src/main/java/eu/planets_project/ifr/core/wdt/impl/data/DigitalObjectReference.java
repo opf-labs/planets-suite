@@ -2,10 +2,12 @@ package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.DOJCRManager;
+import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRConstants;
+import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRManager;
 
 /**
  * 
@@ -48,11 +50,6 @@ public class DigitalObjectReference {
     	dom = _dom;
     }
     
-    // Constructor from URI:
-    public DigitalObjectReference( URI puri ) {
-    	this.puri = puri;
-    }
-
     /**
      * @return the puri
      */
@@ -81,7 +78,7 @@ public class DigitalObjectReference {
             	try {
             		return new URI(DOJCRManager.getResolverPath() + puri.toString());
             	} catch (URISyntaxException e) {
-            		log.debug("SHOULD NEVER HAPPEN!");
+            		log.log(Level.INFO, "SHOULD NEVER HAPPEN!", e);
             	}
             	return puri;
         	} else {
@@ -141,7 +138,7 @@ public class DigitalObjectReference {
         		   String title = dom.retrieve(puri).getTitle();
                	   path = path.concat("_" + title);
         		} catch (Exception e) {
-                   log.debug("DigitalObjectReference title not found. " + e.getMessage());
+        			log.log(Level.INFO, "DigitalObjectReference title not found. " + e.getMessage(), e);
         		}
         	}
         } 
