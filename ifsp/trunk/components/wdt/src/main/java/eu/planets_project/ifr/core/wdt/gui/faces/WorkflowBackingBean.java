@@ -32,13 +32,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-import javax.imageio.spi.ServiceRegistry;
+//import javax.imageio.spi.ServiceRegistry;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.XMLConstants;
-import javax.xml.soap.DetailEntry;
+//import javax.xml.soap.DetailEntry;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -70,6 +70,13 @@ import eu.planets_project.services.datatypes.Event;
 import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
+
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.wdt.impl.data.DetailEntry;
+import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRConstants;
+
 
 /**
  * @author Ross King class providing access to the workflow status
