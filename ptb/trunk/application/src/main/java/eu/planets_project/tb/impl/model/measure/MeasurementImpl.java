@@ -52,6 +52,8 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     
     // TODO AT WorkflowInput, WorkflowProcess, WorkflowOutput
     //  IN WorkflowStageIndex, WorkflowStageName, WorkflowAction
+    // I think we need to record the ID of the entity that is being measured. e.g. D.O. URL
+    // I think we probably need to record the Type of the entity?
 
     /* ----------------- Data that is looked-up on demand: -------------- */
 
