@@ -159,6 +159,7 @@ public class WorkflowBackingBean {
 
 		// create a new (empty) lists of selected Digital Objects
 		selectedObjects = new ArrayList<DigitalObjectReference>();
+		detailEntries = new ArrayList<DetailEntry>();
 		digObjs = new ArrayList<DigitalObject>();
 		serviceBeans = new ArrayList<ServiceBean>();
 		serviceLookup = new HashMap<String, ServiceBean>();
