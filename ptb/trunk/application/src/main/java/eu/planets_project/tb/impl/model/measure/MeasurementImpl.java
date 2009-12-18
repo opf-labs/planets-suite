@@ -19,7 +19,9 @@ import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 
 /**
- * This is the Testbed's notion of a property measurement, 
+ * This is the Testbed's notion of a property measurement.
+ * 
+ * These measurments may be generated in a workflow, by a service, or by a user.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
@@ -48,7 +50,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     // The name of this stage:
     protected String stage;
     
-    // AT WorkflowInput, WorkflowProcess, WorkflowOutput
+    // TODO AT WorkflowInput, WorkflowProcess, WorkflowOutput
     //  IN WorkflowStageIndex, WorkflowStageName, WorkflowAction
 
     /* ----------------- Data that is looked-up on demand: -------------- */
