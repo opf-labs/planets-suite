@@ -674,12 +674,15 @@ public class WorkflowBackingBean {
 	{
 		detailEntries.add(new DetailEntry(
 				DOJCRConstants.PREMIS_TITLE, o.getTitle()));
-		detailEntries.add(new DetailEntry(
-				DOJCRConstants.PREMIS_PERMANENT_URI, o
-						.getPermanentUri().toString()));
-		detailEntries.add(new DetailEntry(
-				DOJCRConstants.PREMIS_FORMAT_URI, o
-						.getFormat().toString()));
+		if (o.getPermanentUri() != null) {
+			detailEntries.add(new DetailEntry(
+					DOJCRConstants.PREMIS_PERMANENT_URI, o.getPermanentUri()
+							.toString()));
+		}
+		if (o.getFormat() != null) {
+			detailEntries.add(new DetailEntry(DOJCRConstants.PREMIS_FORMAT_URI,
+					o.getFormat().toString()));
+		}
 		
 		// fill meta data
 		Iterator<Metadata> iterMetadata = o.getMetadata().iterator();
