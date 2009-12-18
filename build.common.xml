@@ -98,6 +98,7 @@
         <fileset dir="${pserv.root.dir}/lib">
           <include name="standalone/*.jar" />
           <include name="jaxws-ri-2.1.4/lib/*.jar"/>
+          <include name="jackrabbit/*.jar"/>
         </fileset>
         <path refid="pserv_common_classpath"/>
       </path>
@@ -158,6 +159,7 @@
   <path id="standalone_classpath">
     <fileset dir="${pserv.root.dir}/lib">
       <include name="jaxws-ri-2.*/lib/*.jar"/>
+      <include name="jackrabbit/*.jar"/>
       <include name="standalone/*.jar" />
       <include name="junit-4.*.jar" />
     </fileset>
@@ -169,6 +171,7 @@
   <path id="standalone_test_classpath">
     <fileset dir="${pserv.root.dir}/lib">
       <include name="jaxws-ri-2.*/lib/*.jar"/>
+      <include name="jackrabbit/*.jar"/>
       <include name="junit-4.*.jar" />
     </fileset>
     <path refid="standalone_classpath"/>
