@@ -5,6 +5,12 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import static org.junit.Assert.*;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,18 +67,58 @@ public class ServiceDescriptionFactoryTest {
 		+ "egg to eggnog.";
 	assertEquals("Un-expected description.", expectedDescription,
 		serviceDescription.getDescription());
-	// serviceDescription.getEndpoint();
-	// serviceDescription.getFurtherInfo();
-	// serviceDescription.getIdentifier();
-	// serviceDescription.getInputFormats();
-	// serviceDescription.getInstructions();
-	// serviceDescription.getLogo();
-	// serviceDescription.getName();
-	// serviceDescription.getParameters();
-	// serviceDescription.getProperties();
-	// serviceDescription.getServiceProvider();
-	// serviceDescription.getTool();
-	// serviceDescription.getType();
+
+	// assertEquals("Un-expected end-point.","",
+	// serviceDescription.getEndpoint());
+
+	final URI expectedFurtherInfoURI = new URI("http://example.org");
+	assertEquals("Un-expected text returned by getFurtherInfo().",
+		expectedFurtherInfoURI, serviceDescription.getFurtherInfo());
+
+	assertEquals("Un-expected identifier.", "Example_custom_identifier",
+		serviceDescription.getIdentifier());
+
+	final Set<URI> expectedInputFormats = new HashSet<URI>();
+	expectedInputFormats.add(new URI("info:pronom/x-fmt/408"));
+	expectedInputFormats.add(new URI("info:planets/fmt/ext/lowercase"));
+	expectedInputFormats.add(new URI("info:pronom/x-fmt/407"));
+	expectedInputFormats.add(new URI("info:pronom/x-fmt/406"));
+	expectedInputFormats.add(new URI("info:planets/fmt/ext/foo"));
+	expectedInputFormats.add(new URI("info:pronom/x-fmt/91"));
+	
+	assertEquals("Un-expected input formats.", expectedInputFormats,
+		new HashSet<URI>(serviceDescription.getInputFormats()));
+
+	assertEquals("Un-expected instructions.",
+		"Example: Please install the XYZ tool on the system to\n\t\t\t"
+			+ "make this service work.", serviceDescription
+			.getInstructions());
+
+	assertEquals("Un-expected logo URI.",
+		"http://www.planets-project.eu/graphics/Planets_Logo.png",
+		serviceDescription.getLogo().toString());
+
+	assertEquals("Un-expected service name.",
+		"Example: Eggnog migration service.", serviceDescription
+			.getName());
+
+	/* TODO: Yet to be finished....
+	System.out.println("@%^@^%@%^ GNARF>>> "
+		+ serviceDescription.getParameters());
+
+	assertEquals("Un-expected parameter list.", "", serviceDescription
+		.getParameters());
+	assertEquals("Un-expected property list.", "", serviceDescription
+		.getProperties());
+	assertEquals("Un-expected service provider information.", "",
+		serviceDescription.getServiceProvider());
+	assertEquals("Un-expected tool description.", "", serviceDescription
+		.getTool());
+
+	assertEquals("Un-expected service interface type.", "",
+		serviceDescription.getType());
+		*/
+
 	assertEquals("Un-expected service version.", "3.141592653589793",
 		serviceDescription.getVersion());
     }

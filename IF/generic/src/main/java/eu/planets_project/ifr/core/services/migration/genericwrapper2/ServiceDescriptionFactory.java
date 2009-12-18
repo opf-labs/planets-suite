@@ -6,7 +6,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
@@ -36,7 +38,8 @@ class ServiceDescriptionFactory {
 	this.canonicalServiceName = canonicalServiceName;
     }
 
-    ServiceDescription getServiceDescription() throws ConfigurationException, MigrationPathConfigException {
+    ServiceDescription getServiceDescription() throws ConfigurationException,
+	    MigrationPathConfigException {
 
 	NodeList topLevelNodes = configuration.getElementsByTagName(
 		Constants.SERVICE_DESCRIPTION).item(0).getChildNodes();
@@ -82,19 +85,34 @@ class ServiceDescriptionFactory {
 	if (creator == null) {
 	    throw new ConfigurationException("creator not set in configfile");
 	}
+	
+	//FIXME! Is that the correct type passed on to the builder? Shouldn't it be the type of the concrete service?
 	ServiceDescription.Builder builder = new ServiceDescription.Builder(
 		title, "eu.planets_project.ifr.services.migrate.Migrate");
 
-	builder.author(creator);
-	builder.classname(canonicalServiceName);
-	builder.description(description);
-	builder.identifier(identifier);
-	builder.instructions(instructions);
-	builder.version(version);
-	builder.tool(tool);
-	builder.serviceProvider(publisher);
-	builder.paths(getPlanetsMigrationPaths(configuration));
-
+	try {
+	    builder.author(creator);
+	    builder.classname(canonicalServiceName);
+	    builder
+		    .endpoint(new URL("http://FIXME! put the correct URL here!"));
+	    builder.description(description);
+	    builder.identifier(identifier);
+	    builder.instructions(instructions);
+	    builder.version(version);
+	    builder.tool(tool);
+	    builder.serviceProvider(publisher);
+	    eu.planets_project.services.datatypes.MigrationPath planetsPaths[] = getPlanetsMigrationPaths(configuration);
+	    builder.paths(planetsPaths);
+	    builder.inputFormats(getInputFormats(planetsPaths));
+	    
+	    //FIXME! Collect all unique parameters from all the paths defined in the configuration.
+	    final List<Parameter> parameters = planetsPaths[0].getParameters();
+	    builder.parameters(parameters);
+	} catch (MalformedURLException mue) {
+	    throw new ConfigurationException(
+		    "Failed adding end-point information to the service "
+			    + "description.", mue);
+	}
 	if (furtherinfo != null) {
 	    try {
 		builder.furtherInfo(new URI(furtherinfo));
@@ -116,12 +134,34 @@ class ServiceDescriptionFactory {
 
     }
 
+    /**
+     * Extract the unique input format <code>URI</code>s from the migration
+     * paths specified by <code>planetsPaths</code>.
+     * 
+     * @param planetsPaths
+     *            A list of planets <code>MigrationPath</code> instances to
+     *            extract input format <code>URI</code>s from.
+     * @return An array containing the unique input format <code>URI</code>s
+     *         from the migration paths.
+     */
+    private URI[] getInputFormats(
+	    eu.planets_project.services.datatypes.MigrationPath[] planetsPaths) {
+	final Set<URI> inputFormats = new HashSet<URI>();
+	for (eu.planets_project.services.datatypes.MigrationPath migrationPath : planetsPaths) {
+	    inputFormats.add(migrationPath.getInputFormat());
+	}
+	return inputFormats.toArray(new URI[inputFormats.size()]);
+    }
+
     private eu.planets_project.services.datatypes.MigrationPath[] getPlanetsMigrationPaths(
 	    Document wrapperConfiguration) throws MigrationPathConfigException {
+
 	final DBMigrationPathFactory migrationPathFactory = new DBMigrationPathFactory(
 		wrapperConfiguration);
+	
 	final MigrationPaths migrationPaths = migrationPathFactory
 		.getAllMigrationPaths();
+
 	final Collection<MigrationPath> pathCollection = migrationPaths
 		.getAllMigrationPaths();
 
@@ -200,7 +240,7 @@ class ServiceDescriptionFactory {
 	final ArrayList<eu.planets_project.services.datatypes.MigrationPath> planetsPaths = new ArrayList<eu.planets_project.services.datatypes.MigrationPath>();
 	for (MigrationPath migrationPath : genericWrapperMigrationPaths) {
 
-	    List<Parameter> planetsParameters = new ArrayList<Parameter>();
+	    final List<Parameter> planetsParameters = new ArrayList<Parameter>();
 	    planetsParameters.addAll(migrationPath.getToolParameters());
 
 	    // Add a parameter for each preset (category)
