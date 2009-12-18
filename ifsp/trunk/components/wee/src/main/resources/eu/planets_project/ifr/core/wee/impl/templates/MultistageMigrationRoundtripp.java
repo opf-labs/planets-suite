@@ -387,7 +387,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 	    //2. store the data as file
         byte[] buf = new byte[1024];
         int len;
-        InputStream in = digo.getContent().read();
+        InputStream in = digo.getContent().getInputStream();
         while ((len = in.read(buf)) > 0) {
             out.write(buf, 0, len);
         }
