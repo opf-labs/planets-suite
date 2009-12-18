@@ -148,7 +148,7 @@ public class PlanetsServiceEndpoint {
 	 * 		The category name of the service derived from the class name
 	 */
 	public String getCategory() {
-		if (this._class.indexOf('.') >= 0) {
+		if (this._class != null && this._class.indexOf('.') >= 0) {
 			return (this._class.substring(this._class.lastIndexOf('.') + 1));
 		}
 		else {
