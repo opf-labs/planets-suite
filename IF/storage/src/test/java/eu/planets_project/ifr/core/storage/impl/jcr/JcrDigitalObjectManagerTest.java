@@ -121,7 +121,8 @@ public class JcrDigitalObjectManagerTest {
 	
 	
 	@BeforeClass
-	public static void beforeAll() throws Exception {			
+	public static void beforeAll() throws Exception {
+		System.setProperty("eu.planets-project.config.dir", "test/config");
 		repository = new TransientRepository(JCR_CONFIG_PATH, JCR_DATA_PATH);
 	}
 
