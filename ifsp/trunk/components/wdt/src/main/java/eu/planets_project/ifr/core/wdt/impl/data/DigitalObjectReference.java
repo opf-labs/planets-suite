@@ -136,6 +136,7 @@ public class DigitalObjectReference {
         // if it is a digital object from JCR repository
 		if (puri.toString().indexOf(DOJCRManager.PERMANENT_URI) > -1
 				&& puri.toString().indexOf(DOJCRManager.PERMANENT_URI) == 0) {
+			if (puri.toString().equals(DOJCRManager.PERMANENT_URI)) return path;
 			// Special treatment for digital object presentation
 			if (dom != null) {
 				try {
