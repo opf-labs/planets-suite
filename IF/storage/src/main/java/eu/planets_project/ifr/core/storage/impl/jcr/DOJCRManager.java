@@ -74,7 +74,7 @@ public class DOJCRManager {
 	/**
 	 * String constant for content resolver URI
 	 */
-	public static final String CONTENT_RESOLVER_URI = "/storage-browser/jcr/contentResolver?id=";
+	public static final String CONTENT_RESOLVER_URI = "/storage/jcr/contentResolver?id=";
 	public static final String PROTOCOL = "http://";
 
 	/**
@@ -1457,8 +1457,8 @@ public class DOJCRManager {
      */
     public static String getResolverPath()
     {
-    	return PROTOCOL + PlanetsServerConfig.getHostname() + ":" + 
-    	       PlanetsServerConfig.getPort() + CONTENT_RESOLVER_URI;
+    	return PROTOCOL + PlanetsServerConfig.getHostname() + ":"
+				+ PlanetsServerConfig.getPort() + CONTENT_RESOLVER_URI;
     }
     
     /**
