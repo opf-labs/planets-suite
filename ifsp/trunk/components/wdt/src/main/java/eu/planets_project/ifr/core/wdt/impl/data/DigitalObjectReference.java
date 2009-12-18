@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRConstants;
 import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRManager;
+import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * 
@@ -129,14 +130,21 @@ public class DigitalObjectReference {
         	path = puri.getPath();
         }
         
+		log.log(Level.INFO,
+				"DigitalObjectReference do perm uri: " + puri + " index: "
+						+ puri.toString().indexOf(DOJCRManager.PERMANENT_URI));
         // if it is a digital object from JCR repository
 		if (puri.toString().indexOf(DOJCRManager.PERMANENT_URI) > -1
 				&& puri.toString().indexOf(DOJCRManager.PERMANENT_URI) == 0) {
 			// Special treatment for digital object presentation
 			if (dom != null) {
 				try {
-					String title = dom.retrieve(puri).getTitle();
-					path = path.concat("_" + title);
+					DigitalObject obj = dom.retrieve(puri);
+					if (obj.getTitle() != null)
+					{
+						String title = obj.getTitle();
+						path = path.concat("_" + title);
+					}
 				} catch (Exception e) {
 					log.log(Level.INFO,
 							"DigitalObjectReference title not found. "
