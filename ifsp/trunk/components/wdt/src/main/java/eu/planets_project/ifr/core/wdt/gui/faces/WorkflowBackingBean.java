@@ -713,9 +713,11 @@ public class WorkflowBackingBean {
 		while (iterProperties.hasNext()) {
 			eu.planets_project.services.datatypes.Property property = iterProperties
 					.next();
-			detailEntries.add(new DetailEntry(
-					DOJCRConstants.PREMIS_EVENT_PROPERTY_URI, property
-							.getUri().toString()));
+			if (property.getUri() != null) {
+				detailEntries.add(new DetailEntry(
+						DOJCRConstants.PREMIS_EVENT_PROPERTY_URI, property
+								.getUri().toString()));
+			}
 			detailEntries.add(new DetailEntry(
 					DOJCRConstants.PREMIS_EVENT_PROPERTY_NAME, property
 							.getName()));
@@ -741,9 +743,11 @@ public class WorkflowBackingBean {
 	 *        This is a digital object metadata
 	 */
 	public void fillMetadata(Metadata metadata) {
-		detailEntries.add(new DetailEntry(
-				DOJCRConstants.PREMIS_METADATA_TYPE, metadata
-						.getType().toString()));
+		if (metadata.getType() != null) {
+			detailEntries.add(new DetailEntry(
+					DOJCRConstants.PREMIS_METADATA_TYPE, metadata.getType()
+							.toString()));
+		}
 		detailEntries.add(new DetailEntry(
 				DOJCRConstants.PREMIS_METADATA_CONTENT, metadata
 						.getContent()));
@@ -765,9 +769,10 @@ public class WorkflowBackingBean {
 		detailEntries.add(new DetailEntry(
 				DOJCRConstants.PREMIS_EVENT_AGENT_NAME,
 				agent.getName()));
-		detailEntries.add(new DetailEntry(
-				DOJCRConstants.PREMIS_EVENT_AGENT_TYPE,
-				agent.getType()));
+		if (agent.getType() != null) {
+			detailEntries.add(new DetailEntry(
+					DOJCRConstants.PREMIS_EVENT_AGENT_TYPE, agent.getType()));
+		}
 	}
 	
 	/**
