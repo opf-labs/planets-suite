@@ -129,19 +129,21 @@ public class DigitalObjectReference {
         	path = puri.getPath();
         }
         
-        if (puri.toString().indexOf(DOJCRManager.PERMANENT_URI) > -1) 
-        {
-        	// Special treatment for digital object presentation
-        	if (dom != null)
-        	{
-        		try {
-        		   String title = dom.retrieve(puri).getTitle();
-               	   path = path.concat("_" + title);
-        		} catch (Exception e) {
-        			log.log(Level.INFO, "DigitalObjectReference title not found. " + e.getMessage(), e);
-        		}
-        	}
-        } 
+        // if it is a digital object from JCR repository
+		if (puri.toString().indexOf(DOJCRManager.PERMANENT_URI) > -1
+				&& puri.toString().indexOf(DOJCRManager.PERMANENT_URI) == 0) {
+			// Special treatment for digital object presentation
+			if (dom != null) {
+				try {
+					String title = dom.retrieve(puri).getTitle();
+					path = path.concat("_" + title);
+				} catch (Exception e) {
+					log.log(Level.INFO,
+							"DigitalObjectReference title not found. "
+									+ e.getMessage(), e);
+				}
+			}
+		} 
 
         if( path == null ) return "";
         
