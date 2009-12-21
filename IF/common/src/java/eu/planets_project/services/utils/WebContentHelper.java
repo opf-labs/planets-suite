@@ -72,7 +72,7 @@ public class WebContentHelper {
     	loadProperties();
 
     	//resolve ip address
-    	host = java.net.InetAddress.getByName(host).getHostAddress();
+    	//host = java.net.InetAddress.getByName(host).getHostAddress();
 
     	//check webAccessPath
     	if(!new File(webAccessPath).exists()) {
