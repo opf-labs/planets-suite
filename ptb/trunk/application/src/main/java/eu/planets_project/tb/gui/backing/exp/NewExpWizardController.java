@@ -1,12 +1,32 @@
 package eu.planets_project.tb.gui.backing.exp;
 
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
-import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
-import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
+import java.io.File;
+import java.net.URI;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Vector;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.richfaces.component.html.HtmlDataTable;
+
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -34,15 +54,12 @@ import eu.planets_project.tb.gui.backing.UploadManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
-import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
-import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
-import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
@@ -56,47 +73,10 @@ import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
-import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
 import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
 import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
 import eu.planets_project.tb.impl.system.batch.TestbedBatchProcessorManager;
-import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
-
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.FieldPosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Vector;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.event.ValueChangeListener;
-import javax.xml.bind.JAXBException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.richfaces.component.html.HtmlDataTable;
 
 public class NewExpWizardController{
     
@@ -1995,7 +1975,7 @@ public class NewExpWizardController{
         log.info("Handling event in handleManualObsSelectChangeListener.");
         
         //the measurement we're operating upon
-        MeasurementImpl targetBean = (MeasurementImpl) this.getManualObsTable().getRowData();
+        MeasurementBean targetBean = (MeasurementBean) this.getManualObsTable().getRowData();
         
         //the experiment bean
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");

@@ -15,13 +15,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 
 /**
  * This is the Testbed's notion of a property measurement.
  * 
- * These measurments may be generated in a workflow, by a service, or by a user.
+ * These measurements may be generated in a workflow, by a service, or by a user.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
@@ -40,21 +39,12 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     private long id;
     
     @ManyToOne
-    protected InvocationRecordImpl invocation;
-
+    MeasurementEventImpl event;
+    
     protected String identifier;
     
     protected String value;
     
-    /* --------------- Measurement performed AT Stage ------------------ */
-    // The name of this stage:
-    protected String stage;
-    
-    // TODO AT WorkflowInput, WorkflowProcess, WorkflowOutput
-    //  IN WorkflowStageIndex, WorkflowStageName, WorkflowAction
-    // I think we need to record the ID of the entity that is being measured. e.g. D.O. URL
-    // I think we probably need to record the Type of the entity?
-
     /* ----------------- Data that is looked-up on demand: -------------- */
 
     @Transient
@@ -68,10 +58,6 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     
     @Transient
     protected String type;
-    public static final String TYPE_SERVICE = "Service";
-    public static final String TYPE_WORKFLOW = "Workflow";
-    public static final String TYPE_DIGITALOBJECT = "Digital Object";
-    public static final String TYPE_TWO_WAY_COMPARE = "Comparison of Two Digital Objects";
     
     /** For JAXB */
     @SuppressWarnings("unused")
@@ -80,32 +66,30 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     /**
      * @param m  
      */
-    public MeasurementImpl(InvocationRecordImpl invocation ) {
-        this.invocation = invocation;
+    public MeasurementImpl(MeasurementEventImpl event ) {
+        this.event = event;
     }
     
     /**
      * @param m  
      */
-    public MeasurementImpl(InvocationRecordImpl invocation, MeasurementRecordImpl m) {
-        this.invocation = invocation;
+    public MeasurementImpl(MeasurementEventImpl event, MeasurementRecordImpl m) {
+        this.event = event;
         this.identifier = m.getIdentifier();
         this.value = m.getValue();
     }
     
     /**
      * 
-     * @param invocation
+     * @param event
      * @param m
      */
-    public MeasurementImpl(InvocationRecordImpl invocation, MeasurementImpl m) {
-        this.invocation = invocation;
+    public MeasurementImpl(MeasurementEventImpl event, MeasurementImpl m) {
+        this.event = event;
         this.identifier = m.getIdentifier();
         this.value = m.getValue();
         this.name = m.name;
         this.unit = m.unit;
-        this.stage = m.stage;
-        this.type = m.type;
         this.description = m.description;
     }
     
@@ -117,20 +101,16 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      * @param stage
      * @param type
      */
-    private MeasurementImpl(InvocationRecordImpl invocation, String identifier, String name, String unit, String description, 
-            String stage, String type) {
+    private MeasurementImpl(MeasurementEventImpl event, String identifier, String name, String unit, String description ) {
         super();
         this.identifier = identifier;
         this.name = name;
         this.unit = unit;
-        this.stage = stage;
-        this.type = type;
         this.description = description;
     }
     
-    protected MeasurementImpl(InvocationRecordImpl invocation, URI identifier, String name, String unit, String description, 
-            String stage, String type) {
-        this(invocation, identifier.toASCIIString(), name, unit, description, stage, type );
+    protected MeasurementImpl(MeasurementEventImpl event, URI identifier, String name, String unit, String description ) {
+        this(event, identifier.toASCIIString(), name, unit, description );
     }
 
     /**
@@ -138,7 +118,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      * @return
      */
     public MeasurementImpl clone() {
-        return new MeasurementImpl(this.invocation, this.identifier, this.name, this.unit, this.description, this.stage, this.type);
+        return new MeasurementImpl(this.event, this.identifier, this.name, this.unit, this.description );
     }
 
     /**
@@ -146,8 +126,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      */
     public static MeasurementImpl create( URI identifier, String name, String unit, String description, 
             String stage, String type ) {
-        return new MeasurementImpl( null, identifier, name, unit, description, 
-            stage, type);
+        return new MeasurementImpl( null, identifier, name, unit, description );
     }
 
 
@@ -188,20 +167,6 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return the stage
-     */
-    public String getStage() {
-        return stage;
-    }
-
-    /**
-     * @param stage the stage to set
-     */
-    public void setStage(String stage) {
-        this.stage = stage;
     }
 
     /**
@@ -265,7 +230,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      */
     @Override
     public String toString() {
-        return "[id:"+this.identifier+", name:"+this.name+", unit:"+this.unit+", desc:"+this.description+", stage:"+this.stage+", type:"+this.type+", value:"+this.value+"]";
+        return "[id:"+this.identifier+", name:"+this.name+", unit:"+this.unit+", desc:"+this.description+", type:"+this.type+", value:"+this.value+"]";
     }
     
     /**
@@ -276,20 +241,6 @@ public class MeasurementImpl extends MeasurementRecordImpl {
         if( this.unit == null ) return false;
         if( "".equals(this.unit)) return false;
         return true;
-    }
-
-    /**
-     * @param invocation the invocation to set
-     */
-    public void setInvocation(InvocationRecordImpl invocation) {
-        this.invocation = invocation;
-    }
-
-    /**
-     * @return the invocation
-     */
-    public InvocationRecordImpl getInvocation() {
-        return invocation;
     }
 
     /**
@@ -304,6 +255,20 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * @param measurementEventImpl
+     */
+    public void setEvent(MeasurementEventImpl event) {
+       this.event = event;
+    }
+
+    /**
+     * @return
+     */
+    public MeasurementEventImpl getEvent() {
+        return this.event;
     }
 
 }

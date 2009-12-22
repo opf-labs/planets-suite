@@ -41,6 +41,7 @@ import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
@@ -293,7 +294,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         m.setDescription(p.getDescription());
         // FIXME The TYPES have different meanings here! What should this be recorded as?
         //m.setType(p.getType());
-        m.setType(MeasurementImpl.TYPE_DIGITALOBJECT);
+        m.setType(MeasurementEventImpl.TARGET_DIGITALOBJECT);
         m.setUnit(p.getUnit());
         m.setValue(p.getValue());
         

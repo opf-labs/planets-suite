@@ -21,6 +21,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -37,15 +38,28 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.persistency.ServiceRecordPersistencyRemote;
 import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.persistency.ServiceRecordPersistencyImpl;
 
 /**
  * This is a record of the invocation of a service. 
+ * 
  * Can be re-used outside a workflow context if required.
  * 
- * For a 'user' agent, the 'parameters' could specifiy the view platform.
+ * The output results can be
+ *  - Lists of properties,
+ *  - ServiceReport
+ *  - Other outputs, depending on the action?
+ * but in the TB, these can be stored as 'measurements' of different types.
+ * 
+ * This is just because not everything can be modelled ahead of time, and not everything is fixed.
+ * e.g. the ServiceReport object may change, so we should not really depend on it, so instead, we can 
+ * decompose it into the important parts, the success/fail, etc
+ * 
+ * 
+ * For a 'user' agent, the 'parameters' could specify the view platform.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
@@ -72,28 +86,65 @@ public class InvocationRecordImpl implements Serializable {
     @ManyToOne
     private ServiceRecordImpl serviceRecord;
     
-    /** A record of the identity of the Agent, if it is a User */
-    private String username = null;
-
     /** The input parameters */
     @OneToMany(cascade=CascadeType.ALL, mappedBy="invocation", fetch=FetchType.EAGER)
     private Set<InvocationParameterImpl> parameters = new HashSet<InvocationParameterImpl>();
     
-    /** The output results */
-//  - List<Output> ???
-//  - OutputDigitalObject ???
-//  - {ServiceReport}
+    /** The input digital object(s) */
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    private Set<DigitalObjectRecordImpl> inputs = new HashSet<DigitalObjectRecordImpl>();
+    
+    /** Did the service complete successfully. i.e. produced an {Action}Result and ServiceReport. */
+    private boolean invocationSucceeded;
+    
+    /** What was the service exit status - did it return a result or fail. Not necessarily
+     * the same as eu.planets_project.services.datatypes.ServiceReport.Status as the service may return a malformed result. */
+    public static enum ExitState {
+        /** Execution succeeded, close to Status.SUCCESS */
+        SUCCEEDED,
+        /** Execution succeeded, but with warnings. */
+        WARNING,
+        /** Execution failed, with Status.TOOL_ERROR */
+        TOOL_ERROR,
+        /** Execution failed, with Status.INSTALLATION_ERROR */
+        INSTALLATION_ERROR,
+        /** Executed, but result was malformed or inconsistent. */
+        MALFORMED_RESULT
+    }
+    private ExitState serviceStatus;
+    
+    /** A simple log of the output from the service. Build from the info/warn/error strings in the ServiceReport */
+    private Vector<String> serviceLog = new Vector<String>();
+    
+    /** The output digital object(s): */
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    private Set<DigitalObjectRecordImpl> outputs = new HashSet<DigitalObjectRecordImpl>();
+    
+    /** Was the service response correct, or did it fail when it should have succeeded, 
+     * or indeed 'succeed' when is should have failed. Needs human or external standard test to evaluate. 
+     * FIXME Perhaps this should be a 'Measurement'?
+     * */
+    private boolean serviceRepondedCorrectly;
     
     /** The measurements about this invocation */
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="invocation", fetch=FetchType.EAGER)
-    private Set<MeasurementImpl> measurements = new HashSet<MeasurementImpl>();
-
+    @OneToOne(cascade=CascadeType.ALL, mappedBy="invocation", fetch=FetchType.EAGER)
+    private Set<MeasurementEventImpl> measurementEvents = new HashSet<MeasurementEventImpl>();
+    
+    /* -------------------------------------------- */
     
     /** For JAXB */
     @SuppressWarnings("unused")
     private InvocationRecordImpl() {
     }
     
+    /**
+     * Every InvocationRecord must have a related ServiceRecord.
+     * A InvocationRecord *may* have a ExecutionRecordImpl, if invoked from a experimental workflow.
+     * 
+     * FIXME But what if this is a set of measurements from a human agent?
+     * 
+     * @param serviceRecord of the service this in an invocation of.
+     */
     public InvocationRecordImpl( ServiceRecordImpl serviceRecord ) {
         this.serviceRecord = serviceRecord;
     }
@@ -146,8 +197,17 @@ public class InvocationRecordImpl implements Serializable {
     /**
      * @return the measurements
      */
-    public Set<MeasurementImpl> getMeasurements() {
-        return measurements;
+    public void addMeasurementEvent( MeasurementEventImpl me ) {
+        this.measurementEvents.add(me);
+        me.setInvocation(this);
+        return;
+    }
+
+    /**
+     * @return
+     */
+    public Set<MeasurementEventImpl> getMeasurementEvents() {
+        return this.measurementEvents;
     }
 
 }

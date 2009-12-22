@@ -19,11 +19,17 @@ public class MeasurementBean extends MeasurementImpl {
     /** */
     protected boolean selected = true;
     
+    /** Allow the 'stage' to be copied here, for easier presentation */
+    private String stage;
+    
     /**
      * @param measurement
      */
     public MeasurementBean(MeasurementImpl measurement) {
         super(null, measurement);
+        if( measurement.getEvent() != null ) {
+            this.stage = measurement.getEvent().getWorkflowStage();
+        }
     }
 
     /**
@@ -40,4 +46,18 @@ public class MeasurementBean extends MeasurementImpl {
         this.selected = selected;
     }
 
+    /**
+     * @return the stage
+     */
+    public String getStage() {
+        return stage;
+    }
+
+    /**
+     * @param stage the stage to set
+     */
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
+    
 }

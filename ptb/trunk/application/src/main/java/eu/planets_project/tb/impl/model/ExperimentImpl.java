@@ -30,6 +30,7 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
@@ -322,7 +323,9 @@ public class ExperimentImpl extends ExperimentPhaseImpl
         for( BatchExecutionRecordImpl b : this.getExperimentExecutable().getBatchExecutionRecords() ) {
             for( ExecutionRecordImpl run : b.getRuns() ) {
                 for( InvocationRecordImpl iri : run.getServiceCalls() ) {
-                    mi.addAll(iri.getMeasurements());
+                    for( MeasurementEventImpl me : iri.getMeasurementEvents() ) {
+                        mi.addAll(me.getMeasurements());
+                    }
                 }
             }
         }

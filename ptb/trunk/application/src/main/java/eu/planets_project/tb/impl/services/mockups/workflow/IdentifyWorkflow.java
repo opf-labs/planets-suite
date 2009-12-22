@@ -27,6 +27,7 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
@@ -85,12 +86,12 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
                 PROP_IDENTIFY_FORMAT, 
                 "The format of the Digital Object", "",
                 "The format of a Digital Object, specified as a Planets Format URI.", 
-                null, MeasurementImpl.TYPE_DIGITALOBJECT);
+                null, MeasurementEventImpl.TARGET_DIGITALOBJECT);
         MEASURE_IDENTIFY_METHOD = MeasurementImpl.create(
                 PROP_IDENTIFY_METHOD, 
                 "The identification method.", "",
                 "The method the service used to identify the digital object.", 
-                null, MeasurementImpl.TYPE_SERVICE);
+                null, MeasurementEventImpl.TARGET_SERVICE);
 
         // Now set up the hash:
         observables = new HashMap<String,List<MeasurementImpl>>();

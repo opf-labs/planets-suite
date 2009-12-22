@@ -46,6 +46,7 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 
@@ -392,13 +393,16 @@ public class ExecutionRecordImpl implements Serializable {
                         for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
                             InvocationRecordImpl iri = new InvocationRecordImpl( exsr.getServiceRecord() );
                             iri.setExecution(exr);
+                            MeasurementEventImpl me = new MeasurementEventImpl(iri);
+                            iri.addMeasurementEvent(me);
+
                             log.info("Got Stage: "+exsr.getStage());
                             for( MeasurementRecordImpl mr : exsr.getMeasurements() ) {
                                 log.info("Got measurement: "+mr);
                                 // Set the back-reference, or retrieval fails:
-                                MeasurementImpl m2 = new MeasurementImpl(iri);
+                                MeasurementImpl m2 = new MeasurementImpl(me);
                                 log.info("Looking at "+mr.getIdentifier());
-                                iri.getMeasurements().add(m2);
+                                me.addMeasurement(m2);
                             }
                             this.serviceCalls.add(iri);
                         }

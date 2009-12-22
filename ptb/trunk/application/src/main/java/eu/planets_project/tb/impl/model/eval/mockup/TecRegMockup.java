@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
@@ -60,7 +61,7 @@ public class TecRegMockup {
                         PROP_SERVICE_SUCCESS, 
                         "Service succeeded", "",
                         "Did this service execute successfully?  Returns true/false.", 
-                        null, MeasurementImpl.TYPE_SERVICE)
+                        null, MeasurementEventImpl.TARGET_SERVICE)
         );
         // The service time
         observables.put( 
@@ -69,7 +70,7 @@ public class TecRegMockup {
                         PROP_SERVICE_TIME, 
                         "Service execution time", "seconds",
                         "The wall-clock time taken to execute the service, in seconds.", 
-                        null, MeasurementImpl.TYPE_SERVICE)
+                        null, MeasurementEventImpl.TARGET_SERVICE)
         );
 
         // The measured type
@@ -79,7 +80,7 @@ public class TecRegMockup {
                         PROP_DO_FORMAT, 
                         "The format of the Digital Object", "",
                         "The format of a Digital Object, specified as a Planets Format URI.", 
-                        null, MeasurementImpl.TYPE_DIGITALOBJECT)
+                        null, MeasurementEventImpl.TARGET_DIGITALOBJECT)
         );
 
         // The size
@@ -89,7 +90,7 @@ public class TecRegMockup {
                         PROP_DO_SIZE, 
                         "The size of the Digital Object", "bytes",
                         "The total size of a particular Digital Object.", 
-                        null, MeasurementImpl.TYPE_DIGITALOBJECT)
+                        null, MeasurementEventImpl.TARGET_DIGITALOBJECT)
         );
     }
 
@@ -238,16 +239,4 @@ public class TecRegMockup {
         return new MeasurementImpl(null, observables.get(observable));
     }
     
-    /**
-     * FIXME This should not be necessary!
-     * @param observable
-     * @return
-     */
-    @Deprecated
-    public static MeasurementImpl getObservable( URI observable, String stage ) {
-        MeasurementImpl m = new MeasurementImpl(null, observables.get(observable));
-        m.setStage(stage);
-        return m;
-    }
-
 }
