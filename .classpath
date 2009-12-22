@@ -109,6 +109,7 @@
 	<classpathentry kind="src" path="PA/kakadu/src/java"/>
 	<classpathentry kind="lib" path="PC/odfvalidator/lib/jdom.jar" sourcepath="E:/JDOM/jdom-1.1.1.zip"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
