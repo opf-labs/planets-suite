@@ -45,7 +45,7 @@
 			</c:if>
 			
 <!-- start of experimenter tabs -->						
-			<c:if test="${page == 'experiments' || page == 'new_exp' || page == 'import_exp' || page == 'my_exp' || page == 'browse_exp' || page == 'search_exp'}">
+			<c:if test="${page == 'experiments' || page == 'new_exp' || page == 'import_exp' || page == 'my_exp' || page == 'browse_exp' || page == 'search_exp' || page == 'exp_scheduler' || page == 'view_exp'}">
 				<li id="current">
 				<h:commandLink action="experiments" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" class="toolbar"/>
@@ -53,7 +53,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'experiments' and page != 'new_exp' and page != 'import_exp' and page != 'my_exp' and page != 'browse_exp' and page != 'search_exp' }">
+			<c:if test="${page != 'experiments' and page != 'new_exp' and page != 'import_exp' and page != 'my_exp' and page != 'browse_exp' and page != 'search_exp' and page != 'exp_scheduler' and page !='view_exp'}">
                             <li>
                                 <h:commandLink action="experiments" rendered="#{UserBean.reader}">
                                     <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" class="toolbar"/>
@@ -120,6 +120,7 @@
 			</c:if>
 
 <!-- start of admin tabs -->
+<!--
 			<c:if test="${page == 'exp_scheduler'}">
 				<li id="current">
 				<h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}">
@@ -136,7 +137,6 @@
 				</h:commandLink>
 			</li>
 			</c:if>
-      <!-- 
 			<c:if test="${page == 'upload_data'}">
 				<li id="current">
 				<h:commandLink action="upload_data" rendered="#{UserBean.admin}">

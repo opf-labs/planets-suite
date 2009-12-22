@@ -17,6 +17,9 @@
     
 		<h:form>
 		<ul class="leftcol">
+		<c:if test="${UserBean.admin == true}">
+		      <li><h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}"><h:outputText value="#{res['exp_scheduler.pageTitle']}"/></h:commandLink></li>
+		</c:if>
 		<c:if test="${UserBean.experimenter == true}">
 		      <li><h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}"><h:outputText value="#{res['new_exp.pageTitle']}"/></h:commandLink></li>
 			<li><h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">

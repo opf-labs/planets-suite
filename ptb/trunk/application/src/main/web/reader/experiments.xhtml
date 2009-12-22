@@ -26,7 +26,6 @@
 	<div class="innertubemain">
 
 	<div class="clear"></div>
-	<p>Intro paragraph about experiments here</p>
   
 <div align="center">
 		<h:form>
@@ -40,6 +39,10 @@
 						 <img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_browse_exps.png" title="#{res['browse_exp.pageTitle']}" alt="#{res['browse_exp.pageTitle']}" style="margin:5px 5px 5px 5px;"/>
 					</h:commandLink> 
       <a href="#"><img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_search_exps.png" title="#{res['search_exp.pageTitle']}" alt="#{res['search_exp.pageTitle']}" style="margin:5px 5px 5px 5px;"/></a> 
+	  
+<c:if test="${UserBean.admin == true}">
+		      <h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}"><img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_exp_scheduler.png" title="#{res['exp_scheduler.pageTitle']}" alt="#{res['exp_scheduler.pageTitle']}" style="margin:5px 5px 5px 5px;"/></h:commandLink> 
+		</c:if>
 	  </p>
 	   </h:form>
 </div>
