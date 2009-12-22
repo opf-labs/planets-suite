@@ -132,9 +132,23 @@
 			field)
 		-->
 		<properties>
-			<property name="exampleName">
-				exampleValue
-		</property>
+			<!--
+				A property element has two attributes "name" and "id". The name
+				attribute specifies a human readable name and the id attribute must
+				be a valid (unique) URI. You may optionally specify a type attribute
+				as well.
+			-->
+			<property name="exampleName" id="info:exampleID" type="myOptionalExampleType">
+				<!--
+					A property element must contain a "value" sub-element, however, its
+					"unit" attribute is optional.
+				-->
+				<value unit="cubic gram">exampleValue with a ridiculous unit.</value>
+				<description>
+					This is an optional description of an example property with a value
+					and a silly value unit specification.
+				</description>
+			</property>
 		</properties>
 
 	</serviceDescription>
@@ -434,9 +448,8 @@
 							This description is information to the callers about the over-all
 							effect of applying values from this preset.
 						-->
-						Takes the options 'Normal' or 'US'.
-						Defaults to
-						'Normal'.
+						Valid options are 'Normal' or 'US'.
+						Defaults to 'Normal'.
 					</description>
 
 					<settings name="US">
@@ -886,7 +899,7 @@
 							effect of applying values from this preset.
 						-->
 						<![CDATA[
-						Takes the options:
+						Valid options:
 						
 						'complete' : Converts from lowercase to	uppercase.
 						'AC-DC' : Converts As do Ds, thus, AC-DC becomes DC-AC.
@@ -950,6 +963,23 @@
 					from.
 				-->
 				<preset name="quality" default="good">
+
+					<description>
+						<!--
+							This description is information to the callers about the over-all
+							effect of applying values from this preset.
+						-->
+						<![CDATA[
+						Valid options:
+						
+						'good' : Converts from lowercase to	uppercase.
+						'better' : Converts As do Ds, thus, AC-DC becomes DC-AC.
+						'best' : Converts from lowercase to uppercase and adds
+						          a line number to each line.
+
+						Defaults to 'good'.
+						]]>
+					</description>
 
 					<settings name="good">
 
