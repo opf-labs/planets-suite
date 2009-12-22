@@ -1,0 +1,7 @@
+digraph if {
+    
+    node[shape=record]
+    layer[label="{User Interface|Web Service API|Native API}" style=filled fillcolor=gray95]
+    content[label="{{Users|Services|Workflows}|{Verbs|Registries}|{Verbs|Registries|Utils}}"]
+    tech[label="{HTML|WSDL|Java}" style=filled fillcolor=gray95]
+}
