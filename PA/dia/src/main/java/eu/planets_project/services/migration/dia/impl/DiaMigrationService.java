@@ -42,7 +42,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
     /** The service name */
     static final String NAME = "DiaMigrationService";
 
-    static final String configfile = "DiaServiceConfiguration.xml";
+    static final String CONFIG_FILE_NAME = "DiaServiceConfiguration.xml";
 
     /** The unique class id */
     private static final long serialVersionUID = 4596228292063217306L;
@@ -59,7 +59,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
     public MigrateResult migrate(final DigitalObject digitalObject,
 	    URI inputFormat, URI outputFormat, List<Parameter> parameters) {
 
-	final DocumentLocator documentLocator = new DocumentLocator(configfile);
+	final DocumentLocator documentLocator = new DocumentLocator(CONFIG_FILE_NAME);
 
 	MigrateResult migrationResult;
 	try {
@@ -103,7 +103,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	// The generic wrapper does not yet properly implement the describe()
 	// method, thus, you cannot implement your own using that.
 
-	final DocumentLocator documentLocator = new DocumentLocator(configfile);
+	final DocumentLocator documentLocator = new DocumentLocator(CONFIG_FILE_NAME);
 	try {
 	    final Configuration runtimeConfiguration = ServiceConfig
 		    .getConfiguration("pserv-pa-dia");

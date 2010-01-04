@@ -121,14 +121,15 @@ public class ServiceDescriptionFactoryTest {
 	// TODO: Yet to be finished.... Clarify where this information is
 	// supposed to come from...
 	//	  
+//	System.out
+//	.println("@%^@^%@%^ GNARF>>> " + serviceDescription.getServiceProvider());
 	// assertEquals("Un-expected service provider information.", "",
 	// serviceDescription.getServiceProvider());
 	//	  
-	// assertEquals("Un-expected service interface type.", "",
-	// serviceDescription.getType());
+	assertEquals("Un-expected interface type.",
+		"eu.planets_project.services.migrate.Migrate", 
+		serviceDescription.getType());
 
-	System.out
-		.println("@%^@^%@%^ GNARF>>> " + serviceDescription.getTool());
 
     }
 

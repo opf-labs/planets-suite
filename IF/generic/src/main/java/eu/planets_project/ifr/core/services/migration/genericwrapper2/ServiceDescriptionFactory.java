@@ -30,6 +30,7 @@ import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.Property.Builder;
+import eu.planets_project.services.migrate.Migrate;
 
 /**
  * @author Pelle Kofod &lt;pko@statsbiblioteket.dk&gt;
@@ -117,14 +118,13 @@ class ServiceDescriptionFactory {
 			"creator not set in configfile");
 	    }
 
-	    // FIXME! Is that the correct type passed on to the builder?
-	    // Shouldn't
-	    // it be the type of the concrete service?
+	    // Start the creation of a service description for a migration service.
 	    ServiceDescription.Builder builder = new ServiceDescription.Builder(
-		    title, "eu.planets_project.ifr.services.migrate.Migrate");
+		    title, Migrate.class.getCanonicalName());
 
 	    builder.author(creator);
 	    builder.classname(canonicalServiceName);
+
 	    // FIXME! I geuss that the end-point URL should be obtained
 	    // dynamically to ensure that it is in sync. with the actual
 	    // end-point URL.
