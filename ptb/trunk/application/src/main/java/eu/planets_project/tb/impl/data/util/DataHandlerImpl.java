@@ -356,7 +356,8 @@ public class DataHandlerImpl implements DataHandler {
         // Got a URI, is it owned?
         if( dommer.hasDataManager(domUri)) {
             try {
-                DigitalObject digitalObject = dommer.retrieve(domUri);
+            	//get the digital object with it's original content
+                DigitalObject digitalObject = dommer.retrieve(domUri,false);
                 return new DigitalObjectRefBean(digitalObject.getTitle(), domUri.toString(), domUri, digitalObject);
             } catch (DigitalObjectNotFoundException e) {
                 throw new FileNotFoundException("Could not find file "+id);
@@ -367,27 +368,15 @@ public class DataHandlerImpl implements DataHandler {
         
         
     }
-    
-	/**
-	 * returns a List of DigitalObjects (content by reference) representation for all local file refs that we're able to access
-	 * @param localFileRefs
-	 * @return
-	 */
-//	public List<DigitalObject> convertFileRefsToDigos(Collection<String> localFileRefs){
-//		List<File> temps = new ArrayList<File>();
-//		for(String fileRef : localFileRefs){
-//			temps.add(new File(fileRef));
-//		}
-		//this does not work as the DigitalObject.Content uses javax.activation.DataHandler which is not serializable!!
-		//DigitalObjectUtils.createContainedAsStream(temps);
-//		return DigitalObjectUtils.createContainedbyReference(temps);
-//	}
 	
 
-	/* (non-Javadoc)
+	/* 
+	 * Please note this method should not be used for any permanently stored digital objects.
+	 * These should use the externally accessible contentResolver instead
+	 * (non-Javadoc)
 	 * @see eu.planets_project.tb.api.data.util.DataHandler#convertFileRefsToURLAccessibleDigos(java.util.Collection)
 	 */
-	public List<DigitalObject> convertFileRefsToURLAccessibleDigos(Collection<String> localFileRefs){
+	/*public List<DigitalObject> convertFileRefsToURLAccessibleDigos(Collection<String> localFileRefs){
 		List<DigitalObject> ret = new ArrayList<DigitalObject>();
 		for(String fileRef : localFileRefs){
 			try {
@@ -400,10 +389,10 @@ public class DataHandlerImpl implements DataHandler {
 				File exposedFile = this.copyLocalFileAsTempFileInExternallyAccessableDir(f.getAbsolutePath());
 				URI httpRef = this.getHttpFileRef(exposedFile);
 				
-				/*DataHandler dh = new DataHandlerImpl();
-				DigitalObjectRefBean digoRef = dh.get(fileRef);
+				//DataHandler dh = new DataHandlerImpl();
+				//DigitalObjectRefBean digoRef = dh.get(fileRef);
 				//not possible as this requires authentication
-				URI httpRef = digoRef.getDownloadUri();*/
+				//URI httpRef = digoRef.getDownloadUri();
 				
 				//adding the original location as metadata record
 		        URI objectRef = URI.create(fileRef);
@@ -422,6 +411,25 @@ public class DataHandlerImpl implements DataHandler {
 				// TODO Auto-generated catch block
 				log.debug("DataHandler.convertFileRefsToURLAccessibleDigos - could not resolve a URL ro the temp fileRef "+fileRef);
 			} catch (DigitalObjectNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return ret;
+	}*/
+	
+	public List<DigitalObject> convertFileRefsToURLAccessibleDigos(Collection<String> localFileRefs){
+		List<DigitalObject> ret = new ArrayList<DigitalObject>();
+		for(String fileRef : localFileRefs){
+			//use the flag to indicate that we want to return a digital object content by reference (link to contentResolver)
+		    DigitalObjectMultiManager digoManager = new DigitalObjectMultiManager();
+		    try {
+				DigitalObject refByValueDigo = digoManager.retrieve(new URI(fileRef),true);
+				ret.add(refByValueDigo);
+		    } catch (DigitalObjectNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

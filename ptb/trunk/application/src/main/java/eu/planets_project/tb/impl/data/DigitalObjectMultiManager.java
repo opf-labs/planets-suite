@@ -9,6 +9,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -27,7 +28,11 @@ import eu.planets_project.ifr.core.storage.impl.web.BlueMarbleDigitalObjectManag
 import eu.planets_project.ifr.core.storage.impl.web.YahooImageAPIDigitalObjectManagerImpl;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
+import eu.planets_project.services.datatypes.Event;
+import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.tb.api.system.TestbedStatelessAdmin;
+import eu.planets_project.tb.impl.data.util.TBDigitalObjectContentResolver;
 import eu.planets_project.tb.impl.system.TestbedStatelessAdminBean;
 
 /**
@@ -230,6 +235,54 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         // TODO If title is null, reset it to the leaf of the URI?
         // dob.title( pdURI.getPath().substring( pdURI.getPath().lastIndexOf('/')+1) );
         return dm.retrieve(pdURI);
+    }
+    
+    /**
+     * Retrieves a digital Object from the DigitalObjectManager, but allows to trigger the
+     * way the content is added (flag: by value or by publicly accessible reference)
+     * @param pdURI
+     * @param digoByContentResolverRef: a flag to indicate if the content shall be returned with TB Content Resolver ref or by original-value/ref
+     * @return
+     */
+    public DigitalObject retrieve(URI pdURI, boolean digoByTBContentResolverRef)
+    		throws DigitalObjectNotFoundException {
+    	DigitalObject digo = this.retrieve(pdURI);
+    	if(!digoByTBContentResolverRef){
+    		return digo;
+    	}else{
+    		//modify the digo's content and return a link to the TB externally available content resolver servlet.
+    		try {
+				DigitalObjectContent content = getDigoContentByReference(pdURI);
+
+				DigitalObject digoUpdated = new DigitalObject.Builder(content)
+	      	 	  .title(digo.getTitle())
+			      .permanentUri(digo.getPermanentUri())
+	              .manifestationOf(digo.getManifestationOf())
+	              .format(digo.getFormat())
+	              .metadata((Metadata[]) digo.getMetadata().toArray(new Metadata[0]))
+	              .events((Event[]) digo.getEvents().toArray(new Event[0]))
+			      .build();	
+				return digoUpdated;
+			} catch (MalformedURLException e) {
+				log.debug("error building content by reference ",e);
+				throw new DigitalObjectNotFoundException(e);
+			}
+    	}
+    }
+    
+    /**
+     * Builds and returns a digitalObjectContent pointing to the contentResolver servlet.
+     * @param permanentURI
+     * @return
+     * @throws MalformedURLException 
+     */
+    private DigitalObjectContent getDigoContentByReference(URI permanentURI) throws MalformedURLException{
+    	DigitalObjectContent resultContent = null;
+	   log.info("Create digo ontent by reference");     	   	  
+	   URI contentResolverUri = URI.create(TBDigitalObjectContentResolver.getResolverPath() + permanentURI);
+	   resultContent = Content.byReference(contentResolverUri.toURL());
+
+	   return resultContent;
     }
 
     /* (non-Javadoc)

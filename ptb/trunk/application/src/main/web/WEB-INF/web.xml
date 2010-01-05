@@ -169,6 +169,11 @@
 			org.jfree.chart.servlet.DisplayChart
 		</servlet-class>
 	</servlet>
+	<!-- Testbed's external content resolver servlet - content download possible outside PlanetsREALM-->
+    <servlet>
+    	<servlet-name>ExternalDigoContentResolver</servlet-name>
+    	<servlet-class>eu.planets_project.tb.impl.data.util.TBDigitalObjectContentResolver</servlet-class>
+  	</servlet>    
 
 	
 	<servlet-mapping>
@@ -186,6 +191,10 @@
     <servlet-mapping>
         <servlet-name>DisplayChart</servlet-name>
         <url-pattern>/servlet/DisplayChart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExternalDigoContentResolver</servlet-name>
+        <url-pattern>/external/digitalObjectContentResolver</url-pattern>
     </servlet-mapping>
 
 
