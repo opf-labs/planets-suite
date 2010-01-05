@@ -27,7 +27,7 @@
 	<property name="src.web" value="${appDir}/src/web" />
 
 	<!-- Define the API part-->
-	<property name="src.api.includes" value="eu/planets_project/ifr/core/storage/api/** eu/planets_project/ifr/core/storage/impl/** eu/planets_project/ifr/core/storage/utils/**" />
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/storage/api/** eu/planets_project/ifr/core/storage/impl/blnewspaper/** eu/planets_project/ifr/core/storage/impl/file/** eu/planets_project/ifr/core/storage/impl/jcr/** eu/planets_project/ifr/core/storage/impl/oai/** eu/planets_project/ifr/core/storage/impl/util/** eu/planets_project/ifr/core/storage/impl/web/** eu/planets_project/ifr/core/storage/utils/**" />
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test/java" />
