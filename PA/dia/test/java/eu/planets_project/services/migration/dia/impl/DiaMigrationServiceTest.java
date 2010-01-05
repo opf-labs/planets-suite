@@ -165,8 +165,8 @@ public class DiaMigrationServiceTest extends TestCase {
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // !! Warning! You may turn blind if you look at the code below this line.!!
-    // !!                                                                     !!
-    // !! Please leave it, I'll clean up later - Thomas (SB)                  !!
+    // !! !!
+    // !! Please leave it, I'll clean up later - Thomas (SB) !!
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     /**
@@ -175,59 +175,75 @@ public class DiaMigrationServiceTest extends TestCase {
      * .
      */
     @Test
-    /*
-     * public void testDescribe() throws Exception { ServiceDescription
-     * diaServiceDescription = migrationService.describe();
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * assertNotNull("The migration service does not provide author information."
-     * , diaServiceDescription.getAuthor());
-     * assertNotNull("The migration service does not provide a description.",
-     * diaServiceDescription.getDescription()); //
-     * assertNotNull("The migration service does not provide an identifier.",
-     * diaServiceDescription.getIdentifier());
-     * verifyInputFormats(diaServiceDescription.getInputFormats());
-     * 
-     * //assertNotNull(
-     * "The migration service does not provide instructions for the use of this service."
-     * , diaServiceDescription.getInstructions());
-     * assertNotNull("The migration service does not provide a name.",
-     * diaServiceDescription.getName()); //
-     * verifyMigrationPaths(diaServiceDescription.getPaths());
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * assertNotNull("The migration service does not provide a list of properties."
-     * , diaServiceDescription.getProperties()); //assertNotNull(
-     * "The migration service does not provide service provider information.",
-     * diaServiceDescription.getServiceProvider()); //
-     * assertNotNull("The migration service does not provide a tool URI.",
-     * diaServiceDescription.getTool());
-     * assertNotNull("The migration service does not provide type information.",
-     * diaServiceDescription.getType()); //
-     * assertNotNull("The migration service does not provide version information."
-     * , diaServiceDescription.getVersion());
-     * 
-     * // FIXME! test code, kill! // String[] suffixes = new String[]{"bmp",
-     * "gif", "jpg", "png", "pnm", "ras", "tif"}; // HashMap<String, Set<URI>>
-     * formatURIMap = new HashMap<String, Set<URI>>(); // final FormatRegistry
-     * fm= FormatRegistryFactory.getFormatRegistry(); // for (String suffix :
-     * suffixes) { // formatURIMap.put(suffix, fm.getURIsForExtension(suffix));
-     * // System.out.println(suffix + " : " + formatURIMap.get(suffix)); // }
-     * 
-     * }
-     */
+    public void testDescribe() throws Exception {
+
+	final ServiceDescription diaServiceDescription = migrationService
+		.describe();
+
+	assertEquals("Un-expected author (creator) information.",
+		"\"Pelle Kofod <pko@statsbiblioteket.dk>\",\n\t\t\t\"Thomas Skou "
+			+ "Hansen <tsh@statsbiblioteket.dk>\"",
+		diaServiceDescription.getAuthor());
+
+	assertNotNull("The migration service does not provide a description.",
+		diaServiceDescription.getDescription());
+
+	final URI expectedFurtherInfoURI = new URI("http://live.gnome.org/Dia");
+	assertEquals("Un-expected text returned by getFurtherInfo().",
+		expectedFurtherInfoURI, diaServiceDescription.getFurtherInfo());
+
+	assertNotNull("The migration service does not provide an identifier.",
+		diaServiceDescription.getIdentifier());
+
+	// verifyInputFormats(diaServiceDescription.getInputFormats());
+
+	assertNotNull(
+		"The migration service does not provide instructions for the use of this service.",
+		diaServiceDescription.getInstructions());
+	
+	assertNotNull("The migration service does not provide a name.",
+		diaServiceDescription.getName());
+
+	// verifyMigrationPaths(diaServiceDescription.getPaths());
+
+	assertNotNull(
+		"The migration service does not provide a list of properties.",
+		diaServiceDescription.getProperties());
+	
+	assertNotNull("The migration service does not provide a tool URI.",
+		diaServiceDescription.getTool());
+
+	assertNotNull(
+		"The migration service does not provide version information.",
+		diaServiceDescription.getVersion());
+
+	System.out.println("@%^@^%@%^ GNARF>>> "
+		+ diaServiceDescription.getServiceProvider());
+
+//	assertEquals("Un-expected end-point URL.",
+//		"FNaaaaa", diaServiceDescription.getEndpoint());
+
+	assertEquals("Un-expected service provider information.",
+		"DiaWrappingTestProvider", diaServiceDescription.getServiceProvider());
+	
+	assertEquals("Un-expected interface type.",
+		"eu.planets_project.services.migrate.Migrate",
+		diaServiceDescription.getType());
+	
+
+	// FIXME! test code, kill!
+	// String[] suffixes = new String[] { "bmp", "gif", "jpg", "png", "pnm",
+	// "ras", "tif" };
+	// HashMap<String, Set<URI>> formatURIMap = new HashMap<String,
+	// Set<URI>>();
+	// final FormatRegistry fm = FormatRegistryFactory.getFormatRegistry();
+	// for (String suffix : suffixes) {
+	// formatURIMap.put(suffix, fm.getURIsForExtension(suffix));
+	// System.out.println(suffix + " : " + formatURIMap.get(suffix));
+	// }
+
+    }
+
     @SuppressWarnings("unused")
     private void verifyMigrationPaths(List<MigrationPath> migrationPaths) {
 	// TODO: More intelligent test needed.

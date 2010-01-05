@@ -56,14 +56,17 @@
 			make this service work.
         </instructions>
 
-		<furtherinfo>http://example.org</furtherinfo>
+		<furtherinfo>http://live.gnome.org/Dia</furtherinfo>
 
 		<logo>http://projects.gnome.org/dia/images/dialogo.jpg</logo>
 
 		<properties>
-			<property name="exampleName">
-				exampleValue
-		</property>
+			<property name="exampleName" id="info:exampleID">
+				<value unit="dBa">120</value>
+				<description>
+					This migration is very noisy. This property specifies exactly how many dBa.
+				</description>
+			</property>
 		</properties>
 	</serviceDescription>
 

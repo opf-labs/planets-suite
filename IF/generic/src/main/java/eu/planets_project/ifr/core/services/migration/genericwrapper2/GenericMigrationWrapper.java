@@ -66,8 +66,18 @@ public class GenericMigrationWrapper {
 	    MigrationPathFactory pathsFactory = new DBMigrationPathFactory(
 		    configuration);
 	    migrationPaths = pathsFactory.getAllMigrationPaths();
+
+	    String serviceProvider = "Undefined - please assign the correct "
+		    + "service provider identifier to the \"serviceprovider\""
+		    + " property in the property file for this service.";
+	    for (Parameter environmentParameter : envrionmentParameters) {
+		if ("serviceprovider".equals(environmentParameter.getName())){
+		    serviceProvider = environmentParameter.getValue();
+		}
+	    }
+	    
 	    final ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory(
-		    toolIdentifier, configuration);
+		    toolIdentifier, serviceProvider, configuration);
 	    serviceDescription = serviceFactory.getServiceDescription();
 	} catch (Exception e) {
 	    throw new MigrationInitialisationException(
@@ -461,7 +471,6 @@ public class GenericMigrationWrapper {
     // .getCommandLineFileLabel());
     // }
     // }
-
 
     private boolean executeToolProcess(ProcessRunner toolProcessRunner,
 	    List<String> command, InputStream processStandardInput) {

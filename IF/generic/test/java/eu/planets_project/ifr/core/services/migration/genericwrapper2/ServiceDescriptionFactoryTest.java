@@ -3,13 +3,14 @@
  */
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +34,7 @@ public class ServiceDescriptionFactoryTest {
 
     private ServiceDescriptionFactory serviceDescriptionFactory;
     private static final String TOOL_ID = "DummyTestID";
+    private static final String SERVICE_PROVIDER = "TestProvider";
 
     /**
      * @throws java.lang.Exception
@@ -44,7 +46,7 @@ public class ServiceDescriptionFactoryTest {
 		"GenericWrapperConfigFileExample.xml");
 
 	serviceDescriptionFactory = new ServiceDescriptionFactory(TOOL_ID,
-		documentLocator.getDocument());
+		SERVICE_PROVIDER, documentLocator.getDocument());
     }
 
     /**
@@ -113,24 +115,23 @@ public class ServiceDescriptionFactoryTest {
 	assertEquals("Un-expected service version.", "3.141592653589793",
 		serviceDescription.getVersion());
 
-	assertEquals("Un-expected end-point URL.", new URL(
-		"http://FIXME! put the correct URL here!"), serviceDescription
-		.getEndpoint());
+	System.out.println("@%^@^%@%^ GNARF>>> "
+		+ serviceDescription.getEndpoint());
+
+	assertEquals("Not testing a service, thus un-expected end-point URL.",
+		null, serviceDescription.getEndpoint());
 
 	verifyProperties(serviceDescription.getProperties());
-	// TODO: Yet to be finished.... Clarify where this information is
-	// supposed to come from...
-	//	  
-//	System.out
-//	.println("@%^@^%@%^ GNARF>>> " + serviceDescription.getServiceProvider());
-	// assertEquals("Un-expected service provider information.", "",
-	// serviceDescription.getServiceProvider());
-	//	  
+
+	System.out.println("@%^@^%@%^ GNARF>>> "
+		+ serviceDescription.getServiceProvider());
+
+	assertEquals("Un-expected service provider information.",
+		SERVICE_PROVIDER, serviceDescription.getServiceProvider());
+
 	assertEquals("Un-expected interface type.",
-		"eu.planets_project.services.migrate.Migrate", 
+		"eu.planets_project.services.migrate.Migrate",
 		serviceDescription.getType());
-
-
     }
 
     private void verifyProperties(List<Property> properties) throws Exception {
