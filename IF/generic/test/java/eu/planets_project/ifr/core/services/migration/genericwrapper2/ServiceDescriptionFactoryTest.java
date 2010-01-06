@@ -6,11 +6,13 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
+import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterBuilder;
+import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -33,7 +37,6 @@ import eu.planets_project.services.datatypes.Tool;
 public class ServiceDescriptionFactoryTest {
 
     private ServiceDescriptionFactory serviceDescriptionFactory;
-    private static final String TOOL_ID = "DummyTestID";
     private static final String SERVICE_PROVIDER = "TestProvider";
 
     /**
@@ -45,8 +48,9 @@ public class ServiceDescriptionFactoryTest {
 	final DocumentLocator documentLocator = new DocumentLocator(
 		"GenericWrapperConfigFileExample.xml");
 
-	serviceDescriptionFactory = new ServiceDescriptionFactory(TOOL_ID,
-		SERVICE_PROVIDER, documentLocator.getDocument());
+	serviceDescriptionFactory = new ServiceDescriptionFactory(this
+		.getClass().getCanonicalName(), SERVICE_PROVIDER,
+		documentLocator.getDocument());
     }
 
     /**
@@ -95,18 +99,22 @@ public class ServiceDescriptionFactoryTest {
 	assertEquals("Un-expected input formats.", expectedInputFormats,
 		new HashSet<URI>(serviceDescription.getInputFormats()));
 
-	assertEquals("Un-expected instructions.",
-		"Example: Please install the XYZ tool on the system to\n\t\t\t"
-			+ "make this service work.", serviceDescription
-			.getInstructions());
+	final String expectedInstructions = "Example: Please install the XYZ "
+		+ "tool on the system to\n\t\t\tmake this service work.";
+	assertEquals("Un-expected instructions.", expectedInstructions,
+		serviceDescription.getInstructions());
 
-	assertEquals("Un-expected logo URI.",
-		"http://www.planets-project.eu/graphics/Planets_Logo.png",
+	final String expectedLogoURL = "http://www.planets-project.eu/graphics"
+		+ "/Planets_Logo.png";
+	assertEquals("Un-expected logo URI.", expectedLogoURL,
 		serviceDescription.getLogo().toString());
 
-	assertEquals("Un-expected service name.",
-		"Example: Eggnog migration service.", serviceDescription
-			.getName());
+	final String expctedServiceName = "Example: Eggnog migration service.";
+	assertEquals("Un-expected service name.", expctedServiceName,
+		serviceDescription.getName());
+
+	assertEquals("Un-expected service class name.", this.getClass()
+		.getCanonicalName(), serviceDescription.getClassname());
 
 	verifyParameters(serviceDescription.getParameters());
 
@@ -115,16 +123,10 @@ public class ServiceDescriptionFactoryTest {
 	assertEquals("Un-expected service version.", "3.141592653589793",
 		serviceDescription.getVersion());
 
-	System.out.println("@%^@^%@%^ GNARF>>> "
-		+ serviceDescription.getEndpoint());
-
 	assertEquals("Not testing a service, thus un-expected end-point URL.",
 		null, serviceDescription.getEndpoint());
 
 	verifyProperties(serviceDescription.getProperties());
-
-	System.out.println("@%^@^%@%^ GNARF>>> "
-		+ serviceDescription.getServiceProvider());
 
 	assertEquals("Un-expected service provider information.",
 		SERVICE_PROVIDER, serviceDescription.getServiceProvider());
@@ -132,6 +134,90 @@ public class ServiceDescriptionFactoryTest {
 	assertEquals("Un-expected interface type.",
 		"eu.planets_project.services.migrate.Migrate",
 		serviceDescription.getType());
+
+//FIXME! Enable when finished!	
+//	verifyMigrationPaths(serviceDescription.getPaths());
+    }
+
+    /**
+     * Verify that <code>planetsMigrationPaths</code> contains the expected
+     * migration paths. Assertions will be triggered if that is not the case.
+     * 
+     * @param planetsMigrationPaths
+     *            <code>List</code> of planets migration paths to verify.
+     */
+    private void verifyMigrationPaths(List<MigrationPath> planetsMigrationPaths)
+	    throws Exception {
+
+	final List<MigrationPath> expectedPaths = createTestPaths();
+
+	assertEquals("Un-expected numbar of migration paths.", expectedPaths
+		.size(), planetsMigrationPaths.size());
+
+	for (MigrationPath expectedPath : expectedPaths) {
+	    boolean pathMatchFound = false;
+
+	    // Run through all the paths and verify that each expected path
+	    // exists only once in the list and that its parameters are correct.
+	    for (MigrationPath planetsPath : planetsMigrationPaths) {
+
+		if ((expectedPath.getInputFormat().equals(planetsPath
+			.getInputFormat()))
+			&& (expectedPath.getOutputFormat().equals(planetsPath
+				.getOutputFormat()))) {
+
+		    pathMatchFound = true;
+
+		    assertEquals("Wrong parameters for migration path '"
+			    + expectedPath + "'", expectedPath.getParameters(),
+			    planetsPath.getParameters());
+		}
+	    }
+	}
+    }
+
+    private List<MigrationPath> createTestPaths() throws URISyntaxException {
+
+	final List<MigrationPath> paths = new ArrayList<MigrationPath>();
+
+	// Construct all paths with the fmt/16 output format.
+	URI outputFormat = new URI("info:pronom/fmt/16");
+
+	URI inputFormat = new URI("info:pronom/x-fmt/91");
+
+	List<Parameter> parameters = new ArrayList<Parameter>();
+	Parameter.Builder parameterBuilder = new Parameter.Builder("param1",
+		null);
+	parameterBuilder.description("Paper size of the migrated object. Valid"
+		+ " values are\n\t\t\t\t\t\t\"a4\" and \"legal\"");
+	parameters.add(parameterBuilder.build());
+
+	parameterBuilder = new Parameter.Builder("mode", "Normal");
+	parameterBuilder.description("Valid options are 'Normal' or 'US'.\n\t"
+		+ "\t\t\t\t\tDefaults to 'Normal'.");
+	parameters.add(parameterBuilder.build());
+
+	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
+
+	inputFormat = new URI("info:pronom/x-fmt/406");
+	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
+
+	inputFormat = new URI("info:pronom/x-fmt/407");
+	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
+
+	inputFormat = new URI("info:pronom/x-fmt/408");
+	MigrationPath blah = new MigrationPath(inputFormat, outputFormat,
+		parameters);
+	paths.add(blah);
+	paths.add(blah);
+	paths.add(blah);
+
+	// paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
+
+	// <uri value="info:planets/fmt/ext/lowercase" />
+	// <uri value="info:planets/fmt/ext/uppercase" />
+
+	return paths;
     }
 
     private void verifyProperties(List<Property> properties) throws Exception {
@@ -161,30 +247,24 @@ public class ServiceDescriptionFactoryTest {
     private void verifyToolDescription(Tool toolDescription)
 	    throws URISyntaxException, MalformedURLException {
 
-	final URI id = new URI(
+	final URI expectedID = new URI(
 		"http://example-planets-registry.eu/toolident?4385794357");
-	final String name = "Example: HandMixer.exe";
-	final String version = "HandMixer V4.13 by J. Random Hacker.";
-	final String description = "Example: A useful tool for migrating eggs "
-		+ "to eggnog.";
-	final URL homeURL = new URL("http://example.org");
+	final String expectedName = "Example: HandMixer.exe";
+	final String expectedVersion = "HandMixer V4.13 by J. Random Hacker.";
+	final String expectedDescription = "Example: A useful tool for "
+		+ "migrating eggs to eggnog.";
+	final URL expectedHomeURL = new URL("http://example.org");
 
-	final Tool expectedToolDescription = new Tool(id, name, version,
-		description, homeURL);
-
-	assertEquals("Un-expected URI in tool description.",
-		expectedToolDescription.getIdentifier(), toolDescription
-			.getIdentifier());
+	assertEquals("Un-expected URI in tool description.", expectedID,
+		toolDescription.getIdentifier());
 	assertEquals("Un-expected tool name in tool description.",
-		expectedToolDescription.getName(), toolDescription.getName());
+		expectedName, toolDescription.getName());
 	assertEquals("Un-expected tool version in tool description.",
-		expectedToolDescription.getVersion(), toolDescription
-			.getVersion());
-	assertEquals("Un-expected tool description .", expectedToolDescription
-		.getDescription(), toolDescription.getDescription());
+		expectedVersion, toolDescription.getVersion());
+	assertEquals("Un-expected tool description .", expectedDescription,
+		toolDescription.getDescription());
 	assertEquals("Un-expected tool homepage URL in tool description.",
-		expectedToolDescription.getHomepage(), toolDescription
-			.getHomepage());
+		expectedHomeURL, toolDescription.getHomepage());
     }
 
     /**
@@ -198,6 +278,7 @@ public class ServiceDescriptionFactoryTest {
     private void verifyParameters(List<Parameter> parameters) {
 
 	final HashMap<String, String> expectedParameters = new HashMap<String, String>();
+
 	expectedParameters.put("param1", null);
 	expectedParameters.put("param2", null);
 	expectedParameters.put("mode", null);

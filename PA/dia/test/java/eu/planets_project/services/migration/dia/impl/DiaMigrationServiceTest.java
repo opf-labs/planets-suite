@@ -217,9 +217,9 @@ public class DiaMigrationServiceTest extends TestCase {
 		"The migration service does not provide version information.",
 		diaServiceDescription.getVersion());
 
-	System.out.println("@%^@^%@%^ GNARF>>> "
-		+ diaServiceDescription.getServiceProvider());
-
+//	System.out.println("@%^@^%@%^ GNARF>>> "
+//		+ diaServiceDescription.getServiceProvider());
+	//FIXME! Enable when the end-point is correctly configured...
 //	assertEquals("Un-expected end-point URL.",
 //		"FNaaaaa", diaServiceDescription.getEndpoint());
 
