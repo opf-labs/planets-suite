@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowContext;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
@@ -176,8 +177,10 @@ public class MigrationWFWrapper {
 			lEvents.add(migrEvent);
 
 			// create an updated DigitalObject containing the Migration-Event
+			// note, as the FileSystemDigoManager requires a title != null, we'll use a random one here
+			String title = (migOutput.getTitle()==null) ? UUID.randomUUID()+"" : migOutput.getTitle();
 			DigitalObject digoUpdated = new DigitalObject.Builder(migOutput
-					.getContent()).title(migOutput.getTitle()).permanentUri(
+					.getContent()).title(title).permanentUri(
 					migOutput.getPermanentUri()).manifestationOf(
 					migOutput.getManifestationOf()).format(
 					migOutput.getFormat()).metadata(

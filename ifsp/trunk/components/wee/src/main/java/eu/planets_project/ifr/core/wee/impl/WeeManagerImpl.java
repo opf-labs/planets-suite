@@ -33,7 +33,7 @@ import eu.planets_project.services.PlanetsException;
 /**
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- * @author <a href="mailto:Andrew.Lindley@bl.uk">Andy Jackson</a>
+ * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andrew Lindley</a>
  * The WeeManager is a POJO and follows the Singleton Pattern. It's not implemented
  * as stateful SessionBean as the Client interface (web-service) would not able to 
  * maintain a reference the EJB's stub object and therefore would lose state.
