@@ -156,11 +156,11 @@ public final class Parameter {
 	}
 
 	if (type != null) {
-	    hash = hash * 17 + type.hashCode();
+	    hash = hash * 19 + type.hashCode();
 	}
 
 	if (description != null) {
-	    hash = hash * 17 + description.hashCode();
+	    hash = hash * 23 + description.hashCode();
 	}
 
 	if (hash == 0) {

@@ -135,8 +135,8 @@ public class ServiceDescriptionFactoryTest {
 		"eu.planets_project.services.migrate.Migrate",
 		serviceDescription.getType());
 
-//FIXME! Enable when finished!	
-//	verifyMigrationPaths(serviceDescription.getPaths());
+	//FIXME! Enable when ready!
+	// verifyMigrationPaths(serviceDescription.getPaths());
     }
 
     /**
@@ -166,7 +166,31 @@ public class ServiceDescriptionFactoryTest {
 			&& (expectedPath.getOutputFormat().equals(planetsPath
 				.getOutputFormat()))) {
 
+		    assertFalse("Multiple matches found for expected path: "
+			    + expectedPath, pathMatchFound);
+
 		    pathMatchFound = true;
+
+		    System.out.println("##################   Testing path: "
+			    + planetsPath);
+		    System.out.println("Dump expected:\n\n");
+		    for (Parameter parameter : expectedPath.getParameters()) {
+			System.out.println("name: " + parameter.getName());
+			System.out.println("value: " + parameter.getValue());
+			System.out.println("type: " + parameter.getType());
+			System.out.println("description: "
+				+ parameter.getDescription() + "\n\n");
+			System.out.println(" %%%%% Found in actual output: " + planetsPath.getParameters().contains(parameter));
+		    }
+
+		    System.out.println("Dump actual:\n\n");
+		    for (Parameter parameter : planetsPath.getParameters()) {
+			System.out.println("name: " + parameter.getName());
+			System.out.println("value: " + parameter.getValue());
+			System.out.println("type: " + parameter.getType());
+			System.out.println("description: "
+				+ parameter.getDescription() + "\n\n");
+		    }
 
 		    assertEquals("Wrong parameters for migration path '"
 			    + expectedPath + "'", expectedPath.getParameters(),
@@ -189,12 +213,16 @@ public class ServiceDescriptionFactoryTest {
 	Parameter.Builder parameterBuilder = new Parameter.Builder("param1",
 		null);
 	parameterBuilder.description("Paper size of the migrated object. Valid"
-		+ " values are\n\t\t\t\t\t\t\"a4\" and \"legal\"");
+		+ " values are\n\t\t\t\t\t\t\"a4\" and \"legal\"\n\t\t\t\t\t");
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("mode", "Normal");
-	parameterBuilder.description("Valid options are 'Normal' or 'US'.\n\t"
-		+ "\t\t\t\t\tDefaults to 'Normal'.");
+	parameterBuilder.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\t"
+		+ "Valid options are 'Normal' or 'US'.\n\t"
+		+ "\t\t\t\t\tDefaults to 'Normal'." + "\n\t\t\t\t\t\n"
+		+ "\nValid values : Description\n\n"
+		+ "US : Migrate to US legal paper format.\n"
+		+ "Normal : Migrate to the normal A4 paper format.");
 	parameters.add(parameterBuilder.build());
 
 	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
@@ -206,16 +234,199 @@ public class ServiceDescriptionFactoryTest {
 	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
 
 	inputFormat = new URI("info:pronom/x-fmt/408");
-	MigrationPath blah = new MigrationPath(inputFormat, outputFormat,
-		parameters);
-	paths.add(blah);
-	paths.add(blah);
-	paths.add(blah);
+	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
 
-	// paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
+	// Construct a path for migration from lowercase to uppercase.
+	inputFormat = new URI("info:planets/fmt/ext/lowercase");
+	outputFormat = new URI("info:planets/fmt/ext/uppercase");
 
-	// <uri value="info:planets/fmt/ext/lowercase" />
-	// <uri value="info:planets/fmt/ext/uppercase" />
+	parameters = new ArrayList<Parameter>();
+
+	parameterBuilder = new Parameter.Builder("param1", null);
+	parameterBuilder
+		.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\tParameters for 'cat'\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t\t-A, --show-all\n"
+			+ "\t\t\t\t\t\t\t\t  equivalent to -vET\n"
+			+ "\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t\t-b, --number-nonblank\n"
+			+ "\t\t\t\t\t\t\t\t  number nonempty output lines\n"
+			+ "\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t\t-e    equivalent to -vE\n"
+			+ "\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t\t-E, --show-ends\n"
+			+ "\t\t\t\t\t\t\t\t  display $ at end of each line\n"
+			+ "\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t\t-n, --number\n"
+			+ "\t\t\t\t\t\t\t\t  number all output lines\n"
+			+ "\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t\t-s, --squeeze-blank\n"
+			+ "\t\t\t\t\t\t\t\t  suppress repeated empty output lines\n"
+			+ "\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t\t-t    equivalent to -vT\n"
+			+ "\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t\t-T, --show-tabs\n"
+			+ "\t\t\t\t\t\t\t\t  display TAB characters as ^I\n"
+			+ "\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t\t-v, --show-nonprinting\n"
+			+ "\t\t\t\t\t\t\t\t  use ^ and M- notation, except for"
+			+ " LFD and TAB\n\t\t\t\t\t");
+	parameters.add(parameterBuilder.build());
+
+	parameterBuilder = new Parameter.Builder("param2", null);
+	parameterBuilder
+		.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\tCommand line parameters for the 'tr' command.\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   -c, -C, --complement\n"
+			+ "\t\t\t\t\t\t\t\t first complement SET1\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   -d, --delete\n"
+			+ "\t\t\t\t\t\t\t\t delete characters in SET1, do not translate\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   -s, --squeeze-repeats\n"
+			+ "\t\t\t\t\t\t\t\t replace each input sequence of  a  repeated  character  that  is\n"
+			+ "\t\t\t\t\t\t\t\t listed in SET1 with a single occurrence of that character\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   -t, --truncate-set1\n"
+			+ "\t\t\t\t\t\t\t\t first truncate SET1 to length of SET2\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   SETs  are  specified  as  strings  of characters.  Most represent them‐\n"
+			+ "\t\t\t\t\t\t   selves.  Interpreted sequences are:\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   \\NNN   character with octal value NNN (1 to 3 octal digits)\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   \\\\     backslash\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   \\a     audible BEL\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   \\b     backspace\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   \\f     form feed\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   \\n     new line\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   \\r     return\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   \\t     horizontal tab\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   \\v     vertical tab\n"
+			+ "\t\t\t\t\t\t\t\t  CHAR1-CHAR2\n"
+			+ "\t\t\t\t\t\t\t\t  all characters from CHAR1 to CHAR2 in ascending order\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [CHAR*]\n"
+			+ "\t\t\t\t\t\t\t\t  in SET2, copies of CHAR until length of SET1\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [CHAR*REPEAT]\n"
+			+ "\t\t\t\t\t\t\t\t  REPEAT copies of CHAR, REPEAT octal if starting with 0\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:alnum:]\n"
+			+ "\t\t\t\t\t\t\t\t  all letters and digits\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:alpha:]\n"
+			+ "\t\t\t\t\t\t\t\t  all letters\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:blank:]\n"
+			+ "\t\t\t\t\t\t\t\t  all horizontal whitespace\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:cntrl:]\n"
+			+ "\t\t\t\t\t\t\t\t  all control characters\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:digit:]\n"
+			+ "\t\t\t\t\t\t\t\t  all digits\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:graph:]\n"
+			+ "\t\t\t\t\t\t\t\t  all printable characters, not including space\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:lower:]\n"
+			+ "\t\t\t\t\t\t\t\t  all lower case letters\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:print:]\n"
+			+ "\t\t\t\t\t\t\t\t  all printable characters, including space\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:punct:]\n"
+			+ "\t\t\t\t\t\t\t\t  all punctuation characters\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:space:]\n"
+			+ "\t\t\t\t\t\t\t\t  all horizontal or vertical whitespace\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:upper:]\n"
+			+ "\t\t\t\t\t\t\t\t  all upper case letters\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [:xdigit:]\n"
+			+ "\t\t\t\t\t\t\t\t  all hexadecimal digits\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   [=CHAR=]\n"
+			+ "\t\t\t\t\t\t\t\t  all characters which are equivalent to CHAR\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t   Translation occurs if -d is not given and both SET1  and  SET2  appear.\n"
+			+ "\t\t\t\t\t\t   -t  may  be  used only when translating.  SET2 is extended to length of\n"
+			+ "\t\t\t\t\t\t   SET1 by repeating its last character as necessary.   Excess  characters\n"
+			+ "\t\t\t\t\t\t   of  SET2  are  ignored.  Only [:lower:] and [:upper:] are guaranteed to\n"
+			+ "\t\t\t\t\t\t   expand in ascending order; used in SET2  while  translating,  they  may\n"
+			+ "\t\t\t\t\t\t   only  be used in pairs to specify case conversion.  -s uses SET1 if not\n"
+			+ "\t\t\t\t\t\t   translating nor deleting; else squeezing uses  SET2  and  occurs  after\n"
+			+ "\t\t\t\t\t\t   translation or deletion.\n"
+			+ "\t\t\t\t\t");
+	parameters.add(parameterBuilder.build());
+
+	parameterBuilder = new Parameter.Builder("mode", "complete");
+	parameterBuilder.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n" 
+		+ "\t\t\t\t\t\tValid options:\n"
+		+ "\t\t\t\t\t\t\n"
+		+ "\t\t\t\t\t\t'complete' : Converts from lowercase to uppercase.\n"
+		+ "\t\t\t\t\t\t'AC-DC' : Converts As to Ds, thus, AC-DC becomes DC-AC.\n"
+		+ "\t\t\t\t\t\t'extra' : Converts from lowercase to uppercase and adds\n"
+		+ "\t\t\t\t\t\t\t\t  a line number to each line.\n\n"
+		+ "\t\t\t\t\t\tDefaults to 'complete'.\n"
+		+ "\t\t\t\t\t\n\nValid values : Description\n\n"
+		+ "complete : Uppercase all text.\n"
+		+ "extra : Uppercase all text and add line numbers.\n"
+		+ "\t\t\t\t\t\t\n"						
+		+ "AC-DC : Swaps As with Ds. Thus changing AC-DC to DC-AC\n"
+		+ "\t\t\t\t\t\t");
+	parameters.add(parameterBuilder.build());
+
+	parameterBuilder = new Parameter.Builder("quality", null);
+	parameterBuilder
+		.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\tValid options:\n\n"
+			+ "\t\t\t\t\t\t'good' : Converts from lowercase to uppercase.\n"
+			+ "\t\t\t\t\t\t'better' : Converts As do Ds, thus, AC-DC becomes DC-AC.\n"
+			+ "\t\t\t\t\t\t'best' : Converts from lowercase to uppercase and adds\n"
+			+ "\t\t\t\t\t\t\t\t a line number to each line.\n\n"
+			+ "\t\t\t\t\t\tDefaults to 'good'.\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\n\n"
+			+ "Valid values : Description\n\n"
+			+ "better : AC-DC to DC-AC\n"
+			+ "best : Uppercase all and add line numbers.\n"
+			+ "good : Uppercase all.");
+
+	parameters.add(parameterBuilder.build());
+
+	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
+
+	// Construct a path for migration from lowercase to uppercase.
+	inputFormat = new URI("info:planets/fmt/ext/foo");
+	outputFormat = new URI("info:planets/fmt/ext/bar");
+
+	parameters = new ArrayList<Parameter>();
+
+	parameterBuilder = new Parameter.Builder("param1", null);
+	parameterBuilder.description("Command line parameters for the 'cat'\n"
+		+ "\t\t\t\t\t\tcommand.\n" + "\t\t\t\t\t\tSee\n"
+		+ "\t\t\t\t\t\t'man\n" + "\t\t\t\t\t\tcat'.");
+	parameters.add(parameterBuilder.build());
+
+	parameterBuilder = new Parameter.Builder("param2", null);
+	parameterBuilder.description("Command line parameters for the 'tr'\n"
+		+ "\t\t\t\t\t\tcommand.\n" + "\t\t\t\t\t\tSee\n"
+		+ "\t\t\t\t\t\t'man\n" + "\t\t\t\t\t\ttr'.");
+	parameters.add(parameterBuilder.build());
+
+	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
 
 	return paths;
     }
