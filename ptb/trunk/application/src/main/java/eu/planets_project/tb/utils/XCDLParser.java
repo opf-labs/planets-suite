@@ -72,7 +72,7 @@ public class XCDLParser {
     
     public static URI makePropertyUri( String id, String name ) {
         try {
-            return new URI( TecRegMockup.URIXCDLPropertyRoot + id + "/" + name );
+            return new URI( TecRegMockup.URI_XCDL_PROP_ROOT + id + "/" + name );
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return null;

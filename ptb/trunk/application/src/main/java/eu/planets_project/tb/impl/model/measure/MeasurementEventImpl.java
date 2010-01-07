@@ -10,7 +10,7 @@
  */
 package eu.planets_project.tb.impl.model.measure;
 
-import java.util.Collection;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,9 +18,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
-import eu.planets_project.tb.impl.model.exec.DigitalObjectRecordImpl;
 import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
 
 /**
@@ -28,18 +26,53 @@ import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
  *
  */
 public class MeasurementEventImpl {
-
+    
+    /* --------------- Target ------------------ */
+    
     /** If these are measurements about a service, then this is the invocation that was measured. */
     @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    protected InvocationRecordImpl invocation;
+    protected InvocationRecordImpl targetInvocation;
 
-    /** If this is about one or more digital objects, then the digital objects that were measured go here. */
+    /*
+     * If the target was one or more digital object(s).
+     */
+    
+    /** If this is about one or more digital objects, then the digital objects that were measured go here. 
+     * As Data Registry URIs, stored as Strings. */
     @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    private Set<DigitalObjectRecordImpl> inputs = new HashSet<DigitalObjectRecordImpl>();
+    private Set<String> digitalObjects = new HashSet<String>();
+    
+    /* ----------------- Context ------------ */
+
+    /** The experiment stage */
+    public static enum EXP_STAGE {
+        /** Target being measured is an input to an experiment. */
+        EXP_INPUT,
+        /** Target being measured is during the execution of a workflow. */
+        EXP_PROCESS,
+        /** Target being measured is an output to an experiment */
+        EXP_OUTPUT,
+    }
+    private EXP_STAGE experimentStage;
 
     
+    /* 
+     * If the target was examined as part of a workflow, this can be recorded here.
+     */
+    
+    // The name of this stage of the workflow this was invoked in, if any:
+    protected String stage;
+    //  IN WorkflowStageIndex, WorkflowStageName, WorkflowAction
+    
+
+    /*
+     * If the target was a particular workflow invocation, then that would go here.
+     */
+    
+    /* --------------- Agent ------------------ */
+    
     /** */
-    public static enum AGENT { 
+    public static enum AGENT_TYPE { 
         /** This measurement event was carried out by a human testbed user. */
         USER,
         /** This measurement event was carried out by a service. */
@@ -48,27 +81,18 @@ public class MeasurementEventImpl {
         WORKFLOW
     }
     
+    // Agent is service, invoked by user?
+    
     /** The Agent that took these measurements. */
-    private AGENT agent;
+    private AGENT_TYPE agentType;
     
     /** A record of the identity of the Agent, if it is a User */
     private String username = null;
 
-    /* --------------- Measurement performed AT Stage of agent workflow ------------------ */
-    // The name of this stage:
-    protected String stage;
-    
-    // TODO AT WorkflowInput, WorkflowProcess, WorkflowOutput
-    //  IN WorkflowStageIndex, WorkflowStageName, WorkflowAction
-    // I think we need to record the ID of the entity that is being measured. e.g. D.O. URL
-    // I think we probably need to record the Type of the entity?
-    
-    // FIXME Move or copy these back into the Measurement, as different things might be measured for the same target ??? */
-    protected String target;
-    public static final String TARGET_SERVICE = "Service";
-    public static final String TARGET_DIGITALOBJECT = "Digital Object";
-    public static final String TARGET_DIGITALOBJECT_DIFF = "Comparison of Two Digital Objects";
-    public static final String TARGET_WORKFLOW = "Workflow";
+    /** The date of this Event */
+    private Calendar date;
+
+    /* --------------- Measurements, as performed by Agent upon the Target ------------------ */
     
     @OneToMany(cascade=CascadeType.ALL, mappedBy="event", fetch=FetchType.EAGER)
     private Set<MeasurementImpl> measurements = new HashSet<MeasurementImpl>();
@@ -76,22 +100,23 @@ public class MeasurementEventImpl {
     /**
      * @param iri
      */
-    public MeasurementEventImpl(InvocationRecordImpl invocation) {
-        this.invocation = invocation;
+    public MeasurementEventImpl(InvocationRecordImpl targetInvocation) {
+        this.targetInvocation = targetInvocation;
+        this.date = Calendar.getInstance();
     }
 
     /**
      * @return the invocation
      */
-    public InvocationRecordImpl getInvocation() {
-        return invocation;
+    public InvocationRecordImpl getTargetInvocation() {
+        return targetInvocation;
     }
 
     /**
      * @param invocation the invocation to set
      */
-    public void setInvocation(InvocationRecordImpl invocation) {
-        this.invocation = invocation;
+    public void setInvocation(InvocationRecordImpl targetInvocation) {
+        this.targetInvocation = targetInvocation;
     }
 
     /**

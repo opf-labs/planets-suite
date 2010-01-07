@@ -33,7 +33,7 @@ public class OntoPropertyUtil {
     	 String propURI = p.getURI();
     	 // Invent a uri if required - shouldn't be the case:
          if( propURI == null ) {
-        	 propURI = TecRegMockup.URIOntologyPropertyRoot + p.getName();
+        	 propURI = TecRegMockup.URI_ONTOLOGY_PROP_ROOT + p.getName();
          }
          URI pURI;
          try {

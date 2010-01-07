@@ -244,7 +244,7 @@ public class ExecutionStageRecordImpl implements Serializable {
      */
     public boolean isMarkedAsSuccessful() {
         for( MeasurementRecordImpl m : getMeasurements() ) {
-            if( m.getIdentifier().equals( TecRegMockup.PROP_SERVICE_SUCCESS.toString() ) ) {
+            if( m.getIdentifier().equals( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED.toString() ) ) {
                 boolean result = Boolean.parseBoolean( m.getValue() );
                 if( result == true ) return true;
             }

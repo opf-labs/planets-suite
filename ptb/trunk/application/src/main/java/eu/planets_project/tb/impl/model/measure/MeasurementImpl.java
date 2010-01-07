@@ -32,7 +32,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     
     /** */
     private static final long serialVersionUID = 2724034034191132672L;
-    
+
     @Id
     @GeneratedValue
     @XmlTransient
@@ -44,6 +44,14 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     protected String identifier;
     
     protected String value;
+    
+    /** */
+    public static final String TARGET_SERVICE = "Service";
+    public static final String TARGET_DIGITALOBJECT = "Digital Object";
+    public static final String TARGET_DIGITALOBJECT_DIFF = "Comparison of Two Digital Objects";
+    public static final String TARGET_WORKFLOW = "Workflow";
+    /** */
+    protected String targetType;
     
     /* ----------------- Data that is looked-up on demand: -------------- */
 
@@ -125,7 +133,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      * 
      */
     public static MeasurementImpl create( URI identifier, String name, String unit, String description, 
-            String stage, String type ) {
+            String type ) {
         return new MeasurementImpl( null, identifier, name, unit, description );
     }
 

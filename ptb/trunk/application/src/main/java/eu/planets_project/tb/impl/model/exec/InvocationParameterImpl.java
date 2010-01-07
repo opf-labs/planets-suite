@@ -33,12 +33,6 @@ public class InvocationParameterImpl implements Serializable {
     /** */
     private static final long serialVersionUID = 2902934467655678164L;
 
-    
-    // FIXME Add static values for standard parameters. workflow/input/digitalObjects, service/input/digitalObject
-    //  - List<Input> ??? - Same as the 'WorkflowResult' set that TB understands?
-    //  - InputDigitalObject ???
-
-
     @Id
     @GeneratedValue
     @XmlTransient

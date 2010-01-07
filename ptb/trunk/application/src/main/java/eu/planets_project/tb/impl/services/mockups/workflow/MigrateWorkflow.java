@@ -80,7 +80,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         observables.put(STAGE_MIGRATE, new Vector<MeasurementImpl>() );
         // The service succeeded
         observables.get(STAGE_MIGRATE).add(
-                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED) );
         //FIXME What about the parameter: MIGRATE_SUCCESS, choosing enabled-ness...
         // The service time
         observables.get(STAGE_MIGRATE).add(
@@ -165,7 +165,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         if( this.preIsDefined() ) {
             // Add basic properties.
             obs.get(STAGE_PRE_MIGRATE).add( 
-                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED) );
             obs.get(STAGE_PRE_MIGRATE).add( 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME) );
         }
@@ -191,7 +191,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         if( this.postIsDefined() ) {
             // Add basic properties.
             obs.get(STAGE_POST_MIGRATE).add( 
-                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED) );
             obs.get(STAGE_POST_MIGRATE).add( 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME) );
         }
@@ -281,7 +281,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Invent a uri if required:
         if( propURI == null ) {
             try {
-                propURI = new URI( TecRegMockup.URIXCDLPropertyRoot + p.getName());
+                propURI = new URI( TecRegMockup.URI_XCDL_PROP_ROOT + p.getName());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
                 return m;
@@ -294,7 +294,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         m.setDescription(p.getDescription());
         // FIXME The TYPES have different meanings here! What should this be recorded as?
         //m.setType(p.getType());
-        m.setType(MeasurementEventImpl.TARGET_DIGITALOBJECT);
+        m.setType(MeasurementImpl.TARGET_DIGITALOBJECT);
         m.setUnit(p.getUnit());
         m.setValue(p.getValue());
         
@@ -525,7 +525,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Now record
         if( success && migrated.getDigitalObject() != null ) {
 
-            stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
+            stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
 
             // Take the digital object, put it in a temp file, and give it a sensible name, using the new format extension.
             File doTmp = File.createTempFile("migrateResult", ".tmp");
@@ -555,7 +555,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Only get to here if there was not a valid result.
         
         // Build in a 'service failed' property, i.e. the call worked, but no result.
-        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
+        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
         // ADD a report, so the full set is known.
         wr.logReport(migrated.getReport());
@@ -618,7 +618,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
 
         // Record results:
         if( success ) {
-            stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
+            stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
             if( result != null && result.getProperties() != null ) {
                 log.info("Got "+result.getProperties().size()+" properties");
                 for( Property p : result.getProperties() ) {
@@ -630,7 +630,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
 
         // FAILED:
-        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
+        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
     }
 
@@ -684,7 +684,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Record results:
         if( success ) {
             try {
-                stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
+                stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
                 log.info("Start with Measurements #"+stage_m.size());
                 IdentifyWorkflow.collectIdentifyResults(stage_m, result, dob);
                 log.info("Afterwards, Measurements #"+stage_m.size());
@@ -695,7 +695,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
 
         // FAILED:
-        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
+        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
     }
 

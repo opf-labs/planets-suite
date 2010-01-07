@@ -61,6 +61,8 @@ import eu.planets_project.tb.impl.persistency.ServiceRecordPersistencyImpl;
  * 
  * For a 'user' agent, the 'parameters' could specify the view platform.
  * 
+ * This is intended to supersede the {@see ExecutionStageRecordImpl}, which was less explicit and incomplete.
+ * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
@@ -90,9 +92,9 @@ public class InvocationRecordImpl implements Serializable {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="invocation", fetch=FetchType.EAGER)
     private Set<InvocationParameterImpl> parameters = new HashSet<InvocationParameterImpl>();
     
-    /** The input digital object(s) */
+    /** The input digital object(s), as Data Registry URIs stored as Strings */
     @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    private Set<DigitalObjectRecordImpl> inputs = new HashSet<DigitalObjectRecordImpl>();
+    private Set<String> inputs = new HashSet<String>();
     
     /** Did the service complete successfully. i.e. produced an {Action}Result and ServiceReport. */
     private boolean invocationSucceeded;
@@ -113,21 +115,22 @@ public class InvocationRecordImpl implements Serializable {
     }
     private ExitState serviceStatus;
     
-    /** A simple log of the output from the service. Build from the info/warn/error strings in the ServiceReport */
+    /** A simple log of the output from the service. Build from the info/warn/error strings in the ServiceReport.
+     * Should follow a standard format:
+     *   INFO: Message.
+     *   WARN: Warning.
+     *   ERROR: Reason.
+      */
     private Vector<String> serviceLog = new Vector<String>();
     
-    /** The output digital object(s): */
-    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    private Set<DigitalObjectRecordImpl> outputs = new HashSet<DigitalObjectRecordImpl>();
+    /* FIXME Add other output types? Like the WorkflowResult? */
     
-    /** Was the service response correct, or did it fail when it should have succeeded, 
-     * or indeed 'succeed' when is should have failed. Needs human or external standard test to evaluate. 
-     * FIXME Perhaps this should be a 'Measurement'?
-     * */
-    private boolean serviceRepondedCorrectly;
+    /** The output digital object(s), as DR URIs, stored as strings: */
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    private Set<String> outputs = new HashSet<String>();
     
     /** The measurements about this invocation */
-    @OneToOne(cascade=CascadeType.ALL, mappedBy="invocation", fetch=FetchType.EAGER)
+    @OneToOne(cascade=CascadeType.ALL, mappedBy="targetInvocation", fetch=FetchType.EAGER)
     private Set<MeasurementEventImpl> measurementEvents = new HashSet<MeasurementEventImpl>();
     
     /* -------------------------------------------- */

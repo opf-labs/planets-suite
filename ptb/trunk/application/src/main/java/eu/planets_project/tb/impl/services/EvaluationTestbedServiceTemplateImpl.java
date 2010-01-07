@@ -381,13 +381,13 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	        log.info("Looking for property: "+sPropName);
 			
 			//now query the technical registry for all details on this property
-			String[] sMetricNames = (String[])TecRegMockup.getParameterVal(TecRegMockup.URIXCDLPropertyRoot+sPropName+"/metrics");
+			String[] sMetricNames = (String[])TecRegMockup.getParameterVal(TecRegMockup.URI_XCDL_PROP_ROOT+sPropName+"/metrics");
 			
 			if(sMetricNames!=null){
 				for(String sMname : sMetricNames){
 					Map<String,String> m = new HashMap<String,String>();
-					String retType = (String)TecRegMockup.getParameterVal(TecRegMockup.URIXCDLMetricRoot+sMname+"/returndatatype/javaobjecttype");
-					String descr = (String)TecRegMockup.getParameterVal(TecRegMockup.URIXCDLMetricRoot+sMname+"/description");
+					String retType = (String)TecRegMockup.getParameterVal(TecRegMockup.URI_XCDL_METRIC_ROOT+sMname+"/returndatatype/javaobjecttype");
+					String descr = (String)TecRegMockup.getParameterVal(TecRegMockup.URI_XCDL_METRIC_ROOT+sMname+"/description");
 					if(retType!=null){
 						//e.g. "equal"
 						m.put("metricName", sMname);

@@ -53,8 +53,6 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     private static final String IDENTIFY_DO_SIZE = STAGE_IDENTIFY+".do.size";
 
     /** Observable properties for this service type */
-    public static URI PROP_IDENTIFY_FORMAT;
-    public static URI PROP_IDENTIFY_METHOD;
     public static MeasurementImpl MEASURE_IDENTIFY_FORMAT;
     public static MeasurementImpl MEASURE_IDENTIFY_METHOD;
 
@@ -72,33 +70,20 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     private static HashMap<String,List<MeasurementImpl>> observables;
     static {
 
-        // Set up URIs
-        try {
-            PROP_IDENTIFY_FORMAT = new URI( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/format" );
-            PROP_IDENTIFY_METHOD = new URI( TecRegMockup.URIServicePropertyRoot + "identify/method" );
-        } catch (URISyntaxException e) { 
-            log.error("Error during initialisation: " +e);
-            e.printStackTrace();
-        }
-        
         // Set up properties:
-        MEASURE_IDENTIFY_FORMAT = MeasurementImpl.create(
-                PROP_IDENTIFY_FORMAT, 
-                "The format of the Digital Object", "",
-                "The format of a Digital Object, specified as a Planets Format URI.", 
-                null, MeasurementEventImpl.TARGET_DIGITALOBJECT);
+        MEASURE_IDENTIFY_FORMAT = TecRegMockup.getObservable( TecRegMockup.PROP_DO_FORMAT );
         MEASURE_IDENTIFY_METHOD = MeasurementImpl.create(
-                PROP_IDENTIFY_METHOD, 
+                TecRegMockup.PROP_SERVICE_IDENTIFY_METHOD, 
                 "The identification method.", "",
                 "The method the service used to identify the digital object.", 
-                null, MeasurementEventImpl.TARGET_SERVICE);
+                MeasurementImpl.TARGET_SERVICE);
 
         // Now set up the hash:
         observables = new HashMap<String,List<MeasurementImpl>>();
         observables.put(STAGE_IDENTIFY, new Vector<MeasurementImpl>() );
         // The service succeeded
         observables.get(STAGE_IDENTIFY).add( 
-                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED) );
         // The service time
         observables.get(STAGE_IDENTIFY).add( 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME) );
@@ -118,7 +103,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
 
         /*
         observables.put( IDENTIFY_SUCCESS, 
-                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS, STAGE_IDENTIFY) );
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, STAGE_IDENTIFY) );
         // The service time
         observables.put( IDENTIFY_SERVICE_TIME, 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME, STAGE_IDENTIFY) );
@@ -222,7 +207,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         // Now record
         try {
             if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
-                recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
+                recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
                 collectIdentifyResults(recs, identify, dob);
                 wr.logReport(identify.getReport());
                 return wr;
@@ -232,7 +217,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         }
 
         // Build in a 'service failed' property.
-        recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
+        recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
         // Create a ServiceReport from the exception.
         // TODO can we distinguish tool and install error here?
@@ -252,12 +237,12 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         if( ident.getTypes() != null ) {
             for( URI format_uri : ident.getTypes() ) {
                 if( format_uri != null ) {
-                    recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_FORMAT, format_uri.toString()));
+                    recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_DO_FORMAT, format_uri.toString()));
         }
             }
         }
         if( ident.getMethod() != null ) {
-            recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, ident.getMethod().name() ));
+            recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_IDENTIFY_METHOD, ident.getMethod().name() ));
         }
         // Store the size:
         recs.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+getContentSize(dob) ) );

@@ -62,7 +62,7 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         observables.put(STAGE_CREATEVIEW, new Vector<MeasurementImpl>() );
         // The service succeeded
         observables.get(STAGE_CREATEVIEW).add( 
-                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED) );
         // The service time
         observables.get(STAGE_CREATEVIEW).add( 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME) );
@@ -159,7 +159,7 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         // Now record
         try {
             if( success && view.getViewURL() != null ) {
-                recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
+                recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
                 collectCreateViewResults(recs, view, dob);
                 wr.setMainEndpoint(serviceEndpoint);
                 wr.setResult(view);
@@ -171,7 +171,7 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         }
 
         // Build in a 'service failed' property.
-        recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
+        recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
         // Create a ServiceReport from the exception.
         // TODO can we distinguish tool and install error here?

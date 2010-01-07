@@ -93,7 +93,7 @@ public class ViewResultBean {
             for( ExecutionStageRecordImpl stage : exec.getStages() ) {
                 if( stage.getStage().equals( IdentifyWorkflow.STAGE_IDENTIFY )) {
                     for( MeasurementRecordImpl m : stage.getMeasurements() ) {
-                        if( m.getIdentifier().equals(TecRegMockup.URIDigitalObjectPropertyRoot+"basic/format")) {
+                        if( m.getIdentifier().equals(TecRegMockup.URI_DO_PROP_ROOT+"basic/format")) {
                             frb.add(new FormatResultBean(m.getValue()));
                         }
                     }
