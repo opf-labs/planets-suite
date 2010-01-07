@@ -39,6 +39,8 @@ public class BackendProperties {
     // Experiment properties.
     // The max number of input files before admin approval is required to run the experiment.
     public static final String EXP_ADMIN_NOINPUTS = "experiment.adminThreshold.noInputs";
+    
+    public static final String TB_EXPTYPE_MIGRATION_WEE_WFTEMPLATENAME = "tb.expTypeMigration.wee.wftemplateName";
 
     //Note: sFileDirBase = ifr_server/bin/../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war
     String sFileDirBase = null;

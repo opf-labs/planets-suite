@@ -14,6 +14,23 @@
 <fieldset>
     <legend>Migration Experiment</legend>
     
+       <h:panelGroup>
+         <t:graphicImage value="/graphics/toolbar_logout.gif" rendered="#{!ExpTypeMigrate.validCurrentConfiguration}"/>
+	     <h:outputText value=" Invalid workflow configuration" rendered="#{!ExpTypeMigrate.validCurrentConfiguration}" style="color:red;"/>
+	     <t:graphicImage value="/graphics/state_ok.gif" rendered="#{ExpTypeMigrate.validCurrentConfiguration}"/>
+	     <h:outputText value=" Valid workflow configuration" rendered="#{ExpTypeMigrate.validCurrentConfiguration}"/>
+	     <h:panelGroup id="wfConfigPanelGroup_MigrateExpType" rendered="#{(ExpTypeMigrate.tempFileDownloadLinkForCurrentXMLConfig != null) and (ExpTypeMigrate.templateAvailableInWftRegistry)}">
+			    <h:outputLink target="_blank" value="#{ExpTypeMigrate.tempFileDownloadLinkForCurrentXMLConfig}" rendered="#{ExpTypeMigrate.tempFileDownloadLinkForCurrentXMLConfig != null}">
+	          			<h:outputText value=": download configuration."/>
+	        		</h:outputLink>	
+		</h:panelGroup><br/>
+       
+       	 <t:graphicImage value="/graphics/toolbar_logout.gif" rendered="#{!ExpTypeMigrate.templateAvailableInWftRegistry}"/>
+	     <h:outputText value=" requested workflow not available on the workflow execution system" rendered="#{!ExpTypeMigrate.templateAvailableInWftRegistry}" style="color:red;"/>
+	     <t:graphicImage value="/graphics/state_ok.gif" rendered="#{ExpTypeMigrate.templateAvailableInWftRegistry}"/>
+	     <h:outputText value=" requested workflow available on the system" rendered="#{ExpTypeMigrate.templateAvailableInWftRegistry}"/><br/>
+       </h:panelGroup>
+    
     <div class="expStartDO">
     For every Digital Object, migrate from input format:<br/>
     <h:panelGroup rendered="#{!ReadOnly}">

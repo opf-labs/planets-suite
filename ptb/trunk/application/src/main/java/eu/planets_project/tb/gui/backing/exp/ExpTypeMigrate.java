@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -28,26 +29,51 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Template;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service.Parameters;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service.Parameters.Param;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
+import eu.planets_project.tb.api.system.batch.BatchProcessor;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
+import eu.planets_project.tb.gui.backing.exp.ExpTypeExecutablePP.ServiceBean;
+import eu.planets_project.tb.gui.backing.exp.ExpTypeExecutablePP.ServiceParameter;
+import eu.planets_project.tb.gui.backing.exp.utils.ExpTypeWeeBean;
+import eu.planets_project.tb.gui.backing.exp.utils.ExpTypeWeeUtils;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
+import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class ExpTypeMigrate extends ExpTypeBackingBean {
+public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean{
     private Log log = LogFactory.getLog(ExpTypeMigrate.class);
+    private BackendProperties bp = new BackendProperties();
+    private ExpTypeWeeUtils expTypeWeeUtils;
+    //contains the specified parameters for a given serviceEndpoint
+    private HashMap<String, Parameters> serviceParams;
+    
+    
+    public ExpTypeMigrate(){
+    	bp  = new BackendProperties();
+    	expTypeWeeUtils = new ExpTypeWeeUtils(this);
+    	serviceParams = new HashMap<String,Parameters>();
+    }
     
     /**
      * @return the identifyService
@@ -65,9 +91,12 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     public void setMigrationService(String identifyService) {
         // FIXME Refresh the service list at this moment?
         log.info("Setting the Migrate service to: "+identifyService);
+    	//update the experimentBean
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(MigrateWorkflow.PARAM_SERVICE, identifyService);
         expBean.updateExperiment();
+        //update the wfConfiguration with the new values
+    	this.buildWorkflowConfFromCurrentConfiguration();
     }
     
     private boolean isServiceSet() {
@@ -308,9 +337,12 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      * @param inputFormat
      */
     public void setInputFormat( String inputFormat) {
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	//update the experimentBean
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(MigrateWorkflow.PARAM_FROM, inputFormat );
         expBean.updateExperiment();
+        //update the wfConfiguration with the new values
+    	this.buildWorkflowConfFromCurrentConfiguration();
     }
     
     private boolean isInputSet() {
@@ -347,9 +379,12 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      * @param format
      */
     public void setOutputFormat( String format) {
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	//update the experimentBean
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         expBean.getExperiment().getExperimentExecutable().getParameters().put(MigrateWorkflow.PARAM_TO, format );
         expBean.updateExperiment();
+        //update the wfConfiguration with the new values
+    	this.buildWorkflowConfFromCurrentConfiguration();
     }
 
     private boolean isOutputSet() {
@@ -628,14 +663,42 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         System.out.println("Done.");
     }
 
-	/* 
+    /* 
 	 * TODO AL: version 1.0 uses this structure to check for a valid workflow (exp-type specific) configuration.
 	 * (non-Javadoc)
 	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#checkExpTypeBean_Step2_WorkflowConfigurationOK()
 	 */
 	@Override
 	public void checkExpTypeBean_Step2_WorkflowConfigurationOK() throws Exception{
-		// TODO Auto-generated method stub
+		
+		//steps 3 is not required by the workflow logic for this expType. Step3 is done implicitly
+		//1. check valid configuration file provided
+		if(!this.isValidCurrentConfiguration()){
+			throw new Exception("The provided workflow configuration is not valid");
+		}
+		//2 check workflow available on system
+		if(!isTemplateAvailableInWftRegistry()){
+			throw new Exception("The selected workflow is not available on the execution engine - please contact Testbed helpdesk");
+		}
+		//3 check all selected services available
+		/*if(!helperCheckAllSelectedServicesAvailable()){
+			throw new Exception("One or more selected services are not available within the Testbed - please contact Testbed helpdesk");
+		}*/
+	}
+	
+	/**
+	 * Takes the bean's information and persist it into the testbed's db model
+	 * i.e. the experiment's executable.setWorkflowConfig method
+	 */
+	@Override
+	public void saveExpTypeBean_Step2_WorkflowConfiguration_ToDBModel(){
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        //store information in the db entities
+		ExperimentExecutable expExecutable = expBean.getExperiment().getExperimentExecutable();
+        expExecutable.setWEEWorkflowConfig(this.buildWorkflowConfFromCurrentConfiguration());
+        //specify which batch processing system WEE or TB/Local we want to use for this experiment
+        expExecutable.setBatchSystemIdentifier(BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
+        expBean.updateExperiment();
 	}
 
 	/* (non-Javadoc)
@@ -646,5 +709,133 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
 		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		if( expBean != null && AdminManagerImpl.MIGRATE.equals(expBean.getEtype()) ) return true;
 		return false;
+	}
+	
+	// --------------------------- START CHANGES SWITCHING TO WEE BACKEND ----------------------
+
+	/**
+	 * Add a parameter in the editParam screen
+	 * @param event
+	 */
+	public void addParameter(ActionEvent event) {
+		//TODO create logic for adding and editing parameters in GUI
+		//then call the addParam method from this bean 
+	}
+
+	/**
+	 * adds the parameter to the bean's list of params for a given service id.
+	 * @param serviceId
+	 * @param name
+	 * @param value
+	 */
+	private void addParam(String serviceId, String name, String value){
+		if(this.serviceParams.get(serviceId)!=null){
+			//Params object already available
+			Parameters parameters = new Parameters();
+			this.serviceParams.put(serviceId, parameters);
+		}
+		Parameters params = this.serviceParams.get(serviceId);
+		//check if we're updating a param?
+		Param spUpdate = this.getServiceParamContained(serviceId, name);
+		if(spUpdate!=null){
+			//delete
+			this.removeParameter(serviceId, spUpdate);
+		}
+		//finally add
+		Param parameter = new Param();
+		parameter.setName(name);
+		parameter.setValue(value);
+		params.getParam().add(parameter);
+	}
+	
+	public void removeParameter(String serviceId, Param par) {
+		this.serviceParams.get(serviceId).getParam().remove(par);
+	}
+	
+	/**
+	 * Checks if a given ServiceParameterName is already contained in the list
+	 * off added ServiceParameters
+	 * @param paramName
+	 * @return
+	 */
+	private Param getServiceParamContained(String serId, String paramName){
+		for(Param p : this.serviceParams.get(serId).getParam()){
+			if(p.getName().equals(paramName)){
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	
+	public WorkflowConf getWeeWorkflowConf() {
+		return this.expTypeWeeUtils.getWeeWorkflowConf();
+	}
+
+	public void setWeeWorkflowConf(WorkflowConf wfConfig) {
+		this.expTypeWeeUtils.setWeeWorkflowConf(wfConfig);
+	}
+	
+	/**
+	 *  Takes the current bean's configuration (e.g. service, input, output format) and
+	 *  creates a WorkflowConf object.
+	 */
+	public WorkflowConf buildWorkflowConfFromCurrentConfiguration(){
+		
+		//create the template name - it's predefined
+		Template serTempl = new Template();
+		serTempl.setClazz(bp.getProperty(BackendProperties.TB_EXPTYPE_MIGRATION_WEE_WFTEMPLATENAME));
+    	
+    	//create the Service
+    	Services services = new Services();
+    	Service sMigrate = new Service();
+    	sMigrate.setId("migrate1");
+    	sMigrate.setEndpoint(this.getMigrationService());
+    	
+    	Parameters params = this.serviceParams.get(this.getMigrationService());
+    	if((params!=null)&&(params.getParam().size()>0)){
+			//there needs to be a Parameter element only if there's a param for being xsd compliant
+    		sMigrate.setParameters(params);
+		}else{
+			sMigrate.setParameters(new Parameters());
+		}
+    	//add the general parameters for input and output format
+    	Param paramMigrFrom = new Param();
+    	paramMigrFrom.setName(WorkflowTemplate.SER_PARAM_MIGRATE_FROM);
+    	paramMigrFrom.setValue(this.getInputFormat());
+    	sMigrate.getParameters().getParam().add(paramMigrFrom);
+    	
+    	Param paramMigrTo = new Param();
+    	paramMigrTo.setName(WorkflowTemplate.SER_PARAM_MIGRATE_TO);
+    	paramMigrTo.setValue(this.getOutputFormat());
+    	sMigrate.getParameters().getParam().add(paramMigrTo);
+    	
+    	services.getService().add(sMigrate);
+    	WorkflowConf wfConf = null;
+	    try {
+			if((this.getMigrationService()!=null)&&(this.getInputFormat()!=null)&&(this.getOutputFormat()!=null)){
+				//build the WorkflowConf object from the bean's content
+				wfConf = this.expTypeWeeUtils.buildWorkflowConf(serTempl, services);
+			}
+		} catch (Exception e) {
+			log.debug("Unable to retrieve the WorkflowConfiguration"+e);
+		}
+		this.setWeeWorkflowConf(wfConf);
+		return this.getWeeWorkflowConf();
+	}
+
+	/** {@inheritDoc} */
+	public String getTempFileDownloadLinkForCurrentXMLConfig() {
+		return this.expTypeWeeUtils.getTempFileDownloadLinkForCurrentXMLConfig();
+	}
+
+	/** {@inheritDoc} */
+	public boolean isValidCurrentConfiguration() {
+		return this.expTypeWeeUtils.isValidCurrentConfiguration();
+	}
+
+	/** {@inheritDoc} */
+	public boolean isTemplateAvailableInWftRegistry() {
+		return this.expTypeWeeUtils.isTemplateAvailableInWftRegistry(bp.getProperty(BackendProperties.TB_EXPTYPE_MIGRATION_WEE_WFTEMPLATENAME));
 	}
 }
