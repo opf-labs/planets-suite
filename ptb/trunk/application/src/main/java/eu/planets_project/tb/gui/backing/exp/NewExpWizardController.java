@@ -225,11 +225,13 @@ public class NewExpWizardController{
         // Attempt to approve the experiment, and forward appropriately
         if( ! AdminManagerImpl.experimentRequiresApproval(exp) ) {
             autoApproveExperiment();
-            return "goToStage3";
+            NewExpWizardController.redirectToExpStage(expBean.getID(), 3);
+            return "success";
         }
         // Otherwise, await approval:
         AdminManagerImpl.requestExperimentApproval(exp);
-        return "goToStage2";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
     }
     
     public String unsubmitAndEdit() {
@@ -238,7 +240,9 @@ public class NewExpWizardController{
         Experiment exp = expBean.getExperiment();
         ExperimentImpl.resetToEditingStage(exp);
         testbedMan.updateExperiment(exp);
-        return "goToStage1";
+        
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 1);
+        return "success";
     }
     
     public String updateExperimentBeanState() {
@@ -719,12 +723,14 @@ public class NewExpWizardController{
      * @return
      */
     public String commandAddInputDataItem(){
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	//0) upload the specified data to the Testbed's file repository
         log.info("commandAddInputDataItem: Uploading file.");
 		FileUploadBean uploadBean = UploadManager.uploadFile(true);
 		if( uploadBean == null ) {
 	        log.warn("commandAddInputDataItem: Uploaded file was null.");
-		    return "goToStage2";
+            NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+            return "success";
 		}
 		String fileRef = uploadBean.getUniqueFileName();
 		if(!(new File(fileRef).canRead())){
@@ -733,13 +739,14 @@ public class NewExpWizardController{
     	
     	//1) Add the file reference to the expBean
         log.info("Adding file to Experiment Bean.");
-    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	String position = expBean.addExperimentInputData(fileRef);
         log.info("Adding file to Experiment Bean at position "+position);
     	
     	//reload stage2 and displaying the added data items
         log.info("commandAddInputDataItem DONE");
-    	return "goToStage2";
+        // Do a redirect, ensuring the Exp ID is carried through:
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
     }
 
     /**
@@ -846,7 +853,6 @@ public class NewExpWizardController{
         
         // Return generic result, to avoid JSF navigation taking over.
         return "success";
-        //return "goToStage1";
     }
 
     /**
@@ -880,11 +886,13 @@ public class NewExpWizardController{
         NewExpWizardController.redirectToExpStage(exp.getEntityID(), i);
     }    
 
-    private String commandSaveExperimentAndGoto(int stage, String destination ) {
+    private String commandSaveExperimentAndGoto(int stage, int destination ) {
         String result = commandSaveExperiment( stage );
         log.info("Save: "+result);
         if( "success".equals(result)) {
-            return destination;
+            ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+            NewExpWizardController.redirectToExpStage(expBean.getID(), destination);
+            return "success";
         } else {
             return result;
         }
@@ -905,7 +913,7 @@ public class NewExpWizardController{
     }
     
     public String commandSaveStage1AndGotoStage2() {
-        return this.commandSaveExperimentAndGoto(1, "goToStage2");
+        return this.commandSaveExperimentAndGoto(1, 2);
     }
 
     public String commandSaveStage2() {
@@ -913,7 +921,7 @@ public class NewExpWizardController{
     }
     
     public String commandSaveStage2AndGotoStage3() {
-        return this.commandSaveExperimentAndGoto(2, "goToStage3");
+        return this.commandSaveExperimentAndGoto(2, 3);
     }
 
     public String commandSaveStage3() {
@@ -996,6 +1004,7 @@ public class NewExpWizardController{
 	 * @return
 	 */
 	public String commandRemoveAddedFileRef(ActionEvent event){
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		
 		try {
 			//FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -1005,7 +1014,6 @@ public class NewExpWizardController{
 			
 			
 			//2) Remove the data from the bean's variable
-			ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 			expBean.removeExperimentInputData(IDnr+"");
 			
 			//3) Remove the GUI elements from the panel
@@ -1022,7 +1030,8 @@ public class NewExpWizardController{
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		return "goToStage2";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
 	}
 	
 	    
@@ -1048,7 +1057,8 @@ public class NewExpWizardController{
 			testbedMan.updateExperiment(exp);
 		}
 		
-		return "goToStage2";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
 	}
 	
 	/**
@@ -1058,7 +1068,8 @@ public class NewExpWizardController{
 	public String completeSerOpsSelection(){
 		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		expBean.setOpartionSelectionCompleted(true);
-		return "goToStage2";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
 	}
     
 	/**
@@ -1490,7 +1501,9 @@ public class NewExpWizardController{
    		testbedMan.updateExperiment(exp);
    		
    	    expBean.setExecuteAutoEvalWfRunning(false);
-	    return "goToStage6";
+   	    
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
+        return "success";
     }
     
 	/**
@@ -1523,7 +1536,9 @@ public class NewExpWizardController{
   	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
   	  		initEvaluationBenchmarks(exp);
   	  		testbedMan.updateExperiment(exp);
-    		return "goToStage6";
+  	  		
+            NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
+            return "success";
   	  	} else
     		return null;
     }
@@ -1536,7 +1551,8 @@ public class NewExpWizardController{
     	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
   		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
   		testbedMan.updateExperiment(exp);
-		return "goToStage6";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
+        return "success";
     }
     
     /**
@@ -1592,7 +1608,9 @@ public class NewExpWizardController{
     	//exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
     	//exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
         testbedMan.updateExperiment(exp);
-    	return "goToStage6";
+        
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
+        return "success";
     }
     
     public String loadReaderStage2() {
@@ -1700,6 +1718,7 @@ public class NewExpWizardController{
     }
     
     public String commandUploadWfXMLConfigFile(){
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	ExpTypeExecutablePP eTypeExecPP = (ExpTypeExecutablePP)ExpTypeBackingBean.getExpTypeBean(AdminManagerImpl.EXECUTABLEPP);
     	eTypeExecPP.reInitBeanForWFXMLConfigUploaded();
     	
@@ -1708,7 +1727,8 @@ public class NewExpWizardController{
 		FileUploadBean uploadBean = UploadManager.uploadFile(true);
 		if( uploadBean == null ) {
 	        log.warn("commandUploadWfXMLConfigFile: Uploaded file was null.");
-		    return "goToStage2";
+	        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+	        return "success";
 		}
 		String fileRef = uploadBean.getUniqueFileName();
 		log.debug("Uploaded file: uniqueFileName: "+fileRef);
@@ -1720,7 +1740,8 @@ public class NewExpWizardController{
 			eTypeExecPP.checkAndParseWorkflowConfigObject(fileRef);
 			
 		} catch (Exception e) {
-			return "goToStage2";
+	        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+	        return "success";
 		}
     	
 		//2) check if the workflow is available on the WEE Template registry
@@ -1730,7 +1751,8 @@ public class NewExpWizardController{
 			eTypeExecPP.setTemplateAvailableInWftRegistry(true);
 		}else{
 			eTypeExecPP.setTemplateAvailableInWftRegistry(false);
-			return "goToStage2";
+	        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+	        return "success";
 		}
 		
 		//3) populate the bean with servic specific information
@@ -1738,7 +1760,8 @@ public class NewExpWizardController{
 
     	//reload stage2 and display the further navigation options
         log.info("commandUploadWfXMLConfigFile DONE");
-    	return "goToStage2";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
     }
 
 /*
@@ -2035,7 +2058,8 @@ public class NewExpWizardController{
 	    }else {
             // For unrecognised experiment types, set to NULL:
             log.error("unrecognised experiment type");
-        	return "goToStage3";
+            NewExpWizardController.redirectToExpStage(expBean.getID(), 3);
+            return "success";
         }
     	
     	//get the information from the ontology tree bean
@@ -2044,7 +2068,8 @@ public class NewExpWizardController{
 		if(treeBean==null){
 			// ontology tree bean has not been set
 	        log.error("ontology tree bean not set");
-	        return "goToStage3";
+            NewExpWizardController.redirectToExpStage(expBean.getID(), 3);
+            return "success";
 		}
 		
 		//the bean's manual observables
@@ -2112,7 +2137,8 @@ public class NewExpWizardController{
 			log.debug("error building Measurement from OntologyProperty",e);
 		}
 		
-		return "goToStage3";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 3);
+        return "success";
 
     }
     
@@ -2326,7 +2352,9 @@ public class NewExpWizardController{
         exp.setState(Experiment.STATE_COMPLETED);
         testbedMan.updateExperiment(exp);
         expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTFINALIZED);  
-    	return "goToStage6";
+        
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
+        return "success";
     }
     
     
