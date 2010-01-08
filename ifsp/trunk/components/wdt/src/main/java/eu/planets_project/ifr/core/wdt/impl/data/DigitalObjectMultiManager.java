@@ -33,50 +33,66 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     private static Logger log = Logger.getLogger(DigitalObjectMultiManager.class.getName());
 
     // Data manager types
-	public static final int DIGITAL_OBJECT_DATA_MANAGER = 3;
+//	public static final int DIGITAL_OBJECT_DATA_MANAGER = 3;
 	
-	// Max count of data manager types
-	public static final int MAX_COUNT_DATA_MANAGER = 4;
-
     // A simple class to wrap a DR with it's base URI:
     private class DataSource {
         URI uri = null;
         DigitalObjectManager dm = null;
     }
     
-    // The array of data source:
-    private DataSource[] dss;
+    // The array of data sources:
+    private List<DataSource> dss;
+    
+    // The defaults store:
+    private DataSource dodm_ds;
     
     /**
      * The constructor create the list of known DRs:
      */
     public DigitalObjectMultiManager() {
         // Allocate the data sources:
-    	dss = new DataSource[MAX_COUNT_DATA_MANAGER];
+    	dss = new ArrayList<DataSource>();
         
         // The File System Data Registry:
         DigitalObjectManager fsdm = new FileSystemDataManager();
-        dss[0] = new DataSource();
-        dss[0].dm = fsdm;
-        dss[0].uri = ((FileSystemDataManager)fsdm).getRootURI().normalize();
+        DataSource ds = new DataSource();
+        ds.dm = fsdm;
+        ds.uri = ((FileSystemDataManager)fsdm).getRootURI().normalize();
+        dss.add(ds);
         
         // The S3 Data Registry
-        DigitalObjectManager s3dm = new S3DataManager();
-        dss[1] = new DataSource();
-        dss[1].dm = s3dm;
-        dss[1].uri = ((S3DataManager)s3dm).getRootURI().normalize();
+        try {
+            DigitalObjectManager s3dm = new S3DataManager();
+            ds = new DataSource();
+            ds.dm = s3dm;
+            ds.uri = ((S3DataManager)s3dm).getRootURI().normalize();
+            dss.add(ds);
+        } catch( Exception e ) {
+            log.severe("Failed to start data manager S3DataManager.");
+        }
         
         // The BL DigitalObjectManager
-        DigitalObjectManager bln = new SimpleBLNewspaperDigitalObjectManagerImpl();
-        dss[2] = new DataSource();
-        dss[2].dm = bln;
-        dss[2].uri = ((SimpleBLNewspaperDigitalObjectManagerImpl)bln).getRootURI().normalize();
+        try {
+            DigitalObjectManager bln = new SimpleBLNewspaperDigitalObjectManagerImpl();
+            ds = new DataSource();
+            ds.dm = bln;
+            ds.uri = ((SimpleBLNewspaperDigitalObjectManagerImpl)bln).getRootURI().normalize();
+            dss.add(ds);
+        } catch( Exception e ) {
+            log.severe("Failed to start data manager SimpleBLNewspaperDigitalObjectManagerImpl.");
+        }
    
         // The Digital Object Data Registry:
-        DigitalObjectManager dodm = JcrDigitalObjectManagerImpl.getInstance();
-        dss[DIGITAL_OBJECT_DATA_MANAGER] = new DataSource();
-        dss[DIGITAL_OBJECT_DATA_MANAGER].dm = dodm;
-        dss[DIGITAL_OBJECT_DATA_MANAGER].uri = ((JcrDigitalObjectManagerImpl)dodm).getRootURI().normalize();
+        try {
+            DigitalObjectManager dodm = JcrDigitalObjectManagerImpl.getInstance();
+            dodm_ds = new DataSource();
+            dodm_ds.dm = dodm;
+            dodm_ds.uri = ((JcrDigitalObjectManagerImpl)dodm).getRootURI().normalize();
+            dss.add(dodm_ds);
+        } catch( Exception e ) {
+            log.severe("Failed to start data manager JcrDigitalObjectManagerImpl.");
+        }
         
         // The ONB OAI DigitalObjectManager
         /* This OAI source is no longer available, so disable this
@@ -133,10 +149,10 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         puri = puri.normalize();
 //        log.info("findDataManger for: " + puri);
         // Find the (1st) matching data registry:
-        for( int i = 0; i < dss.length; i++ ) {
+        for( int i = 0; i < dss.size(); i++ ) {
 //        	log.info("findDataManager with root uri: " + dss[i].uri.toString());
-            if( puri.toString().startsWith(dss[i].uri.toString())) {
-                return dss[i].dm;
+            if( puri.toString().startsWith(dss.get(i).uri.toString())) {
+                return dss.get(i).dm;
             }
         }
         
@@ -152,8 +168,8 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         // If null, list the known DRs
         if( pdURI == null ) {
             List<URI> childs = new ArrayList<URI>();
-            for( int i = 0; i < dss.length; i++ ) {
-                childs.add(i, dss[i].uri );
+            for( int i = 0; i < dss.size(); i++ ) {
+                childs.add(i, dss.get(i).uri );
             }
             return childs;
         }
@@ -180,7 +196,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
 				e.printStackTrace();
 			}
     	} else if (pdURI.toString().indexOf("archiv-test.onb.ac.at") > 0) {
-    		dm = findDataManager(dss[3].uri);
+    		dm = findDataManager(dodm_ds.uri);
     	} else {
     		dm = findDataManager(pdURI);
     	}
