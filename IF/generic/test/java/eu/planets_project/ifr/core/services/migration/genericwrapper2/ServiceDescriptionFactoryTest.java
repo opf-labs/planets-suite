@@ -4,9 +4,9 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -18,12 +18,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
-import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterBuilder;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
@@ -31,11 +29,16 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Tool;
 
 /**
- * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
+ * This test class verifies that the
+ * <code>{@link ServiceDescriptionFactory}</code> class is capable of correctly
+ * instantiating a <code>ServiceDescription</code> instance from a generic
+ * wrapper configuration file.
  * 
+ * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
 public class ServiceDescriptionFactoryTest {
 
+    private static final String CONFIG_FILE_NAME = "GenericWrapperConfigFileExample.xml";
     private ServiceDescriptionFactory serviceDescriptionFactory;
     private static final String SERVICE_PROVIDER = "TestProvider";
 
@@ -46,7 +49,7 @@ public class ServiceDescriptionFactoryTest {
     public void setUp() throws Exception {
 
 	final DocumentLocator documentLocator = new DocumentLocator(
-		"GenericWrapperConfigFileExample.xml");
+		CONFIG_FILE_NAME);
 
 	serviceDescriptionFactory = new ServiceDescriptionFactory(this
 		.getClass().getCanonicalName(), SERVICE_PROVIDER,
@@ -54,16 +57,12 @@ public class ServiceDescriptionFactoryTest {
     }
 
     /**
-     * @throws java.lang.Exception
-     */
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    /**
      * Test method for
      * {@link eu.planets_project.ifr.core.services.migration.genericwrapper2.ServiceDescriptionFactory#getServiceDescription(org.w3c.dom.Document, java.util.List, java.lang.String)}
-     * .
+     * . This test will create a <code>ServiceDescription</code> instance, using
+     * the <code>ServiceDescriptionFactory</code> with the configuration file
+     * specified by <code>{@link CONFIG_FILE_NAME}</code>, and verify that its
+     * contents is correct.
      */
     @Test
     public void testGetServiceDescription() throws Exception {
@@ -71,6 +70,7 @@ public class ServiceDescriptionFactoryTest {
 		.getServiceDescription();
 
 	assertNotNull(serviceDescription);
+
 	assertEquals("Un-expected author (creator) information.",
 		"\"Easter Bunny <easter.bunny@bunny.net>\"", serviceDescription
 			.getAuthor());
@@ -88,15 +88,7 @@ public class ServiceDescriptionFactoryTest {
 	assertEquals("Un-expected identifier.", "Example_custom_identifier",
 		serviceDescription.getIdentifier());
 
-	final Set<URI> expectedInputFormats = new HashSet<URI>();
-	expectedInputFormats.add(new URI("info:pronom/x-fmt/408"));
-	expectedInputFormats.add(new URI("info:planets/fmt/ext/lowercase"));
-	expectedInputFormats.add(new URI("info:pronom/x-fmt/407"));
-	expectedInputFormats.add(new URI("info:pronom/x-fmt/406"));
-	expectedInputFormats.add(new URI("info:planets/fmt/ext/foo"));
-	expectedInputFormats.add(new URI("info:pronom/x-fmt/91"));
-
-	assertEquals("Un-expected input formats.", expectedInputFormats,
+	assertEquals("Un-expected input formats.", getExpectedInputFormats(),
 		new HashSet<URI>(serviceDescription.getInputFormats()));
 
 	final String expectedInstructions = "Example: Please install the XYZ "
@@ -135,8 +127,28 @@ public class ServiceDescriptionFactoryTest {
 		"eu.planets_project.services.migrate.Migrate",
 		serviceDescription.getType());
 
-	//FIXME! Enable when ready!
-	// verifyMigrationPaths(serviceDescription.getPaths());
+	verifyMigrationPaths(serviceDescription.getPaths());
+    }
+
+    /**
+     * Create a set of input format URIs which is expected to be found in the
+     * <code>ServiceDescription</code> instance being tested.
+     * 
+     * @return a <code>Set</code> of format URIs to compare with the ones in the
+     *         <code>ServiceDescription</code> instance being tested.
+     * @throws URISyntaxException
+     *             if any of the hard-coded format URIs instantiated in this
+     *             method are erroneous.
+     */
+    private Set<URI> getExpectedInputFormats() throws URISyntaxException {
+	final Set<URI> expectedInputFormats = new HashSet<URI>();
+	expectedInputFormats.add(new URI("info:pronom/x-fmt/408"));
+	expectedInputFormats.add(new URI("info:planets/fmt/ext/lowercase"));
+	expectedInputFormats.add(new URI("info:pronom/x-fmt/407"));
+	expectedInputFormats.add(new URI("info:pronom/x-fmt/406"));
+	expectedInputFormats.add(new URI("info:planets/fmt/ext/foo"));
+	expectedInputFormats.add(new URI("info:pronom/x-fmt/91"));
+	return expectedInputFormats;
     }
 
     /**
@@ -155,15 +167,16 @@ public class ServiceDescriptionFactoryTest {
 		.size(), planetsMigrationPaths.size());
 
 	for (MigrationPath expectedPath : expectedPaths) {
+
 	    boolean pathMatchFound = false;
 
 	    // Run through all the paths and verify that each expected path
 	    // exists only once in the list and that its parameters are correct.
-	    for (MigrationPath planetsPath : planetsMigrationPaths) {
+	    for (MigrationPath actualPath : planetsMigrationPaths) {
 
-		if ((expectedPath.getInputFormat().equals(planetsPath
+		if ((expectedPath.getInputFormat().equals(actualPath
 			.getInputFormat()))
-			&& (expectedPath.getOutputFormat().equals(planetsPath
+			&& (expectedPath.getOutputFormat().equals(actualPath
 				.getOutputFormat()))) {
 
 		    assertFalse("Multiple matches found for expected path: "
@@ -171,35 +184,40 @@ public class ServiceDescriptionFactoryTest {
 
 		    pathMatchFound = true;
 
-		    System.out.println("##################   Testing path: "
-			    + planetsPath);
-		    System.out.println("Dump expected:\n\n");
-		    for (Parameter parameter : expectedPath.getParameters()) {
-			System.out.println("name: " + parameter.getName());
-			System.out.println("value: " + parameter.getValue());
-			System.out.println("type: " + parameter.getType());
-			System.out.println("description: "
-				+ parameter.getDescription() + "\n\n");
-			System.out.println(" %%%%% Found in actual output: " + planetsPath.getParameters().contains(parameter));
-		    }
+		    // It is important to test the number of parameters
+		    // explicitly as the following comparison is not able to
+		    // detect redundantly defined parameters.
+		    assertEquals(
+			    "Un-expected number of parameters defined for "
+				    + "path: " + actualPath, expectedPath
+				    .getParameters().size(), actualPath
+				    .getParameters().size());
 
-		    System.out.println("Dump actual:\n\n");
-		    for (Parameter parameter : planetsPath.getParameters()) {
-			System.out.println("name: " + parameter.getName());
-			System.out.println("value: " + parameter.getValue());
-			System.out.println("type: " + parameter.getType());
-			System.out.println("description: "
-				+ parameter.getDescription() + "\n\n");
-		    }
-
+		    // Sending the parameter lists through a HashSet avoids
+		    // failure due to any differences in the order of the
+		    // expected and actual parameters. However, this also causes
+		    // loss of any (accidentally/erroneous) redundantly defined
+		    // parameters in the configuration.
+		    final Set<Parameter> expectedParameters = new HashSet<Parameter>(
+			    expectedPath.getParameters());
+		    final Set<Parameter> actualParameters = new HashSet<Parameter>(
+			    actualPath.getParameters());
 		    assertEquals("Wrong parameters for migration path '"
-			    + expectedPath + "'", expectedPath.getParameters(),
-			    planetsPath.getParameters());
+			    + actualPath + "'", expectedParameters,
+			    actualParameters);
 		}
 	    }
 	}
     }
 
+    /**
+     * Create a list containing <code>MigrationPath</code> instances which are
+     * expected to be equal to the paths generated from the configuration file.
+     * 
+     * @return a list of reference <code>MigrationPath</code> instances.
+     * @throws URISyntaxException
+     *             if a developer has made an error in the hard-coded URIs.
+     */
     private List<MigrationPath> createTestPaths() throws URISyntaxException {
 
 	final List<MigrationPath> paths = new ArrayList<MigrationPath>();
@@ -243,35 +261,25 @@ public class ServiceDescriptionFactoryTest {
 	parameters = new ArrayList<Parameter>();
 
 	parameterBuilder = new Parameter.Builder("param1", null);
-	parameterBuilder
-		.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\tParameters for 'cat'\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t\t-A, --show-all\n"
-			+ "\t\t\t\t\t\t\t\t  equivalent to -vET\n"
-			+ "\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t\t-b, --number-nonblank\n"
-			+ "\t\t\t\t\t\t\t\t  number nonempty output lines\n"
-			+ "\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t\t-e    equivalent to -vE\n"
-			+ "\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t\t-E, --show-ends\n"
-			+ "\t\t\t\t\t\t\t\t  display $ at end of each line\n"
-			+ "\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t\t-n, --number\n"
-			+ "\t\t\t\t\t\t\t\t  number all output lines\n"
-			+ "\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t\t-s, --squeeze-blank\n"
-			+ "\t\t\t\t\t\t\t\t  suppress repeated empty output lines\n"
-			+ "\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t\t-t    equivalent to -vT\n"
-			+ "\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t\t-T, --show-tabs\n"
-			+ "\t\t\t\t\t\t\t\t  display TAB characters as ^I\n"
-			+ "\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t\t-v, --show-nonprinting\n"
-			+ "\t\t\t\t\t\t\t\t  use ^ and M- notation, except for"
-			+ " LFD and TAB\n\t\t\t\t\t");
+	parameterBuilder.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\n"
+		+ "\t\t\t\t\t\tParameters for 'cat'\n" + "\t\t\t\t\t\t\n"
+		+ "\t\t\t\t\t\t\t-A, --show-all\n"
+		+ "\t\t\t\t\t\t\t\t  equivalent to -vET\n" + "\t\t\t\t\t\n"
+		+ "\t\t\t\t\t\t\t-b, --number-nonblank\n"
+		+ "\t\t\t\t\t\t\t\t  number nonempty output lines\n"
+		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-e    equivalent to -vE\n"
+		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-E, --show-ends\n"
+		+ "\t\t\t\t\t\t\t\t  display $ at end of each line\n"
+		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-n, --number\n"
+		+ "\t\t\t\t\t\t\t\t  number all output lines\n"
+		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-s, --squeeze-blank\n"
+		+ "\t\t\t\t\t\t\t\t  suppress repeated empty output lines\n"
+		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-t    equivalent to -vT\n"
+		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-T, --show-tabs\n"
+		+ "\t\t\t\t\t\t\t\t  display TAB characters as ^I\n"
+		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-v, --show-nonprinting\n"
+		+ "\t\t\t\t\t\t\t\t  use ^ and M- notation, except for"
+		+ " LFD and TAB\n\t\t\t\t\t");
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("param2", null);
@@ -372,33 +380,34 @@ public class ServiceDescriptionFactoryTest {
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("mode", "complete");
-	parameterBuilder.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n" 
-		+ "\t\t\t\t\t\tValid options:\n"
-		+ "\t\t\t\t\t\t\n"
-		+ "\t\t\t\t\t\t'complete' : Converts from lowercase to uppercase.\n"
-		+ "\t\t\t\t\t\t'AC-DC' : Converts As to Ds, thus, AC-DC becomes DC-AC.\n"
-		+ "\t\t\t\t\t\t'extra' : Converts from lowercase to uppercase and adds\n"
-		+ "\t\t\t\t\t\t\t\t  a line number to each line.\n\n"
-		+ "\t\t\t\t\t\tDefaults to 'complete'.\n"
-		+ "\t\t\t\t\t\n\nValid values : Description\n\n"
-		+ "complete : Uppercase all text.\n"
-		+ "extra : Uppercase all text and add line numbers.\n"
-		+ "\t\t\t\t\t\t\n"						
-		+ "AC-DC : Swaps As with Ds. Thus changing AC-DC to DC-AC\n"
-		+ "\t\t\t\t\t\t");
+	parameterBuilder
+		.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\tValid options:\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "\t\t\t\t\t\t'complete' : Converts from lowercase to uppercase.\n"
+			+ "\t\t\t\t\t\t'AC-DC' : Converts As to Ds, thus, AC-DC becomes DC-AC.\n"
+			+ "\t\t\t\t\t\t'extra' : Converts from lowercase to uppercase and adds\n"
+			+ "\t\t\t\t\t\t\t\t  a line number to each line.\n\n"
+			+ "\t\t\t\t\t\tDefaults to 'complete'.\n"
+			+ "\t\t\t\t\t\n\nValid values : Description\n\n"
+			+ "complete : Uppercase all text.\n"
+			+ "extra : Uppercase all text and add line numbers.\n"
+			+ "\t\t\t\t\t\t\n"
+			+ "AC-DC : Swaps As with Ds. Thus changing AC-DC to DC-AC\n"
+			+ "\t\t\t\t\t\t");
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("quality", null);
 	parameterBuilder
 		.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\tValid options:\n\n"
+			+ "\t\t\t\t\t\tValid options:\n"
+			+ "\t\t\t\t\t\t\n"
 			+ "\t\t\t\t\t\t'good' : Converts from lowercase to uppercase.\n"
-			+ "\t\t\t\t\t\t'better' : Converts As do Ds, thus, AC-DC becomes DC-AC.\n"
+			+ "\t\t\t\t\t\t'better' : Converts As to Ds, thus, AC-DC becomes DC-AC.\n"
 			+ "\t\t\t\t\t\t'best' : Converts from lowercase to uppercase and adds\n"
 			+ "\t\t\t\t\t\t\t\t a line number to each line.\n\n"
 			+ "\t\t\t\t\t\tDefaults to 'good'.\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\n\n"
+			+ "\t\t\t\t\t\t\n" + "\t\t\t\t\t\n\n"
 			+ "Valid values : Description\n\n"
 			+ "better : AC-DC to DC-AC\n"
 			+ "best : Uppercase all and add line numbers.\n"
@@ -417,13 +426,13 @@ public class ServiceDescriptionFactoryTest {
 	parameterBuilder = new Parameter.Builder("param1", null);
 	parameterBuilder.description("Command line parameters for the 'cat'\n"
 		+ "\t\t\t\t\t\tcommand.\n" + "\t\t\t\t\t\tSee\n"
-		+ "\t\t\t\t\t\t'man\n" + "\t\t\t\t\t\tcat'.");
+		+ "\t\t\t\t\t\t'man\n" + "\t\t\t\t\t\tcat'.\n" + "\t\t\t\t");
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("param2", null);
 	parameterBuilder.description("Command line parameters for the 'tr'\n"
 		+ "\t\t\t\t\t\tcommand.\n" + "\t\t\t\t\t\tSee\n"
-		+ "\t\t\t\t\t\t'man\n" + "\t\t\t\t\t\ttr'.");
+		+ "\t\t\t\t\t\t'man\n" + "\t\t\t\t\t\ttr'.\n" + "\t\t\t\t");
 	parameters.add(parameterBuilder.build());
 
 	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
@@ -431,7 +440,20 @@ public class ServiceDescriptionFactoryTest {
 	return paths;
     }
 
-    private void verifyProperties(List<Property> properties) throws Exception {
+    /**
+     * Verify that the contents of the given list of properties, generated from
+     * the example configuration file, is correct. If that is not the case then
+     * JUnit assertions will be triggered.
+     * 
+     * @param properties
+     *            a list of <code>Property</code> instances generated from the
+     *            example configuration file.
+     * @throws URISyntaxException
+     *             if a developer has made an error in the hard-coded ID URI of
+     *             the tested property.
+     */
+    private void verifyProperties(List<Property> properties)
+	    throws URISyntaxException {
 
 	assertEquals(
 		"Un-expected number of properties in service description.", 1,
@@ -455,6 +477,21 @@ public class ServiceDescriptionFactoryTest {
 		property.getValue());
     }
 
+    /**
+     * Verify that the tool description, created from the example configuration
+     * file, is correct. If that is not the case then JUnit assertions will be
+     * triggered.
+     * 
+     * @param toolDescription
+     *            a <code>Tool</code> instance created from the information in
+     *            the example configuration file.
+     * @throws URISyntaxException
+     *             if a developer has made an error in the hard-coded URI in
+     *             this test.
+     * @throws MalformedURLException
+     *             if a developer has made an error in the hard-coded URL in
+     *             this test.
+     */
     private void verifyToolDescription(Tool toolDescription)
 	    throws URISyntaxException, MalformedURLException {
 

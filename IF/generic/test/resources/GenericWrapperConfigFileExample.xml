@@ -971,8 +971,8 @@
 						<![CDATA[
 						Valid options:
 						
-						'good' : Converts from lowercase to	uppercase.
-						'better' : Converts As do Ds, thus, AC-DC becomes DC-AC.
+						'good' : Converts from lowercase to uppercase.
+						'better' : Converts As to Ds, thus, AC-DC becomes DC-AC.
 						'best' : Converts from lowercase to uppercase and adds
 								 a line number to each line.
 
@@ -1217,7 +1217,7 @@
 						See
 						'man
 						cat'.
-                </description>
+				</description>
 				</parameter>
 				<parameter name="param2">
 					<description>Command line parameters for the 'tr'
@@ -1225,7 +1225,7 @@
 						See
 						'man
 						tr'.
-                </description>
+				</description>
 				</parameter>
 			</toolparameters>
 

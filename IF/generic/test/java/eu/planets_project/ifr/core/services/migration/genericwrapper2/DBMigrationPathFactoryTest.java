@@ -24,7 +24,7 @@ import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.Docu
 import eu.planets_project.services.datatypes.Parameter;
 
 /**
- * Test of the docment based migration path factory.
+ * Test of the document based migration path factory.
  * 
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
