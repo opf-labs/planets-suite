@@ -121,6 +121,7 @@ public class WEEBatchExperimentTestbedUpdater {
 			int actionCounter = 0;
 			ExecutionRecordImpl execRecord = new ExecutionRecordImpl(batchRecord);
 			//the input Digo for all this information is about
+			// FIXME This appears to be the resolved URI, not the proper Planets DR URI:
 			execRecord.setDigitalObjectReferenceCopy(inputDigoURI+"");
 			Properties p = new Properties();
 			//iterate over the results and document the migration action - all other information goes into properties.
@@ -168,6 +169,7 @@ public class WEEBatchExperimentTestbedUpdater {
 			}
 			
 			//got all information - now add the record for this inputDigo
+			log.info("Adding an execution record: "+inputDigoURI);
 			execRecords.add(execRecord);
 		}
 		batchRecord.setRuns(execRecords);
@@ -197,11 +199,23 @@ public class WEEBatchExperimentTestbedUpdater {
 	public void processNotify_WorkflowStarted(long expID){
 		Experiment exp = testbedMan.getExperiment(expID);
     	exp.getExperimentExecutable().setExecutableInvoked(true);
+    	if ( exp.getExperimentExecutable().getBatchExecutionRecords() != null ) {
+            log.info("Updating the experiment 'started': #"+exp.getExperimentExecutable().getBatchExecutionRecords().size());
+    	} else {
+            log.info("Updating the experiment 'started': "+exp.getExperimentExecutable().getBatchExecutionRecords());
+    	}
     	//testbedMan.updateExperiment(exp);
     	edao.updateExperiment(exp);
 	}
 	
 	private void helperUpdateExpWithBatchRecord(Experiment exp,BatchExecutionRecordImpl record){
+        if ( exp.getExperimentExecutable().getBatchExecutionRecords() != null ) {
+            log.info("Adding new BatchExecutionRecord to this Experiment: #"+exp.getExperimentExecutable().getBatchExecutionRecords().size());
+            if ( exp.getExperimentExecutable().getBatchExecutionRecords().size() > 0 )
+                log.info("Adding new BatchExecutionRecord to this Experiment: #"+exp.getExperimentExecutable().getBatchExecutionRecords().iterator().next().getRuns().size());
+        } else {
+            log.info("Adding new BatchExecutionRecord to this Experiment: "+exp.getExperimentExecutable().getBatchExecutionRecords());
+        }
     	exp.getExperimentExecutable().getBatchExecutionRecords().add(record);
 		exp.getExperimentExecutable().setExecutionCompleted(true);
         exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);

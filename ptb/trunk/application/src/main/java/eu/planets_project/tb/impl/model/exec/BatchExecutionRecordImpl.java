@@ -66,13 +66,10 @@ public class BatchExecutionRecordImpl implements Serializable {
     /** For JAXB */
     @SuppressWarnings("unused")
     private BatchExecutionRecordImpl() {
-        log.info("Constructing Batch Execution Record, default constructor.");
-        new Exception().printStackTrace();
     }
     
     public BatchExecutionRecordImpl( ExperimentExecutableImpl executable ) {
         log.info("Constructing Batch ExecutionRecords == "+executable);
-        new Exception().printStackTrace();
         if( executable != null ) log.info("Constructing Batch ExecutionRecords ID == "+ executable.getId());
         this.executable = executable;
     }

@@ -642,6 +642,7 @@ public class ExperimentBean {
                 results.add(res);
                 // Collate successes:
                 runOnes.add(exr.getDigitalObjectReferenceCopy());
+                log.info("Recorded result for: "+exr.getDigitalObjectReferenceCopy());
             }
         }
         // Patch in any input files which are not represented. 
@@ -649,6 +650,7 @@ public class ExperimentBean {
             log.info("Checking for results for "+file);
             if( ! runOnes.contains(file) ) {
                 ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(file);
+                log.info("Adding missing result for: "+file);
                 results.add(res);
             }
         }

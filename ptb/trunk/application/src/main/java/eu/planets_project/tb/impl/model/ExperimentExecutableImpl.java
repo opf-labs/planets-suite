@@ -204,6 +204,12 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
             return 0;
         } else {
             log.info("Batch ExecutionRecords #"+this.getBatchExecutionRecords().size());
+            if( this.getBatchExecutionRecords().size() > 0 ) {
+                BatchExecutionRecordImpl b = this.getBatchExecutionRecords().iterator().next();
+                if( b.getRuns() != null ) {
+                    log.info("Batch ExecutionRecord.get(1).getRuns() #"+b.getRuns().size());
+                }
+            }
             return this.getBatchExecutionRecords().size();
         }
     }
