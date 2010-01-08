@@ -13,11 +13,19 @@ package eu.planets_project.tb.impl.model.measure;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
 
@@ -25,12 +33,20 @@ import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
  * @author AnJackson
  *
  */
+@Entity
+@XmlRootElement(name = "MeasurementEvent")
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class MeasurementEventImpl {
+    
+    @Id
+    @GeneratedValue
+    @XmlTransient
+    private long id;
     
     /* --------------- Target ------------------ */
     
     /** If these are measurements about a service, then this is the invocation that was measured. */
-    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @ManyToOne //(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     protected InvocationRecordImpl targetInvocation;
 
     /*
@@ -39,8 +55,8 @@ public class MeasurementEventImpl {
     
     /** If this is about one or more digital objects, then the digital objects that were measured go here. 
      * As Data Registry URIs, stored as Strings. */
-    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    private Set<String> digitalObjects = new HashSet<String>();
+    //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    private Vector<String> digitalObjects = new Vector<String>();
     
     /* ----------------- Context ------------ */
 
@@ -52,6 +68,8 @@ public class MeasurementEventImpl {
         EXP_PROCESS,
         /** Target being measured is an output to an experiment */
         EXP_OUTPUT,
+        /** Target is being measured outside of an experimental context. */
+        NO_EXP,
     }
     private EXP_STAGE experimentStage;
 
@@ -96,6 +114,9 @@ public class MeasurementEventImpl {
     
     @OneToMany(cascade=CascadeType.ALL, mappedBy="event", fetch=FetchType.EAGER)
     private Set<MeasurementImpl> measurements = new HashSet<MeasurementImpl>();
+
+    
+    /* --------------- Constructors --------------------------- */
     
     /**
      * @param iri

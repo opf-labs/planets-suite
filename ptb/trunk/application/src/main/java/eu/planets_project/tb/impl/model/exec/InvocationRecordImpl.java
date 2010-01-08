@@ -93,8 +93,8 @@ public class InvocationRecordImpl implements Serializable {
     private Set<InvocationParameterImpl> parameters = new HashSet<InvocationParameterImpl>();
     
     /** The input digital object(s), as Data Registry URIs stored as Strings */
-    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    private Set<String> inputs = new HashSet<String>();
+    //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    private Vector<String> inputs = new Vector<String>();
     
     /** Did the service complete successfully. i.e. produced an {Action}Result and ServiceReport. */
     private boolean invocationSucceeded;
@@ -123,14 +123,14 @@ public class InvocationRecordImpl implements Serializable {
       */
     private Vector<String> serviceLog = new Vector<String>();
     
-    /* FIXME Add other output types? Like the WorkflowResult? */
+    /* FIXME Add other output types? Like the WorkflowResult? Prob not necessary at per-invocation level right now. */
     
     /** The output digital object(s), as DR URIs, stored as strings: */
-    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    private Set<String> outputs = new HashSet<String>();
+    //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    private Vector<String> outputs = new Vector<String>();
     
     /** The measurements about this invocation */
-    @OneToOne(cascade=CascadeType.ALL, mappedBy="targetInvocation", fetch=FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="targetInvocation", fetch=FetchType.EAGER)
     private Set<MeasurementEventImpl> measurementEvents = new HashSet<MeasurementEventImpl>();
     
     /* -------------------------------------------- */

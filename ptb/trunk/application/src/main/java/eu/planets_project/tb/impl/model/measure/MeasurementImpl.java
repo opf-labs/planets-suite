@@ -67,6 +67,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     @Transient
     protected String type;
     
+    
     /** For JAXB */
     @SuppressWarnings("unused")
     private MeasurementImpl() { }
