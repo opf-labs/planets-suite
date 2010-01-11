@@ -97,9 +97,12 @@
           <a4j:support event="onchange" reRender="dobInspectorForm" />
         </h:selectOneMenu>
       </dd>
-      <dd>
-        <h:outputText value="#{DobInspector.identifyResult}"/>
-      </dd>
+      <a4j:repeat value="#{DobInspector.identifyResultList}" var="fmt">
+       <dd>
+        <h:outputText value="#{fmt.summary}"/>
+        <h:outputText value=" (#{fmt.uri})"/>
+       </dd>
+      </a4j:repeat>
     
       <dt>Characterise</dt>
       <dd>

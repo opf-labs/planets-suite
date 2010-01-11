@@ -13,6 +13,7 @@ package eu.planets_project.tb.gui.backing.data;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -29,6 +30,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
+import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
@@ -164,6 +166,25 @@ public class DigitalObjectInspector {
                 result += type+" ";
             }
             return result;
+        } catch( Exception e ) {
+            log.error("FAILED! "+e);
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public List<FormatBean> getIdentifyResultList() {
+        if( this.getIdentifyService() == null ) return null;
+        try {
+            List<FormatBean> fmts = new ArrayList<FormatBean>();
+            Identify id = new IdentifyWrapper(new URL( this.getIdentifyService()));
+            IdentifyResult ir = id.identify(this.getDob().getDob(), null);
+            for( URI type : ir.getTypes() ) {
+                FormatBean fb = new FormatBean( ServiceBrowser.fr.getFormatForUri( type ) );
+                fmts.add(fb);
+            }
+
+            return fmts;
         } catch( Exception e ) {
             log.error("FAILED! "+e);
             e.printStackTrace();
