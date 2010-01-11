@@ -32,6 +32,8 @@ import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
+import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
@@ -533,7 +535,8 @@ public class ServiceBrowser {
     public static List<SelectItem> mapServicesToSelectList( List<ServiceDescription> sdlist ) {
         List<SelectItem> slist = new ArrayList<SelectItem>();
         for( ServiceDescription sd : sdlist ) {
-            slist.add( createServiceSelectItem(sd) );
+            SelectItem si = createServiceSelectItem(sd);
+            if( si != null ) slist.add( si );
         }
         return slist;
     }
@@ -543,6 +546,7 @@ public class ServiceBrowser {
      * @return
      */
     private static SelectItem createServiceSelectItem( ServiceDescription sd ) {
+        if( sd.getEndpoint() == null ) return null;
         String serviceName = sd.getName();
         serviceName += " (@"+sd.getEndpoint().getHost()+")";
         return new SelectItem( sd.getEndpoint(), serviceName );
@@ -895,6 +899,18 @@ public class ServiceBrowser {
         return migrators;
     }
 
+    /**
+     * @return
+     */
+    public List<ServiceDescription> getCharacteriseServices() {
+        return getListOfServices(Characterise.class.getCanonicalName());
+    }
 
+    /**
+     * @return
+     */
+    public List<ServiceDescription> getCompareServices() {
+        return getListOfServices(Compare.class.getCanonicalName());
+    }
 
 }

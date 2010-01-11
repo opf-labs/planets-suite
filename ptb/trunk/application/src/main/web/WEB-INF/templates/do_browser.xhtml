@@ -23,17 +23,13 @@
   <div class="domain">
   
     <div id="digitalObjectRegistryBrowser">
-
-      <h:panelGrid columns="2" columnClasses="listContent,infoContent">
-            <h:panelGroup id="DobBrowserPanel">
        <rich:toolBar id="dobrowseToolbar" itemSeparator="line" style="background-color: #{a4jSkin.headerBackgroundColor}">
             <rich:toolBarGroup>
            
                     <h:panelGroup>
-                      <h:commandLink action="#{DobBrowser.goHome}">
-                        <h:graphicImage value="/graphics/toolbar_home.png" />
-                        <h:outputText value="/~ Home"/>
-                      </h:commandLink>
+              <ui:include src="/WEB-INF/templates/do_breadcrumb.xhtml">
+                <ui:param name="dobs" value="#{DobBrowser.locationDob.parents}"/>
+              </ui:include>
                     </h:panelGroup>
 
             </rich:toolBarGroup>
@@ -43,8 +39,10 @@
                 <h:commandButton styleClass="barsearchbutton" onclick="return false;"  value="Search" disabled="true"/>
             </rich:toolBarGroup>
         </rich:toolBar>
-        
-                <rich:dataTable id="DobBrowserList" var="do" value="#{DobBrowser.list}" 
+
+      <h:panelGrid columns="2" columnClasses="listContent,infoContent">
+            <h:panelGroup id="DobBrowserPanel">
+                <rich:dataTable id="DobBrowserList" var="dob" value="#{DobBrowser.list}" 
                  rows="15" reRender="dobrow_ds" styleClass="tbTable" style="width: 100%">
         
                 <rich:column width="1%">
@@ -56,68 +54,67 @@
                     </a4j:region>
                   </f:facet>
                   
-                    <h:panelGroup rendered="#{do.selectable}">
-                      <a4j:commandLink reRender="DobBrowserDetailsPanelBar,DobBrowserList" action="#{do.selectThis}" rendered="#{! do.selected}" title="Add to selection.">
+                    <h:panelGroup rendered="#{dob.selectable}">
+                      <a4j:commandLink reRender="DobBrowserDetailsPanelBar,DobBrowserList" action="#{dob.selectThis}" rendered="#{! dob.selected}" title="Add to selection.">
                         <h:graphicImage value="/graphics/list-add.png" />
                       </a4j:commandLink>
-                      <a4j:commandLink reRender="DobBrowserDetailsPanelBar,DobBrowserList" action="#{do.deselectThis}" rendered="#{do.selected}" title="Remove from selection.">
+                      <a4j:commandLink reRender="DobBrowserDetailsPanelBar,DobBrowserList" action="#{dob.deselectThis}" rendered="#{dob.selected}" title="Remove from selection.">
                         <h:graphicImage value="/graphics/list-remove.png" />
                       </a4j:commandLink>
                     </h:panelGroup>
                     
                 </rich:column>
                        
-                <rich:column width="100%" sortBy="#{do.leafname}" sortOrder="ASCENDING">
+                <rich:column width="100%" sortBy="#{dob.leafname}" sortOrder="ASCENDING">
                 <f:facet name="header">#{res['browse_data.name']}</f:facet>
-                <h:panelGroup rendered="#{do.directory}">
+                <h:panelGroup rendered="#{dob.directory}">
                   <h:commandLink action="success">
                     <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_folder.gif" alt="directory" title="directory"/>
-                    <h:outputText value=" #{do.leafname}"/>
-                    <t:updateActionListener property="#{DobBrowser.dir}" value="#{do}" />
+                    <h:outputText value=" #{dob.leafname}"/>
+                    <t:updateActionListener property="#{DobBrowser.dir}" value="#{dob}" />
                   </h:commandLink>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{not do.directory}">
+                <h:panelGroup rendered="#{not dob.directory}">
                 
                   <a4j:outputPanel>
-                    <rich:dragSupport dragIndicator="dobDragIndicator" dragType="dobUri" dragValue="#{do.uri}">
+                    <rich:dragSupport dragIndicator="dobDragIndicator" dragType="dobUri" dragValue="#{dob.uri}">
                       <rich:dndParam name="dragImage">
                         <h:graphicImage value="/graphics/filetype_file.png" />
                       </rich:dndParam>
                       <rich:dndParam name="dragName">
-                        <h:outputText value=" #{do.leafname}"/>
+                        <h:outputText value=" #{dob.leafname}"/>
                       </rich:dndParam>
                     </rich:dragSupport>
                        
-                  <h:commandLink action="success">
-                    <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
-                    <h:outputText value=" #{do.leafname}"/>
-                    <t:updateActionListener property="#{DobBrowser.dob}" value="#{do}" />
-                  </h:commandLink>
-                  
+               <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+             <ui:include src="/WEB-INF/templates/do_inspector_holder.xhtml">
+              <ui:param name="dob" value="#{dob}"/>
+             </ui:include>
+                                           
                   </a4j:outputPanel>
                   
                 </h:panelGroup>
                 
-                <ui:fragment rendered="#{do.description != null}">
+                <ui:fragment rendered="#{dob.description != null}">
                     <p class="description" style="margin-left: 2em;">
-                      <h:outputText value="#{do.description}"/>
+                      <h:outputText value="#{dob.description}"/>
                     </p>
                 </ui:fragment>
                   
                 </rich:column>
 
-                <rich:column width="1%" sortBy="#{do.size}">
+                <rich:column width="1%" sortBy="#{dob.size}">
                 <f:facet name="header">#{res['browse_data.size']}</f:facet>
-                  <h:outputText value=" #{do.size}" rendered="#{do.size >= 0}"/>
-                  <h:outputText value="-" rendered="#{do.size == -1}"/>
+                  <h:outputText value=" #{dob.size}" rendered="#{dob.size >= 0}"/>
+                  <h:outputText value="-" rendered="#{dob.size == -1}"/>
                 </rich:column>
                 
-                <rich:column width="1%" sortBy="#{do.directory}">
+                <rich:column width="1%" sortBy="#{dob.directory}">
                 <f:facet name="header">#{res['browse_data.type']}</f:facet>
-                <h:panelGroup rendered="#{do.directory}">
+                <h:panelGroup rendered="#{dob.directory}">
                 #{res['browse_data.folder']}
                 </h:panelGroup>
-                <h:panelGroup rendered="#{not do.directory}">
+                <h:panelGroup rendered="#{not dob.directory}">
                 #{res['browse_data.file']}
                 </h:panelGroup>
                 </rich:column>
@@ -132,7 +129,7 @@
                   <h:commandButton action="#{DobBrowser.unselectAll}" value="Remove All These Items From Selection"  disabled="#{!DobBrowser.listSelectable}"/>
                 </p>
                 
-    </h:panelGroup>
+    </h:panelGroup>    
                 
     <rich:panelBar id="DobBrowserDetailsPanelBar" height="400" width="100%" 
       selectedPanel="#{DobBrowser.selectedPanel}" valueChangeListener="#{DobBrowser.panelSelectEvent}">
@@ -143,44 +140,23 @@
          </f:facet>
         </rich:dragIndicator>
                         
-        <rich:panelBarItem id="dob_pan_inspector" label="Inspector">
-                   
-            <ui:fragment rendered="#{DobBrowser.dob == null}">
-              <ui:fragment rendered="#{DobBrowser.location == null}">
-                <p>Click on an item to select it for inspection.</p>
-              </ui:fragment>
-              
-              <ui:fragment rendered="#{DobBrowser.location != null}">
-                <ui:include src="/WEB-INF/templates/do_inspector.xhtml">
-                  <ui:param name="dob" value="#{DobBrowser.locationDob}"/>
-                </ui:include>
-              </ui:fragment>
-              
-            </ui:fragment>
-            
-            <ui:fragment rendered="#{DobBrowser.dob != null}">
-             <ui:include src="/WEB-INF/templates/do_inspector.xhtml">
-              <ui:param name="dob" value="#{DobBrowser.dob}"/>
-             </ui:include>
-            </ui:fragment>
-            
-        </rich:panelBarItem>
-        
         <rich:panelBarItem id="dob_pan_selection" label="Selection">
             <a4j:outputPanel id="dobSelList">
             
             <ui:fragment rendered="#{DobBrowser.selectionSize > 0}">
             
-            <rich:dataTable id="DobBrowserSelectionList" value="#{DobBrowser.selectedDobs}" var="do"
+            <rich:dataTable id="DobBrowserSelectionList" value="#{DobBrowser.selectedDobs}" var="dob"
                styleClass="tbTable" rows="10" reRender="dobsel_ds">
             <f:facet name="caption">
               You have selected #{DobBrowser.selectionSize} item(s).
             </f:facet>
             <rich:column width="99%">
-                <h:outputText value="#{do.leafname}"/>
+             <ui:include src="/WEB-INF/templates/do_inspector_holder.xhtml">
+              <ui:param name="dob" value="#{dob}"/>
+             </ui:include>
             </rich:column>
             <rich:column width="1%">
-                <h:commandLink title="Remove this Digital Object." action="#{do.deselectThis}">
+                <h:commandLink title="Remove this Digital Object." action="#{dob.deselectThis}">
                     <t:graphicImage value="/graphics/user_trash.png" alt="Delete"/>
                 </h:commandLink>
             </rich:column>

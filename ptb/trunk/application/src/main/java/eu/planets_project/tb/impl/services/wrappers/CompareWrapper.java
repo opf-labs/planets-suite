@@ -11,11 +11,11 @@ import javax.xml.ws.Service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.impl.services.util.PlanetsServiceExplorer;
 
 /**
@@ -25,19 +25,19 @@ import eu.planets_project.tb.impl.services.util.PlanetsServiceExplorer;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class IdentifyWrapper implements Identify {
+public class CompareWrapper implements Compare {
 
     /** */
-    private static final Log log = LogFactory.getLog(IdentifyWrapper.class);
+    private static final Log log = LogFactory.getLog(CompareWrapper.class);
 
     PlanetsServiceExplorer pse = null;
     Service service = null;
-    Identify i = null;
+    Compare c = null;
     
     /**
      * @param wsdl The WSDL to wrap as a service.
      */
-    public IdentifyWrapper( URL wsdl ) {
+    public CompareWrapper( URL wsdl ) {
         this.pse = new PlanetsServiceExplorer(wsdl);
         this.init();
     }
@@ -45,7 +45,7 @@ public class IdentifyWrapper implements Identify {
     /**
      * @param pse Construct based on a service explorer.
      */
-    public IdentifyWrapper(PlanetsServiceExplorer pse) {
+    public CompareWrapper(PlanetsServiceExplorer pse) {
         this.pse = pse;
         this.init();
     }
@@ -56,29 +56,36 @@ public class IdentifyWrapper implements Identify {
     private void init() {
         service = Service.create(pse.getWsdlLocation(), pse.getQName());
         try {
-                i = (Identify) service.getPort(pse.getServiceClass());
+            c = (Compare) service.getPort(pse.getServiceClass());
         } catch( Exception e ) {
             log.error("Failed to instanciate service "+ pse.getQName() +" at "+pse.getWsdlLocation() + " : Exception - "+e);
-            i = null;
+            e.printStackTrace();
+            c = null;
         }
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.services.identify.Identify#describe()
+     * @see eu.planets_project.services.compare.Compare#describe()
      */
     public ServiceDescription describe() {
-            return i.describe();
+        return c.describe();
     }
-
 
     /* (non-Javadoc)
-     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
+     * @see eu.planets_project.services.compare.Compare#compare(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.DigitalObject, java.util.List)
      */
-    public IdentifyResult identify(DigitalObject digitalObject,
-            List<Parameter> parameters) {
-       
-            return i.identify( digitalObject, parameters );
+    public CompareResult compare(DigitalObject first, DigitalObject second,
+            List<Parameter> config) {
+        return c.compare(first, second, config);
     }
 
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.compare.Compare#convert(eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public List<Parameter> convert(DigitalObject configFile) {
+        return c.convert(configFile);
+    }
 
+    
+    
 }

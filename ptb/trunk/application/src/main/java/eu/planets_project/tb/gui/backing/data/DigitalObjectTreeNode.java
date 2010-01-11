@@ -4,20 +4,28 @@
 package eu.planets_project.tb.gui.backing.data;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.data.XcdlCorpusDigitalObjectManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 
 import java.io.FileNotFoundException;
 import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -295,7 +303,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
-
+    
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */

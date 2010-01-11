@@ -9,16 +9,13 @@
     xmlns:a4j="http://richfaces.org/a4j"
     xmlns:rich="http://richfaces.org/rich">
 <body>
-  <ui:composition rendered="#{dobs != null}">
+  <ui:composition rendered="#{dob != null}">
 
-                <h:graphicImage value="/graphics/toolbar_home.png" />
-                <a4j:repeat value="#{dobs}" var="do">
-                    <h:commandLink action="browse_data" styleClass="locationLeaf" alt="#{do.uri}" title="#{do.uri}">
-                      <h:outputText value="/#{do.leafname}"/>
-                      <t:updateActionListener property="#{DobBrowser.dir}" value="#{do}" />
-                    </h:commandLink>
-                </a4j:repeat>
-
+                <h:outputLink value="dob_inspector.faces">
+                    <f:param name="dobUri" value="#{dob.uri}"/>
+                    <h:outputText value=" #{dob.leafname}"/>
+                </h:outputLink>
+          
   </ui:composition>
 </body>
 </html>

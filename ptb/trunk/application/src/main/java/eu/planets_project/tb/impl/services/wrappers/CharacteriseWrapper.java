@@ -27,7 +27,6 @@ import eu.planets_project.tb.impl.services.util.PlanetsServiceExplorer;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-@SuppressWarnings("deprecation")
 public class CharacteriseWrapper implements Characterise {
 
     /** */

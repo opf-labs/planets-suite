@@ -150,16 +150,26 @@
         </managed-property>
 	</managed-bean>
 	
-	<managed-bean>
-		<managed-bean-name>ExperimentInspector</managed-bean-name>
-		<managed-bean-class>eu.planets_project.tb.gui.backing.exp.ExperimentInspector</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
+    <managed-bean>
+        <managed-bean-name>ExperimentInspector</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.exp.ExperimentInspector</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
         <managed-property>
             <property-name>experimentId</property-name>
             <value>#{param['eid']}</value>
         </managed-property>
-	</managed-bean>
-	
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>DobInspector</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.data.DigitalObjectInspector</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>dobUri</property-name>
+            <value>#{param['dobUri']}</value>
+        </managed-property>
+    </managed-bean>
+    
 	<managed-bean>
 		<managed-bean-name>PlanetsSharedBean</managed-bean-name>
 		<managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>

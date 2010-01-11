@@ -19,6 +19,7 @@ import org.xml.sax.SAXException;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.validate.Validate;
@@ -41,6 +42,7 @@ public class PlanetsServiceExplorer {
         classmap.put( Validate.QNAME, Validate.class );
         classmap.put( Characterise.QNAME, Characterise.class );
         classmap.put( CreateView.QNAME, CreateView.class );
+        classmap.put( Compare.QNAME, Compare.class );
     }
 
     /**

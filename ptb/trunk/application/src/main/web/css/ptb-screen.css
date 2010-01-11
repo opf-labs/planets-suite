@@ -1037,12 +1037,19 @@ pre.rawServiceDescription {
 
 #digitalObjectRegistryBrowser .rich-toolbar a {
   color: white;
+  text-decoration: none;
+}
+#digitalObjectRegistryBrowser .rich-toolbar a:hover {
+  color: white;
   text-decoration: underline;
 }
 #digitalObjectRegistryBrowser .rich-toolbar .dr-menu-label:hover a {
   color: black;
 }
 
+#digitalObjectRegistryBrowser {
+  width: 100%;
+}
 #digitalObjectRegistryBrowser table {
   width: 100%;
 }
@@ -1067,10 +1074,10 @@ pre.rawServiceDescription {
   padding-left: 16px;
 }
 .thumbnailPreviewPanel img.thumbnailPreviewImage {
-  border: 1px solid #cccccc;
+  border: 1px solid #ffffff;
 }
 .thumbnailPreviewPanel img.thumbnailPreviewImage:hover {
-  background-color: #ffffff !important;
-  border: 1px solid white;
+  background-color: #888888 !important;
+  border: 1px solid #ffffff;
 }
 

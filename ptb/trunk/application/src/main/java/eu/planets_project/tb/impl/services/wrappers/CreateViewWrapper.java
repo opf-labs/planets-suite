@@ -14,8 +14,10 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.view.CreateView;
+import eu.planets_project.services.view.CreateViewResult;
+import eu.planets_project.services.view.ViewActionResult;
+import eu.planets_project.services.view.ViewStatus;
 import eu.planets_project.tb.impl.services.util.PlanetsServiceExplorer;
 
 /**
@@ -25,19 +27,19 @@ import eu.planets_project.tb.impl.services.util.PlanetsServiceExplorer;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class IdentifyWrapper implements Identify {
+public class CreateViewWrapper implements CreateView {
 
     /** */
-    private static final Log log = LogFactory.getLog(IdentifyWrapper.class);
+    private static final Log log = LogFactory.getLog(CreateViewWrapper.class);
 
     PlanetsServiceExplorer pse = null;
     Service service = null;
-    Identify i = null;
+    CreateView c = null;
     
     /**
      * @param wsdl The WSDL to wrap as a service.
      */
-    public IdentifyWrapper( URL wsdl ) {
+    public CreateViewWrapper( URL wsdl ) {
         this.pse = new PlanetsServiceExplorer(wsdl);
         this.init();
     }
@@ -45,7 +47,7 @@ public class IdentifyWrapper implements Identify {
     /**
      * @param pse Construct based on a service explorer.
      */
-    public IdentifyWrapper(PlanetsServiceExplorer pse) {
+    public CreateViewWrapper(PlanetsServiceExplorer pse) {
         this.pse = pse;
         this.init();
     }
@@ -56,29 +58,44 @@ public class IdentifyWrapper implements Identify {
     private void init() {
         service = Service.create(pse.getWsdlLocation(), pse.getQName());
         try {
-                i = (Identify) service.getPort(pse.getServiceClass());
+            c = (CreateView) service.getPort(pse.getServiceClass());
         } catch( Exception e ) {
             log.error("Failed to instanciate service "+ pse.getQName() +" at "+pse.getWsdlLocation() + " : Exception - "+e);
-            i = null;
+            e.printStackTrace();
+            c = null;
         }
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.services.identify.Identify#describe()
+     * @see eu.planets_project.services.view.CreateView#describe()
      */
     public ServiceDescription describe() {
-            return i.describe();
+        return c.describe();
     }
-
 
     /* (non-Javadoc)
-     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
+     * @see eu.planets_project.services.view.CreateView#createView(java.util.List, java.util.List)
      */
-    public IdentifyResult identify(DigitalObject digitalObject,
+    public CreateViewResult createView(List<DigitalObject> digitalObjects,
             List<Parameter> parameters) {
-       
-            return i.identify( digitalObject, parameters );
+        return c.createView(digitalObjects, parameters);
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.view.CreateView#doAction(java.lang.String, java.lang.String)
+     */
+    public ViewActionResult doAction(String sessionIdentifier, String action) {
+        return c.doAction(sessionIdentifier, action);
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.view.CreateView#getViewStatus(java.lang.String)
+     */
+    public ViewStatus getViewStatus(String sessionIdentifier) {
+        return c.getViewStatus(sessionIdentifier);
     }
 
 
+    
+    
 }

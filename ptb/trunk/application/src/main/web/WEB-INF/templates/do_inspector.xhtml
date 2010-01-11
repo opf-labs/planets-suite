@@ -10,8 +10,23 @@
     xmlns:rich="http://richfaces.org/rich">
 <body>
   <ui:composition rendered="#{dob != null}">
+
+        <div id="mainwrapper">
+        <div id="maincol">
+        <div class="innertubemain">
+
   
-    <h:panelGroup styleClass="dobInspector">
+  <a4j:form id="dobInspectorForm">
+    <!-- Persist the dob ID through POST, if any. -->    
+    <input type="hidden" name="dobUri" value="#{DobInspector.dobUri}"/>
+  
+  <div id="digitalObjectRegistryBrowser">
+  <h:panelGrid columns="2" columnClasses="infoContent,listContent">
+    <rich:panel id="dobSummary">
+      <f:facet name="header">
+            <h:outputText value="#{dob.leafname} - Basic Properties"/>
+      </f:facet>
+
     <dl>
         <dt>Location</dt>
         <dd>
@@ -31,7 +46,7 @@
         <ui:fragment rendered="#{!dob.directory}">
         
         <ui:fragment rendered="#{dob.size >= 0}">
-        <dt>Size</dt>
+        <dt>Size [bytes]</dt>
         <dd><h:outputText value="#{dob.size}"/></dd>
         </ui:fragment>
 
@@ -39,24 +54,18 @@
         <dt>Preview</dt>
         <dd>
           <h:panelGrid styleClass="thumbnailPreviewPanel">
-          <h:graphicImage styleClass="thumbnailPreviewImage" value="#{dob.thumbnailUri}" style="background-color: #{DobBrowser.previewBackgroundColour}"/>
-          <rich:inputNumberSlider value="#{DobBrowser.previewBackgroundColourIndex}" showInput="false"
-            enableManualInput="false" showBoundaryValues="false"
-            showToolTip="false">
-            <a4j:support event="onchange" reRender="DobBrowserDetailsPanelBar"/>
-            <rich:toolTip value="Drag to set the background colour of the image thumbnail preview. Hover over the image to flick the background and border to white." verticalOffset="20"/>
-          </rich:inputNumberSlider>
+            <h:graphicImage styleClass="thumbnailPreviewImage" value="#{dob.thumbnailUri}"/>
           </h:panelGrid>
         </dd>
         </ui:fragment>
         
         <ui:fragment rendered="#{dob.downloadUri != null}">
         <dt>Download</dt>
-        <dd><h:outputLink value="#{dob.downloadUri}">Click here to download.</h:outputLink></dd>
+        <dd><h:outputLink target="_blank" value="#{dob.downloadUri}">Click here to download.</h:outputLink></dd>
         </ui:fragment>
 
         <ui:fragment rendered="#{dob.properties != null}">
-          <dt>Properties</dt>
+          <dt>Corpus Properties</dt>
           <dd>
             <ui:repeat value="#{dob.properties}" var="prop">
              <a4j:commandLink>
@@ -72,8 +81,73 @@
         </ui:fragment>
                 
     </dl>
- 
-    </h:panelGroup>
+    
+    </rich:panel>
+    
+    <rich:panel id="dobCharacterise">
+      <f:facet name="header">
+            <h:outputText value="Analysis Tools"/>
+      </f:facet>
+    
+      <dt>Characterise</dt>
+      <dd>
+        <h:selectOneMenu value="#{DobInspector.characteriseService}">
+          <f:selectItem itemValue="" itemLabel="[undefined]" />
+          <f:selectItems value="#{DobInspector.characteriseServiceList}" />
+          <a4j:support event="onchange" reRender="dobInspectorForm" />
+        </h:selectOneMenu>
+      </dd>
+    <!-- Results, if any: -->
+          <dd>
+            <a4j:repeat value="#{DobInspector.characteriseProperties}" var="prop">
+             <a4j:commandLink>
+               <h:outputText value=" #{prop.name}"/>
+               <rich:toolTip value="#{prop.uri}"/>
+             </a4j:commandLink>
+             <h:outputText value=" = "/>
+             <i><h:outputText value="#{prop.value}"/></i><br/>
+            </a4j:repeat>
+          </dd>
+     
+    </rich:panel>
+    
+    </h:panelGrid>
+    </div>
+    
+ </a4j:form>
+  
+        
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    
+        </div>
+        </div>
+        </div>
+        
+        
+        <div id="leftcol">
+        
+        <h3 class="leftcol">Data Browser</h3>
+                <div class="innertube">        
+                    <p class="leftcol">
+                    <h:outputLink value="browse_data.faces">
+                        <f:param name="dobUri" value="#{dob.uri}"/>
+                        <h:outputText value="Return to the Data Browser"/>
+                    </h:outputLink>
+                    </p>
+                </div>
+                
+        <h3 class="leftcol">Inspector</h3>
+        <div class="innertube">        
+        <p class="leftcol">
+
+        </p>
+        </div>
+        
+        </div>
     
   </ui:composition>
 </body>
