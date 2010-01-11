@@ -26,10 +26,13 @@ import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
+import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
 /**
  * @author AnJackson
@@ -76,7 +79,7 @@ public class DigitalObjectInspector {
     /* -------------------- Additional code for deeper inspection --------------------- */
     
     /**
-     * 
+     * @return
      */
     public List<SelectItem> getCharacteriseServiceList() {
         log.info("IN: getCharacteriseServiceList");
@@ -94,6 +97,8 @@ public class DigitalObjectInspector {
 
     /** */
     private String characteriseService;
+    /** */
+    private String identifyService;
 
     /**
      * @return the characteriseService
@@ -133,6 +138,39 @@ public class DigitalObjectInspector {
             return null;
         }
     }
+
+    
+    /**
+     * @return the identifyService
+     */
+    public String getIdentifyService() {
+        return identifyService;
+    }
+
+    /**
+     * @param identifyService the identifyService to set
+     */
+    public void setIdentifyService(String identifyService) {
+        this.identifyService = identifyService;
+    }
+    
+    public String getIdentifyResult() {
+        if( this.getIdentifyService() == null ) return null;
+        try {
+            Identify id = new IdentifyWrapper(new URL( this.getIdentifyService()));
+            IdentifyResult ir = id.identify(this.getDob().getDob(), null);
+            String result = "";
+            for( URI type : ir.getTypes() ) {
+                result += type+" ";
+            }
+            return result;
+        } catch( Exception e ) {
+            log.error("FAILED! "+e);
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     
 
 }

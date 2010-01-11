@@ -86,13 +86,25 @@
     
     <rich:panel id="dobCharacterise">
       <f:facet name="header">
-            <h:outputText value="Analysis Tools"/>
+            <h:outputText value="Analyse Using Planets Services"/>
       </f:facet>
+
+      <dt>Identify</dt>
+      <dd>
+        <h:selectOneMenu value="#{DobInspector.identifyService}">
+          <f:selectItem itemValue="" itemLabel="[none]" />
+          <f:selectItems value="#{ServiceBrowser.identifyServicesSelectList}" />
+          <a4j:support event="onchange" reRender="dobInspectorForm" />
+        </h:selectOneMenu>
+      </dd>
+      <dd>
+        <h:outputText value="#{DobInspector.identifyResult}"/>
+      </dd>
     
       <dt>Characterise</dt>
       <dd>
         <h:selectOneMenu value="#{DobInspector.characteriseService}">
-          <f:selectItem itemValue="" itemLabel="[undefined]" />
+          <f:selectItem itemValue="" itemLabel="[none]" />
           <f:selectItems value="#{DobInspector.characteriseServiceList}" />
           <a4j:support event="onchange" reRender="dobInspectorForm" />
         </h:selectOneMenu>
