@@ -87,7 +87,7 @@
 			
 			<c:if test="${page == 'browse_services'}">
 				<li id="current">
-				<h:commandLink action="browse_services">
+				<h:commandLink action="browse_services" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_services.pageTitle']}"/>
 				</h:commandLink>
@@ -95,7 +95,7 @@
 			</c:if>
 			<c:if test="${page != 'browse_services'}">
 				<li>
-				<h:commandLink action="browse_services">
+				<h:commandLink action="browse_services" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_services.pageTitle']}"/>
 				</h:commandLink>

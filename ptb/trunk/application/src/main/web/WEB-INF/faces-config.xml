@@ -285,6 +285,16 @@
 			<to-view-id>/reader/welcome.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>public_browse_services</from-outcome>
+			<to-view-id>/public/browse_services.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>public_service_inspector</from-outcome>
+			<to-view-id>/public/service_inspector.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 
 	<!-- navigating between stages of experiment wizard -->
