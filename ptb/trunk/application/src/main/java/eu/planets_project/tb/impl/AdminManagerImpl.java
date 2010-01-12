@@ -53,7 +53,7 @@ public class AdminManagerImpl implements AdminManager {
 	// No longer read from XML, by statically coded:
 	static {
 	    hmExperimentTypes = new HashMap<String,String>();
-        hmExperimentTypes.put(IDENTIFY, "Identify");
+        //hmExperimentTypes.put(IDENTIFY, "Identify");
         hmExperimentTypes.put(MIGRATE, "Migrate");
         //hmExperimentTypes.put(VALIDATE, "Validate");
         //hmExperimentTypes.put(CHARACTERISE, "Characterise");
