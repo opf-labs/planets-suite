@@ -10,6 +10,8 @@
  */
 package eu.planets_project.tb.gui.backing.data;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -23,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
@@ -31,6 +34,7 @@ import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
+import eu.planets_project.tb.impl.services.wrappers.ComparePropertiesWrapper;
 import eu.planets_project.tb.impl.services.wrappers.CompareWrapper;
 
 /**
@@ -120,6 +124,8 @@ public class DigitalObjectCompare {
 
     /** */
     private String characteriseService;
+    private String characteriseServiceException;
+    private String characteriseServiceStackTrace;
 
     /**
      * @return the characteriseService
@@ -143,10 +149,13 @@ public class DigitalObjectCompare {
         try {
             Characterise chr = new CharacteriseWrapper(new URL(this.getCharacteriseService()));
             CharacteriseResult cr = chr.characterise( dob.getDob(), null);
+            this.characteriseServiceException = null;
+            this.characteriseServiceStackTrace = null;
             return cr;
         } catch( Exception e ) {
             log.error("FAILED! "+e);
-            e.printStackTrace();
+            this.characteriseServiceException = e.toString();
+            this.characteriseServiceStackTrace = this.stackTraceToString(e);
             return null;
         }
     }
@@ -209,9 +218,25 @@ public class DigitalObjectCompare {
 
         return ServiceBrowser.mapServicesToSelectList( sdl );
     }
+    
+    /**
+     * @return the characteriseServiceException
+     */
+    public String getCharacteriseServiceException() {
+        return characteriseServiceException;
+    }
+
+    /**
+     * @return the characteriseServiceStackTrace
+     */
+    public String getCharacteriseServiceStackTrace() {
+        return characteriseServiceStackTrace;
+    }
 
     /** */
     private String compareService;
+    private String compareServiceException;
+    private String compareServiceStackTrace;
 
     /**
      * @return the compareService
@@ -235,10 +260,13 @@ public class DigitalObjectCompare {
         try {
             Compare chr = new CompareWrapper(new URL(this.getCompareService()));
             CompareResult cr = chr.compare( this.getDob1().getDob(), this.getDob2().getDob(), null);
+            this.compareServiceException = null;
+            this.compareServiceStackTrace = null;
             return cr;
         } catch( Exception e ) {
             log.error("FAILED! "+e);
-            e.printStackTrace();
+            this.compareServiceException = e.toString();
+            this.compareServiceStackTrace = this.stackTraceToString(e);
             return null;
         }
     }
@@ -263,4 +291,112 @@ public class DigitalObjectCompare {
         if( cr == null ) return null;
         return ""+cr.getReport();
     }
+
+    /**
+     * @return the compareServiceException
+     */
+    public String getCompareServiceException() {
+        return compareServiceException;
+    }
+
+    /**
+     * @return the compareServiceStackTrace
+     */
+    public String getCompareServiceStackTrace() {
+        return compareServiceStackTrace;
+    }
+
+    /** */
+    private String compareExtractedService;
+    private String compareExtractedServiceException;
+    private String compareExtractedServiceStackTrace;
+
+    /**
+     * @return the compareExtractedService
+     */
+    public String getCompareExtractedService() {
+        return compareExtractedService;
+    }
+
+    /**
+     * @param compareExtractedService the compareExtractedService to set
+     */
+    public void setCompareExtractedService(String compareExtractedService) {
+        this.compareExtractedService = compareExtractedService;
+    }
+    
+    /**
+     * @return
+     */
+    public List<SelectItem> getComparePropertiesServiceList() {
+        log.info("IN: getComparePropertiesServiceList");
+        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
+/*
+        String input = this.getInputFormat();
+        if( ! this.isInputSet() ) input = null;
+        String output = this.getOutputFormat();
+        if( ! this.isOutputSet() ) output = null;
+*/
+        List<ServiceDescription> sdl = sb.getComparePropertiesServices();
+
+        return ServiceBrowser.mapServicesToSelectList( sdl );
+    }
+    
+    protected String stackTraceToString( Exception e ) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        return sw.toString();
+    }
+    
+    private CompareResult runComparePropertiesService() {
+        if( this.compareExtractedService == null ) return null;
+        try {
+            CompareProperties chr = new ComparePropertiesWrapper(new URL(this.getCompareExtractedService()));
+            CompareResult cr = chr.compare( this.runCharacteriseService(getDob1()), this.runCharacteriseService(getDob2()), null);
+            this.compareExtractedServiceException = null;
+            this.compareExtractedServiceStackTrace = null;
+            return cr;
+        } catch( Exception e ) {
+            log.error("FAILED! "+e);
+            this.compareExtractedServiceException = e.toString();
+            this.compareExtractedServiceStackTrace = this.stackTraceToString(e);
+            return null;
+        }
+     }
+    /**
+     * @return
+     */
+    public List<Property> getCompareExtractedProperties() {
+        CompareResult cr = this.runComparePropertiesService();
+        if( cr == null ) return null;
+        if( cr.getProperties() != null ) {
+            log.info("Got properties: "+cr.getProperties().size());
+        }
+        return cr.getProperties();
+    }
+    
+    /**
+     * @return
+     */
+    public String getCompareExtractedServiceReport() {
+        CompareResult cr = this.runComparePropertiesService();
+        if( cr == null ) return null;
+        return ""+cr.getReport();
+    }
+
+    /**
+     * @return the compareExtractedServiceException
+     */
+    public String getCompareExtractedServiceException() {
+        return compareExtractedServiceException;
+    }
+
+    /**
+     * @return the compareExtractedServiceStackTrace
+     */
+    public String getCompareExtractedServiceStackTrace() {
+        return compareExtractedServiceStackTrace;
+    }
+
 }

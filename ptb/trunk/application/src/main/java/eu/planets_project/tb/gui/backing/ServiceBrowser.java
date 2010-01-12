@@ -34,6 +34,7 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
@@ -874,7 +875,7 @@ public class ServiceBrowser {
 
     /* ------------------------------------------------------------------------------------ */
 
-    // FIXME Cache this stuff automatically, in getListOfServices method.
+    // TODO Cache this stuff automatically, in getListOfServices method.
    
 
     /** Name to store the look-up tables under. */
@@ -911,6 +912,13 @@ public class ServiceBrowser {
      */
     public List<ServiceDescription> getCompareServices() {
         return getListOfServices(Compare.class.getCanonicalName());
+    }
+
+    /**
+     * @return
+     */
+    public List<ServiceDescription> getComparePropertiesServices() {
+        return getListOfServices(CompareProperties.class.getCanonicalName());
     }
 
 }

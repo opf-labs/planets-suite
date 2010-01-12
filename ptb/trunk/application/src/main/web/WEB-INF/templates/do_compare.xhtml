@@ -49,9 +49,9 @@
     
     </h:panelGrid>
     
-    <rich:panel id="dobCompare">
+    <rich:panel id="dobCompareDirect">
       <f:facet name="header">
-            <h:outputText value="Compare #{DobCompare.dob1.leafname} against #{DobCompare.dob2.leafname}"/>
+            <h:outputText value="Compare #{DobCompare.dob1.leafname} against #{DobCompare.dob2.leafname} directly"/>
       </f:facet>
       
       <dt><b>Compare</b></dt>
@@ -77,8 +77,20 @@
              <i><h:outputText value="#{prop.value}"/></i><br/>
             </a4j:repeat>
           </dd>
+      <dd>
+        <h:outputText value="#{DobCompare.compareServiceException}"/>
+      </dd>
+      <dd>
+        <h:outputText value="#{DobCompare.compareServiceStackTrace}"/>
+      </dd>
           
-
+    </rich:panel>
+    
+    <rich:panel id="dobCompare">
+      <f:facet name="header">
+            <h:outputText value="Compare #{DobCompare.dob1.leafname} against #{DobCompare.dob2.leafname} via Characterisation"/>
+      </f:facet>
+    
       <dt><b>Characterise</b></dt>
       <dd>
         <h:selectOneMenu value="#{DobCompare.characteriseService}">
@@ -109,6 +121,12 @@
              <i><h:outputText value="#{prop.value}"/></i><br/>
             </a4j:repeat>
           </dd>
+      <dd>
+        <h:outputText value="#{DobCompare.characteriseServiceException}"/>
+      </dd>
+      <dd>
+        <h:outputText value="#{DobCompare.characteriseServiceStackTrace}"/>
+      </dd>
     
     
     </rich:panel>
@@ -142,7 +160,38 @@
       <br/>
       </p>
       
+      <dt><b>Compare Properties</b></dt>
+      <dd>
+        <h:selectOneMenu value="#{DobCompare.compareExtractedService}">
+          <f:selectItem itemValue="" itemLabel="[none]" />
+          <f:selectItems value="#{DobCompare.comparePropertiesServiceList}" />
+          <a4j:support event="onchange" reRender="dobCompareForm" />
+        </h:selectOneMenu>
+      </dd>
       
+      <dt>Compare Properties Report:</dt>
+      <dd>
+        <h:outputText value="#{DobCompare.compareExtractedServiceReport}"/>
+      </dd>
+      <dt>Compare Properties Result:</dt>
+          <dd>
+            <a4j:repeat value="#{DobCompare.compareExtractedProperties}" var="prop">
+             <a4j:commandLink>
+               <h:outputText value=" #{prop.name}"/>
+               <rich:toolTip value="#{prop.uri}"/>
+             </a4j:commandLink>
+             <h:outputText value=" = "/>
+             <i><h:outputText value="#{prop.value}"/></i><br/>
+            </a4j:repeat>
+          </dd>
+          
+      <dd>
+        <h:outputText value="#{DobCompare.compareExtractedServiceException}"/>
+      </dd>
+      <dd>
+        <h:outputText value="#{DobCompare.compareExtractedServiceStackTrace}"/>
+      </dd>
+          
     </rich:panel>
     
     </div>
