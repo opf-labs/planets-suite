@@ -182,6 +182,18 @@
               </p>
             </h:panelGroup>
             
+            <ui:fragment rendered="#{DobBrowser.selectionSize == 2}">
+            <h:panelGroup rendered="#{!isInExperiment}">
+              <p>
+                <h:outputLink value="dob_compare.faces">
+                    <f:param name="dobUri1" value="#{DobBrowser.dobUri1}"/>
+                    <f:param name="dobUri2" value="#{DobBrowser.dobUri2}"/>
+                    <h:outputText value="Compare these objects."/>
+                </h:outputLink>
+              </p>
+            </h:panelGroup>
+            </ui:fragment>
+            
             </a4j:outputPanel>
         </rich:panelBarItem>
         

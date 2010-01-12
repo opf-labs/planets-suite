@@ -201,6 +201,20 @@ public class DigitalObjectBrowser {
         return b;
     }
     
+    public String getDobUri1() {
+        if(  this.getSelectionSize() >= 1 ) {
+            return ""+this.getSelectedUris().get(0);
+        }
+        return null;
+    }
+    
+    public String getDobUri2() {
+        if(  this.getSelectionSize() >= 2 ) {
+            return ""+this.getSelectedUris().get(1);
+        }
+        return null;
+    }
+    
     /**
      * @return
      */
@@ -234,8 +248,7 @@ public class DigitalObjectBrowser {
         }
         return false;
     }
-
-
+    
     /**
      * @param event
      */

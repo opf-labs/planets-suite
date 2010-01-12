@@ -170,6 +170,20 @@
         </managed-property>
     </managed-bean>
     
+    <managed-bean>
+        <managed-bean-name>DobCompare</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.data.DigitalObjectCompare</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>dobUri1</property-name>
+            <value>#{param['dobUri1']}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>dobUri2</property-name>
+            <value>#{param['dobUri2']}</value>
+        </managed-property>
+    </managed-bean>
+    
 	<managed-bean>
 		<managed-bean-name>PlanetsSharedBean</managed-bean-name>
 		<managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>

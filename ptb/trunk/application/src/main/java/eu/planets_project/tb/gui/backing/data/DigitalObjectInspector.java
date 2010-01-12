@@ -16,7 +16,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -115,11 +114,8 @@ public class DigitalObjectInspector {
     public void setCharacteriseService(String characteriseService) {
         this.characteriseService = characteriseService;
     }
-
-    /**
-     * @return
-     */
-    public List<Property> getCharacteriseProperties() {
+    
+    private CharacteriseResult runCharacteriseService() {
         log.info("Looking for properties using: "+this.getCharacteriseService());
         // Return nothing if no service is selected:
         if( this.getCharacteriseService() == null ) return null;
@@ -129,16 +125,33 @@ public class DigitalObjectInspector {
             DigitalObject dob = this.getDob().getDob();
             log.info("Got digital object: "+dob);
             CharacteriseResult cr = chr.characterise( dob, null);
-            log.info("Got report: "+cr.getReport());
-            if( cr.getProperties() != null ) {
-                log.info("Got properties: "+cr.getProperties().size());
-            }
-            return cr.getProperties();
+            return cr;
         } catch( Exception e ) {
             log.error("FAILED! "+e);
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * @return
+     */
+    public List<Property> getCharacteriseProperties() {
+        CharacteriseResult cr = this.runCharacteriseService();
+        if( cr == null ) return null;
+        if( cr.getProperties() != null ) {
+            log.info("Got properties: "+cr.getProperties().size());
+        }
+        return cr.getProperties();
+    }
+    
+    /**
+     * @return
+     */
+    public String getCharacteriseServiceReport() {
+        CharacteriseResult cr = this.runCharacteriseService();
+        if( cr == null ) return null;
+        return ""+cr.getReport();
     }
 
     
@@ -156,42 +169,45 @@ public class DigitalObjectInspector {
         this.identifyService = identifyService;
     }
     
-    public String getIdentifyResult() {
+    private IdentifyResult runIdentifyService() {
         if( this.getIdentifyService() == null ) return null;
         try {
             Identify id = new IdentifyWrapper(new URL( this.getIdentifyService()));
             IdentifyResult ir = id.identify(this.getDob().getDob(), null);
-            String result = "";
-            for( URI type : ir.getTypes() ) {
-                result += type+" ";
-            }
-            return result;
+            return ir;
         } catch( Exception e ) {
             log.error("FAILED! "+e);
             e.printStackTrace();
             return null;
         }
+    }
+    
+    public String getIdentifyResult() {
+        IdentifyResult ir = this.runIdentifyService();
+        if( ir == null ) return null;
+        String result = "";
+        for( URI type : ir.getTypes() ) {
+            result += type+" ";
+        }
+        return result;
     }
     
     public List<FormatBean> getIdentifyResultList() {
-        if( this.getIdentifyService() == null ) return null;
-        try {
-            List<FormatBean> fmts = new ArrayList<FormatBean>();
-            Identify id = new IdentifyWrapper(new URL( this.getIdentifyService()));
-            IdentifyResult ir = id.identify(this.getDob().getDob(), null);
-            for( URI type : ir.getTypes() ) {
-                FormatBean fb = new FormatBean( ServiceBrowser.fr.getFormatForUri( type ) );
-                fmts.add(fb);
-            }
-
-            return fmts;
-        } catch( Exception e ) {
-            log.error("FAILED! "+e);
-            e.printStackTrace();
-            return null;
+        IdentifyResult ir = this.runIdentifyService();
+        if( ir == null ) return null;
+        List<FormatBean> fmts = new ArrayList<FormatBean>();
+        for( URI type : ir.getTypes() ) {
+            FormatBean fb = new FormatBean( ServiceBrowser.fr.getFormatForUri( type ) );
+            fmts.add(fb);
         }
+        return fmts;
     }
     
+    public String getIdentifyServiceReport() {
+        IdentifyResult ir = this.runIdentifyService();
+        if( ir == null ) return null;
+        return ""+ir.getReport();
+    }
     
 
 }

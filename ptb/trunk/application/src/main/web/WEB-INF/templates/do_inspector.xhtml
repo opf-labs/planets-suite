@@ -27,60 +27,10 @@
             <h:outputText value="#{dob.leafname} - Basic Properties"/>
       </f:facet>
 
-    <dl>
-        <dt>Location</dt>
-        <dd>
-              <ui:include src="/WEB-INF/templates/do_breadcrumb.xhtml">
-                <ui:param name="dobs" value="#{dob.parents}"/>
-              </ui:include>
-        </dd>
-        
-        <dt>Name</dt>
-        <dd><h:outputText value="#{dob.leafname}"/></dd>
-        
-        <ui:fragment rendered="#{dob.description != null}">
-        <dt>Description</dt>
-        <dd><h:outputText value="#{dob.description}"/></dd>
-        </ui:fragment>
-        
-        <ui:fragment rendered="#{!dob.directory}">
-        
-        <ui:fragment rendered="#{dob.size >= 0}">
-        <dt>Size [bytes]</dt>
-        <dd><h:outputText value="#{dob.size}"/></dd>
-        </ui:fragment>
-
-        <ui:fragment rendered="#{dob.thumbnailable}">
-        <dt>Preview</dt>
-        <dd>
-          <h:panelGrid styleClass="thumbnailPreviewPanel">
-            <h:graphicImage styleClass="thumbnailPreviewImage" value="#{dob.thumbnailUri}"/>
-          </h:panelGrid>
-        </dd>
-        </ui:fragment>
-        
-        <ui:fragment rendered="#{dob.downloadUri != null}">
-        <dt>Download</dt>
-        <dd><h:outputLink target="_blank" value="#{dob.downloadUri}">Click here to download.</h:outputLink></dd>
-        </ui:fragment>
-
-        <ui:fragment rendered="#{dob.properties != null}">
-          <dt>Corpus Properties</dt>
-          <dd>
-            <ui:repeat value="#{dob.properties}" var="prop">
-             <a4j:commandLink>
-               <h:outputText value=" #{prop.name}"/>
-               <rich:toolTip value="#{prop.uri}"/>
-             </a4j:commandLink>
-             <h:outputText value=" = "/>
-             <i><h:outputText value="#{prop.value}"/></i><br/>
-            </ui:repeat>
-          </dd>
-        </ui:fragment>
-        
-        </ui:fragment>
-                
-    </dl>
+         <ui:include src="/WEB-INF/templates/do_summary.xhtml">
+           <ui:param name="dob" value="#{dob}"/>
+         </ui:include>
+    
     
     </rich:panel>
     
@@ -89,7 +39,7 @@
             <h:outputText value="Analyse Using Planets Services"/>
       </f:facet>
 
-      <dt>Identify</dt>
+      <dt><b>Identify</b></dt>
       <dd>
         <h:selectOneMenu value="#{DobInspector.identifyService}">
           <f:selectItem itemValue="" itemLabel="[none]" />
@@ -97,14 +47,23 @@
           <a4j:support event="onchange" reRender="dobInspectorForm" />
         </h:selectOneMenu>
       </dd>
+      <dt>Identify Report:</dt>
+      <dd>
+        <h:outputText value="#{DobInspector.identifyServiceReport}"/>
+      </dd>
+      <dt>Identify Result:</dt>
       <a4j:repeat value="#{DobInspector.identifyResultList}" var="fmt">
        <dd>
         <h:outputText value="#{fmt.summary}"/>
         <h:outputText value=" (#{fmt.uri})"/>
        </dd>
       </a4j:repeat>
+      
+      <p>
+      <br/>
+      </p>
     
-      <dt>Characterise</dt>
+      <dt><b>Characterise</b></dt>
       <dd>
         <h:selectOneMenu value="#{DobInspector.characteriseService}">
           <f:selectItem itemValue="" itemLabel="[none]" />
@@ -112,7 +71,11 @@
           <a4j:support event="onchange" reRender="dobInspectorForm" />
         </h:selectOneMenu>
       </dd>
-    <!-- Results, if any: -->
+      <dt>Characterise Report:</dt>
+      <dd>
+        <h:outputText value="#{DobInspector.characteriseServiceReport}"/>
+      </dd>
+      <dt>Characterise Result:</dt>
           <dd>
             <a4j:repeat value="#{DobInspector.characteriseProperties}" var="prop">
              <a4j:commandLink>
@@ -123,11 +86,44 @@
              <i><h:outputText value="#{prop.value}"/></i><br/>
             </a4j:repeat>
           </dd>
+
+      <p>
+      <br/>
+      </p>
+    
+      <dt><b>Validate</b></dt>
+      <dd>To Be Added.</dd>
+
+
+      <p>
+      <br/>
+      </p>
+    
+      <dt><b>Create View</b></dt>
+      <dd>To Be Added.</dd>
+      
+      <p>
+      <br/>
+      </p>
+    
+      <dt><b>Compare</b></dt>
+      <dd>
+                <h:outputLink value="dob_compare.faces">
+                    <f:param name="dobUri1" value="#{dob.uri}"/>
+                    <f:param name="dobUri2" value="#{dob.uri}"/>
+                    <h:outputText value="Compare #{dob.leafname} against itself."/>
+                </h:outputLink>
+      </dd>
      
     </rich:panel>
     
     </h:panelGrid>
     </div>
+    
+    <p>
+      <h:commandButton action="browse_data"
+        value="Return to the Data Browser"/>
+    </p>
     
  </a4j:form>
   
@@ -150,7 +146,7 @@
                     <p class="leftcol">
                     <h:outputLink value="browse_data.faces">
                         <f:param name="dobUri" value="#{dob.uri}"/>
-                        <h:outputText value="Return to the Data Browser"/>
+                        <h:outputText value="Return to the Data Browser"/>.
                     </h:outputLink>
                     </p>
                 </div>

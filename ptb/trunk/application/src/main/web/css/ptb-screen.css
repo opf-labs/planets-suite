@@ -1061,6 +1061,10 @@ pre.rawServiceDescription {
   width: 35%;
   vertical-align: top;
 }
+#digitalObjectRegistryBrowser .halfContent {
+  width: 50%;
+  vertical-align: top;
+}
 .dobDropIndicatorClass {
   padding: 2px;
   border: 1px dotted #ddd;

@@ -11,7 +11,6 @@
 <body>
   <ui:composition rendered="#{dobs != null}">
 
-                <h:graphicImage value="/graphics/toolbar_home.png" />
                 <a4j:repeat value="#{dobs}" var="do">
                     <h:commandLink action="browse_data" styleClass="locationLeaf" alt="#{do.uri}" title="#{do.uri}">
                       <h:outputText value="/#{do.leafname}"/>
