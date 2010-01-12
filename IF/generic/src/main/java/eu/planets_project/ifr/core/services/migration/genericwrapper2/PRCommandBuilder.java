@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
+import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.ConfigurationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -27,7 +28,8 @@ import eu.planets_project.services.utils.ProcessRunner;
  */
 class PRCommandBuilder {
 
-    private final Logger log = Logger.getLogger(PRCommandBuilder.class.getName());
+    private final Logger log = Logger.getLogger(PRCommandBuilder.class
+	    .getName());
 
     private final Collection<Parameter> environmentParameters;
 
@@ -37,8 +39,8 @@ class PRCommandBuilder {
      * <code>environmentParameters</code>.
      * 
      * @param envrionmentParameters
-     *            A parameter collection containing environment information such as
-     *            absolute paths to executables used in the commands to be
+     *            A parameter collection containing environment information such
+     *            as absolute paths to executables used in the commands to be
      *            built.
      */
     PRCommandBuilder(Collection<Parameter> environmentParameters) {
@@ -60,10 +62,14 @@ class PRCommandBuilder {
      * @param tempFileMappings
      * @return
      * @throws MigrationException
+     *             if any non-configuration related errors are encountered.
+     * @throws ConfigurationException
+     *             if any configuration related errors are encountered.
      */
     List<String> buildCommand(MigrationPath migrationPath,
 	    Collection<Parameter> toolParameters,
-	    Map<String, File> tempFileMappings) throws MigrationException {
+	    Map<String, File> tempFileMappings) throws MigrationException,
+	    ConfigurationException {
 
 	final CommandLine commandLine = migrationPath.getCommandLine();
 
@@ -94,7 +100,7 @@ class PRCommandBuilder {
 	// with a value in identifierMap
 	if (!identifierMap.keySet().containsAll(commandLineIdentifiers)) {
 	    commandLineIdentifiers.removeAll(identifierMap.keySet());
-	    throw new MigrationException("Cannot build the command line. "
+	    throw new ConfigurationException("Cannot build the command line. "
 		    + "Missing values for these identifiers: "
 		    + commandLineIdentifiers);
 	}
@@ -260,11 +266,12 @@ class PRCommandBuilder {
      *            A number of predefined tool presets to search for any preset
      *            specified in <code>toolParameters</code>.
      * @return <code>identifierMap</code> with all relevant parameters added.
+     * @throws ConfigurationException
      */
     private Map<String, String> addPresetParameters(
 	    Map<String, String> identifierMap,
 	    Collection<Parameter> toolParameters, ToolPresets toolPresets)
-	    throws MigrationException {
+	    throws ConfigurationException {
 
 	// See if the parameters specifies that a preset should be applied.
 	PresetSetting presetSetting = null;
@@ -291,13 +298,13 @@ class PRCommandBuilder {
 				.getPreset(presetCategoryID);
 			presetSetting = preset.getSetting(parameter.getValue());
 			if (presetSetting == null) {
-			    throw new MigrationException(String.format(
+			    throw new ConfigurationException(String.format(
 				    "The preset '%s = %s' has not been defined"
 					    + " in the configuration.",
 				    parameter.getName(), parameter.getValue()));
 			}
 		    } else {
-			throw new MigrationException(String.format(
+			throw new ConfigurationException(String.format(
 				"More than one preset was specified in the "
 					+ "parameters. Found '%s"
 					+ " = %s' and '%s = %s'.",
@@ -316,13 +323,18 @@ class PRCommandBuilder {
 		final String previousValue = identifierMap.put(parameter
 			.getName(), parameter.getValue());
 		if (previousValue != null) {
-		    log.warning(String.format("The parameter '%s' was specified"
-			    + "by the caller while also specifying usage of "
-			    + "the preset '%s = %s'. The specified value: '%s'"
-			    + " has now been overwritten with the value: '%s'"
-			    + " from the preset.", parameter.getName(),
-			    presetCategoryID, presetSetting.getName(),
-			    previousValue, parameter.getValue()));
+		    log
+			    .warning(String
+				    .format(
+					    "The parameter '%s' was specified"
+						    + "by the caller while also specifying usage of "
+						    + "the preset '%s = %s'. The specified value: '%s'"
+						    + " has now been overwritten with the value: '%s'"
+						    + " from the preset.",
+					    parameter.getName(),
+					    presetCategoryID, presetSetting
+						    .getName(), previousValue,
+					    parameter.getValue()));
 		}
 	    }
 	}

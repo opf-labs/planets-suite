@@ -1,6 +1,6 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions;
 
-public class MigrationInitialisationException extends Exception {
+public class MigrationInitialisationException extends MigrationException {
 
     /**
      * 

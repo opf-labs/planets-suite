@@ -7,7 +7,7 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper2.exception
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  *
  */
-public class MigrationPathConfigException extends Exception {
+public class MigrationPathConfigException extends ConfigurationException {
 
 
     /**

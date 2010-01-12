@@ -296,13 +296,13 @@ public class DBMigrationPathFactoryTest {
      * @param expectedCommandFragments
      *            A list of the expected command and associated parameters to
      *            use for the test.
-     * @throws MigrationException
+     * @throws Exception if anything goes wrong in the test.
      */
     private void commandLineTest(MigrationPath migrationPath,
 	    Collection<Parameter> toolParameters,
 	    Collection<Parameter> environmentParameters,
 	    Map<String, File> tempFileDeclarations,
-	    List<String> expectedCommandLine) throws MigrationException {
+	    List<String> expectedCommandLine) throws Exception {
 
 	final PRCommandBuilder commandBuilder = new PRCommandBuilder(
 		environmentParameters);

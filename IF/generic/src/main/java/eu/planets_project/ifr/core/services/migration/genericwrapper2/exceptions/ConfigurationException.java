@@ -7,7 +7,7 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper2.exception
  * Time: 2:04:20 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ConfigurationException extends MigrationException{
+public class ConfigurationException extends Exception{
 
     /**
 	 * 

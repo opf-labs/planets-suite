@@ -1,17 +1,10 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.services.datatypes.Parameter;
 
 /**
@@ -22,8 +15,6 @@ import eu.planets_project.services.datatypes.Parameter;
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
 class MigrationPathImpl implements MigrationPath {
-
-    private Logger log = Logger.getLogger(MigrationPathImpl.class.getName());
 
     private ToolIOProfile toolInputProfile;
     private ToolIOProfile toolOutputProfile;
@@ -238,9 +229,9 @@ class MigrationPathImpl implements MigrationPath {
 	return parameters.values();
     }
 
-    /**FIXME! Revise documentation....
-     * Declare a list of parameters that the user of the tool must provide
-     * values for in order to execute the tool.
+    /**
+     * FIXME! Revise documentation.... Declare a list of parameters that the
+     * user of the tool must provide values for in order to execute the tool.
      * 
      * @param toolParameters
      *            Collection of tool parameters that must be initialised and
@@ -281,107 +272,8 @@ class MigrationPathImpl implements MigrationPath {
     }
 
     public String toString() {
+
 	return "MigrationPathImpl: " + sourceFormatURI + " -> "
 		+ destinationFormatURI + " Command line: " + commandLine;
     }
-
-    /**
-     * Get a <code>Set</code> containing all the valid identifiers for file
-     * names parameters from <code>tempFileMap</code>, that is, identifiers that
-     * are not the empty string and that have an associated file name, which
-     * also is not the empty string.
-     * 
-     * @param tempFileMap
-     *            a <code>Map</code> of file identifiers associated with file
-     *            names.
-     * @return a <code>Set</code> containing the valid identifiers from
-     *         <code>parameters</code>.
-     */
-    private Set<String> getValidFileIdentifiers(Map<String, String> tempFileMap) {
-
-	Set<String> validFileIdentifiers = new HashSet<String>();
-	for (String identifier : tempFileMap.keySet()) {
-	    final String fileName = tempFileMap.get(identifier);
-	    if ((fileName != null) && ("".equals(fileName) == false)
-		    && ("".equals(identifier) == false)) {
-		validFileIdentifiers.add(identifier);
-	    }
-	}
-	return validFileIdentifiers;
-    }
-
-    /**
-     * Get a <code>Set</code> containing all the names of parameters from
-     * <code>parameters</code> that have been initialised with a value, and are
-     * thus valid.
-     * 
-     * @param parameters
-     *            a <code>Collection</code> of parameters to get valid
-     *            parameters from.
-     * @return a <code>Set</code> containing the names of all the parameters
-     *         from <code>parameters</code> that have a value.
-     */
-    private Set<String> getValidParameterNames(Collection<Parameter> parameters) {
-	Set<String> validParameters = new HashSet<String>();
-	for (Parameter parameter : parameters) {
-	    final String parameterName = parameter.getName();
-	    if ((parameterName != null) && ("".equals(parameterName) == false)
-		    && (parameter.getValue() != null)) {
-		validParameters.add(parameterName);
-	    }
-	}
-
-	return validParameters;
-    }
-
-    /**
-     * Get the names of all identifiers (all words with a leading '#') of the
-     * form <code>%myIdentifier%</code> found in
-     * <code>stringWithIdentifiers</code>. If the previous example was found in
-     * the string, then the returned set would contain the string
-     * &quot;myIdentifier&quot;.
-     * 
-     * @param stringListWithIdentifiers
-     *            a <code>String</code> containing identifiers.
-     * @return a <code>Set</code> containing the identifiers found.
-     */
-    private Set<String> getIdentifiers(List<String> stringListWithIdentifiers) {
-	Set<String> foundIdentifiers = new HashSet<String>();
-
-	for (String stringWithIdentifiers : stringListWithIdentifiers) {
-	    StringTokenizer stringTokenizer = new StringTokenizer(
-		    stringWithIdentifiers);
-	    while (stringTokenizer.hasMoreTokens()) {
-		String identifier = stringTokenizer.nextToken();
-		if (identifier.charAt(0) == '#') {
-		    identifier = identifier.substring(1);
-		    foundIdentifiers.add(identifier);
-		}
-	    }
-	}
-	return foundIdentifiers;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
-     * #getAsPlanetsPath()
-     */
-    /*
-     * FIXME! KILL, KILL. KILL it would be more suitable to put this in the
-     * generic wrapper class. public
-     * eu.planets_project.services.datatypes.MigrationPath getAsPlanetsPath() {
-     * URI outformat = getDestinationFormat(); URI informat = getSourceFormat();
-     * List<Parameter> params = new ArrayList<Parameter>();
-     * 
-     * for (Preset preset : presets.values()) {
-     * params.add(preset.getAsPlanetsParameter()); } return new
-     * eu.planets_project.services.datatypes.MigrationPath( informat, outformat,
-     * params); }
-     * 
-     * public void addPreset(Preset preset) { presets.put(preset.getName(),
-     * preset); }
-     */
 }

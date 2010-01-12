@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
+import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.ConfigurationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationInitialisationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterBuilder;
@@ -122,10 +123,11 @@ public class GenericMigrationWrapper {
      *             force wrapping developers to add cut-and-paste exception
      *             handling on the outside. Thus, it should rather be put inside
      *             this method.
+     *@throws ConfigurationException
      */
     public MigrateResult migrate(DigitalObject sourceObject, URI sourceFormat,
 	    URI destinationFormat, List<Parameter> toolParameters)
-	    throws MigrationException, IOException {
+	    throws MigrationException, ConfigurationException {
 
 	/*
 	 * Validate that the proper parameters are set for the migration path
