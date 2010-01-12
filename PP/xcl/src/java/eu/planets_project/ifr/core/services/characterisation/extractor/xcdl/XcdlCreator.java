@@ -104,7 +104,7 @@ public final class XcdlCreator {
                 String type = prop.getName().toLowerCase().equals(PropertyName.PROPERTYSET.s)
                         ? PropertyName.PROPERTYSET.s : XcdlCreator.typeFromDescription(prop);
                 if (type == null) {
-                    throw new IllegalArgumentException("Property has no name: " + prop);
+                    throw new IllegalArgumentException("Property has no type: " + prop);
                 }
                 if (type.toLowerCase().equals(PropertyName.NORMDATA.s)) {
                     addNormData(object, prop, normDataCount);
