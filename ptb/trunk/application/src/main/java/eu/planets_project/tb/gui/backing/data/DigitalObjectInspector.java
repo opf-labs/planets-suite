@@ -10,9 +10,13 @@
  */
 package eu.planets_project.tb.gui.backing.data;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,25 +60,54 @@ public class DigitalObjectInspector {
     }
 
     /**
+     * -Dfile.encoding=UTF8
      * @param dobUri the dobUri to set
      */
     public void setDobUri(String dobUri) {
+        dobUri = fixBadEncoding(dobUri);
         this.dobUri = dobUri;
     }
     
     public DigitalObjectTreeNode getDob() {
         if( this.dobUri == null ) return null;
         // Create as a URI:
-        URI item;
+        URI item = DigitalObjectInspector.uriEncoder(this.dobUri);
+        if( item == null ) return null;
+        // Lookup and return:
+        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm );
+        return itemNode;
+    }
+
+    /**
+     * TODO Should be able to avoid this hack workaround.
+     * How to set the page encoding correctly?
+     * <?xml version="1.0" encoding="UTF-8"?>
+     * @param in
+     * @return
+     */
+    public static String fixBadEncoding( String in ) { 
+        return in;
+        /*
+        if( in == null ) return in;
         try {
-            item = new URI(this.dobUri);
+            String out = new String( in.getBytes("ISO-8859-1"), "UTF-8" );
+            return out;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return in;
+        }
+        */
+    }
+    
+    public static URI uriEncoder( String uri ) {
+        if( uri == null || uri.length() == 0 ) return null;
+        try {
+            URI nuri = new URI("planets", uri.replaceFirst("planets:", ""), null);
+            return nuri;
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return null;
         }
-        // Lookup and return:
-        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm );
-        return itemNode;
     }
     
     /* -------------------- Additional code for deeper inspection --------------------- */

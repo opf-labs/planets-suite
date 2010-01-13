@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<body>
+<ui:composition rendered="#{uid != null}">
+
+          <h:panelGroup>
+            <h:outputText value="#{message}" styleClass="link" id="link-#{uid}"/>
+            <rich:componentControl for="exp_srv_exception_inspector-#{uid}" attachTo="link-#{uid}" operation="show" event="onclick"/>
+          </h:panelGroup>
+     <rich:modalPanel id="exp_srv_exception_inspector-#{uid}" width="600" height="400" autosized="true">
+         <f:facet name="header">Exception</f:facet>
+         <f:facet name="controls">
+            <h:panelGroup>
+               <h:graphicImage value="/graphics/close.png" styleClass="hidelink" id="hidelink-#{uid}"/>
+                <rich:componentControl for="exp_srv_exception_inspector-#{uid}" attachTo="hidelink-#{uid}" operation="hide" event="onclick"/>
+            </h:panelGroup>
+        </f:facet>
+        <div style="overflow: auto !important; width: 600px; height: 400px;">
+        <pre>
+        <h:outputText value="#{exception}"/>
+        </pre>        
+        </div>
+     </rich:modalPanel>
+
+</ui:composition>
+</body>
+</html>

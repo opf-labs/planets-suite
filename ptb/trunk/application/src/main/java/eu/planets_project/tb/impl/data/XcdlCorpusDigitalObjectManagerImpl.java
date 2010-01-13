@@ -224,7 +224,7 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
      * @return
      */
     public static boolean hasXcdlPropertied( DigitalObject dob ) {
-        if( dob.getMetadata() != null ) {
+        if( dob != null && dob.getMetadata() != null ) {
             for( Metadata md : dob.getMetadata() ) {
                 if( XCDL_MD_URI.equals( md.getType() ) ) return true;
             }

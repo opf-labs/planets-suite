@@ -63,6 +63,7 @@ public class DigitalObjectCompare {
      * @param dobUri the dobUri to set
      */
     public void setDobUri1(String dobUri1) {
+        dobUri1 = DigitalObjectInspector.fixBadEncoding(dobUri1);
         this.dobUri1 = dobUri1;
     }
     
@@ -77,6 +78,7 @@ public class DigitalObjectCompare {
      * @param dobUri the dobUri to set
      */
     public void setDobUri2(String dobUri2) {
+        dobUri2 = DigitalObjectInspector.fixBadEncoding(dobUri2);
         this.dobUri2 = dobUri2;
     }
     

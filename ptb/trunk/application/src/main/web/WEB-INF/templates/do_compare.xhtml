@@ -78,11 +78,13 @@
             </a4j:repeat>
           </dd>
       <dd>
-        <h:outputText value="#{DobCompare.compareServiceException}"/>
+         <ui:include src="/WEB-INF/templates/fragments/show_error_modal.xhtml">
+           <ui:param name="message" value="#{DobCompare.compareServiceException}"/>
+           <ui:param name="exception" value="#{DobCompare.compareServiceStackTrace}"/>
+           <ui:param name="uid" value="1"/>
+         </ui:include>
       </dd>
-      <dd>
-        <h:outputText value="#{DobCompare.compareServiceStackTrace}"/>
-      </dd>
+      
           
     </rich:panel>
     
@@ -122,10 +124,11 @@
             </a4j:repeat>
           </dd>
       <dd>
-        <h:outputText value="#{DobCompare.characteriseServiceException}"/>
-      </dd>
-      <dd>
-        <h:outputText value="#{DobCompare.characteriseServiceStackTrace}"/>
+         <ui:include src="/WEB-INF/templates/fragments/show_error_modal.xhtml">
+           <ui:param name="message" value="#{DobCompare.characteriseServiceException}"/>
+           <ui:param name="exception" value="#{DobCompare.characteriseServiceStackTrace}"/>
+           <ui:param name="uid" value="2"/>
+         </ui:include>
       </dd>
     
     
@@ -186,10 +189,11 @@
           </dd>
           
       <dd>
-        <h:outputText value="#{DobCompare.compareExtractedServiceException}"/>
-      </dd>
-      <dd>
-        <h:outputText value="#{DobCompare.compareExtractedServiceStackTrace}"/>
+         <ui:include src="/WEB-INF/templates/fragments/show_error_modal.xhtml">
+           <ui:param name="message" value="#{DobCompare.compareExtractedServiceException}"/>
+           <ui:param name="exception" value="#{DobCompare.compareExtractedServiceStackTrace}"/>
+           <ui:param name="uid" value="3"/>
+         </ui:include>
       </dd>
           
     </rich:panel>

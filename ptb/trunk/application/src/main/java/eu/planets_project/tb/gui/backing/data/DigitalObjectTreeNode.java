@@ -117,9 +117,10 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      */
     public String getDownloadUri() {
         try {
-            String duri = dh.get(this.getUri().toString()).getDownloadUri().toASCIIString();
+            URI duri = dh.get(this.getUri().toString()).getDownloadUri();
             log.debug("Returning download location: "+duri);
-            return duri;
+            if( duri == null ) return null;
+            return duri.toASCIIString();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -134,6 +135,14 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      */
     public URI getUri() {
         return uri;
+    }
+
+    /**
+     * @return
+     */
+    public String getUriString() { 
+        if( uri == null ) return null;
+        return uri.toASCIIString();
     }
 
     /**
