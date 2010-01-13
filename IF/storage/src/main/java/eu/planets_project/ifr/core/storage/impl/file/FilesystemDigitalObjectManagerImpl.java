@@ -291,7 +291,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	        /* Create the content: */
 	        DigitalObjectContent c1 = Content.byReference(purl.toURL());
 	        /* Given these, we can instantiate our object: */
-	        DigitalObject object = new DigitalObject.Builder(digitalObject).permanentUri(purl).content(c1).build();
+	        DigitalObject object = new DigitalObject.Builder(digitalObject).permanentUri(pdURI).content(c1).build();
 			OutputStream outStream = new FileOutputStream(doMetadata);
 			outStream.write(object.toXml().getBytes());
 			outStream.close();
