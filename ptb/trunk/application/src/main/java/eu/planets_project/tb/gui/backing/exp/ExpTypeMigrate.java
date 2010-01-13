@@ -511,26 +511,35 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
 
         private int batchId;
         private ExecutionRecordImpl exerec;
+        private Properties props;
 
         /**
          * @param exerec
          */
         public MigrationResultBean(int batchId, ExecutionRecordImpl exerec) {
-            this.batchId = batchId;
+        	this.batchId = batchId;
             this.exerec = exerec;
+            try {
+				props =  exerec.getPropertiesListResult();
+			} catch (IOException e) {
+				log.debug("No Properties recorded for the batch: "+batchId);
+				props = new Properties();
+			}
         }
+            
         
         /**
+         * get the DigoResult object if there's one
          * @return
          */
         public String getDigitalObjectResult() {
-            String dobRef = exerec.getResult();
+			Object tbDigoURI = props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
             String summary = "Run "+batchId+": ";
-            if( dobRef != null ) {
+            if( tbDigoURI != null ) {
                 DataHandler dh = new DataHandlerImpl();
                 DigitalObjectRefBean dobr;
                 try {
-                    dobr = dh.get(dobRef);
+                    dobr = dh.get((String)tbDigoURI);
                 } catch (FileNotFoundException e) {
                     log.error("Could not find file. "+e);
                     return "";
@@ -546,15 +555,22 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
             return summary;
         }
 
+        
+        public String getDigitalObjectDownloadURL() {
+        	Object tbDigoURI = props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
+        	return getDigitalObjectDownloadURL(tbDigoURI);
+        }
+        
         /**
+         * Creates an external http:// object ref for any TB datamanager ref.
+         * e.g. https://localhost:8443/testbed/reader/download.jsp?fid=file%253A%252FD%253A%252FImplementation%252Fifr_server%252Fplanets-ftp%252Fusa_bundesstaaten_png.png
          * @return
          */
-        public String getDigitalObjectDownloadURL() {
-            String dobRef = exerec.getResult();
-            if( dobRef != null ) {
+        private String getDigitalObjectDownloadURL(Object tbDigoURI) {
+            if( tbDigoURI != null ) {
                 DataHandler dh = new DataHandlerImpl();
                 try {
-                    DigitalObjectRefBean dobr = dh.get(dobRef);
+                    DigitalObjectRefBean dobr = dh.get((String)tbDigoURI);
                     return dobr.getDownloadUri().toString();
                 } catch (FileNotFoundException e) {
                     log.error("Failed to generate download URL. " + e);

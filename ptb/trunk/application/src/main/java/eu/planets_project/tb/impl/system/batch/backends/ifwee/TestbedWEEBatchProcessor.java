@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.jms.Queue;
@@ -62,7 +64,8 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	private static TestbedManager tbManager;
 	private static WeeService weeService;
 	private static WEEBatchExperimentTestbedUpdater weeTBUpdater;
-	private HashMap<String,TestbedBatchJob> jobs = new HashMap<String,TestbedBatchJob>();
+	//make sure it's a synchronized Map
+	private Map<String,TestbedBatchJob> jobs = Collections.synchronizedMap(new HashMap<String,TestbedBatchJob>());
 	
     //JMS configuration
     private static final String QueueConnectionFactoryName = "ConnectionFactory";
@@ -90,18 +93,18 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#getJob(java.lang.String)
 	 */
-	public TestbedBatchJob getJob(String job_key) {
+	public synchronized TestbedBatchJob getJob(String job_key) {
 		 return jobs.get(job_key);
 	}
 	
-	public void setJob(String job_key, TestbedBatchJob job){
+	public synchronized void setJob(String job_key, TestbedBatchJob job){
 		this.jobs.put(job_key, job);
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#getJobPercentComplete(java.lang.String)
 	 */
-	public int getJobPercentComplete(String job_key) {
+	public synchronized int getJobPercentComplete(String job_key) {
         if(this.isCompleted(job_key)){
         	return 100;
         }
@@ -113,7 +116,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#getJobStatus(java.lang.String)
 	 */
-	public String getJobStatus(String job_key) {
+	public synchronized String getJobStatus(String job_key) {
         if( this.getJob(job_key) == null ) return TestbedBatchJob.NO_SUCH_JOB;
         return this.getJob(job_key).getStatus();
 	}
@@ -121,7 +124,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#getPositionInQueue(java.lang.String)
 	 */
-	public String getPositionInQueue(String job_key) {
+	public synchronized String getPositionInQueue(String job_key) {
 		if( this.getJob(job_key) == null ) return TestbedBatchJob.POSITION_NOT_SUPPORTED;
 		if( this.getJobStatus(job_key).equals(TestbedBatchJob.RUNNING)){
 			return TestbedBatchJob.POSITION_IN_PROGRESS;
@@ -215,7 +218,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#notifyComplete(java.lang.String, eu.planets_project.tb.impl.system.TestbedBatchJob)
 	 */
-	public void notifyComplete(String job_key, TestbedBatchJob job) {
+	public synchronized void notifyComplete(String job_key, TestbedBatchJob job) {
 		//this.setJob(job_key, job);
 		WorkflowResult wfLog=null;
 		try {
@@ -230,7 +233,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#notifyFailed(java.lang.String, eu.planets_project.tb.impl.system.TestbedBatchJob)
 	 */
-	public void notifyFailed(String job_key, TestbedBatchJob job) {
+	public synchronized void notifyFailed(String job_key, TestbedBatchJob job) {
 		//this.setJob(job_key, job);
 		weeTBUpdater.processNotify_WorkflowFailed(job.getExpID(),(String)job.getWorkflowFailureReport());
 		log.debug("callback notify wee for "+job_key);
@@ -240,7 +243,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#notifyRunning(java.lang.String, eu.planets_project.tb.impl.system.TestbedBatchJob)
 	 */
-	public void notifyRunning(String job_key, TestbedBatchJob job) {
+	public synchronized void notifyRunning(String job_key, TestbedBatchJob job) {
 		// TODO AL: this is currently not supported by the WEE implementation
 	}
 
@@ -248,7 +251,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#notifyUpdate(java.lang.String, eu.planets_project.tb.impl.system.TestbedBatchJob)
 	 */
-	public void notifyUpdate(String job_key, TestbedBatchJob job) {
+	public synchronized void notifyUpdate(String job_key, TestbedBatchJob job) {
 		//TODO AL: currently not used - as not supported by WEE... 
 		//This could be used for pulling incremental updates in
 	}
@@ -257,7 +260,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#notifyStart(java.lang.String, eu.planets_project.tb.impl.system.TestbedBatchJob)
 	 */
-	public void notifyStart(String job_key, TestbedBatchJob job) {
+	public synchronized void notifyStart(String job_key, TestbedBatchJob job) {
 		//this.setJob(job_key, job);
 		weeTBUpdater.processNotify_WorkflowStarted(job.getExpID());
 		log.debug("callback notify wee for "+job_key);
@@ -266,7 +269,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#isRunning(java.lang.String)
 	 */
-	public boolean isStarted(String job_key){
+	public synchronized boolean isStarted(String job_key){
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
 			if(
@@ -288,7 +291,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#isCompleted(java.lang.String)
 	 */
-	public boolean isCompleted(String job_key) {
+	public synchronized boolean isCompleted(String job_key) {
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
 			if(status.equals(WorkflowExecutionStatus.COMPLETED.toString())||
@@ -308,7 +311,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#isUpdated(java.lang.String)
 	 */
-	public boolean isUpdated(String job_key) {
+	public synchronized boolean isUpdated(String job_key) {
 		// TODO AL. This operation is currently not supported by the WEE. Would allow  checking for incremental updates
 		return false;
 	}
@@ -330,7 +333,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#isFailed(java.lang.String)
 	 */
-	public boolean isFailed(String job_key) {
+	public synchronized boolean isFailed(String job_key) {
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
 			if(status.equals(WorkflowExecutionStatus.FAILED.toString())){
@@ -349,7 +352,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#isRunning(java.lang.String)
 	 */
-	public boolean isRunning(String job_key) {
+	public synchronized boolean isRunning(String job_key) {
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
 			if(status.equals(WorkflowExecutionStatus.RUNNING.toString())){
@@ -367,7 +370,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#isQueued(java.lang.String)
 	 */
-	public boolean isQueued(String job_key) {
+	public synchronized boolean isQueued(String job_key) {
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
 			if((!status.equals(WorkflowExecutionStatus.RUNNING.toString()))&&

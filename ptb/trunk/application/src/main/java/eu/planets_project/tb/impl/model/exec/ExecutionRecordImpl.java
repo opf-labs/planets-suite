@@ -94,6 +94,7 @@ public class ExecutionRecordImpl implements Serializable {
     public static final String WFResult_ActionEndTime = "wfresult.actionEndTime";
     public static final String WFResult_ServiceEndpoint = "wfresult.serviceEndpoint";
     public static final String WFResult_ServiceReport = "wfresult.serviceReport";
+    public static final String WFResult_ServiceDescription = "wfresult.serviceDescription";
 
     @Id
     @GeneratedValue

@@ -115,6 +115,7 @@ public class WEEBatchExperimentTestbedUpdater {
 		//now iterate over the results and extract and store all crated digos
 		List<ExecutionRecordImpl> execRecords = new ArrayList<ExecutionRecordImpl>();
 		
+		//group related wfResult items per input digital objects 
 		Map<URI,List<WorkflowResultItem>> structuredResults = this.getAllWFResultItemsPerInputDigo(weeWFResult);
 		//FIXME AL: We still need to crate empty executionRecords for the items that weren't processed by the wee (e.g. expSetup.getInputData and compare to the log)
 		for(URI inputDigoURI : structuredResults.keySet()){
@@ -348,6 +349,9 @@ public class WEEBatchExperimentTestbedUpdater {
 		}
 		if(wfResultItem.getServiceReport()!=null){
 			p.setProperty(ExecutionRecordImpl.WFResult_ServiceReport+"["+count+"]", wfResultItem.getServiceReport().toString());
+		}
+		if(wfResultItem.getServiceDescription()!=null){
+			p.setProperty(ExecutionRecordImpl.WFResult_ServiceDescription+"["+count+"]", wfResultItem.getServiceDescription().toString());
 		}
 		return p;
 	}
