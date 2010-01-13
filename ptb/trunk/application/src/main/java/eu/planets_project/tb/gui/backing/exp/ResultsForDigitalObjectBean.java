@@ -98,6 +98,28 @@ public class ResultsForDigitalObjectBean extends DigitalObjectBean {
         if( "".equals( this.getExecutionRecord().getResult() ) ) return false;
         return true;
     }
+    
+    public boolean getHasExecutionSucceededOK(){
+    	//currently the only criteria we're checking for measuring if a record has 
+    	//successfully been migrated is if there's an output file - no workflow_result_log information taken into account
+    	return this.getHasResult();
+    }
+    
+    /**
+     * How long did this record take to execute it's workflow upon the batch processor
+     * e.g. how long did this migration take for the given record
+     * @return the duration in milli seconds
+     */
+    public Long getExecutionDuration() {
+    	if((this.getExecutionRecord()!=null)&&(this.getExecutionRecord().getEndDate()!=null)&&
+    		(this.getExecutionRecord().getStartDate()!=null)){
+    		
+    		if(this.getExecutionRecord().getEndDate().getTimeInMillis() > this.getExecutionRecord().getStartDate().getTimeInMillis()){
+    			return this.getExecutionRecord().getEndDate().getTimeInMillis() - this.getExecutionRecord().getStartDate().getTimeInMillis();
+    		}
+    	}
+    	return null;
+    }
 
     /**
      * @return The list of results, stage by stage.

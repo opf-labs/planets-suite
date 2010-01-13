@@ -43,7 +43,7 @@
                 <rich:componentControl for="exp_do_result_inspector" attachTo="hidelink" operation="hide" event="onclick"/>
             </h:panelGroup>
         </f:facet>
-        <div style="overflow: auto !important; width: 600px; height: 400px;">
+        <div style="overflow: auto !important; width: 800px; height: 600px;">
     <ui:include src="/WEB-INF/templates/fragments/exp_do_result_inspector.xhtml">
        <ui:param name="dor" value="#{res}" />
     </ui:include>
@@ -71,8 +71,8 @@
         
         <rich:column style="text-align: center;">
           <f:facet name="header">Success</f:facet>
-          <h:graphicImage value="/graphics/ose-tick.png" title="Execution Succeeded" rendered="#{res.hasResult}"/>
-          <h:graphicImage value="/graphics/ose-error.png" title="Execution Failed" rendered="#{!res.hasResult}"/>
+          <h:graphicImage value="/graphics/ose-tick.png" title="Execution Succeeded" rendered="#{res.hasExecutionSucceededOK}"/>
+          <h:graphicImage value="/graphics/ose-error.png" title="Execution Failed" rendered="#{!res.hasExecutionSucceededOK}"/>
         </rich:column>
         
         <rich:column style="text-align: center;">

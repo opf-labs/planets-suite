@@ -84,16 +84,21 @@
  -->
 
   <!-- ****************** -->
-  <h2>Execution Report Log</h2>
+  <h2>Report Log for Input Object</h2>
 
   <a4j:repeat var="log" value="#{dor.reportLog}">
     <p style="font-family: monospace;"> <h:outputText value="#{log}" />
     </p>
   </a4j:repeat>
-
+  
   <!-- ****************** -->
-  <h2>Batch Report Log</h2>
-  <pre> #{dor.batchReport} </pre>
+  <h2>Overall Batch Report Log</h2>
+  <pre>
+	<rich:simpleTogglePanel label="show batch report log" opened="false" switchType="client">                   
+		#{dor.batchReport}    
+	</rich:simpleTogglePanel>
+	 
+  </pre>
 
 
 </ui:composition> </body> </html>

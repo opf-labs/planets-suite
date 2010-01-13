@@ -65,6 +65,7 @@ import org.w3c.dom.Document;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -365,8 +366,25 @@ public class ExperimentChartServlet extends HttpServlet {
                     DigitalObjectRefBean dh = new DataHandlerImpl().get(exr.getDigitalObjectReferenceCopy());
                     String dobName = "Object "+i;
                     if( dh != null ) dobName = dh.getName();
+                             
+                    ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(exr.getDigitalObjectReferenceCopy());
+                    Double time = null;
+                    if(res.getExecutionDuration()!=null){
+                    	//convert from milli seconds to seconds
+                    	time = (double)res.getExecutionDuration()/1000;
+                    }
+                    if( time != null ) {
+                        if( res.getHasExecutionSucceededOK()) {
+                            dataset.addValue( time, "Succeeded", dobName);
+                            hasSuccesses = true;
+                        } else {
+                            dataset.addValue( time, "Failed", dobName);
+                            hasFails = true;
+                        }
+                    }
 
-                    for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
+                    //QUESTION AL: Are we still using the ExecutionStageRecordImpl entity??
+                    /*for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
                         Double time = exsr.getDoubleMeasurement( TecRegMockup.PROP_SERVICE_TIME );
                         // Look for timing:
                         if( time != null ) {
@@ -378,7 +396,7 @@ public class ExperimentChartServlet extends HttpServlet {
                                 hasFails = true;
                             }
                         }
-                    }
+                    }*/
                 }
                 // Increment, for the next run.
                 i++;
