@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationInitialisationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterBuilder;
+import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterReader;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -72,11 +72,11 @@ public class GenericMigrationWrapper {
 		    + "service provider identifier to the \"serviceprovider\""
 		    + " property in the property file for this service.";
 	    for (Parameter environmentParameter : envrionmentParameters) {
-		if ("serviceprovider".equals(environmentParameter.getName())){
+		if ("serviceprovider".equals(environmentParameter.getName())) {
 		    serviceProvider = environmentParameter.getValue();
 		}
 	    }
-	    
+
 	    final ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory(
 		    toolIdentifier, serviceProvider, configuration);
 	    serviceDescription = serviceFactory.getServiceDescription();
@@ -99,17 +99,18 @@ public class GenericMigrationWrapper {
     }
 
     /**
-     * Migrate the digital object from the sourceFormat to the destination
-     * format, with the given parameters
+     * Migrate the <code>digitalObject</code> from <code>inputFormat</code> to
+     * <code>outputFormat</code>, applying the parameters provided by
+     * <code>toolParameters</code>.
      * 
      * FIXME! Return by reference must be specified by the parameter:
      * returnbyreference=true/false. Default is true.
      * 
-     * @param sourceObject
+     * @param digitalObject
      *            the digital object to migrate
-     * @param sourceFormat
+     * @param inputFormat
      *            the format of the digital object
-     * @param destinationFormat
+     * @param outputFormat
      *            The
      * @param toolParameters
      *            the parameters. If null, is initialised as an empty list.
@@ -125,16 +126,16 @@ public class GenericMigrationWrapper {
      *             this method.
      *@throws ConfigurationException
      */
-    public MigrateResult migrate(DigitalObject sourceObject, URI sourceFormat,
-	    URI destinationFormat, List<Parameter> toolParameters)
+    public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
+	    URI outputFormat, List<Parameter> toolParameters)
 	    throws MigrationException, ConfigurationException {
 
 	/*
 	 * Validate that the proper parameters are set for the migration path
-	 * identified by sourceFormat and destinationFormat
+	 * identified by inputFormat and outputFormat
 	 */
 	final MigrationPath migrationPath = migrationPaths.getMigrationPath(
-		sourceFormat, destinationFormat);
+		inputFormat, outputFormat);
 
 	// If called with null parameters, use an empty list instead
 	if (toolParameters == null) {
@@ -153,13 +154,13 @@ public class GenericMigrationWrapper {
 	if (inputIOProfile.usePipedIO()) {
 
 	    // Serve the digital object through standard input
-	    standardInputStream = sourceObject.getContent().getInputStream();
+	    standardInputStream = digitalObject.getContent().getInputStream();
 	} else {
 
 	    // Serve the digital object through a temporary input file.
 	    File inputTempFile = temporaryFileMappings.get(inputIOProfile
 		    .getCommandLineFileLabel());
-	    FileUtils.writeInputStreamToFile(sourceObject.getContent()
+	    FileUtils.writeInputStreamToFile(digitalObject.getContent()
 		    .getInputStream(), inputTempFile);
 	}
 
@@ -206,7 +207,7 @@ public class GenericMigrationWrapper {
 	}
 
 	if (executionSuccessful == false) {
-	    return buildMigrationResult(migrationPath, sourceObject, null,
+	    return buildMigrationResult(migrationPath, digitalObject, null,
 		    toolProcessRunner);
 	}
 
@@ -255,15 +256,15 @@ public class GenericMigrationWrapper {
 	    }
 	}
 
-	final DigitalObject destinationObject = builder.format(
-		destinationFormat).build();
+	final DigitalObject resultObject = builder.format(
+		outputFormat).build();
 
-	return buildMigrationResult(migrationPath, sourceObject,
-		destinationObject, toolProcessRunner);
+	return buildMigrationResult(migrationPath, digitalObject,
+		resultObject, toolProcessRunner);
     }
 
     private MigrateResult buildMigrationResult(MigrationPath migrationPath,
-	    DigitalObject sourceObject, DigitalObject resultObject,
+	    DigitalObject inputObject, DigitalObject resultObject,
 	    ProcessRunner toolProcessRunner) {
 
 	String stdoutPart = String.format("Standard output:\n%s\n\n",
@@ -294,9 +295,9 @@ public class GenericMigrationWrapper {
 	// Fill in the blanks in the generic message template.
 	final String reportMessage = String.format("%s object with title '%s'"
 		+ " from format URI: '%s' to '%s'.\n%sStandard error output:"
-		+ "\n%s", statusDescription, sourceObject.getTitle(),
-		migrationPath.getSourceFormat(), migrationPath
-			.getDestinationFormat(), stdoutPart, toolProcessRunner
+		+ "\n%s", statusDescription, inputObject.getTitle(),
+		migrationPath.getInputFormat(),
+		migrationPath.getOutputFormat(), stdoutPart, toolProcessRunner
 			.getProcessErrorAsString());
 
 	final ServiceReport serviceReport = new ServiceReport(messageType,

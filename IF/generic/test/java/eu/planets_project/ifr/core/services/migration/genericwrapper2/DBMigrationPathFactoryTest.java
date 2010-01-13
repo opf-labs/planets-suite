@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
 import eu.planets_project.services.datatypes.Parameter;
 

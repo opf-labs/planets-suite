@@ -7,7 +7,7 @@ import java.io.File;
  * 
  * @author Thomas Skou Hansen <tsh@statsbiblioteket.dk>
  */
-public interface TemporaryFileFactory {
+interface TemporaryFileFactory {
 
     /**
      * Get the path to the temporary directory where the temporary files,
@@ -16,7 +16,7 @@ public interface TemporaryFileFactory {
      * @return <code>File</code> instance containing the path to the temporary
      *         files created by this factory.
      */
-    public File getTempFileDir();
+    File getTempFileDir();
 
     /**
      * Prepare a <code>File</code> object representing a (not yet created) file

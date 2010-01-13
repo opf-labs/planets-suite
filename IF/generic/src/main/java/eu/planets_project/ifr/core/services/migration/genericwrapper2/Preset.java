@@ -76,11 +76,4 @@ class Preset {
 	void setDescription(String description) {
 		this.description = description;
 	}
-
-	/*
-	 * FIXME! KILL, KILL, KILL.... public Parameter getAsPlanetsParameter() {
-	 * 
-	 * Parameter.Builder pb = new Parameter.Builder(name, defaultSettingName);
-	 * pb.description(description); return pb.build(); }
-	 */
 }

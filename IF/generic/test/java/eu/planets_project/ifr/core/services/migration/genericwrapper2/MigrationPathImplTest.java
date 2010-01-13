@@ -36,7 +36,7 @@ public class MigrationPathImplTest {
     @Test
     public void testSetGetCommandLine() throws Exception {
 
-	// TODO: This test does not need all this details. The test of command
+	// TODO: This test does not need all these details. The test of command
 	// line construction should go elsewhere.
 	final String commandParameter = "cat #param1 #tempSource > "
 		+ "#myInterimFile && tr #param2 #myInterimFile > "
@@ -59,14 +59,6 @@ public class MigrationPathImplTest {
 	toolParameters.add(new Parameter("param1", "-n"));
 	// Options for the 'tr' command
 	toolParameters.add(new Parameter("param2", "'[:lower:]' '[:upper:]'"));
-
-	TempFile input = new TempFile("tempSource");
-	input.setFile(new File("/random-source-name"));
-	// FIXME! migrationPath.setTempInputFile(input);
-
-	TempFile output = new TempFile("tempDestination");
-	output.setFile(new File("/random-destination-name"));
-	// FIXME! migrationPath.setTempOutputFile(output);
 
 	migrationPath.addTempFilesDeclaration("myInterimFile",
 		"/random-temp-file-name");

@@ -18,8 +18,8 @@ class MigrationPathImpl implements MigrationPath {
 
     private ToolIOProfile toolInputProfile;
     private ToolIOProfile toolOutputProfile;
-    private URI sourceFormatURI;
-    private URI destinationFormatURI;
+    private URI inputFormatURI;
+    private URI outputFormatURI;
     private Map<String, String> tempFiles;
     private Map<String, Parameter> parameters;
     private ToolPresets toolPresets;
@@ -60,7 +60,7 @@ class MigrationPathImpl implements MigrationPath {
      * @param commandLine
      *            <code>String</code> containing the command line to set.
      */
-    public void setCommandLine(CommandLine commandLine) {
+    void setCommandLine(CommandLine commandLine) {
 	this.commandLine = commandLine;
     }
 
@@ -69,21 +69,21 @@ class MigrationPathImpl implements MigrationPath {
      * 
      * @see
      * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
-     * #getDestinationFormat()
+     * #getOutputFormat()
      */
-    public URI getDestinationFormat() {
-	return destinationFormatURI;
+    public URI getOutputFormat() {
+	return outputFormatURI;
     }
 
     /**
-     * Set the destination format <code>URI</code> for this
-     * <code>CliMigrationPath</code>.
+     * Set the output format <code>URI</code> for this
+     * <code>MigrationPath</code>.
      * 
-     * @param destinationFormatURI
-     *            destination format <code>URI</code> to set.
+     * @param outputFormatURI
+     *            output format <code>URI</code> to set.
      */
-    public void setDestinationFormat(URI destinationFormatURI) {
-	this.destinationFormatURI = destinationFormatURI;
+    void setOutputFormat(URI outputFormatURI) {
+	this.outputFormatURI = outputFormatURI;
     }
 
     /*
@@ -91,21 +91,21 @@ class MigrationPathImpl implements MigrationPath {
      * 
      * @see
      * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
-     * #getSourceFormat()
+     * #getInputFormat()
      */
-    public URI getSourceFormat() {
-	return sourceFormatURI;
+    public URI getInputFormat() {
+	return inputFormatURI;
     }
 
     /**
-     * Set the source format <code>URI</code> for this
-     * <code>CliMigrationPath</code>.
+     * Set the input format <code>URI</code> for this <code>MigrationPath</code>
+     * .
      * 
-     * @param sourceFormatURI
-     *            source format <code>URI</code> to set.
+     * @param inputFormatURI
+     *            input format <code>URI</code> to set.
      */
-    public void setSourceFormat(URI sourceFormatURI) {
-	this.sourceFormatURI = sourceFormatURI;
+    void setInputFormat(URI inputFormatURI) {
+	this.inputFormatURI = inputFormatURI;
     }
 
     /*
@@ -131,7 +131,7 @@ class MigrationPathImpl implements MigrationPath {
      *            a map containing a paring of temp. file labels and optionally
      *            a file name to replace the current internal map.
      */
-    public void setTempFilesDeclarations(
+    void setTempFilesDeclarations(
 	    Map<String, String> tempFileDeclarations) {
 
 	tempFiles = tempFileDeclarations;
@@ -149,7 +149,7 @@ class MigrationPathImpl implements MigrationPath {
      *            a map containing a paring of temp. file labels and optionally
      *            a file name to be added to the internal map.
      */
-    public void addTempFilesDeclarations(
+    void addTempFilesDeclarations(
 	    Map<String, String> tempFileDeclarations) {
 
 	tempFiles.putAll(tempFileDeclarations);
@@ -173,7 +173,7 @@ class MigrationPathImpl implements MigrationPath {
      *         may also indicate that <code>label</code> was actually associated
      *         with <code>null</code>.
      */
-    public String addTempFilesDeclaration(String label, String filename) {
+    String addTempFilesDeclaration(String label, String filename) {
 
 	return tempFiles.put(label, filename);
     }
@@ -238,7 +238,7 @@ class MigrationPathImpl implements MigrationPath {
      *            passed on to the {@link #getCommandLine} method to get the
      *            actual command to execute.
      */
-    public void setToolParameters(Collection<Parameter> toolParameters) {
+    void setToolParameters(Collection<Parameter> toolParameters) {
 	parameters = new HashMap<String, Parameter>();
 
 	for (Parameter parameter : toolParameters) {
@@ -273,7 +273,7 @@ class MigrationPathImpl implements MigrationPath {
 
     public String toString() {
 
-	return "MigrationPathImpl: " + sourceFormatURI + " -> "
-		+ destinationFormatURI + " Command line: " + commandLine;
+	return "MigrationPathImpl: " + inputFormatURI + " -> "
+		+ outputFormatURI + " Command line: " + commandLine;
     }
 }

@@ -30,10 +30,18 @@ import eu.planets_project.services.datatypes.Parameter.Builder;
  * 
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class DBMigrationPathFactory implements MigrationPathFactory {
+class DBMigrationPathFactory implements MigrationPathFactory {
 
+    /**
+     * <code>XPathFactory</code> instance used through out the code of this
+     * factory.
+     */
     private final XPathFactory xPathFactory;
 
+    /**
+     * <code>Document</code> containing the XML configuration file for the
+     * migration tool service using the generic wrapper framework.
+     */
     private Document currentPathConfiguration;
 
     /**
@@ -46,7 +54,7 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
      *            <code>Document</code> containing the description of all the
      *            migration paths that can be produced.
      */
-    public DBMigrationPathFactory(Document pathConfiguration) {
+    DBMigrationPathFactory(Document pathConfiguration) {
 	xPathFactory = XPathFactory.newInstance();
 	currentPathConfiguration = pathConfiguration;
     }
@@ -75,8 +83,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	try {
 	    final XPath pathsXPath = xPathFactory.newXPath();
 	    final NodeList pathsNode = (NodeList) pathsXPath.evaluate(
-		    ConfigurationFileTagsV1.PATH_ELEMENT_XPATH, currentPathConfiguration,
-		    XPathConstants.NODESET);
+		    ConfigurationFileTagsV1.PATH_ELEMENT_XPATH,
+		    currentPathConfiguration, XPathConstants.NODESET);
 
 	    for (int nodeIndex = 0; nodeIndex < pathsNode.getLength(); nodeIndex++) {
 		final Node currentPathNode = pathsNode.item(nodeIndex);
@@ -156,8 +164,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	for (URI sourceFormatURI : sourceFormatURIs) {
 	    MigrationPathImpl newPath = new MigrationPathImpl();
 
-	    newPath.setSourceFormat(sourceFormatURI);
-	    newPath.setDestinationFormat(destinationFormatURI);
+	    newPath.setInputFormat(sourceFormatURI);
+	    newPath.setOutputFormat(destinationFormatURI);
 	    newPath.setCommandLine(commandLine);
 	    newPath.setTempFilesDeclarations(tempFileDeclarations);
 	    newPath.setToolParameters(toolParameters);
@@ -179,7 +187,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 	try {
 	    final Node pipedNode = (Node) pathsXPath.evaluate(
-		    toolIOProfileElementName + "/" + ConfigurationFileTagsV1.PIPED_ELEMENT, pathNode,
+		    toolIOProfileElementName + "/"
+			    + ConfigurationFileTagsV1.PIPED_ELEMENT, pathNode,
 		    XPathConstants.NODE);
 
 	    if (pipedNode != null) {
@@ -252,7 +261,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	    }
 
 	    final String defaultAttributeValue = getAttributeValue(
-		    elementWithDefaultAttribute, ConfigurationFileTagsV1.DEFAULT_ATTRIBUTE);
+		    elementWithDefaultAttribute,
+		    ConfigurationFileTagsV1.DEFAULT_ATTRIBUTE);
 
 	    if (defaultAttributeValue.length() == 0) {
 		throw new MigrationPathConfigException(
@@ -278,7 +288,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 	try {
 	    final NodeList presetNodes = (NodeList) pathsXPath.evaluate(
-		    presetsElementName + "/" + ConfigurationFileTagsV1.PRESET_ELEMENT, pathNode,
+		    presetsElementName + "/"
+			    + ConfigurationFileTagsV1.PRESET_ELEMENT, pathNode,
 		    XPathConstants.NODESET);
 
 	    ToolPresets toolPresets = null;
@@ -287,7 +298,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 		final Node presetNode = presetNodes.item(presetIndex);
 
-		final String presetName = getAttributeValue(presetNode, ConfigurationFileTagsV1.NAME_ATTRIBUTE);
+		final String presetName = getAttributeValue(presetNode,
+			ConfigurationFileTagsV1.NAME_ATTRIBUTE);
 		if (presetName.length() == 0) {
 		    throw new MigrationPathConfigException(
 			    "Empty \"name\" attribute declared in node: "
@@ -298,7 +310,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 			ConfigurationFileTagsV1.DEFAULT_ATTRIBUTE);
 
 		final Node descriptionNode = (Node) pathsXPath.evaluate(
-			ConfigurationFileTagsV1.DESCRIPTION_ELEMENT, presetNode, XPathConstants.NODE);
+			ConfigurationFileTagsV1.DESCRIPTION_ELEMENT,
+			presetNode, XPathConstants.NODE);
 
 		final String description = descriptionNode.getTextContent();
 
@@ -338,7 +351,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 	try {
 	    final NodeList presetSettingNodes = (NodeList) pathsXPath.evaluate(
-		    ConfigurationFileTagsV1.SETTINGS_ELEMENT, presetNode, XPathConstants.NODESET);
+		    ConfigurationFileTagsV1.SETTINGS_ELEMENT, presetNode,
+		    XPathConstants.NODESET);
 
 	    for (int settingsIndex = 0; settingsIndex < presetSettingNodes
 		    .getLength(); settingsIndex++) {
@@ -358,7 +372,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 		Collection<Parameter> parameters = getSettingsParameters(settingsNode);
 
 		final Node descriptionNode = (Node) pathsXPath.evaluate(
-			ConfigurationFileTagsV1.DESCRIPTION_ELEMENT, settingsNode, XPathConstants.NODE);
+			ConfigurationFileTagsV1.DESCRIPTION_ELEMENT,
+			settingsNode, XPathConstants.NODE);
 
 		final String description = descriptionNode.getTextContent();
 
@@ -387,7 +402,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 	try {
 	    final NodeList parameterNodes = (NodeList) pathsXPath.evaluate(
-		    nameOfElementContainingParameters + "/" + ConfigurationFileTagsV1.PARAMETER_ELEMENT,
+		    nameOfElementContainingParameters + "/"
+			    + ConfigurationFileTagsV1.PARAMETER_ELEMENT,
 		    pathNode, XPathConstants.NODESET);
 
 	    for (int parameterIndex = 0; parameterIndex < parameterNodes
@@ -404,7 +420,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 		}
 
 		final Node descriptionNode = (Node) pathsXPath.evaluate(
-			ConfigurationFileTagsV1.DESCRIPTION_ELEMENT, parameterNode, XPathConstants.NODE);
+			ConfigurationFileTagsV1.DESCRIPTION_ELEMENT,
+			parameterNode, XPathConstants.NODE);
 
 		String description = null;
 		if (descriptionNode != null) {
@@ -437,7 +454,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 	try {
 	    final NodeList parameterNodes = (NodeList) pathsXPath.evaluate(
-		    ConfigurationFileTagsV1.PARAMETER_ELEMENT, settingsNode, XPathConstants.NODESET);
+		    ConfigurationFileTagsV1.PARAMETER_ELEMENT, settingsNode,
+		    XPathConstants.NODESET);
 
 	    for (int parameterIndex = 0; parameterIndex < parameterNodes
 		    .getLength(); parameterIndex++) {
@@ -494,8 +512,9 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 	try {
 	    final NodeList tempFileNodes = (NodeList) pathsXPath.evaluate(
-		    tempFilesElementName + "/" + ConfigurationFileTagsV1.TEMPFILE_ELEMENT, pathNode,
-		    XPathConstants.NODESET);
+		    tempFilesElementName + "/"
+			    + ConfigurationFileTagsV1.TEMPFILE_ELEMENT,
+		    pathNode, XPathConstants.NODESET);
 
 	    for (int tempfileIndex = 0; tempfileIndex < tempFileNodes
 		    .getLength(); tempfileIndex++) {
@@ -513,7 +532,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 		String tempFileName = null;
 		try {
-		    tempFileName = getAttributeValue(tempfileNode, ConfigurationFileTagsV1.NAME_ATTRIBUTE);
+		    tempFileName = getAttributeValue(tempfileNode,
+			    ConfigurationFileTagsV1.NAME_ATTRIBUTE);
 		} catch (MigrationPathConfigException mpce) {
 		    // This can safely be to ignored. The name attribute is
 		    // optional.
@@ -556,8 +576,9 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 	try {
 	    final Node commandNode = (Node) pathsXPath.evaluate(
-		    commandLineElementName + "/" +ConfigurationFileTagsV1.COMMAND_ELEMENT, pathNode,
-		    XPathConstants.NODE);
+		    commandLineElementName + "/"
+			    + ConfigurationFileTagsV1.COMMAND_ELEMENT,
+		    pathNode, XPathConstants.NODE);
 
 	    final String command = commandNode.getTextContent().trim();
 
@@ -568,9 +589,12 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 				+ pathNode.getNodeName() + "' element.");
 	    }
 
-	    final NodeList parameterNodes = (NodeList) pathsXPath.evaluate(
-		    commandLineElementName + "/" + ConfigurationFileTagsV1.COMMANDPARAMETER_ELEMENT_XPATH,
-		    pathNode, XPathConstants.NODESET);
+	    final NodeList parameterNodes = (NodeList) pathsXPath
+		    .evaluate(
+			    commandLineElementName
+				    + "/"
+				    + ConfigurationFileTagsV1.COMMANDPARAMETER_ELEMENT_XPATH,
+			    pathNode, XPathConstants.NODESET);
 
 	    final ArrayList<String> commandLineParameters = new ArrayList<String>();
 	    for (int parameterIndex = 0; parameterIndex < parameterNodes
@@ -623,7 +647,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	final XPath pathsXPath = xPathFactory.newXPath();
 	try {
 	    final NodeList uriNodes = (NodeList) pathsXPath.evaluate(
-		    uriListElementName + "/" + ConfigurationFileTagsV1.URI_ELEMENT, pathNode,
+		    uriListElementName + "/"
+			    + ConfigurationFileTagsV1.URI_ELEMENT, pathNode,
 		    XPathConstants.NODESET);
 
 	    final List<URI> uriList = new ArrayList<URI>();
@@ -631,9 +656,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	    for (int uriIndex = 0; uriIndex < uriNodes.getLength(); uriIndex++) {
 
 		final Node uriNode = uriNodes.item(uriIndex);
-		uriList
-			.add(new URI(
-				getAttributeValue(uriNode, ConfigurationFileTagsV1.VALUE_ATTRIBUTE)));
+		uriList.add(new URI(getAttributeValue(uriNode,
+			ConfigurationFileTagsV1.VALUE_ATTRIBUTE)));
 	    }
 
 	    if (uriList.isEmpty()) {
@@ -702,9 +726,9 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 	try {
 	    final XPath pathsXPath = xPathFactory.newXPath();
 
-	    final Node serviceWrappingNode = (Node) pathsXPath
-		    .evaluate(ConfigurationFileTagsV1.CONFIGURATION_ROOT_ELEMENT_XPATH, pathConfiguration,
-			    XPathConstants.NODE);
+	    final Node serviceWrappingNode = (Node) pathsXPath.evaluate(
+		    ConfigurationFileTagsV1.CONFIGURATION_ROOT_ELEMENT_XPATH,
+		    pathConfiguration, XPathConstants.NODE);
 	    final Node versionNode = serviceWrappingNode.getAttributes()
 		    .getNamedItem(ConfigurationFileTagsV1.VERSION_ATTRIBUTE);
 

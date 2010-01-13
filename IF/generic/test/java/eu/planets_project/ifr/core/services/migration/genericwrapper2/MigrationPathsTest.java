@@ -57,19 +57,19 @@ public class MigrationPathsTest {
     @Test
     public void testGetMigrationPath() throws Exception {
 
-        URI sourceFormat = new URI("info:test/lowercase");
-        URI destinationFormat = new URI("info:test/uppercase");
-        migrationPathsToTest.getMigrationPath(sourceFormat, destinationFormat);
+        URI inputFormat = new URI("info:test/lowercase");
+        URI outputFormat = new URI("info:test/uppercase");
+        migrationPathsToTest.getMigrationPath(inputFormat, outputFormat);
 
         // Verify that the opposite path does not exist in the configuration.
-        genericGetInstanceFailCheck(destinationFormat, sourceFormat);
+        genericGetInstanceFailCheck(outputFormat, inputFormat);
 
-        sourceFormat = new URI("info:test/foo");
-        destinationFormat = new URI("info:test/bar");
-        migrationPathsToTest.getMigrationPath(sourceFormat, destinationFormat);
+        inputFormat = new URI("info:test/foo");
+        outputFormat = new URI("info:test/bar");
+        migrationPathsToTest.getMigrationPath(inputFormat, outputFormat);
 
         // Verify that the opposite path does not exist in the configuration.
-        genericGetInstanceFailCheck(destinationFormat, sourceFormat);
+        genericGetInstanceFailCheck(outputFormat, inputFormat);
     }
 
     /**
@@ -83,21 +83,21 @@ public class MigrationPathsTest {
     @Test
     public void testMigrationPaths() throws Exception {
 
-        final URI sourceFormatURI = new URI("info:test/lowercase");
-        final URI destinationFormatURI = new URI("info:test/uppercase");
+        final URI inputFormatURI = new URI("info:test/lowercase");
+        final URI outputFormatURI = new URI("info:test/uppercase");
 
         MigrationPath migrationPath = migrationPathsToTest.getMigrationPath(
-                sourceFormatURI, destinationFormatURI);
+                inputFormatURI, outputFormatURI);
         Assert
                 .assertEquals(
-                        "The source format of the obtained migration path is incorrect.",
-                        sourceFormatURI, migrationPath.getSourceFormat());
+                        "The input format of the obtained migration path is incorrect.",
+                        inputFormatURI, migrationPath.getInputFormat());
 
         Assert
                 .assertEquals(
-                        "The destination format of the obtained migration path is incorrect.",
-                        destinationFormatURI, migrationPath
-                                .getDestinationFormat());
+                        "The output format of the obtained migration path is incorrect.",
+                        outputFormatURI, migrationPath
+                                .getOutputFormat());
     }
 
     /**
@@ -106,24 +106,24 @@ public class MigrationPathsTest {
      * get a <code>CliMigrationPath</code> instance for a path that does not
      * exist in the configuration.
      * 
-     * @param sourceFormat
-     *            <code>URI</code> identifying the desired source format of the
+     * @param inputFormat
+     *            <code>URI</code> identifying the desired input format of the
      *            path.
-     * @param destinationFormat
-     *            <code>URI</code> identifying the desired destination format of
+     * @param outputFormat
+     *            <code>URI</code> identifying the desired output format of
      *            the path.
      */
-    private void genericGetInstanceFailCheck(URI sourceFormat,
-            URI destinationFormat) {
+    private void genericGetInstanceFailCheck(URI inputFormat,
+            URI outputFormat) {
         try {
             // Just trash the return value, it is unimportant.
-            migrationPathsToTest.getMigrationPath(sourceFormat,
-                    destinationFormat);
+            migrationPathsToTest.getMigrationPath(inputFormat,
+                    outputFormat);
             Assert
-                    .fail("Did not expect to find a migration path for source URI: "
-                            + sourceFormat
-                            + " and destination URI: "
-                            + destinationFormat);
+                    .fail("Did not expect to find a migration path for input URI: "
+                            + inputFormat
+                            + " and output URI: "
+                            + outputFormat);
         } catch (MigrationException me) {
             // Ignore this exception. It was the expected outcome of the test.
         }

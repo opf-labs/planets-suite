@@ -3,7 +3,6 @@
  */
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

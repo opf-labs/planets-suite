@@ -12,7 +12,7 @@ import eu.planets_project.services.datatypes.Parameter;
  * 
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public interface MigrationPath {
+interface MigrationPath {
 
     /**
      * Get the input profile for the migration tool which contains information
@@ -56,20 +56,20 @@ public interface MigrationPath {
     CommandLine getCommandLine();
 
     /**
-     * Get the destination format <code>URI</code> of this migration path.
+     * Get the output format <code>URI</code> of this migration path.
      * 
-     * @return <code>URI</code> identifying the destination format of this
+     * @return <code>URI</code> identifying the output format of this
      *         migration path.
      */
-    URI getDestinationFormat();
+    URI getOutputFormat();
 
     /**
-     * Get the source format <code>URI</code> of this migration path.
+     * Get the input format <code>URI</code> of this migration path.
      * 
-     * @return <code>URI</code> identifying the source format of this migration
+     * @return <code>URI</code> identifying the input format of this migration
      *         path.
      */
-    URI getSourceFormat();
+    URI getInputFormat();
 
     /**
      * Get a map defining the relationship between the identifiers in the
@@ -104,14 +104,5 @@ public interface MigrationPath {
      *         presets that can be applied with the tool used by this migration
      *         path.
      */
-    public ToolPresets getToolPresets();
-
-    // TODO: Consider killing this method. It makes this interface
-    // swiss-armyknifish
-    /*
-     * FIXME! KILL, KILL. KILL it would be more suitable to put this in the
-     * generic wrapper class.
-     * eu.planets_project.services.datatypes.MigrationPath getAsPlanetsPath();
-     */
-
+    ToolPresets getToolPresets();
 }

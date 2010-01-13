@@ -7,7 +7,7 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper2;
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  * 
  */
-public interface ToolIOProfile {
+interface ToolIOProfile {
 
     /**
      * Test method for determining whether the tool expects the object to be

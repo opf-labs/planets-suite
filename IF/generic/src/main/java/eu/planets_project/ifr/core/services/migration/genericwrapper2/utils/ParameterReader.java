@@ -1,7 +1,4 @@
-/**
- * 
- */
-package eu.planets_project.ifr.core.services.migration.genericwrapper2;
+package eu.planets_project.ifr.core.services.migration.genericwrapper2.utils;
 
 import java.util.HashMap;
 import java.util.List;

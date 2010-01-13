@@ -1,6 +1,3 @@
-/**
- * 
- */
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import java.util.Collection;
@@ -8,15 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * FIXME! Doc!
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
- * 
  */
-public class ToolPresets {
+class ToolPresets {
 
     private Map<String, Preset> presets;
     private String defaultPresetID;
 
-    public ToolPresets() {
+    ToolPresets() {
 	presets = new HashMap<String, Preset>();
     }
 
@@ -37,11 +34,12 @@ public class ToolPresets {
      * @return <code>Collection</code> containing the names/IDs of all the
      *         available preset categories.
      */
-    public Collection<String> getToolPresetNames() {
+    Collection<String> getToolPresetNames() {
 	return presets.keySet();
     }
 
-    public Collection<Preset> getAllToolPresets() {
+    //FIXME! Doc!
+    Collection<Preset> getAllToolPresets() {
 	return presets.values();
     }
 
@@ -52,11 +50,12 @@ public class ToolPresets {
      * @param defaultPreset
      *            the ID of the default preset category.
      */
-    public void setDefaultPresetName(String defaultPreset) {
+    void setDefaultPresetName(String defaultPreset) {
 	this.defaultPresetID = defaultPreset;
     }
 
     /**
+     * FIXME! Fix doc!
      * Set the presets for this <code>MigrationPathImpl</code> instance.
      * 
      * @param toolPresets
