@@ -1,8 +1,6 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import junit.framework.Assert;
 

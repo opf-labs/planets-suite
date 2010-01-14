@@ -58,7 +58,7 @@ public class GenericMigrationWrapper {
 
 	this.toolIdentifier = toolIdentifier; // TODO: Where should we use this
 	// information? Logging?
-	// ServiceDescription?
+	// ServiceDescription? Should it be stored in an instance variable?
 	tempFileFactory = new J2EETempFileFactory(toolIdentifier);
 
 	envrionmentParameters = ParameterBuilder.buid(environmentSettings);
