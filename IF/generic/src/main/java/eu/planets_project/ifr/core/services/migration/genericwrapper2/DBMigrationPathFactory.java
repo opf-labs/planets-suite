@@ -23,10 +23,8 @@ import eu.planets_project.services.datatypes.Parameter.Builder;
 
 /**
  * Document based factory for construction and initialisation of
- * <code>MigrationPaths</code> objects based on a configuration described in a
- * <code>Document<code>.
- *
- * TODO: The documentation of this class still needs some tender love.
+ * <code>MigrationPaths</code> objects containing <code>MigrationPath</code>
+ * instances created from a generic wrapper configuration <code>Document<code>.
  * 
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
@@ -42,106 +40,117 @@ class DBMigrationPathFactory implements MigrationPathFactory {
      * <code>Document</code> containing the XML configuration file for the
      * migration tool service using the generic wrapper framework.
      */
-    private Document currentPathConfiguration;
+    private Document genericWrapperConfiguration;
 
     /**
      * Create a <code>DBMigrationPathFactory</code> which can produce
-     * <code>MigrationPath</code> objects based on the <code>Document</code>
-     * specified by <code>pathConfiguration</code> containing the configuration
-     * of the migration paths that can be produced.
+     * <code>MigrationPath</code> objects based on the migration path
+     * descriptions in the <code>Document</code> specified by
+     * <code>genericWrapperConfiguration</code>.
      * 
-     * @param pathConfiguration
-     *            <code>Document</code> containing the description of all the
-     *            migration paths that can be produced.
+     * @param genericWrapperConfiguration
+     *            a generic wrapper configuration <code>Document</code> which
+     *            (among other things) contains descriptions of all the
+     *            migration paths to produce.
      */
-    DBMigrationPathFactory(Document pathConfiguration) {
+    DBMigrationPathFactory(Document genericWrapperConfiguration) {
 	xPathFactory = XPathFactory.newInstance();
-	currentPathConfiguration = pathConfiguration;
+	this.genericWrapperConfiguration = genericWrapperConfiguration;
     }
 
     // TODO: We should create a schema for the configuration file and refer to
     // it in this javadoc. Also, this factory should check the specified config
     // file against the schema. The config file is currently not validated.
     /**
-     * Create a <code>CliMigrationPaths</code> object containing all the
-     * migration paths described by the <code>pathConfiguration</code> document.
+     * Create a <code>MigrationPaths</code> instance containing all the
+     * migration paths described by the generic wrapper configuration document
+     * provided at construction time of this factory.
      * 
-     * @return A <code>CliMigrationPaths</code> object containing all the paths
-     *         configured in the configuration document specified.
+     * @return A <code>MigrationPaths</code> instance containing all the
+     *         migration paths produced by this factory.
      * @throws MigrationPathConfigException
-     *             if the contents of <code>pathConfiguration</code> is invalid.
+     *             if any problems are encountered while parsing the generic
+     *             wrapper configuration and producing
+     *             <code>MigrationPath</code> instances.
      */
     public MigrationPaths getAllMigrationPaths()
 	    throws MigrationPathConfigException {
 
 	// First, make sure that the version of the configuration document is
 	// compatible with this factory.
-	verifyConfigurationVersion(currentPathConfiguration);
+	verifyConfigurationVersion(genericWrapperConfiguration);
 
-	MigrationPaths migrationPaths = new MigrationPaths();
+	final MigrationPaths migrationPaths = new MigrationPaths();
 
 	try {
+	    // Get the XML element containing the migration path configurations.
 	    final XPath pathsXPath = xPathFactory.newXPath();
-	    final NodeList pathsNode = (NodeList) pathsXPath.evaluate(
+	    final NodeList pathNodes = (NodeList) pathsXPath.evaluate(
 		    ConfigurationFileTagsV1.PATH_ELEMENT_XPATH,
-		    currentPathConfiguration, XPathConstants.NODESET);
+		    genericWrapperConfiguration, XPathConstants.NODESET);
 
-	    for (int nodeIndex = 0; nodeIndex < pathsNode.getLength(); nodeIndex++) {
-		final Node currentPathNode = pathsNode.item(nodeIndex);
+	    // Process each of the migration path configurations.
+	    for (int nodeIndex = 0; nodeIndex < pathNodes.getLength(); nodeIndex++) {
+		final Node currentPathNode = pathNodes.item(nodeIndex);
 
+		// Collect all the migration paths constructed from the
+		// configuration - one migration path configuration may describe
+		// multiple migration paths.
 		migrationPaths
-			.addAll(createCliMigrationPathInstances(currentPathNode));
+			.addAll(createMigrationPathInstances(currentPathNode));
 	    }
 	    return migrationPaths;
 	} catch (Exception exception) {
 	    throw new MigrationPathConfigException(
-		    "Failed parsing migration path configuration document.",
-		    exception);
+		    "Failed parsing the migration path configurations in the "
+			    + "configuration document.", exception);
 	}
     }
 
     /**
-     * Create a list containing a <code>CliMigrationPath</code> instance for
-     * each entry in the <code>sourceFormatURI</code> list
+     * Create a list containing a <code>MigrationPath</code> instance for each
+     * format <code>URI</code> entry in the <code>&lt;inputformats&gt;</code>
+     * element of the path configuration provided by <code>pathNode</code>.
      * 
-     * @param pathTemplate
-     *            <code>CliMigrationPath</code> instance to use as template for
-     *            the created paths.
-     * @param sourceFomatURIs
-     *            List of <code>URI</code>s to use as source <code>URI</code>
-     *            for the created <code>CliMigrationPath</code> instances.
-     * @param destinationFormatURI
-     *            <code>URI</code> to use as the destination <code>URI</code>
-     *            for the created <code>CliMigrationPath</code> instances.
-     * @return a list of <code>CliMigrationPath</code> instances containing an
-     *         instance per entry in the <code>sourceFormatURI</code> list.
-     * @throw MigrationPathConfigException if the migration paths could not be
-     *        instantiated.
+     * @param pathNode
+     *            a <code>Document Node</code> containing a
+     *            <code>&lt;path&gt;</code> element from the configuration
+     *            document.
+     * @return a list of <code>MigrationPath</code> instances created from the
+     *         path configuration.
+     * @throw MigrationPathConfigException if any problems are encountered while
+     *        parsing the configuration and creating the
+     *        <code>MigrationPath</code> instances.
      */
-    private List<MigrationPath> createCliMigrationPathInstances(Node pathNode)
+    private List<MigrationPath> createMigrationPathInstances(Node pathNode)
 	    throws MigrationPathConfigException {
 
-	// Get input formats
-	final List<URI> sourceFormatURIs = getURIList(pathNode, "inputformats");
+	// Get the input formats
+	final List<URI> inputFormatURIs = getURIList(pathNode,
+		ConfigurationFileTagsV1.INPUT_FORMATS_ELEMENT);
 
-	// Get output format
-	final List<URI> destinationFormatURIs = getURIList(pathNode,
-		"outputformat");
+	// Get the output format
+	final List<URI> outputFormatURIs = getURIList(pathNode,
+		ConfigurationFileTagsV1.OUTPUT_FORMAT_ELEMENT);
 
-	if (destinationFormatURIs.size() > 1) {
-	    throw new MigrationPathConfigException(
-		    "The 'outputformat' element of a 'path' element must contain exactly one 'URI' element and not "
-			    + destinationFormatURIs.size() + " 'URI' elements.");
+	if (outputFormatURIs.size() != 1) {
+	    throw new MigrationPathConfigException(String.format(
+		    "The '%s' element of a '%s' element must contain exactly "
+			    + "one format URI element and not "
+			    + outputFormatURIs.size() + " elements.",
+		    ConfigurationFileTagsV1.OUTPUT_FORMAT_ELEMENT, pathNode
+			    .getNodeName()));
 	}
 
-	final URI destinationFormatURI = destinationFormatURIs.get(0);
+	final URI destinationFormatURI = outputFormatURIs.get(0);
 
 	// Get command line and command line parameters
-	final CommandLine commandLine = getCommandLine(pathNode, "commandline");
+	final CommandLine commandLine = getCommandLine(pathNode,
+		ConfigurationFileTagsV1.COMMAND_LINE_ELEMENT);
 
-	// Get temp files
+	// Get a map of temporary file names and their associated label name.
 	final Map<String, String> tempFileDeclarations = getTempFileDeclarations(
-		pathNode, "tempfiles");
+		pathNode, ConfigurationFileTagsV1.TEMPFILES_ELEMENT);
 
 	// Get tool input information
 	final ToolIOProfile toolInputProfile = getToolIOProfile(pathNode,
@@ -156,15 +165,15 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 		pathNode, ConfigurationFileTagsV1.TOOLPARAMETERS_ELEMENT);
 
 	// Get tool presets
-	ToolPresets toolPresets = getToolPresets(pathNode, "toolpresets");
+	ToolPresets toolPresets = getToolPresets(pathNode,
+		ConfigurationFileTagsV1.TOOL_PRESETS_ELEMENT);
 
-	// for each input format {create a path element}.
-
+	// Create a MigrationPath instance for each input format URI.
 	final List<MigrationPath> paths = new ArrayList<MigrationPath>();
-	for (URI sourceFormatURI : sourceFormatURIs) {
+	for (URI inputFormatURI : inputFormatURIs) {
 	    MigrationPathImpl newPath = new MigrationPathImpl();
 
-	    newPath.setInputFormat(sourceFormatURI);
+	    newPath.setInputFormat(inputFormatURI);
 	    newPath.setOutputFormat(destinationFormatURI);
 	    newPath.setCommandLine(commandLine);
 	    newPath.setTempFilesDeclarations(tempFileDeclarations);
@@ -178,6 +187,25 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 	return paths;
     }
 
+    /**
+     * Create a <code>ToolIOProfile</code> instance from the information in the
+     * XML element with the name specified by
+     * <code>toolIOProfileElementName</code> in the <code>pathNode</code>
+     * element.
+     * 
+     * @param pathNode
+     *            an XML <code>Document Node</code> containing an element with
+     *            the name specified by <code>toolIOProfileElementName</code>.
+     * @param toolIOProfileElementName
+     *            the name of the element to get the tool IO profile information
+     *            from.
+     * @return a <code>ToolIOProfile</code> instance created from the
+     *         information of the XML element identified by
+     *         <code>toolIOProfileElementName</code>.
+     * @throws MigrationPathConfigException
+     *             if any problems are encountered while parsing the XML element
+     *             and creating the <code>ToolIOProfile</code> instance.
+     */
     private ToolIOProfile getToolIOProfile(Node pathNode,
 	    String toolIOProfileElementName)
 	    throws MigrationPathConfigException {
@@ -195,30 +223,31 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 		toolIOProfile.setUsePipedIO(true);
 	    }
 
-	    Map<String, String> tempFileMapping = getTempFileDeclarations(
+	    final Map<String, String> tempFileMapping = getTempFileDeclarations(
 		    pathNode, toolIOProfileElementName);
 
 	    if (!tempFileMapping.isEmpty() && toolIOProfile.usePipedIO()) {
 		throw new MigrationPathConfigException(
-			"Both piped IO and temporary file is specified in the tool IO profile. Only one type may be specified in the '"
+			"Both piped IO and temporary file is specified in the "
+				+ "tool IO profile. Only one type may be "
+				+ "specified in the '"
 				+ toolIOProfileElementName
-				+ "' element of the '"
-				+ pathNode.getNodeName()
+				+ "' element of the '" + pathNode.getNodeName()
 				+ "' element.");
 	    }
 
 	    if (tempFileMapping.isEmpty() && !toolIOProfile.usePipedIO()) {
 		throw new MigrationPathConfigException(
-			"Either piped IO or a temporary file must be specified in the '"
-				+ toolIOProfileElementName
+			"Either piped IO or a temporary file must be specified"
+				+ " in the '" + toolIOProfileElementName
 				+ "' element of the '" + pathNode.getNodeName()
 				+ "' element.");
 	    }
 
 	    if (tempFileMapping.size() > 1) {
 		throw new MigrationPathConfigException(
-			"Only one temporary file may be specified in the tool IO profile. "
-				+ tempFileMapping.size()
+			"Only one temporary file may be specified in the tool"
+				+ " IO profile. " + tempFileMapping.size()
 				+ " were specified in the '"
 				+ toolIOProfileElementName
 				+ "' element of the '" + pathNode.getNodeName()
@@ -226,6 +255,8 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 	    }
 
 	    if (!toolIOProfile.usePipedIO()) {
+		// Based on the above code, we are sure that the temp. file map
+		// contains exactly one element, thus this is OK.
 		final String tempFileLabel = tempFileMapping.keySet()
 			.iterator().next();
 		toolIOProfile.setCommandLineFileLabel(tempFileLabel);
@@ -234,14 +265,16 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 	    }
 
 	    return toolIOProfile;
-	} catch (XPathExpressionException xpee) {
+	} catch (XPathExpressionException xPathExpressionException) {
 	    throw new MigrationPathConfigException(
 		    "Failed reading tool IO profile information from the '"
 			    + toolIOProfileElementName + "' element in the '"
-			    + pathNode.getNodeName() + "' element.", xpee);
+			    + pathNode.getNodeName() + "' element.",
+		    xPathExpressionException);
 	}
     }
 
+    // TODO: Doc - MARK
     private String getDefaultAttributeValue(Node pathNode,
 	    String nameOfElementWithDefaultAttribute)
 	    throws MigrationPathConfigException {
@@ -265,18 +298,21 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 		    ConfigurationFileTagsV1.DEFAULT_ATTRIBUTE);
 
 	    if (defaultAttributeValue.length() == 0) {
-		throw new MigrationPathConfigException(
-			"Empty \"default\" attribute declared in node: "
-				+ elementWithDefaultAttribute.getNodeName());
+		throw new MigrationPathConfigException(String.format(
+			"Empty '%s' attribute declared in node: ",
+			ConfigurationFileTagsV1.DEFAULT_ATTRIBUTE)
+			+ elementWithDefaultAttribute.getNodeName());
 	    }
 
 	    return defaultAttributeValue;
-	} catch (XPathExpressionException xpee) {
-	    throw new MigrationPathConfigException(
-		    "Failed reading the 'default' attribute of the '"
-			    + nameOfElementWithDefaultAttribute
-			    + "' element in the '" + pathNode.getNodeName()
-			    + "' element.", xpee);
+	} catch (XPathExpressionException xPathExpressionException) {
+	    throw new MigrationPathConfigException(String.format(
+		    "Failed reading the '%s' attribute of the '",
+		    ConfigurationFileTagsV1.DEFAULT_ATTRIBUTE)
+		    + nameOfElementWithDefaultAttribute
+		    + "' element in the '"
+		    + pathNode.getNodeName() + "' element.",
+		    xPathExpressionException);
 	}
     }
 
@@ -704,6 +740,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
     }
 
     /**
+     * TODO: Revisit doc....
      * Verify that the version number of the configuration document
      * <code>pathConfiguration</code> is compatible with this factory. The
      * validation is a case-insensitive comparison between the constant

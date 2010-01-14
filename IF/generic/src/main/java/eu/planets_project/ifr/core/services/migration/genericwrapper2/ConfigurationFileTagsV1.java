@@ -22,10 +22,10 @@ class ConfigurationFileTagsV1 {
     static final String SERVICE_DESCRIPTION_ELEMENT_XPATH = "//serviceWrapping/serviceDescription";
 
     /**
-     * The XPath to a property element in a properties element. 
+     * The XPath to a property element in a properties element.
      */
     static final String PROPERTIES_PROPERTY_XPATH = "properties/property";
-    
+
     /**
      * The name of a version element.
      */
@@ -50,7 +50,7 @@ class ConfigurationFileTagsV1 {
      * The name of a value element.
      */
     static final String VALUE_ELEMENT = "value";
-    
+
     /**
      * The name of a logo element.
      */
@@ -75,7 +75,7 @@ class ConfigurationFileTagsV1 {
      * The name of a "home page" element.
      */
     static final String HOME_PAGE_ELEMENT = "homepage";
-    
+
     /**
      * The name of value attributes.
      */
@@ -85,17 +85,17 @@ class ConfigurationFileTagsV1 {
      * The name of unit attributes.
      */
     static final String UNIT_ATTRIBUTE = "unit";
-    
+
     /**
      * The name of ID attributes.
      */
     static final String ID_ATTRIBUTE = "id";
-    
+
     /**
      * The name of type attributes.
      */
     static final String TYPE_ATTRIBUTE = "type";
-    
+
     /**
      * A constant describing the absolute Xpath to a "path" element in the
      * configuration file.
@@ -138,6 +138,20 @@ class ConfigurationFileTagsV1 {
     static final String CONFIGURATION_ROOT_ELEMENT_XPATH = "//serviceWrapping";
 
     /**
+     * The name of a migration path input formats element.
+     */
+    static final String INPUT_FORMATS_ELEMENT = "inputformats";
+
+    /**
+     * The name of a migration path output format element.
+     */
+    static final String OUTPUT_FORMAT_ELEMENT = "outputformat";
+
+    /**
+     * The name of a command line element.
+     */
+    static final String COMMAND_LINE_ELEMENT = "commandline";
+    /**
      * The name of a URI element.
      */
     static final String URI_ELEMENT = "uri";
@@ -157,6 +171,12 @@ class ConfigurationFileTagsV1 {
      * The name of a label attribute.
      */
     static final String LABEL_ATTRIBUTE = "label";
+
+    /**
+     * The name of a temp. files element, which may contain a number of temp
+     * file elements.
+     */
+    static final String TEMPFILES_ELEMENT = "tempfiles";
 
     /**
      * The name of temp. file elements.
@@ -188,6 +208,10 @@ class ConfigurationFileTagsV1 {
      */
     static final String NAME_ATTRIBUTE = "name";
 
+    /**
+     * The name of a toolpresets element, containing preset elements.
+     */
+    static final String TOOL_PRESETS_ELEMENT = "toolpresets";
     /**
      * The name of "preset" elements.
      */

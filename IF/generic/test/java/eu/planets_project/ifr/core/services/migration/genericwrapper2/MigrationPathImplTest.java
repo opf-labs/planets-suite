@@ -63,7 +63,7 @@ public class MigrationPathImplTest {
 	migrationPath.addTempFilesDeclaration("myInterimFile",
 		"/random-temp-file-name");
 
-	final String executableCommandLine = migrationPath.getCommandLine().getToolParameters().get(2);
+	final String executableCommandLine = migrationPath.getCommandLine().getParameters().get(2);
 
 	final String expectedCommandLine = "cat -n /random-source-name > "
 		+ "/random-temp-file-name && tr '[:lower:]' '[:upper:]' "

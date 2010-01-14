@@ -1,70 +1,70 @@
-/**
- * 
- */
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
+ * Data carrier for a command (line) and its parameters.
  * 
+ * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
 class CommandLine {
 
+    /**
+     * An unprocessed command line string which may contain labels to be
+     * substituted with parameter values.
+     */
     private String command;
+
+    /**
+     * A list of parameters (i.e. labels) applied in the command line string.
+     * That is, the labels that must be replaced with proper values in order to
+     * make the command line string executable.
+     */
     private List<String> parameters;
 
+    /**
+     * Create a <code>CommandLine</code> instance holding a command line string
+     * which may contain labels which must be substituted with proper values in
+     * order to produce an executable command line.
+     * 
+     * @param command
+     *            a command line string which may contain labels.
+     * @param parameters
+     *            a list of parameters (i.e. labels) which must be searched for
+     *            in the command line string and replaced with proper values in
+     *            order to make i executable.
+     */
     CommandLine(String command, List<String> parameters) {
 	this.command = command;
 	this.parameters = Collections.unmodifiableList(parameters);
     }
 
+    /**
+     * Get the unprocessed command line string.
+     * 
+     * @return the command line string.
+     */
     String getCommand() {
-	return command;
+	return new String(command);
     }
 
     /**
-     * FIXME! Revisit documentation! Substitution should be handled by a utility class.
+     * Get all the parameters (i.e. labels) used in the command line string.
+     * These labels must be located in the command line string and replaced with
+     * proper values in order to make it executable.
+     * <p/>
+     * <p/>
+     * The returned <code>Parameter</code> instances have no value specified
+     * they merely serve as a check list of parameters in the command line
+     * string which must be replaced with proper values.
      * 
-     * Get the command line with the parameter identifiers substituted with the
-     * parameters specified by <code>toolParameters</code>, and any tempfiles
-     * replaces with their absolute location.
-     * 
-     * The command line should be ready to feed into the processrunner.
-     * 
-     * Note that all the temp files must have been initialised with File objects
-     * by this time, as the absolute location of these files are replaced into
-     * the command line
-     * 
-     * @param toolParameters
-     *            the parameters to the tool
-     * @return String containing the processed command line, ready for
-     *         execution.
-     * @throws MigrationException
-     *             if not all necessary parameters, or temporary files were
-     *             defined in order to substitute all the identifiers in the
-     *             command line.
+     * @return <code>List</code> containing an <code>Parameter</code> instance
+     *         for each parameter that must be defined in order be able to
+     *         produce an executable command line from the string returned by
+     *         <code>{@link getCommand()} .
      */
-//    ArrayList<String> getParameters(List<Parameter> parametersToSubstitute) {
-//	return null;
-//    }
-
-    /**
-     * FIXME! Revisit documentation....
-     * 
-     * Get all the parameters that must be initialised in order to execute the
-     * command line. The returned <code>Parameter</code> instances have no value
-     * specified, thus, their values must be initialised prior calling the
-     * {@link #getCommandLine} method to obtain the actual command line to
-     * execute.
-     * 
-     * @return <code>Collection</code> containing an <code>Parameter</code>
-     *         instance for each parameter that must be specified in order to
-     *         execute the command line of this migration path.
-     */
-    List<String> getToolParameters() {
+    List<String> getParameters() {
 	return parameters;
     }
-
 }

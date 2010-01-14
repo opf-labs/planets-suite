@@ -118,7 +118,7 @@ class PRCommandBuilder {
 	// #toolPath/myMigrationTool Making "commandPath" and "toolPath"
 	// reserved names.
 	executableCommandLine.add(commandLine.getCommand());
-	executableCommandLine.addAll(commandLine.getToolParameters());
+	executableCommandLine.addAll(commandLine.getParameters());
 
 	for (int commandFragmentIdx = 0; commandFragmentIdx < executableCommandLine
 		.size(); commandFragmentIdx++) {
@@ -357,7 +357,7 @@ class PRCommandBuilder {
 
 	final Set<String> foundIdentifiers = new HashSet<String>();
 	final List<String> commandParameterStrings = new ArrayList<String>();
-	commandParameterStrings.addAll(commandLine.getToolParameters());
+	commandParameterStrings.addAll(commandLine.getParameters());
 	commandParameterStrings.add(commandLine.getCommand());
 
 	for (String stringWithIdentifiers : commandParameterStrings) {
