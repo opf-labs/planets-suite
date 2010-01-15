@@ -70,10 +70,26 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
     
     
     public ExpTypeMigrate(){
+    	this.initBean();
+    }
+    
+    private void initBean(){
     	bp  = new BackendProperties();
     	expTypeWeeUtils = new ExpTypeWeeUtils(this);
     	serviceParams = new HashMap<String,Parameters>();
     }
+    
+    /**
+	 * This method is used to initialize this bean from a given experiment
+	 * i.e. initializes all parts that aren't persisted within the TB db model
+	 * but are required within that gui
+	 * @param wfConf
+	 */
+	@Override
+	public void initExpTypeBeanForExistingExperiment(){
+		this.initBean();
+		expTypeWeeUtils.setWeeWorkflowConf(this.getWeeWorkflowConf());
+	}
     
     /**
      * @return the identifyService
@@ -785,7 +801,19 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
 	
 	
 	public WorkflowConf getWeeWorkflowConf() {
-		return this.expTypeWeeUtils.getWeeWorkflowConf();
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		
+		if(!expBean.getApproved()){
+			//that's the one used when building this in 'design experiment'
+			return this.expTypeWeeUtils.getWeeWorkflowConf();
+        } 
+		if(expBean.getApproved()){
+			//that's the one after 'design experiment' has been saved
+			ExperimentExecutable expExecutable = expBean.getExperiment().getExperimentExecutable();
+	        expExecutable.getWEEWorkflowConfig();
+			return expExecutable.getWEEWorkflowConfig();
+        }
+		return null;
 	}
 
 	public void setWeeWorkflowConf(WorkflowConf wfConfig) {

@@ -49,6 +49,8 @@
 	            		<a4j:commandButton id="expandButton" value="expand" action="#{OntologyDnDBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
 	            			<f:param value="expand" name="collapsexpand"/>
 	            		</a4j:commandButton>
+	            		<a4j:status for="settings" startStyleClass="statusBusy" stopStyleClass="statusDone">
+	            		</a4j:status>
             			<br/> 		
 	            		<p>
 	            		<h:outputText value="tree-context menu (slow!): "/>
@@ -71,7 +73,7 @@
 					</a4j:region>
 
     			</rich:simpleTogglePanel>  
-  
+  				
 	            <rich:tree style="width:300px" nodeSelectListener="#{OntologyDnDBean.processSelection}" 
 	                reRender="infoPanel,selproppanel" ajaxSubmitSelection="true" ignoreDupResponses="true" eventsQueue="foo"
 	                switchType="client" id="propertytree" value="#{OntologyDnDBean.treeNode}" var="item" 
