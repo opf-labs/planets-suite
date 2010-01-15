@@ -88,11 +88,8 @@
 		<h3 class="leftcol">Server Specification</h3>
 		<div class="innertube">
 		<p class="leftcol">
-		<h:form styleClass="hidden">	
-			<h:commandLink action="server"  rendered="#{UserBean.reader}">
-				Server Specification
-			</h:commandLink>
-		</h:form>
+		<ui:include src="/WEB-INF/templates/server_spec.xhtml">
+		</ui:include>
 		</p>
 		</div>
 		
