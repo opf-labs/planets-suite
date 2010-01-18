@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -43,6 +42,7 @@ import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
+import eu.planets_project.services.datatypes.ServiceDescription.Builder;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
@@ -55,29 +55,25 @@ import eu.planets_project.services.utils.FileUtils;
 @Stateless
 @StreamingAttachment(parseEagerly = true)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-@WebService(name = MetadataExtractor.NAME, serviceName = Characterise.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
+@WebService(name = MetadataExtractor.NAME, serviceName = Characterise.NAME, targetNamespace = 
+    PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
 public final class MetadataExtractor implements Characterise {
-    /***/
     static final String NAME = "MetadataExtractor";
-    public static final String NZMEPropertyRoot = "planets:pc/nzme/";
+    static final String NZME_PROPERTY_ROOT = "planets:pc/nzme/";
 
     /**
-     * 
+     * @param name The property name
+     * @return A property URI for the given name
      */
-    public static URI makePropertyURI( String name) {
-        try {
-            URI propUri = new URI( NZMEPropertyRoot + name);
-            return propUri;
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return null;
-        }
+    static URI makePropertyURI(final String name) {
+        return URI.create(NZME_PROPERTY_ROOT + name);
     }
 
     /**
      * The optional format XCEL and parameters are ignored in this
      * implementation (you may pass null). {@inheritDoc}
-     * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject,
+     * @see eu.planets_project.services.characterise.Characterise#characterise(
+     *      eu.planets_project.services.datatypes.DigitalObject,
      *      java.lang.String, eu.planets_project.services.datatypes.Parameter)
      */
     public CharacteriseResult characterise(final DigitalObject digitalObject,
@@ -140,19 +136,20 @@ public final class MetadataExtractor implements Characterise {
             String extension = split[split.length - 1];
             inputFormats.addAll(formatRegistry.getUrisForExtension(extension));
         }
-        return new ServiceDescription.Builder(
-                "New Zealand Metadata Extractor Service", Characterise.class
-                        .getName())
-                .author("Fabian Steeg")
-                .classname(this.getClass().getName())
-                .description(
-                        "Metadata extraction service based on the Metadata Extraction Tool of the National Library of New Zealand (patched 3.4GA).")
-                .serviceProvider("The Planets Consortium")
-                .tool( Tool.create(null, "New Zealand Metadata Extractor", "3.4GA (patched)", null, "http://meta-extractor.sourceforge.net/"))
-                .furtherInfo(
-                        URI
-                                .create("http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407&atid=929202"))
-                .inputFormats(inputFormats.toArray(new URI[] {})).build();
+        Builder builder = new ServiceDescription.Builder("New Zealand Metadata Extractor Service", Characterise.class
+                .getName());
+        builder.author("Fabian Steeg");
+        builder.classname(this.getClass().getName());
+        builder.description("Metadata extraction service based on the Metadata Extraction Tool of the National "
+                + "Library of New Zealand (patched 3.4GA).");
+        builder.serviceProvider("The Planets Consortium");
+        builder.tool(Tool.create(null, "New Zealand Metadata Extractor", "3.4GA (patched)", null,
+                "http://meta-extractor.sourceforge.net/"));
+        builder.furtherInfo(URI
+                .create("http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407"
+                        + "&atid=929202"));
+        builder.inputFormats(inputFormats.toArray(new URI[] {}));
+        return builder.build();
     }
 
     /*------------------------------------------------------------------------*/
@@ -196,8 +193,10 @@ public final class MetadataExtractor implements Characterise {
          * all environments (e.g., when running locally as a test or when
          * running on a server:)
          */
-        InputStream stream = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream(type.adapter);
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(type.adapter);
+        if (stream == null) {
+            throw new IllegalStateException("Could not load adapter Jar: " + type.adapter);
+        }
         adapter = FileUtils.writeInputStreamToTmpFile(stream, "adapter", "tmp");
         List<String> props = new ArrayList<String>();
         try {
