@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:c="http://java.sun.com/jstl/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -156,7 +156,7 @@
        
 	   <c:if test="${UserBean.reader == true}">
        <dt>Endpoint</dt>
-       <dd><h:outputLink target="_blank" value="#{ServiceInspector.service.endpoint}"> @#{ServiceInspector.service.endpoint.host}</h:outputLink></dd>
+       <dd><h:outputLink target="_blank" value="#{ServiceInspector.service.endpoint}"  rendered="#{UserBean.reader}"> @#{ServiceInspector.service.endpoint.host}</h:outputLink></dd>
        </c:if>
 	   
        <dt>Active</dt>
@@ -208,13 +208,13 @@
       
       </dl>
 
-       
-      <rich:simpleTogglePanel id="rawServiceDescriptionPanel" switchType="client" label="Raw Service Description" opened="false">
+       <c:if test="${UserBean.reader == true}">
+      <rich:simpleTogglePanel id="rawServiceDescriptionPanel" switchType="client" label="Raw Service Description" opened="false" rendered="#{UserBean.reader}">
         <pre class="rawServiceDescription">
 <h:outputText value="#{ServiceInspector.service.serviceDescriptionAsXml}"/>
         </pre>
       </rich:simpleTogglePanel>
-      
+      </c:if>
      </h:panelGroup>
 </rich:panel>
 </h:panelGrid>
