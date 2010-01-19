@@ -164,6 +164,7 @@ public class ExperimentInspector {
     	ExperimentBean expBean = new ExperimentBean();
     	ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
          //a kind of fill method for the expTypeBean for the current expBean
-         exptype.initExpTypeBeanForExistingExperiment();
+    	if( exptype != null )
+    	    exptype.initExpTypeBeanForExistingExperiment();
     }
 }
