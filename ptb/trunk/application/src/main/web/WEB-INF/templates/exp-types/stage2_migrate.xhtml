@@ -16,7 +16,7 @@
     
        <h:panelGroup>
          <t:graphicImage value="/graphics/toolbar_logout.gif" rendered="#{!ExpTypeMigrate.validCurrentConfiguration}"/>
-	     <h:outputText value=" Invalid workflow configuration" rendered="#{!ExpTypeMigrate.validCurrentConfiguration}" style="color:red;"/>
+	     <h:outputText value=" Invalid workflow configuration - ensure input and output formats and a service are selected." rendered="#{!ExpTypeMigrate.validCurrentConfiguration}" style="color:red;"/>
 	     <t:graphicImage value="/graphics/state_ok.gif" rendered="#{ExpTypeMigrate.validCurrentConfiguration}"/>
 	     <h:outputText value=" Valid workflow configuration" rendered="#{ExpTypeMigrate.validCurrentConfiguration}"/>
 	     <h:panelGroup id="wfConfigPanelGroup_MigrateExpType" rendered="#{(ExpTypeMigrate.tempFileDownloadLinkForCurrentXMLConfig != null) and (ExpTypeMigrate.templateAvailableInWftRegistry)}">

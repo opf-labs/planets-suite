@@ -85,7 +85,7 @@
 			</c:if>
 			-->
 			
-			<c:if test="${page == 'browse_services'}">
+			<c:if test="${page == 'browse_services' || page == 'service_inspector' || page == 'public_browse_services' || page == 'public_service_inspector'}">
 				<li id="current">
 				<h:commandLink action="browse_services">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
@@ -93,7 +93,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'browse_services'}">
+			<c:if test="${page != 'browse_services' and page != 'service_inspector' and page != 'public_browse_services' and page != 'public_service_inspector'}">
 				<li>
 				<h:commandLink action="browse_services">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>

@@ -173,6 +173,8 @@ public class ExperimentBean {
     //output in the form of localInputFile Ref and localFileRef/String
     private Collection<Map.Entry<String,String>> outputData = new Vector<Map.Entry<String,String>>();
     
+	//private Map<String,String> evaluationData = new HashMap<String,String>();
+	
     private int currStage = ExperimentBean.PHASE_EXPERIMENTSETUP_1;
     private boolean approved = false;
     
@@ -552,6 +554,11 @@ public class ExperimentBean {
         log.debug("getting experiment input data: "+this.inputData);
         return this.inputData;
     }
+	
+    //public Map<String,String> getExperimentEvaluationData() {
+    //    log.debug("getting experiment evaluation data: "+this.evaluationData);
+    //    return this.evaluationData;
+    //}
     
     /**
      * fetches a jsf usable list of the experimentInputData values 
@@ -565,6 +572,15 @@ public class ExperimentBean {
     	}
     	return ret;
     }
+	
+    //public List<DigitalObjectBean> getExperimentEvaluationDataValues(){
+    //	List<DigitalObjectBean> ret = new ArrayList<DigitalObjectBean>();
+    //	for(String val : this.getExperimentEvaluationData().values()){
+    //		DigitalObjectBean digoBean = new DigitalObjectBean(val);
+    //		ret.add(digoBean);
+    //	}
+    //	return ret;
+    //}
     
     /**
      * Get the list of files as a simple String collection.
@@ -573,6 +589,10 @@ public class ExperimentBean {
     public Collection<String> getExperimentInputDataFiles() {
         return this.inputData.values();
     }
+	
+    //public Collection<String> getExperimentEvaluationDataFiles() {
+    //    return this.evaluationData.values();
+    //}
     
     /**
      * Returns a map containing the input data's uri as key and its corresponding
@@ -606,6 +626,32 @@ public class ExperimentBean {
     	}
     	return ret;
     }
+	
+    //public Collection<Map<String,String>> getExperimentEvaluationDataNamesAndURIs(){
+    //	Collection<Map<String,String>> ret = new Vector<Map<String,String>>();
+    //	DataHandler dh = new DataHandlerImpl();
+    //	Map<String, String> localFileRefs = this.getExperimentEvaluationData();
+    //	for( String key : localFileRefs.keySet() ) {
+    //		try {
+    //			Map<String,String> map = new HashMap<String,String>();
+    //			//retrieve URI
+    //		    String fInput = localFileRefs.get(key);
+    //		    DigitalObjectRefBean dobr = dh.get(fInput);
+    //		    if(dobr != null ) {
+	//			URI uri = dobr.getDownloadUri();
+	//			map.put("uri", uri.toString()) ;
+	//			map.put("name", this.createShortDoName(dobr) );
+	//			map.put("inputID", key);
+	//			ret.add(map);
+    //		    } else {
+    //		    	log.error("Digital Object "+key+" could not be found!");
+    //		    }
+	//		} catch (FileNotFoundException e) {
+	//			log.error(e.toString());
+	//		}
+    //	}
+    //	return ret;
+    //}
 
     /**
      * @param name
@@ -691,6 +737,33 @@ public class ExperimentBean {
     	    log.warn("Could not remove input data, no matching key for "+key);
     	}
     }
+	
+    //public String addExperimentEvaluationData(String localFileRef) {
+    //    log.debug("Adding evaluation file: "+localFileRef);
+    //	String key = getNextEvaluationDataKey();
+    //	if(!this.evaluationData.values().contains(localFileRef)){
+    //		this.evaluationData.put(key, localFileRef);
+    //		this.exp.getExperimentExecutable().addEvaluationData(localFileRef);
+    //		this.updateExperiment();
+    		// Also add to UI component:
+    //		UIComponent panel = this.getPanelAddedFiles();
+    //		this.helperCreateRemoveFileElement(panel, localFileRef, key);
+    //        return key;
+    //	} else {
+    //	    log.info("EvaluationData contains "+localFileRef);
+    //	    return null;
+    //    }
+    //}
+    
+    //public void removeExperimentEvaluationData(String key){
+    //	if(this.inputData.containsKey(key)){
+    //       this.exp.getExperimentExecutable().removeInputData(this.inputData.get(key));
+    //       log.info("Removed evaluation data matching key: "+key+" : "+this.inputData.get(key));
+    //        this.inputData.remove(key);
+    //	} else {
+    //	    log.warn("Could not remove input data, no matching key for "+key);
+    //	}
+    //}
     
     public void removeAllExperimentInputData(){
     	this.inputData = new HashMap<String,String>();
@@ -718,7 +791,22 @@ public class ExperimentBean {
     	log.debug("Returning input data key: "+count+" / "+inputData.size());
     	return count+"";
     }
-    
+
+    //private String getNextEvaluationDataKey(){
+    //	boolean bFound = true;
+    //	int count = 0;
+    //	while(bFound){
+    //		// Check if the current key is already in use: 
+    //		if(this.evaluationData.containsKey(count+"")){
+    //           count++;
+    //		}
+    //		else{
+    //            bFound = false;
+    //		}
+    //	}
+    //	log.debug("Returning input data key: "+count+" / "+evaluationData.size());
+    //	return count+"";
+    //}	
     
     public void setOutputData(Collection<Entry<String,String>> data){
     	this.outputData = data;
@@ -879,6 +967,10 @@ public class ExperimentBean {
 	public int getNumberOfInputFiles(){
 		return this.inputData.values().size();
 	}
+	
+	//public int getNumberOfEvaluationFiles(){
+	//	return this.evaluationData.values().size();
+	//}
 
 	public void setIntensity(String intensity) {
 		this.intensity = intensity;
@@ -1000,6 +1092,18 @@ public class ExperimentBean {
         } catch (InvalidInputException e) {
             e.printStackTrace();
         }
+    }
+	
+    public void setMigrationType() {
+		setEtype("migrate");
+    }
+	
+    public void setPlanType() {
+		setEtype("executablepp");
+    }
+	
+    public void setEmulationType() {
+		setEtype("emulate");
     }
     
     public String getEtype() {

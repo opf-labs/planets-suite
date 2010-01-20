@@ -13,17 +13,56 @@
 
 
 <h:panelGroup rendered="#{ ! ReadOnly}">
-  <p>At this stage you can specify the design your experiment.  This involves selecting an <b>experiment type</b> and one or more <b>preservation services</b> in the left-hand section of the page, and selecting the <b>digital objects</b> you wish to pass through your chosen services in the right-hand section of the page.</p>
+  <p>At this stage you can specify the design your experiment.  This involves selecting an <b>experiment type</b> and one or more <b>preservation services</b> in the top section of the page, and selecting the <b>digital objects</b> you wish to pass through your chosen services in the lower section of the page.</p>
   
   <fieldset>
     <legend>#{res['new_exp.expEtype']}</legend>
-    <h:outputLabel value="#{res['new_exp.expEtype']}" for="etype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-        <h:selectOneMenu id="etype" onchange="submit();" required="false"
-        value="#{ExperimentBean.etype}"  style="width: 23em;"
- readonly="#{ReadOnly}" disabled="#{ReadOnly}">
-                <f:selectItem itemValue="" itemLabel="Select..."/>
-                <f:selectItems value="#{NewExp_Controller.availableExperimentTypes}" />
-        </h:selectOneMenu>
+	
+	<p>
+	
+	                <h:commandLink action="#{ExperimentBean.setMigrationType}">   
+<c:if test="${ExperimentBean.etypeName != 'Migrate'}">					
+	<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_migration.gif" 
+                            	alt="Migration" title="Migration" style="margin:5px 5px 5px 5px;" /> 
+								</c:if>
+<c:if test="${ExperimentBean.etypeName == 'Migrate'}">					
+	<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_migration_sel.gif" 
+                            	alt="Migration" title="Migration" style="margin:5px 5px 5px 5px;" /> 
+								</c:if>
+					</h:commandLink>
+								
+								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_load_test.gif" 
+                            	alt="Load Test Migration" title="Load Test Migration" style="margin:5px 5px 5px 5px;" /> 
+								
+								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_characterisation.gif" 
+                            	alt="Characterisation" title="Characterisation" style="margin:5px 5px 5px 5px;" />
+								
+								<h:commandLink action="#{ExperimentBean.setEmulationType}">   
+								<c:if test="${ExperimentBean.etypeName != 'View in Emulator'}">
+								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_view_emulator.gif" 
+                            	alt="View in Emulator" title="View in Emulator" style="margin:5px 5px 5px 5px;" />
+								</c:if>
+								
+								<c:if test="${ExperimentBean.etypeName == 'View in Emulator'}">
+								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_view_emulator_sel.gif" 
+                            	alt="View in Emulator" title="View in Emulator" style="margin:5px 5px 5px 5px;" />
+								</c:if>
+								</h:commandLink>
+								
+								<h:commandLink action="#{ExperimentBean.setPlanType}">  
+								<c:if test="${ExperimentBean.etypeName != 'Executable Preservation Plan'}">
+								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_preservation_plan.gif" 
+                            	alt="Execute Preservation Plan" title="Execute Preservation Plan" style="margin:5px 5px 5px 5px;" />
+								</c:if>
+								
+								<c:if test="${ExperimentBean.etypeName == 'Executable Preservation Plan'}">
+								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_preservation_plan_sel.gif" 
+                            	alt="Execute Preservation Plan" title="Execute Preservation Plan" style="margin:5px 5px 5px 5px;" />
+								</c:if>
+								</h:commandLink>
+								</p>
+	
+    
         
     
 	<!--  
@@ -35,10 +74,6 @@
              action="success"
              disabled="#{ReadOnly}" rendered="#{ExperimentBean.etype != ''}"/>
 	-->
-   &nbsp;&nbsp;
-   <ui:include src="/WEB-INF/templates/fragments/tooltip-icon.xhtml">
-     <ui:param name="toolTip" value="#{res['new_exp.tooltipExperimentType']}" />
-   </ui:include>
    
   </fieldset>
    
@@ -58,7 +93,7 @@
     </ui:include>
 
 <!-- Digital Object selection part... -->
-
+<h:panelGroup rendered="#{ExperimentBean.etype != ''}">
         <fieldset>
                 
             <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
@@ -154,7 +189,7 @@
         </h:panelGroup>
  
       </fieldset>
-
+</h:panelGroup>
             
   </ui:composition>
 </body>
