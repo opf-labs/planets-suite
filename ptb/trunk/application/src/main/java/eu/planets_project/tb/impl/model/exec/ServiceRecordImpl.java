@@ -81,8 +81,10 @@ public class ServiceRecordImpl implements Serializable {
     HashSet<Long> experimentIds = new HashSet<Long>();
     
     /** The service invocation records */
+    /*
     @OneToMany(cascade=CascadeType.ALL, mappedBy="serviceRecord", fetch=FetchType.EAGER)
     private Set<InvocationRecordImpl> invocations = new HashSet<InvocationRecordImpl>();
+    */
     
     
     /** Also cache the expanded service description */
@@ -457,15 +459,19 @@ public class ServiceRecordImpl implements Serializable {
     /**
      * @return the invocations
      */
+    /*
     public Set<InvocationRecordImpl> getInvocations() {
         return invocations;
     }
+    */
 
     /**
      * @param invocations the invocations to set
      */
+    /*
     public void setInvocations(Set<InvocationRecordImpl> invocations) {
         this.invocations = invocations;
     }
+    */
     
 }

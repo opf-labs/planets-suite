@@ -39,7 +39,7 @@ public class InvocationParameterImpl implements Serializable {
     private long id = -1;
 
     @ManyToOne
-    private InvocationRecordImpl invocation;
+    private ExecutionStageRecordImpl invocation;
     
     private String identifier;
     
@@ -51,6 +51,10 @@ public class InvocationParameterImpl implements Serializable {
     
     private String description;
 
+    /** For JAXB */
+    @SuppressWarnings("unused")
+    private InvocationParameterImpl() {
+    }
     /**
      * @param p
      */
@@ -79,7 +83,7 @@ public class InvocationParameterImpl implements Serializable {
     /**
      * @return the invocation
      */
-    public InvocationRecordImpl getInvocation() {
+    public ExecutionStageRecordImpl getInvocation() {
         return invocation;
     }
 
@@ -128,7 +132,7 @@ public class InvocationParameterImpl implements Serializable {
     /**
      * @param invocation the invocation to set
      */
-    protected void setInvocation(InvocationRecordImpl invocation) {
+    protected void setInvocation(ExecutionStageRecordImpl invocation) {
         this.invocation = invocation;
     }
 

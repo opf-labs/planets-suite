@@ -29,7 +29,6 @@ import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
@@ -40,7 +39,7 @@ import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 @Entity
 @XmlRootElement(name = "Experiment", namespace = "http://www.planets-project.eu/testbed/experiment")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"version", "expSetup", "executable" , "expApproval", "expExecution", "expEvaluation", "measurements" })
+@XmlType(propOrder={"version", "expSetup", "executable" , "expApproval", "expExecution", "expEvaluation" })
 public class ExperimentImpl extends ExperimentPhaseImpl
 		implements Experiment, java.io.Serializable {
     
@@ -320,6 +319,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
      */
     public Set<MeasurementImpl> getAllMeasurements() {
         Set<MeasurementImpl> mi = new HashSet<MeasurementImpl>();
+        /*
         for( BatchExecutionRecordImpl b : this.getExperimentExecutable().getBatchExecutionRecords() ) {
             for( ExecutionRecordImpl run : b.getRuns() ) {
                 for( InvocationRecordImpl iri : run.getServiceCalls() ) {
@@ -329,6 +329,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
                 }
             }
         }
+        */
         return mi;
     }
 

@@ -147,7 +147,7 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         msAfter = System.currentTimeMillis();
 
         // Record this one-stage experiment:
-        ExecutionStageRecordImpl idStage = new ExecutionStageRecordImpl(STAGE_CREATEVIEW);
+        ExecutionStageRecordImpl idStage = new ExecutionStageRecordImpl(null, STAGE_CREATEVIEW);
         wr.getStages().add( idStage );
         
         // Record the endpoint of the service used for this stage.  FIXME Can this be done more automatically, from above?

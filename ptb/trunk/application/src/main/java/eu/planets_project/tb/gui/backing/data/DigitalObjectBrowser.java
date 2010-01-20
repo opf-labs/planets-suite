@@ -86,8 +86,9 @@ public class DigitalObjectBrowser {
         List<DigitalObjectTreeNode> b = new ArrayList<DigitalObjectTreeNode>();
         b.add( this.getRootTreeNode() );
         // Get the path and trim any trailing slash:
-        String path = location.getPath().replaceFirst("/$", "");
-        log.info("Getting breadcrumb for path " +path);
+        String path = "";
+        if( location != null && location.getPath() != null ) path = location.getPath().replaceFirst("/$", "");
+        log.info("Getting breadcrumb for path " +path+" from location "+location);
         // Split and descend...
         String[] parts = path.split("/");
         for( int i = 0; i < parts.length; i++ ) {

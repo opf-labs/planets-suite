@@ -15,6 +15,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -121,11 +122,15 @@ public class ExecutionRecordImpl implements Serializable {
     private Calendar endDate;
     
     /** The sequence of stages of this experiment. */
-    private Vector<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="execution", fetch=FetchType.EAGER)
+    private Set<ExecutionStageRecordImpl> stages = new HashSet<ExecutionStageRecordImpl>();
+    //private Vector<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
     
     /** The service invocation records */
+    /* FIXME This was a bad idea - just move the new fields into the ExecutionStageRecordImpl, 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="execution", fetch=FetchType.EAGER)
     private Set<InvocationRecordImpl> serviceCalls = new HashSet<InvocationRecordImpl>();
+    */
    
     // The 'Result'
     private String resultType;
@@ -217,15 +222,12 @@ public class ExecutionRecordImpl implements Serializable {
      * @return the stages
      */
     public Vector<ExecutionStageRecordImpl> getStages() {
-        //if( stages == null ) stages = new Vector<ExecutionStageRecordImpl>();
-        return stages;
-    }
-
-    /**
-     * @param stages the stages to set
-     */
-    public void setStages(List<ExecutionStageRecordImpl> stages) {
-        this.stages = new Vector<ExecutionStageRecordImpl>(stages);
+        Vector<ExecutionStageRecordImpl> sortedStages = new Vector<ExecutionStageRecordImpl>();
+        for( ExecutionStageRecordImpl stage : this.stages ) {
+            sortedStages.add(stage);
+        }
+        // TODO Sort the stages, but not too important, as only one stage usually.
+        return sortedStages;
     }
 
     /**
@@ -385,6 +387,7 @@ public class ExecutionRecordImpl implements Serializable {
         //this.measurementEvents.clear();
             // Now add anew:
             //MeasurementEventImpl mev = new MeasurementEventImpl();
+        /*
             log.info("Making a MEV...");
                 log.info("Got batch: "+batch);
                 for( ExecutionRecordImpl exr : batch.getRuns() ) {
@@ -409,6 +412,7 @@ public class ExecutionRecordImpl implements Serializable {
                         }
                 }
             }
+            */
                 /*
             mev.setAgentType(AGENT_TYPE.WORKFLOW);
             mev.setStage(MEASUREMENT_STAGE.EXECUTION);
@@ -423,8 +427,10 @@ public class ExecutionRecordImpl implements Serializable {
     /**
      * @return the serviceCalls
      */
+    /*
     public Set<InvocationRecordImpl> getServiceCalls() {
         return serviceCalls;
     }
+    */
 
 }

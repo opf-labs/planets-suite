@@ -116,6 +116,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      * @return a TB download URI:
      */
     public String getDownloadUri() {
+        if( this.getUri() == null ) return null;
         try {
             URI duri = dh.get(this.getUri().toString()).getDownloadUri();
             log.debug("Returning download location: "+duri);

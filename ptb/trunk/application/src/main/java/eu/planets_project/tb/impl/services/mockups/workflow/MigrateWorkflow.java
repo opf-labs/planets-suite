@@ -437,7 +437,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         WorkflowResult wr = new WorkflowResult();
         
         // Pre-migrate characterise
-        ExecutionStageRecordImpl preStage = new ExecutionStageRecordImpl(STAGE_PRE_MIGRATE);
+        ExecutionStageRecordImpl preStage = new ExecutionStageRecordImpl(null, STAGE_PRE_MIGRATE);
         try {
             wr.getStages().add( preStage );
             if( this.preIsCharacterise() ) {
@@ -452,7 +452,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
          
         // Migrate Stage:
-        ExecutionStageRecordImpl migrateStage = new ExecutionStageRecordImpl(STAGE_MIGRATE);
+        ExecutionStageRecordImpl migrateStage = new ExecutionStageRecordImpl(null, STAGE_MIGRATE);
         try {
             wr.getStages().add( migrateStage );
             executeMigrateStage(wr, migrateStage, dob);
@@ -467,7 +467,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
 
         // Post-migrate characterise
-        ExecutionStageRecordImpl postStage = new ExecutionStageRecordImpl(STAGE_POST_MIGRATE);
+        ExecutionStageRecordImpl postStage = new ExecutionStageRecordImpl(null, STAGE_POST_MIGRATE);
         try {
             wr.getStages().add( postStage );
             if( this.postIsCharacterise() ) {

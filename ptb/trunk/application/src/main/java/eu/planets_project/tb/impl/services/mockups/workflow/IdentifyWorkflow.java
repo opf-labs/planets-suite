@@ -195,7 +195,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         WorkflowResult wr = new WorkflowResult();
         
         // Record this one-stage experiment:
-        ExecutionStageRecordImpl idStage = new ExecutionStageRecordImpl(STAGE_IDENTIFY);
+        ExecutionStageRecordImpl idStage = new ExecutionStageRecordImpl(null, STAGE_IDENTIFY);
         wr.getStages().add( idStage );
         
         // Record the endpoint of the service used for this stage.  FIXME Can this be done more automatically, from above?

@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import eu.planets_project.tb.impl.model.exec.InvocationRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 
 /**
  * @author AnJackson
@@ -47,7 +47,7 @@ public class MeasurementEventImpl {
     
     /** If these are measurements about a service, then this is the invocation that was measured. */
     @ManyToOne //(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    protected InvocationRecordImpl targetInvocation;
+    protected ExecutionStageRecordImpl targetInvocation;
 
     /*
      * If the target was one or more digital object(s).
@@ -55,7 +55,6 @@ public class MeasurementEventImpl {
     
     /** If this is about one or more digital objects, then the digital objects that were measured go here. 
      * As Data Registry URIs, stored as Strings. */
-    //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     private Vector<String> digitalObjects = new Vector<String>();
     
     /* ----------------- Context ------------ */
@@ -118,10 +117,15 @@ public class MeasurementEventImpl {
     
     /* --------------- Constructors --------------------------- */
     
+    /** For JAXB */
+    @SuppressWarnings("unused")
+    private MeasurementEventImpl() {
+    }
+    
     /**
      * @param iri
      */
-    public MeasurementEventImpl(InvocationRecordImpl targetInvocation) {
+    public MeasurementEventImpl(ExecutionStageRecordImpl targetInvocation) {
         this.targetInvocation = targetInvocation;
         this.date = Calendar.getInstance();
     }
@@ -129,14 +133,14 @@ public class MeasurementEventImpl {
     /**
      * @return the invocation
      */
-    public InvocationRecordImpl getTargetInvocation() {
+    public ExecutionStageRecordImpl getTargetInvocation() {
         return targetInvocation;
     }
 
     /**
      * @param invocation the invocation to set
      */
-    public void setInvocation(InvocationRecordImpl targetInvocation) {
+    public void setInvocation(ExecutionStageRecordImpl targetInvocation) {
         this.targetInvocation = targetInvocation;
     }
 
