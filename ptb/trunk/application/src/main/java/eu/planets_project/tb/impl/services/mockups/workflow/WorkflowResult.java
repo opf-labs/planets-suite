@@ -197,7 +197,7 @@ public class WorkflowResult {
             rec.setEndDate(wfr.getEndDate());
             rec.setReportLog(wfr.getReportLog());
             // And the stages.
-            Vector<ExecutionStageRecordImpl> stages = rec.getStages();
+            Set<ExecutionStageRecordImpl> stages = rec.getStages();
             
             if( wfr != null && wfr.getStages() != null ) {
                 // Examine the result:

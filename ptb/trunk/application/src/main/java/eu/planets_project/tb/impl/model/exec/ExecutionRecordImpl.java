@@ -6,16 +6,9 @@ package eu.planets_project.tb.impl.model.exec;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.security.DigestException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -23,7 +16,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -35,21 +27,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
-import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -222,13 +209,8 @@ public class ExecutionRecordImpl implements Serializable {
     /**
      * @return the stages
      */
-    public Vector<ExecutionStageRecordImpl> getStages() {
-        Vector<ExecutionStageRecordImpl> sortedStages = new Vector<ExecutionStageRecordImpl>();
-        for( ExecutionStageRecordImpl stage : this.stages ) {
-            sortedStages.add(stage);
-        }
-        // TODO Sort the stages, but not too important, as only one stage usually.
-        return sortedStages;
+    public Set<ExecutionStageRecordImpl> getStages() {
+        return stages;
     }
 
     /**
