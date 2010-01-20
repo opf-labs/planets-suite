@@ -46,7 +46,7 @@ public class DigitalObjectCompare {
     static private Log log = LogFactory.getLog(DigitalObjectCompare.class);
     
     // The data sources are managed here:
-    DigitalObjectMultiManager dsm = new DigitalObjectMultiManager();
+    static DigitalObjectMultiManager dsm = new DigitalObjectMultiManager();
     
     private String dobUri1;
     private String dobUri2;
@@ -82,27 +82,21 @@ public class DigitalObjectCompare {
         this.dobUri2 = dobUri2;
     }
     
-    protected DigitalObjectTreeNode lookupDob( String dobUri ) {
+    public static DigitalObjectTreeNode lookupDob( String dobUri ) {
         if( dobUri == null ) return null;
         // Create as a URI:
-        URI item;
-        try {
-            item = new URI(dobUri);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return null;
-        }
+        URI item = DigitalObjectInspector.uriEncoder(dobUri);
         // Lookup and return:
         DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm );
         return itemNode;
     }
     
     public DigitalObjectTreeNode getDob1() {
-        return this.lookupDob(this.dobUri1);
+        return lookupDob(this.dobUri1);
     }
     
     public DigitalObjectTreeNode getDob2() {
-        return this.lookupDob(this.dobUri2);
+        return lookupDob(this.dobUri2);
     }
     
     /* -------------------- Additional code for deeper inspection --------------------- */

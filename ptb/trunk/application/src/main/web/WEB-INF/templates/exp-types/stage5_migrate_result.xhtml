@@ -15,7 +15,7 @@
      <rich:dataTable value="#{ExpTypeMigrate.migrateResults}" 
          var="res" styleClass="tbTable" reRender="dolist_ds" rows="10" width="100%">
         <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
-          <f:facet name="header">Digital Object</f:facet>
+          <f:facet name="header">Original Digital Object</f:facet>
           <!-- 
           <h:outputLink value="#{res.downloadURL}" styleClass="inTableIcon">
             <t:graphicImage value="/graphics/go-down.png" alt="Download..."/>
@@ -30,20 +30,28 @@
           </h:outputLink>
         </rich:column>
         <rich:column>
-          <f:facet name="header">Results</f:facet>
+          <f:facet name="header">Migrated Digital Object</f:facet>
           
-         <a4j:repeat value="#{res.migrations}" var="mdo">
-          
-         <h:outputLink value="#{mdo.digitalObjectDownloadURL}">
-           <h:outputText value="#{mdo.digitalObjectResult}"/>
+         <h:outputLink value="#{res.migrationResult.digitalObjectDownloadURL}">
+           <h:outputText value="#{res.migrationResult.digitalObjectResult}"/>
          </h:outputLink>
-         <br/>
-
-         </a4j:repeat>
-          
-
           
         </rich:column>
+        
+        <rich:column>
+          <f:facet name="header">Analyse Migration</f:facet>
+          
+          <h:panelGroup rendered="#{res.outputDob != null}">
+                <h:outputLink value="../reader/dob_compare.faces">
+                    <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
+                    <f:param name="dobUri1" value="#{res.inputDob.uri}"/>
+                    <f:param name="dobUri2" value="#{res.outputDob.uri}"/>
+                    <h:outputText value="Compare these objects."/>
+                </h:outputLink>
+          </h:panelGroup>
+          
+        </rich:column>
+        
         <f:facet name="footer">
           <rich:datascroller id="dolist_ds" renderIfSinglePage="false"></rich:datascroller>
         </f:facet>

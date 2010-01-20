@@ -200,10 +200,12 @@
     
     </div>
     
+    <h:panelGroup rendered="#{ExperimentInspector.experimentId == null}">
     <p>
       <h:commandButton action="browse_data"
         value="Return to the Data Browser"/>
     </p>
+    </h:panelGroup>
     
  </a4j:form>
   
@@ -220,7 +222,8 @@
         
         
         <div id="leftcol">
-        
+
+        <h:panelGroup rendered="#{ExperimentInspector.experimentId == null}">
         <h3 class="leftcol">Data Browser</h3>
                 <div class="innertube">        
                     <p class="leftcol">
@@ -230,7 +233,20 @@
                     </h:outputLink>
                     </p>
                 </div>
-                
+        </h:panelGroup>
+        
+        <h:panelGroup rendered="#{ExperimentInspector.experimentId != null}">
+        <h3 class="leftcol">Experiment Analysis</h3>
+                <div class="innertube">        
+                    <p class="leftcol">
+                    <h:outputLink value="../exp/exp_stage5.faces">
+                        <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
+                        <h:outputText value="Return to the experiment."/>
+                    </h:outputLink>
+                </p>
+                </div>
+        </h:panelGroup>
+               
         <h3 class="leftcol">Inspector</h3>
         <div class="innertube">        
         <p class="leftcol">

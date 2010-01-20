@@ -45,6 +45,8 @@ import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.system.batch.BatchProcessor;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
+import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
+import eu.planets_project.tb.gui.backing.data.DigitalObjectTreeNode;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeExecutablePP.ServiceBean;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeExecutablePP.ServiceParameter;
 import eu.planets_project.tb.gui.backing.exp.utils.ExpTypeWeeBean;
@@ -486,16 +488,20 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
         /**
          * @return
          */
-        public List<MigrationResultBean> getMigrations() {
-            List<MigrationResultBean> migs = new Vector<MigrationResultBean>();
-            int i = 1;
+        public MigrationResultBean getMigrationResult() {
             for( ExecutionRecordImpl exerec : this.getExecutionRecords() ) {
-                migs.add(new MigrationResultBean( i, exerec ) );
-                i++;
+                return new MigrationResultBean( exerec );
             }
-            return migs;
+            return null;
         }
         
+        public DigitalObjectTreeNode getInputDob() {
+            return DigitalObjectCompare.lookupDob(this.getDigitalObject());
+        }
+        
+        public DigitalObjectTreeNode getOutputDob() {
+            return DigitalObjectCompare.lookupDob(this.getMigrationResult().getDobResultReference());
+        }
         
         
     }
@@ -525,20 +531,18 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
      */
     public class MigrationResultBean {
 
-        private int batchId;
         private ExecutionRecordImpl exerec;
         private Properties props;
 
         /**
          * @param exerec
          */
-        public MigrationResultBean(int batchId, ExecutionRecordImpl exerec) {
-        	this.batchId = batchId;
+        public MigrationResultBean(ExecutionRecordImpl exerec) {
             this.exerec = exerec;
             try {
 				props =  exerec.getPropertiesListResult();
 			} catch (IOException e) {
-				log.debug("No Properties recorded for the batch: "+batchId);
+				log.debug("No Properties recorded.");
 				props = new Properties();
 			}
         }
@@ -549,13 +553,13 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
          * @return
          */
         public String getDigitalObjectResult() {
-			Object tbDigoURI = props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
-            String summary = "Run "+batchId+": ";
+            String summary = "";
+            String tbDigoURI = this.getDobResultReference();
             if( tbDigoURI != null ) {
                 DataHandler dh = new DataHandlerImpl();
                 DigitalObjectRefBean dobr;
                 try {
-                    dobr = dh.get((String)tbDigoURI);
+                    dobr = dh.get(tbDigoURI);
                 } catch (FileNotFoundException e) {
                     log.error("Could not find file. "+e);
                     return "";
@@ -569,6 +573,14 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
             }
             summary += "No Result.";
             return summary;
+        }
+        
+        /**
+         * @return
+         */
+        public String getDobResultReference() {
+            Object tbDigoURI = props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
+            return (String)tbDigoURI;
         }
 
         

@@ -167,7 +167,7 @@ public class ExpTypeWeeUtils{
      * @return
      */
     public String getTempFileDownloadLinkForCurrentXMLConfig(){
-		if(this.wfConf==null){
+		if(this.wfConf==null || this.wfConfXML==null){
 			return null;
 		}
 		//save it's hashcode - for caching purposes
