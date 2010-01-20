@@ -104,6 +104,7 @@ public class ExecutionRecordImpl implements Serializable {
     
     /** The experiment this belongs to */
     @ManyToOne
+    @XmlTransient
     private BatchExecutionRecordImpl batch;
     
     // The source Digital Object - original URL.

@@ -47,6 +47,7 @@ public class BatchExecutionRecordImpl implements Serializable {
     
     /** The experiment this belongs to */
     @ManyToOne
+    @XmlTransient
     private ExperimentExecutableImpl executable;
     
     // The date of this invocation:
