@@ -93,12 +93,14 @@
   
   <!-- ****************** -->
   <h2>Overall Batch Report Log</h2>
-  <pre>
+  <p>This is the workflow execution report for the whole experiment, i.e. for all files.</p>
 	<rich:simpleTogglePanel label="show batch report log" opened="false" switchType="client">                   
-		#{dor.batchReport}    
+<div style="overflow: auto !important;">
+<pre>
+#{dor.batchReport}    
+</pre>
+</div>
 	</rich:simpleTogglePanel>
-	 
-  </pre>
 
 
 </ui:composition> </body> </html>
