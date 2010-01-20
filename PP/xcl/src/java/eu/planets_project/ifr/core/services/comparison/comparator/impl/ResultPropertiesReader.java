@@ -53,7 +53,7 @@ public final class ResultPropertiesReader {
                 for (Object object : propElems) {
                     Element e = (Element) object;
                     String state = e.getAttributeValue("state");
-                    String description = state.equals("complete") ? processMetrics(e) : "";
+                    String description = e.getChild("metrics", NS) != null ? processMetrics(e) : "";
                     String name = e.getAttributeValue("name");
                     String desc = "[" + description + "]";
                     Property result = new Property.Builder(XcdlProperties.makePropertyURI(name)).name(name).value(state)
