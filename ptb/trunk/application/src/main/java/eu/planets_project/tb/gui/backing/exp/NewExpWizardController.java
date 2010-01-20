@@ -1554,6 +1554,42 @@ public class NewExpWizardController{
         NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
         return "success";
     }
+	
+	public String goToStage1() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 1);
+        return "success";
+	}
+    
+    public String goToStage2() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
+    }
+    
+    public String goToStage3() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 3);
+        return "success";
+    }
+    
+    public String goToStage4() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 4);
+        return "success";
+    }
+    
+    public String goToStage5() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 5);
+        return "success";
+    }
+    
+    public String goToStage6() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
+        return "success";
+    }
     
     /**
      * Takes the Benchmarks set within the Setup phase and adds them as 
