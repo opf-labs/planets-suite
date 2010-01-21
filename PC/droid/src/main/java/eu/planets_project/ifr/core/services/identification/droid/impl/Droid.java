@@ -63,16 +63,6 @@ public final class Droid implements Identify, Serializable {
     private static final long serialVersionUID = -7116493742376868770L;
     /***/
     static final String NAME = "Droid";
-    /***/
-    private static final String LOCAL_SIGFILE = "PC/droid/test/resources/";
-    /****/
-    private static final String LOCAL_CONFIG = "PC/droid/test/resources/conf/";
-    /***/
-    private static final String SIG = "DROID_SignatureFile_Planets.xml";
-    /***/
-    private static final String CONF = "/server/default/conf/";
-    /***/
-    private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
 
     private String classificationText;
 
@@ -219,11 +209,6 @@ public final class Droid implements Identify, Serializable {
         }
     }
 
-    /**
-     * @return If running in JBoss, returns the deployment directory, else (like
-     *         when running a unit test) returns the project directory to
-     *         retrieve the concepts file
-     */
     private static String sigFileFolder() {
     	log.info("Droid.sigFileFolder()");
         String sigFileLocation = null;
