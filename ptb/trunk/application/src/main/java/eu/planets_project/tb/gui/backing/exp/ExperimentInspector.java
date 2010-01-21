@@ -161,10 +161,10 @@ public class ExperimentInspector {
      * @param exp
      */
     private static void updateExpTypeBeanForExperimentInSession(String etype){
-    	ExperimentBean expBean = new ExperimentBean();
-    	ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
-         //a kind of fill method for the expTypeBean for the current expBean
-    	if( exptype != null )
-    	    exptype.initExpTypeBeanForExistingExperiment();
+    	if((etype!=null)&&(!etype.equals(""))){
+    		ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
+            //a kind of fill method for the expTypeBean for the current expBean
+            exptype.initExpTypeBeanForExistingExperiment();
+    	}
     }
 }

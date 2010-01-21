@@ -7,12 +7,14 @@ import java.net.URI;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.techreg.formats.Format;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -212,6 +214,18 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
 		log.info("Checking "+expBean.getEtype()+" eq "+AdminManagerImpl.IDENTIFY+" : "+AdminManagerImpl.IDENTIFY.equals(expBean.getEtype()));
 		if( AdminManagerImpl.IDENTIFY.equals(expBean.getEtype()) ) return true;
 		return false;
+	}
+
+	@Override
+	public Map<String, List<Parameter>> getWorkflowParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setWorkflowParameters(Map<String,List<Parameter>> params) {
+		// TODO Auto-generated method stub
+		
 	}
 	
     

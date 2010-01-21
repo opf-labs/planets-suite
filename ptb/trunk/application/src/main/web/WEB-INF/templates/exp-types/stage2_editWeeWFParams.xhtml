@@ -9,7 +9,7 @@
     xmlns:a4j="http://richfaces.org/a4j"
     xmlns:rich="http://richfaces.org/rich">
 <body>
-  <ui:composition rendered="#{ExperimentBean.etype == 'executablepp'}">
+  <ui:composition>
   
   <!-- subview:Modal Panel - overlay screen for configuring wfParameters -->
   <f:subview xmlns="http://www.w3.org/1999/xhtml"
@@ -27,7 +27,7 @@
         </f:facet>
         <f:facet name="controls">
             <h:panelGroup>
-            	<h:outputText value="cancel" id="hidepanel"/>
+            	<a4j:commandLink action="#{EditWFParameters.removeEditWFParamBeanInSession}" value="cancel" id="hidepanel" oncomplete="Richfaces.hideModalPanel('configEditParamsPanel');" reRender="wfConfigPanelGroup,configEditParamsBody"/>
                 <rich:componentControl for="configEditParamsPanel" attachTo="hidepanel,returnToMain" operation="hide" event="onclick"/>
             </h:panelGroup>
         </f:facet>
@@ -35,8 +35,9 @@
         <h:panelGroup id="configEditParamsBody">
         <h:message for="editparamspanel" /> 
         <rich:panel id="editparamspanel">
-      		<h:outputText value="Edit Parameters for service: "/><h:outputText value="#{ExpTypeExecutablePP.editedSB.serviceName} (#{ExpTypeExecutablePP.editedSB.serviceId})" style="font-weight:bold;"/>
-            	<h:dataTable binding="#{ExpTypeExecutablePP.parameterTable}" var="params" value="#{ExpTypeExecutablePP.serviceParametersToEdit}">
+      		<h:outputText value="Edit Parameters for service: "/>
+      		<h:outputText value="#{EditWFParameters.serName}" style="font-weight:bold;"/>
+            	<rich:dataTable var="params" value="#{EditWFParameters.serviceParametersToEdit}" rowKeyVar="rownr">
 		              <f:facet name="header">
 		                  <rich:columnGroup>
 		                      <rich:column>
@@ -60,22 +61,27 @@
 	                      <h:outputText value="#{params.value}"></h:outputText>
 	                  </rich:column>
 	                  <rich:column>
-	                      <a4j:commandButton action="#{ExpTypeExecutablePP.updateParameter}" value="Update" eventsQueue="foo" ignoreDupResponses="true" reRender="configEditParamsBody"/>
+	                      <a4j:commandButton actionListener="#{EditWFParameters.updateParameter}" value="Update" eventsQueue="foo" ignoreDupResponses="true" reRender="configEditParamsBody">
+    						<a4j:actionparam name="rowKey" value="#{rownr}"/>
+						  </a4j:commandButton>
 	                  </rich:column>
 	                  <rich:column>
-	                      <a4j:commandButton action="#{ExpTypeExecutablePP.removeParameter}" value="Delete" eventsQueue="foo" ignoreDupResponses="true" reRender="configEditParamsBody"/>
+	                      <a4j:commandButton actionListener="#{EditWFParameters.removeParameter}" value="Delete" eventsQueue="foo" ignoreDupResponses="true" reRender="configEditParamsBody">
+	                      	<a4j:actionparam name="rowKey" value="#{rownr}"/>
+	                      </a4j:commandButton>
 	                  </rich:column>
-          		</h:dataTable>
-          <a4j:form>
+          		</rich:dataTable>
+           <a4j:region>
        		<rich:panel>
        			<f:facet name="header">
        				<h:outputText value="New Parameter Value" />
        			</f:facet>
-       			<h:inputText value="#{ExpTypeExecutablePP.newValue}">
-       				<a4j:support requestDelay="100" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true"/>
+       			<h:inputText value="#{EditWFParameters.newValue}">
+       				<a4j:support requestDelay="100" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true"/>
        			</h:inputText>
        		</rich:panel>
-       			
+       	  </a4j:region>
+       	  <a4j:region>
 			<rich:panel>
 		       <f:facet name="header">
 		       	<h:outputText value="Add Parameter" />
@@ -83,33 +89,37 @@
 		       <h:panelGrid columns="2">
 			        <h:panelGrid columns="2">
 			            <h:outputText value="Name: "/>
-			            <h:inputText id="paramNameinput" value="#{ExpTypeExecutablePP.parameterName}" />
+			            <h:inputText id="paramNameinput" value="#{EditWFParameters.parameterName}" > 
+							<a4j:support event="onblur" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true"/>
+       					</h:inputText>
 			            
 			            <h:outputText value="Value:"/>
-			            <h:inputText value="#{ExpTypeExecutablePP.parameterValue}"/>
+			            <h:inputText id="newInputParamValue" value="#{EditWFParameters.parameterValue}">
+       						<a4j:support event="onblur" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true"/>
+       					</h:inputText>
 			        </h:panelGrid>
-					<a4j:commandButton actionListener="#{ExpTypeExecutablePP.addParameter}" value="Add" eventsQueue="foo" ignoreDupResponses="true" reRender="configEditParamsBody"/>
+					<a4j:commandButton actionListener="#{EditWFParameters.addParameter}" value="Add" eventsQueue="foo" ignoreDupResponses="true" reRender="configEditParamsBody"/>
 		    	</h:panelGrid>
      		</rich:panel>
      		
             <rich:suggestionbox id="suggestionDefaultParams" height="60" width="500"
             	rules="none"
-            	suggestionAction="#{ExpTypeExecutablePP.suggestMatchingDefaultParamsByName}" var="qparams"
+            	suggestionAction="#{EditWFParameters.suggestMatchingDefaultParamsByName}" var="qparams"
             	for="paramNameinput" fetchValue="#{qparams.name}"
             	nothingLabel="No matching default parameters found." columnClasses="center"
             	requestDelay="100" eventsQueue="foo" ignoreDupResponses="true"
             	ajaxSingle="true">
             	<h:column>
                     <f:facet name="header">
-                        <h:outputText value="123"></h:outputText>
+                        <h:outputText value="suggestions"></h:outputText>
                     </f:facet>
                     <h:outputText value="name: #{qparams.name} " /><h:outputText value=" values: #{qparams.value}" />
                 </h:column>
       		</rich:suggestionbox>
      	
-     	</a4j:form>
+     	</a4j:region>
 	    	<h:panelGroup>
-	 			<a4j:commandButton id="returnToMain" actionListener="#{ExpTypeExecutablePP.commandUpdateServiceBeanFromEditParamScreen}" ajaxSingle="true" value="Done" eventsQueue="foo" ignoreDupResponses="true" oncomplete="Richfaces.hideModalPanel('configEditParamsPanel');" reRender="wfConfigPanelGroup,configEditParamsBody"/>
+	 			<a4j:commandButton id="returnToMain" actionListener="#{EditWFParameters.commandUpdateServiceBeanFromEditParamScreen}" ajaxSingle="true" value="Done" eventsQueue="foo" ignoreDupResponses="true" oncomplete="Richfaces.hideModalPanel('configEditParamsPanel');" reRender="wfConfigPanelGroup,configEditParamsBody"/>
 	 		</h:panelGroup>
 	</rich:panel>
     </h:panelGroup>

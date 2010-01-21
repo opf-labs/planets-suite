@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
@@ -14,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
@@ -221,5 +223,20 @@ public abstract class ExpTypeBackingBean {
      * @return true if the ExperimentBean is of this type.
      */
     public abstract boolean isExperimentBeanType();
+    
+    /**
+     * since version 1.0
+     * This method is used to specify the ExpTypeBean's parameter configuration for the underlying WEE workflow
+     * @param sServiceID
+     * @param lParas
+     */
+    public abstract void setWorkflowParameters(Map<String,List<Parameter>> lParams);
+    
+    /**
+     * since version 1.0
+     * This method is used to get the ExpTypeBean's parameter that have been configured for the underlying WEE workflow
+     * @return
+     */
+    public abstract Map<String,List<Parameter>> getWorkflowParameters();
 
 }

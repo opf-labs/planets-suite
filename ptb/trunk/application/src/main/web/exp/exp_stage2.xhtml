@@ -28,6 +28,7 @@
 <h:form enctype="multipart/form-data">
     <!-- Persist the experiment ID through POST, if any. -->    
     <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}"/>
+    <input type="hidden" name="serURL" value="#{EditWFParameters.forServiceURL}"/>
 
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
        <ui:param name="ExperimentPhase" value="2" />

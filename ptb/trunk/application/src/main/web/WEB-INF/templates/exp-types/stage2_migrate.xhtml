@@ -10,6 +10,11 @@
     xmlns:rich="http://richfaces.org/rich">
 <body>
   <ui:composition rendered="#{ExpTypeMigrate.experimentBeanType}">
+  
+  <!-- subview:Modal Panel - overlay screen for configuring wfParameters -->
+  <ui:include src="/WEB-INF/templates/exp-types/stage2_editWeeWFParams.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+  </ui:include>
 
 <fieldset>
     <legend>Migration Experiment</legend>
@@ -97,6 +102,22 @@
     <h:panelGroup rendered="#{ReadOnly}">
       <h:outputText value="#{ExpTypeMigrate.migrationService}" />
     </h:panelGroup>
+   
+    <a4j:region selfRendered="true" immediate="true">
+    <h:panelGroup>	
+    <a4j:commandButton value="Edit Parameters" ajaxSingle="true" actionListener="#{NewExp_Controller.commandShowEditWFParamScreen}" oncomplete="Richfaces.showModalPanel('configEditParamsPanel');window.scrollTo(0,0);" reRender="configEditParamsBody" disabled="#{ReadOnly}" rendered="#{ExpTypeMigrate.validCurrentConfiguration}">
+    	<a4j:actionparam name="selServiceURL" value="#{ExpTypeMigrate.migrationService}"/>
+	</a4j:commandButton>
+	<br/>
+	<rich:simpleTogglePanel label="Service Parameters" opened="false" switchType="client" rendered="#{ExpTypeMigrate.validCurrentConfiguration}">
+      <a4j:repeat value="#{ExpTypeMigrate.migrationServiceParamList}" var="wfparams">
+       <dd>
+        <h:outputText value="#{wfparams}"/>
+       </dd>
+      </a4j:repeat>
+    </rich:simpleTogglePanel>
+    </h:panelGroup>
+    </a4j:region>
     
     </div>
     

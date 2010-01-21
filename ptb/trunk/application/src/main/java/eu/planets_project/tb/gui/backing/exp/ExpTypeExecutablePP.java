@@ -20,6 +20,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -1349,6 +1350,18 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
         if( expBean == null ) return false;
 		if( AdminManagerImpl.EXECUTABLEPP.equals(expBean.getEtype()) ) return true;
 		return false;
+	}
+
+	@Override
+	public Map<String, List<Parameter>> getWorkflowParameters() {
+		// TODO AL adapt this when moving to the add/edit params in a separate managed bean
+		return null;
+	}
+
+	@Override
+	public void setWorkflowParameters(Map<String,List<Parameter>> params) {
+		// TODO AL adapt this when moving to the add/edit params in a separate managed bean
+		
 	}
     
 

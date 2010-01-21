@@ -7,11 +7,13 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.exp.view.ViewResultBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -153,6 +155,26 @@ public class ExpTypeViewer extends ExpTypeBackingBean {
         if( expBean == null ) return false;
 		if( AdminManagerImpl.EMULATE.equals(expBean.getEtype()) ) return true;
 		return false;
+	}
+
+	/*
+	 * TODO AL: version 1.0: adapt this when porting this exp type to the WEE
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getWorkflowParameters()
+	 */
+	@Override
+	public Map<String, List<Parameter>> getWorkflowParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * TODO AL: version 1.0: adapt this when porting this exp type to the WEE
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#setWorkflowParameters(Map<String,List<Parameter>> params)
+	 */
+	@Override
+	public void setWorkflowParameters(Map<String,List<Parameter>> params) {
+		// TODO Auto-generated method stub
+		
 	}
     
     

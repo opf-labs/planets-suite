@@ -51,6 +51,7 @@ import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.PropertyDnDTreeBean;
 import eu.planets_project.tb.gui.backing.UploadManager;
+import eu.planets_project.tb.gui.backing.wf.EditWorkflowParameterInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
@@ -874,6 +875,19 @@ public class NewExpWizardController{
         if( i < 1 || i > 6 ) i = 1;
         JSFUtil.redirect("/exp/exp_stage"+i+".faces?eid="+eid);
     }
+    
+    public static void redirectToEditWFParams(long eid, String serviceURL) {
+        //JSFUtil.redirect("/exp/exp_stage2.faces?eid="+eid+"&serURL="+serviceURL);
+    	FacesContext ctx = FacesContext.getCurrentInstance();
+    	HashMap<String,String> editParamSerURLMap = null;
+    	if(!ctx.getExternalContext().getSessionMap().containsKey(EditWorkflowParameterInspector.EDIT_WORKFLOW_PARAM_SERURL_MAP)){
+    		//takes expId to serviceURL mapping
+    		editParamSerURLMap = new HashMap<String,String>();
+    		ctx.getExternalContext().getSessionMap().put(EditWorkflowParameterInspector.EDIT_WORKFLOW_PARAM_SERURL_MAP, editParamSerURLMap);
+    	}
+    	editParamSerURLMap = (HashMap<String,String>) ctx.getExternalContext().getSessionMap().get(EditWorkflowParameterInspector.EDIT_WORKFLOW_PARAM_SERURL_MAP);
+    	editParamSerURLMap.put(eid+"", serviceURL);
+    }
 
     /**
      * 
@@ -939,6 +953,19 @@ public class NewExpWizardController{
         } else {
             return result;
         }
+    }
+    
+    public void commandShowEditWFParamScreen(ActionEvent evt){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	String etype = expBean.getEtype();
+    	ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
+    	
+		FacesContext context = FacesContext.getCurrentInstance();
+		Object o1 = context.getExternalContext().getRequestParameterMap().get("selServiceURL");
+		if(o1==null){
+			return;
+		}
+    	NewExpWizardController.redirectToEditWFParams(expBean.getID(), (String)o1);
     }
     
     /**

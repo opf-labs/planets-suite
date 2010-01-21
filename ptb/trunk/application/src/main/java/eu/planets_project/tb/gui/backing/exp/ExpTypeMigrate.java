@@ -27,6 +27,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterBuilder;
 import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
@@ -37,6 +38,7 @@ import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Servi
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service.Parameters;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service.Parameters.Param;
 import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.tb.api.data.util.DataHandler;
@@ -68,7 +70,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
     private BackendProperties bp = new BackendProperties();
     private ExpTypeWeeUtils expTypeWeeUtils;
     //contains the specified parameters for a given serviceEndpoint
-    private HashMap<String, Parameters> serviceParams;
+    private HashMap<String, Parameters> serviceParams = new HashMap<String,Parameters>();
     
     
     public ExpTypeMigrate(){
@@ -78,7 +80,19 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
     private void initBean(){
     	bp  = new BackendProperties();
     	expTypeWeeUtils = new ExpTypeWeeUtils(this);
-    	serviceParams = new HashMap<String,Parameters>();
+    }
+    
+    private void initWorkflowParams(){
+    	//worfklow parameters are modified by this bean and therefore aren't directly loaded from the exp bean
+    	//every time. the init fetches parameters from the WorkflowConf object where they are stored
+    	WorkflowConf wfConf = this.getWeeWorkflowConf();
+    	if((wfConf!=null)&&(wfConf.getServices()!=null)){
+    		this.serviceParams = new HashMap<String,Parameters>();
+    		for(Service service : wfConf.getServices().getService()){
+    			//add the params for this endpoint
+    			this.serviceParams.put(service.getEndpoint(), service.getParameters());
+    		}
+    	}
     }
     
     /**
@@ -90,7 +104,17 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
 	@Override
 	public void initExpTypeBeanForExistingExperiment(){
 		this.initBean();
-		expTypeWeeUtils.setWeeWorkflowConf(this.getWeeWorkflowConf());
+		//init the workflow configuration
+		if(this.getWeeWorkflowConf()==null){
+			//in this case we might not have stored the config yet
+			this.setWeeWorkflowConf(buildWorkflowConfFromCurrentConfiguration());
+		}
+		else{
+			//fetches the workflow config either from the experiment or from this backing bean
+			this.setWeeWorkflowConf(this.getWeeWorkflowConf());
+		}
+		//init the parameters from the workflow configuration
+		initWorkflowParams();
 	}
     
     /**
@@ -130,6 +154,19 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
     /**
      * @return Return available Services consistent with the current Input and Output.
      */
+    public List<String> getMigrationServiceParamList() {
+    	List<String> migrSerParams = new ArrayList<String>();
+    	Parameters params = this.serviceParams.get(this.getMigrationService());
+    	if((params!=null)&&params.getParam()!=null){
+    		for(Param p : params.getParam()){
+    			String s =  p.getName()+": "+p.getValue();
+    			migrSerParams.add(s);
+    		}
+    	}
+    	return migrSerParams;
+    }
+    
+
     public List<SelectItem> getMigrationServiceList() {
         log.info("IN: getMigrationServiceList");
         ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
@@ -773,12 +810,11 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
 	 * @param value
 	 */
 	private void addParam(String serviceId, String name, String value){
-		if(this.serviceParams.get(serviceId)!=null){
-			//Params object already available
-			Parameters parameters = new Parameters();
-			this.serviceParams.put(serviceId, parameters);
+		if(this.serviceParams.get(serviceId)==null){
+			//Params object not available
+			this.serviceParams.put(serviceId, new Parameters());
 		}
-		Parameters params = this.serviceParams.get(serviceId);
+		
 		//check if we're updating a param?
 		Param spUpdate = this.getServiceParamContained(serviceId, name);
 		if(spUpdate!=null){
@@ -789,7 +825,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
 		Param parameter = new Param();
 		parameter.setName(name);
 		parameter.setValue(value);
-		params.getParam().add(parameter);
+		this.serviceParams.get(serviceId).getParam().add(parameter);
 	}
 	
 	public void removeParameter(String serviceId, Param par) {
@@ -803,12 +839,24 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
 	 * @return
 	 */
 	private Param getServiceParamContained(String serId, String paramName){
-		for(Param p : this.serviceParams.get(serId).getParam()){
-			if(p.getName().equals(paramName)){
-				return p;
+		if((this.serviceParams!=null)&&(this.serviceParams.get(serId)!=null)){
+			for(Param p : this.serviceParams.get(serId).getParam()){
+				if(p.getName().equals(paramName)){
+					return p;
+				}
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Removes all service parameters for a given serviceID
+	 * @param serId
+	 */
+	private void removeAllServiceParams(String serId){
+		for(Param p : this.serviceParams.get(serId).getParam()){
+			this.serviceParams.get(serId).getParam().remove(p);
+		}
 	}
 	
 	
@@ -822,7 +870,6 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
 		if(expBean.getApproved()){
 			//that's the one after 'design experiment' has been saved
 			ExperimentExecutable expExecutable = expBean.getExperiment().getExperimentExecutable();
-	        expExecutable.getWEEWorkflowConfig();
 			return expExecutable.getWEEWorkflowConfig();
         }
 		return null;
@@ -848,6 +895,22 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
     	sMigrate.setId("migrate1");
     	sMigrate.setEndpoint(this.getMigrationService());
     	
+    	//add the general parameters for current input and output format
+		Param pMigFrom = this.getServiceParamContained(sMigrate.getEndpoint(), WorkflowTemplate.SER_PARAM_MIGRATE_FROM);
+		if(pMigFrom!=null){
+			//delete old value - it's not updated until know
+			this.removeParameter(sMigrate.getEndpoint(), pMigFrom);
+		}
+		this.addParam(sMigrate.getEndpoint(), WorkflowTemplate.SER_PARAM_MIGRATE_FROM, this.getInputFormat());
+		
+		Param pMigTo = this.getServiceParamContained(sMigrate.getEndpoint(), WorkflowTemplate.SER_PARAM_MIGRATE_TO);
+		if(pMigTo!=null){
+			//delete old value - it's not updated until know
+			this.removeParameter(sMigrate.getEndpoint(), pMigTo);
+		}
+		this.addParam(sMigrate.getEndpoint(), WorkflowTemplate.SER_PARAM_MIGRATE_TO, this.getOutputFormat());
+    	
+		//now add all parameters - also including the one's we've added above
     	Parameters params = this.serviceParams.get(this.getMigrationService());
     	if((params!=null)&&(params.getParam().size()>0)){
 			//there needs to be a Parameter element only if there's a param for being xsd compliant
@@ -855,18 +918,8 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
 		}else{
 			sMigrate.setParameters(new Parameters());
 		}
-    	//add the general parameters for input and output format
-    	Param paramMigrFrom = new Param();
-    	paramMigrFrom.setName(WorkflowTemplate.SER_PARAM_MIGRATE_FROM);
-    	paramMigrFrom.setValue(this.getInputFormat());
-    	sMigrate.getParameters().getParam().add(paramMigrFrom);
-    	
-    	Param paramMigrTo = new Param();
-    	paramMigrTo.setName(WorkflowTemplate.SER_PARAM_MIGRATE_TO);
-    	paramMigrTo.setValue(this.getOutputFormat());
-    	sMigrate.getParameters().getParam().add(paramMigrTo);
-    	
     	services.getService().add(sMigrate);
+    	
     	WorkflowConf wfConf = null;
 	    try {
 			if((this.getMigrationService()!=null)&&(this.getInputFormat()!=null)&&(this.getOutputFormat()!=null)){
@@ -893,5 +946,39 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
 	/** {@inheritDoc} */
 	public boolean isTemplateAvailableInWftRegistry() {
 		return this.expTypeWeeUtils.isTemplateAvailableInWftRegistry(bp.getProperty(BackendProperties.TB_EXPTYPE_MIGRATION_WEE_WFTEMPLATENAME));
+	}
+
+	@Override
+	public Map<String, List<Parameter>> getWorkflowParameters() {
+		Map<String,List<Parameter>> ret = new HashMap<String,List<Parameter>>();
+		
+		for(String serID: this.serviceParams.keySet()){
+			List<Parameter> retParamList = new ArrayList<Parameter>();
+			for(Param param : this.serviceParams.get(serID).getParam()){
+				Parameter p = new Parameter.Builder(
+					    param.getName(), param.getValue()).build();
+				retParamList.add(p);
+			}
+			ret.put(serID, retParamList);
+		}
+		return ret;
+	}
+
+	@Override
+	public void setWorkflowParameters(Map<String,List<Parameter>> params) {
+		if((params!=null)&&(!params.isEmpty())){
+			//iterate over all services
+			for(String serviceID : params.keySet()){
+				//remove all old parameters for this service
+				this.removeAllServiceParams(serviceID);
+				
+				//now get and store the new values
+				if(params.get(serviceID)!=null){
+					for(Parameter p : params.get(serviceID)){
+						this.addParam(serviceID, p.getName(), p.getValue());
+					}
+				}
+			}
+		}
 	}
 }

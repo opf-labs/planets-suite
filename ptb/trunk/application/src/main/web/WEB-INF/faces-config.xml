@@ -189,6 +189,20 @@
 		<managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>	
+	
+	<managed-bean>
+        <managed-bean-name>EditWFParameters</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.wf.EditWorkflowParameterInspector</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>experimentId</property-name>
+            <value>#{param['eid']}</value>
+        </managed-property>
+        <!--managed-property>
+            <property-name>forServiceURL</property-name>
+            <value>#{param['serURL']}</value>
+        </managed-property-->
+    </managed-bean>
 	<!--End Managed Beans -->
 
 	<!-- Start Navigation Rules: General Navigation Rules -->
