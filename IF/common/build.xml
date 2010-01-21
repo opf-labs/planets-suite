@@ -81,8 +81,8 @@
       <replacefilter token="@planets.server.conf@" value="${if_server.conf}" />
     </replace>
 	<property file="${src.config}/${src.config.properties}"  />
-	<echo message="COPYING ${src.resources}/DROID_SignatureFile_V16.xml TO ${droid.sigfile.location}/${droid.sigfile.name}"></echo>
-    <copy file="${src.resources}/DROID_SignatureFile_V16.xml" tofile="${droid.sigfile.location}/${droid.sigfile.name}" overwrite="true" />
+	<echo message="COPYING ${src.resources}/DROID_SignatureFile_V26.xml TO ${droid.sigfile.location}/${droid.sigfile.name}"></echo>
+    <copy file="${src.resources}/DROID_SignatureFile_V26.xml" tofile="${droid.sigfile.location}/${droid.sigfile.name}" overwrite="true" />
 	<echo message="COPYING ${src.config}/${src.config.properties} TO ${if_server.conf}/${src.config.properties}"></echo>
 	<copy file="${src.config}/${src.config.properties}" tofile="${if_server.conf}/${src.config.properties}" overwrite="true" />
 </project>
