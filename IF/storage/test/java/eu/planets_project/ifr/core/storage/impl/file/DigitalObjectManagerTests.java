@@ -20,10 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.conf.Configuration;
-import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.services.datatypes.Content;
@@ -37,38 +34,22 @@ import eu.planets_project.services.datatypes.DigitalObjectContent;
 public class DigitalObjectManagerTests {
 
 	private static final String FILE = "test_word.doc";
-    private static final String DATA = "IF/storage/test/resources/testdata";
-    private static final String CONFIG = "IF/storage/test/resources/FilesystemDigitalObjectManager/config/simplefile.properties";
-    private static final String BAD_ROOT_CONFIG = "IF/storage/test/resources/FilesystemDigitalObjectManager/config/badrootsimplefile.properties";
-    private static final String BAD_NAME_CONFIG = "IF/storage/test/resources/FilesystemDigitalObjectManager/config/badnamesimplefile.properties";
-    private static final String MISSING_ROOT_CONFIG = "IF/storage/test/resources/FilesystemDigitalObjectManager/config/missingrootsimplefile.properties";
-    private static final String MISSING_NAME_CONFIG = "IF/storage/test/resources/FilesystemDigitalObjectManager/config/missingnamesimplefile.properties";
-    private DigitalObjectManagerBase _dom = null;
-    private String tempLocation = null;
-    private URI id = null;
+    private static final String DATA = "IF/storage/src/test/resources/testdata";
+    private static final String TEMP = "IF/storage/src/test/resources/temp";
+    private DigitalObjectManager _dom = null;
 	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		// Create the config File object and check that it exists
-		File configFile = new File(CONFIG);
-		if (!configFile.exists()) {
-            throw new IllegalStateException("Configuration file doesn't exist at: " + CONFIG);
-		}
-		// Get the configuration
-		Configuration config = ServiceConfig.getConfiguration(configFile);
-
 		// Check if the test data directory is there
 		File rootDir = new File(DATA);
         if (!rootDir.exists()) {
             throw new IllegalStateException("Could not read from: " + rootDir);
         }
-
         // Set up temp directory for file based instance if it doesn't exist
-		this.tempLocation = config.getString(FilesystemDigitalObjectManagerImpl.PATH_KEY);
-		File tempDir = new File(this.tempLocation);
+		File tempDir = new File(TEMP);
         if (!tempDir.exists()) {
             boolean mkdir = tempDir.mkdir();
             if (!mkdir && !tempDir.exists()) {
@@ -77,8 +58,7 @@ public class DigitalObjectManagerTests {
         }
 		// Instantiate a file based data registry instance
 		// Point it at a root directory in resources, the registry will create the dir if necessary
-		this._dom = new FilesystemDigitalObjectManagerImpl(config);
-		this.id = this._dom.getId();
+		_dom = FilesystemDigitalObjectManagerImpl.getInstance("test", tempDir);
 	}
 
 	/**
@@ -87,7 +67,7 @@ public class DigitalObjectManagerTests {
 	@After
 	public void tearDown() throws Exception {
 		// Clear out the temp repository directory
-		 DigitalObjectManagerTests.deleteDir(new File(this.tempLocation));
+		 DigitalObjectManagerTests.deleteDir(new File(TEMP));
 	}
 
 	/**
@@ -97,10 +77,10 @@ public class DigitalObjectManagerTests {
 	@Test
 	public final void testList() throws URISyntaxException {
 		// Get the root URI
-		List<URI> rootResults = this._dom.list(null);
+		List<URI> rootResults = _dom.list(null);
 		System.out.println("Performing the null URI test to obtain root URI");
 		List<URI> expectedResults = new ArrayList<URI>();
-		expectedResults.add(this.id);
+		expectedResults.add( new URI("planets://localhost:8080/dr/test/") );
 		// We should only have a single URI in the returned results
 		assertEquals("Too many results returned, expecting one and got " + rootResults.size(),
 				expectedResults.size(),	rootResults.size());
@@ -122,31 +102,28 @@ public class DigitalObjectManagerTests {
 		System.out.println("Testing storage of Digital Object");
 		URI purl = new File(DATA, FILE).toURI();
         /* Create the content: */
-		System.out.println("Creating DigitalObjectContent byRef");
         DigitalObjectContent c1 = Content.byReference(purl.toURL().openStream());
         /* Given these, we can instantiate our object: */
-		System.out.println("Creating Digital Object using builder");
         DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl).title(purl.toString()).build();
     	// Check digital object. Title should not be null 
         boolean storeFlag = true;
         // Now store it
         URI pdURI = null;
         try {
-    		System.out.println("Calling store as new");
-            pdURI = this._dom.storeAsNew(object);
+
+            pdURI = _dom.storeAsNew(object);
         } catch (Exception e) {
         	assertTrue(e.getClass().equals(DigitalObjectNotStoredException.class));
         	storeFlag = false;
         }
         
-		System.out.println("creating new object with mytitle");
         object = new DigitalObject.Builder(object.getContent()).title("mytitle").build();
         assertNotNull(object.getTitle());
         
         if (storeFlag)
         {
 			// Then retrieve it and check it's the same
-			DigitalObject retObject = this._dom.retrieve(pdURI);
+			DigitalObject retObject = _dom.retrieve(pdURI);
 			URI newPurl = new File(DATA, FILE).toURI();
 			DigitalObjectContent c2 = Content.byReference(newPurl.toURL().openStream());
 			DigitalObject expectedObject = new DigitalObject.Builder(c2).build(); 
@@ -154,14 +131,14 @@ public class DigitalObjectManagerTests {
                     retObject.getContent());
 			// We can test that the list method works properly now also
 			// Get the root URI
-			List<URI> rootResults = this._dom.list(null);
+			List<URI> rootResults = _dom.list(null);
 			List<URI> expectedResults = new ArrayList<URI>();
-			expectedResults.add(new URI(this.id + "/" + FILE));
+			expectedResults.add(new URI("planets://localhost:8080/dr/test/" + FILE));
 			// We should only have a single URI in the returned results
 			assertEquals("Original and retrieved result count should be equal;",
 					expectedResults.size(),	rootResults.size());
 			// We have the root so let's get what's below
-			List<URI> testResults = this._dom.list(rootResults.get(0));
+			List<URI> testResults = _dom.list(rootResults.get(0));
 			// We should only have a single URI in the returned results
 			assertEquals("Original and retrieved result count should be equal;",
 					expectedResults.size(),	testResults.size());
@@ -183,7 +160,7 @@ public class DigitalObjectManagerTests {
 	public final void testFileNotFound() throws URISyntaxException, DigitalObjectNotFoundException {
 			System.out.println("Testing that DigitalObjectNotFoundException is generated as expected");
 			// Let's retrieve an object we know doesn't exist
-			this._dom.retrieve(new URI(this.id + "/noneexistentobject"));
+			_dom.retrieve(new URI("planets://localhost:8080/dr/test/noneexistentobject"));
 	}
 	
 	/**
@@ -192,11 +169,11 @@ public class DigitalObjectManagerTests {
 	 * @throws MalformedURLException 
 	 */
 	@Test
-	public final void testEmptyRoot() throws URISyntaxException, MalformedURLException {
+	public final void testNullRoot() throws URISyntaxException, MalformedURLException {
 		try {
-			Configuration config = ServiceConfig.getConfiguration(new File(BAD_ROOT_CONFIG));
+			File rootDir = null;
 			// Not doing too much here, just setting up a bad instance and catching the exception
-			FilesystemDigitalObjectManagerImpl.getInstance(config);
+			FilesystemDigitalObjectManagerImpl.getInstance("test", rootDir);
 		} catch (IllegalArgumentException e) {
 			return;
 		}
@@ -209,11 +186,11 @@ public class DigitalObjectManagerTests {
 	 * @throws MalformedURLException 
 	 */
 	@Test
-	public final void testMissingRoot() throws URISyntaxException, MalformedURLException {
+	public final void testNonExistentRoot() throws URISyntaxException, MalformedURLException {
 		try {
-			Configuration config = ServiceConfig.getConfiguration(new File(MISSING_ROOT_CONFIG));
+			File rootDir = new File("IF/storage/src/test/resources/nonexistentroot");
 			// Not doing too much here, just setting up a bad instance and catching the exception
-			FilesystemDigitalObjectManagerImpl.getInstance(config);
+			FilesystemDigitalObjectManagerImpl.getInstance("test", rootDir);
 		} catch (IllegalArgumentException e) {
 			return;
 		}
@@ -221,16 +198,16 @@ public class DigitalObjectManagerTests {
 	}
 
 	/**
-	 * Deliberately test missing name for setup of the registry 
+	 * Deliberately test null root directory for setup of the registry 
 	 * @throws URISyntaxException 
 	 * @throws MalformedURLException 
 	 */
 	@Test
-	public final void testMissingName() throws URISyntaxException, MalformedURLException {
+	public final void testNullName() throws URISyntaxException, MalformedURLException {
 		try {
-			Configuration config = ServiceConfig.getConfiguration(new File(MISSING_NAME_CONFIG));
+			File rootDir = new File(DATA);
 			// Not doing too much here, just setting up a bad instance and catching the exception
-			FilesystemDigitalObjectManagerImpl.getInstance(config);
+			FilesystemDigitalObjectManagerImpl.getInstance(null, rootDir);
 		} catch (IllegalArgumentException e) {
 			return;
 		}
@@ -245,9 +222,9 @@ public class DigitalObjectManagerTests {
 	@Test
 	public final void testEmptyName() throws URISyntaxException, MalformedURLException {
 		try {
-			Configuration config = ServiceConfig.getConfiguration(new File(BAD_NAME_CONFIG));
+			File rootDir = new File(DATA);
 			// Not doing too much here, just setting up a bad instance and catching the exception
-			FilesystemDigitalObjectManagerImpl.getInstance(config);
+			FilesystemDigitalObjectManagerImpl.getInstance("", rootDir);
 		} catch (IllegalArgumentException e) {
 			return;
 		}
