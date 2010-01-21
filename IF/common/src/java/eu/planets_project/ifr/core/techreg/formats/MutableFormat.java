@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 
 /**
@@ -16,6 +17,7 @@ import java.util.Set;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
 final class MutableFormat implements Serializable, Format {
+    private static Logger log = Logger.getLogger(MutableFormat.class.getName());
 
     /**
      * A format URI representing any format, e.g. to define that a service can
@@ -107,6 +109,10 @@ final class MutableFormat implements Serializable, Format {
             try {
                 return typeURI.toURL();
             } catch (MalformedURLException e) {
+                log.severe("URI "+typeURI+" is a malformed URL. "+e);
+                return null;
+            } catch ( IllegalArgumentException e ) {
+                log.severe("URI "+typeURI+" is a illegal URL. "+e);
                 return null;
             }
         }
