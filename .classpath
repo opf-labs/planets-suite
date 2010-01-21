@@ -206,5 +206,7 @@
 	<classpathentry kind="lib" path="lib/jackrabbit/jackrabbit-text-extractors-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jackrabbit/slf4j-api-1.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/jackrabbit/slf4j-log4j12-1.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/tomahawk-1.1.6.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jets3t-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
