@@ -5,7 +5,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.logging.Logger;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 
 /**
  * 
@@ -21,7 +23,7 @@ public class DigitalObjectDirectoryLister {
     private static Logger log = Logger.getLogger(DigitalObjectDirectoryLister.class.getName());
     
     // The data sources are managed here:
-    DigitalObjectManager dsm = new DigitalObjectMultiManager();
+    DataRegistry dataRegistry = DataRegistryImpl.getInstance();
     
     public DigitalObjectReference getRootDigitalObject() {
         return new DigitalObjectReference( null );
@@ -35,7 +37,7 @@ public class DigitalObjectDirectoryLister {
      */
     public DigitalObjectReference[] list( URI puri ) {
         // List from the appropriate registry.
-        List<URI> childs = dsm.list(puri);
+        List<URI> childs = dataRegistry.list(puri);
         
         if( childs == null ) return new DigitalObjectReference[0];
         
@@ -43,10 +45,10 @@ public class DigitalObjectDirectoryLister {
         DigitalObjectReference[] dobs = new DigitalObjectReference[childs.size()];
         for( int i = 0; i < childs.size(); i ++ ) {
             // Create a DOB from the URI:
-        	 dobs[i] = new DigitalObjectReference( childs.get(i), dsm );
+        	 dobs[i] = new DigitalObjectReference( childs.get(i), dataRegistry );
             
             // Mark that DigitalObject as a Directory if listing it returns NULL:
-            List<URI> grandchilds = dsm.list(childs.get(i));
+            List<URI> grandchilds = dataRegistry.list(childs.get(i));
             if( grandchilds == null ) {
                 dobs[i].setDirectory(false);
             } else {
@@ -77,7 +79,7 @@ public class DigitalObjectDirectoryLister {
      * @return
      */
     public DigitalObjectManager getDataManager( URI puri ) {
-        return dsm;
+        return dataRegistry;
     }
     
 }
