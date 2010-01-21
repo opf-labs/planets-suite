@@ -4,6 +4,11 @@
 <faces-config>
 
 	<managed-bean>
+		<managed-bean-name>StorageBackingBean</managed-bean-name>
+		<managed-bean-class>eu.planets_project.ifr.core.storage.gui.StorageBackingBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
 		<managed-bean-name>PlanetsSharedBean</managed-bean-name>
 		<managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
@@ -26,5 +31,10 @@
 			<default-locale>en</default-locale>
 		</locale-config>
 	</application>
+	<converter>
+		<converter-id>DateTimeConverter</converter-id>
+		<converter-class>javax.faces.convert.DateTimeConverter</converter-class>
+	</converter>
+	
 
 </faces-config>
