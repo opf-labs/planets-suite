@@ -1,12 +1,11 @@
 package eu.planets_project.ifr.core.storage.impl.util;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.logging.Logger;
-
-import eu.planets_project.ifr.core.storage.impl.DataManager;
 
 /**
  * 
@@ -23,7 +22,8 @@ public class PDURI {
 	 * The path identifier for a Data Registry PLANETS URI
 	 */
 	private static final String DATA_REG_PART = "dr";
-	
+
+	private URI _uri = null;
 	private String _scheme = "";
 	private String _host = ""; 
 	private int _port = 0;
@@ -31,52 +31,66 @@ public class PDURI {
 	private String _registryName = "";
 	private String _path;
 	private String[] _decodedPath = null; 
-    private static Logger log = Logger.getLogger(DataManager.class.getName());
+    private static Logger _log = Logger.getLogger(PDURI.class.getName());
 
 	/**
 	 * 
 	 * @param pdURI
 	 * @throws URISyntaxException
+	 * @throws UnsupportedEncodingException 
 	 */
-	public PDURI(URI pdURI) throws URISyntaxException{
+	@SuppressWarnings("deprecation")
+	public PDURI(URI pdURI) throws URISyntaxException {
+		// Check that the URL isn't null
+		if (pdURI == null) {
+			throw new URISyntaxException("null", "Supplied URI cannot be null");
+		}
 		// Get the port, host and scheme from the supplied
-		log.fine("parsing URI");
-		_port = pdURI.getPort();
-		 _host = pdURI.getHost();
-		_scheme = pdURI.getScheme();
-		_path = PDURI.stripSeparators(pdURI.normalize().getPath());
-		
-		log.fine("splitting path :" + _path);
-		String[] pathParts = _path.split("/");
-		for (String _string : pathParts) {
-			log.fine("pathpart :" + _string);
+		this._uri = pdURI.normalize();
+		this._port = pdURI.getPort();
+		this._host = pdURI.getHost();
+		this._scheme = pdURI.getScheme();
+
+		try {
+			this._path = PDURI.stripSeparators(pdURI.normalize().getPath());
+			
+			_log.fine("splitting path :" + this._path);
+			String[] pathParts = this._path.split("/");
+			this._registryTag = pathParts[0];
+			_log.fine("reg tag :" + this._registryTag);
+			this._registryName = URLDecoder.decode(pathParts[1], "UTF-8");
+			_log.fine("reg name :" + this._registryName);
+			_log.fine("path parts");
+			this._decodedPath = new String[pathParts.length - 2];
+			_log.fine("_decodedPath is an array " + this._decodedPath.length + " long");
+			for (int _loop = 0; _loop < this._decodedPath.length; _loop++) {
+				_log.fine("Adding path part :" + pathParts[_loop]);
+				this._decodedPath[_loop] = URLDecoder.decode(pathParts[_loop + 2], "UTF-8");
+			}
+		// This means that the path array isn't as large as we're expecting
+		// (No dr or id is a real possibility)
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new URISyntaxException(pdURI.toString(), "Hasn't enough path parts to be a PLANETS DOM URI");
+		} catch (StringIndexOutOfBoundsException e) {
+			throw new URISyntaxException(pdURI.toString(), "Hasn't enough path parts to be a PLANETS DOM URI");
+		} catch (UnsupportedEncodingException e) {
+			throw new URISyntaxException(pdURI.toString(), "There's an unsupported endcoding error UTF-8");
 		}
-		_registryTag = pathParts[0];
-		log.fine("reg tag :" + _registryTag);
-		_registryName = URLDecoder.decode(pathParts[1]);
-		log.fine("reg name :" + _registryName);
-		log.fine("path parts");
-		_decodedPath = new String[pathParts.length - 2];
-		log.fine("_decodedPath is an array " + _decodedPath.length + " long");
-		for (int _loop = 0; _loop < _decodedPath.length; _loop++) {
-			log.fine("Adding path part :" + pathParts[_loop]);
-			_decodedPath[_loop] = URLDecoder.decode(pathParts[_loop + 2]);
-		}
-		log.fine("Checking is a DR URI");
+		_log.fine("Checking is a DR URI");
 		if (!this.isDataRegistryURI())
 			throw new URISyntaxException(pdURI.toString(), "Invalid PLANETS URI");
-
 	}
 
 	private static String stripSeparators(String path) {
-		while ((path.lastIndexOf("/") == (path.length() - 1))) {
-			path = path.substring(0, path.length()-1);
+		String strippedPath = path;
+		while ((strippedPath.lastIndexOf("/") == (strippedPath.length() - 1))) {
+			strippedPath = strippedPath.substring(0, strippedPath.length()-1);
 		}
 		
-		while (path.indexOf("/") == 0) {
-			path = path.substring(1, path.length());
+		while (strippedPath.indexOf("/") == 0) {
+			strippedPath = strippedPath.substring(1, strippedPath.length());
 		}
-		return path;
+		return strippedPath;
 	}
 
 	/**
@@ -89,13 +103,13 @@ public class PDURI {
 	 */
 	public boolean isPlanetsURI() {
 		// Check for nulls
-		this.log.fine("isPlanetsURI()");
-		if ((_host == null) | (_scheme == null)) {
+		PDURI._log.fine("isPlanetsURI()");
+		if ((this._host == null) | (this._scheme == null)) {
 			return false;
 		}
-		this.log.fine("isPlanetsURI() Checks");
+		PDURI._log.fine("isPlanetsURI() Checks");
 		// Now perform the checks and return the result
-		return ((_port > -1) && (_host.length() > 0) && _scheme.equals(PLANETS_SCHEME));
+		return ((this._port > -1) && (this._host.length() > 0) && this._scheme.equals(PLANETS_SCHEME));
 	}
 	
 	/**
@@ -108,9 +122,9 @@ public class PDURI {
 	 */
 	public boolean isDataRegistryURI() {
 		boolean _retVal = false;
-		this.log.fine("isDataRegistryURI()");
+		PDURI._log.fine("isDataRegistryURI()");
 		if (this.isPlanetsURI()) {
-			this.log.fine("isDataRegistryURI() checks");
+			PDURI._log.fine("isDataRegistryURI() checks");
 			_retVal = (this._registryTag.toLowerCase().equals(DATA_REG_PART));
 		}
 		return _retVal;
@@ -125,7 +139,7 @@ public class PDURI {
 	 * @return A data registry identifier or <code>null</code> if the URI is not a genuine PLANETS URI
 	 */
 	public String getDataRegistryIdentifier() {
-		return _registryName;
+		return this._registryName;
 	}
 
 	/**
@@ -133,10 +147,11 @@ public class PDURI {
 	 * @return
 	 * @throws URISyntaxException
 	 */
+	@SuppressWarnings("deprecation")
 	public URI formDataRegistryRootURI() throws URISyntaxException {
 		URI _retVal = null;
-		String _pathPart = "/" + _registryTag + "/" + URLEncoder.encode(_registryName);
-		_retVal = new URI(PDURI.PLANETS_SCHEME, null, _host, _port, _pathPart, null, null);
+		String _pathPart = "/" + this._registryTag + "/" + URLEncoder.encode(this._registryName);
+		_retVal = new URI(PDURI.PLANETS_SCHEME, null, this._host, this._port, _pathPart, null, null);
 		return _retVal;
 	}
 
@@ -160,19 +175,20 @@ public class PDURI {
 	 * @return
 	 * @throws URISyntaxException
 	 */
+	@SuppressWarnings("deprecation")
 	public URI getURI() throws URISyntaxException {
-		log.fine("PDURI.getURI()");
+		_log.fine("PDURI.getURI()");
 		URI _retVal = null;
-		String _pathPart = "/" + _registryTag + "/" + URLEncoder.encode(_registryName);
-		log.fine("PDURI.getURI() _pathPart initialised:" + _pathPart);
+		String _pathPart = "/" + this._registryTag + "/" + URLEncoder.encode(this._registryName);
+		_log.fine("PDURI.getURI() _pathPart initialised:" + _pathPart);
 		
 		for (String _string : this._decodedPath) {
-			log.fine("In concat loop, adding:" + _string);
+			_log.fine("In concat loop, adding:" + _string);
 			_pathPart = _pathPart.concat("/").concat(URLEncoder.encode(_string));
-			log.fine("_pathPart:" + _pathPart);
+			_log.fine("_pathPart:" + _pathPart);
 		}
-		_retVal = new URI(PDURI.PLANETS_SCHEME, null, _host, _port, _pathPart, null, null);
-		log.fine("New URI is:" + _retVal.toString());
+		_retVal = new URI(PDURI.PLANETS_SCHEME, null, this._host, this._port, _pathPart, null, null);
+		_log.fine("New URI is:" + _retVal.toString());
 		return _retVal;
 	}
 	
@@ -183,23 +199,24 @@ public class PDURI {
 	 * @throws URISyntaxException
 	 */
 	public void replaceDecodedPath(String path) throws URISyntaxException {
-		log.fine("PDURI.replaceDecodedPath():" + path);
-		path = PDURI.stripSeparators(path);
-		log.fine("PDURI.replaceDecodedPath() striped path:" + path);
+		_log.fine("PDURI.replaceDecodedPath():" + path);
+		String replacedPath = path;
+		replacedPath = PDURI.stripSeparators(replacedPath);
+		_log.fine("PDURI.replaceDecodedPath() striped path:" + replacedPath);
 		String[] _parsedPath = null;
 		
-		if (path.indexOf("/") >= 0) {
-			_parsedPath = path.split("/");
-			log.fine("separators present array is:");
+		if (replacedPath.indexOf("/") >= 0) {
+			_parsedPath = replacedPath.split("/");
+			_log.fine("separators present array is:");
 		}
 		else {
-			log.fine("no spearator present");
+			_log.fine("no spearator present");
 			_parsedPath = new String[1];
-			_parsedPath[0] = path;
+			_parsedPath[0] = replacedPath;
 		}
 		this._decodedPath = _parsedPath;
 		for (String _string : _parsedPath) {
-			log.fine("ArrayItem:" + _string);
+			_log.fine("ArrayItem:" + _string);
 		}
 	}
 	
@@ -209,12 +226,55 @@ public class PDURI {
 	 */
 	public String getDataRegistryPath() {
 		String _retVal = "";
-		log.fine("_decodedPath has " + _decodedPath.length + " elements");
+		_log.fine("_decodedPath has " + this._decodedPath.length + " elements");
 		for (String _string : this._decodedPath) {
-			log.fine("Adding another element :" + _string);
+			_log.fine("Adding another element :" + _string);
 			_retVal = _retVal.concat("/").concat(_string);
 		}
-		log.fine("returning :" + _retVal);
+		_log.fine("returning :" + _retVal);
 		return _retVal;
 	}
+
+	/**
+	 * @param fullpath
+	 * @return
+	 */
+	public static String extractLeafname( String fullpath ) {
+	    if( fullpath == null ) return null;
+        int lastSlash = fullpath.lastIndexOf("/");
+        if( lastSlash != -1 ) {
+            return fullpath.substring( lastSlash + 1, fullpath.length() );
+        }
+        return fullpath;
+	}
+	
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object obj) {
+    	System.out.println("HEY Equals called");
+        if (!(obj instanceof PDURI)) {
+            return false;
+        }
+    	System.out.println("Object is a PDURI");
+        PDURI other = (PDURI) obj;
+    	System.out.println("my uri is:" + this._uri.toString());
+    	System.out.println("other uri is:" + other._uri.toString());
+    	System.out.println("the answer is " + this._uri.toString().equals(other._uri.toString()));
+        return this._uri.toString().equals(other._uri.toString());
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+    	System.out.println("HEY hashCode called");
+    	System.out.println("MY uri is: " + this._uri.toString());
+    	System.out.println("MY hash is: " + this._uri.hashCode());
+    	return this._uri.toString().hashCode();
+    }
 }

@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.storage.impl.util;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 /**
  * Helper class to validate and parse PLANETS Data URIs.
@@ -30,14 +29,17 @@ public final class PDURIHelper {
 	 * Private constructor to prevent instantiation
 	 */
 	private PDURIHelper() {
+		/**
+		 * Empty block, need private no arg costructor
+		 */
 	}
 	
 	private static String stripTrailingSeparators(String path) {
-		boolean _isSep = (path.lastIndexOf("/") == (path.length() - 1));
-		while ((path.lastIndexOf("/") == (path.length() - 1))) {
-			path = path.substring(0, path.length()-1);
+		String strippedPath = path;
+		while ((strippedPath.lastIndexOf("/") == (strippedPath.length() - 1))) {
+			strippedPath = strippedPath.substring(0, strippedPath.length()-1);
 		}
-		return path;
+		return strippedPath;
 	}
 	/**
 	 * Checks a URI against the PLANETS URI syntax rules.
@@ -123,6 +125,7 @@ public final class PDURIHelper {
 	/**
 	 * @param pdURI - A URI from which to parse the PLANETS data registry path
 	 * @return The data registry path or <code>null</code> if one cannot be found.
+	 * @throws URISyntaxException 
 	 */
 	public static String getDataRegistryPath(URI pdURI) throws URISyntaxException {
 		String _dataRegistryPath = null;
@@ -183,6 +186,7 @@ public final class PDURIHelper {
 	 * @return
 	 * @throws URISyntaxException
 	 */
+	@SuppressWarnings("deprecation")
 	public static String[] getDecodedPathParts(URI pdURI) throws URISyntaxException {
 		String[] _retVal = null;
 		if (PDURIHelper.isDataRegistryURI(pdURI)) {
