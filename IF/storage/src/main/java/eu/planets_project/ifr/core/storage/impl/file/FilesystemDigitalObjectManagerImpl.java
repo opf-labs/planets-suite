@@ -3,23 +3,33 @@
  */
 package eu.planets_project.ifr.core.storage.impl.file;
 
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-
-import eu.planets_project.ifr.core.storage.api.PDURI;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
-import eu.planets_project.ifr.core.storage.api.query.Query;
-import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
-import eu.planets_project.services.datatypes.DigitalObjectContent;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Content;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.logging.Logger;
+
+import eu.planets_project.ifr.core.common.conf.Configuration;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
+import eu.planets_project.ifr.core.storage.impl.util.PDURI;
+import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 
 /**
  * Implementation of the DigitalObjectManager interface based upon a file system.
@@ -27,49 +37,52 @@ import java.util.logging.Logger;
  * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  *
  */
-public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager {
+public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase {
 	/** The logger instance */
     private static Logger log = Logger.getLogger(FilesystemDigitalObjectManagerImpl.class.getName());
     
     /** The extension used for storing digital object metadata */
     protected final static String DO_EXTENSION = ".planets.do";
 
-    /** The name of this data registry instance */
-    protected String _name = null;
 	/** This is the root directory of this particular Data Registry */
 	protected File _root = null;
+	
+	/** Public statics for the property names used to configure an instance */
+	public final static String PATH_KEY = "manager.path";
 
-	/**
-	 * @param name
-	 * 		The name of the data registry
-	 * @param root
-	 * 		A directory that is the root for this data registry
-	 * @return
-	 * 		A new FilesystemDigitalObjectManagerImpl instance based upon a root directory
-	 * @throws IllegalArgumentException 
-	 */
-	public static DigitalObjectManager getInstance(String name, File root) throws IllegalArgumentException {
-		return new FilesystemDigitalObjectManagerImpl(name, root);
+    //=============================================================================================
+	// CONSTRUCTORS
+	//=============================================================================================
+    /**
+     * No Arg Constructor, we don't want people to implement this 
+     */
+    protected FilesystemDigitalObjectManagerImpl() {
+    	super(null);
 	}
 
-	/**
-	 * A convenience instantiator that create the File object for the user.
-	 * @param name
-	 * 		The name of the data registry
-	 * @param rootPath
-	 * 		The string path to a directory that is the root for this data registry
-	 * @return
-	 * 		A new FilesystemDigitalObjectManagerImpl instance based upon a root directory
-	 * @throws IllegalArgumentException 
-	 */
-	public static DigitalObjectManager getInstance(String name, String rootPath) throws IllegalArgumentException {
-		return new FilesystemDigitalObjectManagerImpl(name, new File(rootPath));
-	}
+    /**
+     * {@inheritDoc}
+     * @param config 
+     */
+    public FilesystemDigitalObjectManagerImpl(Configuration config) {
+    	super(config);
+    	try {
+        	String path = config.getString(PATH_KEY);
+        	this.checkConstructorArguments(new File(path));
+        	this._root = new File(path);
+    	} catch (NoSuchElementException e) {
+    		throw new IllegalArgumentException("Path property with key " + PATH_KEY + " not found in config");
+    	}
+    }
 
+	//=============================================================================================
+	// BASE CLASS METHODS
+	//=============================================================================================
 	/**
 	 * {@inheritDoc}
-	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase#list(java.net.URI)
 	 */
+	@Override
 	public List<URI> list(URI pdURI) {
 		// The return array of URIs contains the contents for the passed URI
 		ArrayList<URI> retVal = null;
@@ -80,14 +93,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 		{
 			log.fine("URI is empty so return root URI only");
 			retVal = new ArrayList<URI>();
-			try {
-				retVal.add( PDURI.formDataRegistryRootURI("localhost", "8080", this._name+"/") );
-			} catch (URISyntaxException e) {
-				log.severe("URI Syntax exception");
-				log.severe(e.getMessage());
-				log.severe(e.getStackTrace().toString());
-				return null;
-			} 
+			retVal.add( this.id ); 
 			return retVal; 
 		}
 		log.fine("URI is NOT NULL");
@@ -96,8 +102,9 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 		try {
 			realPdURI = new PDURI(pdURI);
 			fullPath = this._root.getCanonicalPath() + File.separator + realPdURI.getDataRegistryPath();
+			log.info("Full path is " + fullPath);
 	        File searchRoot = new File(fullPath);
-	        log.fine("Looking at: " + pdURI + " -> " + searchRoot.getCanonicalPath() );    
+	        log.info("Looking at: " + pdURI + " -> " + searchRoot.getCanonicalPath() );    
 			retVal = this.listFileLocation( pdURI, searchRoot );
 			
 		} catch (URISyntaxException e) {
@@ -122,56 +129,10 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	}
 	
 	/**
-	 * This code take the actual file location and turns it into a listing.
-	 * 
-	 * @param pdURI
-	 * @param fullPath
-	 * @return
-	 * @throws URISyntaxException
-	 */
-	protected ArrayList<URI> listFileLocation(URI pdURI, File searchRoot ) throws URISyntaxException {
-        if (searchRoot.exists() && searchRoot.isDirectory()) {
-            ArrayList<URI> retVal = new ArrayList<URI>();
-            // Create a filter to avoid do metadata files
-            FilenameFilter filter = new FilenameFilter() {
-                public boolean accept(File f, String name) {
-                    return !name.endsWith(FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
-                }
-            };
-            String[] contents = searchRoot.list(filter);
-            for (String s : contents) {
-                File sf = new File( searchRoot, s );
-                // Create the new URI, using the multiple-argument constructors to ensure characters are properly escaped.
-                if( sf.isDirectory() ) {
-                    retVal.add( createNewPathUri( pdURI, pdURI.getPath() + s + "/" ) );
-                } else {
-                    retVal.add( createNewPathUri( pdURI, pdURI.getPath() + s ) );
-                }
-            }
-            return retVal;
-        }
-        // If does not exist, or is a file.
-        return null;
-	}
-
-	/**
-	 * This is just a helper to create a new URI reliably, using an existing one as a template.
-	 * 
-	 * @param oldPathUri
-	 * @param newPath
-	 * @return
-	 * @throws URISyntaxException
-	 */
-    protected URI createNewPathUri(URI oldPathUri, String newPath)
-            throws URISyntaxException {
-        return new URI(oldPathUri.getScheme(), oldPathUri.getUserInfo(),
-                oldPathUri.getHost(), oldPathUri.getPort(), newPath, null, null);
-    }
-        
-	/**
 	 * {@inheritDoc}
-	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase#retrieve(java.net.URI)
 	 */
+	@Override
 	public DigitalObject retrieve(URI pdURI)
 			throws DigitalObjectNotFoundException {
 		DigitalObject retObj = null;
@@ -206,7 +167,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
                         title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
                     }
                     dob.title(title);
-                    log.fine("Add title: " + title);
+                    log.info("Add title: " + title);
                 }
 			} else {
 			    // Files without an associated metadata file are patched in like this:
@@ -246,6 +207,154 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 		return retObj;
 	}
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase#getQueryTypes()
+     */
+    @Override
+	public List<Class<? extends Query>> getQueryTypes() {
+        return null;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerbASE#storeAsNew()
+     */
+    @Override
+	public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
+		System.out.println("FileSysDOM storeAsNew");
+        URI pdURI;
+        System.out.println("Putting URI together");
+		pdURI = this.id.resolve(UUID.randomUUID().toString());
+		System.out.println("Calling store");
+        this.store(pdURI, digitalObject);
+		System.out.println("returning URI");
+        return pdURI;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
+    @Override
+	public URI storeAsNew(URI pdURI, DigitalObject digitalObject)
+            throws DigitalObjectNotStoredException {
+        this.store(pdURI, digitalObject);
+        return pdURI;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase#updateExisting()
+     */
+    @Override
+	public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
+    	// First lets call retrieve to see if this exists
+    	this.retrieve(pdURI);
+        this.store(pdURI, digitalObject);
+        return pdURI;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase#isWritable(java.net.URI)
+     */
+    @Override
+	public boolean isWritable(URI pdURI) {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
+     */
+    @Override
+	public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
+        return null;
+    }
+
+    //=============================================================================================
+	// FACTORY METHODS
+	//=============================================================================================
+	/**
+	 * @param config
+	 * 		A config object with the DOM details 
+	 * @return
+	 * 		A new FilesystemDigitalObjectManagerImpl instance based upon a root directory
+	 * @throws IllegalArgumentException 
+	 */
+	public static DigitalObjectManager getInstance(Configuration config) throws IllegalArgumentException {
+		return new FilesystemDigitalObjectManagerImpl(config);
+	}
+
+    //=============================================================================================
+	// PRIVATE & PROTECTED METHODS
+	//=============================================================================================
+	private void checkConstructorArguments(File root) throws IllegalArgumentException {
+		// Ensure root is not null
+		if (root == null) {
+			String message = "Supplied root dir is null";
+			log.severe(message);
+			throw new IllegalArgumentException(message);
+		// first make sure it exists and is a directory
+		} else if (root.exists()) {
+			// OK root exists but it MUST be a directory
+			if (!root.isDirectory()) {
+				String message = root.getPath() + " is not a directory";
+				log.severe(message);
+				throw new IllegalArgumentException(message);
+			}
+		// It doesn't exist so lets create the directory
+		} else {
+			String message = "Directory " + root.getPath() + " doesn't exist";
+			log.info(message);
+			root.mkdirs();
+		}
+	}
+	
+	/**
+	 * This code take the actual file location and turns it into a listing.
+	 * 
+	 * @param pdURI
+	 * @param fullPath
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	protected ArrayList<URI> listFileLocation(URI pdURI, File searchRoot ) throws URISyntaxException {
+        if (searchRoot.exists() && searchRoot.isDirectory()) {
+        	log.info("OK " + searchRoot + " exists");
+            ArrayList<URI> retVal = new ArrayList<URI>();
+            // Create a filter to avoid do metadata files
+            FilenameFilter filter = new FilenameFilter() {
+                public boolean accept(File f, String name) {
+                    return !name.endsWith(FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
+                }
+            };
+            String[] contents = searchRoot.list(filter);
+            log.info("Contents String[] has " + contents.length + " elements");
+            for (String s : contents) {
+                File sf = new File( searchRoot, s );
+                // Create the new URI, using the multiple-argument constructors to ensure characters are properly escaped.
+                if( sf.isDirectory() ) {
+                	log.info(sf + " is a directory");
+                	URI uri = createNewPathUri( pdURI, pdURI.getPath() + "/"  + s + "/" );
+                	log.info("Adding URI " + uri + " to list");
+                    retVal.add( uri );
+                } else {
+                	log.info(sf + " is a file");
+                	URI uri = createNewPathUri( pdURI, pdURI.getPath() + "/" + s );
+                	log.info("Adding URI " + uri + " to list");
+                    retVal.add( uri );
+                }
+            }
+            return retVal;
+        }
+        log.info("Either " + searchRoot + " doesn't exist OR it is file");
+        // If does not exist, or is a file.
+        return null;
+	}
+
 	/**
 	 * @param pdURI the URI
 	 * @param digitalObject the object
@@ -254,25 +363,33 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	private void store(URI pdURI, DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException {
 		try {
+			System.out.println("testing title");
 		       if( digitalObject.getTitle() == null ) {
 		          throw new DigitalObjectNotStoredException(
 		        		"The DigitalObject titel was not found!");
 		       }
 
 			// get the path from the URI to store at
+				System.out.println("Getting new PDURI");
 			PDURI _parsedURI = new PDURI(pdURI);
+			System.out.println("getting dr path");
 			String path = _parsedURI.getDataRegistryPath();
+			System.out.println("path is " + path);
 
 			// We need to append the path to the root dir of this registry for the data
+			System.out.println("New binary file");
 			File doBinary = new File(this._root.getCanonicalPath() + 
 					File.separator + path);
+			System.out.println("getting dir dir");
             File doDir = doBinary.getParentFile();
+    		System.out.println("mking dir");
             if( ! doDir.exists() ) doDir.mkdirs();
+    		System.out.println("creating metadata");
 			File doMetadata = new File(this._root.getCanonicalPath() + 
 					File.separator + path + FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
 			
-            log.fine("Storing in binary in "+doBinary.getAbsolutePath());
-            log.fine("And storing in metadata in "+doMetadata.getAbsolutePath());
+            log.info("Storing in binary in "+doBinary.getAbsolutePath());
+            log.info("And storing in metadata in "+doMetadata.getAbsolutePath());
 			
 			// Persist the object to a file
 			InputStream inStream = digitalObject.getContent().getInputStream();
@@ -312,130 +429,18 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			throw new DigitalObjectNotStoredException("Couldn't store Digital Object due to IO problem", e);
 		}
 	}
-	
-	
-	
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
-     */
-    public List<Class<? extends Query>> getQueryTypes() {
-        return null;
-    }
-
-    
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew()
-     */
-    public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
-        URI pdURI;
-        try {
-            pdURI = PDURI.formDataRegistryRootURI("localhost", "8080", this._name+"/").resolve(UUID.randomUUID().toString());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new DigitalObjectNotStoredException("Failed to autogenerate a suitable URI for this item.");
-        }
-        this.store(pdURI, digitalObject);
-        return pdURI;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
-     */
-    public URI storeAsNew(URI pdURI, DigitalObject digitalObject)
-            throws DigitalObjectNotStoredException {
-        this.store(pdURI, digitalObject);
-        return pdURI;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#updateExisting()
-     */
-    public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
-        // FIXME This should only work if the location exists already.
-        this.store(pdURI, digitalObject);
-        return pdURI;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
-     */
-    public boolean isWritable(URI pdURI) {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
-     */
-    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
-        return null;
-    }
-
-    //=============================================================================================
-	// PRIVATE METHODS
-	//=============================================================================================
-	/**
-	 * We don't want the no arg constructor used as every file based registry should have a
-	 * root directory
-	 */
-	@SuppressWarnings("unused")
-    private FilesystemDigitalObjectManagerImpl() {
-	}
 
 	/**
-	 * Constructor that instantiates the data registry on a root directory
-	 * @param name
-	 * 		A non null, none empty java.lang.String that provides a name for this data registry
-	 * @param root
-	 * 		A directory that is the root for this data registry, this should be a none null
-	 * 		java.io.File that is initialised to point to an existing directory
-	 * @throws IllegalArgumentException
-	 * 		When one of the passed parameters doesn't satisfy the criteria documented above
+	 * This is just a helper to create a new URI reliably, using an existing one as a template.
+	 * 
+	 * @param oldPathUri
+	 * @param newPath
+	 * @return
+	 * @throws URISyntaxException
 	 */
-	protected FilesystemDigitalObjectManagerImpl(String name, File root) throws IllegalArgumentException {
-		// Check the passed arguments, this will throw the IllegalArgumentException if not OK
-		this.checkConstructorArguments(name, root);
-		
-		// OK we have a root directory so assign it and assign the name
-		this._root = root;
-		this._name = name;
-	}
-	
-	private void checkConstructorArguments(String name, File root) throws IllegalArgumentException {
-		// Ensure root is not null
-		if (root == null) {
-			String message = "Supplied root dir is null";
-			log.severe(message);
-			throw new IllegalArgumentException(message);
-		// first make sure it exists and is a directory
-		} else if (root.exists()) {
-			// OK root exists but it MUST be a directory
-			if (!root.isDirectory()) {
-				String message = root.getPath() + " is not a directory";
-				log.severe(message);
-				throw new IllegalArgumentException(message);
-			}
-		// It doesn't exist so lets create the directory
-		} else {
-			String message = "Directory " + root.getPath() + " doesn't exist";
-			log.severe(message);
-			throw new IllegalArgumentException(message);
-		}
-
-		// Name should not be null or empty
-		if (name == null) {
-			String message = "The supplied name should not be null";
-			log.severe(message);
-			throw new IllegalArgumentException(message);
-		} else if (name.length() < 1) {
-			String message = "The supplied name should not be empty";
-			log.severe(message);
-			throw new IllegalArgumentException(message);
-		}
-	}
+    static protected URI createNewPathUri(URI oldPathUri, String newPath)
+            throws URISyntaxException {
+        return new URI(oldPathUri.getScheme(), oldPathUri.getUserInfo(),
+                oldPathUri.getHost(), oldPathUri.getPort(), newPath, null, null);
+    }
 }
