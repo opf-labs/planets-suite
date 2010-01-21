@@ -3,6 +3,7 @@ package eu.planets_project.services.datatypes;
 import eu.planets_project.services.utils.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -50,7 +51,16 @@ public final class Content {
      */
     public static DigitalObjectContent byReference(final InputStream inputStream) {
         /* Write the stream to a temp file (is guaranteed to create a new file, given string is for base name only) */
-        File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream, "tempContent", ".dat");
+        //File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream, "tempContent", ".dat");
+    	File tmpFile = null;
+		try {
+			tmpFile = File.createTempFile("tempContent", "tmp");
+			tmpFile.deleteOnExit();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		FileUtils.writeInputStreamToFile(inputStream, tmpFile);
         return new ImmutableContent(tmpFile);
     }
 
@@ -82,8 +92,8 @@ public final class Content {
      * @return A content instance with the specified value
      */
     public static DigitalObjectContent byValue(final InputStream inputStream) {
-        File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream,
-                "tempContent", ".dat");
-        return new ImmutableContent(FileUtils.readFileIntoByteArray(tmpFile));
+        //File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream,
+        //        "tempContent", ".dat");
+        return new ImmutableContent(FileUtils.writeInputStreamToBinary(inputStream));
     }
 }
