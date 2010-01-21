@@ -5,17 +5,182 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
     xmlns:t="http://myfaces.apache.org/tomahawk">
 <body>
 
   <ui:composition template="/WEB-INF/planets/page-template.xhtml">
-    <ui:param name="pagetitle" value="Planets IF Storage"/>
-    <ui:param name="extraCSS" value="css/storage.css" />
+  
+      <style>
+        .col1, .col2{
+            width:50%;
+            vertical-align:top;
+        }
+        .dropPanel {
+        	border:1px solid gray;
+        	padding:2px;
+        }
+    </style>
     
-    <div id="strContent">
-		<h2>The Storage page is currently undergoing reconstruction.</h2>
-        <h:graphicImage id="construct" value="/images/under-construction.gif" />
-    </div>
+    <ui:param name="pagetitle" value="Planets IF Storage"/>
+    
+    
+    <a4j:form>    
+    	<rich:dragIndicator id="indicator2"/>
+    	
+    	<rich:modalPanel id="modalpanel" width="350" height="100" >
+    		<h:outputText value="Modal Panel"></h:outputText>
+    	</rich:modalPanel>
+    	
+        <h:panelGrid columns="2" width="100%" columnClasses="col1,col2">
+        	<rich:panel id="treepanel">
+        	    <f:facet name="header">
+                    <h:outputText value="All available data registries:" />
+                </f:facet>
+                
+                <!-- select different view on the tree and possibly apply a full-text filter on the tree's nodes -->
+                <rich:simpleTogglePanel switchType="client" label="Apply settings: data registry selection and different tree views" 
+                                        style="margin:2px;">    
+                                        
+                                        
+                <h:panelGrid columns="5">
+                <!-- <rich:panel id="controls"> --> 
+                                        
+                                                
+    				<a4j:region id="settings">
+    				<h:panelGrid columns="2">
+    				    <h:outputText value="Select data registry: "/>
+    				    
+    				    <rich:comboBox id="combo" 
+					        defaultLabel="Enter some value"
+    				        onchange="this.form.submit();"
+					         value="#{StorageBackingBean.selectedRegistry}" 
+					         valueChangeListener="#{StorageBackingBean.selectionChanged}">
+					        <f:selectItems value="#{StorageBackingBean.dataRegistryOptions}"/>
+					        <a4j:support event="onselect" reRender="combo"/>
+					    </rich:comboBox>
+    				    
+                    </h:panelGrid> 
+						
+			
+	            		<!-- trigger collaps/expand of the tree -->
+					</a4j:region>
+                    <rich:spacer width = "100"/>
+
+			        <h:outputText value="Select data model" />
+                    <h:selectOneRadio value="#{StorageBackingBean.currentConfiguration}"
+                        layout="pageDirection" valueChangeListener="#{StorageBackingBean.processValueChange}">
+                        <f:selectItems value="#{StorageBackingBean.configurations}" />
+                        <a4j:support event="onclick" reRender="editor,controls" requestDelay="500"
+                            eventsQueue="settingsQueue" similarityGroupingId="settings" />
+                    </h:selectOneRadio>
+
+				<!-- </rich:panel>
+
+				<rich:panel id="controls2">
+                    </rich:panel>-->
+                    
+                    </h:panelGrid> 
+                    
+    			</rich:simpleTogglePanel>  
+
+
+	            <rich:tree style="width:300px" nodeSelectListener="#{StorageBackingBean.processSelection}" 
+	                reRender="infoPanel,selproppanel" ajaxSubmitSelection="true" ignoreDupResponses="true" eventsQueue="foo"
+	                switchType="client" id="propertytree" value="#{StorageBackingBean.treeNode}" var="item" 
+	                dragIndicator="indicator2"  adviseNodeOpened="#{StorageBackingBean.adviseNodeOpened}"
+	                treeNodeVar="treeNode">
+	                <rich:treeNode type="node" icon="/graphics/iconFolder.gif" iconLeaf="/graphics/iconFolder.gif">
+						<h:outputText value="#{item.name}" id="treenodeitemname"/>
+					</rich:treeNode>
+					<rich:treeNode id="treeLeafNode" type="leaf" dragType="props" iconLeaf="/graphics/iconLeaf.gif"> 
+		                 <rich:dndParam name="label" type="drag">property: #{item.name}</rich:dndParam>
+		                 <a4j:support event="ondblclick" actionListener="#{StorageBackingBean.processPropertyDblClick}" reRender="selproppanel" eventsQueue="foo" rendered="#{(not empty expApproved) ? (!expApproved) : true}"/>
+		                 <h:outputText value="#{item.humanReadableName}"/>
+		                 <rich:contextMenu event="oncontextmenu" attached="true" id="treenodemenu" submitMode="ajax" rendered="#{(not empty expApproved) ? (!expApproved) : StorageBackingBean.contextMenuEnabled.selected}">
+                                 <rich:menuItem id="addprop" actionListener="#{StorageBackingBean.processLeafContextMenuAddProperty}" reRender="selproppanel" eventsQueue="foo">
+									<b>add property</b> to clipboard
+								</rich:menuItem>
+                                <rich:menuItem value="close"/>
+               			</rich:contextMenu>
+		            </rich:treeNode>
+	            </rich:tree>    
+
+
+  				
+            </rich:panel>
+             <h:panelGrid columns="1" width="100%">
+	        <!--    <rich:panel id="selproppanel" style="droppanel">
+	                <f:facet name="header">
+	                    <a4j:outputPanel ajaxRendered="true"><h:outputText value="clipboard" /> <a4j:commandButton id="clearclipboardprops" value="clear" action="#{OntologyDnDBean.removeAllSelectedProps}" reRender="selproppanel,clearclipboardprops" eventsQueue="foo" disabled="#{(OntologyDnDBean.selNodesSize lt 1) or (expApproved)}"/></a4j:outputPanel>
+	                </f:facet>
+	                <rich:dropSupport id="dropsupport" acceptedTypes="#{expApproved ? 'none' : 'props'}" dropValue="selpropdrop"
+	                    dropListener="#{OntologyDnDBean.processDrop}" reRender="selproppanel">
+	                </rich:dropSupport>
+	
+			        <rich:dataTable id="selprops" value="#{OntologyDnDBean.selNodes}" var="propNodes" rows="10" 
+				        reRender="selprops_ds" styleClass="tbTable" binding="#{OntologyDnDBean.selPropTable}" rendered="#{OntologyDnDBean.selNodesSize >0}">
+	
+	 					<rich:column>
+	                    	<f:facet name="header">
+	                    		<h:outputText value="remove"/>
+	                    	</f:facet>
+	                    	<a4j:commandLink action="#{OntologyDnDBean.processRemoveSelProp}" reRender="infoPanel,selproppanel" rendered="#{!expApproved}">
+	                            <img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete_query.gif" alt="remove" title="remove"/>
+	                            <f:param value="#{propNodes.data.URI}" name="selPropID"/>
+	                       </a4j:commandLink>
+	                    </rich:column>
+	                    <rich:column sortBy="#{propNodes.data.humanReadableName}" sortOrder="DESCENDING">
+	                    	<f:facet name="header">
+	                    		<h:outputText value="selected property"/>
+	                    	</f:facet>
+	                    	<a4j:commandLink action="#{OntologyDnDBean.processDetailsForSelProp}" reRender="infoPanel">
+	                    		<f:param value="#{propNodes.data.URI}" name="selPropID"/>
+	                    		<h:outputText value="#{propNodes.data.humanReadableName}"></h:outputText>
+	                    	</a4j:commandLink> 
+	                    </rich:column>   
+	                    <c:if test="#{(! empty Standalone) and (Standalone=='false')}">
+	                    <rich:column style="text-align:right;">
+	                    	<f:facet name="header">
+	                    		<h:outputText value="measure in experiment stage"/>
+	                    	</f:facet>
+	                    	<a4j:repeat id="propusagerepeater" value="#{experimentStages}" var="stage" binding="#{OntologyDnDBean.repeater}">
+
+                    			<h:outputText value="#{stage.name}: "/>
+                    			
+                    			<a4j:commandButton value="true" actionListener="#{OntologyDnDBean.selStagePropChange}" reRender="selprops" eventsQueue="foo" disabled="#{OntologyDnDBean.stageSelectedState[propNodes.data.URI][stage.name]=='true'}">
+	            					<f:param value="#{propNodes.data.URI}" name="selPropID"/>
+                                    <f:param value="#{stage.name}" name="selPropStageName"/>
+	            				</a4j:commandButton>
+	            				<a4j:commandButton value="false" actionListener="#{OntologyDnDBean.selStagePropChange}" reRender="selprops" eventsQueue="foo" disabled="#{OntologyDnDBean.stageSelectedState[propNodes.data.URI][stage.name]=='false'}">
+	            					<f:param value="#{propNodes.data.URI}" name="selPropID"/>
+                                    <f:param value="#{stage.name}" name="selPropStageName"/>
+	            				</a4j:commandButton>
+
+							    <br/>
+
+		        			</a4j:repeat>
+	                    </rich:column>
+	                    </c:if>
+	                    <f:facet name="footer">
+	                		<rich:datascroller for="selprops" id="selprops_ds" renderIfSinglePage="false"></rich:datascroller>
+	            		</f:facet>
+	                </rich:dataTable>
+	                
+	                <c:if test="#{(! empty Standalone) and (Standalone=='false')}">
+	                	<br/>
+	                	<a4j:commandButton value="add to experiment"
+                 			action="#{NewExp_Controller.addOntoPropsToExp}" rendered="#{(not empty expApproved) ? (!expApproved) : true}"/>
+                 	</c:if>
+                 		
+	            </rich:panel>-->
+            
+	        </h:panelGrid> 
+        </h:panelGrid>
+
+    </a4j:form>
+
     
   </ui:composition>
 </body>
