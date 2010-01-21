@@ -44,8 +44,8 @@
         <rich:dataTable value="#{ServiceBrowser.migrationInputFormatBeans}" var="fb" style="width:100%;">
           <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }" rendered="#{fb.enabled}">
           
-            <h:panelGroup rendered="#{fb.format.registryURL != null}" styleClass="infoFloat">
-              <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
+            <h:panelGroup rendered="#{fb.format.registryUrl != null}" styleClass="infoFloat">
+              <h:outputLink value="#{fb.format.registryUrl}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
             </h:panelGroup>
             
             <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">
@@ -103,8 +103,8 @@
         <rich:dataTable value="#{ServiceBrowser.migrationOutputFormatBeans}" var="fb" style="width:100%;">
           <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }" rendered="#{fb.enabled}">
           
-            <h:panelGroup rendered="#{fb.format.registryURL != null}" styleClass="infoFloat">
-              <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
+            <h:panelGroup rendered="#{fb.format.registryUrl != null}" styleClass="infoFloat">
+              <h:outputLink value="#{fb.format.registryUrl}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
             </h:panelGroup>
             
             <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">

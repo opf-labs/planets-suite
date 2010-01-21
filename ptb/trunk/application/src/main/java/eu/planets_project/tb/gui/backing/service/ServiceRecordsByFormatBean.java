@@ -55,6 +55,16 @@ public class ServiceRecordsByFormatBean {
     public Format getFormat() {
         return fmt;
     }
+    
+    /**
+     * @return the summary with the version number appended.
+     */
+    public String getSummaryAndVersion() {
+        if (fmt.getVersion() != null)
+            return fmt.getSummary() + " " + fmt.getVersion();
+        return fmt.getSummary();
+    }
+    
     /**
      * @return the asInput
      */
