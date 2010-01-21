@@ -36,7 +36,9 @@ import javax.xml.bind.JAXBException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
@@ -62,7 +64,6 @@ import eu.planets_project.tb.gui.backing.exp.ExpTypeViewer.CreateViewResultsForD
 import eu.planets_project.tb.gui.backing.exp.view.ViewResultBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
-import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
@@ -380,7 +381,9 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
      * @throws URISyntaxException
      */
     private String helperReadDigoToString(String fileRef) throws IOException, DigitalObjectNotFoundException, URISyntaxException{
-    	DigitalObjectMultiManager digoManager = new DigitalObjectMultiManager();
+    	DataRegistry digoManager = DataRegistryImpl.getInstance();
+    	URI uriRef = new URI(fileRef);
+    	this.log.info("Retrieving Digital Object at " + uriRef);
 		DigitalObject xmlTemplateDigo = digoManager.retrieve(new URI(fileRef));
 	    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(xmlTemplateDigo.getContent().getInputStream()));
         StringBuilder stringBuilder = new StringBuilder();

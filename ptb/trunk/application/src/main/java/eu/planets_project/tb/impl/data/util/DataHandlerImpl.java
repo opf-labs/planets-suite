@@ -29,8 +29,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
+import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.utils.DigitalObjectUtils;
@@ -39,8 +43,6 @@ import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.DataSource;
-import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
@@ -70,7 +72,7 @@ import eu.planets_project.tb.impl.system.BackendProperties;
 public class DataHandlerImpl implements DataHandler {
     
     // A reference to the data manager itself:
-    DigitalObjectMultiManager dommer = new DigitalObjectMultiManager();
+    DataRegistry dataReg = DataRegistryImpl.getInstance();
 
 	// A Log for this:
     private Log log = LogFactory.getLog(DataHandlerImpl.class);
@@ -193,8 +195,16 @@ public class DataHandlerImpl implements DataHandler {
      * @see eu.planets_project.tb.api.data.util.DataHandler#storeDigitalObject(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.tb.api.model.Experiment)
      */
     public URI storeDigitalObject(DigitalObject dob, Experiment exp) {
-        DataSource defstore = dommer.getDefaultStorageSpace();
-        log.info("Attempting to store in data registry: "+defstore.getUri());
+    	DigitalObjectManager defstore = null;
+    	try {
+			defstore = this.dataReg.getDefaultDigitalObjectManager();
+		} catch (DigitalObjectManagerNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			return null;
+		}
+        URI defaultDomUri = this.dataReg.getDefaultDigitalObjectManagerId();
+        this.log.info("Attempting to store in data registry: " + defaultDomUri);
         UserBean currentUser = (UserBean) JSFUtil.getManagedObject("UserBean");
         String userid = ".";
         if( currentUser != null && currentUser.getUserid() != null ) {
@@ -205,9 +215,9 @@ public class DataHandlerImpl implements DataHandler {
         URI baseUri = null;
         try {
             if( exp == null ) { 
-                baseUri = new URI(defstore.getUri().toString() + "/testbed/users/"+userid+"/digitalobjects/");
+                baseUri = new URI(defaultDomUri.toString() + "/testbed/users/"+userid+"/digitalobjects/");
             } else {
-                baseUri = new URI(defstore.getUri().toString() + "/testbed/experiments/experiment-"+exp.getEntityID()+"/");
+                baseUri = new URI(defaultDomUri.toString() + "/testbed/experiments/experiment-"+exp.getEntityID()+"/");
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -236,7 +246,8 @@ public class DataHandlerImpl implements DataHandler {
             e1.printStackTrace();
             return null;
         }
-        List<URI> storedDobs = dommer.list(baseUri);
+    	log.info("Calling Data Registry List for " + baseUri);
+        List<URI> storedDobs = dataReg.list(baseUri);
         if( storedDobs != null ) {
           int unum = 1;
           while( storedDobs.contains(dobUri) ) {
@@ -275,7 +286,7 @@ public class DataHandlerImpl implements DataHandler {
     }
     
     private URI storeDigitalObject( URI domUri, DigitalObject dob ) throws DigitalObjectNotStoredException {
-        return dommer.storeAsNew(domUri, dob);
+        return dataReg.storeAsNew(domUri, dob);
     }
 
 
@@ -336,12 +347,11 @@ public class DataHandlerImpl implements DataHandler {
         
         // Check in the known locations for the files - look in each directory.
         if( file.exists() ) {
-            log.debug("Found file: "+file.getAbsolutePath());
+            this.log.debug("Found file: " +file.getAbsolutePath());
             // URGENT The file must be lodged somewhere!
             return new DigitalObjectRefBean(name, id, file);
-        } else {
-            throw new FileNotFoundException("Could not find file "+id);
         }
+		throw new FileNotFoundException("Could not find file " + id);
         
     }
 
@@ -351,22 +361,20 @@ public class DataHandlerImpl implements DataHandler {
         try {
             domUri = new URI( id );
         } catch (URISyntaxException e) {
-            throw new FileNotFoundException("Could not find file "+id);
+            throw new FileNotFoundException("Could not find file " + id);
         }
         // Got a URI, is it owned?
-        if( dommer.hasDataManager(domUri)) {
+        if( this.dataReg.hasDigitalObjectManager(domUri)) {
             try {
             	//get the digital object with it's original content
-                DigitalObject digitalObject = dommer.retrieve(domUri,false);
+            	this.log.info("Retrieving Digital Object at " + domUri);
+                DigitalObject digitalObject = this.dataReg.retrieve(domUri);
                 return new DigitalObjectRefBean(digitalObject.getTitle(), domUri.toString(), domUri, digitalObject);
             } catch (DigitalObjectNotFoundException e) {
-                throw new FileNotFoundException("Could not find file "+id);
+                throw new FileNotFoundException("Could not find file " + id);
             }
-        } else {
-            throw new FileNotFoundException("Could not find file "+id);
         }
-        
-        
+		throw new FileNotFoundException("Could not find file " + id);
     }
 	
 
@@ -421,10 +429,14 @@ public class DataHandlerImpl implements DataHandler {
 	public List<DigitalObject> convertFileRefsToURLAccessibleDigos(Collection<String> localFileRefs){
 		List<DigitalObject> ret = new ArrayList<DigitalObject>();
 		for(String fileRef : localFileRefs){
+			// FIXME: this might have been my (Carl) bad but a new DR every loop seemed insane
 			//use the flag to indicate that we want to return a digital object content by reference (link to contentResolver)
-		    DigitalObjectMultiManager digoManager = new DigitalObjectMultiManager();
+		    // DataRegistry digoManager = new DataRegistryImpl();
 		    try {
-				DigitalObject refByValueDigo = digoManager.retrieve(new URI(fileRef),true);
+		    	URI uriRef = new URI(fileRef);
+		    	this.log.info("Retrieving Digital Object at " + uriRef);
+				DigitalObject refByValueDigo = 
+					((DataRegistryImpl) this.dataReg).retrieveAsTBReference(new URI(fileRef));
 				ret.add(refByValueDigo);
 		    } catch (DigitalObjectNotFoundException e) {
 				// TODO Auto-generated catch block

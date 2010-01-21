@@ -31,7 +31,6 @@ public class TBDigitalObjectContentResolver extends HttpServlet {
 	
 	private static Log log = LogFactory.getLog(TBDigitalObjectContentResolver.class);
 	private DataHandlerImpl dh = new DataHandlerImpl();
-	public static final String CONTENT_RESOLVER_URI = "/testbed/external/digitalObjectContentResolver?id=";
 	
 	private static final int BUFFER_SIZE = 4096;
 	private static final String ID_PARAMETER_NAME = "id";
@@ -70,14 +69,5 @@ public class TBDigitalObjectContentResolver extends HttpServlet {
 		} finally {
 			if(is!=null) is.close();
 		}
-	}
-	
-	/**
-     * This method returns HTTP content resolver path for permanent URI
-     * @return path
-     */
-	public static String getResolverPath(){
-		return "http://" + PlanetsServerConfig.getHostname() + ":"
-		+ PlanetsServerConfig.getPort() + CONTENT_RESOLVER_URI;
 	}
 }

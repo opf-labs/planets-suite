@@ -10,13 +10,9 @@
  */
 package eu.planets_project.tb.gui.backing.data;
 
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +21,8 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -35,7 +33,6 @@ import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
@@ -48,7 +45,7 @@ public class DigitalObjectInspector {
     static private Log log = LogFactory.getLog(DigitalObjectInspector.class);
     
     // The data sources are managed here:
-    DigitalObjectMultiManager dsm = new DigitalObjectMultiManager();
+    DataRegistry dataReg = DataRegistryImpl.getInstance();
     
     private String dobUri;
 
@@ -56,7 +53,7 @@ public class DigitalObjectInspector {
      * @return the dobUri
      */
     public String getDobUri() {
-        return dobUri;
+        return this.dobUri;
     }
 
     /**
@@ -68,13 +65,16 @@ public class DigitalObjectInspector {
         this.dobUri = dobUri;
     }
     
+    /**
+     * @return
+     */
     public DigitalObjectTreeNode getDob() {
         if( this.dobUri == null ) return null;
         // Create as a URI:
         URI item = DigitalObjectInspector.uriEncoder(this.dobUri);
         if( item == null ) return null;
         // Lookup and return:
-        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm );
+        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, this.dataReg );
         return itemNode;
     }
 
@@ -99,6 +99,10 @@ public class DigitalObjectInspector {
         */
     }
     
+    /**
+     * @param uri
+     * @return
+     */
     public static URI uriEncoder( String uri ) {
         if( uri == null || uri.length() == 0 ) return null;
         try {
@@ -138,7 +142,7 @@ public class DigitalObjectInspector {
      * @return the characteriseService
      */
     public String getCharacteriseService() {
-        return characteriseService;
+        return this.characteriseService;
     }
 
     /**
@@ -192,7 +196,7 @@ public class DigitalObjectInspector {
      * @return the identifyService
      */
     public String getIdentifyService() {
-        return identifyService;
+        return this.identifyService;
     }
 
     /**
@@ -215,6 +219,9 @@ public class DigitalObjectInspector {
         }
     }
     
+    /**
+     * @return
+     */
     public String getIdentifyResult() {
         IdentifyResult ir = this.runIdentifyService();
         if( ir == null ) return null;
@@ -225,6 +232,9 @@ public class DigitalObjectInspector {
         return result;
     }
     
+    /**
+     * @return
+     */
     public List<FormatBean> getIdentifyResultList() {
         IdentifyResult ir = this.runIdentifyService();
         if( ir == null ) return null;
@@ -236,6 +246,9 @@ public class DigitalObjectInspector {
         return fmts;
     }
     
+    /**
+     * @return
+     */
     public String getIdentifyServiceReport() {
         IdentifyResult ir = this.runIdentifyService();
         if( ir == null ) return null;

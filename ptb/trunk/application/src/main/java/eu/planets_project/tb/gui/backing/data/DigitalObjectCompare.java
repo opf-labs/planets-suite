@@ -22,6 +22,8 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.Compare;
@@ -32,7 +34,6 @@ import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.ComparePropertiesWrapper;
 import eu.planets_project.tb.impl.services.wrappers.CompareWrapper;
@@ -46,7 +47,7 @@ public class DigitalObjectCompare {
     static private Log log = LogFactory.getLog(DigitalObjectCompare.class);
     
     // The data sources are managed here:
-    static DigitalObjectMultiManager dsm = new DigitalObjectMultiManager();
+    static DataRegistry dataRegistry = DataRegistryImpl.getInstance();
     
     private String dobUri1;
     private String dobUri2;
@@ -82,21 +83,31 @@ public class DigitalObjectCompare {
         this.dobUri2 = dobUri2;
     }
     
-    public static DigitalObjectTreeNode lookupDob( String dobUri ) {
+    /**
+     * @param dobUri
+     * @return
+     */
+    static public DigitalObjectTreeNode lookupDob( String dobUri ) {
         if( dobUri == null ) return null;
         // Create as a URI:
-        URI item = DigitalObjectInspector.uriEncoder(dobUri);
+        URI item;
+        try {
+            item = new URI(dobUri);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
         // Lookup and return:
-        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm );
+        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dataRegistry );
         return itemNode;
     }
     
     public DigitalObjectTreeNode getDob1() {
-        return lookupDob(this.dobUri1);
+        return this.lookupDob(this.dobUri1);
     }
     
     public DigitalObjectTreeNode getDob2() {
-        return lookupDob(this.dobUri2);
+        return this.lookupDob(this.dobUri2);
     }
     
     /* -------------------- Additional code for deeper inspection --------------------- */

@@ -12,7 +12,6 @@ package eu.planets_project.tb.impl.data;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,11 +21,12 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.PDURI;
+import eu.planets_project.ifr.core.common.conf.Configuration;
+
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl;
+import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
@@ -54,28 +54,13 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
     private static String XCDL_DIRNAME = "docs";
 
     /**
-     * @param name
-     * @param root
+     * @param config
      * @throws IllegalArgumentException
      */
-    protected XcdlCorpusDigitalObjectManagerImpl(String name, File root)
+    public XcdlCorpusDigitalObjectManagerImpl(Configuration config)
             throws IllegalArgumentException {
-        super(name, root);
+        super(config);
     }
-
-    /**
-     * @param name
-     *      The name of the data registry
-     * @param root
-     *      A directory that is the root for this data registry
-     * @return
-     *      A new FilesystemDigitalObjectManagerImpl instance based upon a root directory
-     * @throws IllegalArgumentException 
-     */
-    public static DigitalObjectManager getInstance(String name, File root) throws IllegalArgumentException {
-        return new XcdlCorpusDigitalObjectManagerImpl(name, root);
-    }
-
     
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl#getQueryTypes()

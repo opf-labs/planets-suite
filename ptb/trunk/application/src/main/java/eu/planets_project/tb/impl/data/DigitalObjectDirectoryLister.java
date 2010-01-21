@@ -9,7 +9,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.tb.api.data.DigitalObjectReference;
 
 /**
@@ -26,8 +28,11 @@ public class DigitalObjectDirectoryLister {
     private static Log log = LogFactory.getLog(DigitalObjectDirectoryLister.class);
     
     // The data sources are managed here:
-    DigitalObjectManager dsm = new DigitalObjectMultiManager();
+    DataRegistry dataReg = DataRegistryImpl.getInstance();
     
+    /**
+     * @return
+     */
     public DigitalObjectReference getRootDigitalObject() {
         return new DigitalObjectReference( null );
     }
@@ -40,7 +45,8 @@ public class DigitalObjectDirectoryLister {
      */
     public DigitalObjectReference[] list( URI puri ) {
         // List from the appropriate registry.
-        List<URI> childs = dsm.list(puri);
+    	log.info("Calling Data Registry List for " + puri);
+        List<URI> childs = this.dataReg.list(puri);
         
         if( childs == null ) return new DigitalObjectReference[0];
         
@@ -51,7 +57,8 @@ public class DigitalObjectDirectoryLister {
             dobs[i] = new DigitalObjectReference( childs.get(i) );
             
             // Mark that DigitalObject as a Directory if listing it returns NULL:
-            List<URI> grandchilds = dsm.list(childs.get(i));
+        	log.info("Calling Data Registry List for " + childs.get(i));
+            List<URI> grandchilds = this.dataReg.list(childs.get(i));
             if( grandchilds == null ) {
                 dobs[i].setDirectory(false);
             } else {
@@ -82,7 +89,7 @@ public class DigitalObjectDirectoryLister {
      * @return
      */
     public DigitalObjectManager getDataManager( URI puri ) {
-        return dsm;
+        return this.dataReg;
     }
     
     

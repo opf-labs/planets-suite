@@ -4,7 +4,6 @@
 package eu.planets_project.tb.gui.backing.data;
 
 import java.net.URI;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -13,9 +12,10 @@ import java.util.ListIterator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
+import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 
 /**
  * 
@@ -31,8 +31,11 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
     private static Log log = LogFactory.getLog(DigitalObjectRepositoryLister.class);
     
     // The data sources are managed here:
-    DigitalObjectMultiManager dsm = new DigitalObjectMultiManager();
+    DataRegistry dataReg = DataRegistryImpl.getInstance();
     
+    /**
+     * @return
+     */
     public DigitalObjectTreeNode getRootDigitalObject() {
         return new DigitalObjectTreeNode();
     }
@@ -61,7 +64,8 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
         if( this.location != null ) {
             this.location = this.location.normalize();
         }
-        children = dsm.list(location);
+    	log.info("setLocation() Calling Data Registry List for " + location);
+        this.children = this.dataReg.list(location);
     }
     
     /** */
@@ -76,7 +80,7 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
      */
     public boolean canAccessURI( URI puri ) {
         // Do not allow paths above the root to be accessed:
-        if( ! this.dsm.hasDataManager(puri) ) return false;
+        if( ! this.dataReg.hasDigitalObjectManager(puri) ) return false;
         // Default to accessible:
         return true;
     }
@@ -86,8 +90,8 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
      * @param puri
      * @return
      */
-    public DigitalObjectMultiManager getDataManager( URI puri ) {
-        return dsm;
+    public DataRegistry getDataRegistry( URI puri ) {
+        return this.dataReg;
     }
     
     /* (non-Javadoc)
@@ -154,37 +158,47 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
             // Patch in '..':
             if( this.getLocation() != null ) {
                 if( index == 0 ) {
+                	log.info("Location is " + this.location + ", index is zero");
                     URI parentUri = this.getLocation().resolve("..");
-                    if( ! dsm.hasDataManager(parentUri )) parentUri = null;
+                    log.info("Resolved parent URI is " + parentUri);
+                    if( ! this.dataReg.hasDigitalObjectManager(parentUri )) {
+                    	log.info("Setting parentUri to null");
+                    	parentUri = null;
+                    }
                     DigitalObjectTreeNode treeNode = new DigitalObjectTreeNode( parentUri );
                     treeNode.setLeafname("..");
                     return (E) treeNode;
-                } else {
-                    return (E) this.createDobFromUri(children.get(index-1));
                 }
-                
-            } else {
-                return (E) this.createDobFromUri(children.get(index));
+				log.info("Location is " + this.location + ", index is " + index);
+				log.info("Calling createDobFromUri for URI " + this.children.get(index - 1));
+				return (E) this.createDobFromUri(this.children.get(index-1));
             }
-        } else {
-            return null;
+			log.info("Location is null, index is " + index);
+			log.info("Calling createDobFromUri for URI " + this.children.get(index));
+			return (E) this.createDobFromUri(this.children.get(index));
         }
+		return null;
     }
     
     /** */
     private DigitalObjectTreeNode createDobFromUri( URI item ) {
         // Object or folder? If null, or empty folder, 
-        if( dsm.list(item) == null ) {
+    	log.info("CreateDobFromURI() Calling Data Registry List for " + item);
+        if( dataReg.list(item) == null ) {
             // This is a DO:
-            DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm );
-            return itemNode;
-            
-        } else {
-            // This is a location:
-            DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item);
-            itemNode.setDescription( dsm.getDescriptionForUri(item) );
+            DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dataReg );
             return itemNode;
         }
+		// This is a location:
+		DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item);
+		try {
+			itemNode.setDescription( dataReg.getDescription(item));
+		} catch (DigitalObjectManagerNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return itemNode;
         
     }
 

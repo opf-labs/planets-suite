@@ -3,6 +3,7 @@
  */
 package eu.planets_project.tb.gui.backing.data;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
@@ -12,7 +13,6 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.data.XcdlCorpusDigitalObjectManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
@@ -44,7 +44,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     
     static private Log log = LogFactory.getLog(DigitalObjectTreeNode.class);
     
-    private DigitalObjectMultiManager dsm;
+    private DataRegistry dataReg;
     private DigitalObject dob_cache = null;
     private URI uri;
     private String leafname;
@@ -59,10 +59,10 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     /**
      * Constructor based on Digital Object:
      */
-    public DigitalObjectTreeNode( URI uri, DigitalObjectMultiManager dsm ) {
-        log.debug("Creating bean for Digital Object at: "+uri);
+    public DigitalObjectTreeNode( URI uri, DataRegistry dataReg ) {
+        log.debug("Creating bean for Digital Object at: " + uri);
         this.setUri(uri);
-        this.dsm = dsm;
+        this.dataReg = dataReg;
         this.setType("file");
         this.setLeaf(true);
         this.setSelectable(true);
@@ -70,7 +70,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     
     public DigitalObjectTreeNode( URI uri ) {
         this.setUri(uri);
-        this.dsm = null;
+        this.dataReg = null;
         this.setType("folder");
         this.setLeaf(false);
         this.setSelectable(false);
@@ -100,12 +100,13 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      * @return the dob
      */
     public DigitalObject getDob() {
-        if( dsm == null ) return null;
+        if( dataReg == null ) return null;
         if( dob_cache == null ) {
             try {
-                dob_cache = dsm.retrieve(getUri());
+            	log.info("Looking for Digital Object at " + this.getUri());
+                this.dob_cache = this.dataReg.retrieve(getUri());
             } catch (DigitalObjectNotFoundException e) {
-                log.error("Could not locate DOB: "+this.getUri());
+                log.error("Could not locate DOB: " + this.getUri());
                 return null;
             }
         }
@@ -172,7 +173,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      * @return the size of the object.
      */
     public long getSize() {
-        if( dsm == null ) return -1;
+        if( dataReg == null ) return -1;
 
         DigitalObject dob = this.getDob();
         if( dob == null ) return -1;
@@ -243,7 +244,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      * @return the directory
      */
     public boolean isDirectory() {
-        return (dsm == null);
+        return (dataReg == null);
     }
     
     /**

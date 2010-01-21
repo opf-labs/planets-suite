@@ -160,7 +160,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 
 		//1. submit the Workflow to the WEE System and receive a ticket
 		try {
-			retTicket = ""+this.weeService.submitWorkflow((ArrayList<DigitalObject>) digObjs, workflowConfig.getTemplate().getClazz(), new WorkflowConfigUtil().marshalWorkflowConfigToXMLTemplate(workflowConfig));
+			retTicket = "" + TestbedWEEBatchProcessor.weeService.submitWorkflow((ArrayList<DigitalObject>) digObjs, workflowConfig.getTemplate().getClazz(), new WorkflowConfigUtil().marshalWorkflowConfigToXMLTemplate(workflowConfig));
 			jobs.put(retTicket, testbedBatchJob);
 			
 	        Experiment exp = tbManager.getExperiment(expID);   
