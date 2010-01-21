@@ -134,15 +134,6 @@ final class MutableFormat implements Serializable, Format {
     }
 
     /**
-     * @return the summary with the version number appended.
-     */
-    public String getSummaryAndVersion() {
-        if (version != null)
-            return summary + " " + version;
-        return summary;
-    }
-
-    /**
      * @param summary the summary to set
      */
     public void setSummary(String summary) {
