@@ -68,7 +68,6 @@ public final class ServiceConfig {
 	 */
 	public static Configuration getConfiguration(Class<?> clazz) throws ConfigurationException {
 		String className = clazz.getName();
-		_log.info("ServiceConfig.getConfiguration(Class clazz)");
 		_log.info("Class name is " + className);
 		return getConfiguration(className);
 	}
@@ -85,24 +84,28 @@ public final class ServiceConfig {
 		/*
 		 * Determine the absolute filename of the properties file.
 		 */
-		_log.info("ServiceConfig.getConfiguration(String basename)");
 		String baseDirectory = System.getProperty(BASE_DIR_PROPERTY);
         if (baseDirectory == null) {
             _log.warning(String.format("System property %s is not set, looking for file in current directory...",
                     BASE_DIR_PROPERTY));
             baseDirectory = ".";
         }
-		_log.info("baseDirectory = " + baseDirectory);
 		String filename = baseDirectory + File.separatorChar + basename + ".properties";
-		_log.info("filename = " + filename);
+
+		return getConfiguration(new File(filename));
+	}
+	
+	/**
+	 * Return a configuration based on the contents of the passed file
+	 * @param properties the config file
+	 * @return Representation of the config file
+	 */
+	public static Configuration getConfiguration(File properties) {
+		_log.info("File loc:" + properties.getAbsolutePath());
 		/*
 		 * Check that the file exists
 		 */
-		File properties = new File(filename);
-		_log.info("Checking that properties exist");
-		_log.info("File loc:" + properties.getAbsolutePath());
 		if (properties.exists()) {
-			_log.info("Properties file found");
 			/*
 			 * Parse properties file and return appropriate Configuration instance
 			 */
@@ -111,9 +114,9 @@ public final class ServiceConfig {
 				configuration.load(new FileInputStream(properties));
 			} catch (FileNotFoundException e) {
 				// This shouldn't happen as we've previously checked...
-				throw new ConfigurationException("Configuration file missing: " + filename, e);
+				throw new ConfigurationException("Configuration file missing: " + properties.getName(), e);
 			} catch (IOException e) {
-				throw new ConfigurationException("Error reading configuration file: " + filename, e);
+				throw new ConfigurationException("Error reading configuration file: " + properties.getName(), e);
 			}
 			/*
 			 * Return a local implementation of the Configuration interface
@@ -121,8 +124,8 @@ public final class ServiceConfig {
 			 */
 			return new ConfigurationImpl(configuration);
 		}
-		_log.info("Properties file doesn't exist at " + filename);
-		throw new ConfigurationException("Can't find properties files at: " + filename);
+		_log.info("Properties file doesn't exist at " + properties.getAbsolutePath());
+		throw new ConfigurationException("Can't find properties files at: " + properties.getAbsolutePath());
 	}
 
 	private static final class ConfigurationImpl implements Configuration {
