@@ -170,7 +170,7 @@ ni.appendChild(newdiv);
                     <li class="exp_sel"><a href="#" class="exp_done">#{res['new_exp.stage1']}</a></li>
                 </h:panelGroup> 
     <h:panelGroup rendered="#{ExperimentBean.currentStage >= 2}">
-        <li class="exp"><h:commandLink action="goToStage2"
+        <li class="exp"><h:commandLink action="#{NewExp_Controller.goToStage2}"
                     styleClass="exp_done">
                 <t:outputText value="#{res['new_exp.stage2']}" />
         </h:commandLink></li>
@@ -179,7 +179,7 @@ ni.appendChild(newdiv);
         <li class="exp_nd">#{res['new_exp.stage2']}</li>
     </h:panelGroup>
     <h:panelGroup rendered="#{ExperimentBean.currentStage >= 3}">
-        <li class="exp"><h:commandLink action="goToStage3"
+        <li class="exp"><h:commandLink action="#{NewExp_Controller.goToStage3}"
                     styleClass="exp_done">
                 <t:outputText value="#{res['new_exp.stage3']}" />
         </h:commandLink></li>
@@ -188,7 +188,7 @@ ni.appendChild(newdiv);
         <li class="exp_nd">#{res['new_exp.stage3']}</li>
     </h:panelGroup>
     <h:panelGroup rendered="#{ExperimentBean.currentStage >= 4}">
-        <li class="exp"><h:commandLink action="goToStage4"
+        <li class="exp"><h:commandLink action="#{NewExp_Controller.goToStage4}"
                     styleClass="exp_done">
                 <t:outputText value="#{res['new_exp.stage4']}" />
         </h:commandLink></li>
@@ -197,7 +197,7 @@ ni.appendChild(newdiv);
         <li class="exp_nd">#{res['new_exp.stage4']}</li>
     </h:panelGroup>
     <h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
-        <li class="exp"><h:commandLink action="goToStage5"
+        <li class="exp"><h:commandLink action="#{NewExp_Controller.goToStage5}"
                     styleClass="exp_done">
                 <t:outputText value="#{res['new_exp.stage5']}" />
         </h:commandLink></li>
@@ -206,7 +206,7 @@ ni.appendChild(newdiv);
         <li class="exp_nd">#{res['new_exp.stage5']}</li>
     </h:panelGroup>     
     <h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
-        <li class="exp"><h:commandLink action="goToStage6"
+        <li class="exp"><h:commandLink action="#{NewExp_Controller.goToStage6}"
                     styleClass="exp_done">
                 <t:outputText value="#{res['new_exp.stage6']}" />
         </h:commandLink></li>

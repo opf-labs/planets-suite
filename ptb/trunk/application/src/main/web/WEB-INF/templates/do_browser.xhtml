@@ -18,6 +18,8 @@
 
   
   <h:form id="doBrowserForm">
+    <!-- Persist the experiment ID through POST, if any. -->    
+    <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}"/>
                 
   <div class="dopane">
   
@@ -208,7 +210,7 @@
          
                 <h:panelGroup rendered="#{isInExperiment}">
                 <p>
-                <h:commandButton action="goToStage2"
+                <h:commandButton action="#{NewExp_Controller.goToStage2}"
                   value="#{res['browse_data.returnToExperiment']}"/>
                 </p>
                 </h:panelGroup>

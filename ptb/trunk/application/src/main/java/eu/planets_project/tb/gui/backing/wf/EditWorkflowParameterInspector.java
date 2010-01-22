@@ -163,6 +163,7 @@ public class EditWorkflowParameterInspector {
 	 * @param value
 	 */
 	public void setNewValue(String value) {
+        if( this.sessBean == null ) return;
 		this.sessBean.newValue = value;
 	}
 	
@@ -193,6 +194,7 @@ public class EditWorkflowParameterInspector {
 	 * @param name
 	 */
 	public void setParameterName(String name) {
+        if( this.sessBean == null ) return;
 		this.sessBean.parameterName = name;
 	}
 
@@ -201,6 +203,7 @@ public class EditWorkflowParameterInspector {
 	 * @param value
 	 */
 	public void setParameterValue(String value) {
+	    if( this.sessBean == null ) return;
 		this.sessBean.parameterValue = value;
 	}
 	

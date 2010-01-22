@@ -23,6 +23,7 @@ import org.apache.myfaces.custom.tree2.TreeNode;
 
 import eu.planets_project.tb.api.data.DigitalObjectReference;
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.gui.backing.exp.NewExpWizardController;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
@@ -242,7 +243,9 @@ public class FileBrowser {
         // Clear any selection:
         FileBrowser.selectNone();
         // Return: gotoStage2 in the browse new experiment wizard
-        return "goToStage2";
+        //return "goToStage2";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
     }
     
     public static String redirectToDataRegistry() {

@@ -1618,6 +1618,12 @@ public class NewExpWizardController{
         return "success";
     }
     
+    public String browseForData() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        JSFUtil.redirect("/exp/browse_data.faces?eid="+expBean.getID());
+        return "success";
+    }
+    
     /**
      * Takes the Benchmarks set within the Setup phase and adds them as 
      * File Benchmarks for every input file and as experiment overall evaluation benchmarks

@@ -638,7 +638,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
                 try {
                     DigitalObjectRefBean dobr = dh.get((String)tbDigoURI);
                     return dobr.getDownloadUri().toString();
-                } catch (FileNotFoundException e) {
+                } catch ( Exception e ) {
                     log.error("Failed to generate download URL. " + e);
                     return "";
                 }

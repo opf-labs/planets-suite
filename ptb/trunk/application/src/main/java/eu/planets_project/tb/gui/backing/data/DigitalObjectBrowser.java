@@ -17,6 +17,7 @@ import org.richfaces.event.DropEvent;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.exp.NewExpWizardController;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
 /**
@@ -395,7 +396,9 @@ public class DigitalObjectBrowser {
         // Clear any selection:
         fb.clearSelection();
         // Return: gotoStage2 in the browse new experiment wizard
-        return "goToStage2";
+        //return "goToStage2";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
     }
     
     public static String redirectToDataRegistry() {
