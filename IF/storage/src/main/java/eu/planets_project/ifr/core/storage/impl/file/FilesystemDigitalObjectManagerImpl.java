@@ -338,12 +338,12 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
                 // Create the new URI, using the multiple-argument constructors to ensure characters are properly escaped.
                 if( sf.isDirectory() ) {
                 	log.info(sf + " is a directory");
-                	URI uri = createNewPathUri( pdURI, pdURI.getPath() + "/"  + s + "/" );
+                	URI uri = createNewPathUri( pdURI, pdURI.getPath() + s + "/" );
                 	log.info("Adding URI " + uri + " to list");
                     retVal.add( uri );
                 } else {
                 	log.info(sf + " is a file");
-                	URI uri = createNewPathUri( pdURI, pdURI.getPath() + "/" + s );
+                	URI uri = createNewPathUri( pdURI, pdURI.getPath() + s );
                 	log.info("Adding URI " + uri + " to list");
                     retVal.add( uri );
                 }
