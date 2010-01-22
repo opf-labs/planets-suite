@@ -1,10 +1,8 @@
 package eu.planets_project.tb.gui.backing;
 
-import java.awt.GradientPaint;
-import java.awt.RenderingHints;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -23,14 +21,13 @@ import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIPanel;
-
+import javax.faces.component.UIParameter;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.component.html.HtmlOutputText;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -45,23 +42,15 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.entity.StandardEntityCollection;
 import org.jfree.chart.servlet.ServletUtilities;
 
-import com.googlecode.charts4j.AxisLabels;
-import com.googlecode.charts4j.AxisLabelsFactory;
-import com.googlecode.charts4j.Color;
-import com.googlecode.charts4j.Data;
-import com.googlecode.charts4j.DataUtil;
-import com.googlecode.charts4j.GCharts;
-import com.googlecode.charts4j.Plots;
-import com.googlecode.charts4j.ScatterPlot;
-import com.googlecode.charts4j.ScatterPlotData;
-import com.googlecode.charts4j.Shape;
+import eu.planets_project.ifr.core.security.api.model.User;
+import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentSetup;
@@ -69,6 +58,8 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
+import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.exp.DigitalObjectBean;
 import eu.planets_project.tb.gui.backing.exp.EvaluationPropertyResultsBean;
@@ -77,11 +68,7 @@ import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.gui.backing.exp.MeasurementPropertyResultsBean;
 import eu.planets_project.tb.gui.backing.exp.NewExpWizardController;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
-import eu.planets_project.tb.gui.backing.exp.EvaluationPropertyResultsBean.EvalRecordBean;
-import eu.planets_project.tb.gui.backing.exp.view.EmulationInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
-import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.chart.ExperimentChartServlet;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
@@ -90,7 +77,6 @@ import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.PropertyRunEvaluationRecordImpl;
-import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
@@ -100,9 +86,6 @@ import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
-import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
-import eu.planets_project.ifr.core.security.api.model.User;
-import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.ViewerWorkflow;
@@ -687,12 +670,13 @@ public class ExperimentBean {
                 ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(exr.getDigitalObjectReferenceCopy());
                 results.add(res);
                 // Collate successes:
-                runOnes.add(exr.getDigitalObjectReferenceCopy());
+                runOnes.add( normaliseDataReference(exr.getDigitalObjectReferenceCopy()) );
                 log.info("Recorded result for: "+exr.getDigitalObjectReferenceCopy());
             }
         }
         // Patch in any input files which are not represented. 
         for( String file : getExperimentInputData().values() ) {
+            file = normaliseDataReference(file);
             log.info("Checking for results for "+file);
             if( ! runOnes.contains(file) ) {
                 ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(file);
@@ -703,6 +687,17 @@ public class ExperimentBean {
 
         // Now return the results:
         return results;
+    }
+    
+    private static String normaliseDataReference( String inUri ) {
+        URI uri;
+        try {
+            uri = new URI(inUri);
+            return uri.normalize().toASCIIString();
+        } catch (Exception e) {
+            log.error("Could not normalise: "+inUri);
+        }
+        return inUri;
     }
         
     
