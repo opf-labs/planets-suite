@@ -240,7 +240,7 @@ public class DataHandlerImpl implements DataHandler {
                     baseUri.getUserInfo(),
                     baseUri.getHost(), 
                     baseUri.getPort(),
-                    baseUri.getPath() +"/"+ name, 
+                    baseUri.getPath() + name, 
                     null, null );
         } catch (URISyntaxException e1) {
             e1.printStackTrace();
@@ -257,7 +257,7 @@ public class DataHandlerImpl implements DataHandler {
                         baseUri.getUserInfo(),
                         baseUri.getHost(), 
                         baseUri.getPort(),
-                        baseUri.getPath() + "/" + unum + "-" + name, 
+                        baseUri.getPath() + unum + "-" + name, 
                         null, null );
             } catch (URISyntaxException e) {
                 e.printStackTrace();

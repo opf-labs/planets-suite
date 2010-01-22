@@ -27,7 +27,9 @@
         </f:facet>
         <f:facet name="controls">
             <h:panelGroup>
-            	<a4j:commandLink action="#{EditWFParameters.removeEditWFParamBeanInSession}" value="cancel" id="hidepanel" oncomplete="Richfaces.hideModalPanel('configEditParamsPanel');" reRender="wfConfigPanelGroup,configEditParamsBody"/>
+                <h:graphicImage value="/graphics/close.png" styleClass="hidelink" id="hidepanel">
+                	<a4j:support event="onclick" action="#{EditWFParameters.removeEditWFParamBeanInSession}" oncomplete="Richfaces.hideModalPanel('configEditParamsPanel');" reRender="wfConfigPanelGroup,configEditParamsBody"/>
+                </h:graphicImage>
                 <rich:componentControl for="configEditParamsPanel" attachTo="hidepanel,returnToMain" operation="hide" event="onclick"/>
             </h:panelGroup>
         </f:facet>

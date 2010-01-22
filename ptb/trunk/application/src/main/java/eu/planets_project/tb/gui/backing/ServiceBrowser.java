@@ -920,5 +920,12 @@ public class ServiceBrowser {
     public List<ServiceDescription> getComparePropertiesServices() {
         return getListOfServices(CompareProperties.class.getCanonicalName());
     }
+    
+    /**
+     * @return
+     */
+    public List<ServiceDescription> getIdentifyServices() {
+        return getListOfServices(Identify.class.getCanonicalName());
+    }
 
 }

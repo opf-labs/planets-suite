@@ -163,7 +163,7 @@
 
       <p>
       <br/>
-      </p>
+      </p> 
       
       <dt><b>Compare Properties</b></dt>
       <dd>
@@ -197,9 +197,66 @@
            <ui:param name="uid" value="3"/>
          </ui:include>
       </dd>
+      <p>
+      <br/>
+      </p>
           
+    <!-- START WITH IDENTIFY SERVICE HERE -->    
+    <dt><b>Identify</b></dt>
+      <dd>
+        <h:selectOneMenu value="#{DobCompare.identifyService}">
+          <f:selectItem itemValue="" itemLabel="[none]" />
+          <f:selectItems value="#{DobCompare.identifyServiceList}" />
+          <a4j:support event="onchange" reRender="dobCompareForm" />
+        </h:selectOneMenu>
+      </dd>
+      <h:panelGrid columns="2" columnClasses="halfContent">
+    <rich:panel id="dobIdentify1">
+      <f:facet name="header">
+            <h:outputText value="#{DobCompare.dob1.leafname}"/>
+      </f:facet>
+
+      <dt>Identify Report:</dt>
+      <dd>
+        <h:outputText value="#{DobCompare.identify1ServiceReport}"/>
+      </dd>
+      <dt>Identify Result:</dt>
+          <dd>
+            <a4j:repeat value="#{DobCompare.identify1Types}" var="type">
+             <i><h:outputText value="#{type}"/></i><br/>
+            </a4j:repeat>
+          </dd>
+      <dd>
+         <ui:include src="/WEB-INF/templates/fragments/show_error_modal.xhtml">
+           <ui:param name="message" value="#{DobCompare.identifyServiceException}"/>
+           <ui:param name="exception" value="#{DobCompare.identifyServiceStackTrace}"/>
+           <ui:param name="uid" value="4"/>
+         </ui:include>
+      </dd>
+    
+    
     </rich:panel>
     
+    <rich:panel id="dobIdentify2">
+      <f:facet name="header">
+            <h:outputText value="#{DobCompare.dob2.leafname}"/>
+      </f:facet>
+
+      <dt>Identify Report:</dt>
+      <dd>
+        <h:outputText value="#{DobCompare.identify2ServiceReport}"/>
+      </dd>
+      <dt>Identify Result:</dt>
+          <dd>
+            <a4j:repeat value="#{DobCompare.identify2Types}" var="type">
+             <i><h:outputText value="#{type}"/></i><br/>
+            </a4j:repeat>
+          </dd>
+  
+    
+    </rich:panel>
+  </h:panelGrid>
+    </rich:panel>
     </div>
     
     <ui:include src="/WEB-INF/templates/fragments/do_inspection_returns.xhtml"/>

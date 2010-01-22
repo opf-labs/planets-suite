@@ -32,11 +32,14 @@ import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.ComparePropertiesWrapper;
 import eu.planets_project.tb.impl.services.wrappers.CompareWrapper;
+import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
 /**
  * @author AnJackson
@@ -405,5 +408,117 @@ public class DigitalObjectCompare {
     public String getCompareExtractedServiceStackTrace() {
         return compareExtractedServiceStackTrace;
     }
+    
+    //-------------------- IDENTIFY SERVICE FROM HERE --------------
 
+    /** */
+    private String identifyService;
+    private String identifyServiceException;
+    private String identifyServiceStackTrace;
+
+    /**
+     * @return the characteriseService
+     */
+    public String getIdentifyService() {
+        return identifyService;
+    }
+
+    /**
+     * @param characteriseService the characteriseService to set
+     */
+    public void setIdentifyService(String identifyService) {
+        this.identifyService = identifyService;
+    }
+    
+    private IdentifyResult runIdentifyService( DigitalObjectTreeNode dob ) {
+        log.info("Looking for properties using: "+this.getIdentifyService());
+        // Return nothing if no service is selected:
+        if( this.getIdentifyService() == null ) return null;
+        // Run the service:
+        try {
+            Identify idf = new IdentifyWrapper(new URL(this.getIdentifyService()));
+            IdentifyResult ir = idf.identify( dob.getDob(), null);
+            this.identifyServiceException = null;
+            this.identifyServiceStackTrace = null;
+            return ir;
+        } catch( Exception e ) {
+            log.error("FAILED! "+e);
+            this.identifyServiceException = e.toString();
+            this.identifyServiceStackTrace = this.stackTraceToString(e);
+            return null;
+        }
+    }
+
+    /**
+     * @return
+     */
+    public List<URI> getIdentify1Types() {
+        IdentifyResult ir = this.runIdentifyService(this.getDob1());
+        if( ir == null ) return null;
+        if( ir.getTypes() != null ) {
+            log.info("Got types: "+ir.getTypes().size());
+        }
+        return ir.getTypes();
+    }
+    
+    /**
+     * @return
+     */
+    public String getIdentify2ServiceReport() {
+        IdentifyResult ir = this.runIdentifyService(this.getDob2());
+        if( ir == null ) return null;
+        return ""+ir.getReport();
+    }
+
+    /**
+     * @return
+     */
+    public List<URI> getIdentify2Types() {
+        IdentifyResult ir = this.runIdentifyService(this.getDob2());
+        if( ir == null ) return null;
+        if( ir.getTypes() != null ) {
+            log.info("Got types: "+ir.getTypes().size());
+        }
+        return ir.getTypes();
+    }
+    
+    /**
+     * @return
+     */
+    public String getIdentify1ServiceReport() {
+        IdentifyResult ir = this.runIdentifyService(this.getDob1());
+        if( ir == null ) return null;
+        return ""+ir.getReport();
+    }
+
+    /**
+     * @return
+     */
+    public List<SelectItem> getIdentifyServiceList() {
+        log.info("IN: getIdentifyServiceList");
+        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
+/*
+        String input = this.getInputFormat();
+        if( ! this.isInputSet() ) input = null;
+        String output = this.getOutputFormat();
+        if( ! this.isOutputSet() ) output = null;
+*/
+        List<ServiceDescription> sdl = sb.getIdentifyServices();
+
+        return ServiceBrowser.mapServicesToSelectList( sdl );
+    }
+    
+    /**
+     * @return the characteriseServiceException
+     */
+    public String getIdentifyServiceException() {
+        return identifyServiceException;
+    }
+
+    /**
+     * @return the characteriseServiceStackTrace
+     */
+    public String getIdentifyServiceStackTrace() {
+        return identifyServiceStackTrace;
+    }
 }
