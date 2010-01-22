@@ -80,7 +80,7 @@ public class DigitalObjectBean {
             bean = dh.get(file);
             setDownloadURL(bean.getDownloadUri().toString());
             setDigitalObjectName(DataHandlerImpl.createShortDOName(bean.getName()));
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             setDownloadURL("");
             setDigitalObjectName(DataHandlerImpl.createShortDOName(file));
         }
