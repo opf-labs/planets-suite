@@ -16,9 +16,10 @@
       <!-- TODO Add comment list and forms etc etc. -->
       <div class="commentFormWrap">
       <h:form id="commentForm">
-      
         <!-- Persist the experiment ID through POST, if any. -->    
         <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}" />
+        <!-- Cheeky hack that makes sure the comment system remembers the URL of the page this was called from. -->
+        <h:outputText value="#{Comment_Backing.storeCurrentUrl}"/>
         
         <!--  The comment form -->
         <fieldset>
@@ -51,13 +52,13 @@
                 <h:outputText value="#{cmt.author}" styleClass="commentAuthor"/><h:outputText value=" (#{cmt.time} - #{cmt.expPhase})" styleClass="commentDate"/>
                 </div>
                 <t:div styleClass="commentEditWrap" rendered="#{cmt.author==UserBean.userid||UserBean.admin}">
-                  <a4j:commandLink action="addComment">
+                  <a4j:commandLink action="#{NewExp_Controller.editComment}">
                     <h:outputText value="#{res['comment.edit']}"/>
                     <t:updateActionListener property="#{Comment_Backing.commentId}" value="#{cmt.identifier}" />
                   </a4j:commandLink>
                 </t:div>
                 <t:div styleClass="commentReplyWrap">
-                  <a4j:commandLink action="addComment">
+                  <a4j:commandLink action="#{NewExp_Controller.editComment}">
                     <h:outputText value="#{res['comment.replyToThis']}"/>
                     <t:updateActionListener property="#{Comment_Backing.parentId}" value="#{cmt.identifier}" />
                   </a4j:commandLink>
@@ -71,7 +72,7 @@
           <a4j:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}" reRender="commentForm"/>
         </h:panelGroup>
           <t:div styleClass="commentReplyWrap">
-           <a4j:commandLink immediate="true" action="addComment">
+           <a4j:commandLink immediate="true" action="#{NewExp_Controller.editComment}">
               <h:outputText value="#{res['comment.addNew']}"/>
               <t:updateActionListener property="#{Comment_Backing.parentId}" value="-1" />
            </a4j:commandLink>

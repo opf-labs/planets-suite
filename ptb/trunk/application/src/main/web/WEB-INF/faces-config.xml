@@ -361,7 +361,6 @@
 		<navigation-case>
 			<from-outcome>addComment</from-outcome>
 			<to-view-id>/edit_comment.xhtml</to-view-id>
-            <redirect/>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>browseForData</from-outcome>
@@ -377,9 +376,8 @@
  <navigation-rule>
   <from-view-id>/edit_comment.xhtml</from-view-id>
   <navigation-case>
-   <from-outcome>success</from-outcome>
+   <from-outcome>browseExp</from-outcome>
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  

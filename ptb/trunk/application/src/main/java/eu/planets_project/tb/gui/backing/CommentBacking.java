@@ -5,6 +5,10 @@ package eu.planets_project.tb.gui.backing;
 
 import java.util.List;
 
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.tree2.HtmlTree;
@@ -91,7 +95,7 @@ public class CommentBacking implements java.io.Serializable {
         // Format the date:
         java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance();
         this.time = df.format(c.getPostDate().getTime());
-        this.storeCurrentURL();
+        //this.storeCurrentURL();
     }
 
     /**
@@ -135,7 +139,7 @@ public class CommentBacking implements java.io.Serializable {
     public void setParentId(String parentId) {
         this.parentId = parentId;
         if( parentId == null || "".equals(parentId) ) return;
-        this.storeCurrentURL();
+        //this.storeCurrentURL();
     }
 
     /**
@@ -184,7 +188,7 @@ public class CommentBacking implements java.io.Serializable {
     /**
      * action for the submit comment button
      */
-    public void addCommentAction() {
+    public String addCommentAction() {
         log.debug("Recieved addCommentAction()" );
         log.debug("Recieved addCommentAction parentId = '" + parentId + "'" );
         log.debug("Recieved addCommentAction expPhase = '" + expPhase + "'" );
@@ -234,26 +238,22 @@ public class CommentBacking implements java.io.Serializable {
         this.time = "";
         
         // Redirect to the original page, if it is set:
-        if( parentURI == null || parentURI == "" ) return;
-        try {
-          javax.faces.context.FacesContext.getCurrentInstance().getExternalContext().redirect(parentURI);
-        } catch ( java.io.IOException e) {
-            log.error("Redirect failed with exception: " + e);
-        }
+        return this.cancelCommentAction();
     }
     
     
     /**
      * action for the cancel button
      */
-    public void cancelCommentAction(){
+    public String cancelCommentAction(){
     	//cancel add or edit comment - redirect to the original page, if it is set:
-        if( parentURI == null || parentURI == "" ) return;
+        if( parentURI == null || parentURI == "" ) return "success";
         try {
-          javax.faces.context.FacesContext.getCurrentInstance().getExternalContext().redirect(parentURI);
-        } catch ( java.io.IOException e) {
-            log.error("Redirect failed with exception: " + e);
-        }
+            javax.faces.context.FacesContext.getCurrentInstance().getExternalContext().redirect(parentURI);
+          } catch ( java.io.IOException e) {
+              log.error("Redirect failed with exception: " + e);
+          }
+        return "success";
     }
 
     /**
@@ -385,13 +385,34 @@ public class CommentBacking implements java.io.Serializable {
      * Stores the URL needed to drop the user back at the page they initiated the comment editor from.
      */
     private void storeCurrentURL() {
-        // Pick up the view-id that invoked this method:
-        javax.faces.context.ExternalContext fec = javax.faces.context.FacesContext.getCurrentInstance().getExternalContext();
-        this.parentURI = fec.getRequestContextPath();
-        if( fec.getRequestServletPath() != null )
-            this.parentURI += fec.getRequestServletPath();
-        if( fec.getRequestPathInfo() != null )
-            this.parentURI += fec.getRequestPathInfo();
+        // Pick up the URL that invoked this:
+        HttpServletRequest request = 
+            (HttpServletRequest)FacesContext
+                .getCurrentInstance()
+                    .getExternalContext()
+                        .getRequest();
+        if( request == null ) {
+            log.info("HttpServletRequest was null, using JSF context instead.");
+            ExternalContext fec = FacesContext.getCurrentInstance().getExternalContext();
+            this.parentURI = fec.getRequestContextPath();
+            if( fec.getRequestServletPath() != null )
+                this.parentURI += fec.getRequestServletPath();
+            if( fec.getRequestPathInfo() != null )
+                this.parentURI += fec.getRequestPathInfo();
+            /* plus query/fragment?! */
+            log.info("FC: Stored parent URI "+this.parentURI);
+        } else {
+            this.parentURI = request.getRequestURL().toString();
+            if( request.getQueryString() != null) {
+                this.parentURI += "?"+request.getQueryString();
+            }
+            log.info("HSR: Stored parent URI "+this.parentURI);
+        }
+    }
+    
+    public String getStoreCurrentUrl() {
+        this.storeCurrentURL();
+        return "";
     }
 
     /**
