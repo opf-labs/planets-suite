@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.services.datatypes.DigitalObject;
 
@@ -25,7 +26,6 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 	/** Public statics for the property names used to configure an instance */
 	public final static String NAME_KEY = "manager.name";
 	public final static String DESC_KEY = "manager.description";
-	public final static String ID_KEY = "manager.identifier.uri";
 
 	protected URI id = null;
 	protected String name = null; 
@@ -36,7 +36,6 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 
 	protected DigitalObjectManagerBase(Configuration config) {
 		try {
-			URI id = config.getURI(ID_KEY);
 			String name = config.getString(NAME_KEY);
 
 			// We don't care if there's no description
@@ -45,13 +44,16 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 			} catch (NoSuchElementException e) {
 				this.description = "";
 			}
-			this.checkConstructorArguments(id, name);
-			this.id = id;
+			this.checkConstructorArguments(name);
+			this.id = DataRegistryImpl.createDataRegistryIdFromName(name).normalize();
 			this.name = name;
 		} catch (NoSuchElementException e) {
 			throw new IllegalArgumentException("Every DOM properties file must have a " +
-					ID_KEY + " property for the URI id and a " +
 					NAME_KEY + " property for a String name", e);
+		} catch (URISyntaxException e) {
+			String message = "The supplied name should be valid as part of a URI Planets Data Registry ID";
+			log.severe(message);
+			throw new IllegalArgumentException(message, e);
 		}
 	}
 
@@ -136,7 +138,7 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 		return this.description;
 	}
 	
-	protected void checkConstructorArguments(URI id, String name) throws IllegalArgumentException {
+	protected void checkConstructorArguments(String name) throws IllegalArgumentException {
 		// Name should not be null or empty
 		if (name == null) {
 			String message = "The supplied name should not be null";
@@ -148,23 +150,13 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 			throw new IllegalArgumentException(message);
 		}
 		
-		// URI should be a valid PDURI
+		// Name should also be a part of a valid URI
 		try {
-			if (id == null) {
-				String message = "The supplied uri id should not be null";
-				log.severe(message);
-				throw new IllegalArgumentException(message);
-			}
-			PDURI pduri = new PDURI(id);
-			if (!pduri.isDataRegistryURI()) {
-				String message = "The supplied id should not be a valid Planets Data Registry id";
-				log.severe(message);
-				throw new IllegalArgumentException(message);
-			}
+			DataRegistryImpl.createDataRegistryIdFromName(name);
 		} catch (URISyntaxException e) {
-			String message = "The supplied id should be a valid URI and a valid Planets Data Registry id";
+			String message = "The supplied name should be valid as part of a URI Planets Data Registry ID";
 			log.severe(message);
-			throw new IllegalArgumentException(message);
+			throw new IllegalArgumentException(message, e);
 		}
 	}
 }

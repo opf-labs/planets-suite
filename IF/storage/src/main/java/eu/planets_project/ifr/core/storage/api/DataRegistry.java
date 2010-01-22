@@ -59,7 +59,7 @@ public interface DataRegistry extends DigitalObjectManager {
 	 * @param dom - the DigitalObjectManager to be added
 	 * @return true if added successfully, otherwise false
 	 */
-	public boolean addDigitalObjectManager(URI uri, DigitalObjectManagerBase dom);
+	public boolean addDigitalObjectManager(String name, DigitalObjectManagerBase dom);
 	
 	/**
 	 * @param uri - the identifier of the DigitalObjectManager to be removed

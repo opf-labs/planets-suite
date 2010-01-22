@@ -24,6 +24,7 @@ import org.jboss.annotation.ejb.RemoteBinding;
 import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
+import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
@@ -54,6 +55,12 @@ public class DataRegistryImpl implements DataRegistry {
 	// The logger
 	private static Logger _log = Logger.getLogger(DataRegistryImpl.class.getName());
 
+	// The keys in the DataRegistry.roperties config file
+	private static final String DEFAULT_CONFIG_KEY = "dom.config.default.location";
+	private static final String USER_CONFIG_KEY = "dom.config.user.location";
+	private static final String DISABLE_DEFAULT_CONFIG_KEY = "dom.config.disable.default";
+
+	// The class name key that MUST be in every DigitalObjectManager config file
 	private static final String CLASS_NAME_KEY = "manager.class.name";
 
 	// String for the extension filter for properties files
@@ -62,26 +69,25 @@ public class DataRegistryImpl implements DataRegistry {
 	// The instance to try to keep this a singleton
 	private static volatile DataRegistryImpl instance = null;
 
-	// Hash set of ObjectManagers
+	// Hash set of DigitalObjectManagers, effectively the DataRegistry
+	// Any DigitalObjectManger that wants to be part of this DataRegistry implementation MUST
+	// extend the DigitalObjectMangerBase abstract class, not simply implement the interface
 	private HashMap<URI, DigitalObjectManagerBase> _objManagerSet = new HashMap<URI, DigitalObjectManagerBase>();
 
-	// The location of the DigitalObjectManager property files
-	private String _domPropFileDirName = null;
-	
+	// The variables required to handle the configuration setup
+	// The name of the default DigitalObjectManager config dir
+	private String defaultDomDirName = null;
+
+	// The name of the user DigitalObjectManager config dir
+	private String userDomDirName = null;
+
+	// The URI ID of the default data registry
 	private URI defaultDomUri = null;
 	
 	/**
-	 * Constructor of the DataRegistryImpl
-	 */
-	protected DataRegistryImpl() {
-		// OK lets populate the DigitalObjectManager HashList
-		this.findDigitalObjectManagers();
-	}
-	
-	/**
-	 * Factory method
-	 * @return The DataRegistryImpl instance
+	 * Factory method, this is the way to get a DataRegistryImpl instance
 	 * 
+	 * @return The DataRegistryImpl instance
 	 */
 	public static DataRegistryImpl getInstance() {
 		if(instance == null)
@@ -97,22 +103,40 @@ public class DataRegistryImpl implements DataRegistry {
 		return instance;
 	}
 
+	/**
+	 * Constructor of the DataRegistryImpl, protected and is called from the factory 
+	 */
+	protected DataRegistryImpl() {
+		// OK lets populate the DigitalObjectManager HashList
+		this.findDigitalObjectManagers();
+	}
+	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.ifr.core.storage.api.DataRegistry#getDigitalObjectManager(java.net.URI)
 	 */
 	public DigitalObjectManager getDigitalObjectManager(URI uri) throws DigitalObjectManagerNotFoundException {
+
+		// The return val
 		DigitalObjectManager dom = null;
+
+		// First check that the URI isn's null, if it is throw IllegalArgumentException
+		if (uri == null) throw new IllegalArgumentException("URI argument is null");
+
+		// OK, let's try to get the DigitalObjectManager
 		try {
-			_log.info("Looking up DigitalObjectManager for " + uri);
-			dom = this._objManagerSet.get(new PDURI(uri).formDataRegistryRootURI());
+			dom = this._objManagerSet.get(new PDURI(uri.normalize()).formDataRegistryRootURI());
+		// Catch the URI syntax thrown by PDURI if this isn't a valid ID URI, and rethrow as not found
 		} catch (URISyntaxException e) {
-			_log.info("URI Syntax Exception");
-			throw new DigitalObjectManagerNotFoundException("No DigitalObjectManager found for URI:" + uri.toASCIIString(), e);
+			throw new DigitalObjectManagerNotFoundException("URI: " + uri + 
+					" is not a valid Planets DataRegistry URI ID", e);
 		}
+		
+		// Final check, if the returned DOM is null then it's not in the HashMap
 		if (dom == null) {
-			_log.info("Returned DigitalObjectManager is NULL");
-			throw new DigitalObjectManagerNotFoundException("No DigitalObjectManager found for URI:" + uri.toASCIIString()); 
+			throw new DigitalObjectManagerNotFoundException("No DigitalObjectManager found for URI: " + uri); 
 		}
+		
+		// Share the goodness of the retrieved DOM
 		return dom;
 	}
 
@@ -120,14 +144,18 @@ public class DataRegistryImpl implements DataRegistry {
 	 * @see eu.planets_project.ifr.core.storage.api.DataRegistry#hasDigitalObjectManager(java.net.URI)
 	 */
 	public boolean hasDigitalObjectManager(URI uri) {
+		// First check that the URI isn's null, if it is throw IllegalArgumentException
+		if (uri == null) throw new IllegalArgumentException("URI argument is null");
+
 		// Try to retrieve the DigitalObjectManager for the supplied URI
 		try {
 			_log.info("Looking up DigitalObjectManager for " + uri);
-			return this._objManagerSet.containsKey(new PDURI(uri).formDataRegistryRootURI());
+			// Return the hash map lookup, this gives the answer
+			return this._objManagerSet.containsKey(new PDURI(uri.normalize()).formDataRegistryRootURI());
+		// Catch the invalid Planets URI, log and return false
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			_log.warning("URI Syntax Exception, we don't have this DOM");
+			_log.warning("URI: " + uri + 
+					" is not a valid Planets DataRegistry URI ID");
 			_log.info(e.getMessage());
 			return false;
 		}
@@ -138,8 +166,11 @@ public class DataRegistryImpl implements DataRegistry {
 	 */
 	public List<Class<? extends Query>> getQueryTypes() {
 		/*
-		 * FIXME: This is messy as without a URI the multi manager cannot identify which
-		 * DigitalObjectManager to use and no sensible exception to throw at the moment
+		 * TODO: This is messy as without a URI the multi manager cannot identify which
+		 * DigitalObjectManager to use and no sensible exception to throw at the moment.
+		 * 
+		 * It may be possible to implement an "uber" query type that goes across DOMs but that's
+		 * quite a lot of work
 		 */
 		return null;
 	}
@@ -150,10 +181,9 @@ public class DataRegistryImpl implements DataRegistry {
 	public boolean isWritable(URI pdURI) {
 		try {
 			// Attempt to return the isWritable result from the appropriate DigitalObjectManager
-			return this.getDigitalObjectManager(pdURI).isWritable(pdURI);
+			return this.getDigitalObjectManager(pdURI).isWritable(pdURI.normalize());
 		// If no DigitalObjectManager found
 		} catch (DigitalObjectManagerNotFoundException e) {
-			_log.info("DataRegistry.isWritable()");
 			_log.info("No DigitalObjectManager found for URI " + pdURI);
 			// Return false, can't write to a manager that doesn't exist 
 			return false;
@@ -168,12 +198,7 @@ public class DataRegistryImpl implements DataRegistry {
 		if (pdURI == null) {
 			
 			// Create a new ArrayList to return
-			List<URI> allDoms = new ArrayList<URI>(this._objManagerSet.size());
-			
-			// Iterate through the keys and add to the ArrayList
-			for (URI uri : this._objManagerSet.keySet()) {
-				allDoms.add(uri);
-			}
+			List<URI> allDoms = new ArrayList<URI>(this._objManagerSet.keySet());
 			
 			// Return the created list
 			return allDoms;
@@ -182,11 +207,10 @@ public class DataRegistryImpl implements DataRegistry {
 		// OK we have a URI, so return the DigitalObjectManager using it
 		try {
 			_log.info("Retrieving list from the DOM " + pdURI);
-			return this.getDigitalObjectManager(pdURI).list(pdURI);
+			return this.getDigitalObjectManager(pdURI).list(pdURI.normalize());
 		
 		// If no match then return catch the DigitalObjectNotFound excep and return null
 		} catch (DigitalObjectManagerNotFoundException e) {
-			_log.info("DataRegistry.list(URI pdURI, Query q)");
 			_log.info("No DigitalObjectManager found for URI " + pdURI);
 			return null;
 		}
@@ -197,9 +221,8 @@ public class DataRegistryImpl implements DataRegistry {
 	 */
 	public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
 		try {
-			return this.getDigitalObjectManager(pdURI).list(pdURI, q);
+			return this.getDigitalObjectManager(pdURI).list(pdURI.normalize(), q);
 		} catch (DigitalObjectManagerNotFoundException e) {
-			_log.info("DataRegistry.list(URI pdURI, Query q)");
 			_log.info("No DigitalObjectManager found for URI " + pdURI);
 			return null;
 		}
@@ -211,7 +234,7 @@ public class DataRegistryImpl implements DataRegistry {
 	public DigitalObject retrieve(URI pdURI)
 			throws DigitalObjectNotFoundException {
 		try {
-			return this.getDigitalObjectManager(pdURI).retrieve(pdURI);
+			return this.getDigitalObjectManager(pdURI).retrieve(pdURI.normalize());
 		} catch (DigitalObjectManagerNotFoundException e) {
 			_log.info("No DigitalObjectManager found for URI " + pdURI);
 			throw new DigitalObjectNotFoundException("No DigitalObjectManager found for URI " + pdURI, e);
@@ -219,16 +242,28 @@ public class DataRegistryImpl implements DataRegistry {
 	}
 
 	/**
+	 * This is a bit of a hack required by the test bed, it's NOT in the interface, it's specific
+	 * to the implementation.
+	 * 
+	 * FIXME: This needs to be better
+	 * 
 	 * @param pdURI
-	 * @return
+	 * @return A DigitalObject where the content is guaranteed to be a TB reference
 	 * @throws DigitalObjectNotFoundException
 	 */
 	public DigitalObject retrieveAsTBReference(URI pdURI)
 			throws DigitalObjectNotFoundException {
-			DigitalObject finalObj = null;
+		// The return value
+		DigitalObject finalObj = null;
+
 		try {
-			DigitalObject digitalObj = this.getDigitalObjectManager(pdURI).retrieve(pdURI);
+			// let's get the digital object
+			DigitalObject digitalObj = this.getDigitalObjectManager(pdURI).retrieve(pdURI.normalize());
+			
+			// And a content object that's by Refernce
 			DigitalObjectContent content = DataRegistryImpl.getObjectContentByRef(pdURI);
+
+			// Buld the new DO, using the reference content
 			_log.info("The permanent URI of this object will be " + digitalObj.getPermanentUri());
 			finalObj = new DigitalObject.Builder(content)
 					.title(digitalObj.getTitle())
@@ -253,11 +288,12 @@ public class DataRegistryImpl implements DataRegistry {
 	 */
 	public URI storeAsNew(DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException {
-		/*
-		 * FIXME: This is messy as without a URI the multi manager cannot identify which
-		 * DigitalObjectManager to use
-		 */
-		throw new DigitalObjectNotStoredException("Could not identify DigitalObjectManager to store to");
+		// OK let's use the default DOM if we can if we
+		if (this.defaultDomUri != null)
+			return this.storeAsNew(this.defaultDomUri, digitalObject);
+
+		// No default so throw
+		throw new DigitalObjectNotStoredException("Could not identify DigitalObjectManager to use, and default DOM is null");
 	}
 
 	/* (non-Javadoc)
@@ -265,15 +301,20 @@ public class DataRegistryImpl implements DataRegistry {
 	 */
 	public URI storeAsNew(URI pdURI, DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException {
-		
+		// Check the passed args to make sure that there are no nulls
+		if (pdURI == null)
+			throw new IllegalArgumentException("Argument URI pdURI must not be null");
+		if (digitalObject == null)
+			throw new IllegalArgumentException("Argument DigitalObject digitalObject must not be null");
+
 		// Simply look up the correct Digital Object Manager and call the storeAsNew method.
 		try {
-			return this.getDigitalObjectManager(pdURI).storeAsNew(pdURI, digitalObject);
+			return this.getDigitalObjectManager(pdURI).storeAsNew(pdURI.normalize(), digitalObject);
+
 		// If we can't find the DigitalObjectManger
 		} catch (DigitalObjectManagerNotFoundException e) {
-			_log.info("DataRegistry.storeAsNew(URI pdURI, DigitalObject digitalObject)");
 			_log.info("No DigitalObjectManager found for URI " + pdURI);
-			throw new DigitalObjectNotStoredException(e);
+			throw new DigitalObjectNotStoredException("No DigitalObjectManager found for URI " + pdURI, e);
 		}
 	}
 
@@ -283,20 +324,31 @@ public class DataRegistryImpl implements DataRegistry {
 	public URI updateExisting(URI pdURI, DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException,
 			DigitalObjectNotFoundException {
+		// Check the passed args to make sure that there are no nulls
+		if (pdURI == null)
+			throw new IllegalArgumentException("Argument URI pdURI must not be null");
+		if (digitalObject == null)
+			throw new IllegalArgumentException("Argument DigitalObject digitalObject must not be null");
 
 		try {
-			return this.getDigitalObjectManager(pdURI).updateExisting(pdURI, digitalObject);
+			return this.getDigitalObjectManager(pdURI).updateExisting(pdURI.normalize(), digitalObject);
 		} catch (DigitalObjectManagerNotFoundException e) {
-			_log.info("DataRegistry.updateExisting(URI pdURI, DigitalObject digitalObject)");
 			_log.info("No DigitalObjectManager found for URI " + pdURI);
-			throw new DigitalObjectNotFoundException(e);
+			throw new DigitalObjectNotStoredException("No DigitalObjectManager found for URI " + pdURI, e);
 		}
 	}
 
 
-	public boolean addDigitalObjectManager(URI uri, DigitalObjectManagerBase dom) {
+	public boolean addDigitalObjectManager(String name, DigitalObjectManagerBase dom) {
+		// Check the passed args to make sure that there are no nulls
+		if ((name == null) || (name.isEmpty()))
+			throw new IllegalArgumentException("Argument String name cannot be null or empty");
+		if (dom == null)
+			throw new IllegalArgumentException("Argument DigitalObjectManagerBase dom must not be null");
+
+		// OK we'll try a put to the set
 		try {
-			this._objManagerSet.put(new PDURI(uri).formDataRegistryRootURI(), dom);
+			this._objManagerSet.put(DataRegistryImpl.createDataRegistryIdFromName(name), dom);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -327,75 +379,91 @@ public class DataRegistryImpl implements DataRegistry {
 	private void findDigitalObjectManagers() {
 		// OK, we need the config information to find where the DigitalObjectManger
 		// config files are held
-		// TODO: Just using hard coded value during development, replace with config code
-		this._domPropFileDirName = domConfigFolder();
-		System.out.println("Property file Config folder is " + this._domPropFileDirName);
-		File domPropFileDir = new File(this._domPropFileDirName);
+		String defaultConfigDirName = getDefaultConfigFolder();
+		String userConfigDirName = getUserConfigFolder();
+
+		// OK so we can call the routine to get these
+		this.getDigitalObjectManagersFromDirectory(defaultConfigDirName, DataRegistryImpl.DEFAULT_CONFIG_KEY);
+		this.getDigitalObjectManagersFromDirectory(userConfigDirName, DataRegistryImpl.USER_CONFIG_KEY);
+	}
+	
+	private URI getDigitalObjectManagersFromDirectory(String dirName, String propName) {
+		// We want to record the URI of the first writeable DOM we come to.
+		// This will be our fall back for default DOM, it's also the ret val
+		URI firstWriteable = null;
 		
-		// Check that this is a directory
-		if (domPropFileDir.isDirectory()) {
-			// Create a filter for properties files
-			FilenameFilter sel = new FilenameFilter() {
-				public boolean accept(File file, String name) {
-					return name.endsWith(PROP_EXT);
-				}
-			};
+		// We need the directory
+		File propDir = new File(dirName);
 
-			// We want to record the URI of the first writeable DOM we come to.
-			// This will be our fall back for default DOM
-			URI firstWriteable = null;
+		// Check that this is a directory, if not log and return null URI
+		if (!propDir.isDirectory()) {
+			_log.info("Property " + propName + " is not a directory");
+			return firstWriteable;
+		}
+		
+		// Create a filter for properties files
+		FilenameFilter sel = new FilenameFilter() {
+			public boolean accept(File file, String name) {
+				return name.endsWith(PROP_EXT);
+			}
+		};
 
-			// Iterate through contained files 
-			for (File propFile : domPropFileDir.listFiles(sel)) {
-				// Get the properties set from the file
-				_log.info("Found DOM property file: " + propFile.getName());
-				Configuration config = ServiceConfig.getConfiguration(propFile);
+		// Iterate through contained files 
+		for (File propFile : propDir.listFiles(sel)) {
+			// Get the properties set from the file
+			Configuration config = ServiceConfig.getConfiguration(propFile);
 				
-				// Add the registry to the hash map, the Interface class is instantiated
-				// from the class name
+			// Add the registry to the hash map, the Interface class is instantiated
+			// from the class name
+			DigitalObjectManagerBase dom = getDomFromConfig(config);
+			if (dom != null) {
+				_log.info("Adding DOM: " + config.getURI(DigitalObjectManagerBase.NAME_KEY));
+				this._objManagerSet.put(dom.getId(), dom);
+				// Now check if the default property set true and
+				// we haven't got a default yet (this.defaultDomUri not null)
+				// First default wins
+				String isDefault = "";
 				try {
-					_log.info("Adding DOM: " + config.getURI(DigitalObjectManagerBase.ID_KEY));
-					DigitalObjectManagerBase dom = getDomFromConfig(config);
-					if (dom != null) {
-						this._objManagerSet.put(new PDURI(config.getURI(DigitalObjectManagerBase.ID_KEY)).formDataRegistryRootURI(), 
-								dom);
-						// Now check if the default property set true and
-						// we haven't got a default yet (this.defaultDomUri not null)
-						// First default wins
-						String isDefault = "";
-						try {
-							isDefault = config.getString(DataRegistry.DEFAULT_KEY);
-						// No default key but not a problem
-						} catch (NoSuchElementException e) {
-							isDefault = "";
-						}
-						if (isDefault.equals("true") && 
-								(this.defaultDomUri == null)) {
-							this.defaultDomUri = dom.getId();
-						// No default candidate so we'll look for the first writeable
-						} else if ((firstWriteable == null) &&
-									dom.isWritable(dom.getId())) {
-							firstWriteable = dom.getId();
-						}
-					}
-				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					isDefault = config.getString(DataRegistry.DEFAULT_KEY);
+				// No default key but not a problem
+				} catch (NoSuchElementException e) {
+					isDefault = "";
+				}
+				if (isDefault.equals("true") && 
+						(this.defaultDomUri == null)) {
+					this.defaultDomUri = dom.getId();
+				// No default candidate so we'll look for the first writeable
+				} else if ((firstWriteable == null) &&
+							dom.isWritable(dom.getId())) {
+					firstWriteable = dom.getId();
 				}
 			}
-		// The config dir is in fact a file so we bail....
-		// TODO: alternatively we could treat this as a single 
-		// instance property file and treat it as such
-		} else {
-			_log.severe("findDigitalObjectManagers");
 		}
+		return firstWriteable;
 	}
 
-    private static String domConfigFolder() {
-        String domCongigDir = null;
-    	Configuration conf = ServiceConfig.getConfiguration("DataRegistry");
-    	domCongigDir = conf.getString("dom.config.dir.location");
-    	return domCongigDir;
+	/**
+	 * Just a little util method to get the default configuration folder for the data registry
+	 * from its config property file
+	 * 
+	 * @return The String name of the DataRegistry default config dir
+	 */
+    private static String getDefaultConfigFolder() {
+        String defaultConfigDirName = null;
+    	Configuration conf = ServiceConfig.getConfiguration(DataRegistry.class);
+    	defaultConfigDirName = conf.getString(DataRegistryImpl.DEFAULT_CONFIG_KEY);
+    	return defaultConfigDirName;
+    }
+
+	/**
+	 * Just a little util method to get the configuration folder for the data registry
+	 * @return
+	 */
+    private static String getUserConfigFolder() {
+        String userConfigDirName = null;
+    	Configuration conf = ServiceConfig.getConfiguration(DataRegistry.class);
+    	userConfigDirName = conf.getString(DataRegistryImpl.USER_CONFIG_KEY);
+    	return userConfigDirName;
     }
 
     /**
@@ -409,7 +477,9 @@ public class DataRegistryImpl implements DataRegistry {
 		Class<?> domClass = null;
 		DigitalObjectManagerBase dom = null;
 		try {
+			// OK we need a class name or we can't instatiate the instance
 			String className = config.getString(DataRegistryImpl.CLASS_NAME_KEY);
+
 			// Get the class name from the config and then the class from the contexts class loader
 			_log.info("Getting DigitalObjectManager class: " + className);
 			domClass = Class.forName(className,	true,
@@ -501,15 +571,49 @@ public class DataRegistryImpl implements DataRegistry {
 		return dom;
 	}
 
+	/**
+	 * Return the default URI
+	 * 
+	 * @return The default DOM URI
+	 */
 	public URI getDefaultDigitalObjectManagerId() {
-		// TODO Auto-generated method stub
 		return this.defaultDomUri;
 	}
 
+	/**
+	 * A convenient way of setting the default DOM by URI.  If we have this DOM
+	 * then we'll make it the default, if not we retain the existing default.
+	 * 
+	 * @return The default DOM URI following this call
+	 */
+	public URI setDefaultDigitalObjectManagerId(URI uri) {
+		if (this.hasDigitalObjectManager(uri))
+			try {
+				this.defaultDomUri = new PDURI(uri.normalize()).formDataRegistryRootURI();
+			} catch (URISyntaxException e) {
+				_log.info("URI: " + uri + 
+						" is not a valid Planets DataRegistry URI ID");
+			}
+			return this.defaultDomUri;
+	}
+		
+	public static URI createDataRegistryIdFromName(String registryName) throws URISyntaxException {
+		// OK let's check that the name isn't null
+		if ((registryName == null) || (registryName.isEmpty()))
+			throw new IllegalArgumentException("Argument String registryName cannot be null or empty");
+		
+		// Right we need the details for this server
+		return PDURI.formDataRegistryRootURI(PlanetsServerConfig.getHostname(), 
+											  String.valueOf(PlanetsServerConfig.getPort()),
+											  registryName);
+		 
+	}
+
+	// Part of the TB hack
 	private static DigitalObjectContent getObjectContentByRef(URI uri)
 		throws MalformedURLException {
 		DigitalObjectContent content = null;
-		URI resolverURI = URI.create(TBContentResolver.getResolverPath() + uri);
+		URI resolverURI = URI.create(TBContentResolver.getResolverPath() + uri).normalize();
 		content = Content.byReference(resolverURI.toURL());
 		return content;
 	}
