@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    
+<body>
+  <ui:composition>
+  
+        <a4j:status startStyleClass="statusBusy" stopStyleClass="statusDone">
+            <f:facet name="start">
+            <!-- 
+                <h:graphicImage  value="/graphics/spinner.gif"/><br/>
+                Working...
+             -->
+            </f:facet>
+        </a4j:status>
+
+    <div id="mainwrapper">
+    <div id="maincol">
+    <div class="innertubemain">
+            <p>The following services are currently available for experimentation in the Testbed.  Click on a service name to find out more about it.</p>
+    <h:form>
+    
+      <rich:dataTable id="serviceListTable" value="#{ServiceBrowser.allServiceRecordsByName}" var="sd"
+         styleClass="tbTable" sortMode="single"><!-- reRender="services_ds"  -->
+        
+                    
+            <rich:column width="20%" sortBy="#{sd.name}"> 
+                <f:facet name="header">
+                    <h:outputText value="Name"/>
+                </f:facet>
+                <h:outputLink value="service_inspector.faces">
+                    <f:param name="serviceName" value="#{sd.name}"/>
+                    <h:outputText value="#{sd.name}"/>
+                </h:outputLink>
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.nameRecord.type}" sortOrder="ASCENDING">
+                <f:facet name="header">
+                    <h:outputText value="Type"/>
+                </f:facet>
+                <h:outputText value="#{sd.nameRecord.type}"/> 
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.numberOfExperiments}" sortOrder="ASCENDING">
+                <f:facet name="header">
+                    <h:outputText value="# Experiments"/>
+                </f:facet>
+                <h:outputText value="#{sd.numberOfExperiments}"/> 
+            </rich:column>
+            
+            <rich:column width="20%" sortBy="#{sd.nameRecord.toolSummary}"> 
+                <f:facet name="header">
+                    <h:outputText value="Tool"/>
+                </f:facet>
+                <h:outputText value="#{sd.nameRecord.toolSummary}"/>
+            </rich:column>
+            
+            <rich:column width="50%">
+                <f:facet name="header">
+                    <h:outputText value="Description"/>
+                </f:facet>
+                
+                <h:panelGroup rendered="#{sd.nameRecord.logo != null}">
+                  <img src="#{sd.nameRecord.logo}" height="32" style="float: right; height: 32px;" title="#{sd.name}" alt="#{sd.name}"/>
+                </h:panelGroup>
+                
+                <h:outputText value="#{sd.nameRecord.description}"/>
+                <h:outputLink rendered="#{sd.nameRecord.furtherInfo != null}" value="#{sd.nameRecord.furtherInfo}" target="_new"> <t:graphicImage value="/graphics/external-link.png" alt="Open service info in new window..."/></h:outputLink>
+                
+            </rich:column>
+
+<!-- 
+            <f:facet name="footer">
+                <rich:datascroller id="services_ds" renderIfSinglePage="false"></rich:datascroller>
+            </f:facet>
+ -->
+        </rich:dataTable>
+  
+    </h:form>
+    
+    
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+
+    </div>
+    </div>
+    </div>
+    
+    
+    <div id="leftcol">
+
+      <ui:include src="/WEB-INF/templates/sb_sidebar.xhtml">
+        <ui:param name="ShowServiceFilter" value="true"/>
+      </ui:include>
+      
+      
+    </div>
+    
+
+  </ui:composition>
+</body>
+</html>
+  

@@ -22,6 +22,9 @@
   <property file="config.properties"/>
   <property name="jboss.home" value="${if_server.dir}"/>
   <property name="junit.lib" value="${junitlib.dir}"/>
+  
+  <!-- The location of the DR config directory (can be overridden in config.properties) -->
+  <property name="doms.config.dir" value="${jboss.home}/server/default/data/planets/dom-config"/>
 
   <!-- Build classpath -->
   <path id="classpath">
@@ -205,7 +208,7 @@
     </copy> -->
   </target>
 
-  <target name="dist" depends="deploy:ds, populateDirectories">
+  <target name="dist" depends="deploy:ds, deploy:doms, populateDirectories">
 
     <copy todir="${build.dir}/${appName}">
       <fileset dir="web" casesensitive="yes">
@@ -292,6 +295,18 @@
     <copy file="${src.resources}/META-INF/testbed-ds.xml" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
   
+  <target name="deploy:doms" description="Deploy the Testbed-specific Data Registry configuration files.">
+    <copy todir="${doms.config.dir}" overwrite="true">
+      <fileset dir="${basedir}/resources/eu/planets_project/tb/dataregistry">
+        <include name="*.properties" />
+      </fileset>
+    </copy>
+    <replace dir="${doms.config.dir}">
+      <include name="*.properties" />
+      <replacefilter token="@if_server.dir@" value="${if_server.dir}" />
+    </replace>
+  </target>
+    
   <target name="build:ear" depends="createejbjar,dist" description="builds the Testbed application"/>
 
 </project>

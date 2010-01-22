@@ -22,71 +22,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-
-	<div id="mainwrapper">
-	<div id="maincol">
-	<div class="innertubemain">
-
-    <h:form>
-    
-    <div align="center">
-   
-    <h:outputLink value="list_services.faces">
-	<img src="${facesContext.externalContext.requestContextPath}/graphics/browse_services.gif" 
-	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
-	     style="margin:5px 5px 5px 5px;" />
-	</h:outputLink>
-	<h:outputLink value="list_services_by_format.faces">
-	<img src="${facesContext.externalContext.requestContextPath}/graphics/browse_services_by_format.gif" 
-	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
-	     style="margin:5px 5px 5px 5px;" />
-	</h:outputLink>
-    <h:outputLink value="browse_pathways.faces">
-	<img src="${facesContext.externalContext.requestContextPath}/graphics/browse_pathways.gif" 
-	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
-	     style="margin:5px 5px 5px 5px;" />
-	</h:outputLink>
-    <h:outputLink value="list_pathways.faces">
-	<img src="${facesContext.externalContext.requestContextPath}/graphics/list_pathways.gif" 
-	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
-	     style="margin:5px 5px 5px 5px;" />
-	</h:outputLink>
-  
-    </div>
-    
-    </h:form>
-    
-    <p>
-    The Testbed will allow you to browse the services and their histories of invocation on the Testbed.  
-    You can also <a href="/registry/">browse the IF Service Registry directly</a>.
-    </p>
-    
-        <p>&#160;</p>
-        <p>&#160;</p>
-        <p>&#160;</p>
-        <p>&#160;</p>
-        <p>&#160;</p>
-        <p>&#160;</p>
-        <p>&#160;</p>
-        <p>&#160;</p>
-        <p>&#160;</p>
-        <p>&#160;</p>
-
-    </div>
-    </div>
-    </div>
-	
-	
-	<div id="leftcol">
-
-      <ui:include src="/WEB-INF/templates/sb_sidebar.xhtml"/>
-      
-
-      
-      
-	</div>
-	
-
+        <ui:include src="/WEB-INF/templates/browse_services.xhtml"/>
 	</ui:define>
 
 	<ui:define name="footer">

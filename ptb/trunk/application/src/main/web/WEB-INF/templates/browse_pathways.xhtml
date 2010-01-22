@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    
+<body>
+  <ui:composition>
+  
+        <a4j:status startStyleClass="statusBusy" stopStyleClass="statusDone">
+            <f:facet name="start">
+            <!-- 
+                <h:graphicImage  value="/graphics/spinner.gif"/><br/>
+                Working...
+             -->
+            </f:facet>
+        </a4j:status>
+
+    <div id="mainwrapper">
+    <div id="maincol">
+    <div class="innertubemain">
+    
+            <p>Select an input format, migration service or output format to see what pathway options are available within the Testbed. 
+        For example, click on an input format to find out which services accept it, or click on a service to find out what formats it is capable of handling.<br />
+    <b>Hint:</b> Once you've selected an option you can deselect it by clicking on it again.</p>
+    <h:form>
+    
+        <table id="pathwayBrowserTable" class="tbTable" style="width: 100%">
+        <tr>
+        <th>Input Format</th>
+        <th>Migration Service</th>
+        <th>Output Format</th>
+        </tr>
+        
+        <tr>
+        <td style="vertical-align: top; width: 25%;">
+        
+        <rich:dataTable value="#{ServiceBrowser.migrationInputFormatBeans}" var="fb" style="width:100%;">
+          <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }" rendered="#{fb.enabled}">
+          
+            <h:panelGroup rendered="#{fb.format.registryUrl != null}" styleClass="infoFloat">
+              <h:outputLink value="#{fb.format.registryUrl}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
+            </h:panelGroup>
+            
+            <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">
+              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBInputFormatActionListener"/>
+              <h:panelGroup rendered="#{fb.selected}">
+                <input type="checkbox" checked="checked"/>
+              </h:panelGroup>
+              <h:panelGroup rendered="#{!fb.selected}">
+                <input type="checkbox"/>
+              </h:panelGroup>
+              <b><h:outputText value="#{fb.summary} "/></b>
+            </h:commandLink>
+            <h:panelGroup rendered="#{!fb.enabled}" styleClass="selectableDisabled">
+              <input type="checkbox" disabled="disabled"/>
+              <h:outputText value="#{fb.summary} "/>
+            </h:panelGroup>
+            
+          </rich:column>
+        </rich:dataTable>
+
+        </td>
+        <td style="vertical-align: top; width: 50%;">
+        
+        <rich:dataTable value="#{ServiceBrowser.migrationServiceBeans}" var="srb" style="width:100%;">
+          <rich:column styleClass="#{srb.selected ? 'cellSelected' : 'cellUnselected' }" rendered="#{srb.enabled}">
+          
+            <h:panelGroup styleClass="infoFloat">
+              <i><h:outputLink value="#{srb.serviceDescription.endpoint}" target="_blank">@<t:graphicImage value="/graphics/external-link.png" alt="Open WSDL in new window..."/></h:outputLink></i>
+            </h:panelGroup>
+            
+            <h:commandLink rendered="#{srb.enabled}" styleClass="selectableEnabled">
+              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBServiceActionListener"/>
+              <h:panelGroup rendered="#{srb.selected}">
+                <input type="checkbox" checked="checked"/>
+              </h:panelGroup>
+              <h:panelGroup rendered="#{!srb.selected}">
+                <input type="checkbox"/>
+              </h:panelGroup>
+              <b><h:outputText value="#{srb.serviceDescription.name}"/></b>
+            </h:commandLink>
+            
+            <h:panelGroup rendered="#{!srb.enabled}" styleClass="selectableDisabled">
+              <input type="checkbox" disabled="disabled"/>
+              <h:outputText value="#{srb.serviceDescription.name}"/>
+            </h:panelGroup>
+
+            
+          </rich:column>
+        </rich:dataTable>
+
+
+        </td>
+        <td style="vertical-align: top; width: 25%;">
+        
+        <rich:dataTable value="#{ServiceBrowser.migrationOutputFormatBeans}" var="fb" style="width:100%;">
+          <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }" rendered="#{fb.enabled}">
+          
+            <h:panelGroup rendered="#{fb.format.registryUrl != null}" styleClass="infoFloat">
+              <h:outputLink value="#{fb.format.registryUrl}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
+            </h:panelGroup>
+            
+            <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">
+              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBOutputFormatActionListener"/>
+              <h:panelGroup rendered="#{fb.selected}">
+                <input type="checkbox" checked="checked"/>
+              </h:panelGroup>
+              <h:panelGroup rendered="#{!fb.selected}">
+                <input type="checkbox"/>
+              </h:panelGroup>
+              <b><h:outputText value="#{fb.summary} "/></b>
+            </h:commandLink>
+            <h:panelGroup rendered="#{!fb.enabled}" styleClass="selectableDisabled">
+              <input type="checkbox" disabled="disabled"/>
+              <h:outputText value="#{fb.summary} "/>
+            </h:panelGroup>
+            
+          </rich:column>
+        </rich:dataTable>
+
+
+        </td>
+        </tr>
+        </table>
+
+    </h:form>
+    
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+
+    </div>
+    </div>
+    </div>
+    
+    
+    <div id="leftcol">
+    
+      <ui:include src="/WEB-INF/templates/sb_sidebar.xhtml"/>
+      
+        <h3 class="leftcol">Current Selection</h3>
+        <div class="innertube">
+          <h:panelGroup rendered="#{ServiceBrowser.selectedInputFormat == null}">
+            <p class="leftcol"><b>From:</b> <i>ANY</i></p>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{ServiceBrowser.selectedInputFormat != null}">
+            <p class="leftcol"><b>From:</b> #{ServiceBrowser.selectedInputFormat.summary} <i>#{ServiceBrowser.selectedInputFormat.uri}</i></p>
+          </h:panelGroup>
+          
+          <h:panelGroup rendered="#{ServiceBrowser.selectedOutputFormat == null}">
+            <p class="leftcol"><b>To:</b> <i>ANY</i></p>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{ServiceBrowser.selectedOutputFormat != null}">
+            <p class="leftcol"><b>To:</b> #{ServiceBrowser.selectedOutputFormat.summary} <i>#{ServiceBrowser.selectedOutputFormat.uri}</i></p>
+          </h:panelGroup>
+          
+          <h:panelGroup rendered="#{ServiceBrowser.selectedServiceRecord == null}">
+            <p class="leftcol"><b>Using:</b> <i>ANY</i></p>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{ServiceBrowser.selectedServiceRecord  != null}">
+            <p class="leftcol"><b>Using:</b> #{ServiceBrowser.selectedServiceRecord.name}</p>
+          </h:panelGroup>
+        </div>
+      
+    
+    </div>
+  
+  </ui:composition>
+</body>
+</html>
+  

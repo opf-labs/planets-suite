@@ -1085,7 +1085,7 @@ public class ExperimentBean {
     }
   
     public void setEtype(String type) {
-        log.info("Setting experiment types to: "+type);
+        log.info("Setting experiment type to: "+type);
         try {
             this.exp.getExperimentSetup().setExperimentType(type);
             this.updateExperiment();

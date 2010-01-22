@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    
+<body>
+  <ui:composition>
+    <div id="mainwrapper">
+        <div id="maincol">
+            <div class="innertubemain">
+      
+                <p><b>#{res['welcome.header']}</b></p>
+        
+                                <p>There are countless approaches to digital preservation available, making use of a variety of 
+                                    <b>migration</b>, <b>characterisation</b> and <b>emulation</b> tools, but which is the best approach 
+                                    to take?  The Planets Testbed provides a <b>dedicated research environment</b> where <b>services</b> and 
+                                <b>data</b> can be experimented upon, results can be evaluated and outcomes shared with the wider community.</p>
+                                <p>By providing a dedicated hardware and software environment the Testbed allows different approaches to be 
+                        analysed systematically, so that results can be <b>benchmarked</b> and outcomes can be <b>empirically compared</b>.</p>
+                        
+                            <hr />
+                            <h:form styleClass="hidden">                            
+                            <div style="text-align:center;margin-top:20px;">
+                            <h:commandLink action="home" rendered="#{empty UserBean.userid}">
+                                <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_login.gif" 
+                                alt="#{res['welcome.login.login']}" title="#{res['login.login']}" style="margin:5px 5px 5px 5px;" />
+                            </h:commandLink>
+                            <br />
+                            <h:commandLink action="public_browse_services" rendered="#{empty UserBean.userid}">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_long_browse_exps.gif" 
+                                alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" style="margin:5px 5px 5px 5px;" />
+                            </h:commandLink>
+                            <ui:fragment rendered="#{empty UserBean.userid}">
+                                <p>Forgotten your username or password? Need help registering for an account? 
+                                <br />Email the helpdesk: <a href="mailto:helpdesktb@planets-project.eu">helpdesktb@planets-project.eu</a></p>
+                            </ui:fragment>
+                            <h:commandLink action="browse_services" rendered="#{UserBean.reader}">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_services.gif" 
+                                alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" style="margin:5px 5px 5px 5px;" />
+                            </h:commandLink>
+                            <h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_exps.gif" 
+                                alt="#{res['welcome.browse_exps']}" title="#{res['welcome.browse_exps']}" style="margin:5px 5px 5px 5px;" />
+                            </h:commandLink>
+                            <h:commandLink action="browse_data"  rendered="#{UserBean.reader}">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_corpora.gif" 
+                                alt="#{res['welcome.browse_corpora']}" title="#{res['welcome.browse_corpora']}" style="margin:5px 5px 5px 5px;" />
+                            </h:commandLink>
+                            <h:commandLink action="browse_ontology"  rendered="#{UserBean.reader}">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_ontology.gif" 
+                                alt="#{res['welcome.browse_ontology']}" title="#{res['welcome.browse_ontology']}" style="margin:5px 5px 5px 5px;" />
+                            </h:commandLink>
+                            <h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_perform_exp.gif" 
+                                alt="#{res['welcome.perform_exp']}" title="#{res['welcome.perform_exp']}" style="margin:5px 5px 5px 5px;" />
+                            </h:commandLink>
+                            <br />
+                                                        
+                            <a href="/testbed/public/help.faces">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_help.gif" 
+                                alt="#{res['welcome.help']}" title="#{res['welcome.help']}" style="margin:5px 5px 5px 5px;" />
+                            </a>
+                            <a href="/testbed/public/about.faces">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_about.gif" 
+                                alt="#{res['welcome.about']}" title="#{res['welcome.about']}" style="margin:5px 5px 5px 5px;" />
+                            </a>
+                            
+                            </div>
+                            
+                            </h:form>
+                        <p>&#160;</p>
+                        <p>&#160;</p>
+                        <p>&#160;</p>
+                        <p>&#160;</p>
+                        <p>&#160;</p>
+                        <p>&#160;</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="leftcol">
+        
+        
+        <h3 class="leftcol">The Testbed and You</h3>
+        <div class="innertube">
+            <p class="leftcol"><img src="${facesContext.externalContext.requestContextPath}/graphics/tb-you.png" alt="" title="" style="float:left;" />Log into the Testbed and test tools and services against benchmark content or your own data.</p>
+            <p class="leftcol">If you have any interest in which digital preservation tools and approaches perform the best in a variety of situations you can browse through the experiments database and learn from the successes and failures of other experiments.</p>
+            <p class="leftcol">You may even choose to replicate earlier experiments to validate the outcomes that were noted.  By making experiment results available the testbed will provide scientific value to the broader community of content owners and memory institutions.</p>
+        </div>
+    </div>
+  </ui:composition>
+</body>
+</html>
+  

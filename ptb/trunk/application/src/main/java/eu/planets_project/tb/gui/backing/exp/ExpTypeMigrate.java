@@ -537,6 +537,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
         }
         
         public DigitalObjectTreeNode getOutputDob() {
+            if( this.getMigrationResult() == null ) return null;
             return DigitalObjectCompare.lookupDob(this.getMigrationResult().getDobResultReference());
         }
         

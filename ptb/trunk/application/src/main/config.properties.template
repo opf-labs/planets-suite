@@ -12,6 +12,10 @@
 # [*NOTE*] @if_server.dir_@ is used in template ONLY
 if_server.dir=@if_server.dir@
 
+# the directory that stores the Data Registry configuration, as defined in DataRegistry.properties
+# see the IF storage component for details.
+doms.config.dir=${if_server.dir}/server/default/data/planets/dom-config
+
 # the path to find JUnit4
 # e.g. on UNIX: junitlib.dir=/home/username/Eclipse_JEE/eclipse/plugins/org.junit4_4.3.1
 # e.g. on Windows: junitlib.dir=C:/Programme/Eclipse_JEE/eclipse/plugins/org.junit4_4.3.1

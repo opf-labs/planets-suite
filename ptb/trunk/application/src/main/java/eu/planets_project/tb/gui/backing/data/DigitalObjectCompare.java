@@ -47,7 +47,7 @@ public class DigitalObjectCompare {
     static private Log log = LogFactory.getLog(DigitalObjectCompare.class);
     
     // The data sources are managed here:
-    static DataRegistry dataRegistry = DataRegistryImpl.getInstance();
+    DataRegistry dataRegistry = DataRegistryImpl.getInstance();
     
     private String dobUri1;
     private String dobUri2;
@@ -98,16 +98,16 @@ public class DigitalObjectCompare {
             return null;
         }
         // Lookup and return:
-        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dataRegistry );
+        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, DataRegistryImpl.getInstance() );
         return itemNode;
     }
     
     public DigitalObjectTreeNode getDob1() {
-        return this.lookupDob(this.dobUri1);
+        return lookupDob(this.dobUri1);
     }
     
     public DigitalObjectTreeNode getDob2() {
-        return this.lookupDob(this.dobUri2);
+        return lookupDob(this.dobUri2);
     }
     
     /* -------------------- Additional code for deeper inspection --------------------- */
