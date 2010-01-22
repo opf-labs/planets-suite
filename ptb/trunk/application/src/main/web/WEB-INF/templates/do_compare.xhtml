@@ -11,15 +11,17 @@
 <body>
   <ui:composition rendered="#{dob != null}">
 
+  <a4j:form id="dobCompareForm">
+    <!-- Persist the experiment ID through POST, if any. -->    
+    <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}" />
+    <!-- Persist the dob ID through POST, if any. -->    
+    <input type="hidden" name="dobUri1" value="#{DobCompare.dobUri1}"/>
+    <input type="hidden" name="dobUri2" value="#{DobCompare.dobUri2}"/>
+  
         <div id="mainwrapper">
         <div id="maincol">
         <div class="innertubemain">
 
-  
-  <a4j:form id="dobCompareForm">
-    <!-- Persist the dob ID through POST, if any. -->    
-    <input type="hidden" name="dobUri1" value="#{DobCompare.dobUri1}"/>
-    <input type="hidden" name="dobUri2" value="#{DobCompare.dobUri2}"/>
   
   <div id="digitalObjectRegistryBrowser">
   <h:panelGrid columns="2" columnClasses="halfContent">
@@ -200,15 +202,8 @@
     
     </div>
     
-    <h:panelGroup rendered="#{ExperimentInspector.experimentId == null}">
-    <p>
-      <h:commandButton action="browse_data"
-        value="Return to the Data Browser"/>
-    </p>
-    </h:panelGroup>
+    <ui:include src="/WEB-INF/templates/fragments/do_inspection_returns.xhtml"/>
     
- </a4j:form>
-  
         
         <p>&nbsp;</p>
         <p>&nbsp;</p>
@@ -223,17 +218,12 @@
         
         <div id="leftcol">
 
-        <h:panelGroup rendered="#{ExperimentInspector.experimentId == null}">
         <h3 class="leftcol">Data Browser</h3>
                 <div class="innertube">        
                     <p class="leftcol">
-                    <h:outputLink value="browse_data.faces">
-                        <f:param name="dobUri" value="#{dob.uri}"/>
-                        <h:outputText value="Return to the Data Browser"/>.
-                    </h:outputLink>
+    <ui:include src="/WEB-INF/templates/fragments/do_inspection_returns.xhtml"/>
                     </p>
                 </div>
-        </h:panelGroup>
         
         <h:panelGroup rendered="#{ExperimentInspector.experimentId != null}">
         <h3 class="leftcol">Experiment Analysis</h3>
@@ -241,7 +231,7 @@
                     <p class="leftcol">
                     <h:outputLink value="../exp/exp_stage5.faces">
                         <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
-                        <h:outputText value="Return to the experiment."/>
+                        <h:outputText value="Return to the experiment analysis step."/>
                     </h:outputLink>
                 </p>
                 </div>
@@ -255,6 +245,8 @@
         </div>
         
         </div>
+
+ </a4j:form>  
     
   </ui:composition>
 </body>

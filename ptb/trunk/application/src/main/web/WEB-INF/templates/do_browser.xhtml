@@ -189,6 +189,7 @@
             <h:panelGroup rendered="#{!isInExperiment}">
               <p>
                 <h:outputLink value="dob_compare.faces">
+                    <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
                     <f:param name="dobUri1" value="#{DobBrowser.dobUri1}"/>
                     <f:param name="dobUri2" value="#{DobBrowser.dobUri2}"/>
                     <h:outputText value="Compare these objects."/>

@@ -392,7 +392,7 @@ public class CommentBacking implements java.io.Serializable {
                     .getExternalContext()
                         .getRequest();
         if( request == null ) {
-            log.info("HttpServletRequest was null, using JSF context instead.");
+            //log.info("HttpServletRequest was null, using JSF context instead.");
             ExternalContext fec = FacesContext.getCurrentInstance().getExternalContext();
             this.parentURI = fec.getRequestContextPath();
             if( fec.getRequestServletPath() != null )
@@ -406,7 +406,7 @@ public class CommentBacking implements java.io.Serializable {
             if( request.getQueryString() != null) {
                 this.parentURI += "?"+request.getQueryString();
             }
-            log.info("HSR: Stored parent URI "+this.parentURI);
+            //log.info("HSR: Stored parent URI "+this.parentURI);
         }
     }
     
