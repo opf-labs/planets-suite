@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.services.identification.jhove.impl;
 import static eu.planets_project.services.utils.test.TestFile.testIdentification;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 
@@ -72,20 +73,29 @@ public class JhoveIdentificationTests {
         IdentifyResult identify = jhove.identify(new DigitalObject.Builder(
                 Content.byReference(new File(TestFile.BMP.getLocation())
                         .toURI().toURL())).build(), null);
-        URI uri = identify.getTypes().get(0);
-        /* Jhove identifies unknown files as application/octet-stream (x-fmt/411)*/
-        Assert.assertEquals(OCTET_STREAM, uri.toString());
-        /* More info is available in the report message: */
-        System.err.println(identify.getReport().getMessage());
+        checkUnidentified(identify);
     }
-    
+
     @Test
     public void testUnsupportedPng() throws MalformedURLException {
         IdentifyResult identify = jhove.identify(new DigitalObject.Builder(
                 Content.byReference(new File(TestFile.PNG.getLocation())
                         .toURI().toURL())).build(), null);
+        checkUnidentified(identify);
+    }
+    
+    @Test
+    public void testEmptyFile() throws IOException {
+        File emptyTempFile = File.createTempFile("jhove-test", "empty-file");
+        emptyTempFile.deleteOnExit();
+        IdentifyResult identify = jhove.identify(new DigitalObject.Builder(
+                Content.byReference(emptyTempFile)).build(), null);
+        checkUnidentified(identify);
+    }
+    
+    private void checkUnidentified(IdentifyResult identify) {
         URI uri = identify.getTypes().get(0);
-        /* Jhove identifies unknown files as application/octet-stream (x-fmt/411)*/
+        /* Jhove identifies unknown files as "application/octet-stream" (x-fmt/411) */
         Assert.assertEquals(OCTET_STREAM, uri.toString());
         /* More info is available in the report message: */
         System.err.println(identify.getReport().getMessage());

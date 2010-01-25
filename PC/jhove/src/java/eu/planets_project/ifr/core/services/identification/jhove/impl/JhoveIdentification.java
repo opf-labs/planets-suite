@@ -49,23 +49,14 @@ import eu.planets_project.services.utils.FileUtils;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class JhoveIdentification implements Identify, Serializable {
     private static Logger log = Logger.getLogger(JhoveIdentification.class.getName());
-    /***/
     static final String NAME = "JhoveIdentification";
-    /***/
     private static final String ENCODING = "utf-8";
-    /***/
     private static final String RESOURCES = "PC/jhove/src/resources/";
-    /***/
     private static final String CONFIG_FILE = "jhove.conf";
-    /***/
     private static final long serialVersionUID = 1127650680714441971L;
-    /***/
     private static final String PLANETS = "Planets";
-    /***/
     private static final String CONF = "/server/default/conf/";
-    /***/
     private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
-    /***/
     private static final String OUTPUT = "planets-jhove-output";
     private String status;
 
