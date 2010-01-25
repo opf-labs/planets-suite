@@ -270,6 +270,8 @@ public class ExecutionRecordImpl implements Serializable {
     }
 
     /**
+     * how did the execution of this record proceed. have all workflow steps been
+     * processed properly. it's about monitoring the workflow process for this item.
      * @return the report
      */
     public List<String> getReportLog() {

@@ -154,8 +154,12 @@ public class WEEBatchExperimentTestbedUpdater {
                         execRecord.setEndDate(end);
 					}
 				}
+				//2. or about some general reporting information
+				if(action.startsWith(WorkflowResultItem.GENERAL_WORKFLOW_ACTION)){
+					execRecord.setReportLog(this.parseReportLog(wfResultItem));
+				}
 
-				//2. document all other metadata for actions: identification, etc. as properties over all actions
+				//3. document all other metadata for actions: identification, etc. as properties over all actions
 				try{
 					this.updateProperties(actionCounter, p, wfResultItem);
 				}catch(Exception e){
@@ -355,5 +359,22 @@ public class WEEBatchExperimentTestbedUpdater {
 		}
 		return p;
 	}
+	
+	/**
+	 * Looks at the given set of extracted properties (for a given input digo)
+	 * and aabuilds up the ResultLog if available. (i.e. log on how the workflow was processed on this item, 
+	 * e.g. A->B, B->C, C did not terminate properly
+	 * @param p
+	 * @return
+	 */
+	private List<String> parseReportLog(WorkflowResultItem wfResultItem){
+		List<String> ret = new ArrayList<String>();
+		if((wfResultItem.getSActionIdentifier()!=null)&&
+		   (wfResultItem.getSActionIdentifier().startsWith(WorkflowResultItem.GENERAL_WORKFLOW_ACTION))){
+			ret = wfResultItem.getLogInfo();
+		}
+		return ret;
+	}
 
 }
+

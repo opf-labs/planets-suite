@@ -70,6 +70,13 @@
     value="Result of type: #{dor.executionRecord.resultType}"
     rendered="#{dor.hasExecutionRecord}" />
   <h:outputText value="No result." rendered="#{!dor.hasExecutionRecord}" />
+  <!-- output the propertiesList for a exp type that has this kind of output -->
+  <!-- rich:simpleTogglePanel label="show properties list" opened="false" switchType="client" rendered="#{dor.propertiesListResultType}">    
+  <a4j:repeat var="propRes" value="#{dor.resultPropertiesList}">
+    <p style="font-family: monospace;"> <h:outputText value="#{propRes}" />
+    </p>
+  </a4j:repeat>
+  </rich:simpleTogglePanel-->
 
   <!-- This is the migration case:
 
@@ -85,21 +92,22 @@
 
   <!-- ****************** -->
   <h2>Report Log for Input Object</h2>
-
+  <rich:simpleTogglePanel label="show report log" opened="false" switchType="client">    
   <a4j:repeat var="log" value="#{dor.reportLog}">
     <p style="font-family: monospace;"> <h:outputText value="#{log}" />
     </p>
   </a4j:repeat>
+  </rich:simpleTogglePanel>
   
   <!-- ****************** -->
   <h2>Overall Batch Report Log</h2>
   <p>This is the workflow execution report for the whole experiment, i.e. for all files.</p>
-	<rich:simpleTogglePanel label="show batch report log" opened="false" switchType="client">                   
-<div style="overflow: auto !important;">
-<pre>
-#{dor.batchReport}    
-</pre>
-</div>
+	<rich:simpleTogglePanel label="show overall batch report log" opened="false" switchType="client">                   
+		<div style="overflow: auto !important;">
+		<pre>
+			#{dor.batchReport}    
+		</pre>
+		</div>
 	</rich:simpleTogglePanel>
 
 

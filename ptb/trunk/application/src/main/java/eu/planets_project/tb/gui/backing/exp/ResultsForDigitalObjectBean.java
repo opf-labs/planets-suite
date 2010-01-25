@@ -3,8 +3,13 @@
  */
 package eu.planets_project.tb.gui.backing.exp;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
 
 import java.util.Vector;
 
@@ -13,8 +18,11 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
@@ -165,6 +173,52 @@ public class ResultsForDigitalObjectBean extends DigitalObjectBean {
         if( this.getExecutionRecord() == null || this.getExecutionRecord().getReportLog() == null ) return null;
         return this.getExecutionRecord().getReportLog();
     }
+    
+    /**
+     * checks if the is any result type of 'propertiesListResult' available
+     * @return
+     */
+    public boolean isPropertiesListResultType(){
+    	try {
+			if(this.getExecutionRecord().getPropertiesListResult()!=null){
+				return true;
+			}
+		} catch (IOException e) {
+		}
+		return false;
+    }
+    
+    /**
+     * Returns all information when the experiment's result type is: 'PropertiesListResult' i.e.
+     * all wee workflows use this result type to pass on information.
+     * @return
+     */
+    public List<String> getResultPropertiesList(){
+    	List<String> ret = new ArrayList<String>();
+    	if( this.getExecutionRecord() == null || this.getExecutionRecord().getReportLog() == null )
+    		return null;
+    	try {
+			Properties ps = this.getExecutionRecord().getPropertiesListResult();
+			if(ps!=null){
+				Enumeration enumeration = ps.keys();
+				while(enumeration.hasMoreElements()){
+					String key = (String)enumeration.nextElement();
+					String value = ps.getProperty(key);
+					if(!key.startsWith(ExecutionRecordImpl.RESULT_PROPERTY_URI)){
+						ret.add("["+key+"= "+value+"]");
+					}
+				}
+				// Sort list in Case-insensitive sort
+	            Collections.sort(ret, String.CASE_INSENSITIVE_ORDER);
+				return ret;	
+			}
+		} catch (IOException e) {
+			log.debug("unable to fetch the resultPropertiesList in ResultsForDigitalObjectBean "+e);
+			return null;
+		}
+    	return null;
+    }
+    
 
     /**
      * 
