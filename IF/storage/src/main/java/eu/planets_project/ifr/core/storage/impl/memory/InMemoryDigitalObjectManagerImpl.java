@@ -13,12 +13,12 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
  * @author CFWilson
  *
  */
-public class InMemoryDigitalOnjetManagerImpl extends DigitalObjectManagerBase {
+public class InMemoryDigitalObjectManagerImpl extends DigitalObjectManagerBase {
 
 	/**
 	 * @param config
 	 */
-	public InMemoryDigitalOnjetManagerImpl(Configuration config) {
+	public InMemoryDigitalObjectManagerImpl(Configuration config) {
 		super(config);
 		// TODO Auto-generated constructor stub
 	}
