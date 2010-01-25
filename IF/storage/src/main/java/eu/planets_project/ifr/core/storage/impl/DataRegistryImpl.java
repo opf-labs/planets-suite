@@ -81,6 +81,9 @@ public class DataRegistryImpl implements DataRegistry {
 	// The name of the user DigitalObjectManager config dir
 	private String userDomDirName = null;
 
+	// The root Data Registry URI (i.e. planets://hostname:port/dr)
+	private URI dataRegistryRoot = null;
+	
 	// The URI ID of the default data registry
 	private URI defaultDomUri = null;
 	
@@ -417,7 +420,7 @@ public class DataRegistryImpl implements DataRegistry {
 			// from the class name
 			DigitalObjectManagerBase dom = getDomFromConfig(config);
 			if (dom != null) {
-				_log.info("Adding DOM: " + config.getURI(DigitalObjectManagerBase.NAME_KEY));
+				_log.info("Adding DOM: " + config.getString(DigitalObjectManagerBase.NAME_KEY));
 				this._objManagerSet.put(dom.getId(), dom);
 				// Now check if the default property set true and
 				// we haven't got a default yet (this.defaultDomUri not null)
@@ -450,7 +453,7 @@ public class DataRegistryImpl implements DataRegistry {
 	 */
     private static String getDefaultConfigFolder() {
         String defaultConfigDirName = null;
-    	Configuration conf = ServiceConfig.getConfiguration(DataRegistry.class);
+    	Configuration conf = ServiceConfig.getConfiguration("DataRegistry");
     	defaultConfigDirName = conf.getString(DataRegistryImpl.DEFAULT_CONFIG_KEY);
     	return defaultConfigDirName;
     }
@@ -461,7 +464,7 @@ public class DataRegistryImpl implements DataRegistry {
 	 */
     private static String getUserConfigFolder() {
         String userConfigDirName = null;
-    	Configuration conf = ServiceConfig.getConfiguration(DataRegistry.class);
+    	Configuration conf = ServiceConfig.getConfiguration("DataRegistry");
     	userConfigDirName = conf.getString(DataRegistryImpl.USER_CONFIG_KEY);
     	return userConfigDirName;
     }
@@ -603,9 +606,14 @@ public class DataRegistryImpl implements DataRegistry {
 			throw new IllegalArgumentException("Argument String registryName cannot be null or empty");
 		
 		// Right we need the details for this server
-		return PDURI.formDataRegistryRootURI(PlanetsServerConfig.getHostname(), 
+		try {
+			return PDURI.formDataRegistryRootURI(PlanetsServerConfig.getHostname(), 
 											  String.valueOf(PlanetsServerConfig.getPort()),
 											  registryName);
+		} catch (NullPointerException e) {
+			// Assume we're in test mode and return a test mode default
+			return PDURI.formDataRegistryRootURI("testhost", "8080", registryName);
+		}
 		 
 	}
 

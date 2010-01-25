@@ -226,8 +226,9 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
 		System.out.println("FileSysDOM storeAsNew");
         URI pdURI;
         System.out.println("Putting URI together");
-		pdURI = this.id.resolve(UUID.randomUUID().toString());
-		System.out.println("Calling store");
+        System.out.println("ID = " + this.id);
+		pdURI = this.id.resolve(this.name + "/" + UUID.randomUUID().toString());
+		System.out.println("Calling store " + pdURI);
         this.store(pdURI, digitalObject);
 		System.out.println("returning URI");
         return pdURI;
@@ -370,7 +371,7 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
 		       }
 
 			// get the path from the URI to store at
-				System.out.println("Getting new PDURI");
+				System.out.println("Getting new PDURI from " + pdURI);
 			PDURI _parsedURI = new PDURI(pdURI);
 			System.out.println("getting dr path");
 			String path = _parsedURI.getDataRegistryPath();

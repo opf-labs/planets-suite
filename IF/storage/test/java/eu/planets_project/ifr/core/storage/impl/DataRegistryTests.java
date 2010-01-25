@@ -36,7 +36,6 @@ import eu.planets_project.services.datatypes.DigitalObjectContent;
 public class DataRegistryTests {
 	private static final String FILE = "test_word.doc";
     private static final String DATA = "IF/storage/test/resources/testdata";
-    private static final String FILE_TEMP = "IF/storage/test/resources/DataRegistry/simplefileroot";
 
     // The URI for the file base DR and an accompanying URI id
 	private static final String FILE_DR_URI = "planets://bl-planets.bl.uk:8080/dr/localfile";
@@ -242,17 +241,5 @@ public class DataRegistryTests {
 		}
 		assertEquals("There should be no DigitalObjectManagers remaining", 
 				0, DataRegistryTests.dataReg.countDigitalObjectMangers());
-	}
-
-	private static boolean deleteDir(File dir) {
-		if (dir.isDirectory()) {
-			String[] children = dir.list();
-			for (int iLoop = 0; iLoop < children.length; iLoop++) {
-				if (!deleteDir(new File(dir, children[iLoop]))) {
-					return false;
-				}
-			}
-		}
-		return dir.delete();
 	}
 }
