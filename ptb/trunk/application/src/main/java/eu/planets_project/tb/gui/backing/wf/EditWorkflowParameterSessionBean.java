@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.html.HtmlDataTable;
 //import org.richfaces.component.html.HtmlDataTable;
@@ -39,6 +40,7 @@ public class EditWorkflowParameterSessionBean {
 	//for experimentID
 	private String sExpID = null;
 	private String forServiceURL = null;
+	private String forServiceID = null;
 	//holds values for
 	public ServiceDescription serviceDescr;
 	protected ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();
@@ -55,6 +57,7 @@ public class EditWorkflowParameterSessionBean {
 		this.reqParamInspector= reqParamInspector;
 		sExpID = reqParamInspector.getExperimentId(); 
 		forServiceURL = reqParamInspector.getForServiceURL();
+		forServiceID = reqParamInspector.getForServiceID();
 		
 		//1.init default parameters for service
 		this.initDefaultParametersFromSerRegistry();
@@ -62,10 +65,18 @@ public class EditWorkflowParameterSessionBean {
 		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		ExpTypeBackingBean exptypeBean = ExpTypeBackingBean.getExpTypeBean(expBean.getEtype());
 		
-		//2. fill in existing parameters
-		if(exptypeBean.getWorkflowParameters()!=null){
+		//2. fill in existing parameters - handed over by the calling expType
+		Map<String, List<Parameter>> existingServiceParamsByService = exptypeBean.getWorkflowParameters();
+		if(existingServiceParamsByService!=null){
 			//add existing parameters to this bean
-			this.serviceParams = convertParameterList(exptypeBean.getWorkflowParameters().get(forServiceURL));
+			if(this.forServiceID!=null){
+				//using a different serviceID than the service's url
+				this.serviceParams = convertParameterList(existingServiceParamsByService.get(forServiceID));
+			}
+			else{
+				//just using the serviceURL as identifier
+				this.serviceParams = convertParameterList(existingServiceParamsByService.get(forServiceURL));
+			}
 		}
 	}
 	

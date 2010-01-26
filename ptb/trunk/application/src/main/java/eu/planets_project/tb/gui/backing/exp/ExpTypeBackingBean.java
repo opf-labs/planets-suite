@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -79,6 +81,19 @@ public abstract class ExpTypeBackingBean {
             exptype = null;
         }
         return exptype;
+    }
+    /**
+     * TODO Note that this is also a point that requires expansions when adding types.
+     * Reset all avialable expType beans within the Session Map
+     * @param etype
+     * @return
+     */
+    public static final void resetExpTypeBean() {
+    	FacesContext ctx = FacesContext.getCurrentInstance();
+        ctx.getExternalContext().getSessionMap().put("ExpTypeIdentify", new ExpTypeIdentify());
+        ctx.getExternalContext().getSessionMap().put("ExpTypeMigrate", new ExpTypeMigrate());
+        ctx.getExternalContext().getSessionMap().put("ExpTypeViewer", new ExpTypeViewer());
+        ctx.getExternalContext().getSessionMap().put("ExpTypeExecutablePP", new ExpTypeExecutablePP());
     }
     
     /**

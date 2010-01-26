@@ -106,7 +106,7 @@
     <a4j:region selfRendered="true" immediate="true">
     <h:panelGroup>	
     <a4j:commandButton value="Edit Parameters" ajaxSingle="true" actionListener="#{NewExp_Controller.commandShowEditWFParamScreen}" oncomplete="Richfaces.showModalPanel('configEditParamsPanel');window.scrollTo(0,0);" reRender="configEditParamsBody" disabled="#{ReadOnly}" rendered="#{ExpTypeMigrate.validCurrentConfiguration}">
-    	<a4j:actionparam name="selServiceURL" value="#{ExpTypeMigrate.migrationService}"/>
+    	<a4j:actionparam name="selServiceURL" value="#{ExpTypeMigrate.migrationService}"/>>
 	</a4j:commandButton>
 	<br/>
 	<rich:simpleTogglePanel label="Service Parameters" opened="false" switchType="client" rendered="#{ExpTypeMigrate.validCurrentConfiguration}">

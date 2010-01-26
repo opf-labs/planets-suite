@@ -129,7 +129,13 @@ public class ExperimentInspector {
      */
     public static ExperimentBean putExperimentIntoSessionExperimentBean( Experiment exp ) {
         ExperimentBean expBean = new ExperimentBean();
-        if( exp != null ) expBean.fill(exp);
+        if( exp != null ){
+        	expBean.fill(exp);
+        }
+        else{
+        	//in this case we're having a request for a new experiment
+        	resetExpTypeBeanForExperimentInSession();
+        }
         //Store selected Experiment Row accessible later as #{Experiment} 
         FacesContext ctx = FacesContext.getCurrentInstance();
         ctx.getExternalContext().getSessionMap().put(EXP_BEAN_IN_SESSION_DEPRECATED, expBean);
@@ -166,5 +172,12 @@ public class ExperimentInspector {
             //a kind of fill method for the expTypeBean for the current expBean
             exptype.initExpTypeBeanForExistingExperiment();
     	}
+    }
+    
+    /**
+     * removes all existing session based expType specific backing beans and reinits them
+     */
+    private static void resetExpTypeBeanForExperimentInSession(){
+    	ExpTypeBackingBean.resetExpTypeBean();
     }
 }

@@ -169,9 +169,12 @@
 	                    </rich:dataTable>
 	                </rich:column>	                    
 	                <rich:column>
-	                		<a4j:commandButton value="Edit Parameters" id="editParamButton" ajaxSingle="true" actionListener="#{ExpTypeExecutablePP.commandSetServiceBeanForEditParam}" oncomplete="Richfaces.showModalPanel('configEditParamsPanel');window.scrollTo(0,0);" reRender="configEditParamsBody" disabled="#{ReadOnly}">
-	                			<a4j:actionparam name="selServiceID" value="#{service.serviceId}"/>
-	                		</a4j:commandButton>
+	                		<a4j:region selfRendered="true" immediate="true">
+		                		<a4j:commandButton value="Edit Parameters" id="editParamButton" ajaxSingle="true" actionListener="#{NewExp_Controller.commandShowEditWFParamScreen}" oncomplete="Richfaces.showModalPanel('configEditParamsPanel');window.scrollTo(0,0);" reRender="configEditParamsBody" disabled="#{ReadOnly}">
+		                			<a4j:actionparam name="selServiceURL" value="#{service.serviceEndpoint}"/>
+		                			<a4j:actionparam name="selServiceID" value="#{service.serviceId}"/>
+		                		</a4j:commandButton>
+	                		</a4j:region>
 	                </rich:column>	                   
 	            </rich:dataTable>
 		</rich:panel>

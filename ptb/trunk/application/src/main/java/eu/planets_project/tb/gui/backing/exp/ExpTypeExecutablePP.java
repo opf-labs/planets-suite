@@ -63,6 +63,7 @@ import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeMigrate.MigrateResultForDO;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeMigrate.MigrationResultBean;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeViewer.CreateViewResultsForDO;
+import eu.planets_project.tb.gui.backing.exp.utils.ExpTypeWeeBean;
 import eu.planets_project.tb.gui.backing.exp.view.ViewResultBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
@@ -80,7 +81,7 @@ import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
  * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andrew Lindley</a>
  *
  */
-public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializable{
+public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializable,ExpTypeWeeBean{
 
 	private Log log = LogFactory.getLog(ExpTypeExecutablePP.class);
 	private HashMap<String, String> serviceTypes;
@@ -90,13 +91,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
 	// This hash maps service endpoints to service names
 	private HashMap<String, String> serviceNameMap;
 	private WorkflowConfigUtil wfConfigUtil;
-	private HtmlDataTable parameterTable;
 	private WorkflowConf wfConf;
-	//The service bean used on the editParameter screen
-	private ServiceBean sbiq;
-	private String newValue = "";
-	private String parameterName = "";
-	private String parameterValue = "";
 	private boolean bValidXMLConfig,bXMLConfigUploaded,bWfTemplateAvailableInRegistry;
     private String xmlConfigFileRef;
     private String wfDescription;
@@ -772,178 +767,8 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
     
 	public List<ServiceBean> getServiceBeans() {
 		return serviceBeans;
-	}   
+	}   	
 	
-	// INFORMATION REQUIRED FOR THE EDIT PARAMETER WF SCREEN
-	public HtmlDataTable getParameterTable() {
-		return parameterTable;
-	}
-	
-	public void setParameterTable(HtmlDataTable parameterTable) {
-		this.parameterTable = parameterTable;
-	}
-	
-	public List<ServiceParameter> getServiceParametersToEdit() {
-		List<ServiceParameter> sps = new ArrayList<ServiceParameter>();
-		if (sbiq != null) {
-			sps = sbiq.getServiceParameters();
-		}
-		return sps;
-	}
-	
-	public void updateParameter() {
-		if (newValue == null) {
-			//TODO AL: add errorMessage for GUI component?
-			log.debug("New value is null - cannot update!");
-			return;
-		}
-		if (newValue.equals("")) {
-			//TODO AL: add errorMessage for GUI component?
-			log.debug("Invalid new value - cannot update!");
-			return;
-		}
-		int dataRow = parameterTable.getRowIndex();
-		String pn = sbiq.getServiceParameters().get(dataRow).getName();
-		sbiq.getServiceParameters().remove(dataRow);
-		sbiq.getServiceParameters().add(dataRow,
-				new ServiceParameter(pn, newValue));
-	}
-	
-	public void removeParameter() {
-		int dataRow = parameterTable.getRowIndex();
-		sbiq.getServiceParameters().remove(dataRow);
-	}
-
-	/**
-	 * Add a parameter in the editParam screen
-	 * @param event
-	 */
-	public void addParameter(ActionEvent event) {
-		if (sbiq == null) {
-			log.debug("No ServiceBean selected!");
-			return;
-		}
-		if (parameterName.equals("")) {
-			//TODO AL: create ErrorMessage for GUI Component
-			log.debug("Unable to create new parameter: name undefined!");
-			return;
-		}
-		if (parameterValue.equals("")) {
-			//TODO AL: create ErrorMessage for GUI Component
-			log.debug("Unable to create new parameter: value undefined!");
-			return;
-		}
-		sbiq.addParameter(new ServiceParameter(parameterName, parameterValue));
-		this.parameterName ="";
-		this.parameterValue ="";
-	}
-	
-	public String getNewValue() {
-		return newValue;
-	}
-	
-	public void setNewValue(String value) {
-		this.newValue = value;
-	}
-	
-	public String getParameterName() {
-		return this.parameterName;
-	}
-
-	public String getParameterValue() {
-		return this.parameterValue;
-	}
-	
-	public void setParameterName(String name) {
-		this.parameterName = name;
-	}
-
-	public void setParameterValue(String value) {
-		this.parameterValue = value;
-	}
-	
-	/**
-	 * Sets a sb record for the edit process
-	 * @param sb
-	 */
-	public void setSBForEdit(ServiceBean sb){
-		this.sbiq = sb;
-	}
-	
-	
-	/**
-	 * Returns the bean that's used on the editParam screen
-	 * @return
-	 */
-	public ServiceBean getEditedSB(){
-		if(sbiq!=null){
-			return sbiq;
-		}
-		return null;
-	}
-	
-	private String getParamValueFromRequest(String s) {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String value = facesContext.getExternalContext()
-				.getRequestParameterMap().get(s);
-		return value;
-	}
-	
-	
-	
-	public void commandSetServiceBeanForEditParam(ActionEvent evt){
-		FacesContext context = FacesContext.getCurrentInstance();
-		Object o1 = context.getExternalContext().getRequestParameterMap().get("selServiceID");
-		if(o1==null){
-			return;
-		}
-		String sServiceBeanIdForEditParam = (String)o1; 
-		this.newValue="";
-		this.parameterName="";
-		this.parameterValue="";
-
-		//set the bean that's used for the edit mode - but clone it (allows cancel and update button)
-		ServiceBean sb = this.serviceLookup.get(sServiceBeanIdForEditParam);
-		ServiceBean sbForEdit = sb.clone();
-		this.setSBForEdit(sbForEdit);
-	}
-	
-	/**
-	 * Triggers the update parameter information process from the edit service parameters screen to update
-	 * the service bean record with the new parameters
-	 */
-	public void commandUpdateServiceBeanFromEditParamScreen(ActionEvent evt){
-		
-		//update the service bean's parameter information from the edit-bean
-		ServiceBean sb = this.serviceLookup.get(this.sbiq.getServiceId());
-		sb.clearParameters();
-		
-		for(ServiceParameter param : this.getEditedSB().getServiceParameters()){
-			sb.addParameter(param);
-		}
-	}
-	
-	 /**
-	  * Provides information for the auto-complete form on the param screen.
-	  * @param query
-	  * @return
-	 */
-	public List<ServiceParameter> suggestMatchingDefaultParamsByName(Object query) {
-        if( query == null) return null;
-        // look for matching default params
-        String q = (String) query;
-        // Filter this into a list of matching parameters:
-        ArrayList<ServiceParameter> matches = new ArrayList<ServiceParameter>();
-        for(ServiceParameter sp :  this.getEditedSB().getDefaultServiceParameters()){
-            if( sp.getName().startsWith(q) ||
-            	sp.getName().contains(q)) {
-                  matches.add(sp);
-            }
-        }
-        return matches;
-    }
-	
-	//END INFORMATION REQUIRED FOR THE EDIT PARAMETER WF SCREEN
 
 	/**
 	 * A backing bean for handling services contained in the surrounding workflow
@@ -1402,17 +1227,79 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
 		return false;
 	}
 
+	/** {@inheritDoc} 
+	 * This is the callback method for the edit-param bean for passing out existing parameter values
+	 * */
 	@Override
 	public Map<String, List<Parameter>> getWorkflowParameters() {
-		// TODO AL adapt this when moving to the add/edit params in a separate managed bean
+		Map<String, List<Parameter>> ret = new HashMap<String, List<Parameter>>();
+		// populate the data for the add/edit params (a separate managed bean)
+		for(ServiceBean sb : this.getServiceBeans()){
+			List<Parameter> lParam = new ArrayList<Parameter>();
+    		String serID = sb.getServiceId();
+    		
+    		//3. iterate over all parameters that have been created/altered
+    		for(ServiceParameter param : sb.getServiceParameters()){
+    			Parameter parameter = new Parameter(param.getName(),param.getValue());
+    			lParam.add(parameter);
+    		}
+    		ret.put(serID, lParam);
+    	}
+		return ret;
+	}
+
+	/** {@inheritDoc} 
+	 * This is the callback method for the edit-param bean for writing back modified parameter values
+	 * */
+	@Override
+	public void setWorkflowParameters(Map<String,List<Parameter>> params) {
+		//adapted when moving to the add/edit params in a separate managed bean
+		if(params!=null){
+			for(String serviceID : params.keySet()){
+				ServiceBean sb = serviceLookup.get(serviceID);
+				
+				//store old migrate_to and migrate_from and use if they were deleted
+				ServiceParameter pFromOld = sb.getServiceParamContained(WorkflowTemplate.SER_PARAM_MIGRATE_FROM);
+				ServiceParameter pToOld = sb.getServiceParamContained(WorkflowTemplate.SER_PARAM_MIGRATE_TO);
+				
+				//clear old parameters and add the ones that are handed over here
+				sb.clearParameters();
+				for(Parameter p : params.get(serviceID)){
+					sb.addParameter(new ServiceParameter(p.getName(),p.getValue()));
+				}
+				
+				//check if we haven't lost the migrate_to and _from parameters
+				if(sb.getServiceParamContained(WorkflowTemplate.SER_PARAM_MIGRATE_FROM)==null){
+					sb.addDefaultParameter(pFromOld);
+				}
+				if(sb.getServiceParamContained(WorkflowTemplate.SER_PARAM_MIGRATE_TO)==null){
+					sb.addDefaultParameter(pToOld);
+				}
+			}
+		}
+	}
+	
+
+	/** {@inheritDoc} */
+	public WorkflowConf getWeeWorkflowConf() {
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		
+		if(!expBean.getApproved()){
+			//that's the one used when building this in 'design experiment'
+			return this.buildWorkflowConfFromCurrentConfiguration();
+        } 
+		if(expBean.getApproved()){
+			//that's the one after 'design experiment' has been saved
+			ExperimentExecutable expExecutable = expBean.getExperiment().getExperimentExecutable();
+			return expExecutable.getWEEWorkflowConfig();
+        }
 		return null;
 	}
 
-	@Override
-	public void setWorkflowParameters(Map<String,List<Parameter>> params) {
-		// TODO AL adapt this when moving to the add/edit params in a separate managed bean
-		
+	/** {@inheritDoc} */
+	public boolean isValidCurrentConfiguration() {
+		return isValidXMLConfig();
 	}
-    
+  
 
 }

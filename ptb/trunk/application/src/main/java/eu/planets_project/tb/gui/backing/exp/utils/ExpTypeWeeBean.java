@@ -13,7 +13,7 @@ public interface ExpTypeWeeBean {
      * The object containing the workflow's configuration - that's the one being submitted to the WEE
      * @param wfConfig
      */
-    public void setWeeWorkflowConf(WorkflowConf wfConfig);
+    //public void setWeeWorkflowConf(WorkflowConf wfConfig);
     
     public WorkflowConf getWeeWorkflowConf();
     

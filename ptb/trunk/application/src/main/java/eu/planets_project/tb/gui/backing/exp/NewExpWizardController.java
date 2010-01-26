@@ -877,7 +877,7 @@ public class NewExpWizardController{
         JSFUtil.redirect("/exp/exp_stage"+i+".faces?eid="+eid);
     }
     
-    public static void redirectToEditWFParams(long eid, String serviceURL) {
+    public static void redirectToEditWFParams(long eid, String serviceURL,String serviceID) {
         //JSFUtil.redirect("/exp/exp_stage2.faces?eid="+eid+"&serURL="+serviceURL);
     	FacesContext ctx = FacesContext.getCurrentInstance();
     	HashMap<String,String> editParamSerURLMap = null;
@@ -888,6 +888,15 @@ public class NewExpWizardController{
     	}
     	editParamSerURLMap = (HashMap<String,String>) ctx.getExternalContext().getSessionMap().get(EditWorkflowParameterInspector.EDIT_WORKFLOW_PARAM_SERURL_MAP);
     	editParamSerURLMap.put(eid+"", serviceURL);
+    	
+    	HashMap<String,String> editParamSerIDMap = null;
+    	if(!ctx.getExternalContext().getSessionMap().containsKey(EditWorkflowParameterInspector.EDIT_WORKFLOW_PARAM_SERID_MAP)){
+    		//takes expId to serviceID mapping
+    		editParamSerIDMap = new HashMap<String,String>();
+    		ctx.getExternalContext().getSessionMap().put(EditWorkflowParameterInspector.EDIT_WORKFLOW_PARAM_SERID_MAP, editParamSerIDMap);
+    	}
+    	editParamSerIDMap = (HashMap<String,String>) ctx.getExternalContext().getSessionMap().get(EditWorkflowParameterInspector.EDIT_WORKFLOW_PARAM_SERID_MAP);
+    	editParamSerIDMap.put(eid+"", serviceID);
     }
 
     /**
@@ -966,7 +975,13 @@ public class NewExpWizardController{
 		if(o1==null){
 			return;
 		}
-    	NewExpWizardController.redirectToEditWFParams(expBean.getID(), (String)o1);
+		//the id does not always have to be set - e.g. in the migration expType id and url are the same
+		Object o2 = context.getExternalContext().getRequestParameterMap().get("selServiceID");
+    	String serID = null;
+    	if(o2!=null){
+    		serID = (String)o2;
+    	}
+		NewExpWizardController.redirectToEditWFParams(expBean.getID(), (String)o1, serID);
     }
     
     /**

@@ -44,12 +44,14 @@ public class EditWorkflowParameterInspector {
 	private Log log = LogFactory.getLog(EditWorkflowParameterInspector.class);
 	//the service this information belongs to
 	private String forServiceURL;
+	private String forServiceID;
 	//the experiment this information belongs to
 	private String experimentId;
 	private EditWorkflowParameterSessionBean sessBean = null;
 
 	public static final String EDIT_WORKFLOW_PARAM_SERURL_MAP = "edit_param_serurl_map";
-    private static final String EDIT_WORKFLOW_PARAM_SESSION_BEAN_MAP = "edit_wf_param_sess_beans_map";
+	public static final String EDIT_WORKFLOW_PARAM_SERID_MAP = "edit_param_serid_map";
+	private static final String EDIT_WORKFLOW_PARAM_SESSION_BEAN_MAP = "edit_wf_param_sess_beans_map";
     
     
 	
@@ -79,6 +81,7 @@ public class EditWorkflowParameterInspector {
 		
 		//set the service URL the parameters are about
 		this.setForServiceURL(this.getServiceURLFromSessionMap(experimentId));
+		this.setForServiceID(this.getServiceIDFromSessionMap(experimentId));
 		
 	    //finally init this bean
 	    initBean(this.experimentId,this.forServiceURL);
@@ -94,13 +97,26 @@ public class EditWorkflowParameterInspector {
 	
 
 	/**
-	 * The service's ID we're adding parameters for
+	 * The service's Endpoint we're adding parameters for
 	 * This element is filled as a managed-bean's proeprty
 	 * @param forServiceID
 	 */
 	public void setForServiceURL(String forServiceURL) {
 		this.forServiceURL = forServiceURL;
 		//initBean(this.experimentId,this.forServiceURL);
+	}
+	
+	/**
+	 * The service's ID we're adding parameters for
+	 * e.g. migrate1
+	 * @param serviceID
+	 */
+	public void setForServiceID(String serviceID){
+		this.forServiceID = serviceID;
+	}
+	
+	public String getForServiceID(){
+		return this.forServiceID;
 	}
 	
 	//<------------- end of filled by managed bean's property --------------- >
@@ -388,7 +404,7 @@ public class EditWorkflowParameterInspector {
 		//removes the backing bean
 		getWFParamBeansSessionMap().remove(this.generateSessionBeanKey());
 		//removes the reference to the serviceURL we're using
-		this.removeServiceURLFromSessionMap();
+		this.removeServiceInformationFromSessionMap();
 	}
 	
 	/**
@@ -419,6 +435,11 @@ public class EditWorkflowParameterInspector {
         return editWFSessionBeanMap;
 	}
 	
+	/**
+	 * the bean's input parameter that's passed within the SessionMap
+	 * @param expID
+	 * @return
+	 */
 	private String getServiceURLFromSessionMap(String expID){
 		//fetch the serviceURL - due to the modal panel we can't use a managed-property and irect
 		FacesContext ctx = FacesContext.getCurrentInstance();
@@ -431,12 +452,34 @@ public class EditWorkflowParameterInspector {
 	    }
 	}
 	
-	private void removeServiceURLFromSessionMap(){
+	/**
+	 * the bean's input parameter that's passed within the SessionMap
+	 * @param expID
+	 * @return
+	 */
+	private String getServiceIDFromSessionMap(String expID){
+		//fetch the serviceURL - due to the modal panel we can't use a managed-property and irect
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		Object o = ctx.getExternalContext().getSessionMap().get(EDIT_WORKFLOW_PARAM_SERID_MAP);
+	    if(o!=null){
+	    	HashMap<String,String> editParamSerIDMap = (HashMap<String,String>)o;
+	    	return editParamSerIDMap.get(experimentId);
+	    }else{
+	    	return null;
+	    }
+	}
+	
+	private void removeServiceInformationFromSessionMap(){
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		Object o = ctx.getExternalContext().getSessionMap().get(EDIT_WORKFLOW_PARAM_SERURL_MAP);
 	    if(o!=null){
 	    	HashMap<String,String> editParamSerURLMap = (HashMap<String,String>)o;
 	    	editParamSerURLMap.remove(this.experimentId);
+	    }
+		Object o2 = ctx.getExternalContext().getSessionMap().get(EDIT_WORKFLOW_PARAM_SERID_MAP);
+	    if(o2!=null){
+	    	HashMap<String,String> editParamSerIDMap = (HashMap<String,String>)o;
+	    	editParamSerIDMap.remove(this.experimentId);
 	    }
 	}
 	
@@ -446,7 +489,7 @@ public class EditWorkflowParameterInspector {
 	 */
 	private String generateSessionBeanKey(){
 		//key is assembled with expID and serviceURL
-		return "expID:"+this.getExperimentId()+"servURL:"+this.getForServiceURL();
+		return "expID:"+this.getExperimentId()+"servURL:"+this.getForServiceURL()+"servID:"+this.forServiceID;
 	}
 	
 	
@@ -460,7 +503,15 @@ public class EditWorkflowParameterInspector {
 		ExpTypeBackingBean exptypeBean = ExpTypeBackingBean.getExpTypeBean(expBean.getEtype());
 		
 		Map<String,List<Parameter>> ret = new HashMap<String,List<Parameter>>();
-		ret.put(this.forServiceURL, sessBean.convertServiceParameterList(this.sessBean.serviceParams));
+		if(this.forServiceID!=null){
+			//using a different serviceID than the service's url
+			ret.put(this.forServiceID, sessBean.convertServiceParameterList(this.sessBean.serviceParams));
+		}
+		else{
+			//just using the serviceURL as identifier
+			ret.put(this.forServiceURL, sessBean.convertServiceParameterList(this.sessBean.serviceParams));
+		}
+		
 		exptypeBean.setWorkflowParameters(ret);
 	}
 	

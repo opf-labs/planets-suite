@@ -38,7 +38,7 @@
         <h:message for="editparamspanel" /> 
         <rich:panel id="editparamspanel">
       		<h:outputText value="Edit Parameters for service: "/>
-      		<h:outputText value="#{EditWFParameters.serName}" style="font-weight:bold;"/>
+      		<h:outputText value="#{EditWFParameters.serName}" style="font-weight:bold;"/><h:outputText value=" - #{EditWFParameters.forServiceID}" style="font-weight:bold;" rendered="#{EditWFParameters.forServiceID != null}"/>
             	<rich:dataTable var="params" value="#{EditWFParameters.serviceParametersToEdit}" rowKeyVar="rownr">
 		              <f:facet name="header">
 		                  <rich:columnGroup>
