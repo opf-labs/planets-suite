@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -235,6 +236,10 @@ public class PDURI {
 		return _retVal;
 	}
 
+	public String[] getPathParts() {
+		return this._decodedPath;
+	}
+	
 	/**
 	 * @param fullpath
 	 * @return

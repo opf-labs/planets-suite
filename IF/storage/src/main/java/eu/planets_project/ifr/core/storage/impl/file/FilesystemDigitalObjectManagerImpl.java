@@ -371,7 +371,7 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
 		       }
 
 			// get the path from the URI to store at
-				System.out.println("Getting new PDURI from " + pdURI);
+			System.out.println("Getting new PDURI from " + pdURI);
 			PDURI _parsedURI = new PDURI(pdURI);
 			System.out.println("getting dr path");
 			String path = _parsedURI.getDataRegistryPath();
@@ -385,7 +385,7 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
             File doDir = doBinary.getParentFile();
     		System.out.println("mking dir");
             if( ! doDir.exists() ) doDir.mkdirs();
-    		System.out.println("creating metadata");
+    		log.info("creating metadata");
 			File doMetadata = new File(this._root.getCanonicalPath() + 
 					File.separator + path + FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
 			

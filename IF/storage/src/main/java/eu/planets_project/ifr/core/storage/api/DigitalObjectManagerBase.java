@@ -32,7 +32,7 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 	protected String description = "";
 
 	@SuppressWarnings("unused")
-	private DigitalObjectManagerBase(){/** */};
+	private DigitalObjectManagerBase(){/** We don't want no arg constructors*/};
 
 	protected DigitalObjectManagerBase(Configuration config) {
 		try {
