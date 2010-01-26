@@ -31,11 +31,11 @@
 								</c:if>
 					</h:commandLink>
 								
-								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_load_test.gif" 
-                            	alt="Load Test Migration" title="Load Test Migration" style="margin:5px 5px 5px 5px;" /> 
+								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_load_test_inactive.gif" 
+                            	alt="Load Test Migration (Not currently available)" title="Load Test Migration (Not currently available)" style="margin:5px 5px 5px 5px;" /> 
 								
-								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_characterisation.gif" 
-                            	alt="Characterisation" title="Characterisation" style="margin:5px 5px 5px 5px;" />
+								<img src="${facesContext.externalContext.requestContextPath}/graphics/exptype/btn_exp_characterisation_inactive.gif" 
+                            	alt="Characterisation (Not currently available)" title="Characterisation (Not currently available)" style="margin:5px 5px 5px 5px;" />
 								
 								<h:commandLink action="#{ExperimentBean.setEmulationType}">   
 								<c:if test="${ExperimentBean.etypeName != 'View in Emulator'}">
