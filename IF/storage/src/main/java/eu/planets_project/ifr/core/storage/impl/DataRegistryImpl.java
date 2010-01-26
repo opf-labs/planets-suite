@@ -356,7 +356,7 @@ public class DataRegistryImpl implements DataRegistry {
 
 	public boolean addDigitalObjectManager(String name, DigitalObjectManagerBase dom) {
 		// Check the passed args to make sure that there are no nulls
-		if ((name == null) || (name.isEmpty()))
+		if ((name == null) || (name.length() == 0))
 			throw new IllegalArgumentException("Argument String name cannot be null or empty");
 		if (dom == null)
 			throw new IllegalArgumentException("Argument DigitalObjectManagerBase dom must not be null");
