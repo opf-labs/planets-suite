@@ -3,26 +3,21 @@
  */
 package eu.planets_project.ifr.core.services.fixity.javadigest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.net.URI;
-import java.util.List;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.identification.droid.impl.Droid;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.fixity.Fixity;
 import eu.planets_project.services.fixity.FixityResult;
-import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.utils.test.TestFile;
 
@@ -135,5 +130,8 @@ public class JavaDigestTests {
         			 "FixityResult.getDigestValue().toString()",
         			 fixityResult.getDigestValueAsString(),
         			 fixityResult.getDigestValue().toString());
+        
+        System.out.println("File " + testFile.toString() + 
+        				   " gave digest " + fixityResult.getDigestValueAsString());
 	}
 }
