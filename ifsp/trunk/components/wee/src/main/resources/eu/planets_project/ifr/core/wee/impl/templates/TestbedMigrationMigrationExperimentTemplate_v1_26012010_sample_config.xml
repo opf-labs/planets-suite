@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
+  <template>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.TestbedMigrationMigrationExperimentTemplate_v1_26012010</class>
+  </template>
+  <services>
+    <service id="migrate1">
+      <endpoint>http://localhost:8080/pserv-pa-sanselan/SanselanMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_from_fmt</name>
+          <value>planets:fmt/ext/png</value>
+        </param>
+        <param>
+          <name>planets:service/migration/input/migrate_to_fmt</name>
+          <value>planets:fmt/ext/gif</value>
+        </param>
+		<!-- BSpecify 1 for raw output, 0 for ascii output -->
+        <param>
+          <name>pbm-raw</name>
+          <value>1</value>
+        </param>
+      </parameters>
+    </service>
+    <service id="migrate2">
+      <endpoint>http://localhost:8080/pserv-pa-sanselan/SanselanMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_from_fmt</name>
+          <value>planets:fmt/ext/gif</value>
+        </param>
+        <param>
+          <name>planets:service/migration/input/migrate_to_fmt</name>
+          <value>planets:fmt/ext/bmp</value>
+        </param>
+		<!-- BSpecify 1 for raw output, 0 for ascii output -->
+        <param>
+          <name>pbm-raw</name>
+          <value>1</value>
+        </param>
+      </parameters>
+    </service>
+  </services>
+</workflowConf>

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.io.StringReader;
 
 import javax.xml.XMLConstants;
@@ -29,7 +30,7 @@ import org.xml.sax.SAXException;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 
 
-public class WorkflowConfigUtil {
+public class WorkflowConfigUtil implements Serializable{
 	
 	private static Log log = LogFactory.getLog(WorkflowConfigUtil.class);
 	
