@@ -107,6 +107,8 @@
 	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="PA/kakadu/test"/>
 	<classpathentry kind="src" path="PA/kakadu/src/java"/>
+	<classpathentry kind="src" path="PC/javadigest/src/main/java"/>
+	<classpathentry kind="src" path="PC/javadigest/src/test/java"/>
 	<classpathentry kind="lib" path="PC/odfvalidator/lib/jdom.jar" sourcepath="E:/JDOM/jdom-1.1.1.zip"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar"/>
