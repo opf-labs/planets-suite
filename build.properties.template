@@ -14,7 +14,11 @@ if_server.dir=@if_server.dir@
 
 # The location of the IF and service config directory, where the .properties configuration files
 # used by the service config utility live.
-if_server.conf=@if_server.conf@
+if_server.conf=${if_server.dir}/server/default/conf/planets
+
+# the directory that stores the Data Registry configuration, as defined in DataRegistry.properties
+# see the IF storage component for details.
+if_server.doms.config.dir=${if_server.dir}/server/default/data/planets/dom-config
 
 # Alternatively, you can just define the deployment server's library directory and deployment directory.
 #server.deploy.dir=
