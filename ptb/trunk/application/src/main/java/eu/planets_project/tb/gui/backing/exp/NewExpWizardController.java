@@ -72,6 +72,7 @@ import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
+import eu.planets_project.tb.impl.serialization.SerialCloneUtil;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
@@ -1815,7 +1816,7 @@ public class NewExpWizardController{
 			eTypeExecPP.checkAndParseWorkflowConfigObject(fileRef);
 			
 		} catch (Exception e) {
-	        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+			saveExpTypeBeanAndRedirectToExpStage(expBean.getID(), 2, eTypeExecPP);
 	        return "success";
 		}
     	
@@ -1826,7 +1827,7 @@ public class NewExpWizardController{
 			eTypeExecPP.setTemplateAvailableInWftRegistry(true);
 		}else{
 			eTypeExecPP.setTemplateAvailableInWftRegistry(false);
-	        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+			saveExpTypeBeanAndRedirectToExpStage(expBean.getID(), 2, eTypeExecPP);
 	        return "success";
 		}
 		
@@ -1835,8 +1836,48 @@ public class NewExpWizardController{
 
     	//reload stage2 and display the further navigation options
         log.info("commandUploadWfXMLConfigFile DONE");
-        NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        saveExpTypeBeanAndRedirectToExpStage(expBean.getID(), 2, eTypeExecPP);
         return "success";
+    }
+    
+    /**
+     * Store the expType specific bean before calling redirect! Otherwise all non-persisted
+     * information is lost!
+     * @param expID
+     * @param stage
+     * @param eTypeExecPP
+     */
+    private void saveExpTypeBeanAndRedirectToExpStage(long expID, int stage,ExpTypeExecutablePP eTypeExecPP){
+		
+		HashMap<String,ExpTypeExecutablePP> expTypeSessMap = getExpTypeExecutableSessionMap();
+        if(expTypeSessMap.get(expID+"")==null){
+        	 expTypeSessMap.put(expID+"", SerialCloneUtil.clone(eTypeExecPP));
+        }
+        else{
+        	 expTypeSessMap.put(expID+"", eTypeExecPP);
+        }
+        //finally redirect:
+        NewExpWizardController.redirectToExpStage(expID, 2);
+    }
+    
+    /**
+     * We're using a HashMap for dragging through the information on 'design experiment'
+     * stage for the executablePP experiment type - due to the request scope we've now chosen.
+     * @return
+     */
+    private HashMap<String,ExpTypeExecutablePP> getExpTypeExecutableSessionMap(){
+    	FacesContext ctx = FacesContext.getCurrentInstance();
+    	//TODO: als static String exponieren
+    	Object o = ctx.getExternalContext().getSessionMap().get(ExpTypeExecutablePP.EXP_TYPE_SESSION_MAP);
+        if(o!=null){
+        	//get the map we're using to drag over temp. unsaved changes between the redirects
+        	return (HashMap<String,ExpTypeExecutablePP>)o;
+        }else{
+        	//in this case no map available in the session
+        	HashMap<String,ExpTypeExecutablePP> expTypeSessMap = new HashMap<String,ExpTypeExecutablePP>();
+        	ctx.getExternalContext().getSessionMap().put(ExpTypeExecutablePP.EXP_TYPE_SESSION_MAP,expTypeSessMap);
+        	return expTypeSessMap;
+        }
     }
 
 /*

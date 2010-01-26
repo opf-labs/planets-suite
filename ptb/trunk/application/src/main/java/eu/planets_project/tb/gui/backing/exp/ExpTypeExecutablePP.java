@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -79,7 +80,7 @@ import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
  * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andrew Lindley</a>
  *
  */
-public class ExpTypeExecutablePP extends ExpTypeBackingBean {
+public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializable{
 
 	private Log log = LogFactory.getLog(ExpTypeExecutablePP.class);
 	private HashMap<String, String> serviceTypes;
@@ -105,6 +106,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	//Current experiment ID for checking if the reinit must be called.
 	//private String currExpId="";
     private List<String> lTempFileDownloadLinkForWEEWFResults;
+    public static final String EXP_TYPE_SESSION_MAP = "exp_type_executable_pp_sessionMap";
     
 	
 	public ExpTypeExecutablePP(){
@@ -151,6 +153,45 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	 */
 	@Override
 	public void initExpTypeBeanForExistingExperiment(){
+		
+		//check and try to load from session
+		boolean b = initFromCurrentSessionData();
+		if(b){
+			//we've inited from the session
+			return;
+		}else{
+			//try to load from experiment
+			initFromPersistedExperimentData();
+		}	
+	}
+	
+	
+	private boolean initFromCurrentSessionData(){
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		if(expBean.getApproved()){
+			//if approved we don't init from current session data
+			return false;
+		}
+		long expID = expBean.getID();
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		HashMap<String,ExpTypeExecutablePP> expTypeSessMap;
+        Object o = ctx.getExternalContext().getSessionMap().get(ExpTypeExecutablePP.EXP_TYPE_SESSION_MAP);
+        if(o!=null){
+        	expTypeSessMap = (HashMap<String,ExpTypeExecutablePP>)o;
+        	ExpTypeExecutablePP sessBean = expTypeSessMap.get(expID+"");
+        	if(sessBean!=null){
+        		//now exchange the session variable with the one we've stored
+        		ctx.getExternalContext().getSessionMap().put("ExpTypeExecutablePP",sessBean);
+        		return true;
+        	}
+        	else
+        		return false;
+        }
+        return false;
+	}
+	
+	
+	private void initFromPersistedExperimentData(){
 		//1) reinit the bean
 		initBean();
 		
@@ -182,7 +223,6 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 			}
 		}
 	}
-	
 	
 	/**
 	 * Takes the bean's information and persist it into the testbed's db model
@@ -909,7 +949,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	 * A backing bean for handling services contained in the surrounding workflow
 	 * 
 	 */
-	public class ServiceBean implements Cloneable{
+	public class ServiceBean implements Cloneable,Serializable{
 
 		private String serviceId;
 		private String serviceType;
@@ -1106,7 +1146,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		}
 	}
 
-	public class ServiceParameter implements Cloneable{
+	public class ServiceParameter implements Cloneable,Serializable{
 		private String name;
 		private String value;
 
@@ -1149,7 +1189,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
     /**
      * A Bean to hold the results on each digital object.
      */
-    public class ExecutablePPResultsForDO  extends ResultsForDigitalObjectBean {
+    public class ExecutablePPResultsForDO  extends ResultsForDigitalObjectBean implements Serializable{
 
 		public ExecutablePPResultsForDO(String input) {
 			super(input);
@@ -1166,7 +1206,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
         }
     }
     
-    public class ExecutablePPResultBean {
+    public class ExecutablePPResultBean implements Serializable{
 
         private int batchId;
         private ExecutionRecordImpl exerec;
@@ -1238,19 +1278,21 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
          * If any migration took place: link the interim digos in the GUI
          * @return
          */
-        public List<String> getInterimResultDownloadURL() {
-        	List<String> ret = new ArrayList<String>();
+        public List<ResultsForDigitalObjectBean> getInterimResults() {
+        	//List<String> ret = new ArrayList<String>();
+        	List<ResultsForDigitalObjectBean> ret = new ArrayList<ResultsForDigitalObjectBean>();
 			Enumeration enumeration = props.keys();
 			while(enumeration.hasMoreElements()){
 				String key = (String)enumeration.nextElement();
 				String value = props.getProperty(key);
 				//keys start with the 
 				if(key.startsWith(ExecutionRecordImpl.RESULT_PROPERTY_INTERIM_RESULT_URI)){
-					ret.add(getDigitalObjectDownloadURL(props.getProperty(key)));
+					ResultsForDigitalObjectBean r = new ResultsForDigitalObjectBean(props.getProperty(key));
+					ret.add(r);
 				}
 			}
 			// Sort list in Case-insensitive sort
-            Collections.sort(ret, String.CASE_INSENSITIVE_ORDER);
+            //Collections.sort(ret, String.CASE_INSENSITIVE_ORDER);
 			return ret;	
         }
         
@@ -1260,6 +1302,14 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
         public String getDigitalObjectDownloadURL() {
         	Object tbDigoURI = props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
         	return getDigitalObjectDownloadURL(tbDigoURI);
+        }
+        
+        public String getDigitalObjectURI() {
+        	Object tbDigoURI = props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
+        	if(tbDigoURI!=null){
+        		return (String)tbDigoURI;
+        	}
+        	return null;
         }
         
         /**

@@ -26,16 +26,28 @@
 	        <h:outputLink value="#{mdo.digitalObjectDownloadURL}">
 	          <h:outputText value="#{mdo.digitalObjectResult}"/>
 	        </h:outputLink>
+	        <h:outputLink value="../reader/dob_compare.faces">
+                    <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
+                    <f:param name="dobUri1" value="#{res.digitalObject}"/>
+                    <f:param name="dobUri2" value="#{mdo.digitalObjectURI}"/>
+                    <h:outputText value="[-->Compare with input object.]"/>
+            </h:outputLink>
 	        <rich:simpleTogglePanel label="execution log data" opened="false" switchType="client" >  
 		        <!-- all properties that have been recorded on the execution engine -->
 		        <a4j:repeat value="#{mdo.resultProperties}" var="prop">
 		        	<h:outputText value="#{prop}"/><br/>
 		        </a4j:repeat>
 		        <!-- intermediate results of an migration if there was any -->
-		         <a4j:repeat value="#{mdo.interimResultDownloadURL}" var="imr" rowKeyVar="count">
-		         	<h:outputLink value="#{imr}">
-		        		<h:outputText value="intermediate.migration.result #{count}"/>
-		        	</h:outputLink><br/>
+		         <a4j:repeat value="#{mdo.interimResults}" var="imr" rowKeyVar="count">
+		         	<h:outputLink value="#{imr.downloadURL}">
+		        		<h:outputText value="intermediate.migration.result #{count}: #{imr.digitalObjectName}"/>
+		        	</h:outputLink>
+		        	<h:outputLink value="../reader/dob_compare.faces">
+	                    <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
+	                    <f:param name="dobUri1" value="#{res.digitalObject}"/>
+	                    <f:param name="dobUri2" value="#{imr.digitalObject}"/>
+	                    <h:outputText value="[-->Compare with input object.]"/>
+            		</h:outputLink><br/>
 		        </a4j:repeat>
 		    </rich:simpleTogglePanel>
          </a4j:repeat>
