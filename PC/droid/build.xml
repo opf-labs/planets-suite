@@ -21,13 +21,14 @@
 	<property name="src.config" location="${appDir}/src/main/config" />
 	<property name="src.config.properties" value="Droid.properties" />
   
-    <property name="test.src.dir" location="${appDir}/test/java" />
-	<property name="test.resources" location="${appDir}/test/resources" />
-	<property name="test.config" location="${appDir}/test/config" />
+    <property name="test.src.dir" location="${appDir}/src/test/java" />
+	<property name="test.resources" location="${appDir}/src/test/resources" />
+	<property name="test.config" location="${appDir}/src/test/config" />
 	<property name="test.config.properties" value="Droid.properties" />
 	<property name="test.local" value="" />
 	<property name="test.standalone" value="" />
 	<property name="test.server" value="" />
+
 	<!-- Include the build targets etc -->
 	<property name="pserv.root.dir" location="../.." />
 	<property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
@@ -40,16 +41,16 @@
 
 	<!-- We want the build properties file to get the config directory value -->
 	<property file="${pserv.root.dir}/build.properties"/>
-	<!-- Now copy the config template to the properties name -->
+
+	<!-- Now copy the config template to the config directory -->
 	<echo message="COPYING ${src.config.properties}.template TO ${src.config}/${src.config.properties}" />
-	<copy file="${src.config}/${src.config.properties}.template" tofile="${src.config}/${src.config.properties}" overwrite="true"/>
+	<copy file="${src.config}/${src.config.properties}.template" tofile="${if_server.conf}/${src.config.properties}" overwrite="true"/>
+
 	<!-- Substitute the conf directory value from the build properties -->
-    <replace file="${src.config}/${src.config.properties}">
+    <replace file="${if_server.conf}/${src.config.properties}">
       <replacefilter token="@planets.server.conf@" value="${if_server.conf}" />
     </replace>
-	<!-- Copy the live config file from src/main/config area to user config dir -->
-	<echo message="COPYING ${src.config}/${src.config.properties} TO ${if_server.conf}/${src.config.properties}"></echo>
-	<copy file="${src.config}/${src.config.properties}" tofile="${if_server.conf}/${src.config.properties}" overwrite="true" />
+
 	<!-- THIS IS THE LIVE DROID SIG FILE, test use of the V16 sig file -->
 	<!-- Using vars (from ant contrib) so that the same name properties can be used in the test
 		 config file and the live config file.  These are a little "naughty" but ant properties
