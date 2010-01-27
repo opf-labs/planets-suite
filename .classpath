@@ -14,10 +14,9 @@
 	<classpathentry kind="src" path="IF/servreg/src/main/java"/>
 	<classpathentry kind="src" path="IF/servreg/src/test/java"/>
 	<classpathentry kind="src" path="IF/simple/src/java"/>
-	<classpathentry kind="src" path="IF/simple/src/resources"/>
 	<classpathentry kind="src" path="IF/simple/src/test/java"/>
 	<classpathentry kind="src" path="IF/storage/src/main/java"/>
-	<classpathentry kind="src" path="IF/storage/test/java"/>
+	<classpathentry kind="src" path="IF/storage/src/test/java"/>
 	<classpathentry kind="src" path="IF/techreg/src/java"/>
 	<classpathentry kind="src" path="IF/techreg/src/test/java"/>
 	<classpathentry kind="src" path="IF/users/src/java"/>
@@ -85,7 +84,7 @@
 	<classpathentry kind="src" path="PA/uvc/test/java"/>
 	<classpathentry kind="src" path="PA/xena/src/java"/>
 	<classpathentry kind="src" path="PC/droid/src/main/java"/>
-	<classpathentry kind="src" path="PC/droid/test/java"/>
+	<classpathentry kind="src" path="PC/droid/src/test/java"/>
 	<classpathentry kind="src" path="PC/file/src/java"/>
 	<classpathentry kind="src" path="PC/file/test/java"/>
 	<classpathentry kind="src" path="PC/jhove/src/java"/>
