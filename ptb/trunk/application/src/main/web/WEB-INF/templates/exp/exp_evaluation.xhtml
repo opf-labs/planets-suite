@@ -31,7 +31,7 @@
                
                <h:outputText value="#{ExperimentBean.reportBody}" rendered="#{ReadOnly}"/>
            </p>
-
+	</fieldset>
 
             <p><h:commandButton value="#{res['exp_stage6.button']}"
                 action="#{NewExp_Controller.saveEvaluation}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" rendered="#{!ReadOnly}"/></p>
@@ -39,7 +39,7 @@
             <p><h:commandButton value="#{res['exp_stage6.finalize']}"
                 action="#{NewExp_Controller.finalizeExperiment}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" rendered="#{!ReadOnly}"/></p>
                 
-  </fieldset>
+
   
   </ui:composition>
 </body>
