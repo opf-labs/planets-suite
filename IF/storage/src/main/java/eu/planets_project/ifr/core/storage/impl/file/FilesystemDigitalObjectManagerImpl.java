@@ -344,7 +344,7 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
                     retVal.add( uri );
                 } else {
                 	log.info(sf + " is a file");
-                	URI uri = createNewPathUri( pdURI, pdURI.getPath() + s );
+                	URI uri = createNewPathUri( pdURI, pdURI.getPath() +"/"+ s ).normalize();            
                 	log.info("Adding URI " + uri + " to list");
                     retVal.add( uri );
                 }
