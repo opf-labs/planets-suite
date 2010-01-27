@@ -130,7 +130,16 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 		try {
 			_log.log(Level.INFO, "JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl(repository)");
 			jcrManager = new DOJCRManager(repository, _log);
+		// CW: Addes some extra catches here, Throwable, and RTE as was encountering
+		// CLASSPATH problems that weren't been reported
+		} catch (RuntimeException _exp) {
+			String _message = "JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl() Cannot load resources";
+			_log.log(Level.INFO, _message, _exp);
+			throw _exp;
 		} catch (Exception _exp) {
+			String _message = "JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl() Cannot load resources";
+			_log.log(Level.INFO, _message, _exp);
+		} catch (Throwable _exp) {
 			String _message = "JcrDigitalObjectManagerImpl::JcrDigitalObjectManagerImpl() Cannot load resources";
 			_log.log(Level.INFO, _message, _exp);
 		}
