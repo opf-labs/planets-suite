@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -16,21 +15,14 @@ import javax.xml.ws.BindingType;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
-import eu.planets_project.ifr.core.common.conf.Configuration;
-import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
-import eu.planets_project.services.datatypes.ServiceReport.Status;
-import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.fixity.Fixity;
 import eu.planets_project.services.fixity.FixityResult;
-import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * JavaDigest Fixity service.
@@ -44,7 +36,7 @@ import eu.planets_project.services.utils.FileUtils;
 		name = JavaDigest.NAME, 
 		serviceName = Fixity.NAME, 
 		targetNamespace = PlanetsServices.NS, 
-		endpointInterface = "eu.planets_project.services.identify.Identify")
+		endpointInterface = "eu.planets_project.services.fixity.Fixity")
 @StreamingAttachment(parseEagerly = true)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class JavaDigest implements Fixity, Serializable {
