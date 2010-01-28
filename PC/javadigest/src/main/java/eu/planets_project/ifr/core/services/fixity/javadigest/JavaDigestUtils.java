@@ -12,14 +12,14 @@ final class JavaDigestUtils {
     /** Util classes providing static methods should not be instantiated. */
     private JavaDigestUtils() {/* Enforce non-instantiability */}
 
-	static final String ALG_URI_PREFIX = "planets:digest/java/alg/";
-	static final String ALG_ALIAS_URI_PREFIX = "planets:digest/java/alg/alias/";
+	static final String ALG_URI_PREFIX = "planets:digest/alg/java/";
+	static final String ALG_ALIAS_URI_PREFIX = "planets:digest/alg/java/alias/";
 	static final String MD5 = "MD5";
 
 	static final String DIGEST_PREFIX = "MessageDigest.";
 	static final String DIGEST_ALIAS_PREFIX = "Alg.Alias." + DIGEST_PREFIX;
 
-	public static final Map<URI, String> algorithms = 
+	private static final Map<URI, String> algorithms = 
 		new HashMap<URI, String>() {
 			/**
 			 * 
@@ -27,12 +27,12 @@ final class JavaDigestUtils {
 			private static final long serialVersionUID = -4494715265843908566L;
 			{
 				for (URI uri : JavaDigestUtils.getDigestAlgorithms()) {
-					put(uri, JavaDigestUtils.getJavaAlgNameFromURI(uri));
+					put(uri, JavaDigestUtils.getJavaAlgorithmNameFromURI(uri));
 				}
 			}
 		};
 		
-	public static final Map<String, Set<URI>> providerDetails = 
+	private static final Map<String, Set<URI>> providerDetails = 
 		new HashMap<String, Set<URI>>() {
 			/**
 			 * 
@@ -45,7 +45,31 @@ final class JavaDigestUtils {
 			}
 		};
 	
-	public static String getDefaultAlgorithm() {return JavaDigestUtils.MD5;}
+	public static String getDefaultAlgorithmName() {return JavaDigestUtils.MD5;}
+	public static URI getDefaultAlgorithmId() { return URI.create(ALG_URI_PREFIX + JavaDigestUtils.MD5); }
+	
+	public static boolean hasAlgorithmByName(String name) {
+		return JavaDigestUtils.algorithms.containsValue(name);
+	}
+
+	public static boolean hasAlgorithmById(URI id) {
+		return JavaDigestUtils.algorithms.containsKey(id);
+	}
+
+	/**
+	 * Returns the Java algorithm name from a planets alg id URI
+	 * 
+	 * @param uri
+	 * 		A Planets digest algorithm identifier, either:
+	 * 			- a specific id i.e. planets:digest/alg/java/"ID HERE" 
+	 * 			- an alias id i.e. planets:digest/alg/java/alias/"ID HERE" 
+	 * @return
+	 */
+	public static String getJavaAlgorithmNameFromURI(URI uri) {
+		String name = null;
+		name = uri.toString().substring(uri.toString().lastIndexOf("/"));
+		return name;
+	}
 
 	static URI[] getDigestAlgorithms() {
 		Set<URI> result = new HashSet<URI>();
@@ -90,12 +114,5 @@ final class JavaDigestUtils {
 			}
 		}
 		return result;
-	}
-
-	public static String getJavaAlgNameFromURI(URI uri) {
-		String name = null;
-		
-		name = uri.toString().substring(uri.toString().lastIndexOf("/"));
-		return name;
 	}
 }

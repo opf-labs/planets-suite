@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -15,6 +16,8 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+
+import org.jboss.util.platform.Java;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -58,9 +61,15 @@ public final class JavaDigest implements Fixity, Serializable {
 		MessageDigest.class.getName();
 	private static final String SERVICE_AUTHOR = "Carl Wilson";
 	private static final String SERVICE_VERSION = "0.1"; 
-	private static final String SERVICE_PROVIDER = "The Planets Consortium."; 
+	private static final String SERVICE_PROVIDER = "The Planets Consortium.";
+	private static final String TOOL_DESC = "This MessageDigest class provides applications " +
+											"the functionality of a message digest algorithm" +
+											", such as MD5 or SHA. Message digests are " +
+											"secure one-way hash functions that take " +
+											"arbitrary-sized data and output a fixed-length " +
+											"hash value.";
 
-	private static final String ALG_PARAM_NAME = "Algorithm";
+	private static final String ALG_PARAM_NAME = "AlgorithmId";
 	private static final String ALG_PARAM_TYPE = "URI";
 	private static final String ALG_PARAM_DESC = 
 		"A Planets digest algorithm URI identifying the " +
@@ -70,6 +79,7 @@ public final class JavaDigest implements Fixity, Serializable {
 	private static final String PROV_PARAM_TYPE = "String";
 	private static final String PROV_PARAM_DESC = 
 		"An algorithm provider supported values: ";
+	private static final String LIST_SEP = ", ";
 
 	private static final int DEFAULT_CHUNK_SIZE = 1024;
 	
@@ -79,7 +89,7 @@ public final class JavaDigest implements Fixity, Serializable {
 	/** The name of the service / class */
 	static final String NAME = "JavaDigest";
 
-	private String requestedAlgorithm = JavaDigestUtils.getDefaultAlgorithm();
+	private String requestedAlgorithm = JavaDigestUtils.getDefaultAlgorithmName();
 	private String requestedProvider = null;
 	
 	public FixityResult calculateChecksum(DigitalObject digitalObject,
@@ -152,19 +162,29 @@ public final class JavaDigest implements Fixity, Serializable {
 				JavaDigest.NAME, 
 				Fixity.class.getCanonicalName());
 
-		// Add the details
+		// Add the service name, description and author
 		sd.classname(this.getClass().getCanonicalName());
 		sd.description(JavaDigest.SERVICE_DESC);
 		sd.author(JavaDigest.SERVICE_AUTHOR);
+
+		// Add the tool details
 		sd.tool(Tool.create(null,
-				JavaDigest.NAME,
-				JavaDigest.SERVICE_VERSION,
 				MessageDigest.class.getName(),
+				String.valueOf(Java.getVersion()),
+				JavaDigest.TOOL_DESC,
 				JavaDigest.SUPPORT_DOCUMENT_LOC.toString()));
+		
+		// Add doc loc, provider, and the version
 		sd.furtherInfo(JavaDigest.SUPPORT_DOCUMENT_LOC);
 		sd.serviceProvider(JavaDigest.SERVICE_PROVIDER);
+		sd.version(JavaDigest.SERVICE_VERSION);
+
+		// Add an any format URI, cos we can take any data
 		sd.inputFormats(FormatRegistryFactory.getFormatRegistry().createAnyFormatUri());
+		
+		// Last is worst, the parameters
 		sd.parameters(JavaDigest.getParameters());
+
 		// Return the description
 		return sd.build();
 	}
@@ -199,30 +219,39 @@ public final class JavaDigest implements Fixity, Serializable {
 	private static List<Parameter> getParameters() {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 		
-		// Add the algorithm selection parameter
+		// Add the algorithm selection parameter from a builder
+		// We need the name and the default value
 		Parameter.Builder algBuilder = 
 			new Parameter.Builder(JavaDigest.ALG_PARAM_NAME,
-								  JavaDigestUtils.ALG_URI_PREFIX + JavaDigestUtils.getDefaultAlgorithm());
+								  JavaDigestUtils.ALG_URI_PREFIX + 
+								  		JavaDigestUtils.getDefaultAlgorithmName());
+		
+		// We need a description, the prefix is OK
 		String algParamDesc = JavaDigest.ALG_PARAM_DESC;
+
+		// But the alg list is a bit of a nightmare, get the algs from the utils
 		for (URI uri : JavaDigestUtils.getDigestAlgorithms()) {
-			algParamDesc += uri + ", ";
+			// And add one for each alg plus a list separator
+			algParamDesc += uri + JavaDigest.LIST_SEP;
 		}
-		
-		algBuilder.description(algParamDesc.substring(0, algParamDesc.length() - 2));
-		
+		// We can now add the description 
+		// but we'll need to chop off the last list separator
+		algBuilder.description(algParamDesc.substring(0, algParamDesc.length() - 
+														 JavaDigest.LIST_SEP.length()));
+		// Finally the type and deliver parameter goodness to our list
 		algBuilder.type(JavaDigest.ALG_PARAM_TYPE);
-		
 		paramList.add(algBuilder.build());
-		
+
+		// Now a param for 
 		Parameter.Builder provBuilder = new Parameter.Builder(JavaDigest.PROV_PARAM_NAME,
 		 "");
 
 		String algProvDesc = JavaDigest.PROV_PARAM_DESC;
-		for (String algProv : JavaDigestUtils.providerDetails.keySet()) {
-			algProvDesc += algProv + ", ";
+		for (String algProv : JavaDigestUtils.getProviders()) {
+			algProvDesc += algProv + JavaDigest.LIST_SEP;
 		}
 		
-		provBuilder.description(algProvDesc.substring(0, algProvDesc.length() - 2));
+		provBuilder.description(algProvDesc.substring(0, algProvDesc.length() - JavaDigest.LIST_SEP.length()));
 		provBuilder.type(JavaDigest.PROV_PARAM_TYPE);
 		
 		paramList.add(provBuilder.build());
@@ -235,7 +264,7 @@ public final class JavaDigest implements Fixity, Serializable {
 			for (Parameter param : params) {
 				if (param.getName().equals(ALG_PARAM_NAME)) {
 					String reqAlg =
-						JavaDigestUtils.algorithms.get(URI.create(param.getValue()));
+						JavaDigestUtils.getJavaAlgorithmNameFromURI(URI.create(param.getValue()));
 					if (reqAlg != null) this.requestedAlgorithm = reqAlg; 
 				} else if (param.getName().equals(PROV_PARAM_NAME)) {
 					this.requestedProvider = param.getValue();
@@ -248,5 +277,32 @@ public final class JavaDigest implements Fixity, Serializable {
 		}
 		
 		return MessageDigest.getInstance(this.requestedAlgorithm);
+	}
+
+	private void checkParameters(List<Parameter> params)
+					throws NoSuchAlgorithmException, URISyntaxException {
+		// First check null params, no checking necessary, just use the defaults
+		if (params != null) {
+			// Now check out that parameter list
+			for (Parameter param : params) {
+				// It's the algorithm identifier param
+				if (param.getName().equals(ALG_PARAM_NAME)) {
+					try {
+						if (JavaDigestUtils.hasAlgorithmById(URI.create(param.getValue())))
+							// If it's an OK algorithm
+							this.requestedAlgorithm =
+								JavaDigestUtils.getJavaAlgorithmNameFromURI(URI.create(param.getValue()));
+						else 
+							// It's not a valid algorithm ID so throw
+							throw new NoSuchAlgorithmException(NO_ALG_MESSAGE + param.getValue());
+					} catch (IllegalArgumentException e) {
+						// OK the URI has blown so throw the underlying cause
+						throw (URISyntaxException)e.getCause();
+					}
+				} else if (param.getName().equals(PROV_PARAM_NAME)) {
+					this.requestedProvider = param.getValue();
+				}
+			}
+		}
 	}
 }
