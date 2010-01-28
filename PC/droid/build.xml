@@ -36,28 +36,32 @@
 
 	<!-- OK, this is the DROID config stuff, this may be fun -->
 	<!-- First copy the test config file from test config area to pserv/test/config -->
-	<echo message="COPYING ${test.config}/${test.config.properties} TO ${pserv.test.config}/${test.config.properties}"></echo>
 	<copy file="${test.config}/${test.config.properties}" tofile="${pserv.test.config}/${test.config.properties}" overwrite="true" />
 
 	<!-- We want the build properties file to get the config directory value -->
 	<property file="${pserv.root.dir}/build.properties"/>
 
-	<!-- Now copy the config template to the config directory -->
-	<echo message="COPYING ${src.config.properties}.template TO ${src.config}/${src.config.properties}" />
-	<copy file="${src.config}/${src.config.properties}.template" tofile="${if_server.conf}/${src.config.properties}" overwrite="true"/>
+	<!-- Check that ${if_server.conf} is set -->
+	<if>
+		<isset property="if_server.conf" />
+		<then>
+			<!-- Copy the config template to the config dir -->
+			<copy file="${src.config}/${src.config.properties}.template" tofile="${if_server.conf}/${src.config.properties}" overwrite="true"/>
+			<!-- Substitute the conf directory value from the build properties -->
+		    <replace file="${if_server.conf}/${src.config.properties}">
+		    	<replacefilter token="@planets.server.conf@" value="${if_server.dir}" />
+		    </replace>
 
-	<!-- Substitute the conf directory value from the build properties -->
-    <replace file="${if_server.conf}/${src.config.properties}">
-      <replacefilter token="@planets.server.conf@" value="${if_server.conf}" />
-    </replace>
+			<!-- THIS IS THE LIVE DROID SIG FILE, test use of the V16 sig file -->
+			<!-- Using vars (from ant contrib) so that the same name properties can be used in the test
+				 config file and the live config file.  These are a little "naughty" but ant properties
+				 wouldn't get the job done --> 
+			<var name="${droid.sigfile.location}" file="${if_server.conf}/${src.config.properties}" />
+			<var name="${droid.sigfile.name}" file="${if_server.conf}/${src.config.properties}" />
+			<echo message="COPYING ${src.resources}/DROID_SignatureFile_V16.xml TO ${droid.sigfile.location}/${droid.sigfile.name}"></echo>
+		    <copy file="${src.resources}/DROID_SignatureFile_V16.xml" tofile="${droid.sigfile.location}/${droid.sigfile.name}" overwrite="true" />
+		</then>
+	</if>
 
-	<!-- THIS IS THE LIVE DROID SIG FILE, test use of the V16 sig file -->
-	<!-- Using vars (from ant contrib) so that the same name properties can be used in the test
-		 config file and the live config file.  These are a little "naughty" but ant properties
-		 wouldn't get the job done --> 
-	<var name="${droid.sigfile.location}" file="${src.config}/${src.config.properties}" />
-	<var name="${droid.sigfile.name}" file="${src.config}/${src.config.properties}" />
-	<echo message="COPYING ${src.resources}/DROID_SignatureFile_V16.xml TO ${droid.sigfile.location}/${droid.sigfile.name}"></echo>
-    <copy file="${src.resources}/DROID_SignatureFile_V16.xml" tofile="${droid.sigfile.location}/${droid.sigfile.name}" overwrite="true" />
 
 </project>
