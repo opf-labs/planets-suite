@@ -155,8 +155,8 @@ public class ExperimentBean {
     //distinguish between migration and characterisation output results
     //output in the form of localInputFile Ref and localFileRef/String
     private Collection<Map.Entry<String,String>> outputData = new Vector<Map.Entry<String,String>>();
-    
-	//private Map<String,String> evaluationData = new HashMap<String,String>();
+    //the external file refs provided for step evaluate experiment
+	private List<String> evaluationData = new ArrayList<String>();
 	
     private int currStage = ExperimentBean.PHASE_EXPERIMENTSETUP_1;
     private boolean approved = false;
@@ -402,6 +402,7 @@ public class ExperimentBean {
         // Set the report up:
         this.ereportTitle = exp.getExperimentEvaluation().getExperimentReport().getHeader();
         this.ereportBody = exp.getExperimentEvaluation().getExperimentReport().getBodyText();
+        this.evaluationData = exp.getExperimentEvaluation().getExternalEvaluationDocuments();
     }
     //END OF FILL METHOD
 
@@ -585,29 +586,89 @@ public class ExperimentBean {
      * @return
      */
     public Collection<Map<String,String>> getExperimentInputDataNamesAndURIs(){
+    	return helperGetDataNamesAndURIS("design experiment");
+    }
+    
+    /**
+     * Returns a map containing the evaluation data's uri as key and its corresponding
+     * original logical file name as value
+     * e.g. Collection<Map<"http://../planets-testbed/inputdata/fdsljfsdierw.doc,"data1.doc">>
+     * This is used to render as dataTable within the GUI
+     * @return
+     */
+    public Collection<Map<String,String>> getExperimentEvaluationDataNamesAndURIs(){
+    	return helperGetDataNamesAndURIS("evaluate expeirment");
+    }
+    
+    
+    private Collection<Map<String,String>> helperGetDataNamesAndURIS(String expStage){
     	Collection<Map<String,String>> ret = new Vector<Map<String,String>>();
     	DataHandler dh = new DataHandlerImpl();
-    	Map<String, String> localFileRefs = this.getExperimentInputData();
-    	for( String key : localFileRefs.keySet() ) {
-    		try {
+    	
+    	//when we're calling this in design experiment -> fetch the input data refs
+    	if(expStage.equals("design experiment")){
+    		Map<String, String> localFileRefs = this.getExperimentInputData();
+        	for( String key : localFileRefs.keySet() ) {
+        		try {
+        			Map<String,String> map = new HashMap<String,String>();
+        			//retrieve URI
+        		    String fInput = localFileRefs.get(key);
+        		    DigitalObjectRefBean dobr = dh.get(fInput);
+        		    if(dobr != null ) {
+    				URI uri = dobr.getDownloadUri();
+    				map.put("uri", uri.toString()) ;
+    				map.put("name", this.createShortDoName(dobr) );
+    				map.put("inputID", key);
+    				ret.add(map);
+        		    } else {
+        		    	log.error("Digital Object "+key+" could not be found!");
+        		    }
+    			} catch (FileNotFoundException e) {
+    				log.error(e.toString());
+    			}
+        	}
+    	}
+    	//when we're calling this in evaluate experiment -> fetch the external eval data refs
+    	if(expStage.equals("evaluate expeirment")){
+    		for(String digoRef : this.getEvaluationExternalDigoRefs()){
+    			try {
     			Map<String,String> map = new HashMap<String,String>();
-    			//retrieve URI
-    		    String fInput = localFileRefs.get(key);
-    		    DigitalObjectRefBean dobr = dh.get(fInput);
-    		    if(dobr != null ) {
-				URI uri = dobr.getDownloadUri();
-				map.put("uri", uri.toString()) ;
-				map.put("name", this.createShortDoName(dobr) );
-				map.put("inputID", key);
-				ret.add(map);
-    		    } else {
-    		    	log.error("Digital Object "+key+" could not be found!");
-    		    }
-			} catch (FileNotFoundException e) {
-				log.error(e.toString());
-			}
+    			DigitalObjectRefBean dobr = dh.get(digoRef);
+    			if(dobr != null ) {
+    				URI uri = dobr.getDownloadUri();
+    				map.put("uri", uri.toString()) ;
+    				map.put("name", this.createShortDoName(dobr) );
+    				map.put("inputID", dobr.getDomUri()+"");
+    				ret.add(map);
+        		    } else {
+        		    	log.error("Digital Object "+digoRef+" could not be found!");
+        		    }
+    			} catch (FileNotFoundException e) {
+    				log.error(e.toString());
+    			}
+    		}
     	}
     	return ret;
+    }
+    
+    /**
+     * returns the digital objects that are uploaded in step: evaluate experiment
+     * @return
+     */
+    public List<String> getEvaluationExternalDigoRefs(){
+    	return this.evaluationData;
+    }
+    
+    public void removeEvaluationExternalDigoRef(String digoRef){
+    	this.evaluationData.remove(digoRef);
+    	//this.getExperiment().getExperimentEvaluation().removeExternalEvaluationDocument(digoRef);
+    	this.updateExperiment();
+    }
+    
+    public void addEvaluationExternalDigoRef(String digoRef){
+    	this.evaluationData.add(digoRef);
+    	//this.getExperiment().getExperimentEvaluation().addExternalEvaluationDocument(digoRef);
+    	this.updateExperiment();
     }
 	
     //public Collection<Map<String,String>> getExperimentEvaluationDataNamesAndURIs(){

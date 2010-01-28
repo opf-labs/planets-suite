@@ -17,6 +17,7 @@ import java.util.Vector;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -751,6 +752,37 @@ public class NewExpWizardController{
         return "success";
     }
 
+    
+    /**
+     * A file has been slected for being uploaded in evaluate experiment 
+     * and the add icon was pressed to add a reference for this within the experiment bean
+     * @return
+     */
+    public String commandAddExternalEvaluationDataItem(){
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	//0) upload the specified data to the Testbed's file repository
+        log.info("commandAddExternalEvaluationDataItem: Uploading file.");
+		FileUploadBean uploadBean = UploadManager.uploadFile(true);
+		if( uploadBean == null ) {
+	        log.warn("commandAddExternalEvaluationDataItem: Uploaded file was null.");
+            NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
+            return "success";
+		}
+		String fileRef = uploadBean.getUniqueFileName();
+		if(!(new File(fileRef).canRead())){
+			log.error("Added file reference not correct or reachable by the VM "+fileRef);
+		}
+    	
+    	//1) Add the file reference to the expBean
+        log.info("Adding file for evalaute experiment to Experiment Bean.");
+    	expBean.addEvaluationExternalDigoRef(fileRef);
+    	
+    	//reload stage2 and displaying the added data items
+        log.info("commandAddExternalEvaluationDataItem DONE");
+        // Do a redirect, ensuring the Exp ID is carried through:
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
+        return "success";
+    }
     /**
      * The Stage 1-3 Save-Changes action, that just tries to save the current state.
      * 
@@ -1634,10 +1666,65 @@ public class NewExpWizardController{
         return "success";
     }
     
-    public String browseForData() {
+    public String browseForData(ActionEvent evt) {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        browseDataRememberStageId(evt);
         JSFUtil.redirect("/exp/browse_data.faces?eid="+expBean.getID());
         return "success";
+    }
+    
+    /**
+     * When calling browseData - remember in which experiment stage we've called it
+     */
+    private void browseDataRememberStageId(ActionEvent evt){
+    	FacesContext context = FacesContext.getCurrentInstance();
+    	for(UIComponent child : evt.getComponent().getChildren()){
+        	if(child instanceof UIParameter){
+        		UIParameter param = (UIParameter)child;
+        		if(param.getName().equals("stageName")){
+        			if(param.getValue().equals("design experiment")){
+        				context.getExternalContext().getSessionMap().put("browseData_comingFromStageID",2);
+        				return;
+        			}
+        			if(param.getValue().equals("evaluate experiment")){
+        				context.getExternalContext().getSessionMap().put("browseData_comingFromStageID",6);
+        				return;
+        			}
+        		}
+        	}
+    	}
+    	context.getExternalContext().getSessionMap().put("browseData_comingFromStageID",-1);
+    }
+    
+    /**
+     * Coming from the data browser - decide where to go within the experiment
+     * @return
+     */
+    public String goToExperimentFromDataBrowser(){
+    	if(getBrowseDataRememberedStageId()!=-1){
+    		if(getBrowseDataRememberedStageId()==2){
+    			return goToStage2();
+    		}
+    		if(getBrowseDataRememberedStageId()==6){
+    			return goToStage6();
+    		}
+    	}
+    	//the default value is design experiment
+    	return goToStage2();
+    }
+    
+    /**
+     * remembered in which experiment stage we've called browse data. if not remembered properly -1 is returned
+     * @return
+     */
+    public static int getBrowseDataRememberedStageId(){
+    	FacesContext context = FacesContext.getCurrentInstance();
+		Object o = context.getExternalContext().getSessionMap().get("browseData_comingFromStageID");
+		int ret = -1;
+		if(o!=null){
+			ret = (Integer)o;
+		}
+		return ret;
     }
     
     public String editComment() {

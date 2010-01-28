@@ -11,7 +11,7 @@
 <body>
   <ui:composition rendered="#{ExperimentBean != null}">  
 
-<h:form>
+<h:form enctype="multipart/form-data">
     <!-- Persist the experiment ID through POST, if any. -->    
     <input type="hidden" name="eid" value="#{ExperimentBean.experiment.entityID}" />
 

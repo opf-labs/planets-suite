@@ -25,7 +25,7 @@
 		<div id="maincol">
 		<div class="innertubemain">
 
-<h:form>
+<h:form enctype="multipart/form-data">
     <!-- Persist the experiment ID through POST, if any. -->    
     <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}"/>
 
@@ -38,10 +38,18 @@
 
     <ui:include src="/WEB-INF/templates/exp/exp_evaluation.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-       <ui:param name="ReadOnly" value="#{false}" />
+       <ui:param name="ReadOnly" value="#{ExperimentBean.finished}" />
     </ui:include>
 
 <!-- ************************************** -->
+
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="6" />
+       <ui:param name="PlaceBandAsHeader" value="false" />
+    </ui:include>
+
+<!-- ******************  -->
+
         
 </h:form>
 

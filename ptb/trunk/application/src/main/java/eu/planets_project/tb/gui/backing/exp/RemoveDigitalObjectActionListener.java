@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
@@ -46,11 +47,23 @@ public class RemoveDigitalObjectActionListener implements ActionListener {
           // Look through the row data:
           for( String key: targetBean.keySet() )
               log.info("Got ['"+key+"']="+targetBean.get(key));
+          
+          FacesContext context = FacesContext.getCurrentInstance();
+  		  Object o1 = context.getExternalContext().getRequestParameterMap().get("stageName");
+  		  String sInExperimentStage = null;
+  		  if(o1!=null){
+  			sInExperimentStage = (String)o1; 
+  		  }
 
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-          expBean.removeExperimentInputData(targetBean.get("inputID"));
-          log.info("Removed: "+targetBean.get("inputID"));
-          
+          if((sInExperimentStage==null)||(sInExperimentStage.equals("design experiment"))){
+	          expBean.removeExperimentInputData(targetBean.get("inputID"));
+	          log.info("Removed: "+targetBean.get("inputID")+"in design experiment stage");
+          }
+          if((sInExperimentStage!=null)||(sInExperimentStage.equals("evaluate experiment"))){
+        	  expBean.removeEvaluationExternalDigoRef(targetBean.get("inputID"));
+        	  log.info("Removed: "+targetBean.get("inputID")+"in evaluate experiment stage");
+          }
         }
       }
 

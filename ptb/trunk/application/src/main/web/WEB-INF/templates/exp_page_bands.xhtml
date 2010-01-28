@@ -86,6 +86,9 @@
       <h:commandButton value="#{res['exp_stage6.finalize']}"
                 action="#{NewExp_Controller.finalizeExperiment}" rendered="#{ExperimentBean.currentStage lt 7}"/>
                 
+       <h:commandButton value="#{res['exp_stage6.button']}"
+                action="#{NewExp_Controller.saveEvaluation}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" rendered="#{!ReadOnly}"/>
+       
        <h:commandButton value="#{res['reader_exp.buttonStage6']}"
        action="browse_experiments" rendered="#{ExperimentBean.currentStage gt 6 and ! UserBean.experimenter}"/>
        

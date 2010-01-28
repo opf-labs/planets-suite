@@ -8,14 +8,21 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
+import javax.faces.context.FacesContext;
 
 
+import org.ajax4jsf.component.html.HtmlActionParameter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
 
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.gui.backing.wf.EditWorkflowParameterInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
@@ -29,7 +36,7 @@ public class RichFileUploadBean {
     
     private DataHandler dh = new DataHandlerImpl();
     
-    private boolean richUploadEnabled = false;
+    private boolean richUploadEnabled = true;
     
     private String fileTypes = "*";
     
@@ -67,13 +74,41 @@ public class RichFileUploadBean {
         }
         // If it worked, add to experiment:
         if( furi != null ) {
-        	log.info("Adding file to Experiment Bean.");
-        	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        	String position = expBean.addExperimentInputData(furi.toString());
-        	log.info("File added in position: "+position);
+        	addDataToAppropriateExperimentStage(event, furi);
         } else {
             log.error("Upload could not be stored! "+event.isMultiUpload());
         }
+    }
+    
+    private void addDataToAppropriateExperimentStage(UploadEvent evt, URI furi){
+    	FacesContext context = FacesContext.getCurrentInstance();
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		String forStage = null;
+	
+		for(UIComponent child : evt.getComponent().getChildren()){
+        	if(child instanceof HtmlActionParameter){
+        		HtmlActionParameter param = (HtmlActionParameter)child;
+        		if(param.getName().equals("stageName")){
+        			forStage = (String)param.getValue();
+        		}
+        	}
+		}
+
+		if(forStage==null)
+			return;
+		
+		//decide if data shall be added to 'design experiment' or 'evaluate experiment' stage
+		if(forStage.equals("design experiment")){
+			log.info("Adding file to Experiment Bean, stage: design experiment");
+			String position = expBean.addExperimentInputData(furi.toString());
+			log.info("File added in position: "+position);
+			return;
+		}
+		if(forStage.equals("evaluate experiment")){
+			log.info("Adding file to Experiment Bean, stage: evaluate experiment");
+			expBean.addEvaluationExternalDigoRef(furi.toString());
+			return;
+		}
     }
     
     public void enableRichUpload() {

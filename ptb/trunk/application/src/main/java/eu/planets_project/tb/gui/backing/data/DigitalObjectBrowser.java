@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.logging.Log;
@@ -385,7 +386,28 @@ public class DigitalObjectBrowser {
      * Controller that adds the currently selected items to the experiment.
      */
     public static String addToExperiment() {
-        DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
+    	
+    	int iInExperimentStage = NewExpWizardController.getBrowseDataRememberedStageId();
+		
+		//now decide where to add the selected data
+		if(iInExperimentStage==2){
+			//we're in design experiment (by default)
+			return addToDesignExperiment();
+		}
+		if(iInExperimentStage==6){
+			 //we're in evaluate experiment
+			return addToEvaluateExperiment();
+		}
+		//this shouldn't happen
+		return "failure";
+    }
+    
+    /**
+     * adds the selected data to the design experiment stage (i.e. inputData)
+     * @return
+     */
+    private static String addToDesignExperiment(){
+    	DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         if( expBean == null ) return "failure";
         // Add each of the selected items to the experiment:
@@ -398,6 +420,27 @@ public class DigitalObjectBrowser {
         // Return: gotoStage2 in the browse new experiment wizard
         //return "goToStage2";
         NewExpWizardController.redirectToExpStage(expBean.getID(), 2);
+        return "success";
+    }
+    
+    /**
+     * adds the selected data to the evaluation stage. i.e. external evaluation data
+     * @return
+     */
+    private static String addToEvaluateExperiment(){
+    	DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        if( expBean == null ) return "failure";
+        // Add each of the selected items to the experiment:
+        for( URI uri : fb.getSelectedUris() ) {
+            	//add reference to the new experiment's backing bean
+        		expBean.addEvaluationExternalDigoRef(uri.toString());
+        }
+        // Clear any selection:
+        fb.clearSelection();
+        // Return: gotoStage6 in the browse new experiment wizard
+        //return "goToStage2";
+        NewExpWizardController.redirectToExpStage(expBean.getID(), 6);
         return "success";
     }
     

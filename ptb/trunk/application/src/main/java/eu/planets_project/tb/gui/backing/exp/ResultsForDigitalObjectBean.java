@@ -180,7 +180,7 @@ public class ResultsForDigitalObjectBean extends DigitalObjectBean {
      */
     public boolean isPropertiesListResultType(){
     	try {
-			if(this.getExecutionRecord().getPropertiesListResult()!=null){
+			if((this.getExecutionRecord()!=null)&&(this.getExecutionRecord().getPropertiesListResult()!=null)){
 				return true;
 			}
 		} catch (IOException e) {

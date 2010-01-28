@@ -106,6 +106,7 @@
                                  <h:commandLink title="Remove this Digital Object." rendered="#{! ReadOnly}">
                                    <f:actionListener type="eu.planets_project.tb.gui.backing.exp.RemoveDigitalObjectActionListener"/>
                                    <t:graphicImage value="/graphics/user_trash.png" alt="Delete"/>
+                                   <a4j:actionparam name="stageName" value="design experiment"/>
                                  </h:commandLink>
                                  <a href="#{filemap['uri']}">#{filemap['name']}</a>
                            </t:dataList>
@@ -122,9 +123,11 @@
                                      
                          <p class="center">
                           <h:commandButton value="#{res['browse_data.selectData']}"
-                           action="#{NewExp_Controller.browseForData}"
-                           disabled="#{ReadOnly}"
-                           readonly="#{ReadOnly}"/>
+	                           actionListener="#{NewExp_Controller.browseForData}"
+	                           disabled="#{ReadOnly}"
+	                           readonly="#{ReadOnly}">
+	                            <f:param name="stageName" value="design experiment"/>
+                           </h:commandButton>
                          </p>
 				</fieldset>
                 <fieldset>
@@ -166,6 +169,7 @@
                 id="richUpload" immediateUpload="false" noDuplicate="true"
                 acceptedTypes="#{richFileUploadBean.fileTypes}" allowFlash="false">
                 <a4j:support event="onuploadcomplete" reRender="addedFileInfoPanel" />
+                <a4j:actionparam name="stageName" value="design experiment"/>
             </rich:fileUpload>
 
         <p style="text-align: center;">

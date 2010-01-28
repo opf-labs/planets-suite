@@ -54,6 +54,8 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	private HashMap<String, ArrayList<PropertyEvaluationRecordImpl>> propertyEvalRecordsByInputDigoRef = new HashMap<String, ArrayList<PropertyEvaluationRecordImpl>>();
 	//the overall experiment evaluation information HashMap<PropertyURI,Integer>
 	private HashMap<String,Integer> overallPropertyEvalWeights = new HashMap<String,Integer>();
+	//contains a list of digital object references that contain external evluation files (e.g. excel sheets, etc.)
+	private ArrayList<String> lExternalEvalDocumentents = new ArrayList<String>();
 	
 	//a helper reference pointer, for retrieving the experiment in the phase
     @XmlTransient
@@ -712,6 +714,28 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 */
 	public void setOverallPropertyEvalWeights(HashMap<String, Integer> propertyWeights) {
 		this.overallPropertyEvalWeights = propertyWeights;
+	}
+
+
+	/** {@inheritDoc} */
+	public void addExternalEvaluationDocument(String digitalObjectRef) {
+		this.lExternalEvalDocumentents.add(digitalObjectRef);
+	}
+	
+	/** {@inheritDoc} */
+	public void removeExternalEvaluationDocument(String digitalObjectRef) {
+		this.lExternalEvalDocumentents.remove(digitalObjectRef);
+	}
+
+
+	/** {@inheritDoc} */
+	public ArrayList<String> getExternalEvaluationDocuments() {
+		return this.lExternalEvalDocumentents;
+	}
+
+	/** {@inheritDoc} */
+	public void setExternalEvaluationDocuments(ArrayList<String> records) {
+		this.lExternalEvalDocumentents = records;
 	}
 
 }

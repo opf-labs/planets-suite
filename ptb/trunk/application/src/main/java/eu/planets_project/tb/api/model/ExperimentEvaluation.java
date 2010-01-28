@@ -121,4 +121,14 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	public Collection<String> getInputBenchmarkGoalIDs();
 	@Deprecated
 	public List<String> getAllAcceptedEvaluationValues();
+	
+	/**
+	 * returns a list of digital object references that were provided during the evaluation stage of an experiment
+	 * e.g. manual-excel spreadsheets, etc.
+	 * @return
+	 */
+	public ArrayList<String> getExternalEvaluationDocuments();
+	public void setExternalEvaluationDocuments(ArrayList<String> records);
+	public void addExternalEvaluationDocument(String digitalObjectRef);
+	public void removeExternalEvaluationDocument(String digitalObjectRef);
 }
