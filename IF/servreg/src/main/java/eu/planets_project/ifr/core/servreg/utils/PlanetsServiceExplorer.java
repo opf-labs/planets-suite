@@ -19,6 +19,7 @@ import eu.planets_project.services.compare.CommonProperties;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.fixity.Fixity;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.modify.Modify;
@@ -48,6 +49,7 @@ public class PlanetsServiceExplorer {
         classmap.put(CreateView.QNAME, CreateView.class);
         classmap.put(Compare.QNAME, Compare.class);
         classmap.put(CompareProperties.QNAME, CompareProperties.class);
+        classmap.put(Fixity.QNAME, Fixity.class);
     }
 
     /**
