@@ -58,7 +58,8 @@ public final class JavaDigest implements Fixity, Serializable {
 	private static final String NO_ALG_MESSAGE = "The MessageDigest function does not implement the algorithm ";
 	private static final String SUCCESS_MESSAGE = "Digest calculated successfully";
 	private static final String SERVICE_DESC = "Fixity service based on Java " + 
-		MessageDigest.class.getName();
+		MessageDigest.class.getName() + "\n";
+		
 	private static final String SERVICE_AUTHOR = "Carl Wilson";
 	private static final String SERVICE_VERSION = "0.1"; 
 	private static final String SERVICE_PROVIDER = "The Planets Consortium.";
@@ -68,28 +69,29 @@ public final class JavaDigest implements Fixity, Serializable {
 											"secure one-way hash functions that take " +
 											"arbitrary-sized data and output a fixed-length " +
 											"hash value.";
+	private static final URI SUPPORT_DOCUMENT_LOC = 
+		URI.create("http://java.sun.com/j2se/1.5.0/docs/api/java/security/MessageDigest.html");
 
-	private static final String ALG_PARAM_NAME = "AlgorithmId";
-	private static final String ALG_PARAM_TYPE = "URI";
+	public static final String ALG_PARAM_NAME = "AlgorithmId";
+	public static final String ALG_PARAM_TYPE = "URI";
 	private static final String ALG_PARAM_DESC = 
 		"A Planets digest algorithm URI identifying the " +
 		"requested algorithm, supported values: ";
 
-	private static final String PROV_PARAM_NAME = "Provider";
-	private static final String PROV_PARAM_TYPE = "String";
+	public static final String PROV_PARAM_NAME = "Provider";
+	public static final String PROV_PARAM_TYPE = "String";
 	private static final String PROV_PARAM_DESC = 
 		"An algorithm provider supported values: ";
+
 	private static final String LIST_SEP = ", ";
 
 	private static final int DEFAULT_CHUNK_SIZE = 1024;
 	
-	private static final URI SUPPORT_DOCUMENT_LOC = 
-		URI.create("http://java.sun.com/j2se/1.5.0/docs/api/java/security/MessageDigest.html");
 
 	/** The name of the service / class */
 	static final String NAME = "JavaDigest";
 
-	private String requestedAlgorithm = JavaDigestUtils.getDefaultAlgorithmName();
+	private URI requestedAlgorithm = JavaDigestUtils.getDefaultAlgorithmId();
 	private String requestedProvider = null;
 	
 	public FixityResult calculateChecksum(DigitalObject digitalObject,
@@ -97,8 +99,16 @@ public final class JavaDigest implements Fixity, Serializable {
 		FixityResult retResult = null;
 		ServiceReport retReport = null;
 		try {
+			// First off, let's check the parameters, this will throw an exception
+			// For invalid parameters
+			this.checkParameters(parameters);
+			
 			// OK let's try to get the digest algorithm 
 			MessageDigest messDigest = this.getMessageDigest(parameters);
+			
+			if (this.requestedProvider == null) {
+				this.requestedProvider = messDigest.getProvider().getName();
+			}
 
 			// Now calc the result, we need the bytes from the object
 			// so let's get the stream
@@ -115,26 +125,36 @@ public final class JavaDigest implements Fixity, Serializable {
 						JavaDigest.NO_DATA_MESSAGE);
 
 				// And wrap it in the result
-				retResult = new FixityResult(this.requestedAlgorithm, null, retReport);
+				retResult = new FixityResult(this.requestedAlgorithm,
+											 this.requestedProvider,
+											 null,
+											 retReport);
 
 				// Return the result
 				return retResult;
 			}
-
+			messDigest.getProvider().getName();
 			// OK, success so create the result
 			retReport = new ServiceReport(ServiceReport.Type.INFO,
 					ServiceReport.Status.SUCCESS,
 					JavaDigest.SUCCESS_MESSAGE);
 
 			// And wrap it in the result
-			retResult = new FixityResult(this.requestedAlgorithm, messDigest.digest(), null, retReport);
+			retResult = new FixityResult(this.requestedAlgorithm,
+										 this.requestedProvider,
+										 messDigest.digest(),
+										 null,
+										 retReport);
 
 		} catch (NoSuchAlgorithmException e) {
 			// This shouldn't happen at the moment, it supports MD5
 			// Create the Error ServiceReport
 			retReport = new ServiceReport(ServiceReport.Type.ERROR,
 					ServiceReport.Status.TOOL_ERROR,
-					e.getMessage());
+					e.getMessage() + " for algorithm " + this.requestedAlgorithm +
+					((this.requestedProvider != null) ?
+							"and provider " + this.requestedProvider  + "." :
+							"."));
 			// And wrap it in the result
 			retResult = new FixityResult(retReport);
 		} catch (IOException e) {
@@ -146,6 +166,12 @@ public final class JavaDigest implements Fixity, Serializable {
 			retResult = new FixityResult(retReport);
 		} catch (NoSuchProviderException e) {
 			// Create the Error ServiceReport
+			retReport = new ServiceReport(ServiceReport.Type.ERROR,
+					ServiceReport.Status.TOOL_ERROR,
+					e.getMessage());
+			// And wrap it in the result
+			retResult = new FixityResult(retReport);
+		} catch (URISyntaxException e) {
 			retReport = new ServiceReport(ServiceReport.Type.ERROR,
 					ServiceReport.Status.TOOL_ERROR,
 					e.getMessage());
@@ -260,23 +286,15 @@ public final class JavaDigest implements Fixity, Serializable {
 	}
 	
 	private MessageDigest getMessageDigest(List<Parameter> params) throws NoSuchAlgorithmException, NoSuchProviderException {
-		if (params != null) {
-			for (Parameter param : params) {
-				if (param.getName().equals(ALG_PARAM_NAME)) {
-					String reqAlg =
-						JavaDigestUtils.getJavaAlgorithmNameFromURI(URI.create(param.getValue()));
-					if (reqAlg != null) this.requestedAlgorithm = reqAlg; 
-				} else if (param.getName().equals(PROV_PARAM_NAME)) {
-					this.requestedProvider = param.getValue();
-				}
-			}
-		}
-		
+
 		if (this.requestedProvider != null) {
-			return MessageDigest.getInstance(this.requestedAlgorithm, this.requestedProvider);
+			return MessageDigest.getInstance(
+					JavaDigestUtils.getJavaAlgorithmNameFromURI(this.requestedAlgorithm),
+					this.requestedProvider);
 		}
 		
-		return MessageDigest.getInstance(this.requestedAlgorithm);
+		return MessageDigest.getInstance(
+				JavaDigestUtils.getJavaAlgorithmNameFromURI(this.requestedAlgorithm));
 	}
 
 	private void checkParameters(List<Parameter> params)
@@ -290,8 +308,7 @@ public final class JavaDigest implements Fixity, Serializable {
 					try {
 						if (JavaDigestUtils.hasAlgorithmById(URI.create(param.getValue())))
 							// If it's an OK algorithm
-							this.requestedAlgorithm =
-								JavaDigestUtils.getJavaAlgorithmNameFromURI(URI.create(param.getValue()));
+							this.requestedAlgorithm = URI.create(param.getValue());
 						else 
 							// It's not a valid algorithm ID so throw
 							throw new NoSuchAlgorithmException(NO_ALG_MESSAGE + param.getValue());

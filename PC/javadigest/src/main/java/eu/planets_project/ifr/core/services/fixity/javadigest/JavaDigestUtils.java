@@ -32,6 +32,22 @@ final class JavaDigestUtils {
 			}
 		};
 		
+	private static final Set<URI> providerAlg = 
+		new HashSet<URI>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1425731176683194334L;
+
+		{
+			for (String provider : JavaDigestUtils.getProviders()) {
+				for (URI uri : JavaDigestUtils.getAlgorithmsForProvider(provider)) {
+					add(URI.create(uri.toString() + "/" + provider));
+				}
+			}
+		}
+	};
+		
 	private static final Map<String, Set<URI>> providerDetails = 
 		new HashMap<String, Set<URI>>() {
 			/**
@@ -46,7 +62,8 @@ final class JavaDigestUtils {
 		};
 	
 	public static String getDefaultAlgorithmName() {return JavaDigestUtils.MD5;}
-	public static URI getDefaultAlgorithmId() { return URI.create(ALG_URI_PREFIX + JavaDigestUtils.MD5); }
+	public static URI getDefaultAlgorithmId() { return URI.create(ALG_URI_PREFIX 
+												+ JavaDigestUtils.MD5); }
 	
 	public static boolean hasAlgorithmByName(String name) {
 		return JavaDigestUtils.algorithms.containsValue(name);
@@ -56,6 +73,9 @@ final class JavaDigestUtils {
 		return JavaDigestUtils.algorithms.containsKey(id);
 	}
 
+	public static boolean providerSupportsAlgorithm(URI algId, String provName) {
+		return JavaDigestUtils.providerAlg.contains(URI.create(algId.toString() + "/" + provName));
+	}
 	/**
 	 * Returns the Java algorithm name from a planets alg id URI
 	 * 
@@ -67,7 +87,7 @@ final class JavaDigestUtils {
 	 */
 	public static String getJavaAlgorithmNameFromURI(URI uri) {
 		String name = null;
-		name = uri.toString().substring(uri.toString().lastIndexOf("/"));
+		name = uri.toString().substring(uri.toString().lastIndexOf("/") + 1);
 		return name;
 	}
 
@@ -108,9 +128,11 @@ final class JavaDigestUtils {
 			thisKey = thisKey.split(" ")[0];
 			
 			if (thisKey.startsWith(DIGEST_PREFIX)) {
-				result.add(URI.create(ALG_URI_PREFIX + thisKey.substring(DIGEST_PREFIX.length())));
+				result.add(URI.create(ALG_URI_PREFIX + 
+						thisKey.substring(DIGEST_PREFIX.length())));
 			} else if (thisKey.startsWith(DIGEST_ALIAS_PREFIX)) {
-				result.add(URI.create(ALG_ALIAS_URI_PREFIX + thisKey.substring(DIGEST_PREFIX.length())));
+				result.add(URI.create(ALG_ALIAS_URI_PREFIX + 
+						thisKey.substring(DIGEST_ALIAS_PREFIX.length())));
 			}
 		}
 		return result;
