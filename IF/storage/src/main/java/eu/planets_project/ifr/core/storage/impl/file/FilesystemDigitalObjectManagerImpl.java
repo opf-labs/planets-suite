@@ -107,6 +107,15 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
 	        log.info("Looking at: " + pdURI + " -> " + searchRoot.getCanonicalPath() );    
 			retVal = this.listFileLocation( pdURI, searchRoot );
 			
+			if (retVal != null) {
+				log.info("Listing URIs");
+				for (URI uri : retVal) {
+					log.info("URI in list: " + uri);
+				}
+			} else {
+				log.info("RetVal is NULL");
+			}
+			
 		} catch (URISyntaxException e) {
 			log.severe("URI Syntax exception");
 			log.severe(e.getMessage());
@@ -339,7 +348,7 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
                 // Create the new URI, using the multiple-argument constructors to ensure characters are properly escaped.
                 if( sf.isDirectory() ) {
                 	log.info(sf + " is a directory");
-                	URI uri = createNewPathUri( pdURI, pdURI.getPath() + s + "/" );
+                	URI uri = createNewPathUri( pdURI, pdURI.getPath() + "/" + s + "/" );
                 	log.info("Adding URI " + uri + " to list");
                     retVal.add( uri );
                 } else {
