@@ -101,7 +101,7 @@ public class FixityResult {
      * @return the digest value as a java.lang.String
      */
     public String getDigestValueAsString() {
-    	String result = null;
+    	String result = "";
     	
     	for (byte aByte : this.digestValue) {
     		result += aByte;
