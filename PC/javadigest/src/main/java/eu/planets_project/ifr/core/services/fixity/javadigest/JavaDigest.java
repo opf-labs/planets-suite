@@ -125,8 +125,7 @@ public final class JavaDigest implements Fixity, Serializable {
 						JavaDigest.NO_DATA_MESSAGE);
 
 				// And wrap it in the result
-				retResult = new FixityResult(this.requestedAlgorithm,
-											 this.requestedProvider,
+				retResult = new FixityResult(this.requestedAlgorithm.toString(),
 											 null,
 											 retReport);
 
@@ -140,8 +139,7 @@ public final class JavaDigest implements Fixity, Serializable {
 					JavaDigest.SUCCESS_MESSAGE);
 
 			// And wrap it in the result
-			retResult = new FixityResult(this.requestedAlgorithm,
-										 this.requestedProvider,
+			retResult = new FixityResult(this.requestedAlgorithm.toString(),
 										 messDigest.digest(),
 										 null,
 										 retReport);
