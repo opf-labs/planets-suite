@@ -153,12 +153,12 @@
             <param-value>100m</param-value>
         </init-param>
         <init-param>
-            <param-name>uploadRepositoryPath</param-name>
-            <param-value>/tmp</param-value>
             <description>
                 Set the path where the intermediary files will be
                 stored.
             </description>
+            <param-name>uploadRepositoryPath</param-name>
+            <param-value>/tmp</param-value>
         </init-param>
     </filter>
 
@@ -199,7 +199,7 @@
             <param-name>listings</param-name>
             <param-value>false</param-value>
         </init-param>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>2</load-on-startup>
     </servlet>
 
     <!-- Faces Servlet -->
@@ -212,7 +212,8 @@
     <!-- JCR content resolver servlet -->
     <servlet>
     	<servlet-name>JCRContentResolver</servlet-name>
-    	<servlet-class>eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectContentResolver</servlet-class>
+    	<servlet-class>eu.planets_project.ifr.core.storage.servlet.JcrDigitalObjectContentResolver</servlet-class>
+        <load-on-startup>0</load-on-startup>
   	</servlet>    
 
     <servlet-mapping>
@@ -220,12 +221,12 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.faces</url-pattern>
-    </servlet-mapping>
- 	<servlet-mapping>
         <servlet-name>JCRContentResolver</servlet-name>
         <url-pattern>/jcr/contentResolver</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.faces</url-pattern>
     </servlet-mapping>
 
     <mime-mapping>

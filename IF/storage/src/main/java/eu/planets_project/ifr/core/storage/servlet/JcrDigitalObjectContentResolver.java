@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.storage.impl.jcr;
+package eu.planets_project.ifr.core.storage.servlet;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Metadata;
 
@@ -31,8 +32,25 @@ public class JcrDigitalObjectContentResolver extends HttpServlet {
 	private static final int BUFFER_SIZE = 4096;
 	private static final String ID_PARAMETER_NAME = "id";
 	private static final String MIME_TYPE_METADATA_NAME = "mimeType";
+	
+	/**
+	 * Constructor, to watch what is happening.
+	 */
+	public JcrDigitalObjectContentResolver() {
+	    logger.info("Constructing JcrDigitalObjectContentResolver...");
+	}
 
-	@Override
+	/* (non-Javadoc)
+     * @see javax.servlet.GenericServlet#init()
+     */
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        logger.info("Initialising JcrDigitalObjectContentResolver...");
+    }
+
+
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		InputStream is = null;
@@ -71,4 +89,5 @@ public class JcrDigitalObjectContentResolver extends HttpServlet {
 			if(is!=null) is.close();
 		}
 	}
+    
 }
