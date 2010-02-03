@@ -147,7 +147,17 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
 		DigitalObject retObj = null;
         DigitalObject.Builder dob;
 
+        // Look for the XML:
 		try {
+	        // All files should have a binary:
+	        // Files without an associated metadata file are patched in like this:
+	        File binFile = new File( this._root.getCanonicalPath() + File.separator + ( new PDURI(pdURI).getDataRegistryPath() ) );
+	        if( ! binFile.exists() ) {
+	            throw new DigitalObjectNotFoundException("The DigitalObject was not found!");
+	        }
+	        DigitalObjectContent c = Content.byReference( binFile );
+            
+            // Look for the XML:
 			PDURI parsedURI = new PDURI(pdURI);
 			parsedURI.replaceDecodedPath(parsedURI.getDataRegistryPath() + FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
 			String fullPath = this._root.getCanonicalPath() + File.separator + parsedURI.getDataRegistryPath();
@@ -163,11 +173,10 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
 			    reader.close();
 			    // Re-create the digital object metadata.
                 dob = new DigitalObject.Builder(fileData.toString());
-                // And add the content:
-                DigitalObjectContent c = Content.byReference(dob.getContent().getInputStream());
+                // Attach the content:
                 dob.content(c);
                 // If there is no title, add title to the dob.
-                // TODO Not sane behaviour - if an object has been stored with no title, then that should remain the case.  The 'filename' is already in the URI, where it belongs.
+                // TODO Not the originally intended behaviour - if an object has been stored with no title, then that should remain the case.  The 'filename' is already in the URI, where it belongs.
                 if( dob.getTitle() == null ) {
                     String title = null;
                     title = parsedURI.getDataRegistryPath();
@@ -179,15 +188,11 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
                     log.info("Add title: " + title);
                 }
 			} else {
-			    // Files without an associated metadata file are patched in like this:
-			    File binFile = new File( this._root.getCanonicalPath() + File.separator + ( new PDURI(pdURI).getDataRegistryPath() ) );
-			    if( ! binFile.exists() ) {
-			        throw new DigitalObjectNotFoundException("The DigitalObject was not found!");
-			    }
-	            DigitalObjectContent c = Content.byReference( binFile );
-	            dob = new DigitalObject.Builder( c );
-	            dob.title( binFile.getName() );
-			}
+                dob = new DigitalObject.Builder(c);
+            }
+            dob.title( binFile.getName() );
+			// Ensure the PDURI is fixed up:
+			dob.permanentUri(pdURI);
 			// Also turn the content reference into a real file stream:
 			retObj = dob.build();
 		} catch (UnsupportedEncodingException e) {
@@ -232,14 +237,14 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
      */
     @Override
 	public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
-		System.out.println("FileSysDOM storeAsNew");
+		log.fine("FileSysDOM storeAsNew");
         URI pdURI;
-        System.out.println("Putting URI together");
-        System.out.println("ID = " + this.id);
+        log.fine("Putting URI together");
+        log.fine("ID = " + this.id);
 		pdURI = this.id.resolve(this.name + "/" + UUID.randomUUID().toString());
-		System.out.println("Calling store " + pdURI);
+		log.fine("Calling store " + pdURI);
         this.store(pdURI, digitalObject);
-		System.out.println("returning URI");
+		log.fine("returning URI");
         return pdURI;
     }
 
@@ -347,14 +352,14 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
                 File sf = new File( searchRoot, s );
                 // Create the new URI, using the multiple-argument constructors to ensure characters are properly escaped.
                 if( sf.isDirectory() ) {
-                	log.info(sf + " is a directory");
+                	log.fine(sf + " is a directory");
                 	URI uri = createNewPathUri( pdURI, pdURI.getPath() + "/" + s + "/" );
-                	log.info("Adding URI " + uri + " to list");
+                	log.fine("Adding URI " + uri + " to list");
                     retVal.add( uri );
                 } else {
-                	log.info(sf + " is a file");
+                	log.fine(sf + " is a file");
                 	URI uri = createNewPathUri( pdURI, pdURI.getPath() +"/"+ s ).normalize();            
-                	log.info("Adding URI " + uri + " to list");
+                	log.fine("Adding URI " + uri + " to list");
                     retVal.add( uri );
                 }
             }
@@ -373,26 +378,26 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
 	private void store(URI pdURI, DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException {
 		try {
-			System.out.println("testing title");
+			log.fine("testing title");
 		       if( digitalObject.getTitle() == null ) {
 		          throw new DigitalObjectNotStoredException(
 		        		"The DigitalObject titel was not found!");
 		       }
 
 			// get the path from the URI to store at
-			System.out.println("Getting new PDURI from " + pdURI);
+			log.fine("Getting new PDURI from " + pdURI);
 			PDURI _parsedURI = new PDURI(pdURI);
-			System.out.println("getting dr path");
+			log.fine("getting dr path");
 			String path = _parsedURI.getDataRegistryPath();
-			System.out.println("path is " + path);
+			log.fine("path is " + path);
 
 			// We need to append the path to the root dir of this registry for the data
-			System.out.println("New binary file");
+			log.fine("New binary file");
 			File doBinary = new File(this._root.getCanonicalPath() + 
 					File.separator + path);
-			System.out.println("getting dir dir");
+			log.fine("getting dir dir");
             File doDir = doBinary.getParentFile();
-    		System.out.println("mking dir");
+    		log.fine("mking dir");
             if( ! doDir.exists() ) doDir.mkdirs();
     		log.info("creating metadata");
 			File doMetadata = new File(this._root.getCanonicalPath() + 
