@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

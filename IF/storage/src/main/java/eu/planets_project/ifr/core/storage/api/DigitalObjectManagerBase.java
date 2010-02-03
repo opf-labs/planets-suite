@@ -112,7 +112,10 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 	public URI updateExisting(URI pdURI, DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException,
 			DigitalObjectNotFoundException {
-		throw new DigitalObjectNotFoundException("The Digital Object not found by " + DigitalObjectManagerBase.class.getName());
+		// This will throw not found if it can't be found
+		this.retrieve(pdURI);
+		// Throw not stored as it's not implemented
+		throw new DigitalObjectNotStoredException("The Digital Object not stored by " + DigitalObjectManagerBase.class.getName());
 	}
 
 	/**
