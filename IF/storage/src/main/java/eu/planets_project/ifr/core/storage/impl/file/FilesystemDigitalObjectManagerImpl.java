@@ -175,22 +175,21 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
                 dob = new DigitalObject.Builder(fileData.toString());
                 // Attach the content:
                 dob.content(c);
-                // If there is no title, add title to the dob.
-                // TODO Not the originally intended behaviour - if an object has been stored with no title, then that should remain the case.  The 'filename' is already in the URI, where it belongs.
-                if( dob.getTitle() == null ) {
-                    String title = null;
-                    title = parsedURI.getDataRegistryPath();
-                    if(title.contains(".") && title.contains("/")) 
-                    {
-                        title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
-                    }
-                    dob.title(title);
-                    log.info("Add title: " + title);
-                }
 			} else {
                 dob = new DigitalObject.Builder(c);
             }
-            dob.title( binFile.getName() );
+            // If there is no title, add title to the dob.
+            // TODO Not the originally intended behaviour - if an object has been stored with no title, then that should remain the case.  The 'filename' is already in the URI, where it belongs.
+            if( dob.getTitle() == null ) {
+                String title = null;
+                title = parsedURI.getDataRegistryPath();
+                if(title.contains(".") && title.contains("/")) 
+                {
+                    title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
+                }
+                dob.title(title);
+                log.info("Add title: " + title);
+            }
 			// Ensure the PDURI is fixed up:
 			dob.permanentUri(pdURI);
 			// Also turn the content reference into a real file stream:
