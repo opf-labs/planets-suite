@@ -37,7 +37,7 @@ public class FloppyImageHelperServiceTest {
 	
 	static Migrate FLOPPY_IMAGE_HELPER;
 	
-	static String WSDL = "/pserv-pa-floppy-image-helper/FloppyImageHelperService?wsdl";
+	static String WSDL = "/pserv-pa-floppyimagehelper/FloppyImageHelperService?wsdl";
 	
 	static String OUT_DIR_NAME = "FLOPPY_IMAGE_HELPER_TEST_OUT";
 	

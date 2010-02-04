@@ -35,7 +35,7 @@ public class FloppyImageModifyTest {
 	
 	static Modify FLOPPY_IMAGE_MODIFY;
 	
-	static String WSDL = "/pserv-pa-floppy-image-helper/FloppyImageModifyWin?wsdl";
+	static String WSDL = "/pserv-pa-floppyimagehelper/FloppyImageModifyWin?wsdl";
 	
 	static String OUT_DIR_NAME = "FLOPPY_IMAGE_MODIFY_TEST_OUT";
 	
