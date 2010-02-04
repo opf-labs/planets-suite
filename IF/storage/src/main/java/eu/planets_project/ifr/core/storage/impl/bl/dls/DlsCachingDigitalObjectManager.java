@@ -4,16 +4,21 @@
 package eu.planets_project.ifr.core.storage.impl.bl.dls;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.mail.MessagingException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.soap.SOAPException;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.HandlerBase;
@@ -24,6 +29,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
 import eu.planets_project.ifr.core.storage.impl.bl.dls.uitls.DlsItemList;
+import eu.planets_project.ifr.core.storage.impl.bl.dls.uitls.GetServiceProxy;
+import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * This is a DigitalObjectManager implementation that acts as a caching
@@ -85,5 +92,36 @@ public class DlsCachingDigitalObjectManager extends DigitalObjectManagerBase {
 			System.out.println("item: " + uri);
 		}
 		return result;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase#retrieve(java.net.URI)
+	 */
+	@Override
+	public DigitalObject retrieve(URI pdURI) {
+		this.retrieveDlsItem("317841", "317841.xml");
+		return null;
+	}
+	
+	private boolean retrieveDlsItem(String domId, String deliveryName) {
+		boolean status = false;
+		UUID sequenceId = UUID.randomUUID();
+		try {
+			GetServiceProxy proxy = new GetServiceProxy();
+			status = proxy.submitGetRequest(sequenceId.toString(), domId, deliveryName);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SOAPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return status;
 	}
 }

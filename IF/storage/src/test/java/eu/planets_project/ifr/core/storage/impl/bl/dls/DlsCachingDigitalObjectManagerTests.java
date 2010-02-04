@@ -100,7 +100,7 @@ public class DlsCachingDigitalObjectManagerTests {
 	 */
 	@Test
 	public void testRetrieve() {
-		fail("Not yet implemented");
+		testDom.retrieve(testDom.getId());
 	}
 
 	/**
