@@ -15,6 +15,8 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -179,7 +181,7 @@ public class DigitalObjectCompare {
         if( cr.getProperties() != null ) {
             log.info("Got properties: "+cr.getProperties().size());
         }
-        return cr.getProperties();
+        return truncatePropertyValues(cr.getProperties());
     }
     
     /**
@@ -200,7 +202,7 @@ public class DigitalObjectCompare {
         if( cr.getProperties() != null ) {
             log.info("Got properties: "+cr.getProperties().size());
         }
-        return cr.getProperties();
+        return truncatePropertyValues(cr.getProperties());
     }
     
     /**
@@ -290,7 +292,7 @@ public class DigitalObjectCompare {
         if( cr.getProperties() != null ) {
             log.info("Got properties: "+cr.getProperties().size());
         }
-        return cr.getProperties();
+        return truncatePropertyValues(cr.getProperties());
     }
     
     /**
@@ -383,7 +385,7 @@ public class DigitalObjectCompare {
         if( cr.getProperties() != null ) {
             log.info("Got properties: "+cr.getProperties().size());
         }
-        return cr.getProperties();
+        return truncatePropertyValues(cr.getProperties());
     }
     
     /**
@@ -520,5 +522,27 @@ public class DigitalObjectCompare {
      */
     public String getIdentifyServiceStackTrace() {
         return identifyServiceStackTrace;
+    }
+    
+    /**
+     * Truncates the property values at a max. fixed length of 500 chars
+     * @return
+     */
+    private static List<Property> truncatePropertyValues(List<Property> in){
+    	List<Property> ret = new ArrayList<Property>();
+    	 //iterate over the properties and truncate when more than 500 chars 
+        if((in==null)||(in.size()<=0)){
+        	return ret;
+        }
+    	for(Property p : in){
+        	if(p.getValue().length()>500){
+        		//add a truncated value String
+        		ret.add(new Property(p.getUri(),p.getName(),p.getValue().substring(0, 500)+"[..]"));
+        	}else{
+        		//add the original result
+        		ret.add(p);
+        	}
+        }
+    	return ret;
     }
 }

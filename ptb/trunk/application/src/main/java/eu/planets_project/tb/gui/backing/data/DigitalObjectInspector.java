@@ -174,12 +174,25 @@ public class DigitalObjectInspector {
      * @return
      */
     public List<Property> getCharacteriseProperties() {
+    	List<Property> ret = new ArrayList<Property>();
         CharacteriseResult cr = this.runCharacteriseService();
         if( cr == null ) return null;
         if( cr.getProperties() != null ) {
             log.info("Got properties: "+cr.getProperties().size());
+        }else{
+        	return ret;
         }
-        return cr.getProperties();
+        //iterate over the properties and truncate when more than 500 chars 
+        for(Property p : cr.getProperties()){
+        	if(p.getValue().length()>500){
+        		//add a truncated value String
+        		ret.add(new Property(p.getUri(),p.getName(),p.getValue().substring(0, 500)+"[..]"));
+        	}else{
+        		//add the original result
+        		ret.add(p);
+        	}
+        }
+        return ret;
     }
     
     /**
