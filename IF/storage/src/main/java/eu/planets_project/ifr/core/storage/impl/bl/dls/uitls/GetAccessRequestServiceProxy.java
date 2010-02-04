@@ -46,7 +46,7 @@ public class GetAccessRequestServiceProxy {
 	      throw new SOAPException (Constants.FAULT_CODE_CLIENT, "A URL not specified");
 	    }
 	    this.soapUri = SERVICE_URI;
-	    GetAccessRequestMessageBody ourBody = new GetAccessRequestMessageBody();
+	    GetAccessRequestMessageBody ourBody = new GetAccessRequestMessageBody(sequenceId);
 	    this.envelope.setBody(ourBody);
 	    this.message.send (this.getServiceLocation(), this.soapUri, this.envelope);
         this.returnHandler = this.message.receive();
