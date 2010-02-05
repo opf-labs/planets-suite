@@ -40,6 +40,8 @@ public class MigrationWFWrapper {
 	private DigitalObject digOToMigrate;
 	private boolean endOfRoundtripp;
 	private WorkflowTemplate wfi;
+	private URI inputFormat;
+	private URI outputFormat;
 
 	/**
 	 * The default constructor.
@@ -91,6 +93,22 @@ public class MigrationWFWrapper {
 			Migrate migrationService, DigitalObject digOToMigrate) {
 		this(processingTemplate, null, migrationService, digOToMigrate, false);
 	}
+	
+	/**
+	 * Allows to define an input format that overrides the xml config defaults
+	 * @param inputFormat
+	 */
+	public void setInputFormat(URI inputFormat){
+		this.inputFormat = inputFormat;
+	}
+	
+	/**
+	 * Allows to define an output format that overrides the xml config defaults
+	 * @param outputFormat
+	 */
+	public void setOutputFormat(URI outputFormat){
+		this.outputFormat = outputFormat;
+	}
 
 	public DigitalObject runMigration() throws Exception {
 
@@ -122,11 +140,27 @@ public class MigrationWFWrapper {
 			wfResultItem.setServiceParameters(parameterList);
 
 			// get from config: migrate_to_fmt for this service
-			URI migrateToURI = wfi.getServiceCallConfigs(migrationService)
-					.getPropertyAsURI(WorkflowTemplate.SER_PARAM_MIGRATE_TO);
+			URI migrateToURI, migrateFromURI;
+			if(this.outputFormat!=null){
+				//e.g. when using a identification prior to chose the output format
+				migrateToURI = this.outputFormat;
+			}
+			else{
+				//get the ones from the ServiceCallConfigs
+				migrateToURI = wfi.getServiceCallConfigs(migrationService)
+				.getPropertyAsURI(WorkflowTemplate.SER_PARAM_MIGRATE_TO);
+			}
 			wfResultItem.addLogInfo("set migrate to: " + migrateToURI);
-			URI migrateFromURI = wfi.getServiceCallConfigs(migrationService)
-					.getPropertyAsURI(WorkflowTemplate.SER_PARAM_MIGRATE_FROM);
+			
+			if(this.inputFormat!=null){
+				//e.g. when using a identification prior to chose the input format
+				migrateFromURI = this.inputFormat;
+			}
+			else{
+				//get the ones from the ServiceCallConfigs
+				migrateFromURI = wfi.getServiceCallConfigs(migrationService)
+				.getPropertyAsURI(WorkflowTemplate.SER_PARAM_MIGRATE_FROM);
+			}
 			wfResultItem.addLogInfo("set migrate from: " + migrateFromURI);
 
 			if ((migrateToURI == null) && (migrateFromURI == null)) {

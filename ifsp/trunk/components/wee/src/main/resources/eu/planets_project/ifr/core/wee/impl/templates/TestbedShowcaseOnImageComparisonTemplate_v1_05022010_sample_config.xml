@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
+  <template>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.TestbedShowcaseOnImageComparisonTemplate_v1_05022010</class>
+  </template>
+  <services>
+  <service id="identifyFormatA">
+      <endpoint>http://testbed.planets-project.eu/pserv-pa-sanselan/SanselanIdentify?wsdl</endpoint>
+    </service>
+    <service id="migrateAB">
+      <endpoint>http://testbed.planets-project.eu/pserv-pa-imagemagick/ImageMagickMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_to_fmt</name>
+          <value>planets:fmt/ext/jpeg</value>
+        </param>
+		<!-- Specify 5 for JPEG Compression, comprQuality 80 percent -->
+        <param>
+          <name>compressionType</name>
+          <value>5</value>
+        </param>
+        <param>
+          <name>compressionQuality</name>
+          <value>80</value>
+        </param>
+      </parameters>
+    </service>
+    <service id="migrateBC">
+      <endpoint>http://testbed.planets-project.eu/pserv-pa-imagemagick/ImageMagickMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_from_fmt</name>
+          <value>planets:fmt/ext/jpeg</value>
+        </param>
+        <!-- Specify 5 for JPEG Compression, comprQuality 80 percent -->
+        <param>
+          <name>compressionType</name>
+          <value>5</value>
+        </param>
+        <param>
+          <name>compressionQuality</name>
+          <value>80</value>
+        </param>
+      </parameters>
+    </service>
+    <service id="compareAC">
+      <endpoint>http://testbed.planets-project.eu/pserv-pa-java-se/JavaImageIOCompare?wsdl</endpoint>
+    </service>
+  </services>
+</workflowConf>
