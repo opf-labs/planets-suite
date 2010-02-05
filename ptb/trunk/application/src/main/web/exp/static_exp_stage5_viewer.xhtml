@@ -25,11 +25,13 @@
 <tr id="headerRow">
 <td id="header" height="24">
  <h:outputLink value="exp_stage5.faces" title="Return to experiment '#{EmulationInspector.experimentName}'.">
+    <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
   <t:graphicImage value="/graphics/planets-testbed-vsml-cropped.png" alt="Return to experiment '#{EmulationInspector.experimentName}'"/>
  </h:outputLink>
  <h:panelGroup styleClass="headerControls">
  
   <h:outputLink class="homeButton" value="exp_stage5.faces" title="Return to experiment '#{EmulationInspector.experimentName}'">
+    <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
     <t:graphicImage value="/graphics/toolbar_home.png" alt="Return to experiment '#{EmulationInspector.experimentName}'"/>
   </h:outputLink>
 
