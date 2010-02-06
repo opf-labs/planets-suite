@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.PDURI;
 import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
@@ -369,7 +370,19 @@ public class DataHandlerImpl implements DataHandler {
             	//get the digital object with it's original content
             	this.log.info("Retrieving Digital Object at " + domUri);
                 DigitalObject digitalObject = this.dataReg.retrieve(domUri);
-                return new DigitalObjectRefBean(digitalObject.getTitle(), domUri.toString(), domUri, digitalObject);
+                // FIXME This is a duplicate of some PDURI logic, but there are two PDURI classes, oddly!
+                String leafname = domUri.getPath();
+                // Strip any trailing slash:
+                if( leafname.endsWith("/") ) {
+                    leafname = leafname.substring(0, leafname.length()-1);
+                }
+                // Strip any upper path info:
+                if( leafname.contains("/") ) 
+                {
+                    // Strip any directory path information.
+                    leafname = leafname.substring(leafname.lastIndexOf("/") + 1);
+                }
+                return new DigitalObjectRefBean(leafname, domUri.toString(), domUri, digitalObject);
             } catch (DigitalObjectNotFoundException e) {
                 throw new FileNotFoundException("Could not find file " + id);
             }

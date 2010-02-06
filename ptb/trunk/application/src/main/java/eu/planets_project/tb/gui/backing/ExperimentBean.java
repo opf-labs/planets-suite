@@ -629,7 +629,7 @@ public class ExperimentBean {
         	}
     	}
     	//when we're calling this in evaluate experiment -> fetch the external eval data refs
-    	if(expStage.equals("evaluate expeirment")){
+    	if(expStage.equals("evaluate expeirment") && this.getEvaluationExternalDigoRefs() != null ){
     		for(String digoRef : this.getEvaluationExternalDigoRefs()){
     			try {
     			Map<String,String> map = new HashMap<String,String>();

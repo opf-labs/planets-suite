@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -122,6 +123,8 @@ public class ExecutionRecordImpl implements Serializable {
    
     // The 'Result'
     private String resultType;
+    //FIXME Use @Lob on the things I had to make LONGBLOB
+    @Column(columnDefinition="LONGTEXT")
     private String result;
     
     // The 'Report Log' for this digital object
