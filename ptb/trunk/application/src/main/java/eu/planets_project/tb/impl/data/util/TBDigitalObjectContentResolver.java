@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
@@ -44,6 +45,9 @@ public class TBDigitalObjectContentResolver extends HttpServlet {
 		
 		try {
 			if(id==null) throw new DigitalObjectNotFoundException("id is null");
+
+			// Fix up any encoding issues:
+			id = PDURI.encodePlanetsUriStringAsUri(id).toASCIIString();
 			
 			DigitalObjectRefBean digoRef = dh.get(id);
 			if(digoRef==null) throw new DigitalObjectNotFoundException("digital object "+id+" not found");
