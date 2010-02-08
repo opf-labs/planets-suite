@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +17,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.rpc.ServiceException;
 
 import org.apache.soap.SOAPException;
 import org.xml.sax.Attributes;
@@ -25,6 +29,10 @@ import org.xml.sax.HandlerBase;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import eu.planets_project.ifr.core.storage.impl.bl.dls.uk.bl.AccessLocator;
+import eu.planets_project.ifr.core.storage.impl.bl.dls.uk.bl.AccessSoap;
+import eu.planets_project.ifr.core.storage.impl.bl.dls.uk.bl.AccessSoapProxy;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
@@ -104,24 +112,34 @@ public class DlsCachingDigitalObjectManager extends DigitalObjectManagerBase {
 	}
 	
 	private boolean retrieveDlsItem(String domId, String deliveryName) {
-		boolean status = false;
-		UUID sequenceId = UUID.randomUUID();
+		String namespace = "http://bl.uk/";
+		String serviceName = "Get";
+		URL a;
+		boolean boolResult = false;
 		try {
-			GetServiceProxy proxy = new GetServiceProxy();
-			status = proxy.submitGetRequest(sequenceId.toString(), domId, deliveryName);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SOAPException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			a = new URL( "http://localhost:1824/Access.svc?wsdl" );
+			QName qname = new QName("Get");
+			
+
+			try {
+				AccessLocator locator = new AccessLocator();
+				locator.getAccessSoap(a);
+				AccessSoap accessService = new AccessSoapProxy().getAccessSoap();
+				String stringResult;
+				try {
+					boolResult = accessService.get("");
+					System.out.println(boolResult);
+					stringResult = accessService.submitAccessRequest("");
+					System.out.println(stringResult);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+			} catch (ServiceException e1) {
+				e1.printStackTrace();
+			}
+		} catch (MalformedURLException e2) {
+			e2.printStackTrace();
 		}
-		return status;
+		return boolResult;
 	}
 }
