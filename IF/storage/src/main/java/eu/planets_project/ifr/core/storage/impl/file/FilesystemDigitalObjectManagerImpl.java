@@ -182,11 +182,7 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
             // TODO Not the originally intended behaviour - if an object has been stored with no title, then that should remain the case.  The 'filename' is already in the URI, where it belongs.
             if( dob.getTitle() == null ) {
                 String title = null;
-                title = parsedURI.getDataRegistryPath();
-                if(title.contains(".") && title.contains("/")) 
-                {
-                    title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
-                }
+                title = new PDURI(pdURI).getLeafname();
                 dob.title(title);
                 log.info("Add title: " + title);
             }

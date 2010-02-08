@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
+import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Metadata;
 
@@ -61,6 +62,9 @@ public class JcrDigitalObjectContentResolver extends HttpServlet {
 		String id = request.getParameter(ID_PARAMETER_NAME);
 		try {
 			if(id==null) throw new DigitalObjectNotFoundException("id is null");
+			
+	         // Fix up any encoding issues:
+            id = PDURI.encodePlanetsUriStringAsUri(id).toASCIIString();
 			
 			// unfortunately, we have to search for the right metadata field
 			DigitalObject object = jcrDo.retrieve(new URI(id), false);			

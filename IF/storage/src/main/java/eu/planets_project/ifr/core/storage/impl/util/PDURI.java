@@ -235,7 +235,10 @@ public class PDURI {
 		_log.fine("returning :" + _retVal);
 		return _retVal;
 	}
-
+	
+	/**
+	 * @return
+	 */
 	public String[] getPathParts() {
 		return this._decodedPath;
 	}
@@ -252,7 +255,42 @@ public class PDURI {
         }
         return fullpath;
 	}
-	
+
+    /**
+     * @return The leafname of this entity. So, for /path/to/object.txt, return object.txt.
+     */
+    public String getLeafname() {
+        String leafname = null;
+        leafname = this.getDataRegistryPath();
+        // Strip any trailing slash:
+        if( leafname.endsWith("/") ) {
+            leafname = leafname.substring(0, leafname.length()-1);
+        }
+        // Strip any upper path info:
+        if( leafname.contains("/") ) 
+        {
+            // Strip any directory path information.
+            leafname = leafname.substring(leafname.lastIndexOf("/") + 1);
+        }
+        return leafname;
+    }
+
+	/**
+	 * Utility method to re-encode a PDURI that has been converted into a string back into a URI, correcting any encoding issues.
+	 * @param pdUri the PDURI, in a String.
+	 * @return null if not a valid PDURI.
+	 */
+    public static URI encodePlanetsUriStringAsUri( String pdUri ) {
+        if( pdUri == null || pdUri.length() == 0 ) return null;
+        try {
+            URI nuri = new URI("planets", pdUri.replaceFirst("planets:", ""), null);
+            return nuri;
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     /**
      * {@inheritDoc}
      * @see java.lang.Object#equals(java.lang.Object)
