@@ -16,8 +16,8 @@ import javax.mail.MessagingException;
  *
  */
 public class GetServiceProxy {
-	private static final String SERVICE_LOC = "http://192.168.245.51/BL.Dom.Gateway.Webservices/Access.asmx";
-	private static final String SERVICE_URI = "http://Access/Get";
+	private static final String SERVICE_LOC = "http://localhost:1824/Access.asmx?wsdl";
+	private static final String SERVICE_URI = "http://bl.uk/Get";
 	private URL serviceLocation = null;
 	private String soapUri = "";
 	private Message message = new Message();
