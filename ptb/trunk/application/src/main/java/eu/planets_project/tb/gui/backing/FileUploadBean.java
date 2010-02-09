@@ -84,15 +84,7 @@ public class FileUploadBean
         else ;        
         
         // Store the original name of the file.
-        originalName = _upFile.getName();
-        int lastSlash = originalName.lastIndexOf("/");
-        if( lastSlash != -1 ) {
-            originalName = originalName.substring( lastSlash + 1, originalName.length() );
-        }
-        lastSlash = originalName.lastIndexOf("\\");
-        if( lastSlash != -1 ) {
-            originalName = originalName.substring( lastSlash + 1, originalName.length() );
-        }
+        originalName = sanitizeFilename(_upFile.getName());
         log.info("Storing under name: " + originalName );
         
         // If keeping, submit to the data handler.
@@ -110,6 +102,18 @@ public class FileUploadBean
         log.info("Uploading DONE");
         
         return "success-upload";
+    }
+    
+    public static String sanitizeFilename( String originalName ) {
+        int lastSlash = originalName.lastIndexOf("/");
+        if( lastSlash != -1 ) {
+            originalName = originalName.substring( lastSlash + 1, originalName.length() );
+        }
+        lastSlash = originalName.lastIndexOf("\\");
+        if( lastSlash != -1 ) {
+            originalName = originalName.substring( lastSlash + 1, originalName.length() );
+        }
+        return originalName;
     }
     
     

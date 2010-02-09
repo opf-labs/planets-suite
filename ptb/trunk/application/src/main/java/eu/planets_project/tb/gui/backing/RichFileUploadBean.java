@@ -49,14 +49,15 @@ public class RichFileUploadBean {
     public void listener(UploadEvent event) throws Exception {
         log.info("Got: "+event.getUploadItems());
         UploadItem item = event.getUploadItem();
-        log.info("File : '" + item.getFileName() + "' was uploaded");
+        String filename = FileUploadBean.sanitizeFilename(item.getFileName());
+        log.info("File : '" + filename + "' was uploaded");
         URI furi = null;
         if (item.getFile() != null ) {
             File file = item.getFile();
             log.info("Absolute Path : '" + file.getAbsolutePath() + "'!");
             log.info("Adding file to the Data Registry.");
             try {
-				furi = dh.storeBytestream(new FileInputStream( file ) , item.getFileName() );
+				furi = dh.storeBytestream(new FileInputStream( file ) , filename );
 			} catch (FileNotFoundException e) {
                 log.error("File, FileNotFoundException: "+e);
 				e.printStackTrace();
@@ -66,7 +67,7 @@ public class RichFileUploadBean {
 			}
 
         } else if ( item.getData() != null ) {
-			furi = dh.storeBytearray(item.getData(), item.getFileName() );
+			furi = dh.storeBytearray(item.getData(), filename );
         	
         } else {
         	log.error("Upload failed: both Data and File are null!");

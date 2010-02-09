@@ -65,7 +65,7 @@
       <!-- Stage 3: Approve/Run Experiment -->
       <c:if test="#{ExperimentPhase == 3}">
         <h:commandButton value="#{res['reader_exp.buttonStage3']}" 
-              action="#{NewExp_Controller.goToStage4}" disabled="#{not NewExp_Controller.experimentExecutable.executionCompleted}"/>
+              action="#{NewExp_Controller.goToStage4}" disabled="#{! (ExperimentBean.experiment.currentPhaseIndex gt 5)}"/>
       </c:if>
       <!-- Stage 4: Experiment Results -->
       <c:if test="#{ExperimentPhase == 4}">

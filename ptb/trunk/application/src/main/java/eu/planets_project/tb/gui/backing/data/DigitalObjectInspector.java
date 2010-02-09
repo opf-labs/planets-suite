@@ -61,7 +61,7 @@ public class DigitalObjectInspector {
      * @param dobUri the dobUri to set
      */
     public void setDobUri(String dobUri) {
-        dobUri = fixBadEncoding(dobUri);
+        dobUri = uriEncoder(dobUri).toASCIIString();
         this.dobUri = dobUri;
     }
     
@@ -85,9 +85,9 @@ public class DigitalObjectInspector {
      * @param in
      * @return
      */
+    /*
     public static String fixBadEncoding( String in ) { 
         return in;
-        /*
         if( in == null ) return in;
         try {
             String out = new String( in.getBytes("ISO-8859-1"), "UTF-8" );
@@ -96,8 +96,8 @@ public class DigitalObjectInspector {
             e.printStackTrace();
             return in;
         }
-        */
     }
+        */
     
     /**
      * @param uri

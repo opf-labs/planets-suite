@@ -255,7 +255,6 @@
 		<navigation-case>
 			<from-outcome>browse_data</from-outcome>
 			<to-view-id>/reader/browse_data.xhtml</to-view-id>
-			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>browse_ontology</from-outcome>
@@ -365,7 +364,6 @@
 		<navigation-case>
 			<from-outcome>browseForData</from-outcome>
 			<to-view-id>/exp/browse_data.xhtml</to-view-id>
-            <redirect/>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>configAutoEvalSer</from-outcome>

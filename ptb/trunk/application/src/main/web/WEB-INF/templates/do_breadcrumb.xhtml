@@ -12,7 +12,7 @@
   <ui:composition rendered="#{dobs != null}">
 
                 <a4j:repeat value="#{dobs}" var="do">
-                    <h:commandLink action="browse_data" styleClass="locationLeaf" alt="#{do.uri}" title="#{do.uri}">
+                    <h:commandLink action="success" styleClass="locationLeaf" alt="#{do.uri}" title="#{do.uri}">
                       <h:outputText value="/#{do.leafname}"/>
                       <t:updateActionListener property="#{DobBrowser.dir}" value="#{do}" />
                     </h:commandLink>
