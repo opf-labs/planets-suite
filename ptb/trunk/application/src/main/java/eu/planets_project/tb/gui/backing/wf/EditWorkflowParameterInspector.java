@@ -519,6 +519,7 @@ public class EditWorkflowParameterInspector {
 	public class ServiceParameter implements Cloneable{
 		private String name;
 		private String value;
+		private String description;
 
 		public ServiceParameter() {
 		}
@@ -527,6 +528,12 @@ public class EditWorkflowParameterInspector {
 			this.name = n;
 			this.value = v;
 		}
+		
+		public ServiceParameter(String n, String v, String d) {
+			this.name = n;
+			this.value = v;
+			this.description = d;
+		}
 
 		public String getName() {
 			return this.name;
@@ -534,6 +541,14 @@ public class EditWorkflowParameterInspector {
 
 		public String getValue() {
 			return this.value;
+		}
+		
+		public String getDescription() {
+			return this.description;
+		}
+
+		public void setDescription(String d) {
+			this.description = d;
 		}
 
 		public void setName(String n) {

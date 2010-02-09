@@ -100,6 +100,9 @@ public class DigitalObjectInspector {
         */
     
     /**
+     * There are some characters that are allowed in URLs and should not be escaped as %xx
+     * e.g. blanks. These are not allowed in URIs.
+     * This method uses the URI constructor to fix those escapings. 
      * @param uri
      * @return
      */

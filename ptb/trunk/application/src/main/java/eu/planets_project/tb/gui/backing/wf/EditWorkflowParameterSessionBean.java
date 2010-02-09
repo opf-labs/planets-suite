@@ -92,7 +92,7 @@ public class EditWorkflowParameterSessionBean {
 				while (it.hasNext()) {
 					Parameter par = it.next();
 					ServiceParameter spar = reqParamInspector.new ServiceParameter(par
-							.getName(), par.getValue());
+							.getName(), par.getValue(), par.getDescription());
 					
 					//add the default params to the bean
 					this.addDefaultParameter(spar);
@@ -176,7 +176,7 @@ public class EditWorkflowParameterSessionBean {
 		Iterator<Parameter> iParam = paramList.iterator();
 		while(iParam.hasNext()){
 			Parameter serParam = iParam.next();
-			ServiceParameter serP = reqParamInspector.new ServiceParameter(serParam.getName(), serParam.getValue());
+			ServiceParameter serP = reqParamInspector.new ServiceParameter(serParam.getName(), serParam.getValue(), serParam.getDescription());
 			retList.add(serP);
 		}
 		return retList;

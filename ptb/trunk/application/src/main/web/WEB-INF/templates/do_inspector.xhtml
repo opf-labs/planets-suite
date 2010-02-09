@@ -127,7 +127,7 @@
                 
                   <p>
                     <h:commandButton action="#{NewExp_Controller.goToExperimentFromDataBrowser}"
-                        value="#{res['browse_data.returnToExperiment']}" />
+                        value="#{res['browse_data.returnToExperiment']}" rendered="#{isInExperiment}"/>
                 </p>
   
         

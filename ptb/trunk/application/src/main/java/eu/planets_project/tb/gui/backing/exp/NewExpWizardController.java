@@ -1693,7 +1693,7 @@ public class NewExpWizardController{
         		}
         	}
     	}
-    	context.getExternalContext().getSessionMap().put("browseData_comingFromStageID",-1);
+    	//context.getExternalContext().getSessionMap().put("browseData_comingFromStageID",-1);
     }
     
     /**
