@@ -2,7 +2,9 @@ package eu.planets_project.tb.impl.system.batch.backends.ifwee;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -10,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -154,6 +157,11 @@ public class WEEBatchExperimentTestbedUpdater {
                         execRecord.setEndDate(end);
 					}
 				}
+			
+				//1b. every service action gets persisted as a stage record
+				ExecutionStageRecordImpl stageRecord = fillInExecutionStageRecord(wfResultItem,execRecord,action,exp.getEntityID());
+	            execRecord.getStages().add(stageRecord);
+				
 				//2. or about some general reporting information
 				if(action.startsWith(WorkflowResultItem.GENERAL_WORKFLOW_ACTION)){
 					execRecord.setReportLog(this.parseReportLog(wfResultItem));
@@ -374,6 +382,34 @@ public class WEEBatchExperimentTestbedUpdater {
 			ret = wfResultItem.getLogInfo();
 		}
 		return ret;
+	}
+	
+	/**
+	 * Takes a workflow result item and filles in the TB's ExecutionStageRecord from it.
+	 * @param wfResultItem: the workflow result item we're building the execution stage record for
+	 * @param execRecord the parent record that takes the overall workflow's result
+	 * @param stageName a stage name to store this information for
+	 * @return
+	 */
+	private ExecutionStageRecordImpl fillInExecutionStageRecord(WorkflowResultItem wfResultItem, ExecutionRecordImpl execRecord, String stageName, long eid){
+		 ExecutionStageRecordImpl stage = new ExecutionStageRecordImpl(execRecord,stageName);
+         //for now just filling in the endpoint and serviceRecord information
+         try {
+        	 //1. set the stage's endpoint
+			 stage.setEndpoint(new URL(wfResultItem.getServiceEndpoint()));
+			 
+			 //2. create the service record information
+            if( stage.getEndpoint() != null ) {
+                log.info("Recording info about endpoint: "+stage.getEndpoint());
+                Calendar exectime = new GregorianCalendar();
+                exectime.setTimeInMillis(wfResultItem.getStartTime());
+                stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( eid, stage.getEndpoint(), exectime ) );
+            }
+		} catch (MalformedURLException e) {
+			log.debug("can't set stage's endpoint."+e);
+		}
+		return stage;
+		
 	}
 
 }
