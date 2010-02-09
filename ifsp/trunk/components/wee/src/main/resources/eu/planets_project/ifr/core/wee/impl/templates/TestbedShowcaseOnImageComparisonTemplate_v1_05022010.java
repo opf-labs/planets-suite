@@ -43,7 +43,7 @@ import eu.planets_project.services.migrate.MigrateResult;
 
 /**
  * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
- * @since 02.12.2009
+ * @since 05.02.2009
  */
 public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 		WorkflowTemplateHelper implements WorkflowTemplate {
@@ -268,7 +268,14 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 	
 		// document
 		wfResultItem.setServiceParameters(parameterList);
-		
+		// document the endpoint if available - retrieve from WorkflowContext
+		String endpoint = this.getWorkflowContext().getContextObject(
+				identifyService, WorkflowContext.Property_ServiceEndpoint,
+				java.lang.String.class);
+		if (endpoint != null) {
+			wfResultItem.setServiceEndpoint(new URL(endpoint));
+		}
+		wfResultItem.setStartTime(System.currentTimeMillis());
 		//call the identification service
 		IdentifyResult identifyResults = identifyService.identify(digo,parameterList);
 		
