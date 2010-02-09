@@ -118,9 +118,13 @@ public class ListExp extends SortableList {
           // Otherwise, search for the string toFind:
           log.debug("Searching experiments for: " + toFind );
           TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+          Collection<Experiment> allExps = null;
           // Only go if there is a string to search for:
-          if( toFind == null || "".equals(toFind)) return testbedMan.getAllExperiments();
-          Collection<Experiment> allExps = testbedMan.searchAllExperiments(toFind);
+          if( toFind == null || "".equals(toFind)) {
+              allExps = testbedMan.getAllExperiments();
+          } else {
+              allExps = testbedMan.searchAllExperiments(toFind);
+          }
           log.debug("Found "+allExps.size()+" matching experiment(s).");
            currExps = Collections.list(Collections.enumeration(allExps));
           sort(getSort(), isAscending());
@@ -196,7 +200,7 @@ public class ListExp extends SortableList {
 					return ascending ? c1.getExperimentSetup().getBasicProperties().getExperimenter().compareTo(c2.getExperimentSetup().getBasicProperties().getExperimenter()) : c2.getExperimentSetup().getBasicProperties().getExperimenter()
 									.compareTo(c1.getExperimentSetup().getBasicProperties().getExperimenter());
 				}
-                                if (column.equals("startDate"))
+                if (column.equals("startDate"))
 				{
                                     Date c1_startDate = null;
                                     if( c1.getStartDate() != null )
@@ -208,7 +212,7 @@ public class ListExp extends SortableList {
                                     if (c2_startDate==null) c2_startDate=Calendar.getInstance().getTime();
                                     return ascending ? c1_startDate.compareTo(c2_startDate) : c2_startDate.compareTo(c1_startDate);
 				}
-                                if (column.equals("exDate"))
+                if (column.equals("exDate"))
 				{
                                     Date c1_exDate = null;
                                     if( c1.getExperimentExecutable().getExecutionEndDate() != null )
@@ -220,7 +224,7 @@ public class ListExp extends SortableList {
                                     if (c2_exDate==null) c2_exDate=Calendar.getInstance().getTime();
                                     return ascending ? c1_exDate.compareTo(c2_exDate) : c2_exDate.compareTo(c1_exDate);
 				}
-                                if (column.equals("currentStage"))
+                if (column.equals("currentStage"))
 				{
                                         if ((c1.getCurrentPhase() != null) && (c2.getCurrentPhase() != null)) {
                                             return ascending ? new Integer(c1.getCurrentPhaseIndex()).compareTo(new Integer(c2.getCurrentPhaseIndex())) 
@@ -229,6 +233,15 @@ public class ListExp extends SortableList {
                                         else
                                             return 0;
 				}
+                if( column.equals("numOfInputs"))
+                {
+                    if( c1.getExperimentExecutable() != null && c2.getExperimentExecutable() != null ) {
+                        return ascending ? new Integer( c1.getExperimentExecutable().getNumberOfInputs()).compareTo(new Integer( c2.getExperimentExecutable().getNumberOfInputs()))
+                                : new Integer( c2.getExperimentExecutable().getNumberOfInputs()).compareTo(new Integer( c1.getExperimentExecutable().getNumberOfInputs()));
+                    }
+                    else
+                        return 0;
+                }
 				else
 					return 0;
 			}			

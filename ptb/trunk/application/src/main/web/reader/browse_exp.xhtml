@@ -47,10 +47,11 @@
                  cellpadding="2"
                  cellspacing="0"
                  border="1"
-                 binding="#{ListExp_Backing.allExp_data}">
+                 binding="#{ListExp_Backing.allExp_data}"
+                 rowIndexVar="row">
         <t:column>
             <f:facet name="header">
-                <t:commandSortHeader id="sortHeader_name" columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
+                <t:commandSortHeader id="sortName" columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
                     #{res['expList.colHeader.expName']}
                 </t:commandSortHeader>
             </f:facet>
@@ -84,19 +85,23 @@
         </t:column>
         <t:column>
 	        <f:facet name="header">
-	          <t:commandSortHeader id="sortHeader_type" columnName="type" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	          <t:commandSortHeader id="sortType" columnName="type" arrow="true" immediate="false" styleClass="tableHeaderSel">
 	    	      #{res['expList.colHeader.type']}
 				</t:commandSortHeader>
 			</f:facet>		      
             <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
         </t:column>
         <t:column>
-            <f:facet name="header">#{res['expList.colHeader.numberOfInputs']}</f:facet>
+            <f:facet name="header">
+              <t:commandSortHeader id="sortNumOfInputs" columnName="numOfInputs" arrow="true" immediate="false" styleClass="tableHeaderSel">
+                 #{res['expList.colHeader.numberOfInputs']}
+              </t:commandSortHeader>
+            </f:facet>
             <h:outputText value="#{exp.experimentExecutable.numberOfInputs}" />
         </t:column>
         <t:column>
 	        <f:facet name="header">
-	          <t:commandSortHeader id="sortHeader_startDate" columnName="startDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	          <t:commandSortHeader id="sortStartDate" columnName="startDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
 	    	      #{res['expList.colHeader.startDate']}
 		  </t:commandSortHeader>
 			</f:facet>		      
@@ -104,7 +109,7 @@
         </t:column>
         <t:column>
 	        <f:facet name="header">
-	          <t:commandSortHeader id="sortHeader_execDate" columnName="execDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	          <t:commandSortHeader id="sortExecDate" columnName="exDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
 	    	      #{res['expList.colHeader.exDate']}
 		  </t:commandSortHeader>
 			</f:facet>		      
@@ -112,7 +117,7 @@
         </t:column>        
         <t:column>
 	        <f:facet name="header">
-	          <t:commandSortHeader id="sortHeader_currentStage" columnName="currentStage" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	          <t:commandSortHeader id="sortCurrentStage" columnName="currentStage" arrow="true" immediate="false" styleClass="tableHeaderSel">
 	    	      #{res['expList.colHeader.currentStage']}
 		  </t:commandSortHeader>
 			</f:facet>		      
@@ -120,7 +125,7 @@
         </t:column>
         <t:column>
             <f:facet name="header">
-                <t:commandSortHeader id="sortHeader_experimenter" columnName="experimenter" arrow="true" immediate="false" styleClass="tableHeaderSel">
+                <t:commandSortHeader id="sortExperimenter" columnName="experimenter" arrow="true" immediate="false" styleClass="tableHeaderSel">
                     #{res['expList.colHeader.experimenterName']}
                 </t:commandSortHeader>
             </f:facet>
