@@ -371,9 +371,10 @@ public class ExperimentChartServlet extends HttpServlet {
                     Double time = null;
                     if(res.getExecutionDuration()!=null){
                     	//convert from milli seconds to seconds
-                    	time = (double)res.getExecutionDuration()/1000;
+                    	time = (double)res.getExecutionDuration()/1000.0;
                     }
                     log.info("Found DOB: {"+exr.getDigitalObjectReferenceCopy()+"} {"+dobName+"} w/ time "+time);
+                    log.info("Timing: "+res.getExecutionRecord().getStartDate()+" "+res.getExecutionRecord().getEndDate());
                     if( time != null ) {
                         if( res.getHasExecutionSucceededOK()) {
                             dataset.addValue( time, "Succeeded", dobName);

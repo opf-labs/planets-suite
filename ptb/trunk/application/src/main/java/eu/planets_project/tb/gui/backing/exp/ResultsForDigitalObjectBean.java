@@ -122,7 +122,7 @@ public class ResultsForDigitalObjectBean extends DigitalObjectBean {
     	if((this.getExecutionRecord()!=null)&&(this.getExecutionRecord().getEndDate()!=null)&&
     		(this.getExecutionRecord().getStartDate()!=null)){
     		
-    		if(this.getExecutionRecord().getEndDate().getTimeInMillis() > this.getExecutionRecord().getStartDate().getTimeInMillis()){
+    		if(this.getExecutionRecord().getEndDate().getTimeInMillis() >= this.getExecutionRecord().getStartDate().getTimeInMillis()){
     			return this.getExecutionRecord().getEndDate().getTimeInMillis() - this.getExecutionRecord().getStartDate().getTimeInMillis();
     		}
     	}
