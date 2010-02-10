@@ -204,7 +204,7 @@ public class FileTypeResolver {
     public String getMIMEType( String fileName ) 
     {
         String extension = fileName.substring( fileName.lastIndexOf('.') + 1 ); 
-        return (String) mappings.get( extension.toLowerCase() );
+        return mappings.get( extension.toLowerCase() );
     }
     
     
@@ -215,7 +215,7 @@ public class FileTypeResolver {
     {
         if ( mimetype == null )
             return null;
-        String ret = (String) printMappings.get( mimetype );
+        String ret = printMappings.get( mimetype );
         if (ret == null)
             return mimetype;
         else 
@@ -226,15 +226,15 @@ public class FileTypeResolver {
     /**
         @returns a (array)list of all extensions mapping the passed mime-type.
     */
-    public ArrayList getExtensions( String _mimetype ) 
+    public ArrayList<String> getExtensions( String _mimetype ) 
     {
         ArrayList<String> ret = new ArrayList<String>();
         if ( _mimetype == null )
             return ret;
-        Enumeration keys = mappings.keys();
+        Enumeration<String> keys = mappings.keys();
         while ( keys.hasMoreElements() == true) {
-            String extension = (String)keys.nextElement();
-            if ( _mimetype.equalsIgnoreCase( (String) mappings.get(extension) ) )
+            String extension = keys.nextElement();
+            if ( _mimetype.equalsIgnoreCase( mappings.get(extension) ) )
                 ret.add(extension);
             else ;    
         }    
@@ -252,7 +252,7 @@ public class FileTypeResolver {
     public String[] getMIMETypeArray()
     {
         ArrayList<String> ret = getMIMETypeList();
-        String[] arr = (String[]) ret.toArray( new String[0] );
+        String[] arr = ret.toArray( new String[0] );
         Arrays.sort( arr );
         return arr;
         
@@ -266,8 +266,8 @@ public class FileTypeResolver {
     public ArrayList<String> getMIMETypeList()
     {
         ArrayList<String> ret = new ArrayList<String>();        
-        for ( Enumeration e = mappings.elements() ; e.hasMoreElements() ;) {
-            String mt = (String) e.nextElement();
+        for ( Enumeration<String> e = mappings.elements() ; e.hasMoreElements() ;) {
+            String mt = e.nextElement();
             if ( ! ret.contains( mt ) )
                 ret.add( mt );
             }
