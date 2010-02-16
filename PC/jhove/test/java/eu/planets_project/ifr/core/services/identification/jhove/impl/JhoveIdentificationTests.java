@@ -12,6 +12,7 @@ import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -24,7 +25,6 @@ import eu.planets_project.services.utils.test.TestFile;
  * @author Fabian Steeg
  */
 public class JhoveIdentificationTests {
-    private static final String OCTET_STREAM = "info:pronom/x-fmt/411";
     static Identify jhove;
 
     /**
@@ -93,10 +93,15 @@ public class JhoveIdentificationTests {
         checkUnidentified(identify);
     }
     
-    private void checkUnidentified(IdentifyResult identify) {
-        URI uri = identify.getTypes().get(0);
-        /* Jhove identifies unknown files as "application/octet-stream" (x-fmt/411) */
-        Assert.assertEquals(OCTET_STREAM, uri.toString());
+    private void checkUnidentified(final IdentifyResult identify) {
+        /*
+         * Jhove identifies unknown files as "application/octet-stream" (which Droid categorizes as
+         * x-fmt/411, among others).
+         */
+        URI binaryUri = FormatRegistryFactory.getFormatRegistry().createPronomUri("x-fmt/411");
+        Assert.assertTrue(
+                "Identified types should contain corresponding type to 'application/octet-stream'",
+                identify.getTypes().contains(binaryUri));
         /* More info is available in the report message: */
         System.err.println(identify.getReport().getMessage());
     }
