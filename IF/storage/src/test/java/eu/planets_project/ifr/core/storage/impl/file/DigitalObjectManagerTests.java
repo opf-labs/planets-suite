@@ -121,7 +121,8 @@ public class DigitalObjectManagerTests {
 			URI newPurl = new File(AllStorageSuite.TEST_DATA_BASE, FILE).toURI();
 			DigitalObjectContent c2 = Content.byReference(newPurl.toURL().openStream());
 			DigitalObject expectedObject = new DigitalObject.Builder(c2).build(); 
-            assertEquals("Retrieve Digital Object content doesn't match that stored", expectedObject.getContent(),
+			
+            assertEquals("Retrieve Digital Object content ("+expectedObject.getContent()+") doesn't match that stored ("+retObject.getContent()+")", expectedObject.getContent(),
                     retObject.getContent());
 			// We can test that the list method works properly now also
 			// Get the root URI

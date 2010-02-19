@@ -124,8 +124,8 @@ public final class Property {
      */
     @Override
     public String toString() {
-        return String.format("%s [%s] '%s' = '%s' (description=%s unit=%s type=%s)", this.getClass().getSimpleName(),
-                uri, name, value, description, unit, type);
+        return String.format("%s [%s] '%s' = '%s' (unit=%s type=%s description=%s)", this.getClass().getSimpleName(),
+                uri, name, value, unit, type, description);
     }
 
     /**
