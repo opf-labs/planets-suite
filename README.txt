@@ -50,8 +50,13 @@ To build the pserv project, you need a tell it where Planets is installed.
 First, copy 'build.properties.template' to 'build.properties'. 
 
 Now, edit 'build.properties' to point at your IF installation. 
-This means setting the '' property so the same value as you used for 
-'framework.test.dir' in the IF framework properties file.
+This means setting the 'if_server.dir' property so the same value as you
+used for 'framework.test.dir' in the IF framework properties file.  The
+'if_server.conf' property should be set to the same  value as the the
+'framework.config.dir' in the IF framework properties file.
+
+The 'if_server.doms.config.dir' property points to a directory used to
+place Planets Data Registry configuration files.
 
 Once this is done, you should be able to build and deploy the services using
 
