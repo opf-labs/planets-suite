@@ -61,7 +61,9 @@ public class ServicePerformanceHelper {
 
     private long startSystemNanoTime;
     private long stopSystemNanoTime;
-
+    private long stopTransferNanoTime = -1;
+    private long stopLoadedNanoTime = -1;
+    
     private long startCpuNs;
     private long stopCpuNs;
     
@@ -83,7 +85,6 @@ public class ServicePerformanceHelper {
     private MemoryUsage stopHeapUsage;
     private MemoryUsage stopNonHeapUsage;
 
-    
     public ServicePerformanceHelper() {
         // Look for thread management bean:
         ThreadMXBean tmb = ManagementFactory.getThreadMXBean();
@@ -136,7 +137,29 @@ public class ServicePerformanceHelper {
             this.startUserNs = this.threadmxbean.getCurrentThreadCpuTime();
         }
     }
+    
+    /**
+     * Allows developers to specify when the service has finished retrieving data, and 
+     * is now only going to process the inputs and compose the response.
+     * Should only be used when it is really clear that the load/retrieval time can be 
+     * clearly distinguished from the processing time.
+     */
+    public void transferred() {
+        this.stopTransferNanoTime = System.nanoTime();
+    }
 
+    /**
+     * Allows developers to specify when the service has retrieved the data and 
+     * loaded it into memory, ready for processing.
+     * Should NOT be used if the data is not accessed in this manner.
+     */
+    public void loaded() {
+        this.stopLoadedNanoTime = System.nanoTime();
+    }
+
+    /**
+     * Stop all timers, as all work has been done apart from returning from the service call method.
+     */
     public void stop() {
         // Stop timers:
         this.stopSystemNanoTime = System.nanoTime();
@@ -166,7 +189,13 @@ public class ServicePerformanceHelper {
         List<Property> prps = ServiceProperties.collectSystemProperties();
         // Merge in other properties.
         // Timing properties:
-        prps.add( ServiceProperties.createWallClockTimeProperty( (stopSystemNanoTime - startSystemNanoTime)/NANO_MILLI ) );
+        prps.add( ServiceProperties.createWallclockTimeProperty( (stopSystemNanoTime - startSystemNanoTime)/NANO_MILLI ) );
+        if( stopTransferNanoTime >= 0 ) {
+            prps.add( ServiceProperties.createWallclockTransferTimeProperty( (stopTransferNanoTime - startSystemNanoTime)/NANO_MILLI ) );
+        }
+        if( stopLoadedNanoTime >= 0 ) {
+            prps.add( ServiceProperties.createWallclockLoadTimeProperty( (stopLoadedNanoTime - startSystemNanoTime)/NANO_MILLI ) );
+        }
         // Thread timings:
         if( threadmxbean != null ) {
             prps.add( ServiceProperties.createCpuTimeProperty((stopCpuNs - startCpuNs)/NANO_MILLI ) );
