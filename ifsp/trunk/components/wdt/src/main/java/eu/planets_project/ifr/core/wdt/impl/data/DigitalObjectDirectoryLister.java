@@ -1,13 +1,12 @@
 package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.net.URI;
-
 import java.util.List;
 import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 
 /**
  * 
@@ -23,7 +22,7 @@ public class DigitalObjectDirectoryLister {
     private static Logger log = Logger.getLogger(DigitalObjectDirectoryLister.class.getName());
     
     // The data sources are managed here:
-    DataRegistry dataRegistry = DataRegistryImpl.getInstance();
+    DataRegistry dataRegistry = DataRegistryFactory.getDataRegistry();
     
     public DigitalObjectReference getRootDigitalObject() {
         return new DigitalObjectReference( null );
