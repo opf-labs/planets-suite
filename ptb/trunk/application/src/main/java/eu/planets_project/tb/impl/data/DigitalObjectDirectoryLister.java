@@ -10,8 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.tb.api.data.DigitalObjectReference;
 
 /**
@@ -28,7 +28,7 @@ public class DigitalObjectDirectoryLister {
     private static Log log = LogFactory.getLog(DigitalObjectDirectoryLister.class);
     
     // The data sources are managed here:
-    DataRegistry dataReg = DataRegistryImpl.getInstance();
+    DataRegistry dataReg = DataRegistryFactory.getDataRegistry();
     
     /**
      * @return

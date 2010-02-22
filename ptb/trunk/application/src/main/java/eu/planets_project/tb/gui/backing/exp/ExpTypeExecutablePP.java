@@ -1,7 +1,6 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.io.BufferedReader;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,10 +26,8 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.xml.bind.JAXBException;
@@ -39,8 +36,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
@@ -58,20 +55,14 @@ import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.system.batch.BatchProcessor;
-import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
-import eu.planets_project.tb.gui.backing.exp.ExpTypeMigrate.MigrateResultForDO;
-import eu.planets_project.tb.gui.backing.exp.ExpTypeMigrate.MigrationResultBean;
-import eu.planets_project.tb.gui.backing.exp.ExpTypeViewer.CreateViewResultsForDO;
 import eu.planets_project.tb.gui.backing.exp.utils.ExpTypeWeeBean;
-import eu.planets_project.tb.gui.backing.exp.view.ViewResultBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.serialization.JaxbUtil;
 import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
 
 /**
@@ -417,7 +408,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
      * @throws URISyntaxException
      */
     private String helperReadDigoToString(String fileRef) throws IOException, DigitalObjectNotFoundException, URISyntaxException{
-    	DataRegistry digoManager = DataRegistryImpl.getInstance();
+    	DataRegistry digoManager = DataRegistryFactory.getDataRegistry();
     	URI uriRef = new URI(fileRef);
     	this.log.info("Retrieving Digital Object at " + uriRef);
 		DigitalObject xmlTemplateDigo = digoManager.retrieve(new URI(fileRef));

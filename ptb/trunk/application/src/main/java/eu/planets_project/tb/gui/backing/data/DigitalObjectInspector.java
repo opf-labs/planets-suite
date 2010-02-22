@@ -22,7 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -45,7 +45,7 @@ public class DigitalObjectInspector {
     static private Log log = LogFactory.getLog(DigitalObjectInspector.class);
     
     // The data sources are managed here:
-    DataRegistry dataReg = DataRegistryImpl.getInstance();
+    DataRegistry dataReg = DataRegistryFactory.getDataRegistry();
     
     private String dobUri;
 

@@ -30,11 +30,11 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.data.util.DataHandler;
@@ -71,7 +71,7 @@ import eu.planets_project.tb.impl.system.BackendProperties;
 public class DataHandlerImpl implements DataHandler {
     
     // A reference to the data manager itself:
-    DataRegistry dataReg = DataRegistryImpl.getInstance();
+    DataRegistry dataReg = DataRegistryFactory.getDataRegistry();
 
 	// A Log for this:
     private Log log = LogFactory.getLog(DataHandlerImpl.class);
@@ -447,7 +447,7 @@ public class DataHandlerImpl implements DataHandler {
 		    	URI uriRef = new URI(fileRef);
 		    	this.log.info("Retrieving Digital Object at " + uriRef);
 				DigitalObject refByValueDigo = 
-					((DataRegistryImpl) this.dataReg).retrieveAsTBReference(new URI(fileRef));
+					DataRegistryFactory.retrieveAsTbReference(dataReg, new URI(fileRef));
 				ret.add(refByValueDigo);
 		    } catch (DigitalObjectNotFoundException e) {
 				// TODO Auto-generated catch block

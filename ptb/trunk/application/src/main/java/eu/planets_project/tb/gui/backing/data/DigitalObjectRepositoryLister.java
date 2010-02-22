@@ -13,8 +13,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 
 
 /**
@@ -31,7 +31,7 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
     private static Log log = LogFactory.getLog(DigitalObjectRepositoryLister.class);
     
     // The data sources are managed here:
-    DataRegistry dataReg = DataRegistryImpl.getInstance();
+    DataRegistry dataReg = DataRegistryFactory.getDataRegistry();
     
     /**
      * @return

@@ -16,7 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -25,13 +24,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
@@ -52,7 +50,7 @@ public class DigitalObjectCompare {
     static private Log log = LogFactory.getLog(DigitalObjectCompare.class);
     
     // The data sources are managed here:
-    DataRegistry dataRegistry = DataRegistryImpl.getInstance();
+    DataRegistry dataRegistry = DataRegistryFactory.getDataRegistry();
     
     private String dobUri1;
     private String dobUri2;
@@ -103,7 +101,7 @@ public class DigitalObjectCompare {
             return null;
         }
         // Lookup and return:
-        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, DataRegistryImpl.getInstance() );
+        DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, DataRegistryFactory.getDataRegistry() );
         return itemNode;
     }
     
