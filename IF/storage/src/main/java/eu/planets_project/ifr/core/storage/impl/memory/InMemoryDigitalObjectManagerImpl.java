@@ -3,25 +3,16 @@
  */
 package eu.planets_project.ifr.core.storage.impl.memory;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.jcr.Node;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
-import eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl;
-import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRConstants;
 import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.services.datatypes.DigitalObject;
 

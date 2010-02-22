@@ -20,6 +20,8 @@ import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.storage.AllStorageSuite;
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
@@ -46,7 +48,7 @@ public class DataRegistryTests {
 		new TestFile[]{TestFile.HTML, TestFile.RTF, TestFile.TXT, TestFile.XML};
 	
 	// The DataRegistry to test
-	private static DataRegistryImpl dataReg = null;
+	private static DataRegistry dataReg = null;
 	
 	private static HashMap<URI, Configuration> testDoms = new HashMap<URI, Configuration>();
 
@@ -56,7 +58,7 @@ public class DataRegistryTests {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		// Sort out the "preloaded" data registry harness
-		DataRegistryTests.dataReg = DataRegistryImpl.getInstance();
+		DataRegistryTests.dataReg = DataRegistryFactory.getDataRegistry();
 	}
 
 	
@@ -93,7 +95,7 @@ public class DataRegistryTests {
 	/**
 	 * Test consistency of hasDigitalObjectManager()
 	 * 
-	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.DataRegistryImpl#hasDigitalObjectManager(java.net.URI)}.
+	 * Test method for {@link eu.planets_project.ifr.core.storage.api.DataRegistryImpl#hasDigitalObjectManager(java.net.URI)}.
 	 */
 	@Test
 	public final void testPreLoadHasDigitalObjectManager() {
@@ -107,7 +109,7 @@ public class DataRegistryTests {
 	/**
 	 * Test consistency of hasDigitalObjectManager()
 	 * 
-	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.DataRegistryImpl#hasDigitalObjectManager(java.net.URI)}.
+	 * Test method for {@link eu.planets_project.ifr.core.storage.api.DataRegistryImpl#hasDigitalObjectManager(java.net.URI)}.
 	 * @throws DigitalObjectManagerNotFoundException 
 	 */
 	@Test
@@ -128,7 +130,7 @@ public class DataRegistryTests {
 	}
 		
 	/**
-	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.DataRegistryImpl#getDigitalObjectManager(java.net.URI)}.
+	 * Test method for {@link eu.planets_project.ifr.core.storage.api.DataRegistryImpl#getDigitalObjectManager(java.net.URI)}.
 	 * @throws DigitalObjectManagerNotFoundException 
 	 */
 	@Test
@@ -148,7 +150,7 @@ public class DataRegistryTests {
 
 		
 	/**
-	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.DataRegistryImpl#storeAsNew(eu.planets_project.services.datatypes.DigitalObject)}.
+	 * Test method for {@link eu.planets_project.ifr.core.storage.api.DataRegistryImpl#storeAsNew(eu.planets_project.services.datatypes.DigitalObject)}.
 	 */
 	@Test
 	public final void testPreLoadStoreAsNewDefault() {
@@ -165,7 +167,7 @@ public class DataRegistryTests {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.DataRegistryImpl#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)}.
+	 * Test method for {@link eu.planets_project.ifr.core.storage.api.DataRegistryImpl#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)}.
 	 */
 	@Test
 	public final void testPreLoadStoreAsNew() {
@@ -185,7 +187,7 @@ public class DataRegistryTests {
 	}
 	
 	/**
-	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.DataRegistryImpl#getDigitalObjectManager(java.net.URI)}.
+	 * Test method for {@link eu.planets_project.ifr.core.storage.api.DataRegistryImpl#getDigitalObjectManager(java.net.URI)}.
 	 * @throws DigitalObjectManagerNotFoundException 
 	 */
 	@Test

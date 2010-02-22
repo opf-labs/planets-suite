@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.services.datatypes.DigitalObject;
 
@@ -45,7 +44,7 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 				this.description = "";
 			}
 			this.checkConstructorArguments(name);
-			this.id = DataRegistryImpl.createDataRegistryIdFromName(name).normalize();
+			this.id = DataRegistryFactory.createDataRegistryIdFromName(name).normalize();
 			this.name = name;
 		} catch (NoSuchElementException e) {
 			throw new IllegalArgumentException("Every DOM properties file must have a " +

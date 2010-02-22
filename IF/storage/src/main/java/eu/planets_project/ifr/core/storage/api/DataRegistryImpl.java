@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.storage.impl;
+package eu.planets_project.ifr.core.storage.api;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -24,16 +24,10 @@ import org.jboss.annotation.ejb.RemoteBinding;
 import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
-import eu.planets_project.ifr.core.common.conf.ConfigurationException;
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.common.conf.ServiceConfig;
-import eu.planets_project.ifr.core.storage.api.DataRegistry;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
-import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
-import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
 import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.ifr.core.storage.impl.util.TBContentResolver;
 import eu.planets_project.services.datatypes.Content;
@@ -43,6 +37,7 @@ import eu.planets_project.services.datatypes.Event;
 import eu.planets_project.services.datatypes.Metadata;
 
 /**
+ * Package private DataRegistry implementation, to be instantiated using the DataRegistryFactory.
  * @author CFWilson
  *
  */
@@ -52,7 +47,7 @@ import eu.planets_project.services.datatypes.Metadata;
 @LocalBinding(jndiBinding="planets-project.eu/DataRegistry/local")
 @RemoteBinding(jndiBinding="planets-project.eu/DataRegistry/remote")
 @SecurityDomain("PlanetsRealm")
-public class DataRegistryImpl implements DataRegistry {
+class DataRegistryImpl implements DataRegistry {
 	// The logger
 	private static Logger log = Logger.getLogger(DataRegistryImpl.class.getName());
 
@@ -266,7 +261,7 @@ public class DataRegistryImpl implements DataRegistry {
 	 * @return A DigitalObject where the content is guaranteed to be a TB reference
 	 * @throws DigitalObjectNotFoundException
 	 */
-	public DigitalObject retrieveAsTBReference(URI pdURI)
+	public DigitalObject retrieveAsTbReference(URI pdURI)
 			throws DigitalObjectNotFoundException {
 		// The return value
 		DigitalObject finalObj = null;

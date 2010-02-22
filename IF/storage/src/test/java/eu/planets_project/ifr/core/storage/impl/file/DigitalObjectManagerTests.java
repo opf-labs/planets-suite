@@ -6,7 +6,6 @@ package eu.planets_project.ifr.core.storage.impl.file;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,18 +15,16 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 import eu.planets_project.ifr.core.storage.AllStorageSuite;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
-import eu.planets_project.ifr.core.storage.impl.DataRegistryImpl;
 import eu.planets_project.ifr.core.storage.impl.file.temp.TempFilesystemDigitalObjectManagerImpl;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -74,7 +71,7 @@ public class DigitalObjectManagerTests {
 		List<URI> rootResults = _dom.list(null);
 		System.out.println("Performing the null URI test to obtain root URI");
 		List<URI> expectedResults = new ArrayList<URI>();
-		expectedResults.add(DataRegistryImpl.createDataRegistryIdFromName(_dom.getName()));
+		expectedResults.add(DataRegistryFactory.createDataRegistryIdFromName(_dom.getName()));
 		// We should only have a single URI in the returned results
 		assertEquals("Too many results returned, expecting one and got " + rootResults.size(),
 				expectedResults.size(),	rootResults.size());
