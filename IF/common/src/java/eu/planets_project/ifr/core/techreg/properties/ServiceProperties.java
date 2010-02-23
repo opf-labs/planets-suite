@@ -13,6 +13,7 @@ package eu.planets_project.ifr.core.techreg.properties;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
@@ -21,7 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
 import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * @author AnJackson
@@ -39,6 +45,10 @@ public class ServiceProperties {
     /** A standard Planets identifier for the wall-clock time a process takes to execute. */
     public static final URI SERVICE_WALLCLOCK_PROP = URI.create("planets:service/exec/wallclock");
     /** */
+    public static final URI SERVICE_WALLCLOCK_TRANSFER_PROP = URI.create("planets:service/exec/wallclock/transfer");
+    /** */
+    public static final URI SERVICE_WALLCLOCK_LOAD_PROP = URI.create("planets:service/exec/wallclock/load");
+    /** */
     public static final URI SERVICE_CPU_TIME_PROP = URI.create("planets:service/exec/cpu");
     /** */
     public static final URI SERVICE_USER_TIME_PROP = URI.create("planets:service/exec/user");
@@ -48,21 +58,71 @@ public class ServiceProperties {
     public static final URI SERVICE_PEAK_HEAP_PROP = URI.create("planets:service/mem/heap/peak");
     /** */
     public static final URI SERVICE_PEAK_NONHEAP_PROP = URI.create("planets:service/mem/non-heap/peak");
-    
+
+    /**
+     * @return A list of all known service properties, including some values.
+     */
+    public static List<Property> listAllProperties() {
+        List<Property> ps = new ArrayList<Property>();
+        // Go through the properties here:
+        ps.add( ServiceProperties.createClassesLoadedProperty(0) );
+        ps.add( ServiceProperties.createCompilationTimeProperty(0) );
+        ps.add( ServiceProperties.createCpuTimeProperty(0) );
+        ps.add( ServiceProperties.createPeakHeapMemoryProperty(0) );
+        ps.add( ServiceProperties.createPeakNonHeapMemoryProperty(0) );
+        ps.add( ServiceProperties.createTotalJavaMemoryProperty(0) );
+        ps.add( ServiceProperties.createUserTimeProperty(0) );
+        ps.add( ServiceProperties.createWallclockLoadTimeProperty(0) );
+        ps.add( ServiceProperties.createWallclockTimeProperty(0) );
+        ps.add( ServiceProperties.createWallclockTransferTimeProperty(0) );
+        ps.addAll( ServiceProperties.collectSystemProperties() );
+        return ps;
+    }
     
     /**
-     * A utility to construct a 'wall-clock' time estimate from two times, as gleaned from System.currentTimeMillis()
-     * 
-     * @param startTimeInMillis
-     * @param endTimeInMillis
+     * @param argv
+     */
+    public static void main( String[] argv ) {
+        PropertyDefinitionFile pdf = new PropertyDefinitionFile(listAllProperties());
+        System.out.println(pdf.toXmlFormatted());
+    }
+     
+    /**
+     * @param elapsed time in milliseconds
      * @return A Property for this value.
      */
-    public static Property createWallClockTimeProperty(double elapsedMillis ) {
+    public static Property createWallclockTimeProperty(double elapsedMillis ) {
         Property.Builder p = new Property.Builder( SERVICE_WALLCLOCK_PROP );
         p.name("Wall-clock time");
         p.value(""+((elapsedMillis)/1000.0));
         p.unit("s");
         p.description("The elapsed time, as would be measured by a clock on the wall.");
+        return p.build();
+    }
+
+    /**
+     * @param elapsedMillis
+     * @return
+     */
+    public static Property createWallclockTransferTimeProperty(double elapsedMillis ) {
+        Property.Builder p = new Property.Builder( SERVICE_WALLCLOCK_TRANSFER_PROP );
+        p.name("Wall-clock transfer time");
+        p.value(""+((elapsedMillis)/1000.0));
+        p.unit("s");
+        p.description("The elapsed time taken to transfer the content to the service, as would be measured by a clock on the wall.");
+        return p.build();
+    }
+
+    /**
+     * @param elapsedMillis
+     * @return
+     */
+    public static Property createWallclockLoadTimeProperty(double elapsedMillis ) {
+        Property.Builder p = new Property.Builder( SERVICE_WALLCLOCK_LOAD_PROP );
+        p.name("Wall-clock load time");
+        p.value(""+((elapsedMillis)/1000.0));
+        p.unit("s");
+        p.description("The elapsed time taken to transfer the content to the service and load it into memory, as would be measured by a clock on the wall.");
         return p.build();
     }
 
@@ -105,7 +165,7 @@ public class ServiceProperties {
         Property.Builder p = new Property.Builder( SERVICE_COMPILE_TIME_PROP );
         p.name("Classes loaded");
         p.value(""+loaded);
-        p.unit("");
+        p.unit(null);
         p.description("The number of classes loaded into the JVM during execution.");
         return p.build();
     }
@@ -156,8 +216,11 @@ public class ServiceProperties {
         ByteArrayOutputStream byos = new ByteArrayOutputStream();
         try {
             p.storeToXML(byos, "Automatically generated server description.", "UTF-8");
-            Property jspp = new Property(ENV_JAVA_SYS_PROP,"Java JVM System Properties", byos.toString("UTF-8") );
-            return jspp;
+            Property.Builder jspp = new Property.Builder(ENV_JAVA_SYS_PROP);
+            jspp.name( "Java JVM System Properties");
+            jspp.value( byos.toString("UTF-8") );
+            jspp.description("The JVM System Propertes, as enumerated by System.getProperties(), encoded in UTF-8 as XML via Properties.storeToXML. Contains a list of the JVM system properties, including platform and VM details etc.");
+            return jspp.build();
         } catch ( IOException e ) {
             // Fail silently.
             log.fine("IOException when storing server properties to XML. "+e);
