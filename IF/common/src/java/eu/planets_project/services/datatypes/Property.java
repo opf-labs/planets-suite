@@ -39,13 +39,13 @@ public final class Property {
     @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     private String name = "";
     @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
-    private String value = "";
+    private String value = null;
     @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
-    private String unit = "";
+    private String unit = null;
     @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     private String description = "";
     @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
-    private String type = "";
+    private String type = null;
 
     /** For JAXB. */
     @SuppressWarnings("unused")
@@ -137,10 +137,10 @@ public final class Property {
         private final URI uri;
         /* Defaults for optional values are set here: */
         private String name = "";
-        private String value = "";
+        private String value = null;
         private String description = "";
-        private String unit = "";
-        private String type = "";
+        private String unit = null;
+        private String type = null;
 
         /**
          * @param uri The property id
@@ -151,6 +151,19 @@ public final class Property {
                 throw new IllegalArgumentException("Property ID uri must not be null!");
             }
             this.uri = uri;
+        }
+
+        /**
+         * Create a new property by cloning and existing one.
+         * @param p The property to clone into this builder.
+         */
+        public Builder( final Property p ) {
+            uri = p.uri;
+            name = p.name;
+            value = p.value;
+            description = p.description;
+            unit = p.unit;
+            type = p.type;
         }
 
         /**
