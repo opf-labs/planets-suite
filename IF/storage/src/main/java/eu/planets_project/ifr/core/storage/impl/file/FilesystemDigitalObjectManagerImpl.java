@@ -301,7 +301,7 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
     //=============================================================================================
 	// PRIVATE & PROTECTED METHODS
 	//=============================================================================================
-	private void checkConstructorArguments(File root) throws IllegalArgumentException {
+	protected void checkConstructorArguments(File root) throws IllegalArgumentException {
 		// Ensure root is not null
 		if (root == null) {
 			String message = "Supplied root dir is null";

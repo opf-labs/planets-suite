@@ -31,8 +31,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
 
 /**
- * @author CFWilson
- *
+ * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
 public class DigitalObjectManagerTests {
 

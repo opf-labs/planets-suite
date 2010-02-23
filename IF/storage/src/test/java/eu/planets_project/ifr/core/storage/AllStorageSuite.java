@@ -8,7 +8,7 @@ import eu.planets_project.ifr.core.storage.impl.file.DigitalObjectManagerTests;
 import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerTests;
 
 /**
- * @author CFWilson
+ * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { DigitalObjectManagerTests.class,
