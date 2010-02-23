@@ -19,7 +19,10 @@ public class AllStorageSuite {
 	 * Just some public statics for the other test classes
 	 * If the project structure is changed these only need changing here
 	 */
+	/** The base test source folder */
 	public static final String SRC_TEST = "IF/storage/src/test/";
+	/** The test resource folder */
 	public static final String RESOURCE_BASE = SRC_TEST + "resources/";
+	/** The test data folder */
 	public static final String TEST_DATA_BASE = RESOURCE_BASE + "testdata/";
 }
