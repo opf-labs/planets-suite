@@ -39,7 +39,7 @@ import eu.planets_project.services.migrate.MigrateResult;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class DiaMigrationService implements Migrate, Serializable {
 
-    /** The service name */
+    /** The service name to use when publishing this service. **/
     static final String NAME = "DiaMigrationService";
 
     /**
@@ -54,7 +54,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
     /** The unique class id of this migration class **/
     private static final long serialVersionUID = 4596228292063217306L;
 
-    private Logger log = Logger.getLogger(DiaMigrationService.class.getName());
+    private Logger log = Logger.getLogger(this.getClass().getName());
 
     /**
      * {@inheritDoc}
@@ -74,8 +74,8 @@ public final class DiaMigrationService implements Migrate, Serializable {
 		    .getConfiguration(RUN_TIME_CONFIGURATION_FILE_NAME);
 
 	    GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
-		    documentLocator.getDocument(), runtimeConfiguration,
-		    DiaMigrationService.class.getCanonicalName());
+		    documentLocator.getDocument(), runtimeConfiguration, this
+			    .getClass().getCanonicalName());
 
 	    return genericWrapper.migrate(digitalObject, inputFormat,
 		    outputFormat, parameters);
@@ -104,11 +104,9 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	    final Configuration runtimeConfiguration = ServiceConfig
 		    .getConfiguration(RUN_TIME_CONFIGURATION_FILE_NAME);
 
-	    // TODO: Is this the correct way to obtain the canonical name? Is it
-	    // the correct canonical name?
 	    GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
-		    documentLocator.getDocument(), runtimeConfiguration,
-		    DiaMigrationService.class.getCanonicalName());
+		    documentLocator.getDocument(), runtimeConfiguration, this
+			    .getClass().getCanonicalName());
 
 	    return genericWrapper.describe();
 
