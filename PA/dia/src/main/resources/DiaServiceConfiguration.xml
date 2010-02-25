@@ -45,8 +45,7 @@
         </version>
 
 		<creator>
-			<![CDATA["Pelle Kofod <pko@statsbiblioteket.dk>",
-			"Thomas Skou Hansen <tsh@statsbiblioteket.dk>"]]>
+			<![CDATA["Thomas Skou Hansen <tsh@statsbiblioteket.dk>"]]>
 		</creator>
 
 		<identifier>Example_custom_identifier</identifier>

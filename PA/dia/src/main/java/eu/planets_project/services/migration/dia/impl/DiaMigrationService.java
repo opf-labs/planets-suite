@@ -29,7 +29,6 @@ import eu.planets_project.services.migrate.MigrateResult;
 /**
  * Wrapped Dia migration service implementation.
  * 
- * @author Bolette Ammitzbøll Jurik (bam@statsbiblioteket.dk)
  * @author Thomas Skou Hansen (tsh@statsbiblioteket.dk)
  */
 @Local(Migrate.class)
