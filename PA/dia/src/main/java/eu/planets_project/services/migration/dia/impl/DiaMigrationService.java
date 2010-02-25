@@ -27,7 +27,7 @@ import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 
 /**
- * DiaMigrationService testing service.
+ * Wrapped Dia migration service implementation.
  * 
  * @author Bolette Ammitzbøll Jurik (bam@statsbiblioteket.dk)
  * @author Thomas Skou Hansen (tsh@statsbiblioteket.dk)
@@ -42,9 +42,16 @@ public final class DiaMigrationService implements Migrate, Serializable {
     /** The service name */
     static final String NAME = "DiaMigrationService";
 
-    static final String CONFIG_FILE_NAME = "DiaServiceConfiguration.xml";
+    /**
+     * The file name of the static configuration for the generic wrapping
+     * framework.
+     **/
+    private static final String SERVICE_CONFIG_FILE_NAME = "DiaServiceConfiguration.xml";
 
-    /** The unique class id */
+    /** The file name of the dynamic run-time configuration **/
+    private static final String RUN_TIME_CONFIGURATION_FILE_NAME = "pserv-pa-dia";
+
+    /** The unique class id of this migration class **/
     private static final long serialVersionUID = 4596228292063217306L;
 
     private Logger log = Logger.getLogger(DiaMigrationService.class.getName());
@@ -59,39 +66,31 @@ public final class DiaMigrationService implements Migrate, Serializable {
     public MigrateResult migrate(final DigitalObject digitalObject,
 	    URI inputFormat, URI outputFormat, List<Parameter> parameters) {
 
-	final DocumentLocator documentLocator = new DocumentLocator(CONFIG_FILE_NAME);
-
-	MigrateResult migrationResult;
 	try {
+	    final DocumentLocator documentLocator = new DocumentLocator(
+		    SERVICE_CONFIG_FILE_NAME);
+
 	    final Configuration runtimeConfiguration = ServiceConfig
-		    .getConfiguration("pserv-pa-dia");
+		    .getConfiguration(RUN_TIME_CONFIGURATION_FILE_NAME);
 
 	    GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
 		    documentLocator.getDocument(), runtimeConfiguration,
 		    DiaMigrationService.class.getCanonicalName());
 
-	    migrationResult = genericWrapper.migrate(digitalObject,
-		    inputFormat, outputFormat, parameters);
+	    return genericWrapper.migrate(digitalObject, inputFormat,
+		    outputFormat, parameters);
 
-	    // TODO: Some of this exception handling should probably be
-	    // performed by the generic wrapper. However, exceptions thrown by
-	    // the GenericWrapper constructor must be handled here.
-	} catch (Exception e) {
-	    log
-		    .log(Level.SEVERE,
-			    "Migration failed for object with title '"
-				    + digitalObject.getTitle()
-				    + "' from input format URI: " + inputFormat
-				    + " to output format URI: " + outputFormat,
-			    e);
+	} catch (Exception exception) {
+	    log.log(Level.SEVERE, "Migration failed for object with title '"
+		    + digitalObject.getTitle() + "' from input format URI: "
+		    + inputFormat + " to output format URI: " + outputFormat,
+		    exception);
+
 	    ServiceReport serviceReport = new ServiceReport(Type.ERROR,
-		    Status.TOOL_ERROR, e.toString());
+		    Status.TOOL_ERROR, exception.toString());
 
-	    // FIXME! Report failure in a proper way.
 	    return new MigrateResult(null, serviceReport);
 	}
-
-	return migrationResult;
     }
 
     /**
@@ -99,14 +98,11 @@ public final class DiaMigrationService implements Migrate, Serializable {
      */
     public ServiceDescription describe() {
 
-	// DO NOT GET INSPIRED BY THIS METHOD, YET!
-	// The generic wrapper does not yet properly implement the describe()
-	// method, thus, you cannot implement your own using that.
-
-	final DocumentLocator documentLocator = new DocumentLocator(CONFIG_FILE_NAME);
+	final DocumentLocator documentLocator = new DocumentLocator(
+		SERVICE_CONFIG_FILE_NAME);
 	try {
 	    final Configuration runtimeConfiguration = ServiceConfig
-		    .getConfiguration("pserv-pa-dia");
+		    .getConfiguration(RUN_TIME_CONFIGURATION_FILE_NAME);
 
 	    // TODO: Is this the correct way to obtain the canonical name? Is it
 	    // the correct canonical name?
@@ -127,44 +123,5 @@ public final class DiaMigrationService implements Migrate, Serializable {
 		    NAME, Migrate.class.getCanonicalName());
 	    return serviceDescriptionBuilder.build();
 	}
-
-	// TODO: TSH will kill this chunk when it is time....
-	// try {
-	// ServiceDescription.Builder serviceDescriptionBuilder = new
-	// ServiceDescription.Builder(
-	// NAME, Migrate.class.getCanonicalName());
-	// serviceDescriptionBuilder.classname(this.getClass()
-	// .getCanonicalName());
-	// serviceDescriptionBuilder
-	// .description("File migration service using Dia.");
-	// serviceDescriptionBuilder
-	// .author("Bolette Ammitzbøll Jurik <bam@statsbiblioteket.dk>, Thomas Skou Hansen <tsh@statsbiblioteket.dk>");
-	// serviceDescriptionBuilder.furtherInfo(null);
-	// serviceDescriptionBuilder.inputFormats(getAllowedInputFormatURIs()
-	// .toArray(new URI[] {}));
-	// serviceDescriptionBuilder.paths(MigrationPath.constructPaths(
-	// getAllowedInputFormatURIs(), getAllowedOutputFormatURIs())
-	// .toArray(new MigrationPath[] {}));
-	// // serviceDescriptionBuilder.furtherInfo(null);
-	// // serviceDescriptionBuilder.identifier(null);
-	//	
-	// // serviceDescriptionBuilder.inputFormats(null);
-	// // serviceDescriptionBuilder.instructions(null);
-	// // serviceDescriptionBuilder.name(null);
-	// // serviceDescriptionBuilder.parameters(null);
-	//	
-	// // serviceDescriptionBuilder.paths(new
-	// //
-	// GenericCLIMigrationWrapper(configfile).getMigrationPaths().getAsPlanetsPaths());
-	// // serviceDescriptionBuilder.properties(null);
-	// // serviceDescriptionBuilder.serviceProvider(null);
-	// // serviceDescriptionBuilder.tool(null);
-	// // serviceDescriptionBuilder.type(null);
-	// // serviceDescriptionBuilder.version(null);
-	//	
-	// return serviceDescriptionBuilder.build();
-	// } catch (Exception e) {
-	// throw new Error("Failed building migration path information.", e);
-	// }
     }
 }
