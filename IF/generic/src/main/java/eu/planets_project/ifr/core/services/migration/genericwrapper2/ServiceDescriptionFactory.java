@@ -4,7 +4,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -135,8 +138,26 @@ class ServiceDescriptionFactory {
 	    builder.description(getOptionalElementText(serviceDescriptionNode,
 		    ConfigurationFileTagsV1.DESCRIPTION_ELEMENT));
 
-	    builder.identifier(getOptionalElementText(serviceDescriptionNode,
-		    ConfigurationFileTagsV1.IDENTIFIER_ELEMENT));
+	    String identifier = getOptionalElementText(serviceDescriptionNode,
+		    ConfigurationFileTagsV1.IDENTIFIER_ELEMENT);
+	    
+	    if (identifier == null || "".equals(identifier)) {
+		try {
+
+		    // FIXME! TSH finish this!
+		    final String identifierString = canonicalServiceName;
+		    
+		    final MessageDigest identDigest = MessageDigest.getInstance("MD5");
+		    identDigest.update(identifierString.getBytes());
+		    identifier = Arrays.toString(identDigest.digest());
+		
+		} catch (NoSuchAlgorithmException nsae) {
+		    // There is nothing we can do...
+		    throw new RuntimeException(nsae);
+		}
+	    }
+	    
+	    builder.identifier(identifier);
 
 	    builder.instructions(getOptionalElementText(serviceDescriptionNode,
 		    ConfigurationFileTagsV1.INSTRUCTIONS_ELEMENT));

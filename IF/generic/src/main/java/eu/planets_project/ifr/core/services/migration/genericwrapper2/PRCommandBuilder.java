@@ -127,21 +127,31 @@ class PRCommandBuilder {
 		    .get(commandFragmentIdx);
 
 	    final StringTokenizer stringTokenizer = new StringTokenizer(
-		    commandFragment);
+		    commandFragment, "#");
+
+	    // TODO: This is quick'n'dirty cowboy-code. I (TSH) think it could
+	    // be written more elegant and robust.
 
 	    String substitudedString = "";
+	    if (stringTokenizer.hasMoreElements() == false) {
+		// The command fragment contains no identifiers.
+		substitudedString = commandFragment;
+	    }
+
 	    while (stringTokenizer.hasMoreTokens()) {
 
 		String token = stringTokenizer.nextToken();
-		if (token.charAt(0) == '#') {
-		    token = token.substring(1);
-		    substitudedString += identifierMap.get(token);
-		} else {
-		    substitudedString += token;
+
+		int identifierEnd = token.indexOf(' ');
+
+		if (identifierEnd == -1) {
+		    identifierEnd = token.length();
 		}
 
-		substitudedString += (stringTokenizer.hasMoreTokens()) ? " "
-			: "";
+		final String identifier = token.substring(0, identifierEnd);
+
+		substitudedString += identifierMap.get(identifier)
+			+ token.substring(identifierEnd);
 	    }
 
 	    // Replace the command line fragment with the one where the
