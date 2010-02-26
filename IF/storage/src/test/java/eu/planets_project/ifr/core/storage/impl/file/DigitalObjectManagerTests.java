@@ -6,6 +6,7 @@ package eu.planets_project.ifr.core.storage.impl.file;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,6 +106,7 @@ public class DigitalObjectManagerTests {
         try {
     		System.out.println("calling this.dom.storeAsNew(object)");
             pdURI = this.dom.storeAsNew(object);
+            System.out.println("StoreAsNew returned the URI:" + pdURI);
         } catch (Exception e) {
     		System.out.println("Caught an exception in storeAsNew, here's the details");
         	e.printStackTrace();
@@ -126,9 +128,20 @@ public class DigitalObjectManagerTests {
         
         if (storeFlag)
         {
+        	DigitalObject retObject = null;
 			// Then retrieve it and check it's the same
     		System.out.println("now retrieving object to test (ret object)");
-			DigitalObject retObject = this.dom.retrieve(pdURI);
+			System.out.println("Retrieving the test object using URI:" + pdURI);
+			try {
+				retObject = this.dom.retrieve(pdURI);
+			} catch (DigitalObjectNotFoundException e) {
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.out.println("Caught unexpected exception calling retrieve()");
+				e.printStackTrace();
+				fail("this.dom.retrive failed with an unexpected exception");
+			}
 			System.out.println("Creating new Purl");
 			URI newPurl = new File(AllStorageSuite.TEST_DATA_BASE, FILE).toURI();
 			System.out.println("Creating digital object c2");
