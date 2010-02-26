@@ -153,6 +153,8 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
 	        // Files without an associated metadata file are patched in like this:
 	        File binFile = new File( this._root.getCanonicalPath() + File.separator + ( new PDURI(pdURI).getDataRegistryPath() ) );
 	        if( ! binFile.exists() ) {
+	        	log.info("binFile doesn't exist, throwing Not Found exception");
+	        	log.info("looking for file:" + binFile.getAbsolutePath());
 	            throw new DigitalObjectNotFoundException("The DigitalObject was not found!");
 	        }
 	        DigitalObjectContent c = Content.byReference( binFile );
