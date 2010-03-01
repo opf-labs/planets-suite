@@ -17,6 +17,11 @@ public class DOJCRConstants
 	public static final int RESULT_LIST_EMPTY  = 2;
 	
 	/**
+	 * Registry name for digital objects
+	 */
+	public static final String REGISTRY_NAME = "planets-jcr";
+	
+	/**
 	 * Title of the digital object 
 	 */
 	public static final String DOJCR = "DigitalObject";
