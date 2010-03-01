@@ -5,10 +5,12 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRConstants;
 import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRManager;
 import eu.planets_project.services.datatypes.DigitalObject;
+
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 
 /**
  * 
@@ -29,7 +31,7 @@ public class DigitalObjectReference {
     private boolean directory = false;
     
     // The digital object manager to retrieve additional digital object properties from JCR
-    private DigitalObjectManager dom;
+    private DataRegistry dom;
     
     // Constructor from URI:
     public DigitalObjectReference( URI puri ) {
@@ -42,10 +44,10 @@ public class DigitalObjectReference {
      * @param puri
      *        This is a permanent URI of the digital object
      * @param _dom
-     *        This is a digital object manager used to retrieve additional 
+     *        This is a data registry instance used to retrieve additional 
      *        digital object properities
      */
-    public DigitalObjectReference( URI puri, DigitalObjectManager _dom ) 
+    public DigitalObjectReference( URI puri, DataRegistry _dom ) 
     {
     	this.puri = puri;
     	dom = _dom;
@@ -139,8 +141,10 @@ public class DigitalObjectReference {
 			if (puri.toString().equals(DOJCRManager.PERMANENT_URI)) return path;
 			// Special treatment for digital object presentation
 			if (dom != null) {
-				try {
-					DigitalObject obj = dom.retrieve(puri);
+				try { 
+					DigitalObject obj = dom.getDigitalObjectManager(
+							DataRegistryFactory.createDataRegistryIdFromName(DOJCRConstants.REGISTRY_NAME)).retrieve(puri);
+
 					if (obj.getTitle() != null)
 					{
 						String title = obj.getTitle();
