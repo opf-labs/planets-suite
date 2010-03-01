@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
+  <template>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.JcrStoreTemplate</class>
+  </template>
+  <services>
+    <service id="identify">
+      <endpoint>http://localhost:8080/pserv-pc-droid/Droid?wsdl</endpoint>
+    </service>
+  </services>
+</workflowConf>
+
