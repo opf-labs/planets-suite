@@ -234,14 +234,14 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
      */
     @Override
 	public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
-		log.fine("FileSysDOM storeAsNew");
+		log.info("FileSysDOM storeAsNew");
         URI pdURI;
-        log.fine("Putting URI together");
-        log.fine("ID = " + this.id);
+        log.info("Putting URI together");
+        log.info("ID = " + this.id);
 		pdURI = this.id.resolve(this.name + "/" + UUID.randomUUID().toString());
-		log.fine("Calling store " + pdURI);
+		log.info("Calling store:" + pdURI);
         this.store(pdURI, digitalObject);
-		log.fine("returning URI");
+		log.info("returning URI:" + pdURI);
         return pdURI;
     }
 
@@ -375,26 +375,27 @@ public class FilesystemDigitalObjectManagerImpl extends DigitalObjectManagerBase
 	private void store(URI pdURI, DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException {
 		try {
-			log.fine("testing title");
-		       if( digitalObject.getTitle() == null ) {
-		          throw new DigitalObjectNotStoredException(
-		        		"The DigitalObject titel was not found!");
-		       }
+			log.info("testing title");
+	       if( digitalObject.getTitle() == null ) {
+				log.info("NULL title failing");
+	          throw new DigitalObjectNotStoredException(
+	        		"The DigitalObject title was not found!");
+	       }
 
 			// get the path from the URI to store at
-			log.fine("Getting new PDURI from " + pdURI);
+			log.info("Getting new PDURI from " + pdURI);
 			PDURI _parsedURI = new PDURI(pdURI);
-			log.fine("getting dr path");
+			log.info("getting dr path");
 			String path = _parsedURI.getDataRegistryPath();
-			log.fine("path is " + path);
+			log.info("path is " + path);
 
 			// We need to append the path to the root dir of this registry for the data
-			log.fine("New binary file");
+			log.info("New binary file");
 			File doBinary = new File(this._root.getCanonicalPath() + 
 					File.separator + path);
-			log.fine("getting dir dir");
+			log.info("getting dir");
             File doDir = doBinary.getParentFile();
-    		log.fine("mking dir");
+    		log.info("mking dir");
             if( ! doDir.exists() ) doDir.mkdirs();
     		log.info("creating metadata");
 			File doMetadata = new File(this._root.getCanonicalPath() + 
