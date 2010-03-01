@@ -17,8 +17,6 @@ import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.MemoryType;
 import java.lang.management.MemoryUsage;
-import java.lang.management.OperatingSystemMXBean;
-import java.lang.management.RuntimeMXBean;
 import java.lang.management.ThreadMXBean;
 import java.util.List;
 import java.util.logging.Logger;
@@ -27,21 +25,54 @@ import eu.planets_project.ifr.core.techreg.properties.ServiceProperties;
 import eu.planets_project.services.datatypes.Property;
 
 /**
- * A standardised timing collection class, used to monitor performance consistently across services.
+ * A standardised timing and performance data collection class, used to monitor 
+ * performance consistently across services.
  * 
- * Uses System.nanoTime() rather than System.currentTimeMills() because that is generally more accurate. See refs.
+ * To use it, first instanciate this class when your preservation action method starts.
+ * The helper starts timing on construction. This is to prevent accidental re-use 
+ * of each instance of the object, in order to avoid copies of the object being 
+ * used in an non-thread-safe manner.
  * 
- * It starts timing on construction in order to avoid copies of the object being used in an non-thread-safe manner.
+ * When the service has finished it's work, and before creating the final ServiceReport, 
+ * call the .stop() method to halt the timer. Then use getPerformanceProperties() to get
+ * the results, which should be added to the ServiceReport (not the return object specific
+ * to that preservation action.
  * 
- * See also
- *  http://savvyduck.blogspot.com/2008/06/java-getting-thread-time-with.html
- *  http://java.sun.com/javase/6/docs/api/java/lang/System.html#currentTimeMillis%28%29
- *  http://nadeausoftware.com/articles/2008/03/java_tip_how_get_cpu_and_user_time_benchmarking
- *  http://stackoverflow.com/questions/351565/system-currenttimemillis-vs-system-nanotime
- *  http://blogs.sun.com/dholmes/entry/inside_the_hotspot_vm_clocks
- *  http://stackoverflow.com/questions/47177/how-to-monitor-the-computers-cpu-memory-and-disk-usage-in-java
+ * As well as measuring how long the process took (wall-clock time), these methods also measure 
+ * how much CPU time this current thread required (e.g. half the wall-clock time if this process 
+ * is only getting 50% of the CPU time). Note that this will only give meaningful
+ * results if your service runs in a single thread. Also, while the thread is running, 
+ * this helper measures the peak memory usage of the JVM. While this does not explicitly
+ * identify the resource usage associated with your service, it should be indicative in 
+ * the main 'interesting' cases, e.g. when your service is passed a large file. A 
+ * number of standard system properties are also measured, in order to understand the 
+ * context of the execution process.
  * 
- * @author AnJackson
+ * Additionally, this helper provides two methods by which the caller can record when it 
+ * has finished transferring the input arguments (e.g. one or more DigitalObjects) from 
+ * the caller (.transferred()), and/or record when the input arguments have been 
+ * loaded into memory (.loaded()), if that is relevant. Note that the .loaded() 
+ * time should include the .transferred() time. If the input streams are loaded 
+ * directly into memory, the calling code should only record the .loaded() time.
+ * 
+ * For examples of how these calls should be used:
+ * 
+ *  @see eu.planets_project.services.java_se.image.JavaImageIOCompare 
+ *  @see eu.planets_project.services.java_se.image.JavaImageIOMigrate 
+ *  @see eu.planets_project.services.java_se.image.JavaImageIOIdentify 
+ * 
+ * Note that we use System.nanoTime() rather than System.currentTimeMills() because 
+ * that call generally more accurate. In particular, on Windows, the currentTimeMillis 
+ * is often rounded rather coarsely. See also:
+ * 
+ *  @see http://savvyduck.blogspot.com/2008/06/java-getting-thread-time-with.html
+ *  @see http://java.sun.com/javase/6/docs/api/java/lang/System.html#currentTimeMillis%28%29
+ *  @see http://nadeausoftware.com/articles/2008/03/java_tip_how_get_cpu_and_user_time_benchmarking
+ *  @see http://stackoverflow.com/questions/351565/system-currenttimemillis-vs-system-nanotime
+ *  @see http://blogs.sun.com/dholmes/entry/inside_the_hotspot_vm_clocks
+ *  @see http://stackoverflow.com/questions/47177/how-to-monitor-the-computers-cpu-memory-and-disk-usage-in-java
+ * 
+ * @author Andrew.Jackson@bl.uk
  *
  */
 public class ServicePerformanceHelper {
