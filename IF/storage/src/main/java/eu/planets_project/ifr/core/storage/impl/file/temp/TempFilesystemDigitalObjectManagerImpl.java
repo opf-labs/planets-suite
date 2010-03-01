@@ -33,7 +33,7 @@ public class TempFilesystemDigitalObjectManagerImpl extends
 	 */
 	@Override
 	protected void finalize() {
-		deleteDir(this._root);
+		//deleteDir(this._root);
 	}
 
 	private static boolean deleteDir(File dir) {
