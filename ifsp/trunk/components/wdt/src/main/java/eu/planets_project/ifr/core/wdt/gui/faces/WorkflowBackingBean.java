@@ -78,6 +78,14 @@ import eu.planets_project.ifr.core.wdt.impl.data.DetailEntry;
 import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRConstants;
 
 
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
+import eu.planets_project.services.utils.FileUtils;
+
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+
+
 /**
  * @author Ross King class providing access to the workflow status
  */
@@ -134,6 +142,8 @@ public class WorkflowBackingBean {
 	private ArrayList<SubmittedWorkflowBean> submittedWorkflows;
 	private HashMap<UUID, SubmittedWorkflowBean> workflowLookup;
 
+	
+	
 	//
 	// Constructor
 	//
@@ -618,6 +628,31 @@ public class WorkflowBackingBean {
 		}
 	}
 
+	
+	/**
+	 * This method retrieves a digital object from JCR data registry
+	 * @param uri
+	 * @return digital object
+	 */
+	private DigitalObject retrieveDigitalObjectFromJCR(URI uri)
+	{
+		DigitalObject res = null;
+		
+		try {
+			res = ((DataRegistry) dr.getDataManager(
+				        DataRegistryFactory.createDataRegistryIdFromName(DOJCRConstants.REGISTRY_NAME)))
+				.getDigitalObjectManager(
+						DataRegistryFactory.createDataRegistryIdFromName(DOJCRConstants.REGISTRY_NAME))
+				.retrieve(uri);
+		} catch (Exception u) {
+			errorMessageString.add("\nError! Unable to retrieve selected digital object!");
+	        u.printStackTrace();
+		}
+		
+		return res;
+	}
+	
+	
 	/**
 	 * Controller that adds the currently selected items to the workflow.
 	 */
@@ -634,9 +669,25 @@ public class WorkflowBackingBean {
 					URI dobURI = dob.getUri();
 					DigitalObject o = null;
 					try {
-						o = dr.getDataManager(dobURI).retrieve(dobURI);
-						DigitalObject.Builder b = new DigitalObject.Builder(o);
-						o = b.title(dor.getLeafname()).build();
+						// Special handling for the digital objects from JCR repository
+						// data registry URI and digital object URI is not the same
+						if (dobURI.toString().contains(DOJCRConstants.DOJCR))
+						{
+							o = retrieveDigitalObjectFromJCR(dobURI);
+						} else {
+							o = dr.getDataManager(dobURI).retrieve(dobURI);
+							
+							// Recreate digital object by value to enable workflow execution. 
+							// At the moment digital object uses a DataHandler. It is not serializable
+							// and it is not possible to execute workflows. 
+							InputStream streamContent = o.getContent().getInputStream();
+							byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
+							DigitalObjectContent content = Content.byValue(byteContent);
+							o = (new DigitalObject.Builder(o)).content(content).title(dor.getLeafname()).build();
+						}
+
+						//DigitalObject.Builder b = new DigitalObject.Builder(o);
+						//o = b.title(dor.getLeafname()).build();
 						logger.info("adding file name: " + dor.getLeafname());
 						
 					} catch (DigitalObjectNotFoundException e) {
@@ -816,14 +867,7 @@ public class WorkflowBackingBean {
 				if (dob.isSelectable() && dob.isSelected()) 
 				{
 					URI dobURI = dob.getUri();
-					DigitalObject o = null;
-					try {
-						o = dr.getDataManager(dobURI).retrieve(dobURI);
-					} catch (DigitalObjectNotFoundException e) {
-						errorMessageString
-								.add("\nUnable to retrieve selected digital object!");
-						e.printStackTrace();
-					}
+					DigitalObject o = retrieveDigitalObjectFromJCR(dobURI);
 					if (o != null) {
 						fillDetails(o);
 					} else {
