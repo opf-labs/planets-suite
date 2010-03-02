@@ -17,9 +17,16 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.Service;
+import javax.xml.ws.soap.SOAPBinding;
+
+import com.sun.xml.ws.developer.JAXWSProperties;
+
 import eu.planets_project.ifr.core.servreg.utils.PlanetsServiceExplorer;
 import eu.planets_project.ifr.core.servreg.utils.client.wrappers.IdentifyWrapper;
 import eu.planets_project.ifr.core.servreg.utils.client.wrappers.MigrateWrapper;
+import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.identify.Identify;
@@ -31,6 +38,10 @@ import eu.planets_project.services.utils.FileUtils;
 
 /**
  * A really simple class that allows a Planets Service to be invoked from the command line.
+ * 
+ * http://java.sun.com/webservices/docs/2.0/jaxws/mtom-swaref.html
+ * 
+ * Need to add mtom-enabled to jax-ws deployment descriptor
  * 
  * @author AnJackson
  *
@@ -58,7 +69,7 @@ public class PlanetsCommand {
         //System.setProperty("com.sun.xml.ws.util.pipe.StandaloneTubeAssembler.dump","true");
         //System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump","true");
         System.setProperty("com.sun.xml.ws.transport.http.client.HttpTransportPipe.dump","true");
-
+        
         URL wsdl;
         try {
             wsdl = new URL( args[0] );
@@ -70,6 +81,17 @@ public class PlanetsCommand {
         PlanetsServiceExplorer pse = new PlanetsServiceExplorer(  wsdl );
         
         System.out.println(".describe(): "+pse.getServiceDescription());
+        
+        Service service = Service.create(wsdl, pse.getQName());
+        PlanetsService ps = (PlanetsService) service.getPort(pse.getServiceClass());
+        
+        SOAPBinding binding = (SOAPBinding)((BindingProvider)ps).getBinding();
+        System.out.println("Logging MTOM="+binding.isMTOMEnabled());
+        ((BindingProvider)ps).getRequestContext().put( JAXWSProperties.MTOM_THRESHOLOD_VALUE, 8192);
+        ((BindingProvider)ps).getRequestContext().put( JAXWSProperties.HTTP_CLIENT_STREAMING_CHUNK_SIZE, 8192); 
+        System.out.println("Logging MTOM="+binding.isMTOMEnabled());
+        binding.setMTOMEnabled(true);
+        System.out.println("Logging MTOM="+binding.isMTOMEnabled());
 
         /* 
          * The different services are invoked in different ways...
