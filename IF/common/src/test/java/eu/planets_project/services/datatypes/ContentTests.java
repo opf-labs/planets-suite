@@ -2,7 +2,9 @@ package eu.planets_project.services.datatypes;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -11,11 +13,11 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Tests for Content objects. Reads the same data using Content objects both by value and by
@@ -36,8 +38,8 @@ public final class ContentTests {
         file = new File(LOCATION);
         url = file.toURI().toURL();
         stream = url.openStream();
-        byteArray = FileUtils.readFileIntoByteArray(file);
-        content = FileUtils.readTxtFileIntoString(file);
+        byteArray = IOUtils.toByteArray(new FileInputStream(file));
+        content = FileUtils.readFileToString(file);
     }
 
     @Test

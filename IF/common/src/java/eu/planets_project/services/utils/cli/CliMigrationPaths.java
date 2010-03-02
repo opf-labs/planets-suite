@@ -1,19 +1,31 @@
 package eu.planets_project.services.utils.cli;
 
-import eu.planets_project.services.datatypes.MigrationPath;
-import eu.planets_project.services.utils.FileUtils;
-
-import org.w3c.dom.*;
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.*;
+
+import org.apache.commons.io.IOUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import eu.planets_project.services.datatypes.MigrationPath;
 
 /**
  * Create migration paths from an XML config file.
@@ -76,7 +88,7 @@ public class CliMigrationPaths {
                 }
             }
         }
-        FileUtils.close(instream);
+        IOUtils.closeQuietly(instream);
         return paths;
     }
 

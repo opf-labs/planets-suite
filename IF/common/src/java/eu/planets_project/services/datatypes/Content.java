@@ -1,11 +1,13 @@
 package eu.planets_project.services.datatypes;
 
-import eu.planets_project.services.utils.FileUtils;
-
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Static factory methods for content creation.
@@ -50,18 +52,17 @@ public final class Content {
      * @return A content instance with the specified value
      */
     public static DigitalObjectContent byReference(final InputStream inputStream) {
-        /* Write the stream to a temp file (is guaranteed to create a new file, given string is for base name only) */
-        //File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream, "tempContent", ".dat");
-    	File tmpFile = null;
-		try {
-			tmpFile = File.createTempFile("tempContent", "tmp");
-			tmpFile.deleteOnExit();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		FileUtils.writeInputStreamToFile(inputStream, tmpFile);
-        return new ImmutableContent(tmpFile);
+        try {
+            File tempFile = File.createTempFile("tempContent", "tmp");
+            tempFile.deleteOnExit(); // TODO do we really want this here? 
+            FileOutputStream out = new FileOutputStream(tempFile);
+            IOUtils.copyLarge(inputStream, out);
+            out.close();
+            return new ImmutableContent(tempFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException("Could not create content for input stream: " + inputStream);
     }
 
     /**
@@ -82,8 +83,12 @@ public final class Content {
         if (!value.exists()) {
             throw new IllegalArgumentException("Given file does not exist: " + value);
         }
-        byte[] bytes = FileUtils.readFileIntoByteArray(value);
-        return new ImmutableContent(bytes);
+        try {
+            return new ImmutableContent(FileUtils.readFileToByteArray(value));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException("Could not create content for file: " + value);
     }
 
     /**
@@ -92,8 +97,11 @@ public final class Content {
      * @return A content instance with the specified value
      */
     public static DigitalObjectContent byValue(final InputStream inputStream) {
-        //File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream,
-        //        "tempContent", ".dat");
-        return new ImmutableContent(FileUtils.writeInputStreamToBinary(inputStream));
+        try {
+            return new ImmutableContent(IOUtils.toByteArray(inputStream));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException("Could not create content for input stream: " + inputStream);
     }
 }

@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import eu.planets_project.services.utils.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * Access to test files. Implemented as an enum to provide an ironclad
@@ -39,7 +39,7 @@ public enum FileAccess {
             if (f.isDirectory() && !f.isHidden()) {
                 index(f, map);
             } else if (f.isFile() && !f.isHidden()) {
-                map.put(FileUtils.getExtensionFromFile(f).toLowerCase(), f);
+                map.put(FilenameUtils.getExtension(f.getName()).toLowerCase(), f);
             }
         }
     }

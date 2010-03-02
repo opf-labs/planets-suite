@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import eu.planets_project.services.utils.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Planets server configuration.
@@ -36,7 +36,7 @@ public class PlanetsServerConfig {
             props.load( stream );
         } catch( IOException e ) {
             log.severe("Server properties failed to load! :: "+e);
-            FileUtils.close(stream);
+            IOUtils.closeQuietly(stream);
         }
         return props;
     }
