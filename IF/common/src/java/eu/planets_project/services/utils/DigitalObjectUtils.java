@@ -468,7 +468,7 @@ public final class DigitalObjectUtils {
 	}
 
 	/**
-	 * Creates a DigitalObject from a given file, by reference or as stream
+	 * Creates a ZIP-type DigitalObject from a given file, by reference or as stream
 	 * @param file the file to create the DigitalObject from
 	 * @param createByReference create by reference (true) or as stream (false)
 	 * @return
