@@ -70,7 +70,7 @@
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
       <arg value="http://testbed.planets-project.eu/pserv-pa-java-se/JavaImageIOMigrate?wsdl"/>
-      <arg value="../../tests/test-files/images/bitmap/test_png/png_small/2274192346_4a0a03c5d6.png"/>
+      <arg value="${test.resources}/plavicon.png"/>
       <arg value="planets:fmt/ext/png"/>
       <arg value="planets:fmt/ext/jpg"/>
     </java>
@@ -84,7 +84,7 @@
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
       <arg value="http://planets.dialogika.de/planets.webservice/DIaLOGIKa.wsdl"/>
-      <arg value="../../tests/test-files/documents/test_word_6.0/SETUP.DOC"/>
+      <arg value="${test.resources}/test-hw.doc"/>
       <arg value="planets:fmt/ext/doc"/>
       <arg value="planets:fmt/ext/docx"/>
     </java>
