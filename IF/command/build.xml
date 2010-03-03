@@ -41,9 +41,8 @@
     </classpath>
   </taskdef>
 
-  <!-- depends="compile:jar" -->
-  
-  <target name="client:jar" description="Build a single client jar for Planets Services.">
+  <!-- build a single-jar client app -->
+  <target name="client:jar" depends="compile:jar" description="Build a single client jar for Planets Services.">
     <one-jar destfile="mercury.jar" manifest="${src.resources}/META-INF/MANIFEST.MF">
       <main jar="${build.dir}/${jar.base.name}"/>
       <lib>
@@ -61,6 +60,34 @@
         </fileset>
       </lib>
     </one-jar>
+  </target>
+  
+  <!-- as an example, this invokes a service on the testbed -->
+  <target name="invoke:testbed">
+    <echo message="Invoking a service hosted on the central Planets Testbed..."/>
+    <java jar="mercury.jar" fork="true">
+      <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
+      <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
+      <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
+      <arg value="http://testbed.planets-project.eu/pserv-pa-java-se/JavaImageIOMigrate?wsdl"/>
+      <arg value="../../tests/test-files/images/bitmap/test_png/png_small/2274192346_4a0a03c5d6.png"/>
+      <arg value="planets:fmt/ext/png"/>
+      <arg value="planets:fmt/ext/jpg"/>
+    </java>
+  </target>
+  
+  <!-- as an example, this invokes a service from DIaLOGIKa -->
+  <target name="invoke:dialogika">
+    <echo message="Invoking a service hosted by DIaLOGIKa..."/>
+    <java jar="mercury.jar" fork="true">
+      <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
+      <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
+      <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
+      <arg value="http://planets.dialogika.de/planets.webservice/DIaLOGIKa.wsdl"/>
+      <arg value="../../tests/test-files/documents/test_word_6.0/SETUP.DOC"/>
+      <arg value="planets:fmt/ext/doc"/>
+      <arg value="planets:fmt/ext/docx"/>
+    </java>
   </target>
 
 </project>
