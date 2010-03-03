@@ -8,8 +8,7 @@ import java.util.List;
 
 import javax.xml.ws.Service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.servreg.utils.PlanetsServiceExplorer;
 import eu.planets_project.services.compare.Compare;
@@ -28,7 +27,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 public class CompareWrapper implements Compare {
 
     /** */
-    private static final Log log = LogFactory.getLog(CompareWrapper.class);
+    private static final Logger log = Logger.getLogger(CompareWrapper.class.getName());
 
     PlanetsServiceExplorer pse = null;
     Service service = null;
@@ -58,7 +57,7 @@ public class CompareWrapper implements Compare {
         try {
             c = (Compare) service.getPort(pse.getServiceClass());
         } catch( Exception e ) {
-            log.error("Failed to instanciate service "+ pse.getQName() +" at "+pse.getWsdlLocation() + " : Exception - "+e);
+            log.severe("Failed to instanciate service "+ pse.getQName() +" at "+pse.getWsdlLocation() + " : Exception - "+e);
             e.printStackTrace();
             c = null;
         }
