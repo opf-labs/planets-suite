@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file                                    -->
+<!-- ======================================================================= -->
+<project name="if-command" default="compile" basedir=".">
+
+  <property name="appName" value="${ant.project.name}"/>
+  <property name="appDir" location="."/>
+  <property name="src.dir" location="${appDir}/src/main/java"/>
+  <property name="lib.dir" location="${appDir}/lib"/>
+
+  <property name="src.resources" location="${appDir}/src/main/resources"/>
+  <property name="src.web" location="${appDir}/src/main/web"/>
+  <property name="src.config" location="${appDir}/src/main/config" />
+  <property name="src.config.properties" value="Common.properties" />
+
+  <property name="test.src.dir" location="${appDir}/src/test/java"/>
+  <property name="test.resources" location="${appDir}/src/test/resources" />
+  <property name="test.config" location="${appDir}/src/test/config" />
+  <property name="test.config.properties" value="Common.properties" />
+
+  <property name="pserv.app.deploy.mode" value="pure-java" />
+  <property name="pserv.app.build.type" value="none" />
+  <property name="pserv.root.dir" location="../.." />
+  <property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
+  <import file="${pserv.root.dir}/build.common.xml"/>
+
+
+  <!-- Unit testing definitions -->
+  <property name="test.src.dir" location="${appDir}/src/test/java" />
+  <property name="test.local" value="" />
+  <!--
+	<property name="test.standalone" value="" />
+    <property name="test.server" value="" />
+    -->
+
+  <taskdef name="one-jar" classname="com.simontuffs.onejar.ant.OneJarTask">
+    <classpath>
+      <pathelement location="${appDir}/utils/one-jar-ant-task-0.96.jar"/>
+    </classpath>
+  </taskdef>
+
+  <!-- depends="compile:jar" -->
+  
+  <target name="client:jar" description="Build a single client jar for Planets Services.">
+    <one-jar destfile="mercury.jar" manifest="${src.resources}/META-INF/MANIFEST.MF">
+      <main jar="${build.dir}/${jar.base.name}"/>
+      <lib>
+        <fileset dir="${appDir}/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${pserv.root.dir}/build">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${pserv.root.dir}/IF/common/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${pserv.root.dir}/lib">
+          <include name="jaxws-ri-2.*/lib/*.jar"/>
+        </fileset>
+      </lib>
+    </one-jar>
+  </target>
+
+</project>
