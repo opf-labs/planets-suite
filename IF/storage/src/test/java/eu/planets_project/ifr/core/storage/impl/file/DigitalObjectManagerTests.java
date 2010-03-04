@@ -16,14 +16,14 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 import eu.planets_project.ifr.core.storage.AllStorageSuite;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.impl.file.temp.TempFilesystemDigitalObjectManagerImpl;
@@ -42,25 +42,35 @@ public class DigitalObjectManagerTests {
     private static final String MISSING_NAME_PROPS = "missingname.properties";
     private static final String BAD_NAME_PROPS = "badname.properties";
     private static final String MISSING_PATH_PROPS = "missingpath.properties";
-    private DigitalObjectManagerBase dom = null;
+    private static TempFilesystemDigitalObjectManagerImpl dom = null;
 	
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void oneTimeSetUp() throws Exception {
 		// Check if the test data directory is there
 		File rootDir = new File(AllStorageSuite.TEST_DATA_BASE);
         if (!rootDir.exists()) {
             throw new IllegalStateException("Could not read from: " + rootDir);
         }
+        
+        // Clean up the test temp area
+        DigitalObjectManagerTests.deleteDirectory(new File(AllStorageSuite.TEST_TEMP_BASE));
 
         // Instantiate a file based data registry instance
 		// Point it at a root directory in resources, the registry will create the dir if necessary
         Configuration config = ServiceConfig.getConfiguration(new File(CONFIG + TEMP_PROPS));
-		this.dom = new TempFilesystemDigitalObjectManagerImpl(config);
+        DigitalObjectManagerTests.dom = new TempFilesystemDigitalObjectManagerImpl(config);
 	}
 
+	/**
+	 * 
+	 */
+	@AfterClass
+	public static void oneTimeTearDown() {
+		DigitalObjectManagerTests.dom.finalize();
+	}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl#list(java.net.URI)}.
 	 * @throws URISyntaxException 
@@ -68,10 +78,10 @@ public class DigitalObjectManagerTests {
 	@Test
 	public final void testList() throws URISyntaxException {
 		// Get the root URI
-		List<URI> rootResults = this.dom.list(null);
+		List<URI> rootResults = DigitalObjectManagerTests.dom.list(null);
 		System.out.println("Performing the null URI test to obtain root URI");
 		List<URI> expectedResults = new ArrayList<URI>();
-		expectedResults.add(DataRegistryFactory.createDataRegistryIdFromName(this.dom.getName()));
+		expectedResults.add(DataRegistryFactory.createDataRegistryIdFromName(DigitalObjectManagerTests.dom.getName()));
 		// We should only have a single URI in the returned results
 		assertEquals("Too many results returned, expecting one and got " + rootResults.size(),
 				expectedResults.size(),	rootResults.size());
@@ -105,7 +115,7 @@ public class DigitalObjectManagerTests {
         URI pdURI = null;
         try {
     		System.out.println("calling this.dom.storeAsNew(object)");
-            pdURI = this.dom.storeAsNew(object);
+            pdURI = DigitalObjectManagerTests.dom.storeAsNew(object);
             System.out.println("StoreAsNew returned the URI:" + pdURI);
         } catch (Exception e) {
     		System.out.println("Caught an exception in storeAsNew, here's the details");
@@ -133,7 +143,7 @@ public class DigitalObjectManagerTests {
     		System.out.println("now retrieving object to test (ret object)");
 			System.out.println("Retrieving the test object using URI:" + pdURI);
 			try {
-				retObject = this.dom.retrieve(pdURI);
+				retObject = DigitalObjectManagerTests.dom.retrieve(pdURI);
 			} catch (DigitalObjectNotFoundException e) {
 				e.printStackTrace();
 				throw e;
@@ -149,16 +159,22 @@ public class DigitalObjectManagerTests {
 			System.out.println("Creating new Expected object");
 			DigitalObject expectedObject = new DigitalObject.Builder(c2).build(); 
 			
+			// Check that retObject is not null
+			assertNotNull("Not expecting returned object to be null", retObject);
+			
 			System.out.println("Trying content match between expectedObject and retobject");
-            assertEquals("Retrieve Digital Object content (" +
-            		expectedObject.getContent() +
-            		") doesn't match that stored (" + retObject.getContent() +
-            		")", expectedObject.getContent(),
-                    retObject.getContent());
+			// Only test if retObject is not null, this can't happen because of a previous assert
+			if (retObject != null) {
+	            assertEquals("Retrieve Digital Object content (" +
+	            		expectedObject.getContent() +
+	            		") doesn't match that stored (" + retObject.getContent() +
+	            		")", expectedObject.getContent(),
+	                    retObject.getContent());
+			}
 			// We can test that the list method works properly now also
 			// Get the root URI
 			System.out.println("trying list out");
-			List<URI> rootResults = this.dom.list(null);
+			List<URI> rootResults = DigitalObjectManagerTests.dom.list(null);
 			System.out.println("getting expectedResults");
 			List<URI> expectedResults = new ArrayList<URI>();
 			System.out.println("adding entry to expectedResults");
@@ -169,7 +185,7 @@ public class DigitalObjectManagerTests {
 					expectedResults.size(),	rootResults.size());
 			// We have the root so let's get what's below
 			System.out.println("getting testResults from list");
-			List<URI> testResults = this.dom.list(rootResults.get(0));
+			List<URI> testResults = DigitalObjectManagerTests.dom.list(rootResults.get(0));
 			// We should only have a single URI in the returned results
 			assertEquals("Original and retrieved result count should be equal;",
 					expectedResults.size(),	testResults.size());
@@ -191,7 +207,8 @@ public class DigitalObjectManagerTests {
 	public final void testFileNotFound() throws URISyntaxException, DigitalObjectNotFoundException {
 			System.out.println("Testing that DigitalObjectNotFoundException is generated as expected");
 			// Let's retrieve an object we know doesn't exist
-			this.dom.retrieve(new URI((this.dom.getId()).toString() + "/noneexistentobject").normalize());
+			DigitalObjectManagerTests.dom.retrieve(new URI((DigitalObjectManagerTests.dom.getId()).toString() +
+															"/noneexistentobject").normalize());
 	}
 	
 	/**
@@ -228,5 +245,19 @@ public class DigitalObjectManagerTests {
 		// Not doing too much here, just setting up a bad instance and catching the exception
         Configuration config = ServiceConfig.getConfiguration(new File(CONFIG + BAD_NAME_PROPS));
 		new FilesystemDigitalObjectManagerImpl(config);
+	}
+
+	private static boolean deleteDirectory(File path) {
+		if (path.exists()) {
+			File[] files = path.listFiles();
+			for (File file : files) {
+				if (file.isDirectory()) {
+					deleteDirectory(file);
+				} else {
+					file.delete();
+				}
+			}
+		}
+		return path.delete();
 	}
 }

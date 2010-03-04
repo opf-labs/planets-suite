@@ -25,4 +25,10 @@ public class AllStorageSuite {
 	public static final String RESOURCE_BASE = SRC_TEST + "resources/";
 	/** The test data folder */
 	public static final String TEST_DATA_BASE = RESOURCE_BASE + "testdata/";
+	/**
+	 * The temp root folder
+	 * FIXME: This is a temp fix that clears this directory as the temp file dom isn't thread safe.
+	 *       Carl Wilson to fix 
+	 */
+	public static final String TEST_TEMP_BASE = RESOURCE_BASE + "temp";
 }
