@@ -15,12 +15,10 @@ import java.util.logging.Logger;
 
 /**
  * Utilities for reading and writing data.
- * @author Thomas Kraemer (thomas.kraemer@uni-koeln.de), Peter Melms
- *         (peter.melms@uni-koeln.de)
- */
-/**
- * @author melmsp
- *
+ * @author Thomas Kraemer (thomas.kraemer@uni-koeln.de), Peter Melms (peter.melms@uni-koeln.de)
+ * @deprecated Use util classes from Apache Commons IO (FileUtils, IOUtils, FilenameUtils) for
+ *             low level IO operations. Use DigitalObjectUtils.toFile(...) to store digital objects as
+ *             files. Use DigitalObject.Builder(Content) to create digital objects from files.
  */
 public final class FileUtils {
 

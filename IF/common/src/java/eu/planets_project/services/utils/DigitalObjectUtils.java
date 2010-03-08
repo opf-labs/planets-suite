@@ -4,6 +4,8 @@
 package eu.planets_project.services.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -11,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+
+import org.apache.commons.io.IOUtils;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -496,65 +500,6 @@ public final class DigitalObjectUtils {
 	
 	/**
 	 * This method changes the content value in digital object and returns changed
-	 * digital object with new content and permanent URI values. 
-	 * 
-	 * @param digitalObject
-	 *        This is a digital object to be updated
-	 * @param newContent
-	 *        This is a new digital object content
-	 * @param newPermanentUri
-	 *        This is a new digital object permanent URI
-	 * @return changed digital object with new content and permanent URI values
-	 */
-	public static DigitalObject changeContentAndPermanentUri
-	      ( DigitalObject digitalObject
-	      , DigitalObjectContent newContent
-	      , URI newPermanentUri
-	      )
-    {
-		DigitalObject res = null;
-		
-    	if (digitalObject != null && newContent != null && newPermanentUri != null)
-    	{
-    		res = changeContent(digitalObject, newContent);
-    		res = changePermanentUri(res, newPermanentUri);
-    	}
-		return res;
-	}
-	
-	/**
-	 * This method changes the content value in digital object and returns changed
-	 * digital object with new content value. 
-	 * 
-	 * @param digitalObject
-	 *        This is a digital object to be updated
-	 * @param newContent
-	 *        This is a new digital object content
-	 * @return changed digital object with new content value
-	 */
-	public static DigitalObject changeContent(DigitalObject digitalObject, DigitalObjectContent newContent)
-    {
-		DigitalObject res = null;
-		
-    	if (digitalObject != null && newContent != null)
-    	{
-	    	DigitalObject.Builder b = new DigitalObject.Builder(newContent);
-		    if (digitalObject.getTitle() != null) b.title(digitalObject.getTitle());
-		    if (digitalObject.getPermanentUri() != null) b.permanentUri(digitalObject.getPermanentUri());
-		    if (digitalObject.getFormat() != null) b.format(digitalObject.getFormat());
-		    if (digitalObject.getManifestationOf() != null) 
-		    	b.manifestationOf(digitalObject.getManifestationOf());
-		    if (digitalObject.getMetadata() != null) 
-		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
-		    if (digitalObject.getEvents() != null) 
-		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
-            res = b.build();
-    	}
-		return res;
-	}
-    
-	/**
-	 * This method changes the content value in digital object and returns changed
 	 * digital object with new content value. 
 	 * 
 	 * @param digitalObject
@@ -583,99 +528,6 @@ public final class DigitalObjectUtils {
 				eventList.add(newEvent);
 		    	b.events((Event[]) eventList.toArray(new Event[0]));
 		    }
-            res = b.build();
-    	}
-		return res;
-	}
-	
-	/**
-	 * This method changes the permanent URI value in digital object and returns changed
-	 * digital object with new permanent URI value. 
-	 * 
-	 * @param digitalObject
-	 *        This is a digital object to be updated
-	 * @param newPermanentUri
-	 *        This is a new digital object permanent URI
-	 * @return changed digital object with new permanent URI value
-	 */
-	public static DigitalObject changePermanentUri(DigitalObject digitalObject, URI newPermanentUri)
-    {
-		DigitalObject res = null;
-		
-    	if (digitalObject != null && newPermanentUri != null)
-    	{
-	    	DigitalObject.Builder b = new DigitalObject.Builder(digitalObject.getContent());
-		    if (digitalObject.getTitle() != null) b.title(digitalObject.getTitle());
-		    if (newPermanentUri != null) b.permanentUri(newPermanentUri);
-		    if (digitalObject.getFormat() != null) b.format(digitalObject.getFormat());
-		    if (digitalObject.getManifestationOf() != null) 
-		    	b.manifestationOf(digitalObject.getManifestationOf());
-		    if (digitalObject.getMetadata() != null) 
-		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
-		    if (digitalObject.getEvents() != null) 
-		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
-            res = b.build();
-    	}
-		return res;
-	}
-
-	/**
-	 * This method changes the format URI value in digital object and returns changed
-	 * digital object with new format URI value. 
-	 * 
-	 * @param digitalObject
-	 *        This is a digital object to be updated
-	 * @param newFormat
-	 *        This is a new digital object format URI
-	 * @return changed digital object with new format URI value
-	 */
-	public static DigitalObject changeFormat(DigitalObject digitalObject, URI newFormat)
-    {
-		DigitalObject res = null;
-		
-    	if (digitalObject != null && newFormat != null)
-    	{
-	    	DigitalObject.Builder b = new DigitalObject.Builder(digitalObject.getContent());
-		    if (digitalObject.getTitle() != null) b.title(digitalObject.getTitle());
-		    if (digitalObject.getPermanentUri() != null) b.permanentUri(digitalObject.getPermanentUri());
-		    if (newFormat != null) b.format(newFormat);
-		    if (digitalObject.getManifestationOf() != null) 
-		    	b.manifestationOf(digitalObject.getManifestationOf());
-		    if (digitalObject.getMetadata() != null) 
-		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
-		    if (digitalObject.getEvents() != null) 
-		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
-            res = b.build();
-    	}
-		return res;
-	}
-	
-	/**
-	 * This method changes the title value in digital object and returns changed
-	 * digital object with new title value. 
-	 * 
-	 * @param digitalObject
-	 *        This is a digital object to be updated
-	 * @param newTitle
-	 *        This is a new digital object title 
-	 * @return changed digital object with new title value
-	 */
-	public static DigitalObject changeTitle(DigitalObject digitalObject, String newTitle)
-    {
-		DigitalObject res = null;
-		
-    	if (digitalObject != null && newTitle != null)
-    	{
-	    	DigitalObject.Builder b = new DigitalObject.Builder(digitalObject.getContent());
-		    if (newTitle != null) b.title(newTitle);
-		    if (digitalObject.getPermanentUri() != null) b.permanentUri(digitalObject.getPermanentUri());
-		    if (digitalObject.getFormat() != null) b.format(digitalObject.getFormat());
-		    if (digitalObject.getManifestationOf() != null) 
-		    	b.manifestationOf(digitalObject.getManifestationOf());
-		    if (digitalObject.getMetadata() != null) 
-		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
-		    if (digitalObject.getEvents() != null) 
-		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
             res = b.build();
     	}
 		return res;
@@ -745,4 +597,39 @@ public final class DigitalObjectUtils {
 		
 		return res;
 	}
+	
+	/**
+     * @param object The digital object to copy to a file
+     * @param file The file to copy the digital object's byte stream to
+     * @return The number of bytes copied
+     */
+    public static long toFile(final DigitalObject object, final File file) {
+        try {
+            FileOutputStream fOut = new FileOutputStream(file);
+            long bytesCopied = IOUtils.copyLarge(object.getContent().getInputStream(), fOut);
+            fOut.close();
+            return bytesCopied;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    /**
+     * @param object The digital object to copy to a temporary file
+     * @return The temporary file the digital object's byte stream was written to
+     */
+    public static File toFile(final DigitalObject object) {
+        try {
+            File file = File.createTempFile("planets", null);
+            file.deleteOnExit();
+            toFile(object, file);
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException("Could not copy digital object: " + object);
+    }
 }

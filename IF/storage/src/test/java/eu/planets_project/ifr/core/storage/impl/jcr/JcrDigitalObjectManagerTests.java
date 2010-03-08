@@ -299,10 +299,9 @@ public class JcrDigitalObjectManagerTests {
 
 		// this is a digital object we expect after store method.
 		// we have to add the permanent URI and content after store method to check for equality
-		DigitalObject expectedStoreDigitalObject = DigitalObjectUtils.changeContentAndPermanentUri
-		( contentByValueObject
-				, resContentByValueObject.getContent()
-				, resContentByValueObject.getPermanentUri());
+		DigitalObject expectedStoreDigitalObject = new DigitalObject.Builder(contentByValueObject)
+				.content(resContentByValueObject.getContent())
+				.permanentUri(resContentByValueObject.getPermanentUri()).build();
 
 		// check if resContentByValueObject has an ingest event
 		assertTrue("Expecting hasEvent() for INGEST_EVENT to return true",
@@ -322,10 +321,9 @@ public class JcrDigitalObjectManagerTests {
 
 		// this is a digital object we expect after retrieve method with includeContent = true.
 		// we have to add the permanent URI to check for equality. 
-		DigitalObject expectedRetrieveTrueDigitalObject = DigitalObjectUtils.changeContentAndPermanentUri
-		( contentByValueObject
-				, contentByValueObject.getContent()
-				, resContentByValueObject.getPermanentUri());
+		DigitalObject expectedRetrieveTrueDigitalObject = new DigitalObject.Builder(contentByValueObject)
+                .content(contentByValueObject.getContent())
+				.permanentUri(resContentByValueObject.getPermanentUri()).build();
 
 		// contents of retObjectWithContent and expectedRetrieveTrueDigitalObject should be equal
 		// after retrieve method called with includeContent = true
@@ -381,10 +379,9 @@ public class JcrDigitalObjectManagerTests {
 		// this is a digital object we expect after retrieve method with includeContent = false.
 		// we have to add the permanent URI to check for equality. 
 		DigitalObject expectedRetrieveFalseDigitalObject = 
-			DigitalObjectUtils.changeContentAndPermanentUri
-			( contentByValueObject
-					, resolverLink
-					, resContentByValueObject.getPermanentUri());
+			new DigitalObject.Builder(contentByValueObject)
+					.content(resolverLink)
+					.permanentUri(resContentByValueObject.getPermanentUri()).build();
 
 		// add an ingest event from resContentByValueObject to the expectedStoreDigitalObject 
 		ingestEvent = DigitalObjectUtils.getEventBySummary
@@ -490,8 +487,8 @@ public class JcrDigitalObjectManagerTests {
 		// this is a digital object we expect after store method.
 		// we have to add the permanent URI and content after store method to
 		// check for equality
-		DigitalObject expectedStoreDigitalObject = DigitalObjectUtils.changeContentAndPermanentUri
-		(object, resolverLink, resDo.getPermanentUri());
+		DigitalObject expectedStoreDigitalObject = new DigitalObject.Builder(object)
+		        .content(resolverLink).permanentUri(resDo.getPermanentUri()).build();
 
 		// check if resDo has an ingest event
 		assertTrue(DigitalObjectUtils.hasEvent(resDo, JcrDigitalObjectManagerImpl.INGEST_EVENT));
@@ -511,10 +508,7 @@ public class JcrDigitalObjectManagerTests {
 		// we need an injection of the generated permanent URI in object to 
 		// correctly process assertEquals method.
 		DigitalObject expectedRetrieveTrueDigitalObject = 
-			DigitalObjectUtils.changeContentAndPermanentUri
-			( object
-					, object.getContent()
-					, resDo.getPermanentUri());
+			new DigitalObject.Builder(object).permanentUri(resDo.getPermanentUri()).build();
 
 		// contents of retObjectWithContent and expectedRetrieveTrueDigitalObject should be equal
 		// after retrieve method called with includeContent = true
@@ -554,7 +548,7 @@ public class JcrDigitalObjectManagerTests {
 		for (int i = 0; i < MAX_COUNT; i++)
 		{
 			DigitalObject object = createDigitalObject();
-			object = DigitalObjectUtils.changeTitle(object, "mytitle_" + i);
+			object = new DigitalObject.Builder(object).title("mytitle_" + i).build();
 			// store digital object in JCR repository
 			DigitalObject resDigitalObject = dom.store(PERMANENT_URI_PATH, object, true);
 
@@ -589,8 +583,8 @@ public class JcrDigitalObjectManagerTests {
 			assertEquals(digitalObjectList.get(i).getContent(), resolverLink);
 
 			// change the content to compare for equality because content points to content resolver
-			DigitalObject expectedDigitalObject = 
-				DigitalObjectUtils.changeContent(digitalObjectList.get(i), c1);
+            DigitalObject expectedDigitalObject = new DigitalObject.Builder(digitalObjectList
+                    .get(i)).permanentUri(retObject.getPermanentUri()).content(c1).build();
 
 			assertEquals(retObject, expectedDigitalObject);
 		}
@@ -610,11 +604,9 @@ public class JcrDigitalObjectManagerTests {
 
 		// this is a digital object we expect after store method.
 		// we have to add the permanent URI and content after store method to check for equality
-		DigitalObject expectedStoreDigitalObject = DigitalObjectUtils.changeContentAndPermanentUri
-		( object
-				, object.getContent()
-				, resDo.getPermanentUri());
-		expectedStoreDigitalObject = DigitalObjectUtils.changeFormat(expectedStoreDigitalObject, NEWFORMAT);
+		DigitalObject expectedStoreDigitalObject = new DigitalObject.Builder(object)
+				.permanentUri(resDo.getPermanentUri())
+				.format(NEWFORMAT).build();
 
 		// add an ingest event from resDo to the expectedStoreDigitalObject 
 		Event ingestEvent = DigitalObjectUtils.getEventBySummary(resDo,
@@ -691,7 +683,9 @@ public class JcrDigitalObjectManagerTests {
 
 		// test content update
 		// create new digital object with new content
-		DigitalObject cdo = DigitalObjectUtils.changeContent(expectedStoreDigitalObject, c2);
+		DigitalObject cdo = new DigitalObject.Builder(expectedStoreDigitalObject)
+		        .permanentUri(expectedStoreDigitalObject.getPermanentUri())
+		        .content(c2).build();
 
 		// update existing digital object with parameters from new digital object
 		DigitalObject cdoRes = null;
@@ -711,16 +705,16 @@ public class JcrDigitalObjectManagerTests {
 
 		// test update without content
 		// create new digital object with new content
-		DigitalObject digitalObject = DigitalObjectUtils.changeContent(cdo, c1);
-		digitalObject = DigitalObjectUtils.changeTitle(digitalObject, DO_TITLE);
+		DigitalObject digitalObject = new DigitalObject.Builder(cdo).content(c1).build();
+		digitalObject = new DigitalObject.Builder(digitalObject).title(DO_TITLE).build();
 
 		DigitalObject retObjectWithoutContent = dom.store(PERMANENT_URI_PATH, digitalObject, false);
 
 		// create new digital object with new title
-		DigitalObject digitalObjectWithNewTitle = DigitalObjectUtils.changeTitle(cdo, UPDATE_TITLE);
-		digitalObjectWithNewTitle = DigitalObjectUtils.changeContent(digitalObjectWithNewTitle, c1);
-		digitalObjectWithNewTitle = DigitalObjectUtils.changePermanentUri(
-				digitalObjectWithNewTitle, retObjectWithoutContent.getPermanentUri());
+		DigitalObject digitalObjectWithNewTitle = new DigitalObject.Builder(cdo)
+		        .title(UPDATE_TITLE)
+		        .content(c1)
+		        .permanentUri(retObjectWithoutContent.getPermanentUri()).build();
 
 		// add an ingest event from retObjectWithoutContent to the digitalObjectWithNewTitle 
 		ingestEvent = DigitalObjectUtils.getEventBySummary(
@@ -748,10 +742,10 @@ public class JcrDigitalObjectManagerTests {
 
 		// change the content to compare for equality because content points to content resolver
 		// change the title to compare for equality because title was updated
-		retObjectWithoutContent = DigitalObjectUtils.changeContent(
-				retObjectWithoutContent, resultObjectWithoutContent.getContent());
-		retObjectWithoutContent = DigitalObjectUtils.changeTitle(
-				retObjectWithoutContent, resultObjectWithoutContent.getTitle());
+        retObjectWithoutContent = new DigitalObject.Builder(retObjectWithoutContent)
+                .permanentUri(retObjectWithoutContent.getPermanentUri())
+                .content(resultObjectWithoutContent.getContent())
+                .title(resultObjectWithoutContent.getTitle()).build();
 
 		// updated object should be equal with retrieved object
 		assertEquals(resultObjectWithoutContent, updObjectWithoutContent);	
