@@ -8,9 +8,13 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * Determine common properties of different file formats. Implementing services
@@ -20,7 +24,8 @@ import eu.planets_project.services.PlanetsServices;
  *         (fabian.steeg@uni-koeln.de)
  */
 @WebService(name = CommonProperties.NAME, targetNamespace = PlanetsServices.NS)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public interface CommonProperties extends PlanetsService {
     /** The interface name. */
     String NAME = "CommonProperties";

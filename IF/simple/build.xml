@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="if-simple" default="deploy:war" basedir=".">
+<project name="if-simple" default="deploy" basedir=".">
   
   <!-- Define the project name and directory, based on the project name specified above. -->
   <property name="appName" value="${ant.project.name}"/>

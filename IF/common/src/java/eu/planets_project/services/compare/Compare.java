@@ -13,18 +13,23 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.MTOM;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * Comparison of digital objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @WebService(name = Compare.NAME, targetNamespace = PlanetsServices.NS)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public interface Compare extends PlanetsService {
     /***/
     String NAME = "Compare";

@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -29,6 +30,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * XCL Comparator service. Compares image, text or XCDL files wrapped as digital objects.
@@ -37,8 +39,8 @@ import eu.planets_project.services.utils.FileUtils;
  */
 @WebService( name = XcdlCompare.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare" )
 @Stateless
-@StreamingAttachment(parseEagerly = true)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public final class XcdlCompare implements Compare {
     /***/
     static final String NAME = "XcdlCompare";

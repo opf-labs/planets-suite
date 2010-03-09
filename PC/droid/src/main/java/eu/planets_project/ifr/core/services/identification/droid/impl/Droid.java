@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
 
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
@@ -32,6 +33,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.DigitalObjectUtils;
+import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * Droid identification service.
@@ -43,8 +45,8 @@ import eu.planets_project.services.utils.DigitalObjectUtils;
 		serviceName = Identify.NAME, 
 		targetNamespace = PlanetsServices.NS, 
 		endpointInterface = "eu.planets_project.services.identify.Identify")
-@StreamingAttachment(parseEagerly = true)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public final class Droid implements Identify, Serializable {
     private static Logger log = Logger.getLogger(Droid.class.getName());
 

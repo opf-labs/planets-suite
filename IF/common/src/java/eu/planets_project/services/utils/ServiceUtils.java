@@ -19,10 +19,12 @@ import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
+import javax.xml.ws.WebServiceFeature;
 import javax.xml.ws.soap.MTOMFeature;
 import javax.xml.ws.soap.SOAPBinding;
 
 import com.sun.xml.ws.developer.JAXWSProperties;
+import com.sun.xml.ws.developer.StreamingAttachmentFeature;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.MigrationPath;
@@ -40,6 +42,25 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 public class ServiceUtils {
 
     private ServiceUtils() { /* Enforce non-instantiability for this util class */}
+    
+    /** Standard threshold before chunking data, currently 10 MB */
+    public static final int JAXWS_SIZE_THRESHOLD = 10485760;
+
+    /** 
+     * Standardised web service features - MTOM and Streaming.
+     * 
+     * We require at least MTOM feature, and the chunk size set, to get streaming to work.
+     * See https://jax-ws.dev.java.net/guide/Large_Attachments.html
+     * 
+     * NOTE that MTOM does not need to be forced in order to work with the DIaLOGIKa service.
+     * 
+     */
+    public static final WebServiceFeature[] JAXWS_FEATURES = 
+    { 
+        new MTOMFeature(true),
+        new StreamingAttachmentFeature( null, true, (long) JAXWS_SIZE_THRESHOLD )
+    };
+    
 
     /** */
     private static Logger log = Logger.getLogger(ServiceUtils.class.getName());

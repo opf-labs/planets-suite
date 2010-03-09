@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
 
 import org.jboss.util.platform.Java;
 
@@ -30,6 +31,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.fixity.Fixity;
 import eu.planets_project.services.fixity.FixityResult;
+import eu.planets_project.services.utils.ServiceUtils;
 /**
  * JavaDigest Fixity service.
  * First pass simply creates an MD5 checksum, will implement other supported algorithms
@@ -43,8 +45,8 @@ import eu.planets_project.services.fixity.FixityResult;
 		serviceName = Fixity.NAME, 
 		targetNamespace = PlanetsServices.NS, 
 		endpointInterface = "eu.planets_project.services.fixity.Fixity")
-		@StreamingAttachment(parseEagerly = true)
-		@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public final class JavaDigest implements Fixity, Serializable {
 
 	/**

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -15,6 +16,7 @@ import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * Service registry web service implementation.
@@ -26,8 +28,8 @@ import eu.planets_project.services.datatypes.ServiceDescription;
         serviceName = ServiceRegistry.NAME, 
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.ifr.core.servreg.api.ServiceRegistry")
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-@StreamingAttachment(parseEagerly = true)
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public final class RemoteServiceRegistry implements ServiceRegistry {
     /***/
     private static final long serialVersionUID = 1L;

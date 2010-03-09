@@ -54,7 +54,8 @@
 
 	<servlet>
         <servlet-name>AlwaysSaysValidService</servlet-name>
-        <servlet-class>eu.planets_project.ifr.core.simple.impl.AlwaysSaysValidService</servlet-class>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
@@ -64,7 +65,8 @@
     
     <servlet>
         <servlet-name>SimpleCharacterisationService</servlet-name>
-        <servlet-class>eu.planets_project.ifr.core.simple.impl.SimpleCharacterisationService</servlet-class>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
@@ -74,7 +76,8 @@
     
     <servlet>
         <servlet-name>SimpleIdentifyService</servlet-name>
-        <servlet-class>eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService</servlet-class>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>

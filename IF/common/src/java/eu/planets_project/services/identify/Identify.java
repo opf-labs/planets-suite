@@ -11,11 +11,15 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * Identification of a DigitalObject, returning a types object containing the
@@ -23,7 +27,8 @@ import eu.planets_project.services.datatypes.Parameter;
  * @author Fabian Steeg, Andrew Jackson
  */
 @WebService(name = Identify.NAME, targetNamespace = PlanetsServices.NS)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public interface Identify extends PlanetsService {
 
     /** The interface name */

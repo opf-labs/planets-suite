@@ -12,7 +12,8 @@ import java.util.logging.Logger;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.activation.FileTypeMap;
-import javax.xml.bind.annotation.XmlAttachmentRef;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlMimeType;
@@ -31,6 +32,7 @@ import eu.planets_project.services.PlanetsServices;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  * @author Peter Melms (peter.melms@uni-koeln.de)
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
 /*
  * NOTE: This class is intentionally NOT PUBLIC. Clients should use the factory methods in the Content class to
@@ -42,25 +44,24 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
     private static final long serialVersionUID = 7135127983024589335L;
 
     /***/
-    @XmlAttribute
+    @XmlAttribute(namespace = PlanetsServices.OBJECTS_NS)
     private URL reference;
     
-    @XmlElement
+    @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
     private byte[] bytes;
 
     @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
     @XmlMimeType("application/octet-stream")
     /*
-     * FIXME: This field is non-serializable and non-transient. We can't make it serializable because it's not ours and
+     * FIXME: This field is non-serializable and non-transient. We can't ake it serializable because it's not ours and
      * we can't make it transient because then JAXB complains. Support for Java Serialization is currently required by
      * GUI components. Possible solutions: using different UI components; using some sort of wrapper object in the GUI
      * (SerializableDigitalObject).
      */
-    @XmlAttachmentRef() //This appears to be required to actually enable the streaming data handler
     private DataHandler dataHandler;
 
     /***/
-    @XmlAttribute
+    @XmlAttribute(namespace = PlanetsServices.OBJECTS_NS)
     private long length = -1;
 
     @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
@@ -75,7 +76,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
         this.bytes = value;
         log.info("Created Content from byte array: " + this.length + " bytes in length.");
     }
-
+    
     /**
      * @param reference The content reference, as a file.
      */

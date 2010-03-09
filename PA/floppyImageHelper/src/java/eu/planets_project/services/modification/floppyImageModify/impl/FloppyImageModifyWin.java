@@ -11,6 +11,9 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -36,9 +39,9 @@ import eu.planets_project.services.utils.ServiceUtils;
  * @author Peter Melms
  *
  */
-@Stateless()
-
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@Stateless
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 @WebService(
         name = FloppyImageModifyWin.NAME, 
         serviceName = Modify.NAME,

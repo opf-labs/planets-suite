@@ -45,7 +45,7 @@ public class PlanetsServices {
 
 
     /**
-     * The dublicn core namespace, used for certain terms
+     * The Dublin Core namespace, used for certain terms
      */
     public static final String TERMS_NS = "http://purl.org/dc/terms/";
 

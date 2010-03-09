@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -20,6 +21,7 @@ import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.utils.ServiceUtils;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
 
@@ -32,9 +34,9 @@ import eu.planets_project.services.validate.ValidateResult;
 		serviceName = Validate.NAME, 
 		targetNamespace = PlanetsServices.NS, 
 		endpointInterface = "eu.planets_project.services.validate.Validate")
-@StreamingAttachment(parseEagerly = true)
 @Stateless
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public final class JhoveValidation implements Validate, Serializable {
     /***/
     private static final long serialVersionUID = 2127494848765937613L;

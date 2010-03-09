@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -28,6 +29,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
+import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * Service to retrieve common properties of different file formats, given their IDs, based on the XCL Explorer tool.
@@ -36,8 +38,8 @@ import eu.planets_project.services.utils.ProcessRunner;
  */
 @WebService(name = XcdlCommonProperties.NAME, serviceName = CommonProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CommonProperties")
 @Stateless
-@StreamingAttachment(parseEagerly = true)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public final class XcdlCommonProperties implements CommonProperties {
     static final String NAME = "XcdlCommonProperties";
     private static final Logger log = Logger.getLogger(XcdlCommonProperties.class.getName());

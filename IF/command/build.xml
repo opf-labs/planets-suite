@@ -41,9 +41,11 @@
     </classpath>
   </taskdef>
 
-  <!-- build a single-jar client app -->
-  <target name="client:jar" depends="compile:jar" description="Build a single client jar for Planets Services.">
-    <one-jar destfile="mercury.jar" manifest="${src.resources}/META-INF/MANIFEST.MF">
+  <!-- build a single-jar client app - Mercury -->
+  <property name="mercury.jar.path" location="mercury.jar"/>
+  <target name="mercury" depends="compile:jar" description="Build a single client jar for Planets Services.">
+    <delete file="${mercury.jar.path}"/>
+    <one-jar destfile="${mercury.jar.path}" manifest="${src.resources}/META-INF/MANIFEST.MF">
       <main jar="${build.dir}/${jar.base.name}"/>
       <lib>
         <fileset dir="${appDir}/lib">
@@ -56,16 +58,49 @@
           <include name="*.jar"/>
         </fileset>
         <fileset dir="${pserv.root.dir}/lib">
-          <include name="jaxws-ri-2.*/lib/*.jar"/>
+          <include name="jaxws-ri-2.1.4/lib/*.jar"/>
+          <!--
+          <include name="JAXWS2.2-20091203/jaxws-ri/lib/*.jar"/>
+          -->
+          <!--
+          <include name="metro-*/lib/webservices-api.jar"/>
+          <include name="metro-*/lib/webservices-runtime.jar"/>
+          <include name="jaxws-ri-2.1.4/lib/*.jar"/>
+          <exclude name="jaxws-ri-2.1.4/lib/jaxws-*.jar"/>
+          -->
         </fileset>
       </lib>
     </one-jar>
   </target>
   
+  
+  <!-- as an example, this invokes a service locally -->
+  <target name="invoke:local">
+    <echo message="Invoking a service hosted locally..."/>
+    <java jar="${mercury.jar.path}" fork="true">
+      <arg value="http://localhost:8080/pserv-pa-java-se/JavaImageIOMigrate?wsdl"/>
+      <arg value="${test.resources}/plavicon.png"/>
+      <arg value="planets:fmt/ext/png"/>
+      <arg value="planets:fmt/ext/jpg"/>
+    </java>
+  </target>
+  
+  <!-- as an example, this invokes a service locally -->
+  <target name="invoke:local:large">
+    <echo message="Invoking a service hosted locally, passing through a Large file..."/>
+    <java jar="${mercury.jar.path}" fork="true">
+      <jvmarg value="-Xmx128m"/>
+      <arg value="http://localhost:8080/pserv-if-simple/PassThruMigrationService?wsdl"/>
+      <arg value="ubuntu-9.10-desktop-i386.iso"/>
+      <arg value="planets:fmt/ext/png"/>
+      <arg value="planets:fmt/ext/jpg"/>
+    </java>
+  </target>
+  
   <!-- as an example, this invokes a service on the testbed -->
   <target name="invoke:testbed">
     <echo message="Invoking a service hosted on the central Planets Testbed..."/>
-    <java jar="mercury.jar" fork="true">
+    <java jar="${mercury.jar.path}" fork="true">
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
@@ -79,7 +114,7 @@
   <!-- as an example, this invokes a service from DIaLOGIKa -->
   <target name="invoke:dialogika">
     <echo message="Invoking a service hosted by DIaLOGIKa..."/>
-    <java jar="mercury.jar" fork="true">
+    <java jar="${mercury.jar.path}" fork="true">
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>

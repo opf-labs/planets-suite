@@ -4,12 +4,14 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
-import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
 
-import eu.planets_project.services.PlanetsServices;
+import com.sun.xml.ws.developer.StreamingAttachment;
+
 import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.utils.ServiceUtils;
 	
 /**
  * This is a basic migration service, with no parameters or metadata.
@@ -25,10 +27,8 @@ import eu.planets_project.services.PlanetsException;
         name = L2PlanetsService.NAME, 
         serviceName= L2PlanetsService.NAME, 
         targetNamespace = PlanetsServices.NS )
-@SOAPBinding(
-        parameterStyle = SOAPBinding.ParameterStyle.BARE,
-        style = SOAPBinding.Style.RPC)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
+@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public interface L2PlanetsService {
 	 public static final String NAME = "L2PlanetsService";
 	 public static final QName QNAME = new QName(PlanetsServices.NS, L2PlanetsService.NAME );

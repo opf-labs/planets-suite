@@ -37,7 +37,7 @@
 
 	<endpoint name='PassThruMigrationService'
 		implementation='eu.planets_project.ifr.core.simple.impl.PassThruMigrationService'
-		url-pattern='/PassThruMigrationService' />
+		url-pattern='/PassThruMigrationService'/>
 
 	<endpoint name='AlwaysSaysValidService'
 		implementation='eu.planets_project.ifr.core.simple.impl.AlwaysSaysValidService'

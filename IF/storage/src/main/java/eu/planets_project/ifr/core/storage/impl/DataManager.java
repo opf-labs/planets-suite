@@ -32,16 +32,20 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.soap.MTOM;
 
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 import org.jboss.annotation.security.SecurityDomain;
+
+import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DataManagerRemote;
 import eu.planets_project.ifr.core.storage.common.FileHandler;
 import eu.planets_project.ifr.core.storage.impl.util.JCRManager;
 import eu.planets_project.ifr.core.storage.impl.util.PDURI;
+import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * The DataManager is a stateless EJB implementation of the PLANETS
@@ -78,7 +82,7 @@ import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 @Remote(DataManagerRemote.class)
 @LocalBinding(jndiBinding="planets-project.eu/DataManager/local")
 @RemoteBinding(jndiBinding="planets-project.eu/DataManager/remote")
-@BindingType(value="http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@MTOM
 @javax.jws.soap.SOAPBinding(style = SOAPBinding.Style.RPC)
 @SecurityDomain("PlanetsRealm")
 //@RunAs("admin")
