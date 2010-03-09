@@ -8,9 +8,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,7 +36,7 @@ public class JavaDigestTests {
     @BeforeClass
     public static void setup() {
         javaDigest = ServiceCreator.createTestService(Fixity.QNAME, JavaDigest.class,
-                "/pserv-pc-javadigest/javaDigest?wsdl");
+                "/pserv-pc-javadigest/JavaDigest?wsdl");
     }
     
     /*
