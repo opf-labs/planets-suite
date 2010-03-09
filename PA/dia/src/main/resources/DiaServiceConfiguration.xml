@@ -87,7 +87,7 @@
                     </parameter>
 
 					<parameter>
-      					<![CDATA[#diacommand -n -t dia -e #tempDiaFile #inputFile && #diacommand -n -t svg -e #outputFile #tempDiaFile]]>
+      					<![CDATA[#diacommand -n -l -t dia -e #tempDiaFile #inputFile && #diacommand -n -l -t svg -e #outputFile #tempDiaFile]]>
 					</parameter>
 				</commandparameters>
 			</commandline>
@@ -138,7 +138,7 @@
                     </parameter>
                     
 					<parameter>
-				    	<![CDATA[#diacommand -n -t svg -e #outputFile #inputFile]]>
+				    	<![CDATA[#diacommand -n -l -t svg -e #outputFile #inputFile]]>
 					</parameter>
 				</commandparameters>
 			</commandline>
