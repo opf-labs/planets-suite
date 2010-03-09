@@ -109,14 +109,6 @@ class PRCommandBuilder {
 	// associated value (parameter, temp. file path etc.).
 	final List<String> executableCommandLine = new ArrayList<String>();
 
-	// TODO/FIXME! We still need to add the precise (absolute) file path to
-	// the command, however, the mechanism for obtaining this has not yet
-	// been delivered from the IF team. It is probably possible to obtain by
-	// using command line parameters which the generic wrapper class defines
-	// based on information on the environment. Thus a comand line in the
-	// config would look something like this: #commandPath/sh -c
-	// #toolPath/myMigrationTool Making "commandPath" and "toolPath"
-	// reserved names.
 	executableCommandLine.add(commandLine.getCommand());
 	executableCommandLine.addAll(commandLine.getParameters());
 
@@ -129,14 +121,7 @@ class PRCommandBuilder {
 	    final StringTokenizer stringTokenizer = new StringTokenizer(
 		    commandFragment, "#");
 
-	    // TODO: This is quick'n'dirty cowboy-code. I (TSH) think it could
-	    // be written more elegant and robust.
-
 	    String substitudedString = "";
-	    if (stringTokenizer.hasMoreElements() == false) {
-		// The command fragment contains no identifiers.
-		substitudedString = commandFragment;
-	    }
 
 	    while (stringTokenizer.hasMoreTokens()) {
 
@@ -150,8 +135,13 @@ class PRCommandBuilder {
 
 		final String identifier = token.substring(0, identifierEnd);
 
-		substitudedString += identifierMap.get(identifier)
-			+ token.substring(identifierEnd);
+		final String identifierValue = identifierMap.get(identifier);
+		if (identifierValue != null) {
+		    substitudedString += identifierValue
+			    + token.substring(identifierEnd);
+		} else {
+		    substitudedString += token;
+		}
 	    }
 
 	    // Replace the command line fragment with the one where the
