@@ -54,7 +54,6 @@ class DataRegistryImpl implements DataRegistry {
 	// The keys in the DataRegistry.roperties config file
 	private static final String DEFAULT_CONFIG_KEY = "dom.config.default.location";
 	private static final String USER_CONFIG_KEY = "dom.config.user.location";
-	private static final String DISABLE_DEFAULT_CONFIG_KEY = "dom.config.disable.default";
 
 	// The class name key that MUST be in every DigitalObjectManager config file
 	private static final String CLASS_NAME_KEY = "manager.class.name";
@@ -77,9 +76,6 @@ class DataRegistryImpl implements DataRegistry {
 	// The name of the user DigitalObjectManager config dir
 	private static String userDomDirName = null;
 
-	// The root Data Registry URI (i.e. planets://hostname:port/dr)
-	private static URI dataRegistryRoot = null;
-	
 	// The URI ID of the default data registry
 	private static URI defaultDomUri = null;
 	
@@ -208,7 +204,7 @@ class DataRegistryImpl implements DataRegistry {
 		if (pdURI == null) {
 			
 			// Create a new ArrayList to return
-			List<URI> allDoms = new ArrayList<URI>(this.domSet.keySet());
+			List<URI> allDoms = new ArrayList<URI>(domSet.keySet());
 			
 			// Return the created list
 			return allDoms;
@@ -604,7 +600,7 @@ class DataRegistryImpl implements DataRegistry {
 		}
 		DigitalObjectManagerBase dom;
 		try {
-			dom = this.domSet.get(new PDURI(uri).formDataRegistryRootURI());
+			dom = domSet.get(new PDURI(uri).formDataRegistryRootURI());
 		} catch (URISyntaxException e) {
 			throw new DigitalObjectManagerNotFoundException("Cannot find DigitalObjectManger for " + uri);
 		}
@@ -617,14 +613,14 @@ class DataRegistryImpl implements DataRegistry {
 	}
 
 	public String getName(URI uri) throws DigitalObjectManagerNotFoundException {
-		return this.domSet.get(uri).getName();
+		return domSet.get(uri).getName();
 	}
 
 	public DigitalObjectManager getDefaultDigitalObjectManager()
 			throws DigitalObjectManagerNotFoundException {
 		DigitalObjectManager dom = null;
-		if (this.defaultDomUri != null) {
-			dom = this.getDigitalObjectManager(this.defaultDomUri);
+		if (defaultDomUri != null) {
+			dom = this.getDigitalObjectManager(defaultDomUri);
 		}
 		return dom;
 	}
@@ -635,7 +631,7 @@ class DataRegistryImpl implements DataRegistry {
 	 * @return The default DOM URI
 	 */
 	public URI getDefaultDigitalObjectManagerId() {
-		return this.defaultDomUri;
+		return defaultDomUri;
 	}
 
 	/**
@@ -647,12 +643,12 @@ class DataRegistryImpl implements DataRegistry {
 	public URI setDefaultDigitalObjectManagerId(URI uri) {
 		if (this.hasDigitalObjectManager(uri))
 			try {
-				this.defaultDomUri = new PDURI(uri.normalize()).formDataRegistryRootURI();
+				defaultDomUri = new PDURI(uri.normalize()).formDataRegistryRootURI();
 			} catch (URISyntaxException e) {
 				log.info("URI: " + uri + 
 						" is not a valid Planets DataRegistry URI ID");
 			}
-			return this.defaultDomUri;
+			return defaultDomUri;
 	}
 		
 	public static URI createDataRegistryIdFromName(String registryName) throws URISyntaxException {

@@ -11,8 +11,6 @@ import java.util.Calendar;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
@@ -29,17 +27,13 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.security.auth.Subject;
 
 import org.jboss.annotation.security.SecurityDomain;
-
-import java.security.PrivilegedAction;
 
 import eu.planets_project.ifr.core.storage.api.InvocationEvent;
 import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
 import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
 import eu.planets_project.ifr.core.storage.common.PlanetsJCRAccessManager;
-import eu.planets_project.ifr.core.storage.impl.DataManager;
 
 /**
  * Utility class called by the PLANETS DataManager.  This class manages lookup, connection

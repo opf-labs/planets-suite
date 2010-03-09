@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.storage.common;
 
-import eu.planets_project.ifr.core.storage.common.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
@@ -62,7 +61,7 @@ public class ResourceLoader {
 
 		// The Thread Context ClassLoader is the ClassLoader used by the creator
 		// of the Thread that runs your code. By using the Thread Context ClassLoader,
-		// we’re guaranteed to load the resource (class or property file) as long as
+		// weï¿½re guaranteed to load the resource (class or property file) as long as
 		// it's on the application's CLASSPATH.
 
 		//ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

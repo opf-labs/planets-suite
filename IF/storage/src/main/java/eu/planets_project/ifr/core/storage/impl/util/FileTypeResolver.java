@@ -143,7 +143,7 @@ public class FileTypeResolver {
             JDOMXPath xpath = new JDOMXPath("/planets:Document/planets:MIME-mapping");    
             xpath.addNamespace( "planets", "http://www.planets-project.eu/xml/ns/planets/core/mimetypes" );                        
             
-            Iterator _mappings = xpath.selectNodes( d ).iterator();
+            Iterator<?> _mappings = xpath.selectNodes( d ).iterator();
             while ( _mappings.hasNext() ) {            
             
                 Element _mapping = (Element)_mappings.next();
@@ -194,7 +194,7 @@ public class FileTypeResolver {
     {
         if ( _mimetype == null )
             return false;
-        ArrayList al = getMIMETypeList();
+        ArrayList<?> al = getMIMETypeList();
         return al.contains( _mimetype );
     }
 

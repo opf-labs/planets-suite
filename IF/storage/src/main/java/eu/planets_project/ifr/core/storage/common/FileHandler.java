@@ -41,8 +41,6 @@ public class FileHandler {
 
 	// the decoded byte sequence
 	private byte[] decodedBytes = null;
-	// The MD5 Hex String
-	private String md5HexString = null;
 
 	/**
 	 * 
@@ -56,7 +54,6 @@ public class FileHandler {
 				_byteStream.write(_byte);
 			}
 			this.decodedBytes = _byteStream.toByteArray();
-			this.md5HexString = FileHandler.getMD5HexString(this.decodedBytes);
 		} catch (IOException _exp) {
 			throw new RuntimeException(_exp);
 		}

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.InvalidPropertiesFormatException;
@@ -13,10 +14,12 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
+
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 
 /**
  * Local File Disk-Based Digital Object Cache.
@@ -45,11 +48,16 @@ public class DigitalObjectDiskCache {
         }
 
         log.info("write " + dob.getTitle());
-        FileUtils.writeInputStreamToFile(dob.getContent().getInputStream(), cachedir, sessionId);
+        
+        DigitalObjectUtils.toFile(dob, new File(cachedir, sessionId));
         
         // Also store the XML:
         String xmlfile = dob.toXml();
-        FileUtils.writeStringToFile(xmlfile, new File(cachedir, sessionId + ".xml"));
+        try {
+            FileUtils.writeStringToFile(new File(cachedir, sessionId + ".xml"), xmlfile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         return sessionId;
     }
@@ -73,24 +81,29 @@ public class DigitalObjectDiskCache {
 			log.severe("no such file or directory: " + f);
 			return null;
 		}
-		// Look for the file:
-		URL binUrl = null;
-        binUrl = FileUtils.getUrlFromFile(f);
-        
-        // Build a bare DOB:
-        DigitalObject.Builder dob = null;
-        DigitalObjectContent c = Content.byReference(binUrl);
-        dob = new DigitalObject.Builder(c);
-		
-        // Attempt to patch in metadata:
-        File xmlf = new File( cachedir, sessionId+".xml");
-        if( xmlf.exists() ) {
-            dob = new DigitalObject.Builder( FileUtils.readTxtFileIntoString(xmlf));
-            // Add the ref to the binary:
-            dob.content(c);
+        try {
+            // Look for the file:
+            URL binUrl = f.toURI().toURL();
+            
+            DigitalObjectContent c = Content.byReference(binUrl);
+            
+            // Build a bare DOB:
+            DigitalObject.Builder dob = new DigitalObject.Builder(c);
+            
+            // Attempt to patch in metadata:
+            File xmlf = new File( cachedir, sessionId+".xml");
+            if( xmlf.exists() ) {
+                dob = new DigitalObject.Builder( FileUtils.readFileToString(xmlf));
+                // Add the ref to the binary:
+                dob.content(c);
+            }
+            return dob.build();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-		
-		return dob.build();
+		return null;
 	}
 
     /**

@@ -15,8 +15,6 @@ import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
 
-import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
-
 
 /**
  * Implementation of the DigitalObjectManager interface based upon a JCR repository.

@@ -15,7 +15,6 @@ import org.jaxen.dom4j.Dom4jXPath;
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.OaiPmhServer;
 import se.kb.oai.pmh.RecordsList;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryDateRange;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;

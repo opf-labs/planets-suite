@@ -9,10 +9,6 @@
 
 package eu.planets_project.ifr.core.storage.api;
 
-import eu.planets_project.ifr.core.storage.api.ObjectReference;
-import eu.planets_project.ifr.core.storage.api.Value;
-
-import java.io.File;
 
 public interface DataManagerRemoteInterface {
     

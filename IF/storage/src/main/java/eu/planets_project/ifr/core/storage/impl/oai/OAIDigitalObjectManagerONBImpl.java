@@ -22,9 +22,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import se.kb.oai.pmh.Record;
 import se.kb.oai.pmh.OaiPmhServer;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
+import se.kb.oai.pmh.Record;
 import eu.planets_project.ifr.core.storage.api.query.QueryDateRange;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.Content;

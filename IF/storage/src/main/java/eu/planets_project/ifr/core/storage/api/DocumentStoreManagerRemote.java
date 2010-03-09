@@ -20,20 +20,20 @@ package eu.planets_project.ifr.core.storage.api;
 
 import java.net.URI;
 
-import javax.jcr.query.QueryResult;
 import javax.jcr.query.Query;
+import javax.jcr.query.QueryResult;
 
 import org.w3c.dom.Document;
 
 public interface DocumentStoreManagerRemote {
 
 	/*
-	 * Create a document store called ‘name’, that can store any XML documents. 
+	 * Create a document store called ï¿½nameï¿½, that can store any XML documents. 
 	 */
 	URI createDocumentStore(String name);
 
 	/*
-	 * Create a document store called ‘name’, where each document must validate against the supplied schema. 
+	 * Create a document store called ï¿½nameï¿½, where each document must validate against the supplied schema. 
 	 */
 	URI createDocumentStore(String name, URI schemaLoc);
 

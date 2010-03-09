@@ -24,13 +24,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryString;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * Implements the DigitalObjectManager interface for the Yahoo Image API. This
@@ -336,10 +335,11 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 	// A simple class to wrap a query result URL 
 	// with a little bit of metadata. (Might be
 	// extended in thefuture?)
+	@SuppressWarnings( "unused" )
 	private class YahooResult {
 		URI uri = null;       // URI
 		String title = null;  // Title
-		int fileSize;         // File size in kByte
+        int fileSize;         // File size in kByte
 		String format = null; // File format by extension
 	}
 	

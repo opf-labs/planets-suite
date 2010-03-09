@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.annotation.security.RunAs;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -91,7 +90,7 @@ public class DataManager implements DataManagerRemote, DataManagerLocal {
 	private static final String propPath = "eu/planets_project/ifr/core/storage/datamanager.properties";
 	private Properties properties = null;
 	// JCRManager manages Jackrabbit functionality
-	private static JCRManager jcrManager = null;
+	private JCRManager jcrManager = null;
 	
 	/**
 	 * Constructor for the Data Manager. Simply loads the properties and

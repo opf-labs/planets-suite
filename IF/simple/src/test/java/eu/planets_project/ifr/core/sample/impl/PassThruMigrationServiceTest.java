@@ -1,5 +1,12 @@
 package eu.planets_project.ifr.core.sample.impl;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import junit.framework.TestCase;
+
+import org.junit.Test;
+
 import eu.planets_project.ifr.core.simple.impl.PassThruMigrationService;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -7,11 +14,6 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
-import junit.framework.TestCase;
-import org.junit.Test;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Local and client tests of the digital object migration functionality.

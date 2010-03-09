@@ -3,21 +3,27 @@
  */
 package eu.planets_project.ifr.core.sample.impl;
 
-import eu.planets_project.ifr.core.simple.impl.SimpleCharacterisationService;
-import eu.planets_project.services.characterise.Characterise;
-import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.*;
-import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.test.ServiceCreator;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
+import eu.planets_project.ifr.core.simple.impl.SimpleCharacterisationService;
+import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.characterise.CharacteriseResult;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
+import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -71,14 +77,14 @@ public class SimpleCharacterisationServiceTest {
     }
     
     /**
-     * test sizing from a URL reference
-     * @throws MalformedURLException 
+     * test sizing from a File reference.
      */
-    //@Test //fails on Mac due to a bug related to temp files and SAX/JAXB
-    public void testSizeAFileRef() throws MalformedURLException {
+    @Test
+    public void testSizeAFileRef() throws IOException {
         /* set up a binary */
         byte[] binary = new byte[(int)(Math.random()*1024*10)];
-        File file = FileUtils.writeByteArrayToTempFile(binary);
+        File file = File.createTempFile("planets", null);
+        FileUtils.writeByteArrayToFile(file, binary);
         
         /* Create the content: */
         DigitalObjectContent c1 = Content.byReference(file.toURI().toURL());

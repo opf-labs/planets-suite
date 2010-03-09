@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -40,7 +39,6 @@ public class PDURI {
 	 * @throws URISyntaxException
 	 * @throws UnsupportedEncodingException 
 	 */
-	@SuppressWarnings("deprecation")
 	public PDURI(URI pdURI) throws URISyntaxException {
 		// Check that the URL isn't null
 		if (pdURI == null) {

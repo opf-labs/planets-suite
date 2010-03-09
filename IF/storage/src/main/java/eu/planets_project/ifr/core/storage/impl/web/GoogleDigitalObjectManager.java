@@ -16,7 +16,6 @@ import org.richfaces.json.JSONException;
 import org.richfaces.json.JSONObject;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryString;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;

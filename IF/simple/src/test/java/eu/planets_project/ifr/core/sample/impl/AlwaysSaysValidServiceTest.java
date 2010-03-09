@@ -14,13 +14,13 @@ import java.net.URL;
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.planets_project.ifr.core.simple.impl.AlwaysSaysValidService;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
-import eu.planets_project.ifr.core.simple.impl.AlwaysSaysValidService;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

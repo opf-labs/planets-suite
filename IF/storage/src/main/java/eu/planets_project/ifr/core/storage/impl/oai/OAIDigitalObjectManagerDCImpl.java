@@ -5,15 +5,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
-// import java.util.Calendar;
-// import java.util.List;
 
 import org.dom4j.Element;
 
-import se.kb.oai.pmh.Record;
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.OaiPmhServer;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
+import se.kb.oai.pmh.Record;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.Content;
