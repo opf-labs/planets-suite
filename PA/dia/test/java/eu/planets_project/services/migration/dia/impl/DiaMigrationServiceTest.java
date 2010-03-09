@@ -181,8 +181,7 @@ public class DiaMigrationServiceTest extends TestCase {
 		.describe();
 
 	assertEquals("Un-expected author (creator) information.",
-		"\"Pelle Kofod <pko@statsbiblioteket.dk>\",\n\t\t\t\"Thomas Skou "
-			+ "Hansen <tsh@statsbiblioteket.dk>\"",
+		"\"Thomas Skou Hansen <tsh@statsbiblioteket.dk>\"",
 		diaServiceDescription.getAuthor());
 
 	assertNotNull("The migration service does not provide a description.",

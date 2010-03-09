@@ -60,12 +60,6 @@
 		<logo>http://projects.gnome.org/dia/images/dialogo.jpg</logo>
 
 		<properties>
-			<property name="exampleName" id="info:exampleID">
-				<value unit="dBa">120</value>
-				<description>
-					This migration is very noisy. This property specifies exactly how many dBa.
-				</description>
-			</property>
 		</properties>
 	</serviceDescription>
 
@@ -84,16 +78,16 @@
 
 			<commandline>
 				<command>
-					/bin/sh
+					#shellcommand
                 </command>
 
 				<commandparameters>
 					<parameter>
-						-c
+						#shellcommandoption
                     </parameter>
 
 					<parameter>
-      					<![CDATA[dia -n -t dia -e #tempDiaFile #inputFile && dia -n -t svg -e #outputFile #tempDiaFile]]>
+      					<![CDATA[#diacommand -n -t dia -e #tempDiaFile #inputFile && #diacommand -n -t svg -e #outputFile #tempDiaFile]]>
 					</parameter>
 				</commandparameters>
 			</commandline>
@@ -135,16 +129,16 @@
 
 			<commandline>
 				<command>
-					/bin/sh
+					#shellcommand
                 </command>
                 
 				<commandparameters>
 					<parameter>
-						-c
+						#shellcommandoption
                     </parameter>
                     
 					<parameter>
-				    	<![CDATA[dia -n -t svg -e #outputFile #inputFile]]>
+				    	<![CDATA[#diacommand -n -t svg -e #outputFile #inputFile]]>
 					</parameter>
 				</commandparameters>
 			</commandline>
