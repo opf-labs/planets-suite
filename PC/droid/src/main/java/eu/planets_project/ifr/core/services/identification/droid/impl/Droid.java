@@ -1,7 +1,6 @@
 package eu.planets_project.ifr.core.services.identification.droid.impl;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -32,7 +31,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 
 /**
  * Droid identification service.
@@ -73,9 +72,7 @@ public final class Droid implements Identify, Serializable {
      */
     public IdentifyResult identify(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
-        InputStream stream = digitalObject.getContent().getInputStream();
-        File file = FileUtils.writeInputStreamToTmpFile(stream, "droid-temp",
-                "bin");
+        File file = DigitalObjectUtils.toFile(digitalObject);
         List<URI> types = identifyOneBinary(file);
         ServiceReport report = null;
         if (types == null || types.size() == 0) {

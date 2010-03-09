@@ -22,7 +22,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
@@ -49,9 +49,7 @@ public final class PngCheck implements Validate, Serializable {
             URI.create("info:pronom/fmt/13"));
     /***/
     private static final Logger log = Logger.getLogger(PngCheck.class.getName());
-
-    /***/
-    // private byte[] bytes;
+    
     /**
      * Validates that a file is a PNG using PngCheck.
      * @param tempFile The file to verify being a PNG using PngCheck
@@ -116,8 +114,7 @@ public final class PngCheck implements Validate, Serializable {
      */
     public ValidateResult validate(final DigitalObject digitalObject,
             final URI format, final List<Parameter> parameters) {
-        File file = FileUtils.writeInputStreamToTmpFile(digitalObject
-                .getContent().getInputStream(), "pngcheck-temp", "bin");
+        File file = DigitalObjectUtils.toFile(digitalObject);
         boolean valid = basicValidateOneBinary(file, format);
         ValidateResult result = new ValidateResult.Builder(format,
                 new ServiceReport(Type.INFO, Status.SUCCESS, "OK"))

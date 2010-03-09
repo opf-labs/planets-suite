@@ -33,7 +33,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 
 /**
  * JHOVE identification service.
@@ -67,8 +67,7 @@ public final class JhoveIdentification implements Identify, Serializable {
      */
     public IdentifyResult identify(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
-        File file = FileUtils.writeInputStreamToTmpFile(digitalObject
-                .getContent().getInputStream(), "jhove-temp", "bin");
+        File file = DigitalObjectUtils.toFile(digitalObject);
         List<URI> types = identifyOneBinary(file);
         log.info("JHOVE Identification, got types: " + types);
         ServiceReport report;

@@ -23,7 +23,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.file.util.FileServiceSetup;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 
 /**
@@ -77,11 +77,8 @@ public class FileIdentify implements Identify {
             return this.returnWithErrorMessage("Cygwin file.exe not found at location given in cygwin.file.location property.", 1);
         }
 
-        // Get binary data from digital object
-        byte[] binary = FileUtils.writeInputStreamToBinary(digitalObject.getContent().getInputStream());
-       
-        // write binary array to temporary file
-        File tmpInFile = FileUtils.writeByteArrayToTempFile(binary);
+        // write digital object to temporary file
+        File tmpInFile = DigitalObjectUtils.toFile(digitalObject);
 
         // Right we'll need to create a suitable command line
         // String[] commands = new String[] {FileServiceSetup.getProperties().getProperty("cygwin.file.location"),

@@ -4,6 +4,8 @@
 package eu.planets_project.services.validation.odfvalidator;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
+
+import org.apache.commons.io.IOUtils;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -26,7 +30,6 @@ import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
@@ -56,7 +59,7 @@ public class OdfValidator implements Validate {
 	
 	private static String NEWLINE = System.getProperty("line.separator");
 	
-	private String usedSchemas = new String(FileUtils.writeInputStreamToBinary(CoreOdfValidator.class.getResourceAsStream("schema_list.properties")));
+	private String usedSchemas = loadSchemas();
 
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,Validate.class.getCanonicalName());
@@ -157,9 +160,17 @@ public class OdfValidator implements Validate {
 		return sd.build();
 	}
 
+	private String loadSchemas() {
+	    StringWriter writer = new StringWriter();
+        try {
+            IOUtils.copy(CoreOdfValidator.class.getResourceAsStream("schema_list.properties"), writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return writer.toString();
+    }
 
-
-	public ValidateResult validate(DigitalObject digitalObject, URI format,
+    public ValidateResult validate(DigitalObject digitalObject, URI format,
 			List<Parameter> parameters) {
 		
 		if(digitalObject==null || digitalObject.getContent() == null) {
@@ -168,11 +179,7 @@ public class OdfValidator implements Validate {
 		
 		String name = DigitalObjectUtils.getFileNameFromDigObject(digitalObject, format);
 		
-		File odfValidatorTmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODFVALIDATOR_INPUT");
-		FileUtils.deleteAllFilesInFolder(odfValidatorTmp);
-				
-		File inputOdfFile = new File(odfValidatorTmp, FileUtils.randomizeFileName(name));
-		FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), inputOdfFile);
+		File inputOdfFile = DigitalObjectUtils.toFile(digitalObject);
 		inputOdfFile.deleteOnExit();
 		
 		CoreOdfValidator odfValidator = new CoreOdfValidator();

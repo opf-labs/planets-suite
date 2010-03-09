@@ -30,7 +30,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
 
@@ -101,8 +101,7 @@ public class TiffValidation implements Validate, Serializable
 	public ValidateResult validate(final DigitalObject o, final URI fmt, List<Parameter> paramenters)
 	{
 		ValidateResult result;
-		File tempFile =  FileUtils.writeInputStreamToTmpFile(o.getContent().getInputStream(), 
-			"image", "tif");
+		File tempFile =  DigitalObjectUtils.toFile(o);
 		boolean valid = basicValidateOneBinary(tempFile, fmt);
 
 		result = new ValidateResult.Builder(fmt, new ServiceReport(Type.INFO,

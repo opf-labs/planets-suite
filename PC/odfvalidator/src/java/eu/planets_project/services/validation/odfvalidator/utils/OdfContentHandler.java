@@ -3,12 +3,12 @@ package eu.planets_project.services.validation.odfvalidator.utils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -16,7 +16,6 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ZipUtils;
 
 public class OdfContentHandler {
@@ -60,7 +59,6 @@ public class OdfContentHandler {
 	private String odfVersion = null;
 	private String mathMLVersion = null;
 	
-	private static File CONTENT_HANDLER_TMP = null;
 	private static File xmlTmp = null;
 	
 	private static Logger log = Logger.getLogger(OdfContentHandler.class.getName());
@@ -74,29 +72,29 @@ public class OdfContentHandler {
 	 */
 	public OdfContentHandler(File odfFile) {
 		nsWarningList = new HashMap<File, String>();
-		CONTENT_HANDLER_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_CONTENT_HANDLER");
-		FileUtils.deleteAllFilesInFolder(CONTENT_HANDLER_TMP);
-		xmlTmp = FileUtils.createFolderInWorkFolder(CONTENT_HANDLER_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
-		
-		// 1) get all Odf sub files from zip container
-		odfSubFiles = extractOdfSubFiles(odfFile);
-		
-		generator = getGenerator(odfSubFiles);
-		
-		containsEmdeddedMathML = checkForEmbeddedMathML(odfSubFiles);
-		
-		containsMathMLDoctype = checkForMathMLDoctype(odfSubFiles);
-		
-		if(!isNotODF) {
-			
-			getVersions(odfSubFiles);
-			
-			missingFileEntries = checkContainerConformity(odfFile);
-			
-			boolean deleted = odfFile.delete();
-			
-			allNamespacesCorrect = validateNamespaces(odfSubFiles);
-		}
+        try {
+            xmlTmp = File.createTempFile("odf-validator", null).getParentFile();
+            // 1) get all Odf sub files from zip container
+            odfSubFiles = extractOdfSubFiles(odfFile);
+
+            generator = getGenerator(odfSubFiles);
+
+            containsEmdeddedMathML = checkForEmbeddedMathML(odfSubFiles);
+
+            containsMathMLDoctype = checkForMathMLDoctype(odfSubFiles);
+            if (!isNotODF) {
+
+                getVersions(odfSubFiles);
+
+                missingFileEntries = checkContainerConformity(odfFile);
+
+                boolean deleted = odfFile.delete();
+
+                allNamespacesCorrect = validateNamespaces(odfSubFiles);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public boolean allNamespacesCorrect() {
@@ -207,7 +205,7 @@ public class OdfContentHandler {
 		return generator;
 	}
 	
-	private boolean checkForMathMLDoctype(HashMap<String, List<File>> odfSubFiles) { 
+	private boolean checkForMathMLDoctype(HashMap<String, List<File>> odfSubFiles) throws IOException { 
 		List<File> subFiles = getOdfSubFiles();
 		HashMap<File, Boolean> doctypeContainingFiles = new HashMap<File, Boolean>();
 		for (File file : subFiles) {
@@ -341,8 +339,8 @@ public class OdfContentHandler {
 	}
 	
 	
-	private String getMimeType(File odfMimeType) {
-		String mime = FileUtils.readTxtFileIntoString(odfMimeType);
+	private String getMimeType(File odfMimeType) throws IOException {
+		String mime = FileUtils.readFileToString(odfMimeType);
 		return mime;
 	}
 	
@@ -354,8 +352,8 @@ public class OdfContentHandler {
 		return manifestMimeType;
 	}
 	
-	private String getMathMLVersion(File contentXml) {
-		String contentString = FileUtils.readTxtFileIntoString(contentXml);
+	private String getMathMLVersion(File contentXml) throws IOException {
+		String contentString = FileUtils.readFileToString(contentXml);
 		String[] parts = contentString.split(" ");
 		String version = null;
 		for (int i=0;i<parts.length;i++) {
@@ -377,40 +375,45 @@ public class OdfContentHandler {
 		return containsMathMLDoctype;
 	}
 	
-	private boolean containsDocTypeDeclaration(File mathmlXml) {
-		String contentString = FileUtils.readTxtFileIntoString(mathmlXml);
+	private boolean containsDocTypeDeclaration(File mathmlXml) throws IOException {
+		String contentString = FileUtils.readFileToString(mathmlXml);
 		String docTypePattern = "<!DOCTYPE";
 		return contentString.contains(docTypePattern);
 	}
 	
 	
 	public File cleanUpXmlForValidation(File mathmlXML) {
-		String contentString = FileUtils.readTxtFileIntoString(mathmlXML);
-		contentString = contentString.replaceAll(">", ">" + System.getProperty("line.separator"));
-		String[] lines = contentString.split(System.getProperty("line.separator"));
-		String docTypePattern = "<!DOCTYPE";
-		
-		String dest = "<math:math xmlns:math=\"http://www.w3.org/1998/Math/MathML\"" 
-			+ " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
-			+ " xsi:schemaLocation=\"http://www.w3.org/1998/Math/MathML http://www.w3.org/Math/XMLSchema/mathml2/mathml2.xsd\">";
-		
-		for (int i=0;i<lines.length;i++) {
-			if(lines[i].contains(docTypePattern)) {
-				lines[i]="";
-				continue;
-			}
-		}
-		
-		StringBuffer content = new StringBuffer();
-		
-		for (String string : lines) {
-			content.append(string.trim());
-		}
-		
-		File cleanedTmp = new File(xmlTmp, FileUtils.randomizeFileName(mathmlXML.getName()));
-		FileUtils.writeStringToFile(content.toString(), cleanedTmp);
-		
-		return cleanedTmp;
+		try {
+            String contentString = FileUtils.readFileToString(mathmlXML);
+            contentString = contentString.replaceAll(">", ">" + System.getProperty("line.separator"));
+            String[] lines = contentString.split(System.getProperty("line.separator"));
+            String docTypePattern = "<!DOCTYPE";
+            
+            String dest = "<math:math xmlns:math=\"http://www.w3.org/1998/Math/MathML\"" 
+            	+ " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+            	+ " xsi:schemaLocation=\"http://www.w3.org/1998/Math/MathML http://www.w3.org/Math/XMLSchema/mathml2/mathml2.xsd\">";
+            
+            for (int i=0;i<lines.length;i++) {
+            	if(lines[i].contains(docTypePattern)) {
+            		lines[i]="";
+            		continue;
+            	}
+            }
+            
+            StringBuffer content = new StringBuffer();
+            
+            for (String string : lines) {
+            	content.append(string.trim());
+            }
+            
+            File cleanedTmp = File.createTempFile(mathmlXML.getName(), null, xmlTmp);
+            FileUtils.writeStringToFile(cleanedTmp, content.toString());
+            
+            return cleanedTmp;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
 	
 	private String getOdfVersion(File odfSubFile) {
@@ -440,8 +443,13 @@ public class OdfContentHandler {
 	}
 	
 	public boolean subFileContainsMathML(File odfSubfile) {
-		String content = FileUtils.readTxtFileIntoString(odfSubfile);
-		if(content.contains("xmlns=\"http://www.w3.org/1998/Math/MathML\"")) {
+		String content = null;
+        try {
+            content = FileUtils.readFileToString(odfSubfile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		if(content != null && content.contains("xmlns=\"http://www.w3.org/1998/Math/MathML\"")) {
 			return true;
 		}
 		else {
@@ -462,7 +470,7 @@ public class OdfContentHandler {
 		return subFiles;
 	}
 
-	private void getVersions(HashMap<String, List<File>> odfSubFiles) {
+	private void getVersions(HashMap<String, List<File>> odfSubFiles) throws IOException {
 		// read the Odf mimeType 
 		mimeType_string = getMimeType(mimetype_file);
 		
@@ -522,53 +530,6 @@ public class OdfContentHandler {
 		return missingFileEntries;
 	}
 
-
-	private List<File> initialize(File odfFile) {
-		List<File> odfXmlParts = new ArrayList<File>(); 
-		CONTENT_HANDLER_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "ODF_VALIDATOR_TMP");
-		File xmlTmp = FileUtils.createFolderInWorkFolder(CONTENT_HANDLER_TMP, FileUtils.randomizeFileName("XML_CONTENT"));
-		FileUtils.deleteAllFilesInFolder(xmlTmp);
-		
-		String[] files = ZipUtils.getAllFragments(odfFile);
-		
-		// Determine the MimeType
-		for (String string : files) {
-			if(string.endsWith(MIMETYPE_XML)) {
-				File tmpMimetype = ZipUtils.getFileFrom(odfFile, string, xmlTmp);
-				mimeType_string = FileUtils.readTxtFileIntoString(tmpMimetype);
-				continue;
-			}
-		}
-		
-		if(files.length==0) {
-			log.severe("[OdfContentHandler] intialize(): The input file '" + odfFile.getName() + "' is NOT an ODF file! Sorry, returning with error!");
-			isNotODF = true;
-			return odfXmlParts;
-		}
-		
-		for (String currentFragment : files) {
-			if(currentFragment.endsWith(CONTENT_XML)) {
-				File tmpContent = ZipUtils.getFileFrom(odfFile, currentFragment, xmlTmp);
-				odfVersion = getOdfVersion(tmpContent);
-				odfXmlParts.add(tmpContent);
-				continue;
-			}
-			if(currentFragment.endsWith(MANIFEST_XML)) {
-				manifestXml = ZipUtils.getFileFrom(odfFile, currentFragment, xmlTmp);
-				odfXmlParts.add(manifestXml);
-				continue;
-			}
-			if(currentFragment.endsWith(META_XML) 
-					|| currentFragment.endsWith(SETTINGS_XML)
-					|| currentFragment.endsWith(STYLES_XML)) {
-				odfXmlParts.add(ZipUtils.getFileFrom(odfFile, currentFragment, xmlTmp));
-				continue;
-			}
-		}
-		return odfXmlParts;
-	}
-	
-	
 	private List<String> checkContainerConformity(File odfFile) {
 		mimeTypeVerified = verifyManifestMimeType(mimeType_string, odfSubFiles.get("manifest").get(0));
 		

@@ -11,6 +11,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,7 +23,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
@@ -80,8 +81,8 @@ public class OdfValidatorTest {
 		Parameter strictValidation = new Parameter.Builder("strict-validation", "true").build();
 		params.add(strictValidation);
 		
-		Parameter v12_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readTxtFileIntoString(v12UserDocSchema)).build();
-		Parameter v12_user_manifest_schema = new Parameter.Builder("user-manifest-schema", FileUtils.readTxtFileIntoString(v12UserManifestSchema)).build();
+		Parameter v12_user_doc_schema = new Parameter.Builder("user-doc-schema", FileUtils.readFileToString(v12UserDocSchema)).build();
+		Parameter v12_user_manifest_schema = new Parameter.Builder("user-manifest-schema", FileUtils.readFileToString(v12UserManifestSchema)).build();
 		v12_params.add(v12_user_doc_schema);
 		v12_params.add(v12_user_manifest_schema);
 //		
@@ -107,7 +108,7 @@ public class OdfValidatorTest {
 			printTestTitle("Testing OdfValidator with input file: " + currentFile.getName());
 			DigitalObject testIn = new DigitalObject.Builder(Content.byReference(currentFile)).title(currentFile.getName()).build();
 			
-			URI format = techReg.createExtensionUri(FileUtils.getExtensionFromFile(currentFile));
+			URI format = techReg.createExtensionUri(FilenameUtils.getExtension(currentFile.getName()));
 			
 			ValidateResult vr = validator.validate(testIn, format, null);
 			

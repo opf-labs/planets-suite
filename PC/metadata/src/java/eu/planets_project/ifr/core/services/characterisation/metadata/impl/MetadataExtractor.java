@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.services.characterisation.metadata.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -24,6 +25,7 @@ import nz.govt.natlib.meta.config.Configuration;
 import nz.govt.natlib.meta.config.ConfigurationException;
 import nz.govt.natlib.meta.ui.PropsManager;
 
+import org.apache.commons.io.IOUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -45,18 +47,17 @@ import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceDescription.Builder;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 
 /**
- * Service wrapping the Metadata Extraction Tool from the National Archive of
- * New Zealand (http://meta-extractor.sourceforge.net/).
+ * Service wrapping the Metadata Extraction Tool from the National Archive of New Zealand
+ * (http://meta-extractor.sourceforge.net/).
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @Stateless
-@StreamingAttachment(parseEagerly = true)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-@WebService(name = MetadataExtractor.NAME, serviceName = Characterise.NAME, targetNamespace = 
-    PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
+@StreamingAttachment( parseEagerly = true )
+@BindingType( value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true" )
+@WebService( name = MetadataExtractor.NAME, serviceName = Characterise.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise" )
 public final class MetadataExtractor implements Characterise {
     static final String NAME = "MetadataExtractor";
     static final String NZME_PROPERTY_ROOT = "planets:pc/nzme/";
@@ -70,25 +71,21 @@ public final class MetadataExtractor implements Characterise {
     }
 
     /**
-     * The optional format XCEL and parameters are ignored in this
-     * implementation (you may pass null). {@inheritDoc}
-     * @see eu.planets_project.services.characterise.Characterise#characterise(
-     *      eu.planets_project.services.datatypes.DigitalObject,
+     * The optional format XCEL and parameters are ignored in this implementation (you may pass
+     * null). {@inheritDoc}
+     * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject,
      *      java.lang.String, eu.planets_project.services.datatypes.Parameter)
      */
     public CharacteriseResult characterise(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
-        InputStream stream = digitalObject.getContent().getInputStream();
-        byte[] binary = FileUtils.writeInputStreamToBinary(stream);
-        String resultString = basicCharacteriseOneBinary(binary);
+        String resultString = basicCharacteriseOneBinary(digitalObject);
         List<Property> props = readProperties(resultString);
-        return new CharacteriseResult(props, new ServiceReport(Type.INFO,
-                Status.SUCCESS, "OK"));
+        return new CharacteriseResult(props, new ServiceReport(Type.INFO, Status.SUCCESS, "OK"));
     }
 
     /**
-     * Property listing is not yet implemented for this class, the resulting
-     * list will always be empty. {@inheritDoc}
+     * Property listing is not yet implemented for this class, the resulting list will always be
+     * empty. {@inheritDoc}
      * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
      */
     public List<Property> listProperties(final URI formatURI) {
@@ -105,8 +102,7 @@ public final class MetadataExtractor implements Characterise {
                 /* For that, get the extractable properties: */
                 List<String> listProperties = listProperties(metadataType);
                 for (String string : listProperties) {
-                    result.add(new Property(makePropertyURI(string), string,
-                            null));
+                    result.add(new Property(makePropertyURI(string), string, null));
                 }
             }
         }
@@ -119,35 +115,35 @@ public final class MetadataExtractor implements Characterise {
      */
     public ServiceDescription describe() {
         /*
-         * Gather all supported input formats using the tech reg and the types
-         * enum:
+         * Gather all supported input formats using the tech reg and the types enum:
          */
-        FormatRegistry formatRegistry = FormatRegistryFactory
-                .getFormatRegistry();
+        FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
         List<URI> inputFormats = new ArrayList<URI>();
         MetadataType[] metadataTypes = MetadataType.values();
         for (MetadataType metadataType : metadataTypes) {
             /*
-             * We use the sample file extension instead of the mime type, as the
-             * latter is file/unknown for many types (it's what the tool returns
-             * as a result, used for testing)
+             * We use the sample file extension instead of the mime type, as the latter is
+             * file/unknown for many types (it's what the tool returns as a result, used for
+             * testing)
              */
             String[] split = metadataType.sample.split("\\.");
             String extension = split[split.length - 1];
             inputFormats.addAll(formatRegistry.getUrisForExtension(extension));
         }
-        Builder builder = new ServiceDescription.Builder("New Zealand Metadata Extractor Service", Characterise.class
-                .getName());
+        Builder builder = new ServiceDescription.Builder("New Zealand Metadata Extractor Service",
+                Characterise.class.getName());
         builder.author("Fabian Steeg");
         builder.classname(this.getClass().getName());
-        builder.description("Metadata extraction service based on the Metadata Extraction Tool of the National "
-                + "Library of New Zealand (patched 3.4GA).");
+        builder
+                .description("Metadata extraction service based on the Metadata Extraction Tool of the National "
+                        + "Library of New Zealand (patched 3.4GA).");
         builder.serviceProvider("The Planets Consortium");
         builder.tool(Tool.create(null, "New Zealand Metadata Extractor", "3.4GA (patched)", null,
                 "http://meta-extractor.sourceforge.net/"));
-        builder.furtherInfo(URI
-                .create("http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407"
-                        + "&atid=929202"));
+        builder
+                .furtherInfo(URI
+                        .create("http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407"
+                                + "&atid=929202"));
         builder.inputFormats(inputFormats.toArray(new URI[] {}));
         return builder.build();
     }
@@ -157,8 +153,8 @@ public final class MetadataExtractor implements Characterise {
     /*------------------------------------------------------------------------*/
 
     /**
-     * @param metadataXml The XML string resulting from harvesting, the output
-     *        of the NZ metadata extractor
+     * @param metadataXml The XML string resulting from harvesting, the output of the NZ metadata
+     *        extractor
      * @return A list of properties
      */
     static List<Property> readProperties(final String metadataXml) {
@@ -183,29 +179,31 @@ public final class MetadataExtractor implements Characterise {
 
     /**
      * @param type The file type
-     * @return A list of attributes extractable for the given type, as defined
-     *         in the adapters DTD file
+     * @return A list of attributes extractable for the given type, as defined in the adapters DTD
+     *         file
      */
     static List<String> listProperties(final MetadataType type) {
-        File adapter = null;
-        /*
-         * We get the adapter jar from the current thread in order to work in
-         * all environments (e.g., when running locally as a test or when
-         * running on a server:)
-         */
-        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(type.adapter);
-        if (stream == null) {
-            throw new IllegalStateException("Could not load adapter Jar: " + type.adapter);
-        }
-        adapter = FileUtils.writeInputStreamToTmpFile(stream, "adapter", "tmp");
         List<String> props = new ArrayList<String>();
         try {
+            File adapter = File.createTempFile("adapter", null);
             /*
-             * The NZ metadata extractor has an adapter jar for each supported
-             * file format. Inside that, there is a dtd in which the extractable
-             * properties for that format are listed. Thus, we iterate over the
-             * contents of the jar file, get the dtd, and read the properties
-             * defined inside of it:
+             * We get the adapter jar from the current thread in order to work in all environments
+             * (e.g., when running locally as a test or when running on a server:)
+             */
+            InputStream stream = Thread.currentThread().getContextClassLoader()
+                    .getResourceAsStream(type.adapter);
+            if (stream == null) {
+                throw new IllegalStateException("Could not load adapter Jar: " + type.adapter);
+            }
+            // stream to a file
+            FileOutputStream out = new FileOutputStream(adapter);
+            IOUtils.copyLarge(stream, out);
+            out.close();
+            /*
+             * The NZ metadata extractor has an adapter jar for each supported file format. Inside
+             * that, there is a dtd in which the extractable properties for that format are listed.
+             * Thus, we iterate over the contents of the jar file, get the dtd, and read the
+             * properties defined inside of it:
              */
             JarFile jar = new JarFile(adapter);
             Enumeration<JarEntry> entries = jar.entries();
@@ -241,29 +239,24 @@ public final class MetadataExtractor implements Characterise {
     /*------------------------------------------------------------------------*/
 
     /**
-     * @param binary The binary file to characterize
-     * @return Returns the proprietary XML result string returned by the
-     *         extractor tool
+     * @param digitalObject The binary file to characterize
+     * @return Returns the proprietary XML result string returned by the extractor tool
      * @see eu.planets_project.services.characterise.BasicCharacteriseOneBinary#basicCharacteriseOneBinary(byte[])
      */
-    private String basicCharacteriseOneBinary(final byte[] binary) {
-        if (binary.length == 0) {
-            throw new IllegalArgumentException("Binary is empty!");
-        }
-        File file = FileUtils.writeByteArrayToTempFile(binary);
-        /* Create a HarvestSource of the object we want to harvest */
-        FileHarvestSource source = new FileHarvestSource(file);
+    private String basicCharacteriseOneBinary(final DigitalObject digitalObject) {
         try {
+            File file = DigitalObjectUtils.toFile(digitalObject);
+            /* Create a HarvestSource of the object we want to harvest */
+            FileHarvestSource source = new FileHarvestSource(file);
             /* Get the native Configuration: */
-            Configuration c = Config.getInstance().getConfiguration(
-                    "Extract in Native form");
+            Configuration c = Config.getInstance().getConfiguration("Extract in Native form");
             String tempFolder = file.getParent();
             c.setOutputDirectory(tempFolder);
             /* Harvest the file: */
             c.getHarvester().harvest(c, source, new PropsManager());
             /* The resulting file is the original file plus ".xml": */
-            File result = new File(c.getOutputDirectory() + File.separator
-                    + file.getName() + ".xml");
+            File result = new File(c.getOutputDirectory() + File.separator + file.getName()
+                    + ".xml");
             result.deleteOnExit();
             return read(result.getAbsolutePath());
         } catch (ConfigurationException e) {

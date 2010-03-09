@@ -1,12 +1,13 @@
 package eu.planets_project.services.validation.odfvalidator.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import eu.planets_project.services.utils.FileUtils;
+import org.apache.commons.io.FileUtils;
 
 /**
  * @author melmsp
@@ -161,72 +162,53 @@ public class OdfValidatorResult {
 		return resultList;
 	}
 	
-	public List<String> getSchemasAsString() {
+	public List<String> getSchemasAsString() throws IOException {
 		List<String> schemaContents = new ArrayList<String>();
 		
 		Set<String> schemaEntries = schemaFiles.keySet();
 		
 		for (String label : schemaEntries) {
-			if(label.equalsIgnoreCase(DOC_LABEL)) {
-				String tmpDoc = "[Document Schema] = " 
-								+ NEWLINE 
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpDoc);
-			}
-			if(label.equalsIgnoreCase(USER_DOC_LABEL)) {
-				String tmpUserDoc = "[User Document Schema] = "
-								+ NEWLINE
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpUserDoc);
-			}
-			if(label.equalsIgnoreCase(STRICT_LABEL)) {
-				String tmpStrict = "[Strict Schema] = " 
-								+ NEWLINE 
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpStrict);
-			}
-			if(label.equalsIgnoreCase(USER_STRICT_LABEL)) {
-				String tmpUserStrict = "[User Strict Schema] = "
-								+ NEWLINE
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpUserStrict);
-			}
-			if(label.equalsIgnoreCase(MANIFEST_LABEL)) {
-				String tmpManifest = "[Manifest Schema] = " 
-								+ NEWLINE 
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpManifest);
-			}
-			if(label.equalsIgnoreCase(USER_MANIFEST_LABEL)) {
-				String tmpUserManifest = "[User Manifest Schema] = "
-								+ NEWLINE
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpUserManifest);
-			}
-			if(label.equalsIgnoreCase(MATHML_LABEL)) {
-				String tmpMath = "[MathML Schema] = " 
-								+ NEWLINE 
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpMath);
-			}
-			if(label.equalsIgnoreCase(USER_MATHML_LABEL)) {
-				String tmpUserMathML = "[User MathML Schema] = "
-								+ NEWLINE
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpUserMathML);
-			}
-			if(label.equalsIgnoreCase(DSIG_LABEL)) {
-				String tmpDSIG = "[DSIG Schema] = " 
-								+ NEWLINE 
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpDSIG);
-			}
-			if(label.equalsIgnoreCase(USER_DSIG_LABEL)) {
-				String tmpUserDSIG = "[User DSIG Schema] = " 
-								+ NEWLINE 
-								+ FileUtils.readTxtFileIntoString(schemaFiles.get(label));
-				schemaContents.add(tmpUserDSIG);
-			}
+			String schemaContent = NEWLINE + FileUtils.readFileToString(schemaFiles.get(label));
+            if (label.equalsIgnoreCase(DOC_LABEL)) {
+                String tmpDoc = "[Document Schema] = " + schemaContent;
+                schemaContents.add(tmpDoc);
+            }
+            if (label.equalsIgnoreCase(USER_DOC_LABEL)) {
+                String tmpUserDoc = "[User Document Schema] = " + schemaContent;
+                schemaContents.add(tmpUserDoc);
+            }
+            if (label.equalsIgnoreCase(STRICT_LABEL)) {
+                String tmpStrict = "[Strict Schema] = " + schemaContent;
+                schemaContents.add(tmpStrict);
+            }
+            if (label.equalsIgnoreCase(USER_STRICT_LABEL)) {
+                String tmpUserStrict = "[User Strict Schema] = " + schemaContent;
+                schemaContents.add(tmpUserStrict);
+            }
+            if (label.equalsIgnoreCase(MANIFEST_LABEL)) {
+                String tmpManifest = "[Manifest Schema] = " + schemaContent;
+                schemaContents.add(tmpManifest);
+            }
+            if (label.equalsIgnoreCase(USER_MANIFEST_LABEL)) {
+                String tmpUserManifest = "[User Manifest Schema] = " + schemaContent;
+                schemaContents.add(tmpUserManifest);
+            }
+            if (label.equalsIgnoreCase(MATHML_LABEL)) {
+                String tmpMath = "[MathML Schema] = " + schemaContent;
+                schemaContents.add(tmpMath);
+            }
+            if (label.equalsIgnoreCase(USER_MATHML_LABEL)) {
+                String tmpUserMathML = "[User MathML Schema] = " + schemaContent;
+                schemaContents.add(tmpUserMathML);
+            }
+            if (label.equalsIgnoreCase(DSIG_LABEL)) {
+                String tmpDSIG = "[DSIG Schema] = " + schemaContent;
+                schemaContents.add(tmpDSIG);
+            }
+            if (label.equalsIgnoreCase(USER_DSIG_LABEL)) {
+                String tmpUserDSIG = "[User DSIG Schema] = " + schemaContent;
+                schemaContents.add(tmpUserDSIG);
+            }
 		}
 		return schemaContents;
 	}

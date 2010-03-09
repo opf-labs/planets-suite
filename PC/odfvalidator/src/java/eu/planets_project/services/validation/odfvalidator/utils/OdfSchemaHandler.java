@@ -1,13 +1,18 @@
 package eu.planets_project.services.validation.odfvalidator.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import eu.planets_project.services.utils.FileUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 public class OdfSchemaHandler {
 	
@@ -51,10 +56,8 @@ public class OdfSchemaHandler {
 	private static final String MATHMLSCHEMAS_PROPERTIES = "mathmlschemas.properties";
 	private static final String NAMESPACES_PROPERTIES_NAME = "namespaces.properties";
 	
-	private static File ODF_SH_TMP = null;
 	private static String ODF_SH_TMP_NAME = "ODF_SCHEMA_HANDLER";
 	
-	private static File SCHEMAS = null;
 	private static File MATHML_SCHEMAS = null;
 	private static File ODF_SCHEMAS = null;
 	private static String SCHEMAS_NAME = "SCHEMAS";
@@ -63,11 +66,13 @@ public class OdfSchemaHandler {
 	
 	public OdfSchemaHandler() {
 		log.setLevel(Level.INFO);
-		ODF_SH_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), ODF_SH_TMP_NAME);
-		SCHEMAS = FileUtils.createFolderInWorkFolder(ODF_SH_TMP, SCHEMAS_NAME);
-		ODF_SCHEMAS = FileUtils.createFolderInWorkFolder(SCHEMAS, "odf");
-		MATHML_SCHEMAS = FileUtils.createFolderInWorkFolder(SCHEMAS, "mathml");
-//		FileUtils.deleteAllFilesInFolder(SCHEMAS);
+		try {
+		    File tempFile = File.createTempFile("dummy", null);
+            ODF_SCHEMAS = new File(tempFile.getParentFile(), "odf");
+            MATHML_SCHEMAS = new File(tempFile.getParentFile(), "mathml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		boolean provided = provideSchemas();
 		boolean ns_provided = prepareNamespaceTables(NAMESPACES_PROPERTIES_NAME);
 		log.info("All schemas provided = " + provided);
@@ -119,10 +124,6 @@ public class OdfSchemaHandler {
 		return schemaFiles.get(v12_DSIG_SCHEMA);
 	}
 	
-	public File getSchemaDir() {
-		return SCHEMAS;
-	}
-
 	public File getManifestSchema(String version) {
 		if(version.equalsIgnoreCase(ODF_v1_0)) {
 			log.info("[OdfSchemaHandler] retrieveOdfManifestSchemaFile(): using Manifest Schema file: " + schemaFiles.get(v10_MANIFEST_SCHEMA).getName());
@@ -148,8 +149,12 @@ public class OdfSchemaHandler {
 			userDocSchema = getDocumentSchema(version, false);
 		}
 		else {
-			userDocSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userDocSchema.rng"));
-			FileUtils.writeStringToFile(schemaContent, userDocSchema);
+			try {
+                userDocSchema = File.createTempFile("userDocSchema",".rng");
+                FileUtils.writeStringToFile(userDocSchema, schemaContent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 		}
 		return userDocSchema;
 	}
@@ -158,9 +163,9 @@ public class OdfSchemaHandler {
 	public File createUserDocSchemaFromUrl(String version, URL docSchemaURL) {
 		File userDocSchema = null;
 		try {
-			userDocSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userDocSchema.rng"));
+			userDocSchema = File.createTempFile("userDocSchema",".rng");
 			log.info("Reading content from URL (" + docSchemaURL.toString() + ")...please hang on!");
-			FileUtils.writeInputStreamToFile(docSchemaURL.openStream(), userDocSchema);
+			FileUtils.copyURLToFile(docSchemaURL, userDocSchema);
 		} catch (IOException e) {
 			log.severe("ERROR: Could not open URL: " + docSchemaURL.toString() + "!");
 			userDocSchema = getDocumentSchema(version, false);
@@ -183,8 +188,12 @@ public class OdfSchemaHandler {
 				String toReplace = schemaContent.substring(start + INCLUDE_HREF.length()-1, end);
 				schemaContent = schemaContent.replace(toReplace, userDocSchema.getName());
 			}
-			userDocStrictSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userDocStrictSchema.rng"));
-			FileUtils.writeStringToFile(schemaContent, userDocStrictSchema);
+			try {
+                userDocStrictSchema = File.createTempFile("userDocStrictSchema",".rng");
+                FileUtils.writeStringToFile(userDocStrictSchema, schemaContent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 		}
 		return userDocStrictSchema;
 	}
@@ -194,7 +203,7 @@ public class OdfSchemaHandler {
 		File userDocStrictSchema = null;
 		try {
 			log.info("Reading content from URL (" + strictSchemaUrl.toString() + ")...please hang on!");
-			schemaContent = new String(FileUtils.writeInputStreamToBinary(strictSchemaUrl.openStream()));
+			schemaContent = writeInputStreamToString(strictSchemaUrl.openStream());
 			userDocStrictSchema = createUserDocStrictSchema(version, schemaContent, userDocSchema);
 		} catch (IOException e) {
 			log.severe("Could not open URL: " + strictSchemaUrl.toString() + "!");
@@ -204,17 +213,22 @@ public class OdfSchemaHandler {
 	}
 	
 	public File createUserDsigSchema(String schemaContent) {
-		File userDsigSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userDsigSchema.rng"));
-		FileUtils.writeStringToFile(schemaContent, userDsigSchema);
-		return userDsigSchema;
+		try {
+            File userDsigSchema = File.createTempFile("userDsigSchema",".rng");
+            FileUtils.writeStringToFile(userDsigSchema, schemaContent);
+            return userDsigSchema;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
 	
 	public File createUserDsigSchemaFromUrl(String version, URL dsigSchemaUrl) {
 		File userDsigSchema = null;
 		try {
-			userDsigSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userDsigSchema.rng"));
+			userDsigSchema = File.createTempFile("userDsigSchema",".rng");
 			log.info("Reading content from URL (" + dsigSchemaUrl.toString() + ")...please hang on!");
-			FileUtils.writeInputStreamToFile(dsigSchemaUrl.openStream(), userDsigSchema);
+			FileUtils.copyURLToFile(dsigSchemaUrl, userDsigSchema);
 		} catch (IOException e) {
 			log.severe("ERROR: Could not open URL: " + dsigSchemaUrl.toString() + "!");
 			userDsigSchema = getDsigSchema(version);
@@ -223,17 +237,22 @@ public class OdfSchemaHandler {
 	}
 	
 	public File createUserManifestSchema(String schemaContent) {
-		File userManifestSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userManifestSchema.rng"));
-		FileUtils.writeStringToFile(schemaContent, userManifestSchema);
-		return userManifestSchema;
+		try {
+            File userManifestSchema = File.createTempFile("userManifestSchema",".rng");
+            FileUtils.writeStringToFile(userManifestSchema, schemaContent);
+            return userManifestSchema;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
 	
 	public File createUserManifestSchemaFromUrl(String version, URL manifestSchemaUrl) {
 		File userManifestSchema = null;
 		try {
-			userManifestSchema = new File(SCHEMAS, FileUtils.randomizeFileName("userManifestSchema.rng"));
+			userManifestSchema = File.createTempFile("userManifestSchema",".rng");
 			log.info("Reading content from URL (" + manifestSchemaUrl.toString() + ")...please hang on!");
-			FileUtils.writeInputStreamToFile(manifestSchemaUrl.openStream(), userManifestSchema);
+			FileUtils.copyURLToFile(manifestSchemaUrl, userManifestSchema);
 		} catch (IOException e) {
 			log.severe("ERROR: Could not open URL: " + manifestSchemaUrl.toString() + "!");
 			userManifestSchema = getDocumentSchema(version, false);
@@ -261,7 +280,7 @@ public class OdfSchemaHandler {
 	}
 	
 	private boolean prepareNamespaceTables(String namespacePropertiesFileName) {
-		String namespaces = new String(FileUtils.writeInputStreamToBinary(this.getClass().getResourceAsStream(namespacePropertiesFileName))).trim();
+	    String namespaces = writeInputStreamToString(this.getClass().getResourceAsStream(namespacePropertiesFileName));
 		String[] versionedNamespaces = namespaces.split("####");
 		
 		for (String currentPart : versionedNamespaces) {
@@ -306,9 +325,20 @@ public class OdfSchemaHandler {
 		return true;
 	}
 
+    private String writeInputStreamToString(InputStream stream) {
+        StringWriter stringWriter = new StringWriter();
+	    try {
+            IOUtils.copy(stream, stringWriter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		String namespaces = stringWriter.toString().trim();
+        return namespaces;
+    }
+
 	
 	private boolean provideMathMLSchemas(String mathmlSchemaListName) {
-		String mathmlSchemaList = new String(FileUtils.writeInputStreamToBinary(this.getClass().getResourceAsStream(mathmlSchemaListName)));
+		String mathmlSchemaList = writeInputStreamToString(this.getClass().getResourceAsStream(mathmlSchemaListName));
 		String[] entries = mathmlSchemaList.split(System.getProperty("line.separator"));
 		int entryCount = entries.length;
 		boolean[] success = new boolean[entryCount];
@@ -319,11 +349,15 @@ public class OdfSchemaHandler {
 			String name = parts[1].trim();
 			File parentDir = new File(MATHML_SCHEMAS, parent);
 			if(!parentDir.exists()) {
-				FileUtils.createFolderInWorkFolder(MATHML_SCHEMAS, parent);
+				try {
+                    parentDir.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 			}
 			File schema = new File(parentDir, name);
 			if(!schema.exists()) {
-				FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + parent + File.separator + name), schema);
+				writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + parent + File.separator + name), schema);
 			}
 			success[i] = schema.exists();
 			i++;
@@ -344,8 +378,20 @@ public class OdfSchemaHandler {
 		
 	}
 	
-	private boolean provideOdfSchemas(String odfSchemaListName) {
-		String odfSchemaList = new String(FileUtils.writeInputStreamToBinary(this.getClass().getResourceAsStream(odfSchemaListName)));
+    private void writeInputStreamToFile(InputStream stream, File file) {
+        try {
+            FileOutputStream fOut = new FileOutputStream(file);
+            IOUtils.copy(stream, fOut);
+            fOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean provideOdfSchemas(String odfSchemaListName) {
+		String odfSchemaList = writeInputStreamToString(this.getClass().getResourceAsStream(odfSchemaListName));
 		String[] entries = odfSchemaList.split(System.getProperty("line.separator"));
 		int entryCount = entries.length;
 		boolean[] success = new boolean[entryCount];
@@ -358,13 +404,13 @@ public class OdfSchemaHandler {
 			if(label.equalsIgnoreCase(MATHML2_SCHEMA)) {
 				schema = new File(MATHML_SCHEMAS, name);
 				if(!schema.exists()) {
-					FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + name), schema);
+					writeInputStreamToFile(this.getClass().getResourceAsStream(MATHML_SCHEMAS_PATH + name), schema);
 				}
 			}
 			else {
 				schema = new File(ODF_SCHEMAS, name);
 				if(!schema.exists()) {
-					FileUtils.writeInputStreamToFile(this.getClass().getResourceAsStream(ODF_SCHEMAS_PATH + name), schema);
+					writeInputStreamToFile(this.getClass().getResourceAsStream(ODF_SCHEMAS_PATH + name), schema);
 				}
 			}
 			schemaFiles.put(label, schema);
