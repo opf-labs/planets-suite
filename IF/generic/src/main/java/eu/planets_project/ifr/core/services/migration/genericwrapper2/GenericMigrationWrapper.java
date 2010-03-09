@@ -42,7 +42,7 @@ public class GenericMigrationWrapper {
     private MigrationPaths migrationPaths;
     private final String toolIdentifier;
     private final TemporaryFileFactory tempFileFactory;
-    private final List<Parameter> envrionmentParameters;
+    private final List<Parameter> environmentParameters;
 
     private ServiceDescription serviceDescription; // TODO: Consider building
 
@@ -61,7 +61,7 @@ public class GenericMigrationWrapper {
 	// ServiceDescription? Should it be stored in an instance variable?
 	tempFileFactory = new J2EETempFileFactory(toolIdentifier);
 
-	envrionmentParameters = ParameterBuilder.buid(environmentSettings);
+	environmentParameters = ParameterBuilder.buid(environmentSettings);
 
 	try {
 	    MigrationPathFactory pathsFactory = new DBMigrationPathFactory(
@@ -71,7 +71,7 @@ public class GenericMigrationWrapper {
 	    String serviceProvider = "Undefined - please assign the correct "
 		    + "service provider identifier to the \"serviceprovider\""
 		    + " property in the property file for this service.";
-	    for (Parameter environmentParameter : envrionmentParameters) {
+	    for (Parameter environmentParameter : environmentParameters) {
 		if ("serviceprovider".equals(environmentParameter.getName())) {
 		    serviceProvider = environmentParameter.getValue();
 		}
@@ -166,7 +166,7 @@ public class GenericMigrationWrapper {
 
 	// Create an executable command line for the process runner.
 	final PRCommandBuilder commandBuilder = new PRCommandBuilder(
-		envrionmentParameters);
+		environmentParameters);
 	final List<String> prCommand = commandBuilder.buildCommand(
 		migrationPath, toolParameters, temporaryFileMappings);
 
