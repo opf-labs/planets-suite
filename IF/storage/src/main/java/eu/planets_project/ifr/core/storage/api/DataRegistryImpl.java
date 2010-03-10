@@ -121,7 +121,6 @@ class DataRegistryImpl implements DataRegistry {
 	 * @see eu.planets_project.ifr.core.storage.api.DataRegistry#getDigitalObjectManager(java.net.URI)
 	 */
 	public DigitalObjectManager getDigitalObjectManager(URI uri) throws DigitalObjectManagerNotFoundException {
-
 		// The return val
 		DigitalObjectManager dom = null;
 
@@ -135,13 +134,15 @@ class DataRegistryImpl implements DataRegistry {
 		} catch (URISyntaxException e) {
 			throw new DigitalObjectManagerNotFoundException("URI: " + uri + 
 					" is not a valid Planets DataRegistry URI ID", e);
+		} catch (Exception e) {
+			throw new DigitalObjectManagerNotFoundException("No digital object manager found for URI: " + uri, e);
 		}
 		
 		// Final check, if the returned DOM is null then it's not in the HashMap
 		if (dom == null) {
 			throw new DigitalObjectManagerNotFoundException("No DigitalObjectManager found for URI: " + uri); 
 		}
-		
+
 		// Share the goodness of the retrieved DOM
 		return dom;
 	}
