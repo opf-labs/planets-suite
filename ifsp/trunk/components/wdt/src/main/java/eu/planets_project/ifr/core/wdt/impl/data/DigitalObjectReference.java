@@ -12,6 +12,9 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 
+import eu.planets_project.ifr.core.storage.impl.oai.*;
+
+
 /**
  * 
  * This actually a reference to a digital object (URI), and does not contain an actual Digital Object.
@@ -61,47 +64,80 @@ public class DigitalObjectReference {
     }
     
     public URI getScreenUri() {
-    	// Special treatment for BL newspapers
-    	System.out.println("Returning URI...");
-    	if ((puri != null) && (puri.toString().indexOf("jboss-web.deployer/ROOT.war/bl-newspaper/WO1") > -1)) {
-    		String url = puri.toString();
-        	System.out.println("URL before: " + url);
-        	// FIXME
-        	url = "http://ubuntu.planets-project.arcs.ac.at/" + url.substring(url.indexOf("bl-newspaper"));
-        	System.out.println("URL after: " + url);
-        	try {
-        		return new URI(url);
-        	} catch (URISyntaxException e) {
-        		System.out.println("SHOULD NEVER HAPPEN!");
-        	}
-        	return puri;
-    	} else {
-        	if ((puri != null) && (puri.toString().indexOf(DOJCRConstants.DOJCR) > -1)) 
-        	{
-            	try {
-            		return new URI(DOJCRManager.getResolverPath() + puri.toString());
-            	} catch (URISyntaxException e) {
-            		log.log(Level.INFO, "SHOULD NEVER HAPPEN!", e);
-            	}
-            	return puri;
-        	} else {
-    		return puri;
-        	}
-    	}
-    }
+		// Special treatment for BL newspapers
+		System.out.println("Returning URI...");
+		if ((puri != null)
+				&& (puri.toString().indexOf(
+						"jboss-web.deployer/ROOT.war/bl-newspaper/WO1") > -1)) {
+			String url = puri.toString();
+			System.out.println("URL before: " + url);
+			// FIXME
+			url = "http://ubuntu.planets-project.arcs.ac.at/"
+					+ url.substring(url.indexOf("bl-newspaper"));
+			System.out.println("URL after: " + url);
+			try {
+				return new URI(url);
+			} catch (URISyntaxException e) {
+				System.out.println("SHOULD NEVER HAPPEN!");
+			}
+			return puri;
+		} else {
+			// Special handling for the digital objects from JCR repository
+			if ((puri != null)
+					&& (puri.toString().indexOf(DOJCRConstants.DOJCR) > -1)) {
+				try {
+					return new URI(DOJCRManager.getResolverPath()
+							+ puri.toString());
+				} catch (URISyntaxException e) {
+					log.log(Level.INFO, "SHOULD NEVER HAPPEN!", e);
+				}
+				return puri;
+			} else {
+				// Special handling for the digital objects from OAI repository
+				if ((puri != null)
+						&& puri.toString().indexOf(
+								OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI) > -1) {
+					// Special treatment for OAI files!
+					String res = puri.toString();
+					if (dom != null) {
+						try {
+							DigitalObject obj = dom
+									.getDigitalObjectManager(
+											DataRegistryFactory
+													.createDataRegistryIdFromName(OAIDigitalObjectManagerDCBase.REGISTRY_NAME))
+									.retrieve(puri);
+
+							if (obj.getTitle() != null) {
+								String title = obj.getTitle();
+								res = title;
+							}
+						} catch (Exception e) {
+							log.log(Level.INFO,
+									"DigitalObjectReference title not found. "
+											+ e.getMessage(), e);
+						}
+					}
+					return URI.create(res);
+				}
+				return puri;
+			}
+		}
+	}
 
     /**
-     * @param puri the puri to set
-     */
+	 * @param puri
+	 *            the puri to set
+	 */
     public void setUri(URI puri) {
         this.puri = puri;
     }
     
 
     /**
-     * TODO This should be determined by this class, on demand.
-     * @return the directory
-     */
+	 * TODO This should be determined by this class, on demand.
+	 * 
+	 * @return the directory
+	 */
     public boolean isDirectory() {
         return directory;
     }
@@ -121,32 +157,37 @@ public class DigitalObjectReference {
      * @return
      */
     public String getLeafname() {
-        if( puri == null ) return "";
-        
-        String path;
-        if (puri.toString().indexOf("DeliveryManager?pid=") > -1) {
-        	// Special treatment for ONB files!
-        	path = puri.toString();
-        	path = path.substring(path.indexOf("DeliveryManager?pid=") + 20) + ".tif";
-        } else {
-        	path = puri.getPath();
-        }
-        
-		log.log(Level.INFO,
-				"DigitalObjectReference do perm uri: " + puri + " index: "
-						+ puri.toString().indexOf(DOJCRManager.PERMANENT_URI));
-        // if it is a digital object from JCR repository
+		if (puri == null)
+			return "";
+
+		String path;
+		if (puri.toString().indexOf("DeliveryManager?pid=") > -1) {
+			// Special treatment for ONB files!
+			path = puri.toString();
+			path = path.substring(path.indexOf("DeliveryManager?pid=") + 20)
+					+ ".tif";
+		} else {
+			path = puri.getPath();
+		}
+
+		log.log(Level.INFO, "DigitalObjectReference do perm uri: " + puri
+				+ " index: "
+				+ puri.toString().indexOf(DOJCRManager.PERMANENT_URI));
+		// if it is a digital object from JCR repository
 		if (puri.toString().indexOf(DOJCRManager.PERMANENT_URI) > -1
 				&& puri.toString().indexOf(DOJCRManager.PERMANENT_URI) == 0) {
-			if (puri.toString().equals(DOJCRManager.PERMANENT_URI)) return path;
+			if (puri.toString().equals(DOJCRManager.PERMANENT_URI))
+				return path;
 			// Special treatment for digital object presentation
 			if (dom != null) {
-				try { 
-					DigitalObject obj = dom.getDigitalObjectManager(
-							DataRegistryFactory.createDataRegistryIdFromName(DOJCRConstants.REGISTRY_NAME)).retrieve(puri);
+				try {
+					DigitalObject obj = dom
+							.getDigitalObjectManager(
+									DataRegistryFactory
+											.createDataRegistryIdFromName(DOJCRConstants.REGISTRY_NAME))
+							.retrieve(puri);
 
-					if (obj.getTitle() != null)
-					{
+					if (obj.getTitle() != null) {
 						String title = obj.getTitle();
 						path = path.concat("_" + title);
 					}
@@ -156,23 +197,51 @@ public class DigitalObjectReference {
 									+ e.getMessage(), e);
 				}
 			}
-		} 
+		}
 
-        if( path == null ) return "";
-        
-        // Trim any trailing slash:
-        if( path.lastIndexOf("/") == path.length()-1 ) {
-            path = path.substring(0, path.length()-1 );
-        }
-        
-        // Return the portion up to the last slash:
-        return path.substring( path.lastIndexOf('/') + 1 );
-    }
+		if (puri.toString().indexOf(
+				OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI) > -1) {
+			// Special treatment for OAI files!
+			String res = puri.toString();
+			if (dom != null) {
+				try {
+					DigitalObject obj = dom
+							.getDigitalObjectManager(
+									DataRegistryFactory
+											.createDataRegistryIdFromName(OAIDigitalObjectManagerDCBase.REGISTRY_NAME))
+							.retrieve(puri);
+
+					if (obj.getTitle() != null) {
+						String title = obj.getTitle();
+						res = title;
+					}
+				} catch (Exception e) {
+					log.log(Level.INFO,
+							"DigitalObjectReference title not found. "
+									+ e.getMessage(), e);
+				}
+			}
+			return res;
+		}
+
+		if (path == null)
+			return "";
+
+		// Trim any trailing slash:
+		if (path.lastIndexOf("/") == path.length() - 1) {
+			path = path.substring(0, path.length() - 1);
+		}
+
+		// Return the portion up to the last slash:
+		return path.substring(path.lastIndexOf('/') + 1);
+	}
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
+    /*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
     @Override
     public int hashCode() {
         final int prime = 31;
