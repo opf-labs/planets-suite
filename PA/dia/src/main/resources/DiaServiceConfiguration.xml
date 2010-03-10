@@ -48,11 +48,11 @@
 			<![CDATA["Thomas Skou Hansen <tsh@statsbiblioteket.dk>"]]>
 		</creator>
 
-		<identifier>Example_custom_identifier</identifier>
-
 		<instructions>
-			Example: Please install the XYZ tool on the system to
-			make this service work.
+			Install Dia version 0.96.1 on the system providing this dia
+			migratoin service and make sure that the run-time configuration
+			(the pserv-pa-dia.properties file) for is properly configured to
+			use this version of dia.
         </instructions>
 
 		<furtherinfo>http://live.gnome.org/Dia</furtherinfo>
