@@ -1,722 +1,723 @@
-<serviceWrapping version="1.0">
+<serviceWrapping version="1.0" xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="../../src/main/resources/GenericWrapperConfigFile.xsd">
 
-	<!--
-		General instructions: Please leave any optional fields empty if they
-		are not pertinent to a wrapping. That is, do not remove the tags from
-		the file - just leave them with no contents. Optional fields will be
-		explicitly marked as optional.
-	-->
-	<serviceDescription>
+    <!--
+         General instructions: Please leave any optional fields empty if they
+         are not pertinent to a wrapping. That is, do not remove the tags from
+         the file - just leave them with no contents. Optional fields will be
+         explicitly marked as optional.
+     -->
+    <serviceDescription>
 
-		<!-- A brief name by which this service is known. -->
-		<title>
-			Example: Eggnog migration service.
+        <!-- A brief name by which this service is known. -->
+        <title>
+            Example: Eggnog migration service.
         </title>
 
-		<!--
-			A human readable description of the service. This is your chance to
-			describe your service to potential users. Although automatic service
-			discovery will more likely depend upon service type, input formats
-			and tool wrapped, users browsing the Planets service registry will
-			see the name and description. The description may be written in HTML,
-			using a <![CDATA[ <b>Hi</b> ]]> (Optional field)
-		-->
-		<description>
-			Example description of a service wrapping of a fantastic
-			command line tool for migrating an egg to eggnog.
+        <!--
+              A human readable description of the service. This is your chance to
+              describe your service to potential users. Although automatic service
+              discovery will more likely depend upon service type, input formats
+              and tool wrapped, users browsing the Planets service registry will
+              see the name and description. The description may be written in HTML,
+              using a <![CDATA[ <b>Hi</b> ]]> (Optional field)
+          -->
+        <description>
+            Example description of a service wrapping of a fantastic
+            command line tool for migrating an egg to eggnog.
         </description>
 
-		<!-- Detailed description of the wrapped command line tool. -->
-		<tool>
+        <!-- Detailed description of the wrapped command line tool. -->
+        <tool>
 
-			<!-- The name of the wrapped tool (Optional field) -->
-			<name>
-				Example: HandMixer.exe
+            <!-- The name of the wrapped tool (Optional field) -->
+            <name>
+                Example: HandMixer.exe
             </name>
 
-			<!--
-				An identifier for this tool, should be resolvable via a tool
-				registry. (Optional field)
-			-->
-			<identifier>http://example-planets-registry.eu/toolident?4385794357
-			</identifier>
+            <!--
+                   An identifier for this tool, should be resolvable via a tool
+                   registry. (Optional field)
+               -->
+            <identifier>http://example-planets-registry.eu/toolident?4385794357
+            </identifier>
 
-			<!-- Tool description (Optional field) -->
-			<description>
-				Example: A useful tool for migrating eggs to eggnog.
-			</description>
+            <!-- Tool description (Optional field) -->
+            <description>
+                Example: A useful tool for migrating eggs to eggnog.
+            </description>
 
-			<!--
-				Link to the (project) home page of the command line tool. (Optional
-				field)
-			-->
-			<homepage>http://example.org</homepage>
+            <!--
+                   Link to the (project) home page of the command line tool. (Optional
+                   field)
+               -->
+            <homepage>http://example.org</homepage>
 
-			<!--
-				Tool version information. E.g. the version string printed by the
-				tool. (Optional field)
-			-->
-			<version>
-				HandMixer V4.13 by J. Random Hacker.
+            <!--
+                   Tool version information. E.g. the version string printed by the
+                   tool. (Optional field)
+               -->
+            <version>
+                HandMixer V4.13 by J. Random Hacker.
             </version>
-		</tool>
+        </tool>
 
-		<!-- Service wrapping version information. (Optional field)-->
-		<version>
-			3.141592653589793
+        <!-- Service wrapping version information. (Optional field)-->
+        <version>
+            3.141592653589793
         </version>
 
-		<!--
-			Who wrote the wrapper. Preferred form would be a URI or a full email
-			address(es), like: "Full Name <fullname@server.com>".
-		-->
-		<creator>
-			<![CDATA["Easter Bunny <easter.bunny@bunny.net>"]]>
-		</creator>
+        <!--
+              Who wrote the wrapper. Preferred form would be a URI or a full email
+              address(es), like: "Full Name <fullname@server.com>".
+          -->
+        <creator>
+            <![CDATA["Easter Bunny <easter.bunny@bunny.net>"]]>
+        </creator>
 
-		<!--
-			A unique identifier for this service. "We need a unique id for every
-			service; Andrew Lindley is using a MD5 hash to identify a service.
-			This is a brilliant idea. I would say this field summarizes Name of
-			class impl service, Version of service and ID of Tool (URI) or makes
-			them unnecessary.". This is an optional field, however, the generic
-			wrapper will automatically generate an identifier if no value is
-			specified. This is done by generating a MD5 hash of a string
-			containing the canonical class name of the wrapping service
-			implementation class, the service version and the toolID. (Optional
-			field)
-		-->
-		<identifier>Example_custom_identifier</identifier>
+        <!--
+              A unique identifier for this service. "We need a unique id for every
+              service; Andrew Lindley is using a MD5 hash to identify a service.
+              This is a brilliant idea. I would say this field summarizes Name of
+              class impl service, Version of service and ID of Tool (URI) or makes
+              them unnecessary.". This is an optional field, however, the generic
+              wrapper will automatically generate an identifier if no value is
+              specified. This is done by generating a MD5 hash of a string
+              containing the canonical class name of the wrapping service
+              implementation class, the service version and the toolID. (Optional
+              field)
+          -->
+        <identifier>Example_custom_identifier</identifier>
 
-		<!--
-			Installation and setup instructions for the service. This includes
-			software to be installed, environment variables to be set, properties
-			to be set, etc. It is the responsibility of the developer to ensure
-			that the instructions provided are of appropriate detail and quality.
-			This really depends upon the tool been wrapped, for example the pure
-			Java services currently in pserv don't provide any instructions but
-			they should build and deploy when the pserv project is built and they
-			should simply work without any set up. More complex tools relying on
-			installed software will require more detailed information. As yet,
-			there are no formal requirements on the instructions, but they should
-			be sufficient for the build manager and the testbed manager to deploy
-			the service. The instructions should closely follow the installation
-			instructions from the Service Submission document. (Optional field)
-		-->
-		<instructions>
-			Example: Please install the XYZ tool on the system to
-			make this service work.
+        <!--
+              Installation and setup instructions for the service. This includes
+              software to be installed, environment variables to be set, properties
+              to be set, etc. It is the responsibility of the developer to ensure
+              that the instructions provided are of appropriate detail and quality.
+              This really depends upon the tool been wrapped, for example the pure
+              Java services currently in pserv don't provide any instructions but
+              they should build and deploy when the pserv project is built and they
+              should simply work without any set up. More complex tools relying on
+              installed software will require more detailed information. As yet,
+              there are no formal requirements on the instructions, but they should
+              be sufficient for the build manager and the testbed manager to deploy
+              the service. The instructions should closely follow the installation
+              instructions from the Service Submission document. (Optional field)
+          -->
+        <instructions>
+            Example: Please install the XYZ tool on the system to
+            make this service work.
         </instructions>
 
-		<!--
-			A URI that provides a link to further information about a service
-			wrapper. This could point to a web page, information about the tool
-			wrapped, or a help page hosted on the web. (Optional field)
-		-->
-		<furtherinfo>http://example.org</furtherinfo>
+        <!--
+              A URI that provides a link to further information about a service
+              wrapper. This could point to a web page, information about the tool
+              wrapped, or a help page hosted on the web. (Optional field)
+          -->
+        <furtherinfo>http://example.org</furtherinfo>
 
-		<!--
-			A URI that can be used to provide a graphic image logo for the
-			service. This will be displayed in the service registry if present.
+        <!--
+              A URI that can be used to provide a graphic image logo for the
+              service. This will be displayed in the service registry if present.
 
-			(Optional field)
-		-->
-		<logo>http://www.planets-project.eu/graphics/Planets_Logo.png</logo>
+              (Optional field)
+          -->
+        <logo>http://www.planets-project.eu/graphics/Planets_Logo.png</logo>
 
-		<!--
-			An optional list of hard-coded properties to add to the service
-			description. If no properties are applicable to a wrapping then the
-			properties tag should just be left empty. That is, there must be no
-			"property" tags inside it. FIXME! Come up with some brilliant
-			examples here..... Would OS/Hardware platform qualify? (Optional
-			field)
-		-->
-		<properties>
-			<!--
-				A property element has two attributes "name" and "id". The name
-				attribute specifies a human readable name and the id attribute must
-				be a valid (unique) URI. You may optionally specify a type attribute
-				as well.
-			-->
-			<property name="exampleName" id="info:exampleID" type="myOptionalExampleType">
-				<!--
-					A property element must contain a "value" sub-element, however, its
-					"unit" attribute is optional.
-				-->
-				<value unit="cubic gram">exampleValue with a ridiculous unit.</value>
-				<description>
-					This is an optional description of an example property with a value
-					and a silly value unit specification.
-				</description>
-			</property>
-		</properties>
+        <!--
+              An optional list of hard-coded properties to add to the service
+              description. If no properties are applicable to a wrapping then the
+              properties tag should just be left empty. That is, there must be no
+              "property" tags inside it. FIXME! Come up with some brilliant
+              examples here..... Would OS/Hardware platform qualify? (Optional
+              field)
+          -->
+        <properties>
+            <!--
+                   A property element has two attributes "name" and "id". The name
+                   attribute specifies a human readable name and the id attribute must
+                   be a valid (unique) URI. You may optionally specify a type attribute
+                   as well.
+               -->
+            <property name="exampleName" id="info:exampleID" type="myOptionalExampleType">
+                <!--
+                        A property element must contain a "value" sub-element, however, its
+                        "unit" attribute is optional.
+                    -->
+                <value unit="cubic gram">exampleValue with a ridiculous unit.</value>
+                <description>
+                    This is an optional description of an example property with a value
+                    and a silly value unit specification.
+                </description>
+            </property>
+        </properties>
 
-	</serviceDescription>
+    </serviceDescription>
 
-	<!--
-		THE SELF-TEST SECTION IS CURRENTLY NOT USED and should thus be omitted
-		in the current wrappings.
-	-->
-	<selfTests>
+    <!--
+         THE SELF-TEST SECTION IS CURRENTLY NOT USED and should thus be omitted
+         in the current wrappings.
+     -->
+    <selfTests>
 
-		<test name="tr version test">
-			<command>
-				sh
+        <test name="tr version test">
+            <command>
+                sh
             </command>
 
-			<commandparameters>
-				<parameter>
-					-c
+            <commandparameters>
+                <parameter>
+                    -c
                 </parameter>
 
-				<parameter>
-					tr --version | md5sum
+                <parameter>
+                    tr --version | md5sum
                 </parameter>
-			</commandparameters>
+            </commandparameters>
 
-			<expectedOutput>9bac2d02bdb596a4d3297e44e5c8008 -</expectedOutput>
-			<expectedExitCode>0</expectedExitCode>
-		</test>
-	</selfTests>
+            <expectedOutput>9bac2d02bdb596a4d3297e44e5c8008 -</expectedOutput>
+            <expectedExitCode>0</expectedExitCode>
+        </test>
+    </selfTests>
 
-	<paths>
+    <paths>
 
-		<path>
-			<!--
-				This path is an illustration of the possibility to actually define
-				multiple migration paths with only one path element, which is
-				convenient in case the tool is capable of migrating from a number of
-				formats to one specific format. However, the generic wrapper is
-				unable to automatically validating that the all these migrations can
-				be performed with the same command line (except from different
-				parameters specified by the caller). Thus, it is the responsibility
-				of the person writing the configuration file, to verify that it is
-				possible.
-			-->
+        <path>
+            <!--
+                   This path is an illustration of the possibility to actually define
+                   multiple migration paths with only one path element, which is
+                   convenient in case the tool is capable of migrating from a number of
+                   formats to one specific format. However, the generic wrapper is
+                   unable to automatically validating that the all these migrations can
+                   be performed with the same command line (except from different
+                   parameters specified by the caller). Thus, it is the responsibility
+                   of the person writing the configuration file, to verify that it is
+                   possible.
+               -->
 
-			<!--
-				Example of migration from various revisions of the PS format to the
-				pdf1.2 format (Acrobat 3-and-later)
-			-->
+            <!--
+                   Example of migration from various revisions of the PS format to the
+                   pdf1.2 format (Acrobat 3-and-later)
+               -->
 
-			<inputformats>
-				<!--
-					List of format URIs identifying the valid input formats for the
-					wrapped command(s) in this "path" section. It is recommended to use
-					PRONOM URIs where possible in order to achieve the most accurate
-					description of the formats. File suffixes are inaccurate as most
-					file formats are available in several revisions. However, if a
-					format is unknown to PRONOM (or whatever registry that is being
-					used) and thus it is necessary to "invent" a format URI, then it
-					should be on the form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR
-					HERE>"
-				-->
+            <inputformats>
+                <!--
+                        List of format URIs identifying the valid input formats for the
+                        wrapped command(s) in this "path" section. It is recommended to use
+                        PRONOM URIs where possible in order to achieve the most accurate
+                        description of the formats. File suffixes are inaccurate as most
+                        file formats are available in several revisions. However, if a
+                        format is unknown to PRONOM (or whatever registry that is being
+                        used) and thus it is necessary to "invent" a format URI, then it
+                        should be on the form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR
+                        HERE>"
+                    -->
 
-				<uri value="info:pronom/x-fmt/91" />
-				<uri value="info:pronom/x-fmt/406" />
-				<uri value="info:pronom/x-fmt/407" />
-				<uri value="info:pronom/x-fmt/408" />
-			</inputformats>
+                <uri value="info:pronom/x-fmt/91" />
+                <uri value="info:pronom/x-fmt/406" />
+                <uri value="info:pronom/x-fmt/407" />
+                <uri value="info:pronom/x-fmt/408" />
+            </inputformats>
 
-			<outputformat>
-				<!--
-					Format URI identifying the output format of the wrapped command(s)
-					in this "path" section. It is recommended to use a PRONOM URI when
-					possible in order to achieve the most accurate description of the
-					format. File suffixes are inaccurate as most file formats are
-					available in several revisions. However, if a format is unknown to
-					PRONOM (or whatever registry that is being used) and thus it is
-					necessary to "invent" a format URI, then it should be on the form:
-					"info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
-				-->
+            <outputformat>
+                <!--
+                        Format URI identifying the output format of the wrapped command(s)
+                        in this "path" section. It is recommended to use a PRONOM URI when
+                        possible in order to achieve the most accurate description of the
+                        format. File suffixes are inaccurate as most file formats are
+                        available in several revisions. However, if a format is unknown to
+                        PRONOM (or whatever registry that is being used) and thus it is
+                        necessary to "invent" a format URI, then it should be on the form:
+                        "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
+                    -->
 
-				<uri value="info:pronom/fmt/16" />
-			</outputformat>
+                <uri value="info:pronom/fmt/16" />
+            </outputformat>
 
-			<commandline>
-				<!--
-					This element contains all the fragments that constitute the command
-					line to be executed by the generic wrapper. The general form of a
-					command line is "<shell command> <shell option1> <shell option 2>
-					... <shell option N>". Thus, a wrapped tool is actually executed in
-					a separate shell. It is important that only one parameter is
-					specified by each command parameter section. That is, if you want
-					to execute something like: "/bin/sh -c -e -f migrationTool
-					toolParam1 toolParam2" then "-c", "-e" and "-f" must be specified
-					by each their command parameter section, while the entire string
-					"migrationTool toolParam1 toolParam2" may be specified in the same
-					section. Anything in the command and command parameter text can be
-					replaced by a label of the form "#label" to be substituted by some
-					value at runtime by the generic wrapper. The value which the label
-					is replaced with may be specified by the caller of the service as a
-					parameter, however, in that case the label must be declared in the
-					"toolparameters" section. The generic wrapper will attempt to fetch
-					values for undeclared labels from the system/runtime configuration,
-					which is useful e.g. for deferring configuration of the absolute
-					path to the migration tool until the installation time of the
-					system.
-				-->
+            <commandline>
+                <!--
+                        This element contains all the fragments that constitute the command
+                        line to be executed by the generic wrapper. The general form of a
+                        command line is "<shell command> <shell option1> <shell option 2>
+                        ... <shell option N>". Thus, a wrapped tool is actually executed in
+                        a separate shell. It is important that only one parameter is
+                        specified by each command parameter section. That is, if you want
+                        to execute something like: "/bin/sh -c -e -f migrationTool
+                        toolParam1 toolParam2" then "-c", "-e" and "-f" must be specified
+                        by each their command parameter section, while the entire string
+                        "migrationTool toolParam1 toolParam2" may be specified in the same
+                        section. Anything in the command and command parameter text can be
+                        replaced by a label of the form "#label" to be substituted by some
+                        value at runtime by the generic wrapper. The value which the label
+                        is replaced with may be specified by the caller of the service as a
+                        parameter, however, in that case the label must be declared in the
+                        "toolparameters" section. The generic wrapper will attempt to fetch
+                        values for undeclared labels from the system/runtime configuration,
+                        which is useful e.g. for deferring configuration of the absolute
+                        path to the migration tool until the installation time of the
+                        system.
+                    -->
 
-				<command>
-					<!--
-						The command to be executed by the generic wrapper. Typically this
-						will be "sh" on unix/linux systems and "command.exe" on Windows
-						systems. However, do not rely on the command to exist in the
-						system search path and do not specify an absolute path in this
-						configuration file as this may (will!) break on various systems.
-						Instead specifying the actual command, specify a label of the form
-						"#label", just like in this example. However, this requires that
-						label name is mapped to the absolute path of the program in the
-						dynamic/system configuration of the service. I.e. "shellcommand"
-						should be mapped to something like "/bin/sh". As opposed to labels
-						to be substituted with parameter values, this label must remain
-						undefined in this path configuration, thus, forcing the generic
-						wrapper to obtain the appropriate value from the system/runtime
-						configuration.
-					-->
+                <command>
+                    <!--
+                             The command to be executed by the generic wrapper. Typically this
+                             will be "sh" on unix/linux systems and "command.exe" on Windows
+                             systems. However, do not rely on the command to exist in the
+                             system search path and do not specify an absolute path in this
+                             configuration file as this may (will!) break on various systems.
+                             Instead specifying the actual command, specify a label of the form
+                             "#label", just like in this example. However, this requires that
+                             label name is mapped to the absolute path of the program in the
+                             dynamic/system configuration of the service. I.e. "shellcommand"
+                             should be mapped to something like "/bin/sh". As opposed to labels
+                             to be substituted with parameter values, this label must remain
+                             undefined in this path configuration, thus, forcing the generic
+                             wrapper to obtain the appropriate value from the system/runtime
+                             configuration.
+                         -->
 
-					#shellcommand
-				</command>
+                    #shellcommand
+                </command>
 
-				<commandparameters>
-					<!-- An unbounded list of parameters to the above command. -->
+                <commandparameters>
+                    <!-- An unbounded list of parameters to the above command. -->
 
-					<parameter>
-						<!--
-							On unix/linux systems the sh command needs the option -c to
-							realise that is should execute a command rather than starting a
-							new shell and on Windows systems the cmd.exe needs the /c option
-							for the same. In order to make this configurable, a label should
-							be put in place of the option so the generic wrapper can
-							substitute it with the appropriate value. However, this label
-							must remain undefined within this path configuration, just like
-							the shell command label, to force the generic wrapper obtain the
-							appropriate value from the dynamic system configuration. This
-							makes it possible to make a wrapped tool work on different
-							platforms by changing the system/runtime configuration.
-						-->
+                    <parameter>
+                        <!--
+                                  On unix/linux systems the sh command needs the option -c to
+                                  realise that is should execute a command rather than starting a
+                                  new shell and on Windows systems the cmd.exe needs the /c option
+                                  for the same. In order to make this configurable, a label should
+                                  be put in place of the option so the generic wrapper can
+                                  substitute it with the appropriate value. However, this label
+                                  must remain undefined within this path configuration, just like
+                                  the shell command label, to force the generic wrapper obtain the
+                                  appropriate value from the dynamic system configuration. This
+                                  makes it possible to make a wrapped tool work on different
+                                  platforms by changing the system/runtime configuration.
+                              -->
 
-						#shellcommandoption
-					</parameter>
+                        #shellcommandoption
+                    </parameter>
 
-					<parameter>
-						<!--
-							This is the actual shell command line to be wrapped, however,
-							notice that there is no actual tool command in this example. It
-							has been replaced by a label, just like the shell command, as the
-							same rule applies: The actual migration tool command must not be
-							specified directly in this configuration file as the generic
-							wrapper will get the tool command from the system/runtime
-							configuration. Thus, "#absolutetoolpath" will be substituted with
-							something like "/usr/bin/ps2pdf12" at runtime, provided that it
-							is this string is associated with the label in the runtime
-							configuration. All tags like "#param1" are also substituted by
-							command parameters and temporary file names by the generic
-							wrapper. However, these tag names (in this example "param1",
-							"tempSource" and "tempDestination") must be defined elsewhere in
-							this path description. In this example "param1" is defined in the
-							"toolparameters" section, indicating that it is a parameter value
-							that must be provided by the caller of the service, and the
-							remaining tags, "tempSource" and "tempDestination", are defined
-							in the "toolinput" and "tooloutput" sections. Any intermediate
-							temporary files must be defined in the "tempfiles" section (look
-							elsewhere in this example file for an example on this).
-						-->
+                    <parameter>
+                        <!--
+                                  This is the actual shell command line to be wrapped, however,
+                                  notice that there is no actual tool command in this example. It
+                                  has been replaced by a label, just like the shell command, as the
+                                  same rule applies: The actual migration tool command must not be
+                                  specified directly in this configuration file as the generic
+                                  wrapper will get the tool command from the system/runtime
+                                  configuration. Thus, "#absolutetoolpath" will be substituted with
+                                  something like "/usr/bin/ps2pdf12" at runtime, provided that it
+                                  is this string is associated with the label in the runtime
+                                  configuration. All tags like "#param1" are also substituted by
+                                  command parameters and temporary file names by the generic
+                                  wrapper. However, these tag names (in this example "param1",
+                                  "tempSource" and "tempDestination") must be defined elsewhere in
+                                  this path description. In this example "param1" is defined in the
+                                  "toolparameters" section, indicating that it is a parameter value
+                                  that must be provided by the caller of the service, and the
+                                  remaining tags, "tempSource" and "tempDestination", are defined
+                                  in the "toolinput" and "tooloutput" sections. Any intermediate
+                                  temporary files must be defined in the "tempfiles" section (look
+                                  elsewhere in this example file for an example on this).
+                              -->
 
-						#absolutetoolpath -sPAPERSIZE=#param1 #tempSource #tempDestination
-					</parameter>
-				</commandparameters>
-			</commandline>
+                        #absolutetoolpath -sPAPERSIZE=#param1 #tempSource #tempDestination
+                    </parameter>
+                </commandparameters>
+            </commandline>
 
-			<toolinput>
-				<!--
-					This section describes how the input file is passed on to the
-					command line migration tool. There are two options; Either piping
-					the data through standard input to the tool or to write the data to
-					a temporary file which the tool then reads it from. If the wrapped
-					tool is capable of reading the input object from standard input,
-					then the tag <piped/> can be specified instead of the "tempfile"
-					element used in this example. However, make sure that the command
-					line is correctly configured to instruct the tool to read from
-					standard input and make sure that the tool actually supports it.
-					Also, note that only one of the two tags (piped and tempfile) must
-					be present in this section - never both of them.
-				-->
+            <toolinput>
+                <!--
+                        This section describes how the input file is passed on to the
+                        command line migration tool. There are two options; Either piping
+                        the data through standard input to the tool or to write the data to
+                        a temporary file which the tool then reads it from. If the wrapped
+                        tool is capable of reading the input object from standard input,
+                        then the tag <piped/> can be specified instead of the "tempfile"
+                        element used in this example. However, make sure that the command
+                        line is correctly configured to instruct the tool to read from
+                        standard input and make sure that the tool actually supports it.
+                        Also, note that only one of the two tags (piped and tempfile) must
+                        be present in this section - never both of them.
+                    -->
 
-				<tempfile label="tempSource">
-					<!--
-						Get the object to migrate from a temporary file automatically
-						named by the generic wrapper. If the tool requires a specific name
-						for the input file then it can be specified by adding a name
-						attribute like this: name="requiredName.foo". Please note that the
-						label (in this case "tempSource") must match the label used in the
-						command line where the input file is specified.
-					-->
-				</tempfile>
-			</toolinput>
+                <tempfile label="tempSource">
+                    <!--
+                             Get the object to migrate from a temporary file automatically
+                             named by the generic wrapper. If the tool requires a specific name
+                             for the input file then it can be specified by adding a name
+                             attribute like this: name="requiredName.foo". Please note that the
+                             label (in this case "tempSource") must match the label used in the
+                             command line where the input file is specified.
+                         -->
+                </tempfile>
+            </toolinput>
 
-			<tooloutput>
-				<!--
-					This section describes how the output object is passed on from the
-					command line tool to the generic wrapper. There are two options;
-					Either piping the data through standard output or to write the data
-					to a temporary file which the generic wrapper then reads it from.
-					If the wrapped tool is capable of writing the output object to
-					standard output, then the tag <piped/> can be specified instead of
-					the "tempfile" element used in this example. However, make sure
-					that the command line is correctly configured to instruct the tool
-					to write to standard output and make sure that the tool actually
-					supports it. Also, note that only one of the two tags (piped and
-					tempfile) must be present in this section - never both of them.
-				-->
-				<tempfile label="tempDestination">
-					<!--
-						Write the output to a temporary file automatically named by the
-						wrapper. If the tool requires a specific name for the output file
-						then it can be specified by adding a name attribute like this:
-						name="requiredName.foo". Please note that the label (in this case
-						"tempDestination") must match the label used in the command line
-						where the output file is specified.
-					-->
-				</tempfile>
-			</tooloutput>
+            <tooloutput>
+                <!--
+                        This section describes how the output object is passed on from the
+                        command line tool to the generic wrapper. There are two options;
+                        Either piping the data through standard output or to write the data
+                        to a temporary file which the generic wrapper then reads it from.
+                        If the wrapped tool is capable of writing the output object to
+                        standard output, then the tag <piped/> can be specified instead of
+                        the "tempfile" element used in this example. However, make sure
+                        that the command line is correctly configured to instruct the tool
+                        to write to standard output and make sure that the tool actually
+                        supports it. Also, note that only one of the two tags (piped and
+                        tempfile) must be present in this section - never both of them.
+                    -->
+                <tempfile label="tempDestination">
+                    <!--
+                             Write the output to a temporary file automatically named by the
+                             wrapper. If the tool requires a specific name for the output file
+                             then it can be specified by adding a name attribute like this:
+                             name="requiredName.foo". Please note that the label (in this case
+                             "tempDestination") must match the label used in the command line
+                             where the output file is specified.
+                         -->
+                </tempfile>
+            </tooloutput>
 
-			<tempfiles>
-				<!--
-					More complex tool wrappings may utilise intermediate temporary
-					files. Please find examples on this elsewhere in this example file.
-					The use of temporary intermediate files is optional, however, this
-					section must be present although empty, if no intermediate
-					temporary files are applied.
-				-->
-			</tempfiles>
+            <tempfiles>
+                <!--
+                        More complex tool wrappings may utilise intermediate temporary
+                        files. Please find examples on this elsewhere in this example file.
+                        The use of temporary intermediate files is optional, however, this
+                        section must be present although empty, if no intermediate
+                        temporary files are applied.
+                    -->
+            </tempfiles>
 
-			<toolparameters>
-				<!--
-					All the parameter labels used in the command line to specify
-					parameters, which must be provided by the caller of the service,
-					must be declared here in this unbounded list. If no "caller"
-					parameter labels are used in the "commandline" section, then this
-					section must still be present although empty.
-				-->
+            <toolparameters>
+                <!--
+                        All the parameter labels used in the command line to specify
+                        parameters, which must be provided by the caller of the service,
+                        must be declared here in this unbounded list. If no "caller"
+                        parameter labels are used in the "commandline" section, then this
+                        section must still be present although empty.
+                    -->
 
-				<parameter name="param1">
-					<!--
-						Instruct the generic wrapper to accept a parameter called "param1"
-						and provide a description which it can pass on to users, to
-						instruct them in how to use it. That is, information about valid
-						parameter values and their effect.
-					-->
-					<description>Paper size of the migrated object. Valid values are
-						"a4" and "legal"
-					</description>
-				</parameter>
-			</toolparameters>
+                <parameter name="param1">
+                    <!--
+                             Instruct the generic wrapper to accept a parameter called "param1"
+                             and provide a description which it can pass on to users, to
+                             instruct them in how to use it. That is, information about valid
+                             parameter values and their effect.
+                         -->
+                    <description>Paper size of the migrated object. Valid values are
+                        "a4" and "legal"
+                    </description>
+                </parameter>
+            </toolparameters>
 
-			<toolpresets default="mode">
-				<!--
-					An unbounded list of presets. A wrapped tool can optionally provide
-					a number of presets to make it easier for the users to use it. A
-					preset will appear to be just another parameter to the caller
-					although making use of a preset actually will initialise/override a
-					number of parameters. That is, if a caller explicitly specifies the
-					parameters "param1=a4" and "mode=Legal", then the "mode" preset
-					will override "param1", causing the "Legal" format to be used
-					rather than "a4". On the other hand, if the caller does not specify
-					any parameters or preset when calling the service, then the generic
-					wrapper will attempt to find a default preset and a default preset
-					setting. It is thus mandatory that the "default" attribute has been
-					declared in the "toolpresets" element if the wrapping applies
-					presets. However, if that is not the case, then the "toolpresets"
-					section must be empty and no "default" attribute may be declared!
-				-->
-				<preset name="mode" default="Normal">
-					<!--
-						If the caller of the service neither specifies any tool parameters
-						nor any preset, then the generic wrapper will automatically
-						initialise "param1" with the value from the "Normal" settings
-						element, as the "mode" preset and the "Normal" preset settings
-						have been specified as the defaults in this example. However, if
-						the caller has specified any tool parameters (and no preset) then
-						the generic wrapper will not attempt using the default preset.
-						Note that the "default" attribute must be declared for each preset
-						element.
-					-->
+            <toolpresets default="mode">
+                <!--
+                        An unbounded list of presets. A wrapped tool can optionally provide
+                        a number of presets to make it easier for the users to use it. A
+                        preset will appear to be just another parameter to the caller
+                        although making use of a preset actually will initialise/override a
+                        number of parameters. That is, if a caller explicitly specifies the
+                        parameters "param1=a4" and "mode=Legal", then the "mode" preset
+                        will override "param1", causing the "Legal" format to be used
+                        rather than "a4". On the other hand, if the caller does not specify
+                        any parameters or preset when calling the service, then the generic
+                        wrapper will attempt to find a default preset and a default preset
+                        setting. It is thus mandatory that the "default" attribute has been
+                        declared in the "toolpresets" element if the wrapping applies
+                        presets. However, if that is not the case, then the "toolpresets"
+                        section must be empty and no "default" attribute may be declared!
+                    -->
+                <preset name="mode" default="Normal">
+                    <!--
+                             If the caller of the service neither specifies any tool parameters
+                             nor any preset, then the generic wrapper will automatically
+                             initialise "param1" with the value from the "Normal" settings
+                             element, as the "mode" preset and the "Normal" preset settings
+                             have been specified as the defaults in this example. However, if
+                             the caller has specified any tool parameters (and no preset) then
+                             the generic wrapper will not attempt using the default preset.
+                             Note that the "default" attribute must be declared for each preset
+                             element.
+                         -->
 
-					<description>
-						<!--
-							This description is information to the callers about the over-all
-							effect of applying values from this preset.
-						-->
-						Valid options are 'Normal' or 'US'.
-						Defaults to 'Normal'.
-					</description>
+                    <description>
+                        <!--
+                                  This description is information to the callers about the over-all
+                                  effect of applying values from this preset.
+                              -->
+                        Valid options are 'Normal' or 'US'.
+                        Defaults to 'Normal'.
+                    </description>
 
-					<settings name="US">
-						<!--
-							If the "mode" preset (i.e. parameter) is set to "US" then param1
-							will be initialised with the below value, thus overriding any
-							param1 value already specified by the caller. The description
-							should give a meaningful description about the effect of choosing
-							this preset setting.
-						-->
-						<parameter name="param1"><![CDATA['legal']]>
-						</parameter>
-						<description>Migrate to US legal paper format.</description>
-					</settings>
+                    <settings name="US">
+                        <!--
+                                  If the "mode" preset (i.e. parameter) is set to "US" then param1
+                                  will be initialised with the below value, thus overriding any
+                                  param1 value already specified by the caller. The description
+                                  should give a meaningful description about the effect of choosing
+                                  this preset setting.
+                              -->
+                        <parameter name="param1"><![CDATA['legal']]>
+                        </parameter>
+                        <description>Migrate to US legal paper format.</description>
+                    </settings>
 
-					<settings name="Normal">
-						<!--
-							If the "mode" preset (i.e. parameter) is set to "Normal" then
-							param1 will be set to the below value, thus overriding any param1
-							value already specified by the caller. The description should
-							give a meaningful description about the effect of choosing this
-							preset setting.
-						-->
-						<parameter name="param1"><![CDATA[a4]]>
-						</parameter>
-						<description>Migrate to the normal A4 paper format.</description>
-					</settings>
+                    <settings name="Normal">
+                        <!--
+                                  If the "mode" preset (i.e. parameter) is set to "Normal" then
+                                  param1 will be set to the below value, thus overriding any param1
+                                  value already specified by the caller. The description should
+                                  give a meaningful description about the effect of choosing this
+                                  preset setting.
+                              -->
+                        <parameter name="param1"><![CDATA[a4]]>
+                        </parameter>
+                        <description>Migrate to the normal A4 paper format.</description>
+                    </settings>
 
-				</preset>
-			</toolpresets>
+                </preset>
+            </toolpresets>
 
-		</path>
+        </path>
 
-		<path>
-			<!--
-				Silly migration path for conversion of lower case text to upper case
-				text, using 'cat' and 'tr'. This demonstrates the usage of multiple
-				migration tools and temporary intermediate files. The migration
-				paths described by a combination of one of the input formats and the
-				output format will overwrite any similar definitions from any
-				earlier path definitions, that is, definitions closer to the top of
-				the configuration file.
-			-->
-			<inputformats>
-				<!--
-					List of format URIs identifying the valid input formats for the
-					wrapped command(s) in this "path" section. It is recommended to use
-					PRONOM URIs where possible in order to achieve the most accurate
-					description of the formats. File suffixes are inaccurate as most
-					file formats are available in several revisions. However, if a
-					format is unknown to PRONOM (or whatever registry that is being
-					used) and thus it is necessary to "invent" a format URI, then it
-					should be on the form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR
-					HERE>" - like in the example below.
-				-->
+        <path>
+            <!--
+                   Silly migration path for conversion of lower case text to upper case
+                   text, using 'cat' and 'tr'. This demonstrates the usage of multiple
+                   migration tools and temporary intermediate files. The migration
+                   paths described by a combination of one of the input formats and the
+                   output format will overwrite any similar definitions from any
+                   earlier path definitions, that is, definitions closer to the top of
+                   the configuration file.
+               -->
+            <inputformats>
+                <!--
+                        List of format URIs identifying the valid input formats for the
+                        wrapped command(s) in this "path" section. It is recommended to use
+                        PRONOM URIs where possible in order to achieve the most accurate
+                        description of the formats. File suffixes are inaccurate as most
+                        file formats are available in several revisions. However, if a
+                        format is unknown to PRONOM (or whatever registry that is being
+                        used) and thus it is necessary to "invent" a format URI, then it
+                        should be on the form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR
+                        HERE>" - like in the example below.
+                    -->
 
-				<uri value="info:planets/fmt/ext/lowercase" />
-			</inputformats>
+                <uri value="info:planets/fmt/ext/lowercase" />
+            </inputformats>
 
-			<outputformat>
-				<!--
-					Format URI identifying the output format of the wrapped command(s)
-					in this "path" section. It is recommended to use a PRONOM URI when
-					possible in order to achieve the most accurate description of the
-					format. File suffixes are inaccurate as most file formats are
-					available in several revisions. However, if a format is unknown to
-					PRONOM (or whatever registry that is being used) and thus it is
-					necessary to "invent" a format URI, then it should be on the form:
-					"info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>" - like in the
-					example below.
-				-->
+            <outputformat>
+                <!--
+                        Format URI identifying the output format of the wrapped command(s)
+                        in this "path" section. It is recommended to use a PRONOM URI when
+                        possible in order to achieve the most accurate description of the
+                        format. File suffixes are inaccurate as most file formats are
+                        available in several revisions. However, if a format is unknown to
+                        PRONOM (or whatever registry that is being used) and thus it is
+                        necessary to "invent" a format URI, then it should be on the form:
+                        "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>" - like in the
+                        example below.
+                    -->
 
-				<uri value="info:planets/fmt/ext/uppercase" />
-			</outputformat>
+                <uri value="info:planets/fmt/ext/uppercase" />
+            </outputformat>
 
-			<commandline>
-				<!--
-					This element contains all the fragments that constitute the command
-					line to be executed by the generic wrapper. The general form of a
-					command line is "<shell command> <shell option1> <shell option 2>
-					... <shell option N>". Thus, a wrapped tool is actually executed in
-					a separate shell. It is important that only one parameter is
-					specified by each command parameter section. That is, if you want
-					to execute something like: "/bin/sh -c -e -f migrationTool
-					toolParam1 toolParam2" then "-c", "-e" and "-f" must be specified
-					by each their command parameter section, while the entire string
-					"migrationTool toolParam1 toolParam2" may be specified in the same
-					section. Anything in the command and command parameter text can be
-					replaced by a label of the form "#label" to be substituted by some
-					value at runtime by the generic wrapper. The value which the label
-					is replaced with may be specified by the caller of the service as a
-					parameter, however, in that case the label must be declared in the
-					"toolparameters" section. The generic wrapper will attempt to fetch
-					values for undeclared labels from the system/runtime configuration,
-					which is useful e.g. for deferring configuration of the absolute
-					path to the migration tool until the installation time of the
-					system.
-				-->
+            <commandline>
+                <!--
+                        This element contains all the fragments that constitute the command
+                        line to be executed by the generic wrapper. The general form of a
+                        command line is "<shell command> <shell option1> <shell option 2>
+                        ... <shell option N>". Thus, a wrapped tool is actually executed in
+                        a separate shell. It is important that only one parameter is
+                        specified by each command parameter section. That is, if you want
+                        to execute something like: "/bin/sh -c -e -f migrationTool
+                        toolParam1 toolParam2" then "-c", "-e" and "-f" must be specified
+                        by each their command parameter section, while the entire string
+                        "migrationTool toolParam1 toolParam2" may be specified in the same
+                        section. Anything in the command and command parameter text can be
+                        replaced by a label of the form "#label" to be substituted by some
+                        value at runtime by the generic wrapper. The value which the label
+                        is replaced with may be specified by the caller of the service as a
+                        parameter, however, in that case the label must be declared in the
+                        "toolparameters" section. The generic wrapper will attempt to fetch
+                        values for undeclared labels from the system/runtime configuration,
+                        which is useful e.g. for deferring configuration of the absolute
+                        path to the migration tool until the installation time of the
+                        system.
+                    -->
 
-				<command>
-					<!--
-						The command to be executed by the generic wrapper. Typically this
-						will be "sh" on unix/linux systems and "command.exe" on Windows
-						systems. However, do not rely on the command to exist in the
-						system search path and do not specify an absolute path in this
-						configuration file as this may (will!) break on various systems.
-						Instead specifying the actual command, specify a label of the form
-						"#label", just like in this example. However, this requires that
-						label name is mapped to the absolute path of the program in the
-						dynamic/system configuration of the service. I.e. "shellcommand"
-						should be mapped to something like "/bin/sh". As opposed to labels
-						to be substituted with parameter values, this label must remain
-						undefined in this path configuration, thus, forcing the generic
-						wrapper to obtain the appropriate value from the system/runtime
-						configuration.
-					-->
+                <command>
+                    <!--
+                             The command to be executed by the generic wrapper. Typically this
+                             will be "sh" on unix/linux systems and "command.exe" on Windows
+                             systems. However, do not rely on the command to exist in the
+                             system search path and do not specify an absolute path in this
+                             configuration file as this may (will!) break on various systems.
+                             Instead specifying the actual command, specify a label of the form
+                             "#label", just like in this example. However, this requires that
+                             label name is mapped to the absolute path of the program in the
+                             dynamic/system configuration of the service. I.e. "shellcommand"
+                             should be mapped to something like "/bin/sh". As opposed to labels
+                             to be substituted with parameter values, this label must remain
+                             undefined in this path configuration, thus, forcing the generic
+                             wrapper to obtain the appropriate value from the system/runtime
+                             configuration.
+                         -->
 
-					#shellcommand
-				</command>
+                    #shellcommand
+                </command>
 
-				<commandparameters>
-					<!-- An un bounded list of parameters to the above command. -->
+                <commandparameters>
+                    <!-- An un bounded list of parameters to the above command. -->
 
-					<parameter>
-						<!--
-							On unix/linux systems the sh command needs the option -c to
-							realise that is should execute a command rather than starting a
-							new shell and on Windows systems the cmd.exe needs the /c option
-							for the same. In order to make this configurable, a label should
-							be put in place of the option so the generic wrapper can
-							substitute it with the appropriate value. However, this label
-							must remain undefined within this path configuration, just like
-							the shell command label, to force the generic wrapper obtain the
-							appropriate value from the dynamic system configuration. This
-							makes it possible to make a wrapped tool work on different
-							platforms by changing the system/runtime configuration.
-						-->
+                    <parameter>
+                        <!--
+                                  On unix/linux systems the sh command needs the option -c to
+                                  realise that is should execute a command rather than starting a
+                                  new shell and on Windows systems the cmd.exe needs the /c option
+                                  for the same. In order to make this configurable, a label should
+                                  be put in place of the option so the generic wrapper can
+                                  substitute it with the appropriate value. However, this label
+                                  must remain undefined within this path configuration, just like
+                                  the shell command label, to force the generic wrapper obtain the
+                                  appropriate value from the dynamic system configuration. This
+                                  makes it possible to make a wrapped tool work on different
+                                  platforms by changing the system/runtime configuration.
+                              -->
 
-						#shellcommandoption
-					</parameter>
+                        #shellcommandoption
+                    </parameter>
 
-					<parameter>
-						<!--
-							This is the actual shell command line to be wrapped, however,
-							notice that there is no actual tool commands in this example.
-							They have been replaced labels, just like the shell command, as
-							the same rule applies: The actual migration tool command(s) must
-							not be specified directly in this configuration file as the
-							generic wrapper will get the tool command(s) from the
-							system/runtime configuration. Thus, "#catcommand" will be
-							substituted with something like "/bin/cat" at runtime, provided
-							that it is this string is associated with the label in the
-							runtime configuration. All tags like "#param1" are also
-							substituted by command parameters and temporary file names by the
-							generic wrapper. However, these tag names (in this example
-							"param1", "tempSource", "myInterimFile" and "tempDestination")
-							must be defined elsewhere in this path description. In this
-							example "param1" is defined in the "toolparameters" section,
-							indicating that it is a parameter value that must be provided by
-							the caller of the service, and the remaining tags, "tempSource",
-							"myInterimFile" and "tempDestination", are defined in the
-							"toolinput", "tempfiles" and "tooloutput" sections.
-						-->
+                    <parameter>
+                        <!--
+                                  This is the actual shell command line to be wrapped, however,
+                                  notice that there is no actual tool commands in this example.
+                                  They have been replaced labels, just like the shell command, as
+                                  the same rule applies: The actual migration tool command(s) must
+                                  not be specified directly in this configuration file as the
+                                  generic wrapper will get the tool command(s) from the
+                                  system/runtime configuration. Thus, "#catcommand" will be
+                                  substituted with something like "/bin/cat" at runtime, provided
+                                  that it is this string is associated with the label in the
+                                  runtime configuration. All tags like "#param1" are also
+                                  substituted by command parameters and temporary file names by the
+                                  generic wrapper. However, these tag names (in this example
+                                  "param1", "tempSource", "myInterimFile" and "tempDestination")
+                                  must be defined elsewhere in this path description. In this
+                                  example "param1" is defined in the "toolparameters" section,
+                                  indicating that it is a parameter value that must be provided by
+                                  the caller of the service, and the remaining tags, "tempSource",
+                                  "myInterimFile" and "tempDestination", are defined in the
+                                  "toolinput", "tempfiles" and "tooloutput" sections.
+                              -->
 
                         <![CDATA[#catcommand #param1 #tempSource > #myInterimFile && #catcommand #myInterimFile | #trcommand #param2 > #tempDestination]]>
-					</parameter>
-				</commandparameters>
-			</commandline>
+                    </parameter>
+                </commandparameters>
+            </commandline>
 
-			<toolinput>
+            <toolinput>
 
-				<!--
-					This section describes how the input file is passed on to the
-					command line migration tool. There are two options; Either piping
-					the data through standard input to the tool or to write the data to
-					a temporary file which the tool then reads it from. If the wrapped
-					tool is capable of reading the input object from standard input,
-					then the tag <piped/> can be specified instead of the "tempfile"
-					element used in this example. However, make sure that the command
-					line is correctly configured to instruct the tool to read from
-					standard input and make sure that the tool actually supports it.
-					Also, note that only one of the two tags (piped and tempfile) must
-					be present in this section - never both of them.
-				-->
-				<tempfile label="tempSource" name="desiredInputFileName">
-					<!--
-						Get the object to migrate from a temporary file named
-						"desiredInputFileName". This feature is useful for tools which
-						expects that the input file has a certain name (typically a
-						special file suffix). Please note that the label (in this case
-						"tempSource") must match the label used in the command line where
-						the input file is specified.
-					-->
-				</tempfile>
-			</toolinput>
+                <!--
+                        This section describes how the input file is passed on to the
+                        command line migration tool. There are two options; Either piping
+                        the data through standard input to the tool or to write the data to
+                        a temporary file which the tool then reads it from. If the wrapped
+                        tool is capable of reading the input object from standard input,
+                        then the tag <piped/> can be specified instead of the "tempfile"
+                        element used in this example. However, make sure that the command
+                        line is correctly configured to instruct the tool to read from
+                        standard input and make sure that the tool actually supports it.
+                        Also, note that only one of the two tags (piped and tempfile) must
+                        be present in this section - never both of them.
+                    -->
+                <tempfile label="tempSource" name="desiredInputFileName">
+                    <!--
+                             Get the object to migrate from a temporary file named
+                             "desiredInputFileName". This feature is useful for tools which
+                             expects that the input file has a certain name (typically a
+                             special file suffix). Please note that the label (in this case
+                             "tempSource") must match the label used in the command line where
+                             the input file is specified.
+                         -->
+                </tempfile>
+            </toolinput>
 
-			<tooloutput>
-				<!--
-					This section describes how the output object is passed on from the
-					command line tool to the generic wrapper. There are two options;
-					Either piping the data through standard output or to write the data
-					to a temporary file which the generic wrapper then reads it from.
-					If the wrapped tool is capable of writing the output object to
-					standard output, then the tag <piped/> can be specified instead of
-					the "tempfile" element used in this example. However, make sure
-					that the command line is correctly configured to instruct the tool
-					to write to standard output and make sure that the tool actually
-					supports it. Also, note that only one of the two tags (piped and
-					tempfile) must be present in this section - never both of them.
-				-->
-				<tempfile label="tempDestination">
-					<!--
-						Write the output to a temporary file automatically named by the
-						wrapper. If the tool requires a specific name for the output file
-						then it can be specified by adding a name attribute like this:
-						name="requiredName.foo". Please note that the label (in this case
-						"tempDestination") must match the label used in the command line
-						where the output file is specified.
-					-->
-				</tempfile>
-			</tooloutput>
+            <tooloutput>
+                <!--
+                        This section describes how the output object is passed on from the
+                        command line tool to the generic wrapper. There are two options;
+                        Either piping the data through standard output or to write the data
+                        to a temporary file which the generic wrapper then reads it from.
+                        If the wrapped tool is capable of writing the output object to
+                        standard output, then the tag <piped/> can be specified instead of
+                        the "tempfile" element used in this example. However, make sure
+                        that the command line is correctly configured to instruct the tool
+                        to write to standard output and make sure that the tool actually
+                        supports it. Also, note that only one of the two tags (piped and
+                        tempfile) must be present in this section - never both of them.
+                    -->
+                <tempfile label="tempDestination">
+                    <!--
+                             Write the output to a temporary file automatically named by the
+                             wrapper. If the tool requires a specific name for the output file
+                             then it can be specified by adding a name attribute like this:
+                             name="requiredName.foo". Please note that the label (in this case
+                             "tempDestination") must match the label used in the command line
+                             where the output file is specified.
+                         -->
+                </tempfile>
+            </tooloutput>
 
-			<tempfiles>
-				<!--
-					Tempfile entries are used for intermediate temporary files which
-					may be necessary to create if the wrapped command line contains
-					chained commands. Multiple "tempfile" entries are allowed, however,
-					each should have a unique name and must match the corresponding
-					labels used in the command line. In this example, there must be a
-					"#myInterimFile" label in the command line parameters where the
-					tool (temporary) input/output file must be specified.The use of
-					temporary files is optional and depends entirely on the contents of
-					the command line.
-				-->
-				<tempfile label="myInterimFile" name="myDesiredTempFileName.foo">
-					<!--
-						Instruct the generic wrapper to create a file path to where the
-						intermediate file named "myDiseredTempFileName.foo" can be written
-						by the tool. The "name" attribute is optional, however, it is
-						useful for situations where tools expects the file to have a
-						special name and/or suffix. The generic wrapper will just generate
-						a filename automatically if the "name" attribute is omitted.
-					-->
-				</tempfile>
-			</tempfiles>
+            <tempfiles>
+                <!--
+                        Tempfile entries are used for intermediate temporary files which
+                        may be necessary to create if the wrapped command line contains
+                        chained commands. Multiple "tempfile" entries are allowed, however,
+                        each should have a unique name and must match the corresponding
+                        labels used in the command line. In this example, there must be a
+                        "#myInterimFile" label in the command line parameters where the
+                        tool (temporary) input/output file must be specified.The use of
+                        temporary files is optional and depends entirely on the contents of
+                        the command line.
+                    -->
+                <tempfile label="myInterimFile" name="myDesiredTempFileName.foo">
+                    <!--
+                             Instruct the generic wrapper to create a file path to where the
+                             intermediate file named "myDiseredTempFileName.foo" can be written
+                             by the tool. The "name" attribute is optional, however, it is
+                             useful for situations where tools expects the file to have a
+                             special name and/or suffix. The generic wrapper will just generate
+                             a filename automatically if the "name" attribute is omitted.
+                         -->
+                </tempfile>
+            </tempfiles>
 
-			<toolparameters>
-				<!--
-					All the parameter labels used in the command line to specify
-					parameters, which must be provided by the caller of the service,
-					must be declared here in this unbounded list. If no "caller"
-					parameter labels are used in the "commandline" section, then this
-					section must still be present although empty.
-				-->
+            <toolparameters>
+                <!--
+                        All the parameter labels used in the command line to specify
+                        parameters, which must be provided by the caller of the service,
+                        must be declared here in this unbounded list. If no "caller"
+                        parameter labels are used in the "commandline" section, then this
+                        section must still be present although empty.
+                    -->
 
-				<parameter name="param1">
-					<!--
-						Instruct the generic wrapper to accept a parameter called "param1"
-						and provide a description which it can pass on to users, to
-						instruct them in how to use it. That is, information about valid
-						parameter values and their effect.
-					-->
+                <parameter name="param1">
+                    <!--
+                             Instruct the generic wrapper to accept a parameter called "param1"
+                             and provide a description which it can pass on to users, to
+                             instruct them in how to use it. That is, information about valid
+                             parameter values and their effect.
+                         -->
 
-					<description>
-						<!-- Using CDATA preserves the formatting of the text description. -->
-					
-						<![CDATA[Parameters for 'cat'
+                    <description>
+                        <!-- Using CDATA preserves the formatting of the text description. -->
+
+                        <![CDATA[Parameters for 'cat'
 						
 							-A, --show-all
 								  equivalent to -vET
@@ -742,21 +743,21 @@
 					
 							-v, --show-nonprinting
 								  use ^ and M- notation, except for LFD and TAB]]>
-					</description>
-				</parameter>
+                    </description>
+                </parameter>
 
-				<parameter name="param2">
-					<!--
-						Instruct the generic wrapper to accept a parameter called "param2"
-						and provide a description which it can pass on to users, to
-						instruct them in how to use it. That is, information about valid
-						parameter values and their effect.
-					-->
+                <parameter name="param2">
+                    <!--
+                             Instruct the generic wrapper to accept a parameter called "param2"
+                             and provide a description which it can pass on to users, to
+                             instruct them in how to use it. That is, information about valid
+                             parameter values and their effect.
+                         -->
 
-					<description>
-						<!-- Using CDATA preserves the formatting of the text description. -->
-					
-						<![CDATA[Command line parameters for the 'tr' command.
+                    <description>
+                        <!-- Using CDATA preserves the formatting of the text description. -->
+
+                        <![CDATA[Command line parameters for the 'tr' command.
 						
 						   -c, -C, --complement
 								 first complement SET1
@@ -847,58 +848,58 @@
 						   only  be used in pairs to specify case conversion.  -s uses SET1 if not
 						   translating nor deleting; else squeezing uses  SET2  and  occurs  after
 						   translation or deletion.]]>
-					</description>
-				</parameter>
-			</toolparameters>
+                    </description>
+                </parameter>
+            </toolparameters>
 
-			<!--
-				Tool presets can be used instead of messing with the command line
-				parameters. However, these presets can also be used as default
-				settings which will make it possible only to specify a some of the
-				parameters for the tool, as unspecified parameters just can be taken
-				from the defaults.
-			-->
-			<toolpresets default="mode">
-				<!--
-					An unbounded list of presets. A wrapped tool can optionally provide
-					a number of presets to make it easier for the users to use it. A
-					preset will appear to be just another parameter to the caller
-					although making use of a preset actually will initialise/override a
-					number of parameters. That is, in this example, if a caller
-					explicitly specifies the parameters "param1=-n" and "mode=AC-DC",
-					then the "mode" preset will override "param1", causing an empty
-					string to be used rather than "-n". On the other hand, if the
-					caller does not specify any parameters or preset when calling the
-					service, then the generic wrapper will attempt to find a default
-					preset and a default preset setting. It is thus mandatory that the
-					"default" attribute has been declared in the "toolpresets" element
-					if the wrapping applies presets. However, if that is not the case,
-					then the "toolpresets" section must be empty and no "default"
-					attribute may be declared! Also note that the caller of a service
-					may only specify only one preset to be used. Thus, it is not
-					possible to specify both "mode=AC-DC" and "quality=good" in this
-					example.
-				-->
+            <!--
+                   Tool presets can be used instead of messing with the command line
+                   parameters. However, these presets can also be used as default
+                   settings which will make it possible only to specify a some of the
+                   parameters for the tool, as unspecified parameters just can be taken
+                   from the defaults.
+               -->
+            <toolpresets default="mode">
+                <!--
+                        An unbounded list of presets. A wrapped tool can optionally provide
+                        a number of presets to make it easier for the users to use it. A
+                        preset will appear to be just another parameter to the caller
+                        although making use of a preset actually will initialise/override a
+                        number of parameters. That is, in this example, if a caller
+                        explicitly specifies the parameters "param1=-n" and "mode=AC-DC",
+                        then the "mode" preset will override "param1", causing an empty
+                        string to be used rather than "-n". On the other hand, if the
+                        caller does not specify any parameters or preset when calling the
+                        service, then the generic wrapper will attempt to find a default
+                        preset and a default preset setting. It is thus mandatory that the
+                        "default" attribute has been declared in the "toolpresets" element
+                        if the wrapping applies presets. However, if that is not the case,
+                        then the "toolpresets" section must be empty and no "default"
+                        attribute may be declared! Also note that the caller of a service
+                        may only specify only one preset to be used. Thus, it is not
+                        possible to specify both "mode=AC-DC" and "quality=good" in this
+                        example.
+                    -->
 
-				<preset name="mode" default="complete">
-					<!--
-						If the caller of the service neither specifies any tool parameters
-						nor any preset, then the generic wrapper will automatically
-						initialise "param1" and "param2" with the values from the
-						"complete" settings element, as the "mode" preset and the
-						"complete" preset settings have been specified as the defaults in
-						this example. However, if the caller has specified any tool
-						parameters (and no preset) then the generic wrapper will not
-						attempt using the default preset. Note that the "default"
-						attribute must be declared for each preset element.
-					-->
+                <preset name="mode" default="complete">
+                    <!--
+                             If the caller of the service neither specifies any tool parameters
+                             nor any preset, then the generic wrapper will automatically
+                             initialise "param1" and "param2" with the values from the
+                             "complete" settings element, as the "mode" preset and the
+                             "complete" preset settings have been specified as the defaults in
+                             this example. However, if the caller has specified any tool
+                             parameters (and no preset) then the generic wrapper will not
+                             attempt using the default preset. Note that the "default"
+                             attribute must be declared for each preset element.
+                         -->
 
-					<description>
-						<!--
-							This description is information to the callers about the over-all
-							effect of applying values from this preset.
-						-->
-						<![CDATA[
+                    <description>
+                        <!--
+                                  This description is information to the callers about the over-all
+                                  effect of applying values from this preset.
+                              -->
+                        <![CDATA[
 						Valid options:
 						
 						'complete' : Converts from lowercase to uppercase.
@@ -907,68 +908,67 @@
 								  a line number to each line.
 
 						Defaults to 'complete'.]]>
-					</description>
+                    </description>
 
 
-					<settings name="complete">
-						<!--
-							If the "mode" preset (i.e. parameter) is set to "commplete" then
-							param1 and param2 will be initialised with the below values, thus
-							overriding any param1 and param2 value already specified by the
-							caller. The description should give a meaningful description
-							about the effect of choosing this preset setting.
-						-->
+                    <settings name="complete">
+                        <!--
+                                  If the "mode" preset (i.e. parameter) is set to "commplete" then
+                                  param1 and param2 will be initialised with the below values, thus
+                                  overriding any param1 and param2 value already specified by the
+                                  caller. The description should give a meaningful description
+                                  about the effect of choosing this preset setting.
+                              -->
 
-						<parameter name="param1"><![CDATA[]]>
-						</parameter>
+                        <parameter name="param1"><![CDATA[]]>
+                        </parameter>
 
-						<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
-						</parameter>
+                        <parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+                        </parameter>
 
-						<description>Uppercase all text.</description>
-					</settings>
+                        <description>Uppercase all text.</description>
+                    </settings>
 
-					<settings name="AC-DC">
+                    <settings name="AC-DC">
 
-						<parameter name="param1"><![CDATA[]]>
-						</parameter>
+                        <parameter name="param1"><![CDATA[]]>
+                        </parameter>
 
-						<parameter name="param2"><![CDATA['A,D' 'D,A']]></parameter>
+                        <parameter name="param2"><![CDATA['A,D' 'D,A']]></parameter>
 
-						<description>Swaps As with Ds. Thus changing AC-DC to DC-AC
-						</description>
-					</settings>
+                        <description>Swaps As with Ds. Thus changing AC-DC to DC-AC
+                        </description>
+                    </settings>
 
-					<settings name="extra">
+                    <settings name="extra">
 
-						<parameter name="param1"><![CDATA[-n]]></parameter>
+                        <parameter name="param1"><![CDATA[-n]]></parameter>
 
-						<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
-						</parameter>
+                        <parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+                        </parameter>
 
-						<description>Uppercase all text and add line numbers.
-						</description>
-					</settings>
+                        <description>Uppercase all text and add line numbers.
+                        </description>
+                    </settings>
 
-					<description>Mode presets for the lowercase to uppercase convertion
-						tool.
-					</description>
-				</preset>
+                </preset>
 
-				<!--
-					This "quality" preset category is essentially the same as the
-					"mode" category, and is only included to demonstrate that it is
-					possible for the caller to have more preset categories to choose
-					from.
-				-->
-				<preset name="quality" default="good">
+                <!--
+                        This "quality" preset category is essentially the same as the
+                        "mode" category, and is only included to demonstrate that it is
+                        possible for the caller to have more preset categories to choose
+                        from.
+                    -->
+                <preset name="quality" default="good">
 
-					<description>
-						<!--
-							This description is information to the callers about the over-all
-							effect of applying values from this preset.
-						-->
-						<![CDATA[
+                    <description>
+                        <!--
+                                  This description is information to the callers about the over-all
+                                  effect of applying values from this preset.
+                              -->
+                        <![CDATA[
+                        Quality presets for the test tool.
+
 						Valid options:
 						
 						'good' : Converts from lowercase to uppercase.
@@ -978,258 +978,256 @@
 
 						Defaults to 'good'.
 						]]>
-					</description>
-
-					<settings name="good">
-
-						<parameter name="param1"><![CDATA[]]>
-						</parameter>
-
-						<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
-						</parameter>
-
-						<description>Uppercase all.</description>
-					</settings>
-
-					<settings name="better">
-
-						<parameter name="param1"><![CDATA[]]>
-						</parameter>
-
-						<parameter name="param2"><![CDATA['A,D' 'D,A']]></parameter>
-						<description>AC-DC to DC-AC</description>
-					</settings>
-
-					<settings name="best">
-
-						<parameter name="param1"><![CDATA[-n]]></parameter>
-
-						<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
-						</parameter>
-
-						<description>Uppercase all and add line numbers.</description>
-					</settings>
-
-					<description>Quality presets for the test tool.
                     </description>
-				</preset>
-			</toolpresets>
-		</path>
 
-		<path>
+                    <settings name="good">
 
-			<inputformats>
-				<!--
-					List of format URIs identifying the valid input formats for the
-					wrapped command(s) in this "path" section. It is recommended to use
-					PRONOM URIs where possible in order to achieve the most accurate
-					description of the formats. File suffixes are inaccurate as most
-					file formats are available in several revisions. However, if a
-					format is unknown to PRONOM (or whatever registry that is being
-					used) and thus it is necessary to "invent" a format URI, then it
-					should be on the form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR
-					HERE>" - like in the example below.
-				-->
+                        <parameter name="param1"><![CDATA[]]>
+                        </parameter>
 
-				<uri value="info:planets/fmt/ext/foo" />
-			</inputformats>
+                        <parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+                        </parameter>
 
-			<outputformat>
+                        <description>Uppercase all.</description>
+                    </settings>
 
-				<!--
-					Format URI identifying the output format of the wrapped command(s)
-					in this "path" section. It is recommended to use a PRONOM URI when
-					possible in order to achieve the most accurate description of the
-					format. File suffixes are inaccurate as most file formats are
-					available in several revisions. However, if a format is unknown to
-					PRONOM (or whatever registry that is being used) and thus it is
-					necessary to "invent" a format URI, then it should be on the form:
-					"info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>" - like in the
-					example below.
-				-->
+                    <settings name="better">
 
-				<uri value="info:planets/fmt/ext/bar" />
-			</outputformat>
+                        <parameter name="param1"><![CDATA[]]>
+                        </parameter>
 
-			<commandline>
-				<!--
-					This element contains all the fragments that constitute the command
-					line to be executed by the generic wrapper. The general form of a
-					command line is "<shell command> <shell option1> <shell option 2>
-					... <shell option N>". Thus, a wrapped tool is actually executed in
-					a separate shell. It is important that only one parameter is
-					specified by each parameter section. That is, if you want to
-					execute something like: "/bin/sh -c -e -f migrationTool toolParam1
-					toolParam2" then "-c", "-e" and "-f" must be specified by each
-					their parameter section, while the entire string "migrationTool
-					toolParam1 toolParam2" may be specified in the same parameter
-					section. Anything in the command and parameter text can be replaced
-					by a label of the form "#label" to be substituted by some value at
-					runtime by the generic wrapper. The value which the label is
-					replaced with may be specified by the caller of the service as a
-					parameter, however, in that case the label must be declared in the
-					"toolparameters" section. The generic wrapper will attempt to fetch
-					values for undeclared labels from the system/runtime configuration,
-					which is useful e.g. for deferring configuration of the absolute
-					path to the migration tool until the installation time of the
-					system.
-				-->
+                        <parameter name="param2"><![CDATA['A,D' 'D,A']]></parameter>
+                        <description>AC-DC to DC-AC</description>
+                    </settings>
 
-				<command>
-					<!--
-						The command to be executed by the generic wrapper. Typically this
-						will be "sh" on unix/linux systems and "command.exe" on Windows
-						systems. However, do not rely on the command to exist in the
-						system search path and do not specify an absolute path in this
-						configuration file as this may (will!) break on various systems.
-						Instead specifying the actual command, specify a label of the form
-						"#label", just like in this example. However, this requires that
-						label name is mapped to the absolute path of the program in the
-						dynamic/system configuration of the service. I.e. "shellcommand"
-						should be mapped to something like "/bin/sh". As opposed to labels
-						to be substituted with parameter values, this label must remain
-						undefined in this path configuration, thus, forcing the generic
-						wrapper to obtain the appropriate value from the system/runtime
-						configuration.
-					-->
+                    <settings name="best">
 
-					#shellcommand
-				</command>
+                        <parameter name="param1"><![CDATA[-n]]></parameter>
 
-				<commandparameters>
-					<!-- An un bounded list of parameters to the above command. -->
+                        <parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+                        </parameter>
 
-					<parameter>
-						<!--
-							On unix/linux systems the sh command needs the option -c to
-							realise that is should execute a command rather than starting a
-							new shell and on Windows systems the cmd.exe needs the /c option
-							for the same. In order to make this configurable, a label should
-							be put in place of the option so the generic wrapper can
-							substitute it with the appropriate value. However, this label
-							must remain undefined within this path configuration, just like
-							the shell command label, to force the generic wrapper obtain the
-							appropriate value from the dynamic system configuration. This
-							makes it possible to make a wrapped tool work on different
-							platforms by changing the system/runtime configuration.
-						-->
+                        <description>Uppercase all and add line numbers.</description>
+                    </settings>
 
-						#shellcommandoption
-					</parameter>
+                </preset>
+            </toolpresets>
+        </path>
 
-					<parameter>
-						<!--
-							This is the actual shell command line to be wrapped, however,
-							notice that there is no actual tool commands in this example.
-							They have been replaced labels, just like the shell command, as
-							the same rule applies: The actual migration tool command(s) must
-							not be specified directly in this configuration file as the
-							generic wrapper will get the tool command(s) from the
-							system/runtime configuration. Thus, "#catcommand" will be
-							substituted with something like "/bin/cat" at runtime, provided
-							that it is this string is associated with the label in the
-							runtime configuration. All tags like "#param1" are also
-							substituted by command parameters and temporary file names by the
-							generic wrapper. However, these tag names (in this example
-							"param1", "tempSource" and "tempDestination") must be defined
-							elsewhere in this path description. In this example "param1" is
-							defined in the "toolparameters" section, indicating that it is a
-							parameter value that must be provided by the caller of the
-							service, and the remaining tags, "tempSource" and
-							"tempDestination", are defined in the "toolinput" and
-							"tooloutput" sections. The usage of the CDATA tag in this example
-							is optional, however, there may be situations where a command
-							line contains characters which are not allowed by the XML
-							standard and in such situations it will be necessary to use it.
-							Also, notice that the command line contains two tools which are
-							chained by piping the output from the first tool to the second
-							tool. Furthermore, the first tool, the cat command, has been
-							configured to take its input from the standard input - note the
-							dash (-).
-						-->
+        <path>
+
+            <inputformats>
+                <!--
+                        List of format URIs identifying the valid input formats for the
+                        wrapped command(s) in this "path" section. It is recommended to use
+                        PRONOM URIs where possible in order to achieve the most accurate
+                        description of the formats. File suffixes are inaccurate as most
+                        file formats are available in several revisions. However, if a
+                        format is unknown to PRONOM (or whatever registry that is being
+                        used) and thus it is necessary to "invent" a format URI, then it
+                        should be on the form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR
+                        HERE>" - like in the example below.
+                    -->
+
+                <uri value="info:planets/fmt/ext/foo" />
+            </inputformats>
+
+            <outputformat>
+
+                <!--
+                        Format URI identifying the output format of the wrapped command(s)
+                        in this "path" section. It is recommended to use a PRONOM URI when
+                        possible in order to achieve the most accurate description of the
+                        format. File suffixes are inaccurate as most file formats are
+                        available in several revisions. However, if a format is unknown to
+                        PRONOM (or whatever registry that is being used) and thus it is
+                        necessary to "invent" a format URI, then it should be on the form:
+                        "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>" - like in the
+                        example below.
+                    -->
+
+                <uri value="info:planets/fmt/ext/bar" />
+            </outputformat>
+
+            <commandline>
+                <!--
+                        This element contains all the fragments that constitute the command
+                        line to be executed by the generic wrapper. The general form of a
+                        command line is "<shell command> <shell option1> <shell option 2>
+                        ... <shell option N>". Thus, a wrapped tool is actually executed in
+                        a separate shell. It is important that only one parameter is
+                        specified by each parameter section. That is, if you want to
+                        execute something like: "/bin/sh -c -e -f migrationTool toolParam1
+                        toolParam2" then "-c", "-e" and "-f" must be specified by each
+                        their parameter section, while the entire string "migrationTool
+                        toolParam1 toolParam2" may be specified in the same parameter
+                        section. Anything in the command and parameter text can be replaced
+                        by a label of the form "#label" to be substituted by some value at
+                        runtime by the generic wrapper. The value which the label is
+                        replaced with may be specified by the caller of the service as a
+                        parameter, however, in that case the label must be declared in the
+                        "toolparameters" section. The generic wrapper will attempt to fetch
+                        values for undeclared labels from the system/runtime configuration,
+                        which is useful e.g. for deferring configuration of the absolute
+                        path to the migration tool until the installation time of the
+                        system.
+                    -->
+
+                <command>
+                    <!--
+                             The command to be executed by the generic wrapper. Typically this
+                             will be "sh" on unix/linux systems and "command.exe" on Windows
+                             systems. However, do not rely on the command to exist in the
+                             system search path and do not specify an absolute path in this
+                             configuration file as this may (will!) break on various systems.
+                             Instead specifying the actual command, specify a label of the form
+                             "#label", just like in this example. However, this requires that
+                             label name is mapped to the absolute path of the program in the
+                             dynamic/system configuration of the service. I.e. "shellcommand"
+                             should be mapped to something like "/bin/sh". As opposed to labels
+                             to be substituted with parameter values, this label must remain
+                             undefined in this path configuration, thus, forcing the generic
+                             wrapper to obtain the appropriate value from the system/runtime
+                             configuration.
+                         -->
+
+                    #shellcommand
+                </command>
+
+                <commandparameters>
+                    <!-- An un bounded list of parameters to the above command. -->
+
+                    <parameter>
+                        <!--
+                                  On unix/linux systems the sh command needs the option -c to
+                                  realise that is should execute a command rather than starting a
+                                  new shell and on Windows systems the cmd.exe needs the /c option
+                                  for the same. In order to make this configurable, a label should
+                                  be put in place of the option so the generic wrapper can
+                                  substitute it with the appropriate value. However, this label
+                                  must remain undefined within this path configuration, just like
+                                  the shell command label, to force the generic wrapper obtain the
+                                  appropriate value from the dynamic system configuration. This
+                                  makes it possible to make a wrapped tool work on different
+                                  platforms by changing the system/runtime configuration.
+                              -->
+
+                        #shellcommandoption
+                    </parameter>
+
+                    <parameter>
+                        <!--
+                                  This is the actual shell command line to be wrapped, however,
+                                  notice that there is no actual tool commands in this example.
+                                  They have been replaced labels, just like the shell command, as
+                                  the same rule applies: The actual migration tool command(s) must
+                                  not be specified directly in this configuration file as the
+                                  generic wrapper will get the tool command(s) from the
+                                  system/runtime configuration. Thus, "#catcommand" will be
+                                  substituted with something like "/bin/cat" at runtime, provided
+                                  that it is this string is associated with the label in the
+                                  runtime configuration. All tags like "#param1" are also
+                                  substituted by command parameters and temporary file names by the
+                                  generic wrapper. However, these tag names (in this example
+                                  "param1", "tempSource" and "tempDestination") must be defined
+                                  elsewhere in this path description. In this example "param1" is
+                                  defined in the "toolparameters" section, indicating that it is a
+                                  parameter value that must be provided by the caller of the
+                                  service, and the remaining tags, "tempSource" and
+                                  "tempDestination", are defined in the "toolinput" and
+                                  "tooloutput" sections. The usage of the CDATA tag in this example
+                                  is optional, however, there may be situations where a command
+                                  line contains characters which are not allowed by the XML
+                                  standard and in such situations it will be necessary to use it.
+                                  Also, notice that the command line contains two tools which are
+                                  chained by piping the output from the first tool to the second
+                                  tool. Furthermore, the first tool, the cat command, has been
+                                  configured to take its input from the standard input - note the
+                                  dash (-).
+                              -->
 
                         <![CDATA[#catcommand #param1 - | #trcommand #param2 > #tempDestination]]>
-					</parameter>
-				</commandparameters>
-			</commandline>
+                    </parameter>
+                </commandparameters>
+            </commandline>
 
-			<toolinput>
+            <toolinput>
 
-				<!--
-					This section describes how the input file is passed on to the
-					command line migration tool. There are two options; Either piping
-					the data through standard input to the tool or to write the data to
-					a temporary file which the tool then reads it from. If the wrapped
-					tool is capable of reading the input object from standard input,
-					then the tag <piped/> can be specified instead of the "tempfile"
-					element used in this example. However, make sure that the command
-					line is correctly configured to instruct the tool to read from
-					standard input and make sure that the tool actually supports it.
-					Also, note that only one of the two tags (piped and tempfile) must
-					be present in this section - never both of them. In this example
-					the generic wrapper is instructed to pass the digital object on to
-					the migration tool through standard input.
-				-->
-				<piped />
-			</toolinput>
+                <!--
+                        This section describes how the input file is passed on to the
+                        command line migration tool. There are two options; Either piping
+                        the data through standard input to the tool or to write the data to
+                        a temporary file which the tool then reads it from. If the wrapped
+                        tool is capable of reading the input object from standard input,
+                        then the tag <piped/> can be specified instead of the "tempfile"
+                        element used in this example. However, make sure that the command
+                        line is correctly configured to instruct the tool to read from
+                        standard input and make sure that the tool actually supports it.
+                        Also, note that only one of the two tags (piped and tempfile) must
+                        be present in this section - never both of them. In this example
+                        the generic wrapper is instructed to pass the digital object on to
+                        the migration tool through standard input.
+                    -->
+                <piped />
+            </toolinput>
 
-			<tooloutput>
-				<!--
-					This section describes how the output object is passed on from the
-					command line tool to the generic wrapper. There are two options;
-					Either piping the data through standard output or to write the data
-					to a temporary file which the generic wrapper then reads it from.
-					If the wrapped tool is capable of writing the output object to
-					standard output, then the tag <piped/> can be specified instead of
-					the "tempfile" element used in this example. However, make sure
-					that the command line is correctly configured to instruct the tool
-					to write to standard output and make sure that the tool actually
-					supports it. Also, note that only one of the two tags (piped and
-					tempfile) must be present in this section - never both of them.
-				-->
-				<tempfile label="tempDestination">
-					<!--
-						Write the output to a temporary file automatically named by the
-						wrapper. If the tool requires a specific name for the output file
-						then it can be specified by adding a name attribute like this:
-						name="requiredName.foo". Please note that the label (in this case
-						"tempDestination") must match the label used in the command line
-						where the output file is specified.
-					-->
-				</tempfile>
-			</tooloutput>
+            <tooloutput>
+                <!--
+                        This section describes how the output object is passed on from the
+                        command line tool to the generic wrapper. There are two options;
+                        Either piping the data through standard output or to write the data
+                        to a temporary file which the generic wrapper then reads it from.
+                        If the wrapped tool is capable of writing the output object to
+                        standard output, then the tag <piped/> can be specified instead of
+                        the "tempfile" element used in this example. However, make sure
+                        that the command line is correctly configured to instruct the tool
+                        to write to standard output and make sure that the tool actually
+                        supports it. Also, note that only one of the two tags (piped and
+                        tempfile) must be present in this section - never both of them.
+                    -->
+                <tempfile label="tempDestination">
+                    <!--
+                             Write the output to a temporary file automatically named by the
+                             wrapper. If the tool requires a specific name for the output file
+                             then it can be specified by adding a name attribute like this:
+                             name="requiredName.foo". Please note that the label (in this case
+                             "tempDestination") must match the label used in the command line
+                             where the output file is specified.
+                         -->
+                </tempfile>
+            </tooloutput>
 
-			<tempfiles>
-				<!--
-					More complex tool wrappings may utilise intermediate temporary
-					files. Please find examples on this elsewhere in this example file.
-					This section is empty in this example as it does not apply
-					temporary files for intermediate results. It is piped through
-					standard output instead, as seen from the command line declaration.
-				-->
-			</tempfiles>
+            <tempfiles>
+                <!--
+                        More complex tool wrappings may utilise intermediate temporary
+                        files. Please find examples on this elsewhere in this example file.
+                        This section is empty in this example as it does not apply
+                        temporary files for intermediate results. It is piped through
+                        standard output instead, as seen from the command line declaration.
+                    -->
+            </tempfiles>
 
 
-			<toolparameters>
-				<parameter name="param1">
-					<description>Command line parameters for the 'cat'
-						command.
-						See
-						'man
-						cat'.
-				</description>
-				</parameter>
-				<parameter name="param2">
-					<description>Command line parameters for the 'tr'
-						command.
-						See
-						'man
-						tr'.
-				</description>
-				</parameter>
-			</toolparameters>
+            <toolparameters>
+                <parameter name="param1">
+                    <description>Command line parameters for the 'cat'
+                        command.
+                        See
+                        'man
+                        cat'.
+                    </description>
+                </parameter>
+                <parameter name="param2">
+                    <description>Command line parameters for the 'tr'
+                        command.
+                        See
+                        'man
+                        tr'.
+                    </description>
+                </parameter>
+            </toolparameters>
 
-			<!-- No presets -->
-		</path>
-	</paths>
+            <!-- No presets -->
+        </path>
+    </paths>
 </serviceWrapping>
