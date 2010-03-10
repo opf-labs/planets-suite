@@ -929,38 +929,43 @@ public class DOJCRManager {
      * @throws	RepositoryException
      * @throws	URISyntaxException
      */
-    public Metadata retrieveMetadata(Node node) 
-          throws ItemNotFoundException, RepositoryException, URISyntaxException 
-    {
-    	Metadata _retVal = null;
-    	try {
-	    	Property _propType = node.getProperty(DOJCRConstants.DOJCR_METADATA_TYPE);
-	    	Property _propContent = node.getProperty(DOJCRConstants.DOJCR_METADATA_CONTENT);
-	    	Property _propName = node.getProperty(DOJCRConstants.DOJCR_METADATA_NAME);
-	    	_retVal = new Metadata
-	    	      ( new URI(_propType.getString())
-	    	      , _propName.getString()
-	    	      , _propContent.getString()
-				  );
-	    	_retVal.toString();
-    	} catch (Exception e)
-    	{
-    		_log.log(Level.INFO, "retrieveMetadata error: " + e.getMessage(), e);
-    	}
-    	
-    	return _retVal;
-    }
+    public Metadata retrieveMetadata(Node node) throws ItemNotFoundException,
+			RepositoryException, URISyntaxException {
+		Metadata _retVal = null;
+		try {
+			Property _propType = node
+					.getProperty(DOJCRConstants.DOJCR_METADATA_TYPE);
+			Property _propContent = node
+					.getProperty(DOJCRConstants.DOJCR_METADATA_CONTENT);
+			if (!node.hasProperty(DOJCRConstants.DOJCR_METADATA_NAME)) {
+				_retVal = new Metadata(new URI(_propType.getString()),
+						_propContent.getString());
+			} else {
+				Property _propName = node
+						.getProperty(DOJCRConstants.DOJCR_METADATA_NAME);
+				_retVal = new Metadata(new URI(_propType.getString()),
+						_propName.getString(), _propContent.getString());
+			}
+			_retVal.toString();
+		} catch (Exception e) {
+			_log
+					.log(Level.INFO, "retrieveMetadata error: "
+							+ e.getMessage(), e);
+		}
+
+		return _retVal;
+	}
     
     /**
-     * Returns the persisted details of the Event identified by the passed node.
-     * 
-     * @param	node
-     * 			The String id of the Event node to be retrieved.
-     * @return	The Event object.
-     * @throws	ItemNotFoundException
-     * @throws	RepositoryException
-     * @throws	URISyntaxException
-     */
+	 * Returns the persisted details of the Event identified by the passed node.
+	 * 
+	 * @param node
+	 *            The String id of the Event node to be retrieved.
+	 * @return The Event object.
+	 * @throws ItemNotFoundException
+	 * @throws RepositoryException
+	 * @throws URISyntaxException
+	 */
     public Event retrieveEvent(Node node) 
           throws ItemNotFoundException, RepositoryException, URISyntaxException 
     {
