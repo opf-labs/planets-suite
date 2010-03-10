@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dom4j.Element;
-
+import se.kb.oai.pmh.Record;
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.OaiPmhServer;
-import se.kb.oai.pmh.Record;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.Content;
@@ -27,9 +27,25 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 	 * @param baseURL The base URL
 	 */
 	public OAIDigitalObjectManagerDCImpl(String baseURL) {
-		super(baseURL, "oai_dc");
+		super(baseURL, OAIDigitalObjectManagerDCBase.PREFIX);
 	}
 	
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
+     */
+    public List<URI> list(URI pdURI) {
+        // Perform OAI-PMH request without time range ('from' and 'until' are optional in OAI-PMH!)
+        try {
+            return list(pdURI, null);
+        } catch (QueryValidationException e) {
+            // Since query is null, this can never happen
+            return new ArrayList<URI>();
+        }
+    }
+
+
 	/**
 	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
@@ -99,36 +115,31 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
-        // TODO Auto-generated method stub
-        return null;
+    	return super.list(pdURI, q);
     }
 
-	/*
+
+    /*
 	public static void main(String[] args) {
-		OAIDigitalObjectManagerDCImpl oaiImpl = new OAIDigitalObjectManagerDCImpl("http://www.bibliovault.org/perl/oai2");		
+		OAIDigitalObjectManagerDCImpl oaiImpl = new OAIDigitalObjectManagerDCImpl(OAIDigitalObjectManagerDCBase.DEFAULT_BASE_URL);		
 		Calendar start = Calendar.getInstance();
 		start.add(Calendar.MONTH, -24);
 		Calendar now = Calendar.getInstance();
 		
 		// ListIdentifiers
 		System.out.println("starting query.");
-		try {
-			List<URI> identifiers = oaiImpl.list(null, new QueryDateRange(start, now));
-			System.out.println(identifiers.size() + " found.");
-			
-			// GetRecord for each identifier
-			for (URI id : identifiers) {
-				try {
-					DigitalObject dob = oaiImpl.retrieve(id);
-					System.out.println("retrieved file: " + dob.getTitle());
-				} catch (DigitalObjectNotFoundException e) {
-					System.out.println("couldn't retrieve file: " + e.getMessage());
-				}
-			}
-		} catch (QueryValidationException e) {
-			System.out.println("QueryValidationException: " + e.getMessage());
-		}
+		List<URI> identifiers = oaiImpl.list(null);
+		System.out.println(identifiers.size() + " found.");
 		
+		// GetRecord for each identifier
+		for (URI id : identifiers) {
+			try {
+				DigitalObject dob = oaiImpl.retrieve(id);
+				System.out.println("retrieved file: " + dob.getTitle());
+			} catch (DigitalObjectNotFoundException e) {
+				System.out.println("couldn't retrieve file: " + e.getMessage());
+			}
+		}
 		System.out.println("done.");
 	}
 	*/
