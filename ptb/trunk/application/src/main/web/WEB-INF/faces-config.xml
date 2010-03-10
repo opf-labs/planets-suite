@@ -243,6 +243,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>tandc</from-outcome>
+			<to-view-id>/public/terms.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>service_inspector</from-outcome>
 			<to-view-id>/reader/service_inspector.xhtml</to-view-id>
 			<redirect />

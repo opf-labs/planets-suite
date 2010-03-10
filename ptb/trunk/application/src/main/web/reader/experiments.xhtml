@@ -38,7 +38,9 @@
 				<h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
 						 <img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_browse_exps.png" title="#{res['browse_exp.pageTitle']}" alt="#{res['browse_exp.pageTitle']}" style="margin:5px 5px 5px 5px;"/>
 					</h:commandLink> 
-      <img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_search_exps_inactive.png" title="#{res['search_exp.pageTitle']}" alt="#{res['search_exp.pageTitle']}" style="margin:5px 5px 5px 5px;"/>
+      <!--
+	  <img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_search_exps_inactive.png" title="#{res['search_exp.pageTitle']}" alt="#{res['search_exp.pageTitle']}" style="margin:5px 5px 5px 5px;"/>
+	  -->
 	  
 <c:if test="${UserBean.admin == true}">
 		      <h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}"><img src="${facesContext.externalContext.requestContextPath}/graphics/exp/btn_exp_scheduler.png" title="#{res['exp_scheduler.pageTitle']}" alt="#{res['exp_scheduler.pageTitle']}" style="margin:5px 5px 5px 5px;"/></h:commandLink> 
