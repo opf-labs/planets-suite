@@ -66,6 +66,7 @@ public class ServiceDescriptionFactoryTest {
      */
     @Test
     public void testGetServiceDescription() throws Exception {
+
 	final ServiceDescription serviceDescription = serviceDescriptionFactory
 		.getServiceDescription();
 
@@ -76,7 +77,7 @@ public class ServiceDescriptionFactoryTest {
 			.getAuthor());
 
 	final String expectedDescription = "Example description of a service "
-		+ "wrapping of a fantastic\n\t\t\tcommand line tool for migrating an "
+		+ "wrapping of a fantastic\n            command line tool for migrating an "
 		+ "egg to eggnog.";
 	assertEquals("Un-expected description.", expectedDescription,
 		serviceDescription.getDescription());
@@ -92,7 +93,7 @@ public class ServiceDescriptionFactoryTest {
 		new HashSet<URI>(serviceDescription.getInputFormats()));
 
 	final String expectedInstructions = "Example: Please install the XYZ "
-		+ "tool on the system to\n\t\t\tmake this service work.";
+		+ "tool on the system to\n            make this service work.";
 	assertEquals("Un-expected instructions.", expectedInstructions,
 		serviceDescription.getInstructions());
 
@@ -200,8 +201,10 @@ public class ServiceDescriptionFactoryTest {
 		    // parameters in the configuration.
 		    final Set<Parameter> expectedParameters = new HashSet<Parameter>(
 			    expectedPath.getParameters());
+
 		    final Set<Parameter> actualParameters = new HashSet<Parameter>(
 			    actualPath.getParameters());
+		    
 		    assertEquals("Wrong parameters for migration path '"
 			    + actualPath + "'", expectedParameters,
 			    actualParameters);
@@ -231,14 +234,15 @@ public class ServiceDescriptionFactoryTest {
 	Parameter.Builder parameterBuilder = new Parameter.Builder("param1",
 		null);
 	parameterBuilder.description("Paper size of the migrated object. Valid"
-		+ " values are\n\t\t\t\t\t\t\"a4\" and \"legal\"\n\t\t\t\t\t");
+		+ " values are\n                        \"a4\" and \"legal\"\n"
+		+"                    ");
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("mode", "Normal");
-	parameterBuilder.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\t"
-		+ "Valid options are 'Normal' or 'US'.\n\t"
-		+ "\t\t\t\t\tDefaults to 'Normal'." + "\n\t\t\t\t\t\n"
-		+ "\nValid values : Description\n\n"
+	parameterBuilder.description("\n                        \n            "
+		+"            Valid options are 'Normal' or 'US'.\n    "
+		+ "                    Defaults to 'Normal'." + "\n           "
+		+"         \n\nValid values : Description\n\n"
 		+ "US : Migrate to US legal paper format.\n"
 		+ "Normal : Migrate to the normal A4 paper format.");
 	parameters.add(parameterBuilder.build());
@@ -261,153 +265,168 @@ public class ServiceDescriptionFactoryTest {
 	parameters = new ArrayList<Parameter>();
 
 	parameterBuilder = new Parameter.Builder("param1", null);
-	parameterBuilder.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\n"
-		+ "\t\t\t\t\t\tParameters for 'cat'\n" + "\t\t\t\t\t\t\n"
-		+ "\t\t\t\t\t\t\t-A, --show-all\n"
-		+ "\t\t\t\t\t\t\t\t  equivalent to -vET\n" + "\t\t\t\t\t\n"
-		+ "\t\t\t\t\t\t\t-b, --number-nonblank\n"
-		+ "\t\t\t\t\t\t\t\t  number nonempty output lines\n"
-		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-e    equivalent to -vE\n"
-		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-E, --show-ends\n"
-		+ "\t\t\t\t\t\t\t\t  display $ at end of each line\n"
-		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-n, --number\n"
-		+ "\t\t\t\t\t\t\t\t  number all output lines\n"
-		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-s, --squeeze-blank\n"
-		+ "\t\t\t\t\t\t\t\t  suppress repeated empty output lines\n"
-		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-t    equivalent to -vT\n"
-		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-T, --show-tabs\n"
-		+ "\t\t\t\t\t\t\t\t  display TAB characters as ^I\n"
-		+ "\t\t\t\t\t\n" + "\t\t\t\t\t\t\t-v, --show-nonprinting\n"
-		+ "\t\t\t\t\t\t\t\t  use ^ and M- notation, except for"
-		+ " LFD and TAB\n\t\t\t\t\t");
+	parameterBuilder.description("\n                        \n"
+		+ "                        \n"
+		+ "                        Parameters for 'cat'\n"
+		+ "                        \n"
+		+ "                            -A, --show-all\n"
+		+ "                                  equivalent to -vET\n"
+		+ "                                  \n"
+		+ "                            -b, --number-nonblank\n"
+		+ "                                  number nonempty output lines\n"
+		+ "                                  \n"
+		+ "                            -e    equivalent to -vE\n"
+		+ "                                  \n"
+		+ "                            -E, --show-ends\n"
+		+ "                                  display $ at end of each line\n"
+		+ "                                  \n"
+		+ "                            -n, --number\n"
+		+ "                                  number all output lines\n"
+		+ "                                  \n"
+		+ "                            -s, --squeeze-blank\n"
+		+ "                                  suppress repeated empty output lines\n"
+		+ "                                  \n"
+		+ "                            -t    equivalent to -vT\n"
+		+ "                                  \n"
+		+ "                            -T, --show-tabs\n"
+		+ "                                  display TAB characters as ^I\n"
+		+ "                                  \n"
+		+ "                            -v, --show-nonprinting\n"
+		+ "                                  use ^ and M- notation, except for"
+		+ " LFD and TAB\n                    ");
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("param2", null);
 	parameterBuilder
-		.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\tCommand line parameters for the 'tr' command.\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   -c, -C, --complement\n"
-			+ "\t\t\t\t\t\t\t\t first complement SET1\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   -d, --delete\n"
-			+ "\t\t\t\t\t\t\t\t delete characters in SET1, do not translate\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   -s, --squeeze-repeats\n"
-			+ "\t\t\t\t\t\t\t\t replace each input sequence of  a  repeated  character  that  is\n"
-			+ "\t\t\t\t\t\t\t\t listed in SET1 with a single occurrence of that character\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   -t, --truncate-set1\n"
-			+ "\t\t\t\t\t\t\t\t first truncate SET1 to length of SET2\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   SETs  are  specified  as  strings  of characters.  Most represent them‐\n"
-			+ "\t\t\t\t\t\t   selves.  Interpreted sequences are:\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   \\NNN   character with octal value NNN (1 to 3 octal digits)\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   \\\\     backslash\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   \\a     audible BEL\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   \\b     backspace\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   \\f     form feed\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   \\n     new line\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   \\r     return\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   \\t     horizontal tab\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   \\v     vertical tab\n"
-			+ "\t\t\t\t\t\t\t\t  CHAR1-CHAR2\n"
-			+ "\t\t\t\t\t\t\t\t  all characters from CHAR1 to CHAR2 in ascending order\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [CHAR*]\n"
-			+ "\t\t\t\t\t\t\t\t  in SET2, copies of CHAR until length of SET1\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [CHAR*REPEAT]\n"
-			+ "\t\t\t\t\t\t\t\t  REPEAT copies of CHAR, REPEAT octal if starting with 0\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:alnum:]\n"
-			+ "\t\t\t\t\t\t\t\t  all letters and digits\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:alpha:]\n"
-			+ "\t\t\t\t\t\t\t\t  all letters\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:blank:]\n"
-			+ "\t\t\t\t\t\t\t\t  all horizontal whitespace\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:cntrl:]\n"
-			+ "\t\t\t\t\t\t\t\t  all control characters\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:digit:]\n"
-			+ "\t\t\t\t\t\t\t\t  all digits\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:graph:]\n"
-			+ "\t\t\t\t\t\t\t\t  all printable characters, not including space\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:lower:]\n"
-			+ "\t\t\t\t\t\t\t\t  all lower case letters\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:print:]\n"
-			+ "\t\t\t\t\t\t\t\t  all printable characters, including space\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:punct:]\n"
-			+ "\t\t\t\t\t\t\t\t  all punctuation characters\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:space:]\n"
-			+ "\t\t\t\t\t\t\t\t  all horizontal or vertical whitespace\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:upper:]\n"
-			+ "\t\t\t\t\t\t\t\t  all upper case letters\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [:xdigit:]\n"
-			+ "\t\t\t\t\t\t\t\t  all hexadecimal digits\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   [=CHAR=]\n"
-			+ "\t\t\t\t\t\t\t\t  all characters which are equivalent to CHAR\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t   Translation occurs if -d is not given and both SET1  and  SET2  appear.\n"
-			+ "\t\t\t\t\t\t   -t  may  be  used only when translating.  SET2 is extended to length of\n"
-			+ "\t\t\t\t\t\t   SET1 by repeating its last character as necessary.   Excess  characters\n"
-			+ "\t\t\t\t\t\t   of  SET2  are  ignored.  Only [:lower:] and [:upper:] are guaranteed to\n"
-			+ "\t\t\t\t\t\t   expand in ascending order; used in SET2  while  translating,  they  may\n"
-			+ "\t\t\t\t\t\t   only  be used in pairs to specify case conversion.  -s uses SET1 if not\n"
-			+ "\t\t\t\t\t\t   translating nor deleting; else squeezing uses  SET2  and  occurs  after\n"
-			+ "\t\t\t\t\t\t   translation or deletion.\n"
-			+ "\t\t\t\t\t");
+		.description("\n                        \n"+
+			"                        \n"
+			+ "                        Command line parameters for the 'tr' command.\n"
+			+ "                        \n"
+			+ "                           -c, -C, --complement\n"
+			+ "                                 first complement SET1\n"
+			+ "                                 \n"
+			+ "                           -d, --delete\n"
+			+ "                                 delete characters in SET1, do not translate\n"
+			+ "                                 \n"
+			+ "                           -s, --squeeze-repeats\n"
+			+ "                                 replace each input sequence of  a  repeated  character  that  is\n"
+			+ "                                 listed in SET1 with a single occurrence of that character\n"
+			+ "                                 \n"
+			+ "                           -t, --truncate-set1\n"
+			+ "                                 first truncate SET1 to length of SET2\n"
+			+ "                                 \n"
+			+ "                           SETs  are  specified  as  strings  of characters.  Most represent them‐\n"
+			+ "                           selves.  Interpreted sequences are:\n"
+			+ "                           \n"
+			+ "                           \\NNN   character with octal value NNN (1 to 3 octal digits)\n"
+			+ "                           \n"
+			+ "                           \\\\     backslash\n"
+			+ "                           \n"
+			+ "                           \\a     audible BEL\n"
+			+ "                           \n"
+			+ "                           \\b     backspace\n"
+			+ "                           \n"
+			+ "                           \\f     form feed\n"
+			+ "                           \n"
+			+ "                           \\n     new line\n"
+			+ "                           \n"
+			+ "                           \\r     return\n"
+			+ "                           \n"
+			+ "                           \\t     horizontal tab\n"
+			+ "                           \n"
+			+ "                           \\v     vertical tab\n"
+			+ "                                  CHAR1-CHAR2\n"
+			+ "                                  all characters from CHAR1 to CHAR2 in ascending order\n"
+			+ "                                  \n"
+			+ "                           [CHAR*]\n"
+			+ "                                  in SET2, copies of CHAR until length of SET1\n"
+			+ "                                  \n"
+			+ "                           [CHAR*REPEAT]\n"
+			+ "                                  REPEAT copies of CHAR, REPEAT octal if starting with 0\n"
+			+ "                                  \n"
+			+ "                           [:alnum:]\n"
+			+ "                                  all letters and digits\n"
+			+ "                                  \n"
+			+ "                           [:alpha:]\n"
+			+ "                                  all letters\n"
+			+ "                                  \n"
+			+ "                           [:blank:]\n"
+			+ "                                  all horizontal whitespace\n"
+			+ "                                  \n"
+			+ "                           [:cntrl:]\n"
+			+ "                                  all control characters\n"
+			+ "                                  \n"
+			+ "                           [:digit:]\n"
+			+ "                                  all digits\n"
+			+ "                                  \n"
+			+ "                           [:graph:]\n"
+			+ "                                  all printable characters, not including space\n"
+			+ "                                  \n"
+			+ "                           [:lower:]\n"
+			+ "                                  all lower case letters\n"
+			+ "                                  \n"
+			+ "                           [:print:]\n"
+			+ "                                  all printable characters, including space\n"
+			+ "                                  \n"
+			+ "                           [:punct:]\n"
+			+ "                                  all punctuation characters\n"
+			+ "                                  \n"
+			+ "                           [:space:]\n"
+			+ "                                  all horizontal or vertical whitespace\n"
+			+ "                                  \n"
+			+ "                           [:upper:]\n"
+			+ "                                  all upper case letters\n"
+			+ "                                  \n"
+			+ "                           [:xdigit:]\n"
+			+ "                                  all hexadecimal digits\n"
+			+ "                                  \n"
+			+ "                           [=CHAR=]\n"
+			+ "                                  all characters which are equivalent to CHAR\n"
+			+ "                                  \n"
+			+ "                           Translation occurs if -d is not given and both SET1  and  SET2  appear.\n"
+			+ "                           -t  may  be  used only when translating.  SET2 is extended to length of\n"
+			+ "                           SET1 by repeating its last character as necessary.   Excess  characters\n"
+			+ "                           of  SET2  are  ignored.  Only [:lower:] and [:upper:] are guaranteed to\n"
+			+ "                           expand in ascending order; used in SET2  while  translating,  they  may\n"
+			+ "                           only  be used in pairs to specify case conversion.  -s uses SET1 if not\n"
+			+ "                           translating nor deleting; else squeezing uses  SET2  and  occurs  after\n"
+			+ "                           translation or deletion.\n"
+			+ "                    ");
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("mode", "complete");
 	parameterBuilder
-		.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\tValid options:\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t'complete' : Converts from lowercase to uppercase.\n"
-			+ "\t\t\t\t\t\t'AC-DC' : Converts As to Ds, thus, AC-DC becomes DC-AC.\n"
-			+ "\t\t\t\t\t\t'extra' : Converts from lowercase to uppercase and adds\n"
-			+ "\t\t\t\t\t\t\t\t  a line number to each line.\n\n"
-			+ "\t\t\t\t\t\tDefaults to 'complete'.\n"
-			+ "\t\t\t\t\t\n\nValid values : Description\n\n"
+		.description("\n                        \n                        \n"
+			+ "                        Valid options:\n"
+			+ "                        \n"
+			+ "                        'complete' : Converts from lowercase to uppercase.\n"
+			+ "                        'AC-DC'    : Converts As to Ds, thus, AC-DC becomes DC-AC.\n"
+			+ "                        'extra'    : Converts from lowercase to uppercase and adds\n"
+			+ "                                     a line number to each line.\n"
+			+ "                                     \n"
+			+ "                        Defaults to 'complete'.\n"
+			+ "                    \n\nValid values : Description\n\n"
 			+ "complete : Uppercase all text.\n"
 			+ "extra : Uppercase all text and add line numbers.\n"
-			+ "\t\t\t\t\t\t\n"
+			+ "                        \n"
 			+ "AC-DC : Swaps As with Ds. Thus changing AC-DC to DC-AC\n"
-			+ "\t\t\t\t\t\t");
+			+ "                        ");
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("quality", null);
 	parameterBuilder
-		.description("\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\tValid options:\n"
-			+ "\t\t\t\t\t\t\n"
-			+ "\t\t\t\t\t\t'good' : Converts from lowercase to uppercase.\n"
-			+ "\t\t\t\t\t\t'better' : Converts As to Ds, thus, AC-DC becomes DC-AC.\n"
-			+ "\t\t\t\t\t\t'best' : Converts from lowercase to uppercase and adds\n"
-			+ "\t\t\t\t\t\t\t\t a line number to each line.\n\n"
-			+ "\t\t\t\t\t\tDefaults to 'good'.\n"
-			+ "\t\t\t\t\t\t\n" + "\t\t\t\t\t\n\n"
+		.description("\n                        \n                        \n"
+			+ "                        Quality presets for the test tool.\n"
+			+ "                        \n"
+			+ "                        Valid options:\n"
+			+ "                        \n"
+			+ "                        'good' : Converts from lowercase to uppercase.\n"
+			+ "                        'better' : Converts As to Ds, thus, AC-DC becomes DC-AC.\n"
+			+ "                        'best' : Converts from lowercase to uppercase and adds\n"
+			+ "                                 a line number to each line.\n"
+			+ "                                 \n"
+			+ "                        Defaults to 'good'.\n"
+			+ "                        \n" + "                    \n\n"
 			+ "Valid values : Description\n\n"
 			+ "better : AC-DC to DC-AC\n"
 			+ "best : Uppercase all and add line numbers.\n"
@@ -425,14 +444,18 @@ public class ServiceDescriptionFactoryTest {
 
 	parameterBuilder = new Parameter.Builder("param1", null);
 	parameterBuilder.description("Command line parameters for the 'cat'\n"
-		+ "\t\t\t\t\t\tcommand.\n" + "\t\t\t\t\t\tSee\n"
-		+ "\t\t\t\t\t\t'man\n" + "\t\t\t\t\t\tcat'.\n" + "\t\t\t\t");
+		+ "                        command.\n" + "                        See\n"
+		+ "                        'man\n" + "                        cat'.\n" 
+		+ "                    ");
 	parameters.add(parameterBuilder.build());
 
 	parameterBuilder = new Parameter.Builder("param2", null);
 	parameterBuilder.description("Command line parameters for the 'tr'\n"
-		+ "\t\t\t\t\t\tcommand.\n" + "\t\t\t\t\t\tSee\n"
-		+ "\t\t\t\t\t\t'man\n" + "\t\t\t\t\t\ttr'.\n" + "\t\t\t\t");
+		+ "                        command.\n"
+		+ "                        See\n"
+		+ "                        'man\n" 
+		+ "                        tr'.\n"
+		+ "                    ");
 	parameters.add(parameterBuilder.build());
 
 	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
@@ -461,8 +484,8 @@ public class ServiceDescriptionFactoryTest {
 
 	final Property property = properties.get(0);
 	final String expectedDescription = "This is an optional description of"
-		+ " an example property with a value\n\t\t\t\t\tand a silly value "
-		+ "unit specification.";
+		+ " an example property with a value\n                    and "
+		+ "a silly value unit specification.";
 	assertEquals("Un-expected property description.", expectedDescription,
 		property.getDescription());
 	assertEquals("Un-expected property name.", "exampleName", property
