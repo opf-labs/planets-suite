@@ -58,7 +58,9 @@ public class ServiceProperties {
     public static final URI SERVICE_PEAK_HEAP_PROP = URI.create("planets:service/mem/heap/peak");
     /** */
     public static final URI SERVICE_PEAK_NONHEAP_PROP = URI.create("planets:service/mem/non-heap/peak");
-
+    /** */
+    public static final URI SERVICE_TOOL_RUNNER_TIME_PROP = URI.create("planets:service/exec/tool");
+    
     /**
      * @return A list of all known service properties, including some values.
      */
@@ -176,6 +178,15 @@ public class ServiceProperties {
         p.value(""+bytes);
         p.unit("bytes");
         p.description("The total memory allocated to the Java virtual machine.");
+        return p.build();
+    }
+    
+    public static Property createToolRunnerTimeProperty( double elapsedMillis) {
+    	Property.Builder p = new Property.Builder( SERVICE_TOOL_RUNNER_TIME_PROP );
+        p.name("Tool Runner Execution Time");
+        p.value(""+((elapsedMillis)/1000.0));
+        p.unit("s");
+        p.description("The elapsed time spent in the command line runner, executing the tool.");
         return p.build();
     }
 
