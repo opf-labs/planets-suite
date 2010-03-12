@@ -301,6 +301,12 @@ public class WorkflowFactory{
 			for(File f : list){
 				classp+=f.getCanonicalPath()+System.getProperty("path.separator");
 			}
+			//navigate to //ifr_server/server/default/deploy/jbossws.sar
+			dir = new File(RegistryUtils.getWeeDirBase()+"/../../deploy/jbossws.sar/");
+			list = dir.listFiles();
+			for(File f : list){
+				classp+=f.getCanonicalPath()+System.getProperty("path.separator");
+			}
 			classpath = classp;
 		}
 		return classpath;

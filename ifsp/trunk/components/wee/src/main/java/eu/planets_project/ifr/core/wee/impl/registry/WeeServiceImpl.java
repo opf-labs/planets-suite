@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.wee.impl.registry;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -13,6 +14,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.RemoteBinding;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wee.api.WeeManager;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
@@ -86,5 +90,28 @@ public class WeeServiceImpl implements WeeService, Serializable{
 		return ticket;
 	}
 
+	
+	/** {@inheritDoc} */
+	public UUID submitWorkflowByReference(ArrayList<URI> digObjRefs,
+			String workflowTemplateName, String xmlWorkflowConfig)
+			throws Exception {
+		
+		ArrayList<DigitalObject> lDigObjs = new ArrayList<DigitalObject>();
+		DataRegistry dataRegistry = DataRegistryFactory.getDataRegistry();
+		
+		//now iterate over the payload and build digital objects
+		for(URI digoRefURI : digObjRefs){
+			try{
+				DigitalObject digo = dataRegistry.retrieve(digoRefURI);
+				lDigObjs.add(digo);	
+			}
+			catch(DigitalObjectNotFoundException e){
+				log.debug("skipping data reference: "+digoRefURI);
+			}
+		}
+		return this.submitWorkflow(lDigObjs, workflowTemplateName, xmlWorkflowConfig);
+	}
+
+	
 	
 }

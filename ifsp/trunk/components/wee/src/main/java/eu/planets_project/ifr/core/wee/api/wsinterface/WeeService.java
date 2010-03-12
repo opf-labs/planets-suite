@@ -3,6 +3,7 @@
  */
 package eu.planets_project.ifr.core.wee.api.wsinterface;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -134,4 +135,39 @@ public interface WeeService {
                     partName = "ticket")
             UUID ticket
     ) throws Exception;
+    
+    /**
+     * since 12.03.2010
+     * An updated interface taking data registry pointers to digital objects instead of submitting the entire payload. 
+     * This approach requires a shared repository between the caller and the WEE in place 
+     * @param digitalObjects A list of Planets Digital Object references which contain the payload the wf is invoked upon - object references must be accessible to the WEE
+     * @param QWorkflowTemplateName the fully qualified name of the java workflowTemplate to use for this submission. i.e. specifying the structure. Please note: the template must be registered.
+     * @param xmlWorkflowConfig holding the workflowTemplate's configuration i.e. specifying how to populate a static template
+     * @return a ticket (UUID) for the submitted job which can be used for polling on the status and its results
+     * @throws Exception 
+     */
+	@WebMethod(
+            operationName = WeeService.NAME+ "_submitWorkflowByReference", 
+            action = PlanetsServices.NS + "/" + WeeService.NAME +"/submitWorkflowByReference")
+    @WebResult(
+            name = WeeService.NAME + "UUID", 
+            targetNamespace = PlanetsServices.NS + "/" + WeeService.NAME, 
+            partName = WeeService.NAME + "UUID")
+    public UUID submitWorkflowByReference ( 
+    		@WebParam(
+                    name = "digitalObjectRefs", 
+                    targetNamespace = PlanetsServices.NS + "/" + WeeService.NAME, 
+                    partName = "digitalObjectRefs")
+            ArrayList<URI> digObjRefs,
+            @WebParam(
+                    name = "QWorkflowTemplateName", 
+                    targetNamespace = PlanetsServices.NS + "/" + WeeService.NAME, 
+                    partName = "xmlWorkflowConfig")
+            String qWorkflowTemplateName,
+            @WebParam(
+                    name = "xmlWorkflowConfig", 
+                    targetNamespace = PlanetsServices.NS + "/" + WeeService.NAME, 
+                    partName = "xmlWorkflowConfig")   
+            String xmlWorkflowConfig
+    ) throws Exception; 
 }
