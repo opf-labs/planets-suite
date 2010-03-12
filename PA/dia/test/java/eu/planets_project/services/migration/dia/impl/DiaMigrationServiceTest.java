@@ -94,10 +94,8 @@ public class DiaMigrationServiceTest extends TestCase {
 	// Dia file format URI
 	final URI diaFormatURI = new URI("info:pronom/x-fmt/381");
 
-	// SVG version 1.1 format URI
-	final URI svgFormatURI = new URI("info:pronom/fmt/92");
-
-	// TODO: Verify that Dia is indeed producing a SVG version 1.1 file!
+	// SVG version 1.0 format URI
+	final URI svgFormatURI = new URI("info:pronom/fmt/91");
 
 	DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
 		Content.byValue(diaTestFile));
@@ -121,14 +119,14 @@ public class DiaMigrationServiceTest extends TestCase {
     }
 
     /**
-     * Test migration from Xfig to SVG version 1.1
+     * Test migration from Xfig to Dia.
      * 
      * Test method for
      * {@link eu.planets_project.services.migration.dia.impl.DiaMigrationService#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)}
      * .
      */
     @Test
-    public void testMigrationFigToSvg() throws Exception {
+    public void testMigrationFigToDia() throws Exception {
 
 	final String figTestFileName = "z80pio.fig";
 
@@ -137,23 +135,64 @@ public class DiaMigrationServiceTest extends TestCase {
 	 */
 	final File figTestFile = new File(FIG_TEST_FILE_PATH, figTestFileName);
 
-	// Fig format URI
-	final URI diaFormatURI = new URI("info:planets/fmt/ext/fig");
+	// Fig Planets (pseudo) format  URI
+	final URI figFormatURI = new URI("info:planets/fmt/ext/fig");
 
-	// SVG version 1.1 format URI
-	final URI svgFormatURI = new URI("info:pronom/fmt/92");
-
-	// TODO: Verify that Dia is indeed producing a SVG version 1.1 file!
+	// Dia (unspecified version) PRONOM format URI
+	final URI diaFormatURI = new URI("info:pronom/x-fmt/381");
 
 	final DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
 		Content.byValue(figTestFile));
-	digitalObjectBuilder.format(diaFormatURI);
+	digitalObjectBuilder.format(figFormatURI);
 	digitalObjectBuilder.title(figTestFileName);
+	
 	final DigitalObject digitalObject = digitalObjectBuilder.build();
 
 	final List<Parameter> testParameters = new ArrayList<Parameter>();
 	final MigrateResult migrationResult = migrationService.migrate(
-		digitalObject, diaFormatURI, svgFormatURI, testParameters);
+		digitalObject, figFormatURI, diaFormatURI, testParameters);
+
+	final ServiceReport serviceReport = migrationResult.getReport();
+	final ServiceReport.Status migrationStatus = serviceReport.getStatus();
+	assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
+
+	// TODO: Can we make some meaningful tests on the output from
+	// migrationResult.getDigitalObject()?
+    }
+
+    /**
+     * Test migration from Dia to PNG.
+     * 
+     * Test method for
+     * {@link eu.planets_project.services.migration.dia.impl.DiaMigrationService#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)}
+     * .
+     */
+    @Test
+    public void testMigrationDiaToPng() throws Exception {
+
+	final String diaTestFileName = "CompositeAction.dia";
+
+	/**
+	 * Full path to the Fig test file to use.
+	 */
+	final File figTestFile = new File(DIA_TEST_FILE_PATH, diaTestFileName);
+
+	// Dia (unspecified version) PRONOM format URI
+	final URI diaFormatURI = new URI("info:pronom/x-fmt/381");
+
+	// PNG version 1.2 PRONOM format URI
+	final URI pngFormatURI = new URI("info:pronom/fmt/13");
+
+	final DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
+		Content.byValue(figTestFile));
+	digitalObjectBuilder.format(diaFormatURI);
+	digitalObjectBuilder.title(diaTestFileName);
+	
+	final DigitalObject digitalObject = digitalObjectBuilder.build();
+
+	final List<Parameter> testParameters = new ArrayList<Parameter>();
+	final MigrateResult migrationResult = migrationService.migrate(
+		digitalObject, diaFormatURI, pngFormatURI, testParameters);
 
 	final ServiceReport serviceReport = migrationResult.getReport();
 	final ServiceReport.Status migrationStatus = serviceReport.getStatus();

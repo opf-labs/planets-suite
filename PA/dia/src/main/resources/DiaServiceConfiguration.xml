@@ -49,10 +49,12 @@
 		</creator>
 
 		<instructions>
-			Install Dia version 0.96.1 on the system providing this dia
+			Install Dia version 0.96.1 on the system providing this
+			dia
 			migratoin service and make sure that the run-time configuration
 			(the pserv-pa-dia.properties file) for is properly configured to
-			use this version of dia.
+			use
+			this version of dia.
         </instructions>
 
 		<furtherinfo>http://live.gnome.org/Dia</furtherinfo>
@@ -71,9 +73,8 @@
 			</inputformats>
 
 			<outputformat>
-				<!-- SVG 1.1 -->
-				<!-- FIXME! Verify that Dia outputs SVG 1.1 files! -->
-				<uri value="info:pronom/fmt/92" />
+				<!-- Unspecified (current) dia file format version -->
+				<uri value="info:pronom/x-fmt/381" />
 			</outputformat>
 
 			<commandline>
@@ -87,13 +88,13 @@
                     </parameter>
 
 					<parameter>
-      					<![CDATA[#diacommand -n -l -t dia -e #tempDiaFile #inputFile && #diacommand -n -l -t svg -e #outputFile #tempDiaFile]]>
+                        <![CDATA[#diacommand -n -l -t dia -e #outputFile #inputFile]]>
 					</parameter>
 				</commandparameters>
 			</commandline>
 
 			<toolinput>
-				<tempfile label="inputFile" name="inputFile.fig">
+				<tempfile label="inputFile" name="diaFigInput.fig">
 				</tempfile>
 			</toolinput>
 
@@ -103,8 +104,6 @@
 			</tooloutput>
 
 			<tempfiles>
-				<tempfile label="tempDiaFile" name="tempDiaFile.dia">
-				</tempfile>
 			</tempfiles>
 
 			<toolparameters>
@@ -114,6 +113,53 @@
 			</toolpresets>
 		</path>
 
+        <path>
+            <inputformats>
+                <!-- Unspecified (current) dia file format version -->
+                <uri value="info:pronom/x-fmt/381" />
+            </inputformats>
+
+            <outputformat>
+                <!-- PNG version 1.2 FIXME! Verify this! -->
+                <uri value="info:pronom/fmt/13" />
+            </outputformat>
+
+            <commandline>
+                <command>
+                    #shellcommand
+                </command>
+
+                <commandparameters>
+                    <parameter>
+                        #shellcommandoption
+                    </parameter>
+
+                    <parameter>
+                        <![CDATA[#diacommand -n -l -t png -e #outputFile #inputFile]]>
+                    </parameter>
+                </commandparameters>
+            </commandline>
+
+            <toolinput>
+                <tempfile label="inputFile" name="diaInput.dia">
+                </tempfile>
+            </toolinput>
+
+            <tooloutput>
+                <tempfile label="outputFile">
+                </tempfile>
+            </tooloutput>
+
+            <tempfiles>
+            </tempfiles>
+
+            <toolparameters>
+            </toolparameters>
+
+            <toolpresets>
+            </toolpresets>
+        </path>
+
 		<path>
 			<inputformats>
 				<!-- Dia files. -->
@@ -121,22 +167,20 @@
 			</inputformats>
 
 			<outputformat>
-				<!-- SVG 1.1 -->
-				<!-- FIXME! Verify that Dia outputs SVG 1.1 files! -->
-				<uri value="info:pronom/fmt/92" />
-
+                <!-- SVG version 1.0 -->
+                <uri value="info:pronom/fmt/91" />
 			</outputformat>
 
 			<commandline>
 				<command>
 					#shellcommand
                 </command>
-                
+
 				<commandparameters>
 					<parameter>
 						#shellcommandoption
                     </parameter>
-                    
+
 					<parameter>
 				    	<![CDATA[#diacommand -n -l -t svg -e #outputFile #inputFile]]>
 					</parameter>
@@ -158,9 +202,59 @@
 
 			<toolparameters>
 			</toolparameters>
-			
+
 			<toolpresets>
 			</toolpresets>
 		</path>
+
+        <path>
+            <inputformats>
+                <!-- Xfig file extension-->
+                <uri value="info:planets/fmt/ext/fig" />
+            </inputformats>
+
+            <outputformat>
+                <!-- PNG version 1.2 FIXME! Verify this! -->
+                <uri value="info:pronom/fmt/13" />
+            </outputformat>
+
+            <commandline>
+                <command>
+                    #shellcommand
+                </command>
+
+                <commandparameters>
+                    <parameter>
+                        #shellcommandoption
+                    </parameter>
+
+                    <parameter>
+                        <![CDATA[#diacommand -n -l -t dia -e #tempDiaFile #inputFile && #diacommand -n -l -t png -e #outputFile #tempDiaFile]]>
+                    </parameter>
+                </commandparameters>
+            </commandline>
+
+            <toolinput>
+                <tempfile label="inputFile" name="inputFile.fig">
+                </tempfile>
+            </toolinput>
+
+            <tooloutput>
+                <tempfile label="outputFile">
+                </tempfile>
+            </tooloutput>
+
+            <tempfiles>
+                <tempfile label="tempDiaFile" name="tempDiaFile.dia">
+                </tempfile>
+            </tempfiles>
+
+            <toolparameters>
+            </toolparameters>
+
+            <toolpresets>
+            </toolpresets>
+        </path>
+
 	</paths>
 </serviceWrapping>
