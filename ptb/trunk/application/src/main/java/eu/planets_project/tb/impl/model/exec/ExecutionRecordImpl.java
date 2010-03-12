@@ -124,7 +124,7 @@ public class ExecutionRecordImpl implements Serializable {
     // The 'Result'
     private String resultType;
     //FIXME Use @Lob on the things I had to make LONGBLOB
-    @Column(columnDefinition="LONGTEXT")
+    @Column(columnDefinition="VARCHAR(10000)")
     private String result;
     
     // The 'Report Log' for this digital object

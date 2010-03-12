@@ -1,5 +1,6 @@
 package eu.planets_project.tb.api.system.batch;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 
@@ -45,7 +46,9 @@ public interface BatchProcessor {
 	 * @return
 	 */
 	public String sumitBatch(long expID, List<DigitalObject> digObjs, WorkflowConf workflowConfig);
+	public String sumitBatchByReference(long expID, List<URI> digObjRef, WorkflowConf workflowConfig);
 
+	
     public TestbedBatchJob getJob( String job_key );
 	    
     public String getJobStatus( String job_key );

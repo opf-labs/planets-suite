@@ -13,7 +13,9 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -122,9 +124,23 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 				log.info("Submitting workflow to batch processor: "+BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
 				log.info("Got inputs #"+executable.getInputData().size());
 				DataHandler dh = new DataHandlerImpl();
-				List<DigitalObject> digos = dh.convertFileRefsToURLAccessibleDigos(executable.getInputData());
+			  //NOTE: previously submitting digital objects...
+				//List<DigitalObject> digos = dh.convertFileRefsToURLAccessibleDigos(executable.getInputData());
 				//submit the batch process to the WEE
-				String queue_key = bp.sumitBatch(exp.getEntityID(), digos, executable.getWEEWorkflowConfig());
+				//String queue_key = bp.sumitBatch(exp.getEntityID(), digos, executable.getWEEWorkflowConfig());
+			  
+			  //NOTE: changed to submitting by data registry references..
+				//submit the batch process to the WEE passing objects by reference (shared data registry pointers)
+				List<URI> digoRefs = new ArrayList<URI>();
+				for(String inputDataRef : executable.getInputData()){
+					try{
+						digoRefs.add(new URI(inputDataRef));
+					}catch(URISyntaxException err){
+						log.debug("this shouldn't happen - conversion String -> URI failed for "+inputDataRef);
+					}
+				}
+				String queue_key = bp.sumitBatchByReference(exp.getEntityID(), digoRefs, executable.getWEEWorkflowConfig());
+				
 				if((queue_key!=null)&&(!queue_key.equals(""))){
 					executable.setBatchExecutionIdentifier(queue_key);
 					//executable.setExecutableInvoked(true);

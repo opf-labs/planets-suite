@@ -161,24 +161,58 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 		//1. submit the Workflow to the WEE System and receive a ticket
 		try {
 			retTicket = "" + TestbedWEEBatchProcessor.weeService.submitWorkflow((ArrayList<DigitalObject>) digObjs, workflowConfig.getTemplate().getClazz(), new WorkflowConfigUtil().marshalWorkflowConfigToXMLTemplate(workflowConfig));
-			jobs.put(retTicket, testbedBatchJob);
-			
-	        Experiment exp = tbManager.getExperiment(expID);   
-	        //2. decide how long we want to poll for an object before from the engine before we throw a time-out
-	        //2a. automatically approved experiments - use shortTimeout (5 Minutes)
-	        if(exp.getExperimentApproval().getApprovalUsersIDs().contains(AdminManagerImpl.APPROVAL_AUTOMATIC_USER)){
-	        	submitTicketForPollingToQueue(retTicket,this.QueueName_shortTimeout,this.getBatchProcessorSystemIdentifier());
-	        }
-	        //2b manually approved experiments - use longTimeout (3 Days)
-	        if(!exp.getExperimentApproval().getApprovalUsersIDs().contains(AdminManagerImpl.APPROVAL_AUTOMATIC_USER)){
-	        	submitTicketForPollingToQueue(retTicket,this.QueueName_longTimeout,this.getBatchProcessorSystemIdentifier());
-	        }
+			submitTicketToExecutionQueue(retTicket, testbedBatchJob, expID);
 	        return retTicket;
 		} catch (Exception e) {
-			log.error("Error when remote submit workflow to WEE or ticket to pollingQueue was called",e);
+			log.error("Error when remotely submitting workflow to WEE or ticket to pollingQueue was called",e);
 			return "";
 		}
 	}
+	
+	/** {@inheritDoc} */
+	public String sumitBatchByReference(long expID, List<URI> digObjRef,
+			WorkflowConf workflowConfig) {
+		
+		String retTicket ="";
+		//0. create a TestbedBatchJob object that's used to temporarily park the results
+		TestbedBatchJob testbedBatchJob = new TestbedBatchJob( expID);
+		
+		//1. submit the Workflow to the WEE System and receive a ticket
+		try {
+			retTicket = "" + TestbedWEEBatchProcessor.weeService.submitWorkflowByReference((ArrayList<URI>) digObjRef, workflowConfig.getTemplate().getClazz(), new WorkflowConfigUtil().marshalWorkflowConfigToXMLTemplate(workflowConfig));
+			submitTicketToExecutionQueue(retTicket, testbedBatchJob, expID);
+	        return retTicket;
+		} catch (Exception e) {
+			log.error("Error when remotely submitting workflow by reference to WEE or ticket to pollingQueue was called",e);
+			return "";
+		}
+	}
+	
+	
+	/**
+	 * Decide how long we want to poll for an object before from the engine before we throw a time-out
+	 * automatically approved experiments - use shortTimeout (5 Minutes)
+	 * manually approved experiments - use longTimeout (3 Days)
+	 * @param ticket
+	 * @param testbedBatchJob
+	 * @param expID
+	 * @throws Exception
+	 */
+	private void submitTicketToExecutionQueue(String ticket, TestbedBatchJob testbedBatchJob, long expID) throws Exception{
+		jobs.put(ticket, testbedBatchJob);
+		
+        Experiment exp = tbManager.getExperiment(expID);   
+        //2. decide how long we want to poll for an object before from the engine before we throw a time-out
+        //2a. automatically approved experiments - use shortTimeout (5 Minutes)
+        if(exp.getExperimentApproval().getApprovalUsersIDs().contains(AdminManagerImpl.APPROVAL_AUTOMATIC_USER)){
+        	submitTicketForPollingToQueue(ticket,this.QueueName_shortTimeout,this.getBatchProcessorSystemIdentifier());
+        }
+        //2b manually approved experiments - use longTimeout (3 Days)
+        if(!exp.getExperimentApproval().getApprovalUsersIDs().contains(AdminManagerImpl.APPROVAL_AUTOMATIC_USER)){
+        	submitTicketForPollingToQueue(ticket,this.QueueName_longTimeout,this.getBatchProcessorSystemIdentifier());
+        }
+	}
+	
 	
 
 	/* (non-Javadoc)

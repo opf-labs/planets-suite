@@ -3,6 +3,7 @@
  */
 package eu.planets_project.tb.impl.system.batch.backends.tbown;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -253,6 +254,13 @@ public class TestbedBatchProcessor implements BatchProcessor{
 	public boolean isQueued(String job_key) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	/** {@inheritDoc} */
+	public String sumitBatchByReference(long expID, List<URI> digObjRef,
+			WorkflowConf workflowConfig) {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 }
