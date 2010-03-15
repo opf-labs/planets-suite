@@ -221,7 +221,7 @@
 								<f:facet name="header">Object Name</f:facet>
 								<h:panelGroup rendered="#{do.directory}">
 									<h:commandLink action="success">
-								    	<h:outputText value=" #{do.leafname}"/>
+								    	<h:outputText value=" #{do.leafname}" id="mdir"/>
 								        <t:updateActionListener property="#{theWorkflow.dir}" value="#{do}" />
 								    </h:commandLink>
 								</h:panelGroup>
@@ -230,6 +230,15 @@
 								</h:panelGroup>
 							 </h:column>
 						</t:dataTable>
+					    <h:panelGrid>		
+					        <h:panelGroup style="#{theWorkflow.display}">					
+                                <h:commandButton action="#{theWorkflow.getPrev}" value="Prev" disabled="#{theWorkflow.disable}"/>
+                                <h:outputText value="Set current page number:" />					
+					            <h:inputText value="#{theWorkflow.dataScrollerIndex}" id="sc1" size="1" disabled="#{theWorkflow.disable}"/>					
+					            <h:commandButton action="#{theWorkflow.scrollEvent}" value="Set" disabled="#{theWorkflow.disable}"/>					
+                                <h:commandButton action="#{theWorkflow.getNext}" value="Next" disabled="#{theWorkflow.disable}"/>
+					        </h:panelGroup>					
+					    </h:panelGrid>						                    
 						<h:panelGroup>
 							<h:commandButton action="#{theWorkflow.selectAll}" value="Select All"/>
 							<h:commandButton action="#{theWorkflow.selectNone}" value="Select None"/>
