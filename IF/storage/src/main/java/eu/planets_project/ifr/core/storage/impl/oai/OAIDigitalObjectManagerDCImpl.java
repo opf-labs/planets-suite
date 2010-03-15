@@ -51,6 +51,8 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
 	 */
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
+    	long starttime = System.currentTimeMillis();
+    	log.info("OAIDigitalObjectManagerDCImpl retrieve() starttime: " + starttime);
 		try {
 			OaiPmhServer server = new OaiPmhServer(baseURL);
 			Record record = server.getRecord(pdURI.toString(), metaDataPrefix);
@@ -99,14 +101,19 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 					Builder builder = new DigitalObject.Builder(Content.byReference(new URL(url)));
 					builder.title(title);
 					builder.metadata(new Metadata(namespaceURI, record.getMetadataAsString()));
+			    	long endtime = System.currentTimeMillis();
+			    	log.info("OAIDigitalObjectManagerDCImpl retrieve() timediff: " + (endtime - starttime));
 					return builder.build();
 				}
 			}
 			
+	    	log.info("OAIDigitalObjectManagerDCImpl retrieve() error: NoHTTP URL available.");
 			throw new DigitalObjectNotFoundException("No HTTP URL available for this record");
 		} catch (OAIException e) {
+	    	log.info("OAIDigitalObjectManagerDCImpl retrieve() error: " + e.getMessage());
 			throw new DigitalObjectNotFoundException(e.getMessage());
 		} catch (IOException e) {
+	    	log.info("OAIDigitalObjectManagerDCImpl retrieve() error2: " + e.getMessage());
 			throw new DigitalObjectNotFoundException(e.getMessage());
 		}
 	}
@@ -115,6 +122,7 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
+		log.info("OAIDigitalObjectManagerDCBase list() URI " + pdURI);
     	return super.list(pdURI, q);
     }
 
