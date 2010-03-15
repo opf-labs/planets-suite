@@ -93,6 +93,10 @@ import eu.planets_project.ifr.core.storage.impl.oai.*;
  */
 public class WorkflowBackingBean {
 
+	enum ButtonType {
+	    PREV, SET, NEXT
+	}
+	
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	// The Data Registry:
 	private DigitalObjectDirectoryLister dr = new DigitalObjectDirectoryLister();
@@ -143,9 +147,12 @@ public class WorkflowBackingBean {
 	private ServiceRegistry registry;
 	private ArrayList<SubmittedWorkflowBean> submittedWorkflows;
 	private HashMap<UUID, SubmittedWorkflowBean> workflowLookup;
+	
+	private int dataScrollerIndex = 0;
+	private boolean disable = true;
+	private String display = "display:none";
 
-	
-	
+
 	//
 	// Constructor
 	//
@@ -892,6 +899,73 @@ public class WorkflowBackingBean {
 		}
 	}
 
+	public String getNext() 
+	{
+		logger.info("getNext()");
+		calculateNodes(ButtonType.NEXT);
+        return null;
+	}
+
+	
+	/**
+	 * Controller that selects the needed page.
+	 */
+	public String scrollEvent() {
+		logger.info("scrollEvent() dataScrollerIndex: " + dataScrollerIndex);
+		calculateNodes(ButtonType.SET);
+		return "success";
+	}
+
+
+	public String getPrev() 
+	{
+		logger.info("getPrev()");
+		calculateNodes(ButtonType.PREV);
+        return null;
+	}
+
+	
+	public void calculateNodes(ButtonType bt) 
+	{
+		logger.info("calculateNodes()");
+		List<FileTreeNode> cchilds = (List<FileTreeNode>) tn.getChildren();
+		if (cchilds != null) {
+			logger.info("calculateNodes() cchilds.size: " + cchilds.size());
+			for (FileTreeNode tfn : cchilds ) {
+				logger.info("calculateNodes() tfn.getUri(): " + tfn.getUri());
+				if (tfn.getUri().toString().equals(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI)) {
+					switch (bt) {
+						case PREV:
+							dr.decreaseDorIndex();
+					    	if (dataScrollerIndex > 0) {
+					    		dataScrollerIndex--;
+					    	}
+					    	break;
+						case SET:
+							dr.changeDorIndex(dataScrollerIndex);
+					    	break;
+						case NEXT:
+							dr.increaseDorIndex();
+				    		dataScrollerIndex++;
+					    	break;
+						default:
+					    	break;
+					}
+					logger.info("calculateNodes() dataScrollerIndex: " + dataScrollerIndex);
+
+					// Update the location:
+					setLocation(tfn.getUri());
+					// Also add childs:
+					tfn.setExpanded(true);
+					this.getChildItems(tm, tfn, dr.list(getLocation()), 1);
+					this.currentTab = "selectObjectsTab";	
+					break;
+				}
+			}
+		}
+	}
+
+
 	/**
 	 * Controller that removed all selected items from the workflow.
 	 */
@@ -1043,6 +1117,18 @@ public class WorkflowBackingBean {
 			return true;
 		}
 	}
+	
+	/**
+	 * This method hides the buttons panel if needed.
+	 * @return display type
+	 */
+	public String getDisplay() {
+		display = "display:none";
+		if (!disable) {
+			display = "display:inline";
+		}
+		return display;
+	}
 
 	/**
 	 * Sends back a list of the DOs under the current URI
@@ -1185,6 +1271,18 @@ public class WorkflowBackingBean {
 	}
 
 	public void setDir(FileTreeNode tfn) {
+		if (tfn != null) {
+		   logger.info("setDir() uri: " + tfn.getUri());
+		   
+	       	if (tfn.getUri() != null) {
+		    	if (tfn.getUri().toString().contains(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI)) {
+		    		disable = false;
+	    		} else {
+	    			disable = true;
+	    		}
+    	    	logger.info("WorkflowBackingBean setDir() set disable for buttons: " + disable);
+	    	}		   
+		}
 		// Update the location:
 		setLocation(tfn.getUri());
 		// Also add childs:
@@ -1410,6 +1508,24 @@ public class WorkflowBackingBean {
 		}
 	}
 
+	
+	public int getDataScrollerIndex() {
+		return dataScrollerIndex;
+	}
+
+	public void setDataScrollerIndex(int dataScrollerIndex) {
+		this.dataScrollerIndex = dataScrollerIndex;
+	}
+
+	public boolean isDisable() {
+		return disable;
+	}
+
+	public void setDisable(boolean disable) {
+		this.disable = disable;
+	}
+	
+	
 	//
 	// a little class for handling generated service descriptions
 	//
