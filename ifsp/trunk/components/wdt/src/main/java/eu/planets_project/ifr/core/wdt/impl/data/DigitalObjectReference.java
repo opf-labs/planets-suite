@@ -99,24 +99,6 @@ public class DigitalObjectReference {
 								OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI) > -1) {
 					// Special treatment for OAI files!
 					String res = puri.toString();
-					if (dom != null) {
-						try {
-							DigitalObject obj = dom
-									.getDigitalObjectManager(
-											DataRegistryFactory
-													.createDataRegistryIdFromName(OAIDigitalObjectManagerDCBase.REGISTRY_NAME))
-									.retrieve(puri);
-
-							if (obj.getTitle() != null) {
-								String title = obj.getTitle();
-								res = title;
-							}
-						} catch (Exception e) {
-							log.log(Level.INFO,
-									"DigitalObjectReference title not found. "
-											+ e.getMessage(), e);
-						}
-					}
 					return URI.create(res);
 				}
 				return puri;
