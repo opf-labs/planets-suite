@@ -2,9 +2,14 @@ package eu.planets_project.ifr.core.wee.api.workflow;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.wee.api.ReportingLog;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.Agent;
@@ -119,7 +124,41 @@ public interface WorkflowTemplate extends Serializable{
      * @param digoToStore
      * @return
      */
-    public DigitalObject storeDigitalObjectInJCR(DigitalObject digoToStore);
+    //public DigitalObject storeDigitalObjectInJCR(DigitalObject digoToStore);
+    
+    /**
+     * a shortcut for storing a digital object in the default data registry
+     * takes a digital object and stores it within the default DataRegistry (i.e. default DigitalObjectManager)
+     * @param digoToStore
+     * @see WorkflowTemplate#getDataRegistry()
+     * @return
+     */
+    public URI storeDigitalObject(DigitalObject digoToStore) throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException;
+    
+    /**
+     * a shortcut for storing a digital object in a specified data repository
+     * @param digoToStore
+     * @param repositoryID the data repository identifier specified in the planets:// namespace.
+     * e.g. 'planets://localhost:8080/dr/planets-jcr'
+     * @return
+     * @throws DigitalObjectManagerNotFoundException
+     * @throws DigitalObjectNotStoredException
+     */
+    public URI storeDigitalObjectInRepository(DigitalObject digoToStore, URI repositoryID) throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException;
+    
+    /**
+     * returns a handle to the DataRegistry which can then be used to subsequently storing digital objects
+     * in a workflow template
+     * @return
+     */
+    public DataRegistry getDataRegistry();
+    
+    /**
+     * a shortcut for retrieving a digital object stored within a data registry
+     * @param digitalObjectRef
+     * @return
+     */
+    public DigitalObject retrieveDigitalObjectDataRegistryRef(URI digitalObjectRef) throws DigitalObjectNotFoundException;
     
     /**
      * Get the workflowResult object that's used to record information for this call

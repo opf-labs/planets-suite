@@ -71,15 +71,14 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 		int count = 0;
 		try {
 			// get the digital objects and iterate one by one
-			for (DigitalObject dgoA : this.getData()) {
-
-				// store the digital object in jcr repository
-				//dgoA = this.storeDigitalObjectInJCR(dgoA);
+			for (DigitalObject dgoA : this.getData()) {	
 
 				// document all general actions for this digital object
-				WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA,
-						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, System
-								.currentTimeMillis(),this.getWorkflowReportingLogger());
+				WorkflowResultItem wfResultItem = new WorkflowResultItem(
+						dgoA.getPermanentUri(),
+						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, 
+						System.currentTimeMillis(),
+						this.getWorkflowReportingLogger());
 				this.addWFResultItem(wfResultItem);
 				wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
 
@@ -87,9 +86,9 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 				this.processingDigo = dgoA;
 
 				try {
-					// Migrate Object round-trip
+					// Single Migration
 						wfResultItem.addLogInfo("starting migration A-B");
-					DigitalObject dgoB = runMigration(migrate1, dgoA, true);
+					URI dgoBRef = runMigration(migrate1, dgoA.getPermanentUri(), true);
 						wfResultItem.addLogInfo("completed migration A-B");
 
 					//TODO: use the identification service for data enrichment (e.g. mime type of output object)
@@ -121,18 +120,22 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 	}
 
 	/**
-	 * Runs the migration service on a given digital object. It uses the
+	 * Runs the migration service on a given digital object reference. It uses the
 	 * MigrationWFWrapper to call the service, create workflowResult logs,
-	 * events and to persist the object within the JCR repository
+	 * events and to persist the object within the specified repository
 	 */
-	private DigitalObject runMigration(Migrate migrationService,
-			DigitalObject digO, boolean endOfRoundtripp) throws Exception {
+	private URI runMigration(Migrate migrationService,
+			URI digORef, boolean endOfRoundtripp) throws Exception {
 
 		MigrationWFWrapper migrWrapper = new MigrationWFWrapper(this,
-				this.processingDigo, migrationService, digO, endOfRoundtripp);
-		
+				this.processingDigo.getPermanentUri(), 
+				migrationService, 
+				digORef, 
+				new URI("planets://localhost:8080/dr/experiment-files"),
+				endOfRoundtripp);
 		
 		return migrWrapper.runMigration();
+
 	}
 
 	/**

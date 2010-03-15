@@ -49,7 +49,7 @@ public class JcrStoreTemplate extends WorkflowTemplateHelper implements Workflow
         try {
             for (DigitalObject dgo : this.getData()) {
 				// document all general actions for this digital object
-				WorkflowResultItem wfResultItem = new WorkflowResultItem(dgo,
+				WorkflowResultItem wfResultItem = new WorkflowResultItem(dgo.getPermanentUri(),
 						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, System
 								.currentTimeMillis(),this.getWorkflowReportingLogger());
 				this.addWFResultItem(wfResultItem);

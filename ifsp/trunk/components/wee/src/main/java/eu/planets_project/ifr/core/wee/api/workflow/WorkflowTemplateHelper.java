@@ -22,7 +22,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
@@ -46,9 +49,6 @@ import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
  */
 public abstract class WorkflowTemplateHelper implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -9043319482888030134L;
 	private Map<PlanetsService, ServiceCallConfigs> serviceInvocationConfigs = new HashMap<PlanetsService, ServiceCallConfigs>();
     private List<DigitalObject> data = new ArrayList<DigitalObject>();
@@ -69,7 +69,7 @@ public abstract class WorkflowTemplateHelper implements Serializable {
             "eu.planets_project.services.migrate.MigrateAsync", "eu.planets_project.services.compare.Compare",
             "eu.planets_project.services.compare.CompareProperties", "eu.planets_project.services.validate.Validate",
             "eu.planets_project.services.view.CreateView"};
-
+    
     /*
      * (non-Javadoc)
      * @seeeu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#
@@ -285,7 +285,7 @@ public abstract class WorkflowTemplateHelper implements Serializable {
      * @see WorkflowTemplate#storeDigitalObjectInJCR(DigitalObject)
      * @return
      */
-    public DigitalObject storeDigitalObjectInJCR(DigitalObject digoToStore) {
+    /*public DigitalObject storeDigitalObjectInJCR(DigitalObject digoToStore) {
     	//decode upon the location where to store the data
     	URI PERMANENT_URI_PATH;
 		if(getWorklowInstanceID()==null){
@@ -307,7 +307,44 @@ public abstract class WorkflowTemplateHelper implements Serializable {
 			resDo = digoToStore;
 		}
 		return resDo;
+    }*/
+    
+    /*
+     * (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#storeDigitalObject
+     */
+    public URI storeDigitalObject(DigitalObject digoToStore) 
+    	throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException{
+		
+    	return this.getDataRegistry().getDefaultDigitalObjectManager().storeAsNew(digoToStore);
     }
+       
+    /*
+     * (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#storeDigitalObject
+     */
+    public URI storeDigitalObjectInRepository(DigitalObject digoToStore, URI repositoryID) 
+    	throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException{
+    		
+		return this.getDataRegistry().getDigitalObjectManager(repositoryID).storeAsNew(digoToStore);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getDataRegistry
+     */
+    public DataRegistry getDataRegistry(){
+    	return DataRegistryFactory.getDataRegistry();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#retrieveDigitalObjectDataRegistryRef
+     */
+    public DigitalObject retrieveDigitalObjectDataRegistryRef(URI digitalObjectRef) throws DigitalObjectNotFoundException{
+    	return this.getDataRegistry().retrieve(digitalObjectRef);
+    }
+    
     
     
     /**

@@ -84,7 +84,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
     private Compare comparexcdl1;
     
     private WorkflowResult wfResult;
-	private DigitalObject processingDigo;
+	private URI processingDigo;
 	private static URL configForImages;
 	private static DigitalObject CONFIG;
 	
@@ -125,13 +125,13 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
             for (DigitalObject dgoA : this.getData()) {
             	
             	//document all general actions for this digital object
-            	WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA,
+            	WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA.getPermanentUri(),
                 		WorkflowResultItem.GENERAL_WORKFLOW_ACTION,
                 		System.currentTimeMillis());
             	 wfResult.addWorkflowResultItem(wfResultItem);
             	
             	 //start executing on digital ObjectA
-            	this.processingDigo = dgoA;
+            	this.processingDigo = dgoA.getPermanentUri();
             	
                 try {
                     // Migrate Object round-trip
@@ -334,7 +334,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
         		WorkflowResultItem.SERVICE_ACTION_COMPARE,
         		System.currentTimeMillis());
     	 wfResult.addWorkflowResultItem(wfResultItem);
-    	 wfResultItem.setAboutExecutionDigoRef(processingDigo.getPermanentUri());
+    	 wfResultItem.setAboutExecutionDigoRef(processingDigo);
     	 
         try {
 			//FIXME: using a static list of properties ... this should move to the configuration file

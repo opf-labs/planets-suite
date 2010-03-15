@@ -91,10 +91,11 @@ public class JIPDemonstrationWorkflow_v1_02122009 extends
 			for (DigitalObject dgoA : this.getData()) {
 
 				// store the digital object in jcr repository
-				dgoA = this.storeDigitalObjectInJCR(dgoA);
+				//URI uriA = this.storeDigitalObjectInRepository(dgoA,new URI("planets://localhost:8080/dr/planets-jcr"));
+				//dgoA = this.getDataRegistry().retrieve(uriA);
 
 				// document all general actions for this digital object
-				WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA,
+				WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA.getPermanentUri(),
 						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, System
 								.currentTimeMillis(),this.getWorkflowReportingLogger());
 				this.addWFResultItem(wfResultItem);
@@ -144,16 +145,20 @@ public class JIPDemonstrationWorkflow_v1_02122009 extends
 	/**
 	 * Runs the migration service on a given digital object. It uses the
 	 * MigrationWFWrapper to call the service, create workflowResult logs,
-	 * events and to persist the object within the JCR repository
+	 * events and to persist the object within the default repository
 	 */
 	private DigitalObject runMigration(Migrate migrationService,
 			DigitalObject digO, boolean endOfRoundtripp) throws Exception {
 
 		MigrationWFWrapper migrWrapper = new MigrationWFWrapper(this,
-				this.processingDigo, migrationService, digO, endOfRoundtripp);
+				this.processingDigo.getPermanentUri(), 
+				migrationService, 
+				digO.getPermanentUri(),
+				endOfRoundtripp);
 		
+		URI migResDigoRef = migrWrapper.runMigration();
+		return this.getDataRegistry().retrieve(migResDigoRef);
 		
-		return migrWrapper.runMigration();
 	}
 
 	/**

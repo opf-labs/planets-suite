@@ -56,7 +56,7 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 	
 	private Compare compareAC;
 
-	private DigitalObject processingDigo;
+	private URI processingDigo;
 
 	/*
 	 * (non-Javadoc)
@@ -81,35 +81,32 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 			// get the digital objects and iterate one by one
 			for (DigitalObject dgoA : this.getData()) {
 
-				// store the digital object in jcr repository
-				//dgoA = this.storeDigitalObjectInJCR(dgoA);
-
 				// document all general actions for this digital object
-				WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA,
+				WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA.getPermanentUri(),
 						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, System
 								.currentTimeMillis(),this.getWorkflowReportingLogger());
 				this.addWFResultItem(wfResultItem);
 				wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
 
 				// start executing on digital ObjectA
-				this.processingDigo = dgoA;
+				this.processingDigo = dgoA.getPermanentUri();
 
 				try {
 					//run a pre-Identification service on A to determine it's format
 						wfResultItem.addLogInfo("starting identification A");
-					URI formatA = identifyFormat(identifyFormatA, dgoA);
+					URI formatA = identifyFormat(identifyFormatA, dgoA.getPermanentUri());
 						wfResultItem.addLogInfo("completed identification A");
 					// Migrate Object round-trip
 						wfResultItem.addLogInfo("starting migration A-B");
-					DigitalObject dgoB = runMigration(migrateAB, dgoA, formatA, null, false);
+					URI dgoB = runMigration(migrateAB, dgoA.getPermanentUri(), formatA, null, false);
 						wfResultItem.addLogInfo("completed migration A-B");
 						wfResultItem.addLogInfo("starting migration B-C");
-					DigitalObject dgoC = runMigration(migrateBC, dgoB,null, formatA, true);
+					URI dgoC = runMigration(migrateBC, dgoB,null, formatA, true);
 						wfResultItem.addLogInfo("completed migration B-C");
 						
 					//compare the object's A and C
 						wfResultItem.addLogInfo("starting comparison A-C");
-					runComparison(compareAC,dgoA,dgoC);
+					runComparison(compareAC,dgoA.getPermanentUri(),dgoC);
 						wfResultItem.addLogInfo("completed comparison A-C");
 
 					//TODO: use the identification service for data enrichment (e.g. mime type of output object)
@@ -147,11 +144,11 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 	 * MigrationWFWrapper to call the service, create workflowResult logs,
 	 * events and to persist the object within the JCR repository
 	 */
-	private DigitalObject runMigration(Migrate migrationService,
-			DigitalObject digO, URI inputFormat, URI outputFormat, boolean endOfRoundtripp) throws Exception {
+	private URI runMigration(Migrate migrationService,
+			URI digORef, URI inputFormat, URI outputFormat, boolean endOfRoundtripp) throws Exception {
 
 		MigrationWFWrapper migrWrapper = new MigrationWFWrapper(this,
-				this.processingDigo, migrationService, digO, endOfRoundtripp);
+				this.processingDigo, migrationService, digORef, endOfRoundtripp);
 		
 		//possibly using identification service to determine the input/output format
 		if(inputFormat!=null){
@@ -161,6 +158,9 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 			migrWrapper.setOutputFormat(outputFormat);
 		}
 		
+		//specifying the location where to store migration results
+		migrWrapper.setDataRepository(new URI("planets://localhost:8080/dr/experiment-files"));
+		
 		return migrWrapper.runMigration();
 	}
 	
@@ -168,11 +168,11 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 	/**
 	 *  Runs the comparison service on two digital objects 
 	 * @param compareService
-	 * @param digo1
-	 * @param digo2
+	 * @param digo1 data registry pointer to digital object1
+	 * @param digo2 data registry pointer to digital object2
 	 * @throws Exception
 	 */
-	private CompareResult runComparison(Compare compareService, DigitalObject digo1, DigitalObject digo2) throws Exception{
+	private CompareResult runComparison(Compare compareService, URI digo1Ref, URI digo2Ref) throws Exception{
 		
 		WorkflowResultItem wfResultItem = new WorkflowResultItem(this.processingDigo,
 				WorkflowResultItem.SERVICE_ACTION_COMPARE, System
@@ -203,6 +203,10 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 			ServiceDescription serDescr = compareService.describe();
 			wfResultItem.setServiceDescription(serDescr);
 
+			//retrieve the digital objects from their data registry location
+			DigitalObject digo1 = this.retrieveDigitalObjectDataRegistryRef(digo1Ref);
+			DigitalObject digo2 = this.retrieveDigitalObjectDataRegistryRef(digo2Ref);
+			
 			// now call the comparison
 			CompareResult compareResult = compareService.compare(digo1,digo2, parameterList);
 			
@@ -241,20 +245,20 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 	
 
 	/**
-	 * Runs the identification service on a given digital object and returns the
+	 * Runs the identification service on a given digital object reference and returns the
 	 * first format that is found.
 	 * 
 	 * @param DigitalObject
 	 * @return
 	 * @throws Exception
 	 */
-	 private URI identifyFormat(Identify identifyService, DigitalObject digo) throws Exception{
+	 private URI identifyFormat(Identify identifyService, URI digoRef) throws Exception{
 		 
 		 WorkflowResultItem wfResultItem = new WorkflowResultItem(this.processingDigo,
 					WorkflowResultItem.SERVICE_ACTION_IDENTIFICATION, System
 							.currentTimeMillis());
 			
-		 wfResultItem.setInputDigitalObject(digo);
+		 wfResultItem.setInputDigitalObjectRef(digoRef);
 			this.getWFResult().addWorkflowResultItem(wfResultItem);
 	  
 		// get all parameters that were added in the configuration file
@@ -276,6 +280,10 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 			wfResultItem.setServiceEndpoint(new URL(endpoint));
 		}
 		wfResultItem.setStartTime(System.currentTimeMillis());
+		
+		//resolve the digital Object reference
+		DigitalObject digo = this.retrieveDigitalObjectDataRegistryRef(digoRef);
+		
 		//call the identification service
 		IdentifyResult identifyResults = identifyService.identify(digo,parameterList);
 		

@@ -114,7 +114,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
                     log.error(err);
                     log.error(e.getClass() + ": " + e.getMessage());
                     System.out.println(e);
-                    WorkflowResultItem wfResultItem = new WorkflowResultItem(dgo,
+                    WorkflowResultItem wfResultItem = new WorkflowResultItem(dgo.getPermanentUri(),
                     		WorkflowResultItem.GENERAL_WORKFLOW_ACTION,
                     		System.currentTimeMillis());
                     wfResultItem.addLogInfo(err);

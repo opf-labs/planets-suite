@@ -21,6 +21,9 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WorkflowResultItem implements Serializable{
 	
@@ -45,10 +48,12 @@ public class WorkflowResultItem implements Serializable{
     private long startTime = -1;
     private long endTime = -1;
     private String sActionIdentifier="";
-    //xml serialization of the digital object
+    //xml serialization of the digital object - deprecated
     private String digoIn;
-    //xml serialization of the digital object
+    private URI digoInRef;
+    //xml serialization of the digital object - deprecated
     private String digoOut;
+    private URI digoOutRef;
     private List<String> extractedInformation;
     private List<String> logInfo;
     private ServiceReport serReport;
@@ -97,33 +102,42 @@ public class WorkflowResultItem implements Serializable{
     public WorkflowResultItem(String serviceActionIdentifier, long startTime, long endTime,ReportingLog logger){
     	this(null,serviceActionIdentifier,startTime,endTime,logger);
     }
-	
+    
     /**
      * The most common constructor
-     * @param aboutDigo The original reference for which the execute was called
+     * since 15.03.2010
+     * Updated method signature to deal with shared data references (data registry). 
+     * @param aboutDigoRef The original reference for which the execute was called
      * @param serviceActionIdentifier
      * @param startTime
      * @param endTime
      */
-    public WorkflowResultItem(DigitalObject aboutDigo, String serviceActionIdentifier, long startTime){
-    	this(aboutDigo,serviceActionIdentifier,startTime,-1,null);
+    public WorkflowResultItem(URI aboutDigoRef, String serviceActionIdentifier, long startTime){
+    	this(aboutDigoRef,serviceActionIdentifier,startTime,-1,null);
     }
+ 
     /**
      * Allows to pass a specific logger.
-     * @see WorkflowResultItem#WorkflowResultItem(DigitalObject, String, long)
+     * since 15.03.2010
+     * Updated method signature to deal with shared data references (data registry). 
+     * @see WorkflowResultItem#WorkflowResultItem(URI, String, long)
      */
-    public WorkflowResultItem(DigitalObject aboutDigo, String serviceActionIdentifier, long startTime,ReportingLog logger){
-    	this(aboutDigo,serviceActionIdentifier,startTime,-1,logger);
+    public WorkflowResultItem(URI aboutDigoRef, String serviceActionIdentifier, long startTime,ReportingLog logger){
+    	this(aboutDigoRef,serviceActionIdentifier,startTime,-1,logger);
     }
     
     /**
      * Allows to pass a specific logger.
-     * @see WorkflowResultItem#WorkflowResultItem(DigitalObject, String, long, long)
+     * since 15.03.2010
+     * Updated method signature to deal with shared data references (data registry). 
+     * @see WorkflowResultItem#WorkflowResultItem(URI, String, long)
      */
-	public WorkflowResultItem(DigitalObject aboutDigo,String serviceActionIdentifier, long startTime, long endTime){
-		this(aboutDigo,serviceActionIdentifier,startTime,endTime,null);
+    public WorkflowResultItem(URI aboutDigoRef,String serviceActionIdentifier, long startTime, long endTime){
+		this(aboutDigoRef,serviceActionIdentifier,startTime,endTime,null);
 	}
-	public WorkflowResultItem(DigitalObject aboutDigo,String serviceActionIdentifier, long startTime, long endTime,ReportingLog logger){
+    
+
+    public WorkflowResultItem(URI aboutDigoRef,String serviceActionIdentifier, long startTime, long endTime,ReportingLog logger){
 		this();
 		if(logger!=null){
 			this.logger = logger;
@@ -131,12 +145,12 @@ public class WorkflowResultItem implements Serializable{
 		else{
 	    	logger = new ReportingLog(Logger.getLogger(WorkflowResultItem.class));
 		}
-		if(aboutDigo==null){
+		if(aboutDigoRef==null){
 			aboutExecutionDigoDifferentThanInputDigo = false;
 		}
 		else{
 			aboutExecutionDigoDifferentThanInputDigo = true;
-			this.setAboutExecutionDigoRef(aboutDigo.getPermanentUri());
+			this.setAboutExecutionDigoRef(aboutDigoRef);
 		}
 		this.setSActionIdentifier(serviceActionIdentifier);
 		this.setStartTime(startTime);
@@ -151,7 +165,7 @@ public class WorkflowResultItem implements Serializable{
 		this.logger = logger;
 	}
 	
-	
+	@Deprecated
 	public void setInputDigitalObject(DigitalObject inDigo){
 		if(inDigo!=null){
 			this.digoIn = inDigo.toXml();
@@ -167,6 +181,17 @@ public class WorkflowResultItem implements Serializable{
 		}
 	}
 	
+	public void setInputDigitalObjectRef(URI inDigoRef){
+		if(inDigoRef!=null){
+			if(!aboutExecutionDigoDifferentThanInputDigo){
+				this.setAboutExecutionDigoRef(inDigoRef);
+			}
+			logger.info("setInputDigitalObjectRef: "+inDigoRef.toString());
+			this.digoInRef = inDigoRef;
+		}
+	}
+	
+	@Deprecated
 	public void setOutputDigitalObject(DigitalObject outDigo){
 		if(outDigo!=null){
 			this.digoOut = outDigo.toXml();
@@ -177,6 +202,14 @@ public class WorkflowResultItem implements Serializable{
 			else{
 				logger.info("setOutputDigitalObject: "+outDigo.toString()+" \n details: \n "+digoOut);
 			}
+		}
+	}
+	
+	public void setOutputDigitalObjectRef(URI outDigoRef){
+		if(outDigoRef!=null){
+			this.addLogInfo("Successfully added OutputDigitalObjectRef");
+			logger.info("setOutputDigitalObjectRef: "+outDigoRef);
+			this.digoOutRef = outDigoRef;
 		}
 	}
 	
@@ -237,23 +270,48 @@ public class WorkflowResultItem implements Serializable{
 		logger.info("setSActionIdentifier: "+actionIdentifier);
 	}
 
+	@Deprecated
 	public DigitalObject getInputDigitalObject() {
 		if(this.digoIn!=null){
 			return new DigitalObject.Builder(this.digoIn).build();
 		}
-		else{
-			return null;
+		else if(this.getInputDigitalObjectRef()!=null){
+			//let's check maybe we can find the digital object in the data registry somewhere
+			try {
+				return DataRegistryFactory.getDataRegistry().retrieve(this.getInputDigitalObjectRef());
+			} catch (DigitalObjectNotFoundException e) {
+			}
 		}
+		return null;
+	}
+	
+	public URI getInputDigitalObjectRef() {
+		if(this.digoInRef!=null){
+			return digoInRef;
+		}
+		return null;
 	}
 
-
+	@Deprecated
 	public DigitalObject getOutputDigitalObject() {
 		if(this.digoOut!=null){
 			return new DigitalObject.Builder(this.digoOut).build();
 		}
-		else{
-			return null;
+		else if(this.getOutputDigitalObjectRef()!=null){
+			try {
+				//let's check maybe we can find the digital object in the data registry somewhere
+				return DataRegistryFactory.getDataRegistry().retrieve(this.getOutputDigitalObjectRef());
+			} catch (DigitalObjectNotFoundException e) {
+			}
 		}
+		return null;
+	}
+	
+	public URI getOutputDigitalObjectRef() {
+		if(this.digoOutRef!=null){
+			return digoOutRef;
+		}
+		return null;
 	}
 
 

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowContext;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
@@ -25,7 +27,7 @@ import eu.planets_project.services.migrate.MigrateResult;
  * behavior
  * <ul>
  * <li>logging proper WorkflowResult statements</li>
- * <li>persisting digital objects in jcr and returning objects by reference</li>
+ * <li>persisting digital objects in the default data registry and returning objects as shared data registry URIs</li>
  * <li>creating default events</li>
  * </ul>
  * 
@@ -35,13 +37,15 @@ import eu.planets_project.services.migrate.MigrateResult;
  */
 public class MigrationWFWrapper {
 
-	private DigitalObject pedigreeDigo;
+	private URI pedigreeDigoRef;
 	private Migrate migrationService;
-	private DigitalObject digOToMigrate;
+	private URI digOToMigrateRef;
 	private boolean endOfRoundtripp;
 	private WorkflowTemplate wfi;
 	private URI inputFormat;
 	private URI outputFormat;
+	private URI dataRepositoryID;
+	private DataRegistry dataRegistry;
 
 	/**
 	 * The default constructor.
@@ -55,30 +59,49 @@ public class MigrationWFWrapper {
 	 *            The migration service that's being called
 	 * @param digOToMigrate:
 	 *            The digitalObject that's being migrated
+	 * @param dataRepositoryID:
+	 *            a 'planets://' scheme based repository identifier for storing the created migration results
+	 *            if null - the default repository will be used
 	 * @param endOfRoundtripp:
 	 *            an indicator triggering the 'finalMigrationResult' flag in the
 	 *            logs
 	 */
 	public MigrationWFWrapper(WorkflowTemplate processingTemplate,
-			DigitalObject pedigreeDigo, Migrate migrationService,
-			DigitalObject digOToMigrate, boolean endOfRoundtripp) {
+			URI pedigreeDigoRef, Migrate migrationService,
+			URI digOToMigrateRef, URI dataRepositoryID, boolean endOfRoundtripp) {
 
 		this.wfi = processingTemplate;
-		this.pedigreeDigo = pedigreeDigo;
+		this.pedigreeDigoRef = pedigreeDigoRef;
 		this.migrationService = migrationService;
-		this.digOToMigrate = digOToMigrate;
+		this.digOToMigrateRef = digOToMigrateRef;
 		this.endOfRoundtripp = endOfRoundtripp;
+		this.dataRepositoryID = dataRepositoryID;
+		this.dataRegistry = DataRegistryFactory.getDataRegistry();
 	}
-
+	
 	/**
-	 * Calls the default constructor with endOfRoundtripp=false
+	 * Calls the default constructor with using the default data registry manager
+	 * for storing migration outputs
 	 * 
 	 * @see #MigrationWFWrapper(DigitalObject, Migrate, DigitalObject, boolean)
 	 */
 	public MigrationWFWrapper(WorkflowTemplate processingTemplate,
-			DigitalObject pedigreeDigo, Migrate migrationService,
-			DigitalObject digOToMigrate) {
-		this(processingTemplate, pedigreeDigo, migrationService, digOToMigrate,
+			URI pedigreeDigoRef, Migrate migrationService,
+			URI digOToMigrateRef, boolean endOfRoundtripp) {
+		this(processingTemplate, pedigreeDigoRef, migrationService, digOToMigrateRef,
+				null, endOfRoundtripp);
+	}
+	
+	/**
+	 * Calls the default constructor; using the default data registry manager
+	 * for storing migration outputs; and stating endOfRoundtripp=false
+	 * 
+	 * @see #MigrationWFWrapper(DigitalObject, Migrate, DigitalObject, boolean)
+	 */
+	public MigrationWFWrapper(WorkflowTemplate processingTemplate,
+			URI pedigreeDigoRef, Migrate migrationService,
+			URI digOToMigrateRef) {
+		this(processingTemplate, pedigreeDigoRef, migrationService, digOToMigrateRef,null,
 				false);
 	}
 
@@ -90,8 +113,8 @@ public class MigrationWFWrapper {
 	 * @see #MigrationWFWrapper(DigitalObject, Migrate, DigitalObject, boolean)
 	 */
 	public MigrationWFWrapper(WorkflowTemplate processingTemplate,
-			Migrate migrationService, DigitalObject digOToMigrate) {
-		this(processingTemplate, null, migrationService, digOToMigrate, false);
+			Migrate migrationService, URI digOToMigrateRef) {
+		this(processingTemplate, null, migrationService, digOToMigrateRef, false);
 	}
 	
 	/**
@@ -109,19 +132,33 @@ public class MigrationWFWrapper {
 	public void setOutputFormat(URI outputFormat){
 		this.outputFormat = outputFormat;
 	}
+	
+	
+	/**
+	 * Allows specifying a 'planets://' scheme based repository identifier for 
+	 * storing the created migration results
+	 * @param repositoryID: if null - the default repository will be used
+	 */
+	public void setDataRepository(URI repositoryID){
+		this.dataRepositoryID = repositoryID;
+	}
 
-	public DigitalObject runMigration() throws Exception {
+	/**
+	 * @return an URI to the resulting digital object's data registry reference
+	 * @throws Exception
+	 */
+	public URI runMigration() throws Exception {
 
 		// an object used for documenting the results of a service action
 		// document the service type and start-time
 		WorkflowResultItem wfResultItem;
 		if (endOfRoundtripp) {
-			wfResultItem = new WorkflowResultItem(pedigreeDigo,
+			wfResultItem = new WorkflowResultItem(pedigreeDigoRef,
 					WorkflowResultItem.SERVICE_ACTION_FINAL_MIGRATION, System
 							.currentTimeMillis(), wfi
 							.getWorkflowReportingLogger());
 		} else {
-			wfResultItem = new WorkflowResultItem(pedigreeDigo,
+			wfResultItem = new WorkflowResultItem(pedigreeDigoRef,
 					WorkflowResultItem.SERVICE_ACTION_MIGRATION, System
 							.currentTimeMillis(), wfi
 							.getWorkflowReportingLogger());
@@ -170,7 +207,7 @@ public class MigrationWFWrapper {
 			}
 
 			// document
-			wfResultItem.setInputDigitalObject(digOToMigrate);
+			wfResultItem.setInputDigitalObjectRef(digOToMigrateRef);
 			wfResultItem.setServiceParameters(parameterList);
 			wfResultItem.setStartTime(System.currentTimeMillis());
 			// document the endpoint if available - retrieve from
@@ -184,9 +221,12 @@ public class MigrationWFWrapper {
 			ServiceDescription serDescr = migrationService.describe();
 			wfResultItem.setServiceDescription(serDescr);
 
+			//retrieve the actual digital object
+			DigitalObject digoToMigrate = dataRegistry.retrieve(digOToMigrateRef);
+			
 			// now call the migration
 			MigrateResult migrateResult = migrationService.migrate(
-					digOToMigrate, migrateFromURI, migrateToURI, parameterList);
+					digoToMigrate, migrateFromURI, migrateToURI, parameterList);
 
 			// document
 			wfResultItem.setEndTime(System.currentTimeMillis());
@@ -203,7 +243,7 @@ public class MigrationWFWrapper {
 			DigitalObject migOutput = migrateResult.getDigitalObject();
 
 			// add Migration Event to DigitalObject
-			Event migrEvent = buildMigrationOutputEvent(digOToMigrate,
+			Event migrEvent = buildMigrationOutputEvent(digoToMigrate,
 					parameterList, wfResultItem.getStartTime(), wfResultItem
 							.getDuration(),serDescr,endpoint);
 
@@ -222,14 +262,23 @@ public class MigrationWFWrapper {
 							new Metadata[0])).events(
 					(Event[]) lEvents.toArray(new Event[0])).build();
 
-			// store the received DigitalObject in the JCR repository
-			DigitalObject digoOut = wfi.storeDigitalObjectInJCR(digoUpdated);
-			wfResultItem.addLogInfo("jcr: got Digo with permanent URI: "
-					+ digoOut.getPermanentUri());
-			wfResultItem.setOutputDigitalObject(digoOut);
+			
+			// decide in which repository to store the received DigitalObject
+			URI digoRef;
+			if(this.dataRepositoryID!=null){
+				digoRef = wfi.storeDigitalObjectInRepository(digoUpdated, dataRepositoryID);
+			}
+			else{
+				//in this case use the default data registry manager location for persisting
+				digoRef = wfi.storeDigitalObject(digoUpdated);
+			}
+			
+			wfResultItem.addLogInfo("got digital object with permanent URI: "
+					+ digoRef);
+			wfResultItem.setOutputDigitalObjectRef(digoRef);
 			wfResultItem.addLogInfo("migration completed");
 
-			return digoOut;
+			return digoRef;
 
 		} catch (Exception e) {
 			wfResultItem.addLogInfo("migration failed " + e);
