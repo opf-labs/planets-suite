@@ -338,12 +338,32 @@ public class ExecutionRecordImpl implements Serializable {
     
     /* -- */
     
+    /**
+     * since 15.03.2010
+     * updated to cope with shared data registry pointers for digital objects
+     * it does not copy the specified object into the TB's data space but just hooks in the 
+     * information into the experiment.
+     * @param dobRef
+     * @param exp
+     * @return
+     */
+    public URI setDigitalObjectResult(URI dobRef, Experiment exp){
+    	this.setResult(dobRef.toString());
+        this.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
+        return dobRef;
+    }
+    
+    /**
+     * stores the digital object within the TB's data store and hooks in the information
+     * into the experiment. 
+     * @param dob
+     * @param exp
+     * @return
+     */
     public URI setDigitalObjectResult( DigitalObject dob, Experiment exp ) {
         DataHandler dh = new DataHandlerImpl();
         URI storeUri = dh.storeDigitalObject(dob, exp);
-        this.setResult(storeUri.toString());
-        this.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
-        return storeUri;
+        return setDigitalObjectResult(storeUri, exp);
     }
     
     public void setDobRefResult( String storeKey ) {

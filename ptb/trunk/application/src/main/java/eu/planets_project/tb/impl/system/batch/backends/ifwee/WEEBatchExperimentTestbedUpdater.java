@@ -18,6 +18,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -55,12 +58,14 @@ public class WEEBatchExperimentTestbedUpdater {
 	private ExperimentPersistencyRemote edao;
 	private TestbedManager testbedMan;
 	private DataHandler dh;
+	private DataRegistry dataRegistry;
 	
 	public WEEBatchExperimentTestbedUpdater(){
 		tbWEEBatch = TestbedWEEBatchProcessor.getInstance();
 		edao = ExperimentPersistencyImpl.getInstance();
 		testbedMan = TestbedManagerImpl.getInstance();
 		dh = new DataHandlerImpl();
+		dataRegistry = DataRegistryFactory.getDataRegistry();
 
 	}
 	 
@@ -134,20 +139,21 @@ public class WEEBatchExperimentTestbedUpdater {
 				//1. check if this record was about the migration action
 				String action = wfResultItem.getSActionIdentifier();
 				if(action.startsWith(WorkflowResultItem.SERVICE_ACTION_MIGRATION)){
-					DigitalObject outputDigo = wfResultItem.getOutputDigitalObject();
-					if(outputDigo!=null){
+					URI outputDigoRef = wfResultItem.getOutputDigitalObjectRef();
+					if(outputDigoRef!=null){
+						//DigitalObject outputDigo = dataRegistry.retrieve(outputDigoRef);
 						//1.a download the ResultDigo into the TB and store it's reference - if it's the final migration producing the output object
 						if(action.equals(WorkflowResultItem.SERVICE_ACTION_FINAL_MIGRATION)){
 							//documenting the final output object
-							URI tbUri = execRecord.setDigitalObjectResult(outputDigo, exp);
+							URI tbUri = execRecord.setDigitalObjectResult(outputDigoRef, exp);
 							//FIXME: currently not possible to mix DIGO and PROPERTY result: 
 							p.put(ExecutionRecordImpl.RESULT_PROPERTY_URI, tbUri.toString());
 						}
 						else{
 						//1.b documenting the interim results in a multi-migration-workflow
-							DataHandler dh = new DataHandlerImpl();
-					        URI tbUri = dh.storeDigitalObject(outputDigo, exp);
-					        p.put(ExecutionRecordImpl.RESULT_PROPERTY_INTERIM_RESULT_URI+"["+actionCounter+"]", tbUri.toString());
+							//DataHandler dh = new DataHandlerImpl();
+					        //URI tbUri = dh.storeDigitalObject(outputDigo, exp);
+					        p.put(ExecutionRecordImpl.RESULT_PROPERTY_INTERIM_RESULT_URI+"["+actionCounter+"]", outputDigoRef.toString());
 						}
 						Calendar start = new GregorianCalendar();
 						start.setTimeInMillis(wfResultItem.getStartTime());
