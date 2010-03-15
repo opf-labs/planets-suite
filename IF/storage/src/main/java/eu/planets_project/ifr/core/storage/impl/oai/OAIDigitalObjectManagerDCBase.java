@@ -33,7 +33,7 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 	
 	protected static String DEFAULT_BASE_URL = "http://eprints.whiterose.ac.uk/cgi/oai2";
 	
-	private static String OAI_DC_BASE_URI = "planets://localhost:8080/dr/oai-dc";
+	public static String OAI_DC_BASE_URI = "planets://localhost:8080/dr/oai-dc";
 	
 	public static String OAI_DC_CHILD_URI = "oai:"; 
 	
@@ -73,6 +73,7 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 	public List<URI> list(URI pdURI) {
 		// The return array of URIs contains the contents for the passed URI
 		List<URI> retVal = new ArrayList<URI>(0);
+		log.info("OAIDigitalObjectManagerDCBase list() URI " + pdURI);
 
 		try {
 			if (pdURI.toString().equals(OAI_DC_BASE_URI)) {
@@ -96,11 +97,13 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 		public DigitalObject retrieve(URI pdURI)
 				throws DigitalObjectNotFoundException {
 			DigitalObject retObj = null;
+			log.info("OAIDigitalObjectManagerDCBase retrieve() URI " + pdURI);
 			
 			retObj = dom.retrieve(pdURI);
 			
 			return retObj;
 		}
+
 
 	    /**
 	     * {@inheritDoc}
