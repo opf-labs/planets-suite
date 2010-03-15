@@ -25,34 +25,28 @@ public class RemoteServiceCreationTests {
 
     private static final String ENDPOINT = "http://localhost:8080/pserv-pa-shotgun/ShotgunModify?wsdl";
     private static final String NAME = "Shotgun";
-    private static final String INTERFACE_NAME = "eu.planets_project.services.modify.Modify";
-    private static final String IMPLEMENTATION_NAME = "eu.planets_project.services.shotgun.ShotgunModify";
+    private static final String INTERFACE_NAME = Modify.class.getName();
     private static final DigitalObject DIGITAL_OBJECT = new DigitalObject.Builder(Content
             .byValue(new File("build.xml"))).build();
     private static final URI FORMAT = FormatRegistryFactory.getFormatRegistry().createExtensionUri("xml");
 
     @Test
     public void createService() throws MalformedURLException, ClassNotFoundException {
-        @SuppressWarnings("unchecked")/*
-                                       * Some casting nastiness as we can't reference a service implementation here
-                                       * (would fail compilation by Ant, as common does not depend on the services)
-                                       */
-        Modify modify = ServiceUtils.createService(Modify.QNAME, (Class<Modify>) Class.forName(IMPLEMENTATION_NAME),
-                new URL(ENDPOINT));
+        Modify modify = ServiceUtils.createService(Modify.QNAME, Modify.class, new URL(ENDPOINT));
         modify.modify(DIGITAL_OBJECT, FORMAT, null);
     }
 
     @Test
     public void createServiceFromDescription() throws MalformedURLException {
         ServiceDescription.Builder builder = new ServiceDescription.Builder(NAME, INTERFACE_NAME);
-        builder.classname(IMPLEMENTATION_NAME).endpoint(new URL(ENDPOINT));
+        builder.endpoint(new URL(ENDPOINT));
         ServiceDescription shotgun = builder.build();
         Modify modify = ServiceUtils.createService(shotgun);
         modify.modify(DIGITAL_OBJECT, FORMAT, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    /* We need endpoint, type and class name */
+    /* We need endpoint and type */
     public void invalidServiceCreation() {
         ServiceUtils.createService(new ServiceDescription.Builder(NAME, INTERFACE_NAME).build());
     }

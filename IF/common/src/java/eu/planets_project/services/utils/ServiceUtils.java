@@ -3,8 +3,6 @@
  */
 package eu.planets_project.services.utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import com.sun.xml.ws.developer.StreamingAttachmentFeature;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.MigrationPath;
-import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
@@ -174,16 +171,15 @@ public class ServiceUtils {
     /**
      * @param <T> The type of the implementation class to instantiate
      * @param interfaceName The QName of the service interface, e.g. Migrate.QNAME
-     * @param implementationClass The class of the instance to create, e.g. JTidy.class
+     * @param interfaceType The Class of the service interface, e.g. Migrate.class
      * @param wsdlLocation The full URL of the WSDL for the service to create
      * @return An instance of T, representing the service running at the given URL
      */
-    public static <T> T createService(QName interfaceName, Class<T> implementationClass, URL wsdlLocation) {
+    public static <T> T createService(QName interfaceName, Class<T> interfaceType, URL wsdlLocation) {
         log.info("INIT: Creating the proxied service class.");
         Service service = Service.create(wsdlLocation, interfaceName);
+        T ids = service.getPort(interfaceType, new MTOMFeature());
         /* Enable streaming, if supported by the service: */
-        @SuppressWarnings("unchecked") T ids = (T) service.getPort(implementationClass.getInterfaces()[0],
-                new MTOMFeature());
         ((BindingProvider) ids).getRequestContext().put(JAXWSProperties.HTTP_CLIENT_STREAMING_CHUNK_SIZE, 8096);
         SOAPBinding binding = (SOAPBinding) ((BindingProvider) ids).getBinding();
         binding.setMTOMEnabled(true);
@@ -194,18 +190,18 @@ public class ServiceUtils {
 
     /**
      * @param <T> The type of the service to create
-     * @param description The description to instantiate a service for. Needs endpoint, type and class name set
+     * @param description The description to instantiate a service for. Needs endpoint and type set
      * @return A service proxy for a service running at the descriptions endpoint
      */
     public static <T> T createService(ServiceDescription description) {
-        if (description.getEndpoint() == null || description.getType() == null || description.getClassname() == null) {
+        if (description.getEndpoint() == null || description.getType() == null) {
             throw new IllegalArgumentException(
-                    "Service description needs endpoint, type and class name to be instantiated.");
+                    "Service description needs endpoint and type to be instantiated.");
         }
         try {
             String type = description.getType();
-            @SuppressWarnings("unchecked")/* We have to assume the class name is correct */
-            Class<T> clazz = (Class<T>) Class.forName(description.getClassname());
+            @SuppressWarnings("unchecked") /* We have to assume the type is correct */
+            Class<T> clazz = (Class<T>) Class.forName(description.getType());
             /*
              * This assumes the type to be the full qualified interface name (which is what we do for our services).
              * Would getting the interface name from the class object created above be any better? (problem: order)
