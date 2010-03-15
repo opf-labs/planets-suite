@@ -31,13 +31,13 @@ public class ServiceRegistryFactoryRemoteTests extends RemoteServiceRegistryTest
          * Test retrieving a service registry instance from a specified WSDL location:
          */
         try {
-            ServiceRegistry remoteRegistry = ServiceRegistryFactory.getServiceRegistry(REGISTRY_WEBSERVICE_WSDL);
+            registry = ServiceRegistryFactory.getServiceRegistry(REGISTRY_WEBSERVICE_WSDL);
             /*
              * We fall back during testing if we are not running a server. Here, it makes no sense to use the
              * ServiceCreator as for the other tests, as we explicitly want to test the factory method that takes a full
              * WSDL location and returns the registry webservice at that location.
              */
-            return remoteRegistry != null && serverMode() ? remoteRegistry : fallBack();
+            return registry != null && serverMode() ? registry : fallBack();
         } catch (WebServiceException x) {
             /*
              * We need this particular case when we have a running server but are testing standalone:
