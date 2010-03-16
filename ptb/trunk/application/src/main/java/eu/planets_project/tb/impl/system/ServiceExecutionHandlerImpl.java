@@ -58,8 +58,6 @@ import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowDroidXCDLExtractorComparator;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
-import eu.planets_project.tb.impl.services.util.ServiceRequestBuilderImpl;
-import eu.planets_project.tb.impl.services.util.ServiceRespondsExtractorImpl;
 import org.w3c.dom.Document;
 
 /**
@@ -158,93 +156,6 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	
 
 	
-	
-	/**
-	 * 
-     * @param exp
-	 * @throws Exception 
-     */
-	@Deprecated
-    private void executeOldExperiment(Experiment exp) throws Exception {
-        ExperimentExecutable executable = exp.getExperimentExecutable();
-            //set the testbed's output file directory (e.g. tomcat55..)
-            this.setDir();
-            //stores the inputFiles with a mapping Map<position i,fileRef>
-            createInputDataMap(executable.getInputData());
-            //TBServiceTemplate which is registered within the admin wizard
-            TestbedServiceTemplate serTempl = executable.getServiceTemplate();
-            ServiceOperation selOperation = serTempl.getServiceOperation(
-                    executable.getSelectedServiceOperationName()
-                    );
-            
-            ServiceRequestBuilder requBuilder = new ServiceRequestBuilderImpl(
-                    selOperation.getXMLRequestTemplate(),this.hmInputFiles);
-            
-            //take the template and build the actual service request (containing file refs)
-            String serviceRequest = requBuilder.buildXMLServiceRequest();
-            boolean byValueCall = requBuilder.isCallByValue();
-            
-          //2) build the wsclient for invoking the call
-            //create the web service client
-            WSClientBean wsclient = createWSClient(serTempl,selOperation);
-            wsclient.setXmlRequest(serviceRequest);
-            executable.setServiceXMLRequest(serviceRequest);
-        
-          //3) Send the request and check if completed successfully
-            executable.setExecutionStartDate(new GregorianCalendar().getTimeInMillis());
-            String message = wsclient.sendRequest();
-            executable.setExecutionEndDate(new GregorianCalendar().getTimeInMillis());
-            if(!message.equals("success-send")){
-                log.error("WSClientbean error sending request");
-                throw new ServiceInvocationException("error-send");
-            }
-            
-          //4) Fetch the results from the service's responds
-            String xPathToOutput = selOperation.getXPathToOutput();
-            String xmlResponds = wsclient.getXmlResponse();
-            executable.setServiceXMLResponds(xmlResponds);
-            ServiceRespondsExtractor respondsExtractor = new ServiceRespondsExtractorImpl(xmlResponds, xPathToOutput);
-            //Structure: <int position+"",String fileRefToServiceOutput>
-            Map<String,String> mapResults = respondsExtractor.getAllOutputs();
-            //test if there was any outputdata retrieved successfully
-            if((mapResults==null)||(mapResults.size()<1)){
-                throw new InvalidInputException("Could not retireve output data from the xmlResult");
-            }
-            //if migration experiment, move the file output to the TB's repository
-            boolean bMigration = selOperation.getServiceOperationType().equals(
-                    selOperation.SERVICE_OPERATION_TYPE_MIGRATION
-                    );
-            if(bMigration){
-                //if data was called byValue (e.g. Base64 file) and not by reference - decode the data into local file refs
-                if(byValueCall){
-                    Map<String,String> createdResults = this.createFilesFromBase64Result(mapResults,selOperation.getOutputFileType());
-                    mapResults = createdResults;
-                }else{
-                //take the migration output file refs and copy them into the TB's output dir
-                //this step also renames them to their input file name
-                Map<String,String> movedResults = this.copyFileOutputToOutputDir(mapResults);
-                mapResults = movedResults;
-                }
-            }
-            
-         //5) write the characterisation results or the migration (copied and renamed) file refs
-            //into the experiment's executable - this may take null values for some outputs
-            Iterator<String> itKeys = mapResults.keySet().iterator();
-            while(itKeys.hasNext()){
-                String key = itKeys.next();
-                executable.setOutputData(this.hmInputFiles.get(key), mapResults.get(key));
-            }
-            
-         //6) final check for execution success
-            if (executable.getOutputData().size()<=0){
-                //in this case no outputdata at all was extracted: experiment success is not true
-                throw new InvalidInputException("Could not retireve any output data for the experiments");
-            }
-    
-            executable.setExecutionCompleted(true);
-            executable.setExecutionSuccess(true);
-            
-    }
 
     /**
 	 * Takes the added data and builds up a map structure with the position number

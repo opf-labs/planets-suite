@@ -18,6 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -81,10 +82,13 @@ public class ExecutionStageRecordImpl implements Serializable {
     
     // The set of measured properties.
     // TODO Replace these old forms with the measurement events, below:
+    @Lob
     private Vector<MeasurementRecordImpl> measurements = new Vector<MeasurementRecordImpl>();
+    @Lob
     private Vector<MeasurementRecordImpl> manualMeasurements = new Vector<MeasurementRecordImpl>();
     
     /** The endpoint invoked during this stage */
+    @Lob
     private URL endpoint;
 
     /** The record of the service description at this time */
@@ -98,6 +102,7 @@ public class ExecutionStageRecordImpl implements Serializable {
     private Set<InvocationParameterImpl> parameters = new HashSet<InvocationParameterImpl>();
     
     /** The input digital object(s), as Data Registry URIs stored as Strings */
+    @Lob
     private Vector<String> inputs = new Vector<String>();
     
     /** Did the service complete successfully. i.e. produced an {Action}Result and ServiceReport. */
@@ -125,12 +130,14 @@ public class ExecutionStageRecordImpl implements Serializable {
      *   WARN: Warning.
      *   ERROR: Reason.
       */
+    @Lob
     private Vector<String> serviceLog = new Vector<String>();
     
     /* FIXME Add other output types? Like the WorkflowResult? Prob not necessary at per-invocation level right now. */
     
     /** The output digital object(s), as DR URIs, stored as strings: */
     //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @Lob
     private Vector<String> outputs = new Vector<String>();
     
     /** The measurements about this invocation */

@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -41,8 +42,10 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	//Note: HashMap<BenchmarkGoalID, BenchmarkGoal>
+    @Lob
 	private HashMap<String, BenchmarkGoalImpl> experimentBenchmarkGoals;
 	//Note: URI: inputFile is the key, String: BenchmarkGoalID
+    @Lob
 	private HashMap<URI,HashMap<String,BenchmarkGoalImpl>> fileBenchmarkGoals;
 	//Note: HashMap<BenchmarkGoalID, BenchmarkGoal>
 
@@ -51,10 +54,13 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	private boolean bExpSetupImputValuesSet;
 	
 	//the property evaluation records for a given inputDigitalObjectRef over all stages
+    @Lob
 	private HashMap<String, ArrayList<PropertyEvaluationRecordImpl>> propertyEvalRecordsByInputDigoRef = new HashMap<String, ArrayList<PropertyEvaluationRecordImpl>>();
 	//the overall experiment evaluation information HashMap<PropertyURI,Integer>
+    @Lob
 	private HashMap<String,Integer> overallPropertyEvalWeights = new HashMap<String,Integer>();
 	//contains a list of digital object references that contain external evluation files (e.g. excel sheets, etc.)
+    @Lob
 	private ArrayList<String> lExternalEvalDocumentents = new ArrayList<String>();
 	
 	//a helper reference pointer, for retrieving the experiment in the phase

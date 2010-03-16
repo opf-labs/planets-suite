@@ -15,6 +15,7 @@ import java.util.Vector;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -56,9 +57,17 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	private String sExperimentApproach;
 	private long lExperimentStructureReference;
 	
-	private Vector<String> vExpObjectTypes, vExpToolTypes, vExpDigiTypes;
+    @Lob
+    private Vector<String> vExpObjectTypes;
+    @Lob
+    private Vector<String> vExpToolTypes;
+    @Lob
+    private Vector<String> vExpDigiTypes;
+    @Lob
 	private Vector<Long> vRefExpIDs;
+    @Lob
 	private Vector<String>vInvolvedUsers;
+    @Lob
 	private HashMap<String,Vector<String>> hmLiteratureReference;
 	//private HashMap<Long,Vector<Integer>> hmInvolvedUserSpecialExperimentRoles;
 

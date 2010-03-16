@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.xpath.XPath;
@@ -54,7 +55,8 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
     private static final long serialVersionUID = 6394812915770350751L;
     
     //contains a mapping of the TB BenchmarkGoalID to the ID(name) used within the service's BMGoal result
-	private HashMap<String, String> mappingGoalIDToPropertyID = new HashMap<String, String>(); 
+    @Lob
+    private HashMap<String, String> mappingGoalIDToPropertyID = new HashMap<String, String>(); 
 	private String sXPathForBMGoalRootNodes = "/*//property";
 	//the extracted property's name
 	private String sXPathForBMGoalName = "@name";

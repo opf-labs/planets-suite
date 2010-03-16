@@ -20,6 +20,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -52,11 +53,14 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	//not only the registered Service Operations - note: non registered ones cannot be invoked
 	// FIXME: Should this be in the XML? Only can be if a real class (not inner).
     @XmlTransient
+    @Lob
 	private Vector<ServiceOperationImpl> lAllRegisteredServiceOperations;
 	//all Operation Names within the WSDL not only the registered ones that can be executed via the TB
 	//Note: to persist this object it's impl and not its interface is required here
+    @Lob
 	private Vector<String> lAllOperationNamesFromWSDL;
     //all tag names and values that have been registered for this service
+    @Lob
 	private Vector<ServiceTagImpl> lTags;
 	//records the service's first deployment data
 	private Calendar deploymentDate = new GregorianCalendar();

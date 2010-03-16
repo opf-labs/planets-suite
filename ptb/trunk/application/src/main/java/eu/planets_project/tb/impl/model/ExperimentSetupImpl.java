@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -48,6 +49,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	//BenchmarkGoals:
 	//private boolean bBenchmarkGoalListFinal;
 	//the structure: HashMap<BenchmarkGoal.getXMLID,BenchmarkGoal>();
+    @Lob
 	private HashMap<String,BenchmarkGoalImpl> hmBenchmarkGoals;
 	
 	@OneToOne(cascade={CascadeType.ALL})

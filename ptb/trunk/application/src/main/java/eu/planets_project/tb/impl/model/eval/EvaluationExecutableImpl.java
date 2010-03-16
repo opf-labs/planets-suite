@@ -1,6 +1,7 @@
 package eu.planets_project.tb.impl.model.eval;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -32,6 +33,7 @@ import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 public class EvaluationExecutableImpl extends ExecutableImpl implements EvaluationExecutable, java.io.Serializable, Cloneable{
 
 	//no one-to-one annotation, as we want to persist this data by value and not per reference
+    @Lob
 	private EvaluationTestbedServiceTemplateImpl tbServiceTemplate;
 	private String sXCDLSource, sXCDLTarget, sXCDLComparison;
 	

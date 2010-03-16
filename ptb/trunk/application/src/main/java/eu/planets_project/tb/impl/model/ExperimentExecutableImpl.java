@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -66,15 +67,19 @@ import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
 public class ExperimentExecutableImpl extends ExecutableImpl implements ExperimentExecutable, java.io.Serializable {
 
     /** A hashmap for the parameters */
+    @Lob
     private HashMap<String,String> parameters = new HashMap<String,String>();
     
 	//hashmap of local file refs for input and output data of service execution
 	//note: C:/DATA/ rather than http://localhost:8080/testbed/
+    @Lob
 	private HashMap<String,String> hmInputOutputData = new HashMap<String,String>();
 	
     /** The list of automatically measurable properties that should be measured during the experiment. */
+    @Lob
     private Vector<String> properties = new Vector<String>();
     /** The list of manually measurable property IDs per stage */
+    @Lob
     private HashMap<String,Vector<String>> manualProperties = new HashMap<String, Vector<String>>();
 
     /** The log of executed experiment results */
@@ -85,10 +90,12 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
     private String workflowType;
     
 	//no one-to-one annotation, as we want to persist this data by value and not per reference
+    @Lob
 	private TestbedServiceTemplateImpl tbServiceTemplate;
 	private String sSelectedServiceOperationName="";
 	
 	/** Information required for switching to WEE backend (TB version-1.0) - Start*/
+    @Lob
 	private WorkflowConf weeworkflowConfig;
 	private String batchExecutionSystemIdentifier="";
 	/** Information required for switching to WEE backend - End*/

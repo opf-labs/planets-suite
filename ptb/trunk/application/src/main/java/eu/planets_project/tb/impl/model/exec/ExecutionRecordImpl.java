@@ -21,8 +21,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -96,18 +99,22 @@ public class ExecutionRecordImpl implements Serializable {
     private BatchExecutionRecordImpl batch;
     
     // The source Digital Object - original URL.
+    @Column(columnDefinition="VARCHAR(10000)")
     private String digitalObjectSource;
     
     // The identity of the internally cached copy (from the DataHandler)
+    @Column(columnDefinition="VARCHAR(10000)")
     private String digitalObjectReferenceCopy;
     
     // A fixity check for this digital object.
     private String digitalObjectFixity;
     
     // The start date of this invocation:
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar startDate;
     
     // The end date of this invocation:
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar endDate;
     
     /** The sequence of stages of this experiment. */
@@ -121,13 +128,15 @@ public class ExecutionRecordImpl implements Serializable {
     private Set<InvocationRecordImpl> serviceCalls = new HashSet<InvocationRecordImpl>();
     */
    
+    //FIXME Use @Lob on the things I had to make LONGBLOB
+    
     // The 'Result'
     private String resultType;
-    //FIXME Use @Lob on the things I had to make LONGBLOB
     @Column(columnDefinition="VARCHAR(10000)")
     private String result;
     
     // The 'Report Log' for this digital object
+    @Lob
     private Vector<String> reportLog = new Vector<String>();
 
     /** For JAXB */

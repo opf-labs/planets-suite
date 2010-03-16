@@ -4,6 +4,7 @@ import java.util.Hashtable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
 public class TestBean implements java.io.Serializable{
@@ -11,6 +12,8 @@ public class TestBean implements java.io.Serializable{
 	private int id;
 	private String name;
 	private String description;
+	
+    @Lob
 	private Hashtable<Integer,String> htable;
 	
 	public TestBean(){

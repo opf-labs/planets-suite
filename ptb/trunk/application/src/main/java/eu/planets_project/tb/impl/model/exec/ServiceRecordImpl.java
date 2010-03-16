@@ -19,6 +19,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -78,12 +79,13 @@ public class ServiceRecordImpl implements Serializable {
     private Calendar dateFirstSeen;
     
     /** List of experiment IDs that saw this service record. */
+    @Lob
     HashSet<Long> experimentIds = new HashSet<Long>();
     
     /** The service invocation records */
     /*
     @OneToMany(cascade=CascadeType.ALL, mappedBy="serviceRecord", fetch=FetchType.EAGER)
-    private Set<InvocationRecordImpl> invocations = new HashSet<InvocationRecordImpl>();
+    private Set<ExecutionStageRecordImpl> invocations = new HashSet<ExecutionStageRecordImpl>();
     */
     
     
@@ -92,6 +94,12 @@ public class ServiceRecordImpl implements Serializable {
     @XmlTransient
     ServiceDescription cached_sd = null;
 
+    /** 
+     * Default constructor. For JAXB.
+     */
+    private ServiceRecordImpl() {
+    }
+    
     /**
      * @return the id
      */
