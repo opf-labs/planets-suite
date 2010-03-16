@@ -135,16 +135,19 @@ public interface WorkflowTemplate extends Serializable{
      */
     public URI storeDigitalObject(DigitalObject digoToStore) throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException;
     
-    /**
+       /**
      * a shortcut for storing a digital object in a specified data repository
      * @param digoToStore
      * @param repositoryID the data repository identifier specified in the planets:// namespace.
      * e.g. 'planets://localhost:8080/dr/planets-jcr'
+     * @param objectLocation The suggested URI to associate with the stored object
      * @return
      * @throws DigitalObjectManagerNotFoundException
      * @throws DigitalObjectNotStoredException
      */
+    public URI storeDigitalObjectInRepository(URI objectLocation, DigitalObject digoToStore, URI repositoryID) throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException;
     public URI storeDigitalObjectInRepository(DigitalObject digoToStore, URI repositoryID) throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException;
+
     
     /**
      * returns a handle to the DataRegistry which can then be used to subsequently storing digital objects

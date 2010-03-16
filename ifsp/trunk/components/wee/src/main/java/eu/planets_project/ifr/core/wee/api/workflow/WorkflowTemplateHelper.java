@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -29,6 +30,8 @@ import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManager
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.ReportingLog;
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.services.PlanetsService;
@@ -54,8 +57,9 @@ public abstract class WorkflowTemplateHelper implements Serializable {
     private List<DigitalObject> data = new ArrayList<DigitalObject>();
     private UUID wfInstanceUUID = null;
     //FIXME: change this to DigitalObjectManager after the interface has been updated
-    private JcrDigitalObjectManagerImpl dom = (JcrDigitalObjectManagerImpl)JcrDigitalObjectManagerImpl.getInstance();
+    //private JcrDigitalObjectManagerImpl dom = (JcrDigitalObjectManagerImpl)JcrDigitalObjectManagerImpl.getInstance();
     private WorkflowContext wfContext = null;
+    private DataRegistry dataRegistry = DataRegistryFactory.getDataRegistry();
     
     /*
      * All services with a Planets interface can be used within a given
@@ -315,7 +319,7 @@ public abstract class WorkflowTemplateHelper implements Serializable {
      */
     public URI storeDigitalObject(DigitalObject digoToStore) 
     	throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException{
-		
+    	
     	return this.getDataRegistry().getDefaultDigitalObjectManager().storeAsNew(digoToStore);
     }
        
@@ -325,8 +329,18 @@ public abstract class WorkflowTemplateHelper implements Serializable {
      */
     public URI storeDigitalObjectInRepository(DigitalObject digoToStore, URI repositoryID) 
     	throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException{
-    		
-		return this.getDataRegistry().getDigitalObjectManager(repositoryID).storeAsNew(digoToStore);
+		
+    	return this.getDataRegistry().getDigitalObjectManager(repositoryID).storeAsNew(digoToStore);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#storeDigitalObject
+     */
+    public URI storeDigitalObjectInRepository(URI objectLocation, DigitalObject digoToStore, URI repositoryID) 
+    	throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException{
+		
+    	return this.getDataRegistry().getDigitalObjectManager(repositoryID).storeAsNew(objectLocation,digoToStore);
     }
     
     /*
@@ -334,7 +348,7 @@ public abstract class WorkflowTemplateHelper implements Serializable {
      * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getDataRegistry
      */
     public DataRegistry getDataRegistry(){
-    	return DataRegistryFactory.getDataRegistry();
+    	return this.dataRegistry;
     }
     
     /*

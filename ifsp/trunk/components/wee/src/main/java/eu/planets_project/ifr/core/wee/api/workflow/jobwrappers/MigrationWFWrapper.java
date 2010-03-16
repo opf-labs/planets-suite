@@ -1,16 +1,21 @@
 package eu.planets_project.ifr.core.wee.api.workflow.jobwrappers;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowContext;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Event;
 import eu.planets_project.services.datatypes.Metadata;
@@ -46,6 +51,7 @@ public class MigrationWFWrapper {
 	private URI outputFormat;
 	private URI dataRepositoryID;
 	private DataRegistry dataRegistry;
+	private static FormatRegistry fr;
 
 	/**
 	 * The default constructor.
@@ -77,6 +83,7 @@ public class MigrationWFWrapper {
 		this.endOfRoundtripp = endOfRoundtripp;
 		this.dataRepositoryID = dataRepositoryID;
 		this.dataRegistry = DataRegistryFactory.getDataRegistry();
+		this.fr = FormatRegistryFactory.getFormatRegistry();
 	}
 	
 	/**
@@ -253,6 +260,7 @@ public class MigrationWFWrapper {
 			// create an updated DigitalObject containing the Migration-Event
 			// note, as the FileSystemDigoManager requires a title != null, we'll use a random one here
 			String title = (migOutput.getTitle()==null) ? UUID.randomUUID()+"" : migOutput.getTitle();
+			URI suggStorageURI = helperCreateDOMURIWithFileExtension(wfi.getWorklowInstanceID(),digOToMigrateRef,dataRepositoryID,migrateToURI);
 			DigitalObject digoUpdated = new DigitalObject.Builder(migOutput
 					.getContent()).title(title).permanentUri(
 					migOutput.getPermanentUri()).manifestationOf(
@@ -266,7 +274,7 @@ public class MigrationWFWrapper {
 			// decide in which repository to store the received DigitalObject
 			URI digoRef;
 			if(this.dataRepositoryID!=null){
-				digoRef = wfi.storeDigitalObjectInRepository(digoUpdated, dataRepositoryID);
+				digoRef = wfi.storeDigitalObjectInRepository(suggStorageURI, digoUpdated, dataRepositoryID);
 			}
 			else{
 				//in this case use the default data registry manager location for persisting
@@ -343,5 +351,60 @@ public class MigrationWFWrapper {
 		return migrateEvent;
 
 	}
+	
+    /**
+     * Returns a repository URI which can be used for persisting this object under
+     * a self-specified name.
+     * No actual checking that the document format at hand really corresponds to the
+     * given file extension we're setting
+     * @param title
+     * @param domURI the DigitalObjectManager to use 
+     * @param formatID the migration's expected output format: e.g. planets:fmt/ext/jpeg
+     * @return
+     */
+    private URI helperCreateDOMURIWithFileExtension(UUID workflowInstanceID, URI originatorURI, URI domUri, URI formatID){
+        
+    	String uriPath;
+    	String name = null,extension = null;
+        try {
+	    	//1a. first try to extract some naming information from the originator
+	    	if(originatorURI!=null){
+	    		String path = originatorURI.getPath();
+				int iSlash = path.lastIndexOf("/");
+				if(iSlash!=-1){
+					name = path.substring(iSlash+1,path.length());
+				}else{
+					name = path;
+				}
+				//then try to assign an extension
+		    	if(formatID==null){
+		     	   //FIXME: in case that formatID == null we should have a statically configured service as droid in place to extract this information
+		     	  throw new Exception("no format ID specified");
+		        }
+		        extension = fr.getFirstExtension(formatID);
+		        if(extension!=null){
+		        	name+="."+extension;
+		        }
+	    	}
+	    	//1b. or assign a random one if no originator information is available
+	    	if((originatorURI==null)||(extension==null)){
+	    		name = UUID.randomUUID()+"";
+	    	}
+	        
+	        //finally build up the intended storage URI using the workflowID as folder
+	    	if(workflowInstanceID!=null){
+	    		uriPath = "/"+workflowInstanceID+"/"+name;
+	    	}
+	    	else{
+	    		//in this case use some random path
+	    		uriPath = "/"+UUID.randomUUID()+"/"+name;
+	    	}
+        
+			return new URI(domUri.getScheme(),domUri.getAuthority(),domUri.getPath()+uriPath,null,null).normalize();
+		
+        } catch (Exception e) {
+			return null;
+		}
+     }
 
 }
