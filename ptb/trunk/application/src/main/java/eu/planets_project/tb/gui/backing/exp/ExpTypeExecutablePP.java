@@ -91,7 +91,6 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
     private String currXMLConfigTempFileURI;
 	//Current experiment ID for checking if the reinit must be called.
 	//private String currExpId="";
-    private List<String> lTempFileDownloadLinkForWEEWFResults;
     public static final String EXP_TYPE_SESSION_MAP = "exp_type_executable_pp_sessionMap";
     
 	
@@ -129,7 +128,6 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
 	    bWfTemplateAvailableInRegistry = false;
 	    currXMLConfigHashCode=0;
 	    currXMLConfigTempFileURI = null;
-	    lTempFileDownloadLinkForWEEWFResults = new ArrayList<String>();;
 	}
 	
 	/**
@@ -1164,47 +1162,6 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
 
         // Now return the results:
         return results;
-    }
-    
-    /**
-     * Get download links for all BatchExecutionRecordImpl - in future we're only
-     * gonna have one batchRecord anyway.
-     * @return
-     */
-    public List<String> getTempFileDownloadLinkForWEEWFResults(){
-    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	if(expBean.getExperiment()==null){
-			//this is the case when the 'new experiment' hasn't been persisted
-			return new ArrayList<String>();
-		}
-    	//check if we need to update the cache
-    	if(expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords().size()!=lTempFileDownloadLinkForWEEWFResults.size()){
-    		lTempFileDownloadLinkForWEEWFResults = new ArrayList<String>();
-    		for(BatchExecutionRecordImpl batchRec : expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords()){
-				if((batchRec.getWorkflowExecutionLog()!=null)&&(batchRec.getWorkflowExecutionLog().getSerializedWorkflowResult()!=null)){
-					//create a temp file for this.
-					DataHandler dh = new DataHandlerImpl();
-					try {
-						//get a temporary file
-						File f = dh.createTempFileInExternallyAccessableDir();
-						Writer out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(f), "UTF-8" ) );
-						out.write(batchRec.getWorkflowExecutionLog().getSerializedWorkflowResult());
-						out.close();
-						lTempFileDownloadLinkForWEEWFResults.add(""+dh.getHttpFileRef(f));
-					} catch (Exception e) {
-						log.debug("Error getting getTempFileDownloadLinkForWEEWFResults "+e);
-						return new ArrayList<String>();
-					}
-				}
-				else{
-					return new ArrayList<String>();
-				}
-			}
-    	}else{
-    		//just return the cached object
-    		return lTempFileDownloadLinkForWEEWFResults;
-    	}
-		return lTempFileDownloadLinkForWEEWFResults;
     }
 
 	/* (non-Javadoc)

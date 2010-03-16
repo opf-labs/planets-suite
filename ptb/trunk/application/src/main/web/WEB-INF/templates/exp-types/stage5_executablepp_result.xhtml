@@ -58,12 +58,6 @@
           <rich:datascroller id="dolist_ds" renderIfSinglePage="false"></rich:datascroller>
         </f:facet>
      </rich:dataTable>
-     
-     <a4j:repeat value="#{ExpTypeExecutablePP.tempFileDownloadLinkForWEEWFResults}" var="wfresultLogFiles" rowKeyVar="count">
-     	<h:outputLink value="#{wfresultLogFiles}" target="_blank">
-       		<h:outputText value="batch processor log #{count+1}"/>
-       	</h:outputLink><br/>
-     </a4j:repeat>
 
   </ui:composition>
 </body>

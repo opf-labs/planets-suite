@@ -1,6 +1,11 @@
 package eu.planets_project.tb.gui.backing;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -2426,5 +2431,49 @@ public class ExperimentBean {
    }
    public String getResultChartIdentifier() {
        return this.graphId;
+   }
+   /*---------------------end Chart stuff ------------------*/
+   
+   
+   private List<String> lTempFileDownloadLinkForWEEWFResults = new ArrayList<String>();;
+   /**
+    * Get download links for all BatchExecutionRecordImpl - in future we're only
+    * gonna have one batchRecord anyway.
+    * @return
+    */
+   public List<String> getTempFileDownloadLinkForWEEWFResults(){
+   	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+   	if(expBean.getExperiment()==null){
+			//this is the case when the 'new experiment' hasn't been persisted
+			return new ArrayList<String>();
+		}
+   	//check if we need to update the cache
+   	if(expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords().size()!=lTempFileDownloadLinkForWEEWFResults.size()){
+   		lTempFileDownloadLinkForWEEWFResults = new ArrayList<String>();
+   		for(BatchExecutionRecordImpl batchRec : expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords()){
+				if((batchRec.getWorkflowExecutionLog()!=null)&&(batchRec.getWorkflowExecutionLog().getSerializedWorkflowResult()!=null)){
+					//create a temp file for this.
+					DataHandler dh = new DataHandlerImpl();
+					try {
+						//get a temporary file
+						File f = dh.createTempFileInExternallyAccessableDir();
+						Writer out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(f), "UTF-8" ) );
+						out.write(batchRec.getWorkflowExecutionLog().getSerializedWorkflowResult());
+						out.close();
+						lTempFileDownloadLinkForWEEWFResults.add(""+dh.getHttpFileRef(f));
+					} catch (Exception e) {
+						log.debug("Error getting getTempFileDownloadLinkForWEEWFResults "+e);
+						return new ArrayList<String>();
+					}
+				}
+				else{
+					return new ArrayList<String>();
+				}
+			}
+   	}else{
+   		//just return the cached object
+   		return lTempFileDownloadLinkForWEEWFResults;
+   	}
+		return lTempFileDownloadLinkForWEEWFResults;
    }
 }

@@ -5,8 +5,13 @@ package eu.planets_project.tb.gui.backing.exp;
 
 import java.io.ByteArrayOutputStream;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.net.URI;
@@ -56,6 +61,7 @@ import eu.planets_project.tb.gui.backing.exp.utils.ExpTypeWeeUtils;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
@@ -71,7 +77,6 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
     private ExpTypeWeeUtils expTypeWeeUtils;
     //contains the specified parameters for a given serviceEndpoint
     private HashMap<String, Parameters> serviceParams = new HashMap<String,Parameters>();
-    
     
     public ExpTypeMigrate(){
     	this.initBean();

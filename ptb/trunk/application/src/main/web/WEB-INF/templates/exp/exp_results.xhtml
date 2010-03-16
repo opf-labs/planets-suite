@@ -112,6 +112,13 @@
           <h:outputText value="Click here to download data from all runs, in CSV format..."/>
         </h:outputLink>
     </p>
+    <p>
+     <a4j:repeat value="#{ExperimentBean.tempFileDownloadLinkForWEEWFResults}" var="wfresultLogFiles" rowKeyVar="count">
+     	<h:outputLink value="#{wfresultLogFiles}" target="_blank">
+       		<h:outputText value="Click here to download the batch processor log..."/>
+       	</h:outputLink><br/>
+     </a4j:repeat>
+    </p>
     </fieldset>
 
   </h:panelGroup>
