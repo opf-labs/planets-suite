@@ -114,6 +114,7 @@
 	<classpathentry kind="lib" path="PC/odfvalidator/lib/jdom.jar" sourcepath="E:/JDOM/jdom-1.1.1.zip"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/commons-io-1.4.jar" sourcepath="IF/common/lib/commons-io-1.4-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
@@ -133,7 +134,7 @@
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar" sourcepath="E:/JDOM/jdom-1.1.1/jdom/src"/>
 	<classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar"/>
-	<classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar" sourcepath="PC/metadata/lib/metadata-src.zip"/>
 	<classpathentry kind="lib" path="lib/endorsed/activation.jar"/>
 	<classpathentry kind="lib" path="IF/storage/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jsf-api.jar"/>
@@ -152,7 +153,6 @@
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
 	<classpathentry kind="lib" path="IF/storage/lib/oai4j-0.6b1.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar" sourcepath="E:/ODFValidator/SOURCE/src"/>
 	<classpathentry kind="lib" path="lib/standalone/jsf-facelets.jar"/>
 	<classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar"/>
