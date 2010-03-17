@@ -34,8 +34,8 @@ public class GenericMigrationWrapperTest {
     /**
      */
     public GenericMigrationWrapperTest() throws Exception {
-	sourceFormatURI = new URI("info:planets/fmt/ext/lowercase");
-	destinationFormatURI = new URI("info:planets/fmt/ext/uppercase");
+	sourceFormatURI = new URI("planets:fmt/ext/lowercase");
+	destinationFormatURI = new URI("planets:fmt/ext/uppercase");
     }
 
     @Before
@@ -62,6 +62,7 @@ public class GenericMigrationWrapperTest {
     public void testDescribe() {
 	// FIXME! Make a meaningful implementation.
 	ServiceDescription sb = genericWrapper.describe();
+	sb.getAuthor(); // Now sb is used :-)
     }
 
     @Test

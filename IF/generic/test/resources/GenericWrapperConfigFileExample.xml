@@ -209,8 +209,8 @@
                         file formats are available in several revisions. However, if a
                         format is unknown to PRONOM (or whatever registry that is being
                         used) and thus it is necessary to "invent" a format URI, then it
-                        should be on the form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR
-                        HERE>"
+                        should be on the form: "planets:fmt/ext/<PUT FORMAT
+                        DESCRIPTOR / FILE EXTENSION HERE>"
                     -->
 
                 <uri value="info:pronom/x-fmt/91" />
@@ -228,7 +228,7 @@
                         available in several revisions. However, if a format is unknown to
                         PRONOM (or whatever registry that is being used) and thus it is
                         necessary to "invent" a format URI, then it should be on the form:
-                        "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>"
+                        "planets:fmt/ext/<PUT FORMAT DESCRIPTOR / FILE EXTENSION HERE>"
                     -->
 
                 <uri value="info:pronom/fmt/16" />
@@ -503,11 +503,11 @@
                         file formats are available in several revisions. However, if a
                         format is unknown to PRONOM (or whatever registry that is being
                         used) and thus it is necessary to "invent" a format URI, then it
-                        should be on the form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR
-                        HERE>" - like in the example below.
+                        should be on the form: "planets:fmt/ext/<PUT FORMAT DESCRIPTOR /
+                        FILE EXTENSION HERE>" - like in the example below.
                     -->
 
-                <uri value="info:planets/fmt/ext/lowercase" />
+                <uri value="planets:fmt/ext/lowercase" />
             </inputformats>
 
             <outputformat>
@@ -519,11 +519,11 @@
                         available in several revisions. However, if a format is unknown to
                         PRONOM (or whatever registry that is being used) and thus it is
                         necessary to "invent" a format URI, then it should be on the form:
-                        "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>" - like in the
-                        example below.
+                        "planets:fmt/ext/<PUT FORMAT DESCRIPTOR / FILE
+                        EXTENSION HERE>" - like in the example below.
                     -->
 
-                <uri value="info:planets/fmt/ext/uppercase" />
+                <uri value="planets:fmt/ext/uppercase" />
             </outputformat>
 
             <commandline>
@@ -1025,11 +1025,11 @@
                         file formats are available in several revisions. However, if a
                         format is unknown to PRONOM (or whatever registry that is being
                         used) and thus it is necessary to "invent" a format URI, then it
-                        should be on the form: "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR
+                        should be on the form: "planets:fmt/ext/<PUT FORMAT DESCRIPTOR
                         HERE>" - like in the example below.
                     -->
 
-                <uri value="info:planets/fmt/ext/foo" />
+                <uri value="planets:fmt/ext/foo" />
             </inputformats>
 
             <outputformat>
@@ -1042,11 +1042,11 @@
                         available in several revisions. However, if a format is unknown to
                         PRONOM (or whatever registry that is being used) and thus it is
                         necessary to "invent" a format URI, then it should be on the form:
-                        "info:planets/fmt/ext/<PUT FORMAT DESCRIPTOR HERE>" - like in the
+                        "planets:fmt/ext/<PUT FORMAT DESCRIPTOR HERE>" - like in the
                         example below.
                     -->
 
-                <uri value="info:planets/fmt/ext/bar" />
+                <uri value="planets:fmt/ext/bar" />
             </outputformat>
 
             <commandline>

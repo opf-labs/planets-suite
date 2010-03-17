@@ -144,10 +144,10 @@ public class ServiceDescriptionFactoryTest {
     private Set<URI> getExpectedInputFormats() throws URISyntaxException {
 	final Set<URI> expectedInputFormats = new HashSet<URI>();
 	expectedInputFormats.add(new URI("info:pronom/x-fmt/408"));
-	expectedInputFormats.add(new URI("info:planets/fmt/ext/lowercase"));
+	expectedInputFormats.add(new URI("planets:fmt/ext/lowercase"));
 	expectedInputFormats.add(new URI("info:pronom/x-fmt/407"));
 	expectedInputFormats.add(new URI("info:pronom/x-fmt/406"));
-	expectedInputFormats.add(new URI("info:planets/fmt/ext/foo"));
+	expectedInputFormats.add(new URI("planets:fmt/ext/foo"));
 	expectedInputFormats.add(new URI("info:pronom/x-fmt/91"));
 	return expectedInputFormats;
     }
@@ -259,8 +259,8 @@ public class ServiceDescriptionFactoryTest {
 	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
 
 	// Construct a path for migration from lowercase to uppercase.
-	inputFormat = new URI("info:planets/fmt/ext/lowercase");
-	outputFormat = new URI("info:planets/fmt/ext/uppercase");
+	inputFormat = new URI("planets:fmt/ext/lowercase");
+	outputFormat = new URI("planets:fmt/ext/uppercase");
 
 	parameters = new ArrayList<Parameter>();
 
@@ -437,8 +437,8 @@ public class ServiceDescriptionFactoryTest {
 	paths.add(new MigrationPath(inputFormat, outputFormat, parameters));
 
 	// Construct a path for migration from lowercase to uppercase.
-	inputFormat = new URI("info:planets/fmt/ext/foo");
-	outputFormat = new URI("info:planets/fmt/ext/bar");
+	inputFormat = new URI("planets:fmt/ext/foo");
+	outputFormat = new URI("planets:fmt/ext/bar");
 
 	parameters = new ArrayList<Parameter>();
 

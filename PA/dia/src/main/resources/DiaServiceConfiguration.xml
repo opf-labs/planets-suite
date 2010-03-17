@@ -1,117 +1,126 @@
 <serviceWrapping version="1.0">
 
-	<serviceDescription>
+    <serviceDescription>
 
-		<title>
-			Dia migration service.
+        <title>
+            Dia migration service.
         </title>
 
-		<description>
-			Migration of formats that can be handled by Dia. E.g.
-			migration from Dia files to a variety of other formats such as Fig,
-			SVG and PNG, but also migration between non-Dia formats. E.g.
-			migration from Fig to SVG.  
+        <description>
+            Migration of formats that can be handled by Dia. E.g.
+            migration from Dia files to a variety of other formats such as Fig,
+            SVG and PNG, but also migration between non-Dia formats. E.g.
+            migration from Fig to SVG.  
         </description>
 
-		<tool>
-			<name>
-				dia
+        <tool>
+            <name>
+                dia
             </name>
 
-			<description>
-				Dia is roughly inspired by the commercial Windows
-				program 'Visio', though more geared towards informal diagrams for
-				casual use. It can be used to draw many different kinds of diagrams.
-				It currently has special objects to help draw entity relationship
-				diagrams, UML diagrams, flowcharts, network diagrams, and many other
-				diagrams. It is also possible to add support for new shapes by
-				writing simple XML files, using a subset of SVG to draw the shape.
+            <description>
+                Dia is roughly inspired by the commercial Windows
+                program 'Visio', though more geared towards informal diagrams
+                for casual use. It can be used to draw many different kinds of
+                diagrams.
+                It currently has special objects to help draw entity
+                relationship
+                diagrams, UML diagrams, flowcharts, network
+                diagrams, and many other
+                diagrams. It is also possible to add
+                support for new shapes by
+                writing simple XML files, using a
+                subset of SVG to draw the shape.
 
-				It can load and save diagrams to a custom XML format (gzipped by
-				default, to save space), can export diagrams to a number of formats,
-				including EPS, SVG, XFIG, WMF and PNG, and can print diagrams
-				(including ones that span multiple pages).
+                It can load and save diagrams to
+                a custom XML format (gzipped by
+                default, to save space), can
+                export diagrams to a number of formats,
+                including EPS, SVG, XFIG,
+                WMF and PNG, and can print diagrams
+                (including ones that span
+                multiple pages).
 			</description>
 
-			<homepage>http://live.gnome.org/Dia</homepage>
+            <homepage>http://live.gnome.org/Dia</homepage>
 
-			<version>
-				Dia version 0.96.1, compiled 09:31:57 Nov 26 2008
+            <version>
+                Dia version 0.96.1, compiled 09:31:57 Nov 26 2008
             </version>
-		</tool>
+        </tool>
 
-		<version>
-			1.00
+        <version>
+            1.00
         </version>
 
-		<creator>
+        <creator>
 			<![CDATA["Thomas Skou Hansen <tsh@statsbiblioteket.dk>"]]>
-		</creator>
+        </creator>
 
-		<instructions>
-			Install Dia version 0.96.1 on the system providing this
-			dia
-			migratoin service and make sure that the run-time configuration
-			(the pserv-pa-dia.properties file) for is properly configured to
-			use
-			this version of dia.
+        <instructions>
+            Install Dia version 0.96.1 on the system providing this
+            dia
+            migratoin service and make sure that the run-time configuration
+            (the pserv-pa-dia.properties file) for is properly configured to
+            use
+            this version of dia.
         </instructions>
 
-		<furtherinfo>http://live.gnome.org/Dia</furtherinfo>
+        <furtherinfo>http://live.gnome.org/Dia</furtherinfo>
 
-		<logo>http://projects.gnome.org/dia/images/dialogo.jpg</logo>
+        <logo>http://projects.gnome.org/dia/images/dialogo.jpg</logo>
 
-		<properties>
-		</properties>
-	</serviceDescription>
+        <properties>
+        </properties>
+    </serviceDescription>
 
-	<paths>
-		<path>
-			<inputformats>
-				<!-- Xfig file extension-->
-				<uri value="info:planets/fmt/ext/fig" />
-			</inputformats>
+    <paths>
+        <path>
+            <inputformats>
+                <!-- Xfig file extension-->
+                <uri value="planets:fmt/ext/fig" />
+            </inputformats>
 
-			<outputformat>
-				<!-- Unspecified (current) dia file format version -->
-				<uri value="info:pronom/x-fmt/381" />
-			</outputformat>
+            <outputformat>
+                <!-- Unspecified (current) dia file format version -->
+                <uri value="info:pronom/x-fmt/381" />
+            </outputformat>
 
-			<commandline>
-				<command>
-					#shellcommand
+            <commandline>
+                <command>
+                    #shellcommand
                 </command>
 
-				<commandparameters>
-					<parameter>
-						#shellcommandoption
+                <commandparameters>
+                    <parameter>
+                        #shellcommandoption
                     </parameter>
 
-					<parameter>
+                    <parameter>
                         <![CDATA[#diacommand -n -l -t dia -e #outputFile #inputFile]]>
-					</parameter>
-				</commandparameters>
-			</commandline>
+                    </parameter>
+                </commandparameters>
+            </commandline>
 
-			<toolinput>
-				<tempfile label="inputFile" name="diaFigInput.fig">
-				</tempfile>
-			</toolinput>
+            <toolinput>
+                <tempfile label="inputFile" name="diaFigInput.fig">
+                </tempfile>
+            </toolinput>
 
-			<tooloutput>
-				<tempfile label="outputFile">
-				</tempfile>
-			</tooloutput>
+            <tooloutput>
+                <tempfile label="outputFile">
+                </tempfile>
+            </tooloutput>
 
-			<tempfiles>
-			</tempfiles>
+            <tempfiles>
+            </tempfiles>
 
-			<toolparameters>
-			</toolparameters>
+            <toolparameters>
+            </toolparameters>
 
-			<toolpresets>
-			</toolpresets>
-		</path>
+            <toolpresets>
+            </toolpresets>
+        </path>
 
         <path>
             <inputformats>
@@ -160,57 +169,57 @@
             </toolpresets>
         </path>
 
-		<path>
-			<inputformats>
-				<!-- Dia files. -->
-				<uri value="info:pronom/x-fmt/381" />
-			</inputformats>
+        <path>
+            <inputformats>
+                <!-- Dia files. -->
+                <uri value="info:pronom/x-fmt/381" />
+            </inputformats>
 
-			<outputformat>
+            <outputformat>
                 <!-- SVG version 1.0 -->
                 <uri value="info:pronom/fmt/91" />
-			</outputformat>
+            </outputformat>
 
-			<commandline>
-				<command>
-					#shellcommand
+            <commandline>
+                <command>
+                    #shellcommand
                 </command>
 
-				<commandparameters>
-					<parameter>
-						#shellcommandoption
+                <commandparameters>
+                    <parameter>
+                        #shellcommandoption
                     </parameter>
 
-					<parameter>
+                    <parameter>
 				    	<![CDATA[#diacommand -n -l -t svg -e #outputFile #inputFile]]>
-					</parameter>
-				</commandparameters>
-			</commandline>
+                    </parameter>
+                </commandparameters>
+            </commandline>
 
-			<toolinput>
-				<tempfile label="inputFile" name="inputFile.dia">
-				</tempfile>
-			</toolinput>
+            <toolinput>
+                <tempfile label="inputFile" name="inputFile.dia">
+                </tempfile>
+            </toolinput>
 
-			<tooloutput>
-				<tempfile label="outputFile">
-				</tempfile>
-			</tooloutput>
+            <tooloutput>
+                <tempfile label="outputFile">
+                </tempfile>
+            </tooloutput>
 
-			<tempfiles>
-			</tempfiles>
+            <tempfiles>
+            </tempfiles>
 
-			<toolparameters>
-			</toolparameters>
+            <toolparameters>
+            </toolparameters>
 
-			<toolpresets>
-			</toolpresets>
-		</path>
+            <toolpresets>
+            </toolpresets>
+        </path>
 
         <path>
             <inputformats>
                 <!-- Xfig file extension-->
-                <uri value="info:planets/fmt/ext/fig" />
+                <uri value="planets:fmt/ext/fig" />
             </inputformats>
 
             <outputformat>
@@ -256,5 +265,5 @@
             </toolpresets>
         </path>
 
-	</paths>
+    </paths>
 </serviceWrapping>

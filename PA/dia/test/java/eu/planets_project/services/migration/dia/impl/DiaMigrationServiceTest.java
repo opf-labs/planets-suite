@@ -136,7 +136,7 @@ public class DiaMigrationServiceTest extends TestCase {
 	final File figTestFile = new File(FIG_TEST_FILE_PATH, figTestFileName);
 
 	// Fig Planets (pseudo) format  URI
-	final URI figFormatURI = new URI("info:planets/fmt/ext/fig");
+	final URI figFormatURI = new URI("planets:fmt/ext/fig");
 
 	// Dia (unspecified version) PRONOM format URI
 	final URI diaFormatURI = new URI("info:pronom/x-fmt/381");
