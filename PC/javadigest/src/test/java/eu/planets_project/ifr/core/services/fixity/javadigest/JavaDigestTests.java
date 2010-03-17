@@ -5,16 +5,22 @@ package eu.planets_project.ifr.core.services.fixity.javadigest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.net.URI;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.fixity.Fixity;
@@ -23,8 +29,7 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.utils.test.TestFile;
 
 /**
- * @author CFWilson
- *
+ * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
 public class JavaDigestTests {
 
@@ -36,7 +41,7 @@ public class JavaDigestTests {
     @BeforeClass
     public static void setup() {
         javaDigest = ServiceCreator.createTestService(Fixity.QNAME, JavaDigest.class,
-                "/pserv-pc-javadigest/JavaDigest?wsdl");
+                "/pserv-pc-javadigest/javaDigest?wsdl");
     }
     
     /*
@@ -47,62 +52,50 @@ public class JavaDigestTests {
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testRtf() { testDefaultDigest(TestFile.RTF, javaDigest); }
-    @Test public void testAllRtf() { testAllDigestAlgorithms(TestFile.RTF, javaDigest);}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testBmp() { testDefaultDigest(TestFile.BMP, javaDigest); }
-    @Test public void testAllBmp() { testAllDigestAlgorithms(TestFile.BMP, javaDigest);}
-/**
+    /**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testXml() { testDefaultDigest(TestFile.XML, javaDigest); }
-    @Test public void testAllCml() { testAllDigestAlgorithms(TestFile.XML, javaDigest);}
-/**
+    /**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testZip() { testDefaultDigest(TestFile.ZIP, javaDigest); }
-    @Test public void testAllZip() { testAllDigestAlgorithms(TestFile.ZIP, javaDigest);}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testPdf() { testDefaultDigest(TestFile.PDF, javaDigest); }
-    @Test public void testAllPdf() { testAllDigestAlgorithms(TestFile.PDF, javaDigest);}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testGif() { testDefaultDigest(TestFile.GIF, javaDigest); }
-    @Test public void testAllGif() { testAllDigestAlgorithms(TestFile.GIF, javaDigest);}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testJpg() { testDefaultDigest(TestFile.JPG, javaDigest); }
-    @Test public void testAllJpg() { testAllDigestAlgorithms(TestFile.JPG, javaDigest);}
-/**
+    /**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testTif() { testDefaultDigest(TestFile.TIF, javaDigest); }
-    @Test public void testAllTif() { testAllDigestAlgorithms(TestFile.TIF, javaDigest);}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testPcx() { testDefaultDigest(TestFile.PCX, javaDigest); }
-    @Test public void testAllPcx() { testAllDigestAlgorithms(TestFile.PCX, javaDigest);}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testPng() { testDefaultDigest(TestFile.PNG, javaDigest); }
-    @Test public void testAllPng() { testAllDigestAlgorithms(TestFile.PNG, javaDigest);}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testWav() { testDefaultDigest(TestFile.WAV, javaDigest); }
-    @Test public void testAllWav() { testAllDigestAlgorithms(TestFile.WAV, javaDigest);}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testHtml(){ testDefaultDigest(TestFile.HTML, javaDigest);}
-    @Test public void testAllHtml() { testAllDigestAlgorithms(TestFile.HTML, javaDigest);}
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#describe()}.
 	 */
@@ -114,56 +107,41 @@ public class JavaDigestTests {
 	}
 
 	private void testDefaultDigest(TestFile testFile, Fixity fixity) {
-		// Ok let's make the call
+		// Ok let's make the call to test
         FixityResult fixityResult = fixity.calculateChecksum(
                 new DigitalObject.Builder(Content.byReference(new File(testFile
                         .getLocation()))).build(), null);
         
+        // Check the result against an "independent" MD5 hash implementation
+        try {
+        	// Use the apache codec MD5 algorithm
+        	File theFile = new File(testFile.getLocation());
+        	InputStream inStream = new FileInputStream(theFile);
+			byte[] hash = DigestUtils.md5(inStream);
+			inStream.close();
+
+			// Assert that the hashes are equal
+			assertTrue("Expecting Fast MD5 and Java MD5 byte hashes to be equal",
+					Arrays.equals(hash, fixityResult.getDigestValue()));
+			
+			// Check the hex string value of the hash
+			InputStream newStream = new FileInputStream(theFile);
+			String hexhash = DigestUtils.md5Hex(newStream);
+			
+			// Assert that the string hashes are equal
+			assertEquals("Expecting Fast MD5 and Java MD5 string hashes to be equal",
+					hexhash,
+					fixityResult.getHexDigestValue());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Failure reading TestFile " + testFile.getLocation());
+		}
+        
         this.checkResult(fixityResult);
         
         System.out.println("File " + testFile.toString() + 
-        				   " gave digest " + fixityResult.getDigestValueAsString());
-	}
-	
-	private void testAllDigestAlgorithms(TestFile testFile, Fixity fixity) {
-		return;
-//		// First get the supported algs
-//		URI[] theAlgs = JavaDigestUtils.getDigestAlgorithms();
-//		DigitalObject digitalObject = new DigitalObject.Builder(Content.byReference(new File(testFile
-//                .getLocation()))).build(); 
-//		// Now test the algs
-//		for (URI uri : theAlgs) {
-//			List<Parameter> paramList = new ArrayList<Parameter>();
-//			paramList.add(this.createAlgParam(uri));
-//
-//	        FixityResult fixityResult =
-//	        	fixity.calculateChecksum(digitalObject, paramList);
-//	        
-//	        this.checkResult(fixityResult);
-//	        System.out.println("File " + testFile.toString() + 
-// 				   " gave digest " + fixityResult.getDigestValueAsString());
-//
-//	        // Save the result and the "default provider"
-//	        byte[] firstDigestValue = fixityResult.getDigestValue().clone();
-//
-//	        // Now we can test against other provider implementations
-//	        for (String provider : JavaDigestUtils.getProviders()) {
-//	        	// If its the same provider or they don't implement the alg then don't bother 
-//
-//	        	// Add the provider param
-//	        	paramList.add(this.createProvParam(provider));
-//
-//	        	// get the result
-//		        FixityResult newResult =
-//		        	fixity.calculateChecksum(digitalObject, paramList);
-//
-//				this.checkResult(newResult);
-//				
-//				// Test that the vals are equal
-//				assertEquals("Expected firstResult to equal newResult.getDigestValue",
-//							 firstDigestValue, newResult.getDigestValue());
-//	        }
-//		}
+        				   " gave digest " + fixityResult.getHexDigestValue());
 	}
 
 	private void checkResult(FixityResult fixityResult) {
@@ -181,38 +159,14 @@ public class JavaDigestTests {
         			 fixityResult.getReport().getStatus(),
         			 ServiceReport.Status.SUCCESS);
         
-        // We'd not expect a null Digest value or algorithm identifier
+        // We'd not expect a null Digest value or algorithm identifier, or provider
         assertNotNull("FixityResult.getDigestValue() should not be null",
         		fixityResult.getDigestValue());
         assertNotNull("FixityResult.getDigestValueAsString() should not be null",
-        		fixityResult.getDigestValueAsString());
+        		fixityResult.getHexDigestValue());
         assertNotNull("FixityResult.getAlgorithmId() should not be null",
         		fixityResult.getAlgorithmId());
-	}
-
-	private Parameter createAlgParam(URI algID) {
-		// Add the algorithm selection parameter from a builder
-		// We need the name and the default value
-		Parameter.Builder algBuilder = 
-			new Parameter.Builder(JavaDigest.ALG_PARAM_NAME,
-								  algID.toString());
-		
-		// Finally the type and deliver parameter goodness to our list
-		algBuilder.type(JavaDigest.ALG_PARAM_TYPE);
-		
-		return algBuilder.build();
-	}
-
-	private Parameter createProvParam(String provName) {
-		// Add the algorithm selection parameter from a builder
-		// We need the name and the default value
-		Parameter.Builder algBuilder = 
-			new Parameter.Builder(JavaDigest.PROV_PARAM_NAME,
-								  provName);
-		
-		// Finally the type and deliver parameter goodness to our list
-		algBuilder.type(JavaDigest.PROV_PARAM_TYPE);
-		
-		return algBuilder.build();
+        assertNotNull("FixityResult.getAlgorithmprovider() should not be null",
+        		fixityResult.getAlgorithmProvider());
 	}
 }
