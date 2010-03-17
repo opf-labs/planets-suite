@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 
 /**
  * Suite to run all tests in the droid component.
- * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
+ * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
 
 @RunWith(Suite.class)
