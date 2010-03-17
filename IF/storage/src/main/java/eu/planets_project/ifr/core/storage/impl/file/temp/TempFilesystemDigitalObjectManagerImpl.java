@@ -47,11 +47,13 @@ public class TempFilesystemDigitalObjectManagerImpl extends
 				File[] files = path.listFiles();
 				for (File file : files) {
 					if (file.isDirectory()) {
-						if (!deleteDirectory(file))
-							System.out.println("Failed to delete directory " + file.getAbsolutePath());
+						if (!deleteDirectory(file)) {
+							file.deleteOnExit();
+						}
 					} else {
-						if (!file.delete())
-							System.out.println("Failed to delete file " + file.getAbsolutePath());
+						if (!file.delete()) {
+							file.deleteOnExit();
+						}
 					}
 				}
 			}
