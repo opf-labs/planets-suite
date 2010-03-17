@@ -151,6 +151,7 @@ public class WorkflowBackingBean {
 	private int dataScrollerIndex = 0;
 	private boolean disable = true;
 	private String display = "display:none";
+	private static boolean firstTime = true;
 
 
 	//
@@ -211,6 +212,7 @@ public class WorkflowBackingBean {
 		// Create the tree:
 		tm = new TreeModelBase(tn);
 		// Add child nodes:
+		logger.info("### WorkflowBackingBean: Constructor() before .list() uri: null ");
 		this.getChildItems(tm, tn, dr.list(null), 1);
 	}
 
@@ -933,7 +935,7 @@ public class WorkflowBackingBean {
 			logger.info("calculateNodes() cchilds.size: " + cchilds.size());
 			for (FileTreeNode tfn : cchilds ) {
 				logger.info("calculateNodes() tfn.getUri(): " + tfn.getUri());
-				if (tfn.getUri().toString().equals(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI)) {
+				if (dr.isOaiRegistry(tfn.getUri())) {
 					switch (bt) {
 						case PREV:
 							dr.decreaseDorIndex();
@@ -957,6 +959,7 @@ public class WorkflowBackingBean {
 					setLocation(tfn.getUri());
 					// Also add childs:
 					tfn.setExpanded(true);
+					logger.info("### WorkflowBackingBean: calculateNodes() before .list() getLocation: " + getLocation());
 					this.getChildItems(tm, tfn, dr.list(getLocation()), 1);
 					this.currentTab = "selectObjectsTab";	
 					break;
@@ -1213,9 +1216,14 @@ public class WorkflowBackingBean {
 				if (!cchilds.contains(cnode))
 					cchilds.add(cnode);
 				// If there are any, add them via recursion:
-				if (dob.isDirectory() && depth > 0)
+				if (dob.isDirectory() && depth > 0) {
+					logger.info("### WorkflowBackingBean: getChildItems() before .list() dob.getUri: " + dob.getUri());
+					if (dr.isOaiRegistry(dob.getUri())) {
+		    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI));
+			    	}
 					this.getChildItems(tm, cnode, dr.list(dob.getUri()),
 							depth - 1);
+				}
 			}
 		}
 
@@ -1275,10 +1283,18 @@ public class WorkflowBackingBean {
 		   logger.info("setDir() uri: " + tfn.getUri());
 		   
 	       	if (tfn.getUri() != null) {
-		    	if (tfn.getUri().toString().contains(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI)) {
+	    		if (dr.isOaiRegistry(tfn.getUri())) {
 		    		disable = false;
+		    		if (!firstTime) {
+		    	    	logger.info("WorkflowBackingBean setDir() !first time for OAI. call refreshChilds.");
+		    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI));
+		    		} else {
+		    	    	logger.info("WorkflowBackingBean setDir() first time for OAI.");
+		    			firstTime = false;
+		    		}
 	    		} else {
 	    			disable = true;
+	    			dataScrollerIndex = 0;
 	    		}
     	    	logger.info("WorkflowBackingBean setDir() set disable for buttons: " + disable);
 	    	}		   
@@ -1287,6 +1303,7 @@ public class WorkflowBackingBean {
 		setLocation(tfn.getUri());
 		// Also add childs:
 		tfn.setExpanded(true);
+		logger.info("### WorkflowBackingBean: setDir() before .list() getLocation(): " + getLocation());
 		this.getChildItems(tm, tfn, dr.list(getLocation()), 1);
 		this.currentTab = "selectObjectsTab";
 	}
@@ -1299,6 +1316,7 @@ public class WorkflowBackingBean {
 		logger.fine("Setting location: " + location);
 		if (location != null)
 			this.location = location.normalize();
+		logger.info("### WorkflowBackingBean: setLocation() before .list() this.location: " + this.location);
 		DigitalObjectReference[] dobs = dr.list(this.location);
 		int fileCount = 0;
 		for (DigitalObjectReference dob : dobs) {

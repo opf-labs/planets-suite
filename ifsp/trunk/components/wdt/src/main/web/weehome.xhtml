@@ -232,10 +232,10 @@
 						</t:dataTable>
 					    <h:panelGrid>		
 					        <h:panelGroup style="#{theWorkflow.display}">					
-                                <h:commandButton action="#{theWorkflow.getPrev}" value="Prev" disabled="#{theWorkflow.disable}"/>
                                 <h:outputText value="Set current page number:" />					
 					            <h:inputText value="#{theWorkflow.dataScrollerIndex}" id="sc1" size="1" disabled="#{theWorkflow.disable}"/>					
 					            <h:commandButton action="#{theWorkflow.scrollEvent}" value="Set" disabled="#{theWorkflow.disable}"/>					
+                                <h:commandButton action="#{theWorkflow.getPrev}" value="Prev" disabled="#{theWorkflow.disable}"/>
                                 <h:commandButton action="#{theWorkflow.getNext}" value="Next" disabled="#{theWorkflow.disable}"/>
 					        </h:panelGroup>					
 					    </h:panelGrid>						                    
