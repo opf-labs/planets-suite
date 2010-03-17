@@ -883,7 +883,16 @@ public class WorkflowBackingBean {
 				if (dob.isSelectable() && dob.isSelected()) 
 				{
 					URI dobURI = dob.getUri();
-					DigitalObject o = retrieveDigitalObjectFromRegistry(dobURI, DOJCRConstants.REGISTRY_NAME);
+					DigitalObject o = null;
+					
+					// JCR repository
+					if (dobURI.toString().contains(DOJCRConstants.DOJCR)) {
+					   o = retrieveDigitalObjectFromRegistry(dobURI, DOJCRConstants.REGISTRY_NAME);
+					} 
+					// OAI repository
+					if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI)) {
+						o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerDCBase.REGISTRY_NAME);
+					} 
 					if (o != null) {
 						fillDetails(o);
 					} else {
