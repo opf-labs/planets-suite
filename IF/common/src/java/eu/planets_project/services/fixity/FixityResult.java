@@ -3,6 +3,7 @@
  */
 package eu.planets_project.services.fixity;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +24,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 public class FixityResult {
 
 	private String algorithmId;
+	private String algorithmProvider;
 	private byte[] digestValue;
     private List<Property> properties;
     private ServiceReport report;
@@ -36,6 +38,8 @@ public class FixityResult {
     /**
      * @param algorithmId
      * 			the java.lang.String identifier of the digest algorithm used
+     * @param algorithmProvider
+     * 			the java.lang.String name of the digest algorithm provider
      * @param digestValue
      * 			the byte[] digest value
      * @param properties
@@ -43,9 +47,10 @@ public class FixityResult {
      * @param report
      * 			the service report
      */
-    public FixityResult(String algorithmId, byte[] digestValue,
+    public FixityResult(String algorithmId, String algorithmProvider, byte[] digestValue,
     					List<Property> properties, ServiceReport report) {
     	this.algorithmId = algorithmId;
+    	this.algorithmProvider = algorithmProvider;
     	this.digestValue = digestValue.clone();
     	this.properties = properties;
     	this.report = report;
@@ -54,13 +59,17 @@ public class FixityResult {
     /**
      * @param algorithmId
      * 			the java.lang.String identifier of the digest algorithm used
+     * @param algorithmProvider
+     * 			the java.lang.String name of the digest algorithm provider
      * @param properties
      * 			any service properties to add to the report
      * @param report
      * 			the service report
      */
-    public FixityResult(String algorithmId,	List<Property> properties, ServiceReport report) {
+    public FixityResult(String algorithmId,	String algorithmProvider,
+    				    List<Property> properties, ServiceReport report) {
     	this.algorithmId = algorithmId;
+    	this.algorithmProvider = algorithmProvider;
     	this.digestValue = null;
     	this.properties = properties;
     	this.report = report;
@@ -98,16 +107,18 @@ public class FixityResult {
     }
     
     /**
+     * @return the algorithm provider
+     */
+    public String getAlgorithmProvider() {
+    	return this.algorithmProvider;
+    }
+    /**
      * @return the digest value as a java.lang.String
      */
-    public String getDigestValueAsString() {
-    	String result = "";
-    	
-    	for (byte aByte : this.digestValue) {
-    		result += aByte;
-    	}
-    	
-    	return result;
+    public String getHexDigestValue() {
+    	// OK use the BigInt trick to format this correctly
+    	BigInteger bi = new BigInteger(1, this.digestValue);
+    	return String.format("%0" + (this.digestValue.length << 1) + "x", bi);
     }
     
     /**
@@ -123,7 +134,7 @@ public class FixityResult {
      */
     public List<Property> getProperties() {
         return this.properties == null ?
-        		// If propertie
+        		// If properties null
         		Collections.unmodifiableList(new ArrayList<Property>()) : 
        			Collections.unmodifiableList(this.properties);
     }
