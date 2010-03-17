@@ -129,7 +129,7 @@
             </inputformats>
 
             <outputformat>
-                <!-- PNG version 1.2 FIXME! Verify this! -->
+                <!-- PNG version 1.2 -->
                 <uri value="info:pronom/fmt/13" />
             </outputformat>
 
@@ -171,7 +171,7 @@
 
         <path>
             <inputformats>
-                <!-- Dia files. -->
+                <!-- Unspecified (current) dia file format version -->
                 <uri value="info:pronom/x-fmt/381" />
             </inputformats>
 
@@ -207,55 +207,6 @@
             </tooloutput>
 
             <tempfiles>
-            </tempfiles>
-
-            <toolparameters>
-            </toolparameters>
-
-            <toolpresets>
-            </toolpresets>
-        </path>
-
-        <path>
-            <inputformats>
-                <!-- Xfig file extension-->
-                <uri value="planets:fmt/ext/fig" />
-            </inputformats>
-
-            <outputformat>
-                <!-- PNG version 1.2 FIXME! Verify this! -->
-                <uri value="info:pronom/fmt/13" />
-            </outputformat>
-
-            <commandline>
-                <command>
-                    #shellcommand
-                </command>
-
-                <commandparameters>
-                    <parameter>
-                        #shellcommandoption
-                    </parameter>
-
-                    <parameter>
-                        <![CDATA[#diacommand -n -l -t dia -e #tempDiaFile #inputFile && #diacommand -n -l -t png -e #outputFile #tempDiaFile]]>
-                    </parameter>
-                </commandparameters>
-            </commandline>
-
-            <toolinput>
-                <tempfile label="inputFile" name="inputFile.fig">
-                </tempfile>
-            </toolinput>
-
-            <tooloutput>
-                <tempfile label="outputFile">
-                </tempfile>
-            </tooloutput>
-
-            <tempfiles>
-                <tempfile label="tempDiaFile" name="tempDiaFile.dia">
-                </tempfile>
             </tempfiles>
 
             <toolparameters>
