@@ -1,25 +1,18 @@
 package eu.planets_project.ifr.core.simple.impl;
 
 import java.io.File;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
-import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.soap.MTOM;
-import javax.xml.ws.soap.SOAPBinding;
-
-import org.jboss.annotation.ejb.TransactionTimeout;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
-import eu.planets_project.ifr.core.servreg.utils.client.wrappers.MigrateWrapper;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -30,7 +23,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -44,7 +37,7 @@ import eu.planets_project.services.utils.ServiceUtils;
 @MTOM
 @StreamingAttachment(parseEagerly=true, memoryThreshold=(long)ServiceUtils.JAXWS_SIZE_THRESHOLD)
 //@TransactionTimeout(100000)
-public final class PassThruMigrationService implements Migrate, Serializable {
+public final class PassThruMigrationService implements Migrate {
     /** The service name. */
     static final String NAME = "PassThruMigrationService";
 
@@ -78,9 +71,7 @@ public final class PassThruMigrationService implements Migrate, Serializable {
          */
         
         // Clone the content:
-        File tmpFile = FileUtils.getTempFile("digital-object-content", "bin");
-        FileUtils.writeInputStreamToFile(
-                digitalObject.getContent().getInputStream(), tmpFile );
+        File tmpFile = DigitalObjectUtils.toFile(digitalObject);
         
         // Create a new Digital Object, based on the old one:
         DigitalObject newDO = new DigitalObject.Builder(digitalObject).content(Content.byReference(tmpFile)).build();

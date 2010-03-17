@@ -623,6 +623,7 @@ public final class DigitalObjectUtils {
      */
     public static File toFile(final DigitalObject object) {
         try {
+            /* TODO: use format registry to set the extension? */
             File file = File.createTempFile("planets", null);
             file.deleteOnExit();
             toFile(object, file);
