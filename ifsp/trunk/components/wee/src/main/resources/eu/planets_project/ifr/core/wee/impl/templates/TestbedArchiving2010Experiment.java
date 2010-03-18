@@ -109,13 +109,16 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
             for (DigitalObject dgoA : this.getData()) {
             	
             	//document all general actions for this digital object
-            	WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA.getPermanentUri(),
-                		WorkflowResultItem.GENERAL_WORKFLOW_ACTION,
-                		System.currentTimeMillis());
-            	 this.addWFResultItem(wfResultItem);
-            	 
-            	 wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
-            	 wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
+            	// document all general actions for this digital object
+				WorkflowResultItem wfResultItem = new WorkflowResultItem(
+						dgoA.getPermanentUri(),
+						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, 
+						System.currentTimeMillis(),
+						this.getWorkflowReportingLogger());
+				this.addWFResultItem(wfResultItem);
+				
+            	wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
+            	wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
             	
             	 //start executing on digital ObjectA
             	this.processingDigo = dgoA.getPermanentUri();
@@ -146,7 +149,7 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
                     URI dgoEFormat = identifyFormat(identify1,dgoERef);
                     wfResultItem.addLogInfo("completed identify object E format: "+dgoEFormat);
                     
-                    	wfResultItem.addLogInfo("starting XCDL extraction for A");
+                    wfResultItem.addLogInfo("starting XCDL extraction for A");
                     URI dgoAXCDL = runMigration(migratexcdl1,dgoA.getPermanentUri(),false);
                     	wfResultItem.addLogInfo("completed XCDL extraction for A");
                     	wfResultItem.addLogInfo("starting XCDL extraction for B");
