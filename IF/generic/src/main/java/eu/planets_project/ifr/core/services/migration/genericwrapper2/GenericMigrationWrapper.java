@@ -45,9 +45,7 @@ public class GenericMigrationWrapper {
     private final List<Parameter> environmentParameters;
 
     private ServiceDescription serviceDescription; // TODO: Consider building
-
-    // the service description
-    // with a separate factory.
+    // the service description with a separate factory.
 
     // TODO: It would probably be nice to pass a factory for creation of
     // temporary files on order to avoid a tight coupling with the Planets J2EE
