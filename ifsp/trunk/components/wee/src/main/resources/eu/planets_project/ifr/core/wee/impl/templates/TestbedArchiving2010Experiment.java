@@ -10,6 +10,7 @@ import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
+import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.LogReferenceCreatorWrapper;
 import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.MigrationWFWrapper;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
@@ -111,7 +112,10 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
             	WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA.getPermanentUri(),
                 		WorkflowResultItem.GENERAL_WORKFLOW_ACTION,
                 		System.currentTimeMillis());
-            	 wfResult.addWorkflowResultItem(wfResultItem);
+            	 this.addWFResultItem(wfResultItem);
+            	 
+            	 wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
+            	 wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
             	
             	 //start executing on digital ObjectA
             	this.processingDigo = dgoA.getPermanentUri();
@@ -138,10 +142,9 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
                     	wfResultItem.addLogInfo("completed migration D-E");
                     
                     //identify format after migration roundtripp
-                    wfResultItem.addLogInfo("starting identify object A format: ");
+                    wfResultItem.addLogInfo("starting identify object E format: ");
                     URI dgoEFormat = identifyFormat(identify1,dgoERef);
-                    wfResultItem.addLogInfo("completed identify object A format: "+dgoEFormat);
-                    wfResultItem.addLogInfo("compared object format A-E identical? "+(dgoAFormat==dgoEFormat));
+                    wfResultItem.addLogInfo("completed identify object E format: "+dgoEFormat);
                     
                     	wfResultItem.addLogInfo("starting XCDL extraction for A");
                     URI dgoAXCDL = runMigration(migratexcdl1,dgoA.getPermanentUri(),false);
@@ -166,12 +169,14 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
                 count++;
             }
             
-            wfResult.setEndTime(System.currentTimeMillis());
-        	return wfResult;
+        	this.getWFResult().setEndTime(System.currentTimeMillis());
+			LogReferenceCreatorWrapper.createLogReferences(this);
+			return this.getWFResult();
         	
         } catch(Exception e) {
-        	 wfResult.setEndTime(System.currentTimeMillis());
-         	return wfResult;
+        	wfResult.setEndTime(System.currentTimeMillis());
+        	LogReferenceCreatorWrapper.createLogReferences(this);
+ 			return this.getWFResult();
         }
     }
     
@@ -187,7 +192,7 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
 				this.processingDigo, 
 				migrationService, 
 				digORef, 
-				new URI("planets://localhost:8080/dr/experiment-files"),
+				new URI("planets://testbed-dev.planets-project.ait.ac.at:80/dr/experiment-files"),
 				endOfRoundtripp);
 		
 		return migrWrapper.runMigration();

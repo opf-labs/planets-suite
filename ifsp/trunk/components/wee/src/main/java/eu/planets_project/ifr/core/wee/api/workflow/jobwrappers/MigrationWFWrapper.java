@@ -246,7 +246,6 @@ public class MigrationWFWrapper {
 				throw new Exception(s);
 			}
 
-			wfResultItem.addLogInfo("storing Digo in JCR repository");
 			DigitalObject migOutput = migrateResult.getDigitalObject();
 
 			// add Migration Event to DigitalObject
@@ -281,7 +280,7 @@ public class MigrationWFWrapper {
 				digoRef = wfi.storeDigitalObject(digoUpdated);
 			}
 			
-			wfResultItem.addLogInfo("got digital object with permanent URI: "
+			wfResultItem.addLogInfo("storing digital object with permanent URI: "
 					+ digoRef);
 			wfResultItem.setOutputDigitalObjectRef(digoRef);
 			wfResultItem.addLogInfo("migration completed");
