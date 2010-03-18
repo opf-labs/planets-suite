@@ -234,6 +234,10 @@ text-transform:uppercase;
 p.leftcol {
 text-align:left;
 }
+p.leftcol_r {
+text-align:right;
+font-weight:bold;
+}
 p.center {
 text-align:center;
 }

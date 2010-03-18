@@ -16,19 +16,17 @@
     <div class="innertube">
     
 		<h:form>
-		<ul class="leftcol">
 		<c:if test="${UserBean.admin == true}">
-		      <li><h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}"><h:outputText value="#{res['exp_scheduler.pageTitle']}"/></h:commandLink></li>
+		      <p style="leftcol_r"><h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}"><h:outputText value="#{res['exp_scheduler.pageTitle']}"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" alt="#{res['exp_scheduler.pageTitle']}" title="#{res['exp_scheduler.pageTitle']}" /></h:commandLink></p>
 		</c:if>
 		<c:if test="${UserBean.experimenter == true}">
-		      <li><h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}"><h:outputText value="#{res['new_exp.pageTitle']}"/></h:commandLink></li>
-			<li><h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
-					<h:outputText value="#{res['my_exp.pageTitle']}"/></h:commandLink></li>
+		      <p style="leftcol_r"><h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}"><h:outputText value="#{res['new_exp.pageTitle']}"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" alt="#{res['new_exp.pageTitle']}" title="#{res['new_exp.pageTitle']}" /></h:commandLink></p>
+			<p style="leftcol_r"><h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
+					<h:outputText value="#{res['my_exp.pageTitle']}"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" alt="#{res['my_exp.pageTitle']}" title="#{res['my_exp.pageTitle']}" /></h:commandLink></p>
 		</c:if>
-      <li>					<h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
-						 #{res['browse_exp.pageTitle']}
-					</h:commandLink></li>
-	  </ul>
+      <p style="leftcol_r"><h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
+						 #{res['browse_exp.pageTitle']} <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" alt="#{res['browse_exp.pageTitle']}" title="#{res['browse_exp.pageTitle']}" />
+					</h:commandLink></p>
 	   </h:form>
         </div>
   </ui:composition>
