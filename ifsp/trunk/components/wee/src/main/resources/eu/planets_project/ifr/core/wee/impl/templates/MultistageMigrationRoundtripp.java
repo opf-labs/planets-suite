@@ -22,6 +22,7 @@ import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
+import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.MigrationWFWrapper;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Checksum;
@@ -136,24 +137,24 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
                 try {
                     // Migrate Object round-trip
                 		wfResultItem.addLogInfo("starting migration A-B");
-                    DigitalObject dgoB = runMigration(migrate1,dgoA,false);
+                    URI dgoBRef = runMigration(migrate1,dgoA.getPermanentUri(),false);
                     	wfResultItem.addLogInfo("completed migration A-B");
                     	wfResultItem.addLogInfo("starting migration B-C");
-                    DigitalObject dgoC = runMigration(migrate2,dgoB,false);
+                    URI dgoCRef = runMigration(migrate2,dgoBRef,false);
                     	wfResultItem.addLogInfo("completed migration B-C");
                     	wfResultItem.addLogInfo("starting migration C-D");
-                    DigitalObject dgoD = runMigration(migrate3,dgoC,false);
+                    URI dgoDRef = runMigration(migrate3,dgoCRef,false);
                     	wfResultItem.addLogInfo("completed migration C-D");
                     	wfResultItem.addLogInfo("starting migration D-E");
                     //this object is documented as main experiment outcome file
-                    DigitalObject dgoE = runMigration(migrate4,dgoD,true);
+                    URI dgoERef = runMigration(migrate4,dgoDRef,true);
                     	wfResultItem.addLogInfo("completed migration D-E");
                     
                     	wfResultItem.addLogInfo("starting XCDL extraction for A");
-                    DigitalObject dgoAXCDL = runMigration(migratexcdl1,dgoA,false);
+                    URI dgoAXCDL = runMigration(migratexcdl1,dgoA.getPermanentUri(),false);
                     	wfResultItem.addLogInfo("completed XCDL extraction for A");
                     	wfResultItem.addLogInfo("starting XCDL extraction for B");
-                    DigitalObject dgoEXCDL = runMigration(migratexcdl1,dgoE,false);
+                    URI dgoEXCDL = runMigration(migratexcdl1,dgoERef,false);
                     	wfResultItem.addLogInfo("completed XCDL extraction for B");
                     
                     //perform object comparison
@@ -180,8 +181,28 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
          	return wfResult;
         }
     }
+    
+    /**
+	 * Runs the migration service on a given digital object reference. It uses the
+	 * MigrationWFWrapper to call the service, create workflowResult logs,
+	 * events and to persist the object within the specified repository
+	 */
+	private URI runMigration(Migrate migrationService,
+			URI digORef, boolean endOfRoundtripp) throws Exception {
+
+		MigrationWFWrapper migrWrapper = new MigrationWFWrapper(this,
+				this.processingDigo, 
+				migrationService, 
+				digORef, 
+				new URI("planets://localhost:8080/dr/experiment-files"),
+				endOfRoundtripp);
+		
+		return migrWrapper.runMigration();
+
+	}
  
-    private DigitalObject runMigration(Migrate migrationService, DigitalObject digO, boolean endOfRoundtripp)
+	
+    /*private DigitalObject runMigration2(Migrate migrationService, DigitalObject digO, boolean endOfRoundtripp)
             throws Exception {
  
 		//an object used for documenting the results of a service action
@@ -196,8 +217,6 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 		wfResult.addWorkflowResultItem(wfResultItem);
 		
 	    try {
-	    	//static definition of which properties to compare - taking the standard set for images
-	    	
 	    	//get all parameters that were added in the configuration file
 	    	List<Parameter> parameterList;
 	    	if(this.getServiceCallConfigs(migrationService)!=null){
@@ -222,13 +241,14 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 	    	}
 
 	    	//document
-			wfResultItem.setInputDigitalObject(digO);
+			//wfResultItem.setInputDigitalObject(digO);
+			wfResultItem.setInputDigitalObjectRef(digORef);
 			wfResultItem.setServiceParameters(parameterList);
 			wfResultItem.setStartTime(System.currentTimeMillis());
 	        wfResultItem.setServiceEndpoint(migrationService.describe().getEndpoint());
 			
 			//now call the migration
-			MigrateResult migrateResult = migrationService.migrate(digO,
+			MigrateResult migrateResult = migrationService.migrate(digORef,
 					migrateFromURI, migrateToURI, parameterList);
 			
 			//document
@@ -278,7 +298,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 			wfResultItem.addLogInfo("migration failed "+e);
 			throw e;
 		}
-    }
+    }*/
     
 	/**
 	 * Runs the identification service on a given digital object and returns an Array of identified id's (for Droid e.g. PronomIDs)
@@ -286,7 +306,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 	 * @return
 	 * @throws Exception
 	 */
-	private List<String> runIdentification(DigitalObject digo) throws Exception{
+	private List<String> runIdentification(URI digoRef) throws Exception{
 		
 		//get all parameters that were added in the configuration file
 		 List<Parameter> parameterList;
@@ -295,6 +315,8 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
         }else{
         	parameterList = new ArrayList<Parameter>();
         }
+        
+        DigitalObject digo = this.getDataRegistry().retrieve(digoRef);
 	        
         IdentifyResult results = identify1.identify(digo,parameterList);
         ServiceReport report = results.getReport();
@@ -327,7 +349,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
      * @param digo2
      * @throws Exception 
      */
-    private void compareDigitalObjectsIdentical(DigitalObject digo1, DigitalObject digo2) throws Exception {
+    private void compareDigitalObjectsIdentical(URI digo1Ref, URI digo2Ref) throws Exception {
     
     	//creating the logger
     	WorkflowResultItem wfResultItem = new WorkflowResultItem(
@@ -344,6 +366,9 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 			wfResultItem.setServiceParameters(configProperties);
 			wfResultItem.setStartTime(System.currentTimeMillis());
 	        wfResultItem.setServiceEndpoint(comparexcdl1.describe().getEndpoint());
+	        
+	        DigitalObject digo1 = this.getDataRegistry().retrieve(digo1Ref);
+	        DigitalObject digo2 = this.getDataRegistry().retrieve(digo2Ref);
 			
 	        //call the comparison service
 			CompareResult result = comparexcdl1.compare(digo1, digo2,
