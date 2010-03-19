@@ -207,7 +207,10 @@ class PRCommandBuilder {
      * Pick all key-value pairs from the parameters in
      * <code>toolParameters</code> and <code>environmentParameters</code> (given
      * at construction time), for each parameter which name exists in
-     * <code>relevantIdentifiers</code>.
+     * <code>relevantIdentifiers</code>. If a parameter has been assigned a
+     * value both in <code>toolParameters</code> and in the
+     * <code>environmentParameters</code> then the parameter value from
+     * <code>environmentParameters</code> is chosen.
      * 
      * @param relevantIdentifiers
      *            A set of identifiers to look for in
