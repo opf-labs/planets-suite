@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
@@ -38,7 +35,7 @@ import eu.planets_project.services.utils.ServiceUtils;
 @Stateless
 @WebService(name = DiaMigrationService.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
 @MTOM
-@StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
+@StreamingAttachment(parseEagerly = true, memoryThreshold = ServiceUtils.JAXWS_SIZE_THRESHOLD)
 public final class DiaMigrationService implements Migrate, Serializable {
 
     /** The service name to use when publishing this service. **/
@@ -66,33 +63,33 @@ public final class DiaMigrationService implements Migrate, Serializable {
      *      eu.planets_project.services.datatypes.Parameter)
      */
     public MigrateResult migrate(final DigitalObject digitalObject,
-	    URI inputFormat, URI outputFormat, List<Parameter> parameters) {
+            URI inputFormat, URI outputFormat, List<Parameter> parameters) {
 
-	try {
-	    final DocumentLocator documentLocator = new DocumentLocator(
-		    SERVICE_CONFIG_FILE_NAME);
+        try {
+            final DocumentLocator documentLocator = new DocumentLocator(
+                    SERVICE_CONFIG_FILE_NAME);
 
-	    final Configuration runtimeConfiguration = ServiceConfig
-		    .getConfiguration(RUN_TIME_CONFIGURATION_FILE_NAME);
+            final Configuration runtimeConfiguration = ServiceConfig
+                    .getConfiguration(RUN_TIME_CONFIGURATION_FILE_NAME);
 
-	    GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
-		    documentLocator.getDocument(), runtimeConfiguration, this
-			    .getClass().getCanonicalName());
+            GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
+                    documentLocator.getDocument(), runtimeConfiguration, this
+                            .getClass().getCanonicalName());
 
-	    return genericWrapper.migrate(digitalObject, inputFormat,
-		    outputFormat, parameters);
+            return genericWrapper.migrate(digitalObject, inputFormat,
+                    outputFormat, parameters);
 
-	} catch (Exception exception) {
-	    log.log(Level.SEVERE, "Migration failed for object with title '"
-		    + digitalObject.getTitle() + "' from input format URI: "
-		    + inputFormat + " to output format URI: " + outputFormat,
-		    exception);
+        } catch (Exception exception) {
+            log.log(Level.SEVERE, "Migration failed for object with title '"
+                    + digitalObject.getTitle() + "' from input format URI: "
+                    + inputFormat + " to output format URI: " + outputFormat,
+                    exception);
 
-	    ServiceReport serviceReport = new ServiceReport(Type.ERROR,
-		    Status.TOOL_ERROR, exception.toString());
+            ServiceReport serviceReport = new ServiceReport(Type.ERROR,
+                    Status.TOOL_ERROR, exception.toString());
 
-	    return new MigrateResult(null, serviceReport);
-	}
+            return new MigrateResult(null, serviceReport);
+        }
     }
 
     /**
@@ -100,28 +97,23 @@ public final class DiaMigrationService implements Migrate, Serializable {
      */
     public ServiceDescription describe() {
 
-	final DocumentLocator documentLocator = new DocumentLocator(
-		SERVICE_CONFIG_FILE_NAME);
-	try {
-	    final Configuration runtimeConfiguration = ServiceConfig
-		    .getConfiguration(RUN_TIME_CONFIGURATION_FILE_NAME);
+        final DocumentLocator documentLocator = new DocumentLocator(
+                SERVICE_CONFIG_FILE_NAME);
+        try {
+            final Configuration runtimeConfiguration = ServiceConfig
+                    .getConfiguration(RUN_TIME_CONFIGURATION_FILE_NAME);
 
-	    GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
-		    documentLocator.getDocument(), runtimeConfiguration, this
-			    .getClass().getCanonicalName());
+            GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
+                    documentLocator.getDocument(), runtimeConfiguration, this
+                            .getClass().getCanonicalName());
 
-	    return genericWrapper.describe();
+            return genericWrapper.describe();
 
-	} catch (Exception e) {
-	    log.log(Level.SEVERE,
-		    "Failed getting service description for service: "
-			    + this.getClass().getCanonicalName(), e);
-
-	    // FIXME! Report failure in a proper way. Should we return a service
-	    // description anyway? If so, then how?
-	    ServiceDescription.Builder serviceDescriptionBuilder = new ServiceDescription.Builder(
-		    NAME, Migrate.class.getCanonicalName());
-	    return serviceDescriptionBuilder.build();
-	}
+        } catch (Exception e) {
+            log.log(Level.SEVERE,
+                    "Failed getting service description for service: "
+                            + this.getClass().getCanonicalName(), e);
+            return null;
+        }
     }
 }
