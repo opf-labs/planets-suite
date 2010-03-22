@@ -1,18 +1,6 @@
 package eu.planets_project.ifr.core.wee.impl.templates;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
@@ -20,23 +8,9 @@ import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
 import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.LogReferenceCreatorWrapper;
 import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.MigrationWFWrapper;
-import eu.planets_project.services.compare.Compare;
-import eu.planets_project.services.compare.CompareResult;
-import eu.planets_project.services.datatypes.Agent;
-import eu.planets_project.services.datatypes.Checksum;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.DigitalObjectContent;
-import eu.planets_project.services.datatypes.Event;
-import eu.planets_project.services.datatypes.Metadata;
-import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.migrate.MigrateResult;
+
 
 /**
  * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
@@ -81,6 +55,7 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 						this.getWorkflowReportingLogger());
 				this.addWFResultItem(wfResultItem);
 				wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
+				wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
 
 				// start executing on digital ObjectA
 				this.processingDigo = dgoA;
@@ -131,6 +106,7 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 				this.processingDigo.getPermanentUri(), 
 				migrationService, 
 				digORef, 
+				//new URI("planets://testbed-dev.planets-project.ait.ac.at:80/dr/experiment-files"),
 				new URI("planets://localhost:8080/dr/experiment-files"),
 				endOfRoundtripp);
 		
