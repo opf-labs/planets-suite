@@ -211,7 +211,7 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
      * @author GrafR
      *
      */
-    public class ManagerControl extends Thread {
+    private class ManagerControl extends Thread {
         
         /**
          * Repository implementation
