@@ -29,6 +29,8 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.utils.test.TestFile;
 
 /**
+ * Automated tests for the JavaDigest fixity service.  
+ * 
  * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
 public class JavaDigestTests {
