@@ -59,6 +59,7 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister;
+import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister.RegistryType;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectReference;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
@@ -152,6 +153,8 @@ public class WorkflowBackingBean {
 	private boolean disable = true;
 	private String display = "display:none";
 	private static boolean firstTime = true;
+	private static boolean kbFirstTime = true;
+	private static URI currentNode = null;
 
 
 	//
@@ -690,15 +693,20 @@ public class WorkflowBackingBean {
 							if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI)) {
 								o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerDCBase.REGISTRY_NAME);
 							} else {
-							    o = dr.getDataManager(dobURI).retrieve(dobURI);
-							
-								// Recreate digital object by value to enable workflow execution. 
-								// At the moment digital object uses a DataHandler. It is not serializable
-								// and it is not possible to execute workflows. 
-								InputStream streamContent = o.getContent().getInputStream();
-								byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
-								DigitalObjectContent content = Content.byValue(byteContent);
-								o = (new DigitalObject.Builder(o)).content(content).title(dor.getLeafname()).build();
+								if (dobURI.toString().contains(OAIDigitalObjectManagerKBBase.OAI_KB_CHILD_URI)) {
+									dobURI = URI.create(dobURI.toString().concat(OAIDigitalObjectManagerKBBase.NEED_REAL_CONTENT));
+									o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerKBBase.REGISTRY_NAME);
+								} else {
+								    o = dr.getDataManager(dobURI).retrieve(dobURI);
+								
+									// Recreate digital object by value to enable workflow execution. 
+									// At the moment digital object uses a DataHandler. It is not serializable
+									// and it is not possible to execute workflows. 
+									InputStream streamContent = o.getContent().getInputStream();
+									byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
+									DigitalObjectContent content = Content.byValue(byteContent);
+									o = (new DigitalObject.Builder(o)).content(content).title(dor.getLeafname()).build();
+								}
 							}
 						}
 
@@ -893,6 +901,9 @@ public class WorkflowBackingBean {
 					if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI)) {
 						o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerDCBase.REGISTRY_NAME);
 					} 
+					if (dobURI.toString().contains(OAIDigitalObjectManagerKBBase.OAI_KB_CHILD_URI)) {
+						o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerKBBase.REGISTRY_NAME);
+					} 
 					if (o != null) {
 						fillDetails(o);
 					} else {
@@ -944,7 +955,7 @@ public class WorkflowBackingBean {
 			logger.info("calculateNodes() cchilds.size: " + cchilds.size());
 			for (FileTreeNode tfn : cchilds ) {
 				logger.info("calculateNodes() tfn.getUri(): " + tfn.getUri());
-				if (dr.isOaiRegistry(tfn.getUri())) {
+				if (dr.isOaiRegistry(tfn.getUri()) && currentNode != null && currentNode.equals(tfn.getUri())) {
 					switch (bt) {
 						case PREV:
 							dr.decreaseDorIndex();
@@ -957,7 +968,7 @@ public class WorkflowBackingBean {
 					    	break;
 						case NEXT:
 							dr.increaseDorIndex();
-				    		dataScrollerIndex++;
+							dataScrollerIndex++;
 					    	break;
 						default:
 					    	break;
@@ -1227,9 +1238,19 @@ public class WorkflowBackingBean {
 				// If there are any, add them via recursion:
 				if (dob.isDirectory() && depth > 0) {
 					logger.info("### WorkflowBackingBean: getChildItems() before .list() dob.getUri: " + dob.getUri());
-					if (dr.isOaiRegistry(dob.getUri())) {
-		    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI));
-			    	}
+					RegistryType rt = dr.getRegistryType(dob.getUri());
+					switch (rt) {
+						case OAIDC:
+							logger.info("### WorkflowBackingBean: getChildItems() case OAIDC");
+			    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI));
+			    		   break;
+						case OAIKB:
+							logger.info("### WorkflowBackingBean: getChildItems() case OAIKB");
+				    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI));
+				    		   break;
+						default:
+				    		   break;
+					}
 					this.getChildItems(tm, cnode, dr.list(dob.getUri()),
 							depth - 1);
 				}
@@ -1290,21 +1311,39 @@ public class WorkflowBackingBean {
 	public void setDir(FileTreeNode tfn) {
 		if (tfn != null) {
 		   logger.info("setDir() uri: " + tfn.getUri());
-		   
+		   dr.resetDorIndex();
+		   dataScrollerIndex = 0;
+
 	       	if (tfn.getUri() != null) {
-	    		if (dr.isOaiRegistry(tfn.getUri())) {
-		    		disable = false;
-		    		if (!firstTime) {
-		    	    	logger.info("WorkflowBackingBean setDir() !first time for OAI. call refreshChilds.");
-		    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI));
-		    		} else {
-		    	    	logger.info("WorkflowBackingBean setDir() first time for OAI.");
-		    			firstTime = false;
-		    		}
-	    		} else {
-	    			disable = true;
-	    			dataScrollerIndex = 0;
-	    		}
+				RegistryType rt = dr.getRegistryType(tfn.getUri());
+				switch (rt) {
+					case OAIDC:
+			    		disable = false;
+			    		if (!firstTime) {
+			    	    	logger.info("WorkflowBackingBean setDir() !first time for OAI. call refreshChilds.");
+			    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI));
+			    		} else {
+			    	    	logger.info("WorkflowBackingBean setDir() first time for OAI.");
+			    			firstTime = false;
+			    		}
+			    		currentNode = tfn.getUri();
+		    		   break;
+					case OAIKB:
+			    		disable = false;
+			    		if (!kbFirstTime) {
+			    	    	logger.info("WorkflowBackingBean setDir() !first time for OAI. call refreshChilds.");
+			    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI));
+			    		} else {
+			    	    	logger.info("WorkflowBackingBean setDir() first time for OAI.");
+			    			kbFirstTime = false;
+			    		}
+			    		currentNode = tfn.getUri();
+			    		   break;
+					default:
+			    		disable = true;
+		    			currentNode = null;
+			    		break;
+				}
     	    	logger.info("WorkflowBackingBean setDir() set disable for buttons: " + disable);
 	    	}		   
 		}

@@ -9,6 +9,7 @@ import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.impl.oai.OAIDigitalObjectManagerDCBase;
+import eu.planets_project.ifr.core.storage.impl.oai.OAIDigitalObjectManagerKBBase;
 
 /**
  * 
@@ -27,6 +28,10 @@ public class DigitalObjectDirectoryLister {
 	 */
 	private static final int LEAFS_MAX_COUNT = 10;
 	
+	public enum RegistryType {
+	    JCR, OAIDC, OAIKB, DEFAULT
+	}
+	
     private static Logger log = Logger.getLogger(DigitalObjectDirectoryLister.class.getName());
     
     /**
@@ -35,6 +40,7 @@ public class DigitalObjectDirectoryLister {
     private static int dorIndex = 0;
     
     private static List<URI> tmpChilds = new ArrayList<URI>(0);
+    private static List<URI> kbChilds = new ArrayList<URI>(0);
     
     // The data sources are managed here:
     DataRegistry dataRegistry = DataRegistryFactory.getDataRegistry();
@@ -46,8 +52,21 @@ public class DigitalObjectDirectoryLister {
     public void refreshChilds(URI puri) {
     	long starttime = System.currentTimeMillis();
     	log.info("DigitalObjectDirectoryLister refreshChilds(). puri: " + puri + ", starttime: " + starttime);
-    	tmpChilds.clear();
-    	tmpChilds = dataRegistry.list(puri);
+		RegistryType rt = getRegistryType(puri);
+    	log.info("DigitalObjectDirectoryLister refreshChilds(). rt: " + rt.name());
+		switch (rt) {
+			case OAIDC:
+		           tmpChilds.clear();
+		   	       tmpChilds = dataRegistry.list(puri);
+    		   break;
+			case OAIKB:
+		    	log.info("DigitalObjectDirectoryLister refreshChilds(). case OAIKB puri: " + puri);
+		           kbChilds.clear();
+		   	       kbChilds = dataRegistry.list(puri);
+	    		   break;
+			default:
+	    		break;
+		}
     	long endtime2 = System.currentTimeMillis();
     	log.info("DigitalObjectDirectoryLister refreshChilds() difftime: " + (endtime2 - starttime));
     }
@@ -60,7 +79,44 @@ public class DigitalObjectDirectoryLister {
     public boolean isOaiRegistry(URI uri) {
     	boolean res = false;
     	
-    	if (uri != null && uri.toString().equals(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI)) {
+    	if (uri != null && (uri.toString().equals(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI) || 
+		            uri.toString().equals(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI))) {
+    		res = true;
+    	}
+    	
+    	return res;
+    }
+    
+    /**
+     * Check if current URI belongs to the OAI registry.
+     * @param uri The current URI
+     * @return true if the URI belongs to the OAI registry, false otherwise
+     */
+    public RegistryType getRegistryType(URI uri) {
+    	RegistryType res = RegistryType.DEFAULT;
+    	
+    	if (uri != null) {
+    		if (uri.toString().equals(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI)) {
+    			res = RegistryType.OAIDC;
+    		}
+    		if (uri.toString().equals(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI)) {
+				res = RegistryType.OAIKB;
+			}
+    	}
+	
+    	return res;
+    }
+    
+
+    /**
+     * Check if current URI belongs to the OAI KB registry.
+     * @param uri The current URI
+     * @return true if the URI belongs to the OAI registry, false otherwise
+     */
+    public boolean isOaiKBRegistry(URI uri) {
+    	boolean res = false;
+    	
+    	if (uri != null && uri.toString().equals(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI)) {
     		res = true;
     	}
     	
@@ -78,12 +134,26 @@ public class DigitalObjectDirectoryLister {
     	log.info("DigitalObjectDirectoryLister list() uri: " + puri + ", starttime: " + starttime);
         // List from the appropriate registry.
     	List<URI> childs = null;
-    	if (isOaiRegistry(puri) && tmpChilds != null) {
-        	log.info("DigitalObjectDirectoryLister list() take tmpChilds.");
-    		childs = tmpChilds;
-    	} else {
-            childs = dataRegistry.list(puri);
-    	}
+    	
+		RegistryType rt = getRegistryType(puri);
+		switch (rt) {
+			case OAIDC:
+		    	if (tmpChilds != null) {
+  		        	log.info("DigitalObjectDirectoryLister list() take tmpChilds.");
+  		    		childs = tmpChilds;
+		          	}
+    		   break;
+			case OAIKB:
+		    	if (kbChilds != null) {
+  		        	log.info("DigitalObjectDirectoryLister list() take kbChilds. size: " + kbChilds.size());
+  		    		childs = kbChilds;
+		          	}
+	    		   break;
+			default:
+	            childs = dataRegistry.list(puri);
+	            log.info("DigitalObjectDirectoryLister list() default childs size: " + childs.size());
+	    		   break;
+		}
     	
     	long endtime = System.currentTimeMillis();
     	log.info("DigitalObjectDirectoryLister list() difftime: " + (endtime - starttime));
@@ -92,11 +162,24 @@ public class DigitalObjectDirectoryLister {
         
     	long starttime2 = System.currentTimeMillis();
     	log.info("DigitalObjectDirectoryLister list() starttime2: " + starttime2);
+    	
         // Create a DigitalObject for each URI.
     	int childsSize = childs.size();
-    	if (puri != null) {
+    	log.info("DigitalObjectDirectoryLister list() childsSize: " + childsSize + ", dorIndex: " + dorIndex);
+    	if (puri != null) {    		
     		if (isOaiRegistry(puri)) {
-    			childsSize = LEAFS_MAX_COUNT;
+				if (childsSize > LEAFS_MAX_COUNT) {
+			    	// for the last page calculate the list size
+			    	if (dorIndex + LEAFS_MAX_COUNT > childsSize && childsSize%LEAFS_MAX_COUNT != 0) {
+				    	log.info("DigitalObjectDirectoryLister list() childsSize > LEAFS_MAX_COUNT and has rest");
+			    		childsSize = childsSize%LEAFS_MAX_COUNT;
+			    	} else {
+				    	log.info("DigitalObjectDirectoryLister list() childsSize > LEAFS_MAX_COUNT");
+						childsSize = LEAFS_MAX_COUNT;
+			    	}
+			    	log.info("DigitalObjectDirectoryLister list() change childsSize: " + childsSize);
+			    	
+				}
     		} else {
 	        	log.info("DigitalObjectDirectoryLister list() reset dorIndex.");
 	    		dorIndex = 0;    			
@@ -104,7 +187,9 @@ public class DigitalObjectDirectoryLister {
     	}
     	log.info("DigitalObjectDirectoryLister list() set childsSize: " + childsSize +
     			", dorIndex: " + dorIndex);
+    	// show empty list if index > then childs size
         if (dorIndex >= childs.size()) {
+        	log.info("DigitalObjectDirectoryLister list() dorIndex >= childs.size().");
            childsSize = 0;
         }
 
@@ -113,9 +198,16 @@ public class DigitalObjectDirectoryLister {
         if (dorIndex < childs.size()) {
 	    	log.info("DigitalObjectDirectoryLister list() dorIndex: " + dorIndex);
 	        for( int i = 0; i < childs.size(); i ++ ) {
-	        	if (puri != null) {
+    	    	log.info("DigitalObjectDirectoryLister list() for dorIndex: " + dorIndex + ", i: " + i + 
+    	    			", childs.size(): " + childs.size());
+	        	if (puri != null) { 
 	        		if (isOaiRegistry(puri) && i == LEAFS_MAX_COUNT) {
 		    	    	log.info("DigitalObjectDirectoryLister list() break dorIndex: " + dorIndex + ", i: " + i);
+		    			break;
+		    		}
+	        		if (isOaiRegistry(puri) && i + dorIndex == childs.size()) {
+		    	    	log.info("DigitalObjectDirectoryLister list() break i + dorIndex == childs.size() dorIndex: " + 
+		    	    			dorIndex + ", i: " + i);
 		    			break;
 		    		}
 	        	}
@@ -131,7 +223,7 @@ public class DigitalObjectDirectoryLister {
 	                dobs[i].setDirectory(true);
 	            }
 	        }
-        } //
+        } 
     	long endtime2 = System.currentTimeMillis();
     	log.info("DigitalObjectDirectoryLister list() difftime2: " + (endtime2 - starttime2));
         
@@ -140,6 +232,11 @@ public class DigitalObjectDirectoryLister {
     }
     
 
+    public void resetDorIndex() {
+    	dorIndex = 0;
+    }
+    
+    
     public void increaseDorIndex() {
     	dorIndex = dorIndex + LEAFS_MAX_COUNT;
     }
