@@ -312,36 +312,39 @@ public class ExperimentBean {
         log.info("Looking for BMGs... ");
         try {
         	if (exp.getCurrentPhase() instanceof ExperimentEvaluation) { 
-	        	if (this.inputData != null) {
-	        		
-	        		//iterate over all input files
-	    			for(String localFileRef : this.inputData.values()) {
-	    			    // Clean up the localFileRef, so that the TB can cope with it's data store being moved.
-	    				//store a set of file BMGoals for every record item
-	    				DataHandler dh = new DataHandlerImpl();
-	    				URI inputFileURI = dh.get(localFileRef).getDownloadUri();
-	    				Collection<BenchmarkGoal> colFileBMGoals = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(inputFileURI);
-	    				if(colFileBMGoals==null)
-	    					throw new Exception("Exception while setting file benchmarks for record: "+inputFileURI);
-	    				
-	    				for(BenchmarkGoal bmg : colFileBMGoals){
-	    	                log.info("Found fileBMG: " + bmg.getName());
-	    	                log.info("Found fileBMG.id: " + bmg.getID());
-	    					//now crate the bmb out of the bmg
-		    				BenchmarkBean bmb = new BenchmarkBean(bmg);
-							bmb.setSourceValue(bmg.getSourceValue());
-							bmb.setTargetValue(bmg.getTargetValue());
-							bmb.setEvaluationValue(bmg.getEvaluationValue());
-							bmb.setWeight(String.valueOf(bmg.getWeight()));
-							bmb.setSelected(true);
-							if((bmb.getSourceValue()==null)||(bmb.getSourceValue().equals("")))
-								bmb.setSrcError(true);
-							if((bmb.getTargetValue()==null)||(bmb.getTargetValue().equals("")))
-								bmb.setTarError(true);							
-							
-							//now add the file bmbs for this experimentbean
-				    		fileBenchmarks.put(inputFileURI+bmb.getID(), bmb);
-	    				}
+        	    if (this.inputData != null) {
+
+        	        //iterate over all input files
+        	        for(String localFileRef : this.inputData.values()) {
+        	            // Clean up the localFileRef, so that the TB can cope with it's data store being moved.
+        	            //store a set of file BMGoals for every record item
+        	            DataHandler dh = new DataHandlerImpl();
+        	            DigitalObjectRefBean dorb = dh.get(localFileRef);
+        	            if( dorb != null ) {
+        	                URI inputFileURI = dorb.getDownloadUri();
+        	                Collection<BenchmarkGoal> colFileBMGoals = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(inputFileURI);
+        	                if(colFileBMGoals==null)
+        	                    throw new Exception("Exception while setting file benchmarks for record: "+inputFileURI);
+
+        	                for(BenchmarkGoal bmg : colFileBMGoals){
+        	                    log.info("Found fileBMG: " + bmg.getName());
+        	                    log.info("Found fileBMG.id: " + bmg.getID());
+        	                    //now crate the bmb out of the bmg
+        	                    BenchmarkBean bmb = new BenchmarkBean(bmg);
+        	                    bmb.setSourceValue(bmg.getSourceValue());
+        	                    bmb.setTargetValue(bmg.getTargetValue());
+        	                    bmb.setEvaluationValue(bmg.getEvaluationValue());
+        	                    bmb.setWeight(String.valueOf(bmg.getWeight()));
+        	                    bmb.setSelected(true);
+        	                    if((bmb.getSourceValue()==null)||(bmb.getSourceValue().equals("")))
+        	                        bmb.setSrcError(true);
+        	                    if((bmb.getTargetValue()==null)||(bmb.getTargetValue().equals("")))
+        	                        bmb.setTarError(true);							
+
+        	                    //now add the file bmbs for this experimentbean
+        	                    fileBenchmarks.put(inputFileURI+bmb.getID(), bmb);
+        	                }
+        	            }
 	    			}
 	    		}
         	}
@@ -616,22 +619,33 @@ public class ExperimentBean {
     	if(expStage.equals("design experiment")){
     		Map<String, String> localFileRefs = this.getExperimentInputData();
         	for( String key : localFileRefs.keySet() ) {
+        	    boolean found = false;
         		try {
         			Map<String,String> map = new HashMap<String,String>();
         			//retrieve URI
         		    String fInput = localFileRefs.get(key);
         		    DigitalObjectRefBean dobr = dh.get(fInput);
-        		    if(dobr != null ) {
-    				URI uri = dobr.getDownloadUri();
-    				map.put("uri", uri.toString()) ;
-    				map.put("name", this.createShortDoName(dobr) );
-    				map.put("inputID", key);
-    				ret.add(map);
+        		    if( dobr != null ) {
+        		        URI uri = dobr.getDownloadUri();
+        		        map.put("uri", uri.toString()) ;
+        		        map.put("name", this.createShortDoName(dobr) );
+        		        map.put("inputID", key);
+        		        ret.add(map);
+        		        found = true;
         		    } else {
-        		    	log.error("Digital Object "+key+" could not be found!");
+        		        log.error("Digital Object "+key+" could not be found!");
         		    }
     			} catch (FileNotFoundException e) {
     				log.error(e.toString());
+    			}
+    			// Catch lost items...
+    			if( !found ) {
+                    Map<String,String> map = new HashMap<String,String>();
+                    String fInput = localFileRefs.get(key);
+                    map.put("uri", fInput);
+                    map.put("name", "ERROR: Digital Object Not Found: " + getLeafnameFromPath(fInput));
+                    map.put("inputID", key);
+                    ret.add(map);
     			}
         	}
     	}
@@ -712,6 +726,10 @@ public class ExperimentBean {
         String name = dobr.getName();
         if( name == null ) return dobr.getDomUri().getPath();
         if( name == null ) return "no-name";
+        return this.getLeafnameFromPath(name);
+    }
+    
+    private String getLeafnameFromPath(String name) {
         int lastSlash = name.lastIndexOf("/");
         if( lastSlash != -1 ) {
             return name.substring( lastSlash + 1, name.length() );
