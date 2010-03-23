@@ -872,11 +872,16 @@ public class NewExpWizardController{
         ExperimentImpl.resetToApprovedStage(exp);
         ExperimentImpl.resetToEditingStage(exp);
         
-        // Place new experiment bean into session:
-        ExperimentBean newExpBean = ExperimentInspector.putExperimentIntoRequestExperimentBean(exp);
-        
         // Make the current user the owner:
         UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        if( user != null ) {
+            BasicProperties props = exp.getExperimentSetup().getBasicProperties();
+            props.setExperimenter(user.getUserid());
+            props.setContact(user.getFullname(), user.getEmail(), user.getTelephone(), user.getAddress());
+        }
+
+        // Place new experiment bean into session:
+        ExperimentBean newExpBean = ExperimentInspector.putExperimentIntoRequestExperimentBean(exp);
         newExpBean.setUserData(user);
         long eid = newExpBean.persistExperiment();
         

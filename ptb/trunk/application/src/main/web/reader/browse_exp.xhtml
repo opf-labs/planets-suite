@@ -67,7 +67,7 @@
                             <f:facet name="icon"><t:graphicImage value="/graphics/accessories-text-editor.png"/></f:facet>
 							<b>edit</b> experiment
 						</rich:menuItem>
-						<rich:menuItem id="contextSaveAs" action="#{ListExp_Backing.commandSaveExperimentAs}">
+						<rich:menuItem id="contextSaveAs" rendered="#{UserBean.experimenter}" action="#{ListExp_Backing.commandSaveExperimentAs}">
                             <f:facet name="icon"><t:graphicImage value="/graphics/edit-copy.png"/></f:facet>
 							<b>save configuration as</b> new experiment
 						</rich:menuItem>

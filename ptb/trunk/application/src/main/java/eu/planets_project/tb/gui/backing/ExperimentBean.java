@@ -224,6 +224,8 @@ public class ExperimentBean {
             this.econtactemail = user.getEmail();
             this.econtacttel = user.getTelephone();
             this.econtactaddress = user.getAddress();
+        } else {
+            log.error("Attempted to re-fill user data with a null user.");
         }
     }
     

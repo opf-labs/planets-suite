@@ -122,14 +122,6 @@ public class ExecutionRecordImpl implements Serializable {
     private Set<ExecutionStageRecordImpl> stages = new HashSet<ExecutionStageRecordImpl>();
     //private Vector<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
     
-    /** The service invocation records */
-    /* FIXME This was a bad idea - just move the new fields into the ExecutionStageRecordImpl, 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="execution", fetch=FetchType.EAGER)
-    private Set<InvocationRecordImpl> serviceCalls = new HashSet<InvocationRecordImpl>();
-    */
-   
-    //FIXME Use @Lob on the things I had to make LONGBLOB
-    
     // The 'Result'
     private String resultType;
     @Column(columnDefinition="VARCHAR(10000)")
