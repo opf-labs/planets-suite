@@ -607,6 +607,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean implements ExpTypeWeeBean
                     log.error("Could not find file. "+e);
                     return "";
                 }
+                if( dobr == null ) return "";
                 summary += dobr.getName();
                 long size = dobr.getSize();
                 if( size >= 0 ) {
