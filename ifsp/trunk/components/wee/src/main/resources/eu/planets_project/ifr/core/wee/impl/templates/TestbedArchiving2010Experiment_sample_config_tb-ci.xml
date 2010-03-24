@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
   <template>
-    <class>eu.planets_project.ifr.core.wee.impl.templates.TestbedArchiving2010Experiment</class>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.TestbedArchiving2010Experiment_24032010_v2</class>
   </template>
   <services>
     <service id="migrate1">
-      <endpoint>http://testbed-dev.planets-project.ait.ac.at:80/pserv-pa-gimp26/Gimp26Migration?wsdl</endpoint>
+      <endpoint>http://testbed.planets-project.eu:80/pserv-pa-gimp26/Gimp26Migration?wsdl</endpoint>
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_from_fmt</name>
@@ -23,7 +23,7 @@
       </parameters>
     </service>
     <service id="migrate2">
-      <endpoint>http://testbed-dev.planets-project.ait.ac.at:80/pserv-pa-jasper19/Jasper19Migration?wsdl</endpoint>
+      <endpoint>http://testbed.planets-project.eu:80/pserv-pa-jasper19/Jasper19Migration?wsdl</endpoint>
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_from_fmt</name>
@@ -76,7 +76,7 @@
       </parameters>
     </service>
      <service id="migrate3">
-      <endpoint>http://testbed-dev.planets-project.ait.ac.at:80/pserv-pa-jasper19/Jasper19Migration?wsdl</endpoint>
+      <endpoint>http://testbed.planets-project.eu:80/pserv-pa-jasper19/Jasper19Migration?wsdl</endpoint>
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_from_fmt</name>
@@ -90,7 +90,7 @@
       </parameters>
     </service>
     <service id="migrate4">
-      <endpoint>http://testbed-dev.planets-project.ait.ac.at:80/pserv-pa-gimp26/Gimp26Migration?wsdl</endpoint>
+      <endpoint>http://testbed.planets-project.eu:80/pserv-pa-gimp26/Gimp26Migration?wsdl</endpoint>
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_from_fmt</name>
@@ -109,7 +109,7 @@
       </parameters>
     </service>
     <service id="identify1">
-      <endpoint>http://testbed-dev.planets-project.ait.ac.at:80/pserv-pc-jhove/JhoveIdentification?wsdl</endpoint>
+      <endpoint>http://testbed.planets-project.eu:80/pserv-pc-jhove/JhoveIdentification?wsdl</endpoint>
     </service>
     <service id="migratexcdl1">
       <endpoint>http://testbed.planets-project.eu:80/pserv-xcl/XcdlMigrate?wsdl</endpoint>

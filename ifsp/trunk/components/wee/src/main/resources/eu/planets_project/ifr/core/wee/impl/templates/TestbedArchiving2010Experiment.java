@@ -195,7 +195,8 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
 				this.processingDigo, 
 				migrationService, 
 				digORef, 
-				new URI("planets://testbed-dev.planets-project.ait.ac.at:80/dr/experiment-files"),
+				//new URI("planets://testbed-dev.planets-project.ait.ac.at:80/dr/experiment-files"),
+				  new URI("planets://testbed.planets-project.eu:80/dr/experiment-files"),
 				endOfRoundtripp);
 		
 		return migrWrapper.runMigration();
@@ -294,7 +295,7 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
     	WorkflowResultItem wfResultItem = new WorkflowResultItem(
         		WorkflowResultItem.SERVICE_ACTION_COMPARE,
         		System.currentTimeMillis());
-    	 wfResult.addWorkflowResultItem(wfResultItem);
+         this.addWFResultItem(wfResultItem);
     	 wfResultItem.setAboutExecutionDigoRef(processingDigo);
     	 
         try {

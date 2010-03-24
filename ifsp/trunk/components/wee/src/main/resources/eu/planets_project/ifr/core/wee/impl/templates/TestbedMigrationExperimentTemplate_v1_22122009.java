@@ -106,8 +106,8 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 				this.processingDigo.getPermanentUri(), 
 				migrationService, 
 				digORef, 
-				//new URI("planets://testbed-dev.planets-project.ait.ac.at:80/dr/experiment-files"),
-				new URI("planets://localhost:8080/dr/experiment-files"),
+				new URI("planets://testbed.planets-project.eu:80/dr/experiment-files"),
+				//new URI("planets://localhost:8080/dr/experiment-files"),
 				endOfRoundtripp);
 		
 		return migrWrapper.runMigration();
