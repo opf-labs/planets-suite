@@ -97,6 +97,7 @@
     <p style="font-family: monospace;"> <h:outputText value="#{log}" />
     </p>
   </a4j:repeat>
+  
   </rich:simpleTogglePanel>
   
   <!-- ****************** -->
@@ -105,7 +106,11 @@
 	<rich:simpleTogglePanel label="show overall batch report log" opened="false" switchType="client">                   
 		<div style="overflow: auto !important;">
 		<pre>
-			#{dor.batchReport}    
+			<a4j:repeat value="#{ExperimentBean.tempFileDownloadLinkForWEEWFResults}" var="wfresultLogFiles" rowKeyVar="count">
+     			<h:outputLink value="#{wfresultLogFiles}" target="_blank">
+       				<h:outputText value="Click here to download the batch processor log..."/>
+       			</h:outputLink><br/>
+  			</a4j:repeat> 
 		</pre>
 		</div>
 	</rich:simpleTogglePanel>
