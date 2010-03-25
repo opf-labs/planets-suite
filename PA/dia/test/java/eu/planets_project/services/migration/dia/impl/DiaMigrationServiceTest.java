@@ -4,6 +4,7 @@
 package eu.planets_project.services.migration.dia.impl;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -15,14 +16,18 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import eu.planets_project.services.datatypes.Checksum;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.Checksums;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -111,8 +116,14 @@ public class DiaMigrationServiceTest extends TestCase {
 	final ServiceReport.Status migrationStatus = serviceReport.getStatus();
 	assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
 
-	// TODO: Can we make some meaningful tests on the output from
-	// migrationResult.getDigitalObject()?
+	// Verify the checksum of the migrated object.
+	final DigitalObject migratedObject = migrationResult.getDigitalObject();
+	final DigitalObjectContent migratedData = migratedObject.getContent();
+	final byte[] resultChecksumArray = Checksums.md5(migratedData
+		.getInputStream());
+	final BigInteger resultChecksum = new BigInteger(resultChecksumArray);
+	assertEquals("The checksum of the migration output is incorrect.",
+		"2c93e0a52493f0f67677988848e8abc8", resultChecksum.toString(16));
     }
 
     /**
@@ -257,10 +268,6 @@ public class DiaMigrationServiceTest extends TestCase {
 	// FIXME! Enable when the end-point is correctly configured...
 	// assertEquals("Un-expected end-point URL.",
 	// "FNaaaaa", diaServiceDescription.getEndpoint());
-
-	assertEquals("Un-expected service provider information.",
-		"Dia Migration Service Test Provider", diaServiceDescription
-			.getServiceProvider());
 
 	assertEquals("Un-expected interface type.",
 		"eu.planets_project.services.migrate.Migrate",
