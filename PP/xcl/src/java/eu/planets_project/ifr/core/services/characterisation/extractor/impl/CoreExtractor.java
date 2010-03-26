@@ -216,6 +216,8 @@ public class CoreExtractor {
 
         shell.setStartingDir(new File(EXTRACTOR_HOME));
         log.info("Setting starting Dir to: " + EXTRACTOR_HOME);
+        //set timeout to 10 minutes
+        shell.setTimeout(600000);
         log.info("Starting Extractor tool...");
         shell.run();
         String processOutput = shell.getProcessOutputAsString();
