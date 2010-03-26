@@ -80,11 +80,6 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 	 */
 	private static Map<URI, DigitalObject> leafMap = new HashMap<URI, DigitalObject>();
 	
-	/**
-	 * The cache map binds URI with the publication link.
-	 */
-	private static Map<URI, URI> publicationLinkMap = new HashMap<URI, URI>();
-	
     /**
      * The manager control thread.
      */
@@ -112,20 +107,10 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
     	log.info("OAIDigitalObjectManagerKBImpl retrieve() starttime: " + starttime);
 		try {
 			log.log(Level.INFO, "OAIDigitalObjectManagerKBImpl retrieve() uri: " + pdURI);
-			boolean needRealContent = false;
 			
 			if (pdURI != null) {
-				// evaluate if real content needed or just metadata information is important
-				if (pdURI.toString().contains(OAIDigitalObjectManagerKBBase.NEED_REAL_CONTENT)) {
-					// retrieve real publication link
-					needRealContent = true;
-					pdURI = URI.create(pdURI.toString().replaceAll(OAIDigitalObjectManagerKBBase.NEED_REAL_CONTENT, ""));
-					log.log(Level.INFO, "OAIDigitalObjectManagerKBImpl retrieve() needRealContent = true, uri: " + pdURI);
-				} 
-				
 				// return digital object if it exists in the map
-				if (leafMap.containsKey(pdURI) && (!needRealContent || publicationLinkMap.containsKey(pdURI))) {		
-//					if (leafMap.containsKey(pdURI) && !needRealContent) {		
+				if (leafMap.containsKey(pdURI)) {		
 			    	log.info("OAIDigitalObjectManagerKBImpl retrieve() already exist in map uri: " + pdURI);
 			    	long endtime = System.currentTimeMillis();
 			    	log.info("OAIDigitalObjectManagerKBImpl retrieve() timediff: " + (endtime - starttime));
@@ -133,15 +118,6 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 				}
 			}
 
-			String publicationLink = OAIDigitalObjectManagerKBBase.TMP_PUBLICATION_LINK;
-			
-			if (needRealContent) {
-				// Get an intermediate HTML page and the publication link
-				publicationLink = retrieveIntermediateHtmlPage(pdURI.toString());
-				publicationLinkMap.put(pdURI, URI.create(publicationLink));
-			}
-			log.log(Level.INFO, "OAIDigitalObjectManagerKBImpl retrieve() publicationLink: " + publicationLink);
-	
 			List<Metadata> metadataList = metadataMap.get(pdURI);
 			if (metadataList != null) {
 				// DigitalObject title
@@ -156,8 +132,8 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 					}
 				}
 				
-				if (publicationLink != null && publicationLink.length() > 0) {
-					Builder builder = new DigitalObject.Builder(Content.byReference(new URL(publicationLink)));
+				if (pdURI != null && pdURI.toString().length() > 0) {
+					Builder builder = new DigitalObject.Builder(Content.byReference(pdURI.toURL()));
 					builder.title(title);
 					builder.metadata(metadataList.toArray(new Metadata[]{}));
 					
@@ -224,17 +200,20 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 	    										resolver.indexOf(RESOLVER_END));
 	    	    log.log(Level.INFO, "test() resolverLink[" + i +  "]: " + resolverLink);
 	    	    if (resolverLink != null) {
-	    	    	resultList.add(URI.create(resolverLink));
+					// Get an intermediate HTML page and the publication link
+					String publicationLink = retrieveIntermediateHtmlPage(resolverLink);
+	    	    	resultList.add(URI.create(publicationLink));
+
 	    	    	// Retrieve metadata
 	    	    	List<Metadata> metadataList = new ArrayList<Metadata>(0);
 	    	    	for (OaiMetadata emd : OaiMetadata.values()) {
 	    	    		String md = retrieveOaiMetadata(emd, resolver);
 	    	    		if (md != null && md.length() > 0) {
-		    	    	   Metadata metadata = new Metadata(URI.create(resolverLink), emd.name(), md);
+			    	       Metadata metadata = new Metadata(URI.create(publicationLink), emd.name(), md);
 		    	    	   metadataList.add(metadata);
 	    	    		}
 	    	    	}
-	    	    	metadataMap.put(URI.create(resolverLink), metadataList);
+	    	    	metadataMap.put(URI.create(publicationLink), metadataList);
 	    	    }
 	    	}
 	        return resultList;
@@ -486,9 +465,6 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
                             // remove it if it is not more present in the repository.
                             if (leafMap.containsKey(currentUri)) { 
                             	leafMap.remove(currentUri);
-                            }
-                            if (publicationLinkMap.containsKey(currentUri)) { 
-                            	publicationLinkMap.remove(currentUri);
                             }
                         }
                     }

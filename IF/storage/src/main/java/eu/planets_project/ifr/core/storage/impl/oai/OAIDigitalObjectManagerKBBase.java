@@ -35,15 +35,11 @@ public class OAIDigitalObjectManagerKBBase extends DigitalObjectManagerBase {
 	
 	public static final String OAI_KB_BASE_URI = "planets://localhost:8080/dr/oai-kb";
 	
-	public static final String OAI_KB_CHILD_URI = "resolver"; 
+	public static final String OAI_KB_CHILD_URI = "http://toegang.kb.nl"; 
 	
 	public static final String PREFIX = "oai_kb";
 	
 	public static final String REGISTRY_NAME = "oai-kb";
-	
-	public static final String NEED_REAL_CONTENT = "needrealcontent";
-
-	public static final String TMP_PUBLICATION_LINK = "http://";
 	
 	
     /**
