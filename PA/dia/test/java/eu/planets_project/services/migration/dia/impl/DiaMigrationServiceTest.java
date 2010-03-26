@@ -16,7 +16,6 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import eu.planets_project.services.datatypes.Checksum;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
@@ -27,7 +26,6 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.Checksums;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -57,9 +55,7 @@ public class DiaMigrationServiceTest extends TestCase {
     private final File FIG_TEST_FILE_PATH = new File(
 	    "tests/test-files/images/vector/fig");
 
-    private Set<URI> inputFormatURIs;
-
-    private Set<URI> outputFormatURIs;
+    private Set<MigrationPath> expectedMigrationPaths;
 
     /**
      * @throws java.lang.Exception
@@ -68,8 +64,7 @@ public class DiaMigrationServiceTest extends TestCase {
     public void setUp() throws Exception {
 	migrationService = ServiceCreator.createTestService(Migrate.QNAME,
 		DiaMigrationService.class, wsdlLocation);
-	initialiseInputFormatURIs();
-	initialiseOutputFormatURIs();
+	initialiseExpectedMigrationPaths();
     }
 
     /**
@@ -164,8 +159,14 @@ public class DiaMigrationServiceTest extends TestCase {
 	final ServiceReport.Status migrationStatus = serviceReport.getStatus();
 	assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
 
-	// TODO: Can we make some meaningful tests on the output from
-	// migrationResult.getDigitalObject()?
+	// Verify the checksum of the migrated object.
+	final DigitalObject migratedObject = migrationResult.getDigitalObject();
+	final DigitalObjectContent migratedData = migratedObject.getContent();
+	final byte[] resultChecksumArray = Checksums.md5(migratedData
+		.getInputStream());
+	final BigInteger resultChecksum = new BigInteger(resultChecksumArray);
+	assertEquals("The checksum of the migration output is incorrect.",
+		"2f356491a03e754c93692a12df68166d", resultChecksum.toString(16));
     }
 
     /**
@@ -206,15 +207,15 @@ public class DiaMigrationServiceTest extends TestCase {
 	final ServiceReport.Status migrationStatus = serviceReport.getStatus();
 	assertEquals(ServiceReport.Status.SUCCESS, migrationStatus);
 
-	// TODO: Can we make some meaningful tests on the output from
-	// migrationResult.getDigitalObject()?
+	// Verify the checksum of the migrated object.
+	final DigitalObject migratedObject = migrationResult.getDigitalObject();
+	final DigitalObjectContent migratedData = migratedObject.getContent();
+	final byte[] resultChecksumArray = Checksums.md5(migratedData
+		.getInputStream());
+	final BigInteger resultChecksum = new BigInteger(resultChecksumArray);
+	assertEquals("The checksum of the migration output is incorrect.",
+		"6aca03cd76603e03e76b8af5ff105e1e", resultChecksum.toString(16));
     }
-
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !! Warning! You may turn blind if you look at the code below this line.!!
-    // !! !!
-    // !! Please leave it, I'll clean up later - Thomas (SB) !!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     /**
      * Test method for
@@ -223,6 +224,8 @@ public class DiaMigrationServiceTest extends TestCase {
      */
     @Test
     public void testDescribe() throws Exception {
+
+	// TODO: This test needs serious improvement.
 
 	final ServiceDescription diaServiceDescription = migrationService
 		.describe();
@@ -241,7 +244,7 @@ public class DiaMigrationServiceTest extends TestCase {
 	assertNotNull("The migration service does not provide an identifier.",
 		diaServiceDescription.getIdentifier());
 
-	// verifyInputFormats(diaServiceDescription.getInputFormats());
+	verifyInputFormats(diaServiceDescription.getInputFormats());
 
 	assertNotNull(
 		"The migration service does not provide instructions for the use of this service.",
@@ -250,6 +253,7 @@ public class DiaMigrationServiceTest extends TestCase {
 	assertNotNull("The migration service does not provide a name.",
 		diaServiceDescription.getName());
 
+	// TODO: Enable when fixed...
 	// verifyMigrationPaths(diaServiceDescription.getPaths());
 
 	assertNotNull(
@@ -263,9 +267,7 @@ public class DiaMigrationServiceTest extends TestCase {
 		"The migration service does not provide version information.",
 		diaServiceDescription.getVersion());
 
-	// System.out.println("@%^@^%@%^ GNARF>>> "
-	// + diaServiceDescription.getServiceProvider());
-	// FIXME! Enable when the end-point is correctly configured...
+	// TODO! Enable when the end-point is correctly configured...
 	// assertEquals("Un-expected end-point URL.",
 	// "FNaaaaa", diaServiceDescription.getEndpoint());
 
@@ -273,203 +275,87 @@ public class DiaMigrationServiceTest extends TestCase {
 		"eu.planets_project.services.migrate.Migrate",
 		diaServiceDescription.getType());
 
-	// FIXME! test code, kill!
-	// String[] suffixes = new String[] { "bmp", "gif", "jpg", "png", "pnm",
-	// "ras", "tif" };
-	// HashMap<String, Set<URI>> formatURIMap = new HashMap<String,
-	// Set<URI>>();
-	// final FormatRegistry fm = FormatRegistryFactory.getFormatRegistry();
-	// for (String suffix : suffixes) {
-	// formatURIMap.put(suffix, fm.getURIsForExtension(suffix));
-	// System.out.println(suffix + " : " + formatURIMap.get(suffix));
-	// }
-
     }
 
     @SuppressWarnings("unused")
     private void verifyMigrationPaths(List<MigrationPath> migrationPaths) {
-	// TODO: More intelligent test needed.
+
 	assertNotNull(
 		"The migration service does not provide a list of migration paths.",
 		migrationPaths);
 
-	final List<MigrationPath> testPaths = MigrationPath.constructPaths(
-		inputFormatURIs, outputFormatURIs);
-	for (MigrationPath migrationPath : testPaths) {
-	    System.out.println("///" + migrationPath.toString());
+	// Put the migration paths into a set to avoid comparison of the order
+	// of the
+	// parameters, as the order is not important.
+	final Set<MigrationPath> actualPaths = new HashSet<MigrationPath>(
+		migrationPaths);
+	assertEquals(
+		"Unexpected migration paths supported by the migration service.",
+		expectedMigrationPaths, actualPaths);
+
+	for (MigrationPath migrationPath : actualPaths) {
+	    System.out.println("/// ACTUAL ///:" + migrationPath.toString());
 	}
 
+	for (MigrationPath expectedPath : expectedMigrationPaths) {
+	    System.out.println("/// EXPECTED ///:" + expectedPath.toString());
+	}
     }
 
     private void verifyInputFormats(List<URI> inputFormats) {
-	// TODO: More intelligent test needed.
+
 	assertNotNull(
 		"The migration service does not provide a list of possible input formats.",
 		inputFormats);
 
+	final Set<URI> expectedInputFormatURIs = new HashSet<URI>();
+	for (MigrationPath expectedPath : expectedMigrationPaths) {
+	    expectedInputFormatURIs.add(expectedPath.getInputFormat());
+	}
+
 	// Check if the tool allows input formats that are not expected by this
 	// test class.
-	for (URI uri : inputFormats) {
+	for (URI actualURI : inputFormats) {
 	    assertTrue(
-		    "Unexpected allowed input format URI reported by the tool: "
-			    + uri, inputFormatURIs.contains(uri));
+		    "Unexpected allowed input format URI reported by the migration service: "
+			    + actualURI, expectedInputFormatURIs
+			    .contains(actualURI));
 	}
 
 	// Check that the tool allows all input formats expected by this test.
-	for (URI uri : inputFormatURIs) {
-	    assertTrue("Input format URI is not supported by the tool: " + uri,
-		    inputFormats.contains(uri));
+	for (URI expectedURI : expectedInputFormatURIs) {
+	    assertTrue(
+		    "Input format URI is not supported by the migration service: "
+			    + expectedURI, inputFormats.contains(expectedURI));
 	}
     }
 
-    private void initialiseInputFormatURIs() throws URISyntaxException {
-	inputFormatURIs = new HashSet<URI>();
+    private void initialiseExpectedMigrationPaths() throws URISyntaxException {
+	expectedMigrationPaths = new HashSet<MigrationPath>();
 
-	// DIA URI
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/381"));
+	// Create a PLANETS MigrationPath instance for the fig -> dia migration
+	// path.
+	List<Parameter> migrationPathParameters = new ArrayList<Parameter>();
+	MigrationPath newPath = new MigrationPath(
+		new URI("planets:fmt/ext/fig"),
+		new URI("info:pronom/x-fmt/381"), migrationPathParameters);
 
-	// SVG URIs
-	inputFormatURIs.add(new URI("info:pronom/fmt/91"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/92"));
+	expectedMigrationPaths.add(newPath);
 
-	// PNG URIs
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/11"));
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/12"));
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/13"));
+	// Create a MigrationPath instance for the dia -> PNG Version 1.2 URI
+	// migration path.
+	migrationPathParameters = new ArrayList<Parameter>();
+	newPath = new MigrationPath(new URI("info:pronom/x-fmt/381"), new URI(
+		"info:pronom/fmt/13"), migrationPathParameters);
 
-	// DXF URIs
-	inputFormatURIs.add(new URI("info:pronom/fmt/63"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/64"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/65"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/66"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/67"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/68"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/69"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/70"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/71"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/72"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/73"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/74"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/75"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/76"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/77"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/78"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/79"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/80"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/81"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/82"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/83"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/84"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/85"));
+	expectedMigrationPaths.add(newPath);
 
-	// TODO: FIG URIs are not provided by PRONOM. Add these when possible.
+	// Create a MigrationPath instance for the dia -> SVG Version 1.0 URI
+	// migration path.
+	migrationPathParameters = new ArrayList<Parameter>();
+	newPath = new MigrationPath(new URI("info:pronom/x-fmt/381"), new URI(
+		"info:pronom/fmt/91"), migrationPathParameters);
 
-	// BMP URIs
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/25"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/114"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/115"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/116"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/117"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/118"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/119"));
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/270"));
-
-	// GIF URIs
-	inputFormatURIs.add(new URI("info:pronom/fmt/3"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/4"));
-
-	// TODO: PNM URIs are not provided by PRONOM. Add these when possible.
-
-	// RAS URI
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/184"));
-
-	// TIF URIs
-	inputFormatURIs.add(new URI("info:pronom/fmt/7"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/8"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/9"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/10"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/152"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/153"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/154"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/155"));
-	inputFormatURIs.add(new URI("info:pronom/fmt/156"));
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/399"));
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/387"));
-	inputFormatURIs.add(new URI("info:pronom/x-fmt/388"));
+	expectedMigrationPaths.add(newPath);
     }
-
-    private void initialiseOutputFormatURIs() throws URISyntaxException {
-
-	outputFormatURIs = new HashSet<URI>();
-
-	// CGM URI
-	outputFormatURIs.add(new URI("info:pronom/x-fmt/142"));
-
-	// DIA URI
-	outputFormatURIs.add(new URI("info:pronom/x-fmt/381"));
-
-	// TODO: SHAPE URI is not provided by PRONOM. Add when possible.
-
-	// PNG URIs
-	outputFormatURIs.add(new URI("info:pronom/fmt/11"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/12"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/13"));
-
-	// DXF URIs
-	outputFormatURIs.add(new URI("info:pronom/fmt/63"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/64"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/65"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/66"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/67"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/68"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/69"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/70"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/71"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/72"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/73"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/74"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/75"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/76"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/77"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/78"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/79"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/80"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/81"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/82"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/83"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/84"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/85"));
-
-	// PLT URI
-	outputFormatURIs.add(new URI("info:pronom/x-fmt/83"));
-
-	// HPGL URI
-	outputFormatURIs.add(new URI("info:pronom/fmt/293"));
-
-	// EPS URIs
-	outputFormatURIs.add(new URI("info:pronom/fmt/122"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/123"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/124"));
-
-	// TODO: EPSI URI is not provided by PRONOM. Add when possible.
-
-	// SVG URIs
-	outputFormatURIs.add(new URI("info:pronom/fmt/91"));
-	outputFormatURIs.add(new URI("info:pronom/fmt/92"));
-
-	// SVGZ URI
-	outputFormatURIs.add(new URI("info:pronom/x-fmt/109"));
-
-	// TODO: MP URI is not provided by PRONOM. Add when possible.
-
-	// TODO: TEX URI is not provided by PRONOM. Add when possible.
-
-	// WPG URI
-	outputFormatURIs.add(new URI("info:pronom/x-fmt/395"));
-
-	// TODO: FIG URI is not provided by PRONOM. Add when possible.
-
-	// TODO: CODE URI is not provided by PRONOM. Add when possible.
-    }
-
 }
