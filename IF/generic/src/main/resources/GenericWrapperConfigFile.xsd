@@ -573,7 +573,7 @@
 
     <xs:complexType name="presetType">
         <xs:sequence>
-            <xs:element name="description" type="xs:string" minOccurs="0">
+            <xs:element name="description" type="xs:string" minOccurs="1">
                 <xs:annotation>
                     <xs:documentation>If the caller of the service neither specifies any tool parameters
                         nor any preset, then the generic wrapper will automatically
