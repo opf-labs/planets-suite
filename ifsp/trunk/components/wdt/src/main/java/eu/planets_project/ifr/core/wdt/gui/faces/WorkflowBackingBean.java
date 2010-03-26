@@ -669,6 +669,36 @@ public class WorkflowBackingBean {
 	
 	
 	/**
+	 * This method recreates digital object by value to enable workflow execution. 
+	 * @param o The initial digital object
+	 * @return The digital object with content created by value
+	 */
+//	private DigitalObject recreateByValue(DigitalObject o, URI dobURI) {
+//		DigitalObject res = null;
+//		InputStream streamContent = o.getContent().getInputStream();
+//		byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
+//		DigitalObjectContent content = Content.byValue(byteContent);
+//		
+//    	DigitalObject.Builder b = new DigitalObject.Builder(content);
+//	    if (o.getTitle() != null) b.title(o.getTitle());
+//	    if (dobURI != null) b.permanentUri(dobURI);
+//	    if (o.getFormat() != null) b.format(o.getFormat());
+//	    if (o.getManifestationOf() != null) 
+//	    	b.manifestationOf(o.getManifestationOf());
+//	    if (o.getMetadata() != null) 
+//	    	b.metadata((Metadata[]) o.getMetadata().toArray(new Metadata[0]));
+//	    if (o.getEvents() != null) 
+//	    	b.events((Event[]) o.getEvents().toArray(new Event[0]));
+//        res = b.build();
+//
+//		
+//		logger.info("recreateByValue() res digital object: " + res.toString());
+//
+//		return res;
+//	}
+	
+	
+	/**
 	 * Controller that adds the currently selected items to the workflow.
 	 */
 	public String addToWorkflow() {
@@ -692,10 +722,12 @@ public class WorkflowBackingBean {
 							// Special handling for the digital objects from OAI repository
 							if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI)) {
 								o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerDCBase.REGISTRY_NAME);
+//								o = recreateByValue(o);
 							} else {
 								if (dobURI.toString().contains(OAIDigitalObjectManagerKBBase.OAI_KB_CHILD_URI)) {
-									dobURI = URI.create(dobURI.toString().concat(OAIDigitalObjectManagerKBBase.NEED_REAL_CONTENT));
+									logger.info("addToWorkflow() dobURI: " + dobURI);
 									o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerKBBase.REGISTRY_NAME);
+//									o = recreateByValue(o, dobURI);
 								} else {
 								    o = dr.getDataManager(dobURI).retrieve(dobURI);
 								
