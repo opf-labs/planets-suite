@@ -40,55 +40,38 @@ public class OaiMigrationTemplate extends
 	 * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#execute()
 	 */
 	@SuppressWarnings("finally")
-	public WorkflowResult execute() {
-		int count = 0;
+    public WorkflowResult execute(DigitalObject dgo) {
+		WorkflowResultItem wfResultItem = new WorkflowResultItem(
+				dgo.getPermanentUri(),
+				WorkflowResultItem.GENERAL_WORKFLOW_ACTION, 
+				System.currentTimeMillis(),
+				this.getWorkflowReportingLogger());
+		this.addWFResultItem(wfResultItem);
+		
+    	wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
+    	wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
+    	
 		try {
-			// get the digital objects and iterate one by one
-			for (DigitalObject dgoA : this.getData()) {	
+			// start executing on digital Object
+			this.processingDigo = dgo;
 
-				// document all general actions for this digital object
-				WorkflowResultItem wfResultItem = new WorkflowResultItem(
-						dgoA.getPermanentUri(),
-						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, 
-						System.currentTimeMillis(),
-						this.getWorkflowReportingLogger());
-				this.addWFResultItem(wfResultItem);
-				wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
-				wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
+			// Single Migration
+			wfResultItem.addLogInfo("starting migration A-B");
+			URI dgoBRef = runMigration(migrate, dgo.getPermanentUri(), true);
+				wfResultItem.addLogInfo("completed migration A-B");
 
-				// start executing on digital ObjectA
-				this.processingDigo = dgoA;
-
-				try {
-					// Single Migration
-						wfResultItem.addLogInfo("starting migration A-B");
-					URI dgoBRef = runMigration(migrate, dgoA.getPermanentUri(), true);
-						wfResultItem.addLogInfo("completed migration A-B");
-
-					wfResultItem
-						.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"
-								+ processingDigo);
-					wfResultItem.setEndTime(System.currentTimeMillis());
-
-				} catch (Exception e) {
-					String err = "workflow execution error for digitalObject #"
-							+ count + " with permanent uri: " + processingDigo
-							+ "";
-					wfResultItem.addLogInfo(err + " " + e);
-					wfResultItem.setEndTime(System.currentTimeMillis());
-				}
-				count++;
-			}
-
-			this.getWFResult().setEndTime(System.currentTimeMillis());
-			LogReferenceCreatorWrapper.createLogReferences(this);
-			return this.getWFResult();
-
+			wfResultItem
+				.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"
+						+ processingDigo);
+			wfResultItem.setEndTime(System.currentTimeMillis());
 		} catch (Exception e) {
-			this.getWFResult().setEndTime(System.currentTimeMillis());
-			LogReferenceCreatorWrapper.createLogReferences(this);
-			return this.getWFResult();
+			String err = "workflow execution error for digitalObject  with permanent uri: " + processingDigo
+			+ "";
+			wfResultItem.addLogInfo(err + " " + e);
+			wfResultItem.setEndTime(System.currentTimeMillis());
 		}
+		return this.getWFResult();
+
 	}
 
 	/**
@@ -110,4 +93,12 @@ public class OaiMigrationTemplate extends
 
 	}
 
+	
+    /** {@inheritDoc} */
+    public WorkflowResult finalizeExecution() {
+    	this.getWFResult().setEndTime(System.currentTimeMillis());
+		LogReferenceCreatorWrapper.createLogReferences(this);
+		return this.getWFResult();
+    }
+	
 }

@@ -25,7 +25,7 @@ public class JcrStoreTemplate extends WorkflowTemplateHelper implements Workflow
 
 
     /**
-     * Identify service. 
+     * Identify service. At least one service must be defined in the template.
      */
     private Identify identify;
 
@@ -44,38 +44,33 @@ public class JcrStoreTemplate extends WorkflowTemplateHelper implements Workflow
      * @see
      * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#execute()
      */
-    public WorkflowResult execute() {
-        int count = 0;
+	@SuppressWarnings("finally")
+    public WorkflowResult execute(DigitalObject dgo) {
+		WorkflowResultItem wfResultItem = new WorkflowResultItem(
+				dgo.getPermanentUri(),
+				WorkflowResultItem.GENERAL_WORKFLOW_ACTION, 
+				System.currentTimeMillis(),
+				this.getWorkflowReportingLogger());
+		this.addWFResultItem(wfResultItem);
+		
+    	wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
+    	wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
+    	
         try {
-            for (DigitalObject dgo : this.getData()) {
-				// document all general actions for this digital object
-				WorkflowResultItem wfResultItem = new WorkflowResultItem(dgo.getPermanentUri(),
-						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, System
-								.currentTimeMillis(),this.getWorkflowReportingLogger());
-				this.addWFResultItem(wfResultItem);
-				wfResultItem.addLogInfo("working on workflow template: " + this.getClass().getName());
-				wfResultItem.addLogInfo("Processing file #" + (count + 1));
-                try {
-                    wfResultItem.addLogInfo("****** initial DO. " + dgo.toString());
-                	  // Manage the Digital Object Data Registry:
-                    wfResultItem.addLogInfo("Create JCR for digital object.");
-                    JcrDigitalObjectManagerImpl dodm = 
-                    	(JcrDigitalObjectManagerImpl) JcrDigitalObjectManagerImpl.getInstance();
-                    wfResultItem.addLogInfo("****** digital object before store.");
-                	dgo = dodm.store(PERMANENT_URI_PATH, dgo, true);
-                	wfResultItem.addLogInfo("****** digital object after store: " + dgo.toString());
-                	URI permanentUri = dgo.getPermanentUri();
-                    wfResultItem.addLogInfo("Store DO in JCR res: " + permanentUri.toString());
-                	DigitalObject tmpDO = dodm.retrieve(permanentUri, true);
-                    wfResultItem.addLogInfo("result DO from JCR content length: " + tmpDO.getContent().length());
-                    wfResultItem.addLogInfo("result DO from JCR after retrieve: " + tmpDO.toString());
-                } catch (Exception e) {
-                	wfResultItem.addLogInfo("workflow execution error for digitalObject #" + count);
-                	wfResultItem.addLogInfo(e.getClass() + ": " + e.getMessage());
-        			this.getWFResult().setEndTime(System.currentTimeMillis());
-                }
-                count++;
-            }
+            wfResultItem.addLogInfo("****** initial DO. " + dgo.toString());
+        	  // Manage the Digital Object Data Registry:
+            wfResultItem.addLogInfo("Create JCR for digital object.");
+            JcrDigitalObjectManagerImpl dodm = 
+            	(JcrDigitalObjectManagerImpl) JcrDigitalObjectManagerImpl.getInstance();
+            wfResultItem.addLogInfo("****** digital object before store.");
+        	dgo = dodm.store(PERMANENT_URI_PATH, dgo, true);
+        	wfResultItem.addLogInfo("****** digital object after store: " + dgo.toString());
+        	URI permanentUri = dgo.getPermanentUri();
+            wfResultItem.addLogInfo("Store DO in JCR res: " + permanentUri.toString());
+        	DigitalObject tmpDO = dodm.retrieve(permanentUri, true);
+            wfResultItem.addLogInfo("result DO from JCR content length: " + tmpDO.getContent().length());
+            wfResultItem.addLogInfo("result DO from JCR after retrieve: " + tmpDO.toString());
+            
 			this.getWFResult().setEndTime(System.currentTimeMillis());
 			LogReferenceCreatorWrapper.createLogReferences(this);
 			return this.getWFResult();
@@ -85,6 +80,14 @@ public class JcrStoreTemplate extends WorkflowTemplateHelper implements Workflow
 			LogReferenceCreatorWrapper.createLogReferences(this);
 			return this.getWFResult();
 		}
+    }
+    
+    
+    /** {@inheritDoc} */
+    public WorkflowResult finalizeExecution() {
+    	this.getWFResult().setEndTime(System.currentTimeMillis());
+		LogReferenceCreatorWrapper.createLogReferences(this);
+		return this.getWFResult();
     }
 
 }
