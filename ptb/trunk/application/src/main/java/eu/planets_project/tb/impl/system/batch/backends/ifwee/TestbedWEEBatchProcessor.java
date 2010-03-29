@@ -109,7 +109,12 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
         	return 100;
         }
         else{
-        	return -1;
+        	try {
+        		return weeService.getProgress(UUID.fromString(job_key));
+    		} catch (Exception e) {
+    			log.debug("WEE getProgress error for job: "+job_key);
+    			return -1;
+    		}	
         }
 	}
 

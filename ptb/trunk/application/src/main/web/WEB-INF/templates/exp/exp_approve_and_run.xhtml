@@ -15,12 +15,14 @@
 
     <ui:include src="/WEB-INF/templates/exp/exp_approval.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ReadOnly" value="#{ReadOnly}" />
     </ui:include>
 
 <!-- *************** Execution *************** -->
 
     <ui:include src="/WEB-INF/templates/exp/exp_execution.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ReadOnly" value="#{ReadOnly}" />
     </ui:include>
 
   

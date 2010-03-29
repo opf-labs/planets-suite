@@ -1435,6 +1435,19 @@ public class NewExpWizardController{
           return running;
 	  }
 	  
+	  public String getPositionInQueueStatusMessage() {
+		  String ret = "";
+          ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+          refreshExperimentBean();
+          Experiment exp = expBean.getExperiment();
+		  //get the batch processor that's responsible for this job
+          BatchProcessor pb = TestbedBatchProcessorManager.getInstance().getBatchProcessor(exp.getExperimentExecutable().getBatchSystemIdentifier());
+          String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
+          log.info("Looking for experiment position under job key: "+job_key+" : " + pb.getPositionInQueue(job_key));
+          ret+=pb.getPositionInQueue(job_key);
+          return ret;
+	  }
+	  
 	  public int getExecuteExperimentProgress() {
           TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -1457,10 +1470,10 @@ public class NewExpWizardController{
           //get the batch processor that's responsible for this job
           BatchProcessor pb = TestbedBatchProcessorManager.getInstance().getBatchProcessor(exp.getExperimentExecutable().getBatchSystemIdentifier());
           String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
-          log.info("Looking for experiment status under job key: "+job_key+" : " + pb.getJobStatus(job_key));
+          log.info("Looking for experiment progress under job key: "+job_key+" : " + pb.getJobStatus(job_key));
           
           if( pb.getJobStatus(job_key).equals(TestbedBatchJob.NO_SUCH_JOB ) ) {
-              log.info("Got No Such Job.");
+              log.info("Got No Such Job for key: "+job_key);
               exp.getExperimentExecutable().setExecutionSuccess(false);
               exp.getExperimentExecutable().setExecutionCompleted(true);
               exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
@@ -1468,12 +1481,12 @@ public class NewExpWizardController{
               testbedMan.updateExperiment(exp);
               return -1;
           } else if( pb.getJobStatus(job_key).equals(TestbedBatchJob.NOT_STARTED) ) {
-              log.info("Got NOT STARTED.");
+              log.info("Got NOT STARTED for key: "+job_key);
               return 0;
           } else if( pb.getJobStatus(job_key).equals(TestbedBatchJob.RUNNING) ) {
               int percent = pb.getJobPercentComplete(job_key);
               // Return percentage:
-              log.info("Got percent complete:" + percent);
+              log.info("Got percent complete:" + percent+" for key: "+job_key);
               return percent;
 
           } else {

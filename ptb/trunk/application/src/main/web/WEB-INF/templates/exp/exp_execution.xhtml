@@ -9,6 +9,15 @@
 
 			<fieldset>
 				<legend>Execute Experiment</legend>
+				<h:panelGroup rendered="#{ReadOnly}">	
+					<p>							
+						workflow-job-ticket: <b>#{NewExp_Controller.experimentExecutable.batchExecutionIdentifier}</b><br />
+						The experiment has been executed
+						<b>#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords}
+						times </b>on #{NewExp_Controller.experimentExecutable.numberOfInputs}
+						digital objects.
+					</p>
+				</h:panelGroup>
 
 				<h:panelGroup class="expRunStatusPanel"
 					rendered="#{NewExp_Controller.executeExperimentProgress != 9999 and !ReadOnly}">
@@ -81,17 +90,18 @@
 							Your experiment is currently being executed. Depending on the
 							intensity of your experiment this may take some time.
 							<br />
-							<h:commandButton value="Refresh This Page"
-								action="success" />
+							workflow-job-ticket: <b>#{NewExp_Controller.experimentExecutable.batchExecutionIdentifier}</b><br />
+							your experiment is queued at position: <b>#{NewExp_Controller.positionInQueueStatusMessage}</b><br/>
+							<h:commandButton value="Refresh This Page" action="success" />
 						</p>
 					</h:panelGroup>
 
 					<p>
 						The experiment has been executed
-						#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords}
-						times on #{NewExp_Controller.experimentExecutable.numberOfInputs}
+						<b>#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords}
+						times </b>on #{NewExp_Controller.experimentExecutable.numberOfInputs}
 						digital objects.
-        </p>
+       				 </p>
 
 
 				</a4j:outputPanel>
