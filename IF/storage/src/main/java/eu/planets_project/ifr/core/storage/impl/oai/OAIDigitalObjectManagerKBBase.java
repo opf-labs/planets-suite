@@ -33,8 +33,6 @@ public class OAIDigitalObjectManagerKBBase extends DigitalObjectManagerBase {
 	public static final String DEFAULT_BASE_URL = 
 		"http://jsru.kb.nl/sru?operation=searchRetrieve&version=1.1&x-collection=eDepot&recordSchema=dcx&query=nbn-number%20all";
 	
-	public static final String OAI_KB_BASE_URI = "planets://localhost:8080/dr/oai-kb";
-	
 	public static final String OAI_KB_CHILD_URI = "http://toegang.kb.nl"; 
 	
 	public static final String PREFIX = "oai_kb";

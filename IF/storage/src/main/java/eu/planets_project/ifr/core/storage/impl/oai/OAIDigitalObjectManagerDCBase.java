@@ -33,8 +33,6 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 	
 	protected static String DEFAULT_BASE_URL = "http://eprints.whiterose.ac.uk/cgi/oai2";
 	
-	public static String OAI_DC_BASE_URI = "planets://localhost:8080/dr/oai-dc";
-	
 	public static String OAI_DC_CHILD_URI = "oai:"; 
 	
 	public static String PREFIX = "oai_dc";
@@ -76,7 +74,7 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 		log.info("OAIDigitalObjectManagerDCBase list() URI " + pdURI);
 
 		try {
-			if (pdURI.toString().equals(OAI_DC_BASE_URI)) {
+			if (pdURI.toString().contains(REGISTRY_NAME)) {
 				URI _pdURI = null;
 				retVal = dom.list(_pdURI);
 			}

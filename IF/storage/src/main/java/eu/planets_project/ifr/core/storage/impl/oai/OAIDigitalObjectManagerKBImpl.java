@@ -309,7 +309,7 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 			String line; 
 			while ((line = rd.readLine()) != null) { 
 				res = res + line;
-//				log.log(Level.INFO, "sendPostRequest() line: " + line);			
+				log.log(Level.INFO, "sendPostRequest() line: " + line);			
 				} 
 			wr.close(); 
 			rd.close(); 
@@ -361,7 +361,7 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 		
 		// Get an intermediate HTML page		
 		String intermediateHtml = sendPostRequest(postFormLink, parameterList);
-		log.log(Level.INFO, "test() intermediateHtml: " + res);
+		log.log(Level.INFO, "test() intermediateHtml: " + intermediateHtml);
 		
 		// Retrieve publication link
 		if (intermediateHtml != null && intermediateHtml.length() > 0) {
@@ -369,6 +369,7 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 					intermediateHtml.indexOf(LINK_END));
 			}
 
+		log.log(Level.INFO, "test() retrieveIntermediateHtmlPage() res: " + res);
 		return res;
     }
     
