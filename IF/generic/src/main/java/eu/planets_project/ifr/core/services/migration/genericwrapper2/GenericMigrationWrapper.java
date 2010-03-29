@@ -44,8 +44,7 @@ public class GenericMigrationWrapper {
     private final TemporaryFileFactory tempFileFactory;
     private final List<Parameter> environmentParameters;
 
-    private ServiceDescription serviceDescription; // TODO: Consider building
-    // the service description with a separate factory.
+    private ServiceDescription serviceDescription;
 
     // TODO: It would probably be nice to pass a factory for creation of
     // temporary files on order to avoid a tight coupling with the Planets J2EE
@@ -83,8 +82,6 @@ public class GenericMigrationWrapper {
 		    "Failed initialising migration path data from the configuration document: "
 			    + configuration.getNodeName(), e);
 	}
-
-	// TODO: parse and initialise the ServiceDescription
     }
 
     /**
@@ -254,11 +251,10 @@ public class GenericMigrationWrapper {
 	    }
 	}
 
-	final DigitalObject resultObject = builder.format(
-		outputFormat).build();
+	final DigitalObject resultObject = builder.format(outputFormat).build();
 
-	return buildMigrationResult(migrationPath, digitalObject,
-		resultObject, toolProcessRunner);
+	return buildMigrationResult(migrationPath, digitalObject, resultObject,
+		toolProcessRunner);
     }
 
     private MigrateResult buildMigrationResult(MigrationPath migrationPath,
@@ -415,64 +411,23 @@ public class GenericMigrationWrapper {
     }
 
     /**
-     * FIXME! This appears to be obsolete.... KILL! Create a temporary input
-     * file and write the contents of the digital object specified by
-     * <code>sourceObject</code> to it if the migration path dictates the use of
-     * a temporary input file. If the migration path does not dictate the use of
-     * a temporary input file, then <code>null</code> is returned.
+     * Execute the command line, described by the list of strings provided by
+     * <code>command</code>, using the <code>ProcessRunner</code> provided by
+     * <code>toolProcessRunner</code>. The process runner will pass any
+     * information from <code>processStandardInput</code> on to the command
+     * through the standard input.
      * 
-     * @param sourceObject
-     *            The digital object to be written to a temporary file, if
-     *            necessary.
-     * 
-     * @param migrationPath
-     *            The migration path containing information about whether a
-     *            temporary input file should be applied for this migration.
-     * @return A <code>File</code> instance representing the temporary input
-     *         file containing the data from the digital object if a temporary
-     *         file must be used and otherwise <code>null</code>.
+     * @param toolProcessRunner
+     *            <code>ProcessRunner</code> instance for execution of the
+     *            command line.
+     * @param command
+     *            A list of strings constituting a command line to execute.
+     * @param processStandardInput
+     *            An input stream for passing information to be piped to the
+     *            command through standard input.
+     * @return <code>true</code> if the execution was successful and otherwise
+     *         <code>false</code>.
      */
-    // private File createTempInputFile(DigitalObject sourceObject,
-    // MigrationPath migrationPath) {
-    //
-    // File inputTempFile = null;
-    // final ToolIOProfile inputIOProfile = migrationPath
-    // .getToolInputProfile();
-    // if (!inputIOProfile.usePipedIO()) {
-    //
-    // // Create a temporary file and write the contents of the digital
-    // // object to it.
-    // inputTempFile = createTempFile(inputIOProfile);
-    // FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
-    // inputTempFile);
-    // }
-    // return inputTempFile;
-    // }
-
-    /**
-     * FIXME! This appears to be obsolete.... KILL! Create a temporary file
-     * based on the <code>{@link ToolIOProfile}</code> provided by
-     * <code>toolIOProfile</code>. If the profile contains a desired file name,
-     * then a temporary file with that name will be created and other wise a
-     * file with a random name will be generated. However, files with random
-     * names will have the command line file label included in their name to
-     * make any debugging easier.
-     * 
-     * @param toolIOProfile
-     *            <code>ToolIOProfile</code> with optional name information for
-     *            the temporary file to create.
-     * @return <code>File</code> representing a temporary file.
-     */
-    // private File createTempFile(ToolIOProfile toolIOProfile) {
-    // if (toolIOProfile.getDesiredTempFileName() != null) {
-    // return tempFileFactory.prepareTempFile(toolIOProfile
-    // .getDesiredTempFileName());
-    // } else {
-    // return tempFileFactory.prepareRandomNamedTempFile(toolIOProfile
-    // .getCommandLineFileLabel());
-    // }
-    // }
-
     private boolean executeToolProcess(ProcessRunner toolProcessRunner,
 	    List<String> command, InputStream processStandardInput) {
 
