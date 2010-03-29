@@ -37,7 +37,9 @@
 	<!-- First copy the test config file(s) from test config area to pserv/test/config -->
 	<echo message="COPYING ${test.config}/* TO ${pserv.test.config}">
 	</echo>
-	<copydir dest="${pserv.test.config}" src="${test.config}" forceoverwrite="yes" casesensitive="yes" />
+	<copy todir="${pserv.test.config}" overwrite="yes">
+		<fileset dir="${test.config}" />
+	</copy>
 
 	<!-- We need to get the directory path of the configuration directory of
 	 the planets server from the build properties file. -->
@@ -46,6 +48,8 @@
 	<!-- Copy the configuration template from src/main/config area to user config dir to indicate that it must be adapted to the systetm running the server -->
 	<echo message="COPYING ${src.config}/* TO ${if_server.conf}">
 	</echo>
-	<copydir dest="${if_server.conf}" src="${src.config}" forceoverwrite="yes" casesensitive="yes" />
+	<copy todir="${if_server.conf}" overwrite="yes">
+		<fileset dir="${src.config}" />
+	</copy>
 
 </project>
