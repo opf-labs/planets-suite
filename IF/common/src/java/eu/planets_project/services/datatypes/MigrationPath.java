@@ -151,4 +151,50 @@ public final class MigrationPath {
         }
 
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result
+		+ ((inputFormat == null) ? 0 : inputFormat.hashCode());
+	result = prime * result
+		+ ((outputFormat == null) ? 0 : outputFormat.hashCode());
+	result = prime * result
+		+ ((parameters == null) ? 0 : parameters.hashCode());
+	return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	MigrationPath other = (MigrationPath) obj;
+	if (inputFormat == null) {
+	    if (other.inputFormat != null)
+		return false;
+	} else if (!inputFormat.equals(other.inputFormat))
+	    return false;
+	if (outputFormat == null) {
+	    if (other.outputFormat != null)
+		return false;
+	} else if (!outputFormat.equals(other.outputFormat))
+	    return false;
+	if (parameters == null) {
+	    if (other.parameters != null)
+		return false;
+	} else if (!parameters.equals(other.parameters))
+	    return false;
+	return true;
+    }
 }
