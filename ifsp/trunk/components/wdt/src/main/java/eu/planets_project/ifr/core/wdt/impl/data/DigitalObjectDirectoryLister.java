@@ -79,8 +79,8 @@ public class DigitalObjectDirectoryLister {
     public boolean isOaiRegistry(URI uri) {
     	boolean res = false;
     	
-    	if (uri != null && (uri.toString().equals(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI) || 
-		            uri.toString().equals(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI))) {
+    	if (uri != null && (uri.toString().contains(OAIDigitalObjectManagerDCBase.REGISTRY_NAME) || 
+		            uri.toString().contains(OAIDigitalObjectManagerKBBase.REGISTRY_NAME))) {
     		res = true;
     	}
     	
@@ -96,10 +96,10 @@ public class DigitalObjectDirectoryLister {
     	RegistryType res = RegistryType.DEFAULT;
     	
     	if (uri != null) {
-    		if (uri.toString().equals(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI)) {
+    		if (uri.toString().contains(OAIDigitalObjectManagerDCBase.REGISTRY_NAME)) {
     			res = RegistryType.OAIDC;
     		}
-    		if (uri.toString().equals(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI)) {
+    		if (uri.toString().contains(OAIDigitalObjectManagerKBBase.REGISTRY_NAME)) {
 				res = RegistryType.OAIKB;
 			}
     	}
@@ -116,7 +116,7 @@ public class DigitalObjectDirectoryLister {
     public boolean isOaiKBRegistry(URI uri) {
     	boolean res = false;
     	
-    	if (uri != null && uri.toString().equals(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI)) {
+    	if (uri != null && uri.toString().contains(OAIDigitalObjectManagerKBBase.REGISTRY_NAME)) {
     		res = true;
     	}
     	

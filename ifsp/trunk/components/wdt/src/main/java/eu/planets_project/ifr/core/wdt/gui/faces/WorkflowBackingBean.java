@@ -152,8 +152,6 @@ public class WorkflowBackingBean {
 	private int dataScrollerIndex = 0;
 	private boolean disable = true;
 	private String display = "display:none";
-	private static boolean firstTime = true;
-	private static boolean kbFirstTime = true;
 	private static URI currentNode = null;
 
 
@@ -1274,11 +1272,21 @@ public class WorkflowBackingBean {
 					switch (rt) {
 						case OAIDC:
 							logger.info("### WorkflowBackingBean: getChildItems() case OAIDC");
-			    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI));
+			    	    	try {
+					    		   dr.refreshChilds(DataRegistryFactory
+											.createDataRegistryIdFromName(OAIDigitalObjectManagerDCBase.REGISTRY_NAME));
+				    	    	} catch (Exception e) {
+					    	    	logger.info("WorkflowBackingBean getChildItems() error: " + e.getMessage());			    	    		
+				    	    	}
 			    		   break;
 						case OAIKB:
 							logger.info("### WorkflowBackingBean: getChildItems() case OAIKB");
-				    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI));
+			    	    	try {
+					    		   dr.refreshChilds(DataRegistryFactory
+											.createDataRegistryIdFromName(OAIDigitalObjectManagerKBBase.REGISTRY_NAME));
+				    	    	} catch (Exception e) {
+					    	    	logger.info("WorkflowBackingBean getChildItems() error: " + e.getMessage());			    	    		
+				    	    	}
 				    		   break;
 						default:
 				    		   break;
@@ -1351,24 +1359,10 @@ public class WorkflowBackingBean {
 				switch (rt) {
 					case OAIDC:
 			    		disable = false;
-			    		if (!firstTime) {
-			    	    	logger.info("WorkflowBackingBean setDir() !first time for OAI. call refreshChilds.");
-			    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerDCBase.OAI_DC_BASE_URI));
-			    		} else {
-			    	    	logger.info("WorkflowBackingBean setDir() first time for OAI.");
-			    			firstTime = false;
-			    		}
 			    		currentNode = tfn.getUri();
 		    		   break;
 					case OAIKB:
 			    		disable = false;
-			    		if (!kbFirstTime) {
-			    	    	logger.info("WorkflowBackingBean setDir() !first time for OAI. call refreshChilds.");
-			    		   dr.refreshChilds(URI.create(OAIDigitalObjectManagerKBBase.OAI_KB_BASE_URI));
-			    		} else {
-			    	    	logger.info("WorkflowBackingBean setDir() first time for OAI.");
-			    			kbFirstTime = false;
-			    		}
 			    		currentNode = tfn.getUri();
 			    		   break;
 					default:
