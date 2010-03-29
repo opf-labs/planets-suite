@@ -34,6 +34,38 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 public class DiaMigrationServiceTest extends TestCase {
 
     /**
+     * PRONOM format URI for the PNG file format version 1.2
+     */
+    private static final String PNG_VERSION_1_2_FORMAT_URI = "info:pronom/fmt/13";
+
+    /**
+     * PLANTES format URI for the Xfig file format 'fig'
+     */
+    private static final String FIG_FORMAT_URI = "planets:fmt/ext/fig";
+
+    /**
+     * PRONOM format URI for the SVG file format version 1.0
+     */
+    private static final String SVG_VERSION_1_0_FORMAT_URI = "info:pronom/fmt/91";
+
+    /**
+     * PRONOM format URI for the DIA file format.
+     */
+    private static final String DIA_FORMAT_URI = "info:pronom/x-fmt/381";
+
+    /**
+     * File path to the dia test files used by this test class.
+     */
+    private static final File DIA_TEST_FILE_PATH = new File(
+	    "tests/test-files/images/vector/dia");
+
+    /**
+     * File path to the Xfig test files used by this test class.
+     */
+    private static final File FIG_TEST_FILE_PATH = new File(
+	    "tests/test-files/images/vector/fig");
+
+    /**
      * The location of this service when deployed.
      */
     private String wsdlLocation = "/pserv-pa-dia/DiaMigrationService?wsdl";
@@ -44,17 +76,9 @@ public class DiaMigrationServiceTest extends TestCase {
     private Migrate migrationService = null;
 
     /**
-     * File path to the dia test files used by this test class.
+     * A set of PLANETS <code>MigrationPath</code> objects for comparison and
+     * validation of the output from the Dia migration service.
      */
-    private final File DIA_TEST_FILE_PATH = new File(
-	    "tests/test-files/images/vector/dia");
-
-    /**
-     * File path to the Xfig test files used by this test class.
-     */
-    private final File FIG_TEST_FILE_PATH = new File(
-	    "tests/test-files/images/vector/fig");
-
     private Set<MigrationPath> expectedMigrationPaths;
 
     /**
@@ -68,14 +92,7 @@ public class DiaMigrationServiceTest extends TestCase {
     }
 
     /**
-     * @throws java.lang.Exception
-     */
-    @Override
-    public void tearDown() throws Exception {
-    }
-
-    /**
-     * Test migration from Dia to SVG version 1.1
+     * Test migration from Dia to SVG version 1.0
      * 
      * Test method for
      * {@link eu.planets_project.services.migration.dia.impl.DiaMigrationService#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)}
@@ -92,10 +109,10 @@ public class DiaMigrationServiceTest extends TestCase {
 	final File diaTestFile = new File(DIA_TEST_FILE_PATH, diaTestFileName);
 
 	// Dia file format URI
-	final URI diaFormatURI = new URI("info:pronom/x-fmt/381");
+	final URI diaFormatURI = new URI(DIA_FORMAT_URI);
 
 	// SVG version 1.0 format URI
-	final URI svgFormatURI = new URI("info:pronom/fmt/91");
+	final URI svgFormatURI = new URI(SVG_VERSION_1_0_FORMAT_URI);
 
 	final DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
 		Content.byValue(diaTestFile));
@@ -122,7 +139,7 @@ public class DiaMigrationServiceTest extends TestCase {
     }
 
     /**
-     * Test migration from Xfig to Dia.
+     * Test migration from Xfig format 'fig' to Dia.
      * 
      * Test method for
      * {@link eu.planets_project.services.migration.dia.impl.DiaMigrationService#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)}
@@ -139,10 +156,10 @@ public class DiaMigrationServiceTest extends TestCase {
 	final File figTestFile = new File(FIG_TEST_FILE_PATH, figTestFileName);
 
 	// Fig Planets (pseudo) format URI
-	final URI figFormatURI = new URI("planets:fmt/ext/fig");
+	final URI figFormatURI = new URI(FIG_FORMAT_URI);
 
 	// Dia (unspecified version) PRONOM format URI
-	final URI diaFormatURI = new URI("info:pronom/x-fmt/381");
+	final URI diaFormatURI = new URI(DIA_FORMAT_URI);
 
 	final DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
 		Content.byValue(figTestFile));
@@ -170,7 +187,7 @@ public class DiaMigrationServiceTest extends TestCase {
     }
 
     /**
-     * Test migration from Dia to PNG.
+     * Test migration from Dia to PNG version 1.2.
      * 
      * Test method for
      * {@link eu.planets_project.services.migration.dia.impl.DiaMigrationService#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)}
@@ -187,10 +204,10 @@ public class DiaMigrationServiceTest extends TestCase {
 	final File figTestFile = new File(DIA_TEST_FILE_PATH, diaTestFileName);
 
 	// Dia (unspecified version) PRONOM format URI
-	final URI diaFormatURI = new URI("info:pronom/x-fmt/381");
+	final URI diaFormatURI = new URI(DIA_FORMAT_URI);
 
 	// PNG version 1.2 PRONOM format URI
-	final URI pngFormatURI = new URI("info:pronom/fmt/13");
+	final URI pngFormatURI = new URI(PNG_VERSION_1_2_FORMAT_URI);
 
 	final DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
 		Content.byValue(figTestFile));
@@ -225,8 +242,6 @@ public class DiaMigrationServiceTest extends TestCase {
     @Test
     public void testDescribe() throws Exception {
 
-	// TODO: This test needs serious improvement.
-
 	final ServiceDescription diaServiceDescription = migrationService
 		.describe();
 
@@ -253,8 +268,11 @@ public class DiaMigrationServiceTest extends TestCase {
 	assertNotNull("The migration service does not provide a name.",
 		diaServiceDescription.getName());
 
-	// TODO: Enable when fixed...
-	// verifyMigrationPaths(diaServiceDescription.getPaths());
+	//TODO: Enable when the IF bug is fixed. For some reason any empty
+	//parameter lists in the migration path instances are 'null' if the
+	//test is executed against a server. Local execution of the test
+	//works fine.
+	//verifyMigrationPaths(diaServiceDescription.getPaths());
 
 	assertNotNull(
 		"The migration service does not provide a list of properties.",
@@ -277,7 +295,16 @@ public class DiaMigrationServiceTest extends TestCase {
 
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * Verify that the migration paths provided by <code>migraitonPaths</code>
+     * are identical to the expected migration paths in the
+     * <code>expectedMigrationPaths</code> attribute of this test class. The
+     * test is carried out using JUnit test <code>Assert</code> methods, thus
+     * this method will not exit normally if the verification fails.
+     * 
+     * @param migrationPaths
+     *            A list of PLANETS migration path objects to verify.
+     */
     private void verifyMigrationPaths(List<MigrationPath> migrationPaths) {
 
 	assertNotNull(
@@ -285,23 +312,26 @@ public class DiaMigrationServiceTest extends TestCase {
 		migrationPaths);
 
 	// Put the migration paths into a set to avoid comparison of the order
-	// of the
-	// parameters, as the order is not important.
+	// of the parameters, as the order is not important, nor predictable.
 	final Set<MigrationPath> actualPaths = new HashSet<MigrationPath>(
 		migrationPaths);
 	assertEquals(
 		"Unexpected migration paths supported by the migration service.",
 		expectedMigrationPaths, actualPaths);
-
-	for (MigrationPath migrationPath : actualPaths) {
-	    System.out.println("/// ACTUAL ///:" + migrationPath.toString());
-	}
-
-	for (MigrationPath expectedPath : expectedMigrationPaths) {
-	    System.out.println("/// EXPECTED ///:" + expectedPath.toString());
-	}
     }
 
+    /**
+     * Verify that the format URIs provided by <code>inputFormats</code> are
+     * identical to the input format URIs of the expected migration paths in the
+     * <code>expectedMigrationPaths</code> attribute of this test class. The
+     * order of the URIs is not important as the test just verifies that there
+     * is a one to one correspondence between the two sets of URIs. The test is
+     * carried out using JUnit test <code>Assert</code> methods, thus this
+     * method will not exit normally if the verification fails.
+     * 
+     * @param inputFormats
+     *            A list of format URI objects to verify.
+     */
     private void verifyInputFormats(List<URI> inputFormats) {
 
 	assertNotNull(
@@ -330,31 +360,42 @@ public class DiaMigrationServiceTest extends TestCase {
 	}
     }
 
+    /**
+     * Initialise the <code>expectedMigrationPaths</code> attribute with a set
+     * of PLANETS <code>MigrationPath</code> objects which have been configured
+     * with the expected properties of the paths returned by the
+     * <code>describe()</code> method of the <code>DiaMigrationService</code>
+     * class. Thus, the contents of the <code>expectedMigrationPaths</code>
+     * attribute can be used for validation of the output from the Dia migration
+     * service.
+     * 
+     * @throws URISyntaxException
+     *             if any of the hard-coded format URIs are invalid.
+     */
     private void initialiseExpectedMigrationPaths() throws URISyntaxException {
 	expectedMigrationPaths = new HashSet<MigrationPath>();
 
-	// Create a PLANETS MigrationPath instance for the fig -> dia migration
-	// path.
-	List<Parameter> migrationPathParameters = new ArrayList<Parameter>();
-	MigrationPath newPath = new MigrationPath(
-		new URI("planets:fmt/ext/fig"),
-		new URI("info:pronom/x-fmt/381"), migrationPathParameters);
-
-	expectedMigrationPaths.add(newPath);
-
 	// Create a MigrationPath instance for the dia -> PNG Version 1.2 URI
 	// migration path.
-	migrationPathParameters = new ArrayList<Parameter>();
-	newPath = new MigrationPath(new URI("info:pronom/x-fmt/381"), new URI(
-		"info:pronom/fmt/13"), migrationPathParameters);
+	List<Parameter> migrationPathParameters = new ArrayList<Parameter>();
+	MigrationPath newPath = new MigrationPath(new URI(DIA_FORMAT_URI),
+		new URI(PNG_VERSION_1_2_FORMAT_URI), migrationPathParameters);
 
 	expectedMigrationPaths.add(newPath);
 
 	// Create a MigrationPath instance for the dia -> SVG Version 1.0 URI
 	// migration path.
 	migrationPathParameters = new ArrayList<Parameter>();
-	newPath = new MigrationPath(new URI("info:pronom/x-fmt/381"), new URI(
-		"info:pronom/fmt/91"), migrationPathParameters);
+	newPath = new MigrationPath(new URI(DIA_FORMAT_URI), new URI(
+		SVG_VERSION_1_0_FORMAT_URI), migrationPathParameters);
+
+	expectedMigrationPaths.add(newPath);
+
+	// Create a PLANETS MigrationPath instance for the fig -> dia migration
+	// path.
+	migrationPathParameters = new ArrayList<Parameter>();
+	newPath = new MigrationPath(new URI(FIG_FORMAT_URI), new URI(
+		DIA_FORMAT_URI), migrationPathParameters);
 
 	expectedMigrationPaths.add(newPath);
     }
