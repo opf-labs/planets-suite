@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URI;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -28,6 +30,19 @@ public final class Content {
      * @return A content instance referencing the given location
      */
     public static DigitalObjectContent byReference(final URL reference) {
+    	URI uriReference = null;
+    	/* we do not really expect a URI syntax exception on conversion from URL ... */
+    	try { uriReference = reference.toURI(); }
+    	catch(URISyntaxException use) { System.out.println(use.getClass().getName()+": "+use.getMessage()); }
+        return new ImmutableContent(uriReference);
+    }
+
+    /**
+     * Create content by reference.
+     * @param reference The URI reference to the content
+     * @return A content instance referencing the given location
+     */
+    public static DigitalObjectContent byReference(final URI reference) {
         return new ImmutableContent(reference);
     }
 

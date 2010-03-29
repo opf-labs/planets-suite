@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.InputStream;
+import java.net.URI;
 
 /**
  * Representation of digital object content.
@@ -20,8 +21,14 @@ public interface DigitalObjectContent {
      *         actual value (if this is value content) or a stream for reading
      *         the reference (if this is a reference content)
      */
-    public InputStream getInputStream();
+    InputStream getInputStream();
 
+    /**
+     * @return The reference for this content
+     */
+    @XmlElement(name = "reference", namespace = PlanetsServices.OBJECTS_NS)
+    URI getReference();
+    
     /**
      * @return The checksum for this content
      */

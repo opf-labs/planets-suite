@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -45,7 +46,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
 
     /***/
     @XmlAttribute(namespace = PlanetsServices.OBJECTS_NS)
-    private URL reference;
+    private URI reference;
     
     @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
     private byte[] bytes;
@@ -93,11 +94,11 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
     /**
      * @param reference The content, passed as an explicit reference.
      */
-    ImmutableContent(final URL reference) {
-        if (reference == null) throw new IllegalArgumentException("URL parameter must not be null!");
+    ImmutableContent(final URI reference) {
+        if (reference == null) throw new IllegalArgumentException("URI parameter must not be null!");
         this.length = -1;
         this.reference = reference;
-        log.info("Created Content from URL: " + reference);
+        log.info("Created Content from URI: " + reference);
     }
 
     /** No-args constructor for JAXB. Clients should not use this. */
@@ -133,7 +134,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
                 return new ByteArrayInputStream(bytes);
             } else {
                 log.info("Opening reference: " + reference);
-                return reference.openStream();
+                return reference.toURL().openStream();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,7 +147,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
      *         {@link #getInputStream()} or {@link #getValue()}, which will always return the actual content, no matter how it was
      *         created (by value or by reference).
      */
-    public URL getReference() {
+    public URI getReference() {
         return reference;
     }
     
