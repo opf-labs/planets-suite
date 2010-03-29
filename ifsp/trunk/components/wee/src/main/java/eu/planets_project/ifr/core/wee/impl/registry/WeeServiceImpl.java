@@ -55,6 +55,11 @@ public class WeeServiceImpl implements WeeService, Serializable{
 	public int getPositionInQueue(UUID ticket) throws Exception {
 		return weeManager.getPositionInQueue(ticket);
 	}
+	
+	/** {@inheritDoc} */
+	public int getProgress(UUID ticket) throws Exception {
+		return weeManager.getProgress(ticket);
+	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.ifr.core.wee.api.wsinterface.WeeService#getResult(java.util.UUID)
@@ -111,7 +116,5 @@ public class WeeServiceImpl implements WeeService, Serializable{
 		}
 		return this.submitWorkflow(lDigObjs, workflowTemplateName, xmlWorkflowConfig);
 	}
-
-	
 	
 }

@@ -100,87 +100,79 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
      * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#execute()
      */
     @SuppressWarnings("finally")
-	public WorkflowResult execute() {
-    	//init the log...
-        wfResult = new WorkflowResult();
-        int count = 0;
+	public WorkflowResult execute(DigitalObject dgoA) {
+          	
+    	//document all general actions for this digital object
+    	// document all general actions for this digital object
+		WorkflowResultItem wfResultItem = new WorkflowResultItem(
+				dgoA.getPermanentUri(),
+				WorkflowResultItem.GENERAL_WORKFLOW_ACTION, 
+				System.currentTimeMillis(),
+				this.getWorkflowReportingLogger());
+		this.addWFResultItem(wfResultItem);
+		
+    	wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
+    	wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
+    	
+    	 //start executing on digital ObjectA
+    	this.processingDigo = dgoA.getPermanentUri();
+    	
         try {
-        	//get the digital objects and iterate one by one
-            for (DigitalObject dgoA : this.getData()) {
-            	
-            	//document all general actions for this digital object
-            	// document all general actions for this digital object
-				WorkflowResultItem wfResultItem = new WorkflowResultItem(
-						dgoA.getPermanentUri(),
-						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, 
-						System.currentTimeMillis(),
-						this.getWorkflowReportingLogger());
-				this.addWFResultItem(wfResultItem);
-				
-            	wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
-            	wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
-            	
-            	 //start executing on digital ObjectA
-            	this.processingDigo = dgoA.getPermanentUri();
-            	
-                try {
-                	//identify format before migration roundtripp
-                	wfResultItem.addLogInfo("starting identify object A format: ");
-                	URI dgoAFormat = identifyFormat(identify1,dgoA.getPermanentUri());
-                	wfResultItem.addLogInfo("completed identify object A format: "+dgoAFormat);
-                	
-                	// Migrate Object round-trip
-                		wfResultItem.addLogInfo("starting migration A-B");
-                    URI dgoBRef = runMigration(migrate1,dgoA.getPermanentUri(),false);
-                    	wfResultItem.addLogInfo("completed migration A-B");
-                    	wfResultItem.addLogInfo("starting migration B-C");
-                    URI dgoCRef = runMigration(migrate2,dgoBRef,false);
-                    	wfResultItem.addLogInfo("completed migration B-C");
-                    	wfResultItem.addLogInfo("starting migration C-D");
-                    URI dgoDRef = runMigration(migrate3,dgoCRef,false);
-                    	wfResultItem.addLogInfo("completed migration C-D");
-                    	wfResultItem.addLogInfo("starting migration D-E");
-                    //this object is documented as main experiment outcome file
-                    URI dgoERef = runMigration(migrate4,dgoDRef,true);
-                    	wfResultItem.addLogInfo("completed migration D-E");
-                    
-                    //identify format after migration roundtripp
-                    wfResultItem.addLogInfo("starting identify object E format: ");
-                    URI dgoEFormat = identifyFormat(identify1,dgoERef);
-                    wfResultItem.addLogInfo("completed identify object E format: "+dgoEFormat);
-                    
-                    wfResultItem.addLogInfo("starting XCDL extraction for A");
-                    URI dgoAXCDL = runMigration(migratexcdl1,dgoA.getPermanentUri(),false);
-                    	wfResultItem.addLogInfo("completed XCDL extraction for A");
-                    	wfResultItem.addLogInfo("starting XCDL extraction for B");
-                    URI dgoEXCDL = runMigration(migratexcdl1,dgoERef,false);
-                    	wfResultItem.addLogInfo("completed XCDL extraction for B");
-                    
-                    //perform object comparison
-                    	wfResultItem.addLogInfo("starting comparisson for XCDL1 and XCDL2");
-                    this.compareDigitalObjectsIdentical(dgoAXCDL, dgoEXCDL);
-                    	wfResultItem.addLogInfo("completed comparisson for XCDL1 and XCDL2");
-                    
-                    	wfResultItem.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"+processingDigo);
-                    	wfResultItem.setEndTime(System.currentTimeMillis());
-                    
-                } catch (Exception e) {
-                	String err = "workflow execution error for digitalObject #" + count +" with permanent uri: "+processingDigo+"";            
-                    wfResultItem.addLogInfo(err+" "+e);
-                    wfResultItem.setEndTime(System.currentTimeMillis());
-                }
-                count++;
-            }
-            
-        	this.getWFResult().setEndTime(System.currentTimeMillis());
-			LogReferenceCreatorWrapper.createLogReferences(this);
-			return this.getWFResult();
+        	//identify format before migration roundtripp
+        	wfResultItem.addLogInfo("starting identify object A format: ");
+        	URI dgoAFormat = identifyFormat(identify1,dgoA.getPermanentUri());
+        	wfResultItem.addLogInfo("completed identify object A format: "+dgoAFormat);
         	
-        } catch(Exception e) {
-        	wfResult.setEndTime(System.currentTimeMillis());
-        	LogReferenceCreatorWrapper.createLogReferences(this);
- 			return this.getWFResult();
+        	// Migrate Object round-trip
+        		wfResultItem.addLogInfo("starting migration A-B");
+            URI dgoBRef = runMigration(migrate1,dgoA.getPermanentUri(),false);
+            	wfResultItem.addLogInfo("completed migration A-B");
+            	wfResultItem.addLogInfo("starting migration B-C");
+            URI dgoCRef = runMigration(migrate2,dgoBRef,false);
+            	wfResultItem.addLogInfo("completed migration B-C");
+            	wfResultItem.addLogInfo("starting migration C-D");
+            URI dgoDRef = runMigration(migrate3,dgoCRef,false);
+            	wfResultItem.addLogInfo("completed migration C-D");
+            	wfResultItem.addLogInfo("starting migration D-E");
+            //this object is documented as main experiment outcome file
+            URI dgoERef = runMigration(migrate4,dgoDRef,true);
+            	wfResultItem.addLogInfo("completed migration D-E");
+            
+            //identify format after migration roundtripp
+            wfResultItem.addLogInfo("starting identify object E format: ");
+            URI dgoEFormat = identifyFormat(identify1,dgoERef);
+            wfResultItem.addLogInfo("completed identify object E format: "+dgoEFormat);
+            
+            wfResultItem.addLogInfo("starting XCDL extraction for A");
+            URI dgoAXCDL = runMigration(migratexcdl1,dgoA.getPermanentUri(),false);
+            	wfResultItem.addLogInfo("completed XCDL extraction for A");
+            	wfResultItem.addLogInfo("starting XCDL extraction for B");
+            URI dgoEXCDL = runMigration(migratexcdl1,dgoERef,false);
+            	wfResultItem.addLogInfo("completed XCDL extraction for B");
+            
+            //perform object comparison
+            	wfResultItem.addLogInfo("starting comparisson for XCDL1 and XCDL2");
+            this.compareDigitalObjectsIdentical(dgoAXCDL, dgoEXCDL);
+            	wfResultItem.addLogInfo("completed comparisson for XCDL1 and XCDL2");
+            
+            	wfResultItem.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"+processingDigo);
+            	wfResultItem.setEndTime(System.currentTimeMillis());
+            
+        } catch (Exception e) {
+        	String err = "workflow execution error for digitalObject with permanent uri: "+processingDigo+"";            
+            wfResultItem.addLogInfo(err+" "+e);
+            wfResultItem.setEndTime(System.currentTimeMillis());
         }
+            
+		return this.getWFResult();
+    }
+    
+    
+    /** {@inheritDoc} */
+    public WorkflowResult finalizeExecution() {
+    	this.getWFResult().setEndTime(System.currentTimeMillis());
+		LogReferenceCreatorWrapper.createLogReferences(this);
+		return this.getWFResult();
     }
     
     /**

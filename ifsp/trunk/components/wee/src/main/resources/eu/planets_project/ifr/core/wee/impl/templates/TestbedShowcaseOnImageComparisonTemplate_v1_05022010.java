@@ -75,69 +75,61 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 	 * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#execute()
 	 */
 	@SuppressWarnings("finally")
-	public WorkflowResult execute() {
-		int count = 0;
+	public WorkflowResult execute(DigitalObject dgoA) {
+
+		// document all general actions for this digital object
+		WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA.getPermanentUri(),
+				WorkflowResultItem.GENERAL_WORKFLOW_ACTION, System
+						.currentTimeMillis(),this.getWorkflowReportingLogger());
+		this.addWFResultItem(wfResultItem);
+		wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
+
+		// start executing on digital ObjectA
+		this.processingDigo = dgoA.getPermanentUri();
+
 		try {
-			// get the digital objects and iterate one by one
-			for (DigitalObject dgoA : this.getData()) {
+			//run a pre-Identification service on A to determine it's format
+				wfResultItem.addLogInfo("starting identification A");
+			URI formatA = identifyFormat(identifyFormatA, dgoA.getPermanentUri());
+				wfResultItem.addLogInfo("completed identification A");
+			// Migrate Object round-trip
+				wfResultItem.addLogInfo("starting migration A-B");
+			URI dgoB = runMigration(migrateAB, dgoA.getPermanentUri(), formatA, null, false);
+				wfResultItem.addLogInfo("completed migration A-B");
+				wfResultItem.addLogInfo("starting migration B-C");
+			URI dgoC = runMigration(migrateBC, dgoB,null, formatA, true);
+				wfResultItem.addLogInfo("completed migration B-C");
+				
+			//compare the object's A and C
+				wfResultItem.addLogInfo("starting comparison A-C");
+			runComparison(compareAC,dgoA.getPermanentUri(),dgoC);
+				wfResultItem.addLogInfo("completed comparison A-C");
 
-				// document all general actions for this digital object
-				WorkflowResultItem wfResultItem = new WorkflowResultItem(dgoA.getPermanentUri(),
-						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, System
-								.currentTimeMillis(),this.getWorkflowReportingLogger());
-				this.addWFResultItem(wfResultItem);
-				wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
-
-				// start executing on digital ObjectA
-				this.processingDigo = dgoA.getPermanentUri();
-
-				try {
-					//run a pre-Identification service on A to determine it's format
-						wfResultItem.addLogInfo("starting identification A");
-					URI formatA = identifyFormat(identifyFormatA, dgoA.getPermanentUri());
-						wfResultItem.addLogInfo("completed identification A");
-					// Migrate Object round-trip
-						wfResultItem.addLogInfo("starting migration A-B");
-					URI dgoB = runMigration(migrateAB, dgoA.getPermanentUri(), formatA, null, false);
-						wfResultItem.addLogInfo("completed migration A-B");
-						wfResultItem.addLogInfo("starting migration B-C");
-					URI dgoC = runMigration(migrateBC, dgoB,null, formatA, true);
-						wfResultItem.addLogInfo("completed migration B-C");
-						
-					//compare the object's A and C
-						wfResultItem.addLogInfo("starting comparison A-C");
-					runComparison(compareAC,dgoA.getPermanentUri(),dgoC);
-						wfResultItem.addLogInfo("completed comparison A-C");
-
-					//TODO: use the identification service for data enrichment (e.g. mime type of output object)
-						
-					wfResultItem
-						.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"
-								+ processingDigo);
-					wfResultItem.setEndTime(System.currentTimeMillis());
-
-				} catch (Exception e) {
-					String err = "workflow execution error for digitalObject #"
-							+ count + " with permanent uri: " + processingDigo
-							+ "";
-					wfResultItem.addLogInfo(err + " " + e);
-					wfResultItem.setEndTime(System.currentTimeMillis());
-				}
-				count++;
-			}
-
-			this.getWFResult().setEndTime(System.currentTimeMillis());
-			LogReferenceCreatorWrapper.createLogReferences(this);
-			return this.getWFResult();
+			//TODO: use the identification service for data enrichment (e.g. mime type of output object)
+				
+			wfResultItem
+				.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"
+						+ processingDigo);
+			wfResultItem.setEndTime(System.currentTimeMillis());
 
 		} catch (Exception e) {
-			this.getWFResult().setEndTime(System.currentTimeMillis());
-			LogReferenceCreatorWrapper.createLogReferences(this);
-			return this.getWFResult();
+			String err = "workflow execution error for digitalObject #"
+					+ " with permanent uri: " + processingDigo;
+			wfResultItem.addLogInfo(err + " " + e);
+			wfResultItem.setEndTime(System.currentTimeMillis());
 		}
+
+			return this.getWFResult();
 	}
-
-
+	
+	
+	/** {@inheritDoc} */
+	public WorkflowResult finalizeExecution() {
+		this.getWFResult().setEndTime(System.currentTimeMillis());
+		LogReferenceCreatorWrapper.createLogReferences(this);
+		return this.getWFResult();
+	}
+	
 
 	/**
 	 * Runs the migration service on a given digital object. It uses the

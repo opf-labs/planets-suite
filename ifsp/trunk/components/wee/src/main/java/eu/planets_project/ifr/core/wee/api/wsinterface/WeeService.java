@@ -112,11 +112,33 @@ public interface WeeService {
                     partName = "ticket")
             UUID ticket
     ) throws Exception;
+    
+    /**
+     * Percent of processed (completed) objects
+     * @param ticket the UUID obtained when submitting a job
+     * @return -1 when scheduled, failed or completed, 0-100 when currently running
+     * @throws Exception for an unknown ticket request
+     */
+    @WebMethod(
+            operationName = WeeService.NAME +"_getProgress", 
+            action = PlanetsServices.NS + "/" + WeeService.NAME +"/getProgress")
+    @WebResult(
+            name = WeeService.NAME + "percent", 
+            targetNamespace = PlanetsServices.NS + "/" + WeeService.NAME, 
+            partName = WeeService.NAME + "percent")
+    public int getProgress(
+    		@WebParam(
+                    name = "ticket", 
+                    targetNamespace = PlanetsServices.NS + "/" + WeeService.NAME, 
+                    partName = "ticket")
+            UUID ticket
+    ) throws Exception;
 
     
     /**
      * Returns a WorkflowResult containing the workflow execution's results. 
      * (e.g. pointers to the Planets data registry on digital objects, events, etc.)
+     * Incremental workflow results as they come in when execution is running
      * @param ticket the UUID obtained when submitting a job
      * @return
      * @throws Exception if the workflow failed to terminate successfully or if the ticket is unknown

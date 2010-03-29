@@ -41,57 +41,48 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 	 * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#execute()
 	 */
 	@SuppressWarnings("finally")
-	public WorkflowResult execute() {
-		int count = 0;
+	public WorkflowResult execute(DigitalObject dgoA) {
+
+		// document all general actions for this digital object
+		WorkflowResultItem wfResultItem = new WorkflowResultItem(
+				dgoA.getPermanentUri(),
+				WorkflowResultItem.GENERAL_WORKFLOW_ACTION, 
+				System.currentTimeMillis(),
+				this.getWorkflowReportingLogger());
+		this.addWFResultItem(wfResultItem);
+		wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
+		wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
+
+		// start executing on digital ObjectA
+		this.processingDigo = dgoA;
+
 		try {
-			// get the digital objects and iterate one by one
-			for (DigitalObject dgoA : this.getData()) {	
+			// Single Migration
+				wfResultItem.addLogInfo("starting migration A-B");
+			URI dgoBRef = runMigration(migrate1, dgoA.getPermanentUri(), true);
+				wfResultItem.addLogInfo("completed migration A-B");
 
-				// document all general actions for this digital object
-				WorkflowResultItem wfResultItem = new WorkflowResultItem(
-						dgoA.getPermanentUri(),
-						WorkflowResultItem.GENERAL_WORKFLOW_ACTION, 
-						System.currentTimeMillis(),
-						this.getWorkflowReportingLogger());
-				this.addWFResultItem(wfResultItem);
-				wfResultItem.addLogInfo("working on workflow template: "+this.getClass().getName());
-				wfResultItem.addLogInfo("workflow-instance id: "+this.getWorklowInstanceID());
-
-				// start executing on digital ObjectA
-				this.processingDigo = dgoA;
-
-				try {
-					// Single Migration
-						wfResultItem.addLogInfo("starting migration A-B");
-					URI dgoBRef = runMigration(migrate1, dgoA.getPermanentUri(), true);
-						wfResultItem.addLogInfo("completed migration A-B");
-
-					//TODO: use the identification service for data enrichment (e.g. mime type of output object)
-						
-					wfResultItem
-						.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"
-								+ processingDigo);
-					wfResultItem.setEndTime(System.currentTimeMillis());
-
-				} catch (Exception e) {
-					String err = "workflow execution error for digitalObject #"
-							+ count + " with permanent uri: " + processingDigo
-							+ "";
-					wfResultItem.addLogInfo(err + " " + e);
-					wfResultItem.setEndTime(System.currentTimeMillis());
-				}
-				count++;
-			}
-
-			this.getWFResult().setEndTime(System.currentTimeMillis());
-			LogReferenceCreatorWrapper.createLogReferences(this);
-			return this.getWFResult();
+			//TODO: use the identification service for data enrichment (e.g. mime type of output object)
+				
+			wfResultItem
+				.addLogInfo("successfully completed workflow for digitalObject with permanent uri:"
+						+ processingDigo);
+			wfResultItem.setEndTime(System.currentTimeMillis());
 
 		} catch (Exception e) {
-			this.getWFResult().setEndTime(System.currentTimeMillis());
-			LogReferenceCreatorWrapper.createLogReferences(this);
-			return this.getWFResult();
+			String err = "workflow execution error for digitalObject with permanent uri: " + processingDigo;
+			wfResultItem.addLogInfo(err + " " + e);
+			wfResultItem.setEndTime(System.currentTimeMillis());
 		}
+		
+		return this.getWFResult();
+	}
+	
+	/** {@inheritDoc} */
+	public WorkflowResult finalizeExecution() {
+		this.getWFResult().setEndTime(System.currentTimeMillis());
+		LogReferenceCreatorWrapper.createLogReferences(this);
+		return this.getWFResult();
 	}
 
 	/**

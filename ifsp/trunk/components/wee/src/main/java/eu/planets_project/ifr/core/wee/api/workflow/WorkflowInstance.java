@@ -1,7 +1,10 @@
 package eu.planets_project.ifr.core.wee.api.workflow;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
+
+import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
@@ -23,5 +26,9 @@ public interface WorkflowInstance extends Serializable{
 	
 	public WorkflowTemplate getWorkflowTemplate();
 	
-	public WorkflowResult execute() throws Exception;
+	public List<DigitalObject> getData();
+	
+	public WorkflowResult execute(DigitalObject digo);
+	
+	public WorkflowResult finalizeExecution();
 }

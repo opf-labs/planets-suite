@@ -3,6 +3,7 @@
  */
 package eu.planets_project.ifr.core.wee.impl;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -23,6 +24,7 @@ import eu.planets_project.ifr.core.wee.api.WeeManager;
 import eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
+import eu.planets_project.services.datatypes.DigitalObject;
 
 
 /**
@@ -135,7 +137,17 @@ public class WorkflowExecutionEngineImpl implements MessageListener {
 	    	log.debug("WorkflowExecutionEngine: start executing wf ID: " + wf.getWorkflowID());
 	    	
 	    	//EXECUTES THE WF INSTANCE
-			ret = wf.execute();
+			List<DigitalObject> payload = wf.getData();
+			int count = 1;
+			for(DigitalObject digo : payload){
+				//process the payload item by item - workflowResult appends individual log items
+				ret = wf.execute(digo);
+				count+=1;
+				int progress = (100/payload.size())*count;
+				weeManager.notify(uuid, ret, WorkflowExecutionStatus.RUNNING, progress);
+			}
+			ret = wf.finalizeExecution();
+			
 			
 			log.debug("WorkflowExecutionEngine: completed executing wf ID: " + wf.getWorkflowID());
 		} catch (Exception e) {

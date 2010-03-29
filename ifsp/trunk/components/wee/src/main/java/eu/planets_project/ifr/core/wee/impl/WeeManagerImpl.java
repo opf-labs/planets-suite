@@ -60,6 +60,8 @@ public class WeeManagerImpl implements WeeManager, Serializable {
     private Map<UUID,WorkflowInstance> mapUUIDtoWF;
     //mapping of UUIDs to execution status
     private Map<UUID,WorkflowExecutionStatus> mapUUIDtoExecStatus;
+    //mapping of UUIDs to progress. -1..0-100
+    private Map<UUID,Integer> mapUUIDtoProgress;
     //mapping of UUIDs to execution results
     private Map<UUID,WorkflowResult> mapUUIDtoExecResults;
     //the singleton ojbect
@@ -75,6 +77,7 @@ public class WeeManagerImpl implements WeeManager, Serializable {
     	 //mapUUIDtoWF = new HashMap<UUID,WorkflowInstance>();
     	 mapUUIDtoExecStatus = new HashMap<UUID,WorkflowExecutionStatus>();
     	 mapUUIDtoExecResults = new HashMap<UUID,WorkflowResult>();
+    	 mapUUIDtoProgress = new HashMap<UUID,Integer>();
     	 mapUUIDtoWF = new HashMap<UUID,WorkflowInstance>();
     }
     
@@ -190,12 +193,22 @@ public class WeeManagerImpl implements WeeManager, Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.ifr.core.wee.api.WeeManager#notify(java.util.UUID, eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus)
 	 */
-	public void notify(UUID ticket, WorkflowResult wfResult, WorkflowExecutionStatus executionStatus){
+	public synchronized void notify(UUID ticket, WorkflowResult wfResult, WorkflowExecutionStatus executionStatus){
+		this.notify(ticket, wfResult, executionStatus,-1);
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.ifr.core.wee.api.WeeManager#notify(java.util.UUID, eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus, java.lang.Integer)
+	 */
+	public synchronized void notify(UUID ticket, WorkflowResult wfResult, WorkflowExecutionStatus executionStatus, int progress){
 		if(this.isTicketKnown(ticket)){
-			this.mapUUIDtoExecStatus.put(ticket, executionStatus);
+			this.mapUUIDtoExecStatus.put(ticket, executionStatus); 
 			this.mapUUIDtoExecResults.put(ticket, wfResult);
-			//remove workflow from local execution queue
-			removeWorkflowFromLocalQueue(ticket);
+			this.mapUUIDtoProgress.put(ticket, progress);
+			if((executionStatus.equals(WorkflowExecutionStatus.FAILED))||(executionStatus.equals(WorkflowExecutionStatus.COMPLETED))){
+				//remove workflow from local execution queue - if it's not 'running' or 'submitted'
+				removeWorkflowFromLocalQueue(ticket);
+			}
 		}
 		log.debug("WEEManager: notify called from execution engine on status: "+executionStatus+" wfReult #"+wfResult+" ticket #"+ticket);
 	}
@@ -203,7 +216,7 @@ public class WeeManagerImpl implements WeeManager, Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.ifr.core.wee.api.WeeManager#notify(java.util.UUID, eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus)
 	 */
-	public void notify(UUID ticket, WorkflowExecutionStatus status){
+	public synchronized void notify(UUID ticket, WorkflowExecutionStatus status){
 		if(this.isTicketKnown(ticket)){
 			this.mapUUIDtoExecStatus.put(ticket, status);
 		}
@@ -213,6 +226,7 @@ public class WeeManagerImpl implements WeeManager, Serializable {
 	private void removeWorkflowFromLocalQueue(UUID ticket){
 		WorkflowInstance executedWF = this.mapUUIDtoWF.get(ticket);
 		//checkMessagesSkipped(executedWF);
+		log.debug("WEEManager: removing ticket#: "+ticket+" from local job queue");
 		this.localJobqueue.remove(executedWF);
 	}
 	
@@ -245,14 +259,13 @@ public class WeeManagerImpl implements WeeManager, Serializable {
 		
 		//check if ticket is known
 		if(isTicketKnown(ticket)){
-			//check if execution is successfully completed
-			if(isExecutionCompleted(ticket)){
+			//check for (intermediate or final) results
+			if(this.mapUUIDtoExecResults.containsKey(ticket)){
 				//now fetch the execution's result data 
 				return this.mapUUIDtoExecResults.get(ticket);
-	
 			}
 			else{
-				log.debug("WEEManager: requesting WEE Execution Result for a scheduled but not executed or failed workflow. ticket #"+ticket);
+				log.debug("WEEManager: requesting WEE Execution Result failed for workflow ticket #"+ticket+".");
 				throw new PlanetsException("WEEManager: requesting WEE Execution Result for a scheduled but not executed or failed workflow. ticket #"+ticket);
 			}
 		}
@@ -333,5 +346,22 @@ public class WeeManagerImpl implements WeeManager, Serializable {
             return null;
         }
     }
+
+
+	/** {@inheritDoc} */
+	public int getProgress(UUID ticket) throws PlanetsException {
+		if(this.mapUUIDtoWF.containsKey(ticket)){
+			if(this.mapUUIDtoProgress.containsKey(ticket)){
+				//execution taking place or complete, return progress
+				return mapUUIDtoProgress.get(ticket);
+			}
+			else{
+				//known ticket, but execution not yet started
+				return -1;
+			}
+		}
+		log.debug("WEEManager: requesting progress for unknown ticket #"+ticket);
+		throw new PlanetsException("WEEManager: requesting progress for unknown ticket #"+ticket);
+	}
     
 }

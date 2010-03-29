@@ -44,6 +44,7 @@ import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
+import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.LogReferenceCreatorWrapper;
 
 /**
  * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
@@ -376,4 +377,5 @@ public abstract class WorkflowTemplateHelper implements Serializable {
     	//FIXME: AL: this should actually be provided by the WEE at runtime
     	this.agentWEE = agent;
     }
+    
 }

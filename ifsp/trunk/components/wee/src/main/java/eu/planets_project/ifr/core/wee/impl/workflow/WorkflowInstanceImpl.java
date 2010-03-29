@@ -1,10 +1,12 @@
 package eu.planets_project.ifr.core.wee.impl.workflow;
 
+import java.util.List;
 import java.util.UUID;
 
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
+import eu.planets_project.services.datatypes.DigitalObject;
 
 public class WorkflowInstanceImpl implements WorkflowInstance{
 
@@ -33,12 +35,20 @@ public class WorkflowInstanceImpl implements WorkflowInstance{
     	return UUID.randomUUID();
     }
 
-	public WorkflowResult execute() throws Exception{
-		return this.getWorkflowTemplate().execute();
+	public WorkflowResult execute(DigitalObject digo){
+		return this.getWorkflowTemplate().execute(digo);
 	}
 
 	public WorkflowTemplate getWorkflowTemplate() {
 		return this.wfTemplate;
+	}
+
+	public List<DigitalObject> getData() {
+		return this.wfTemplate.getData();
+	}
+
+	public WorkflowResult finalizeExecution() {
+		return this.wfTemplate.finalizeExecution();
 	}
 
 }

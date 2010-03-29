@@ -189,8 +189,13 @@ public interface WorkflowTemplate extends Serializable{
 	 * @return
 	 * no Exceptions thrown - all information on execution success, etc. is contained within the WorkflowResult
 	 */
-	public WorkflowResult execute();
+	public WorkflowResult execute(DigitalObject dio);
 	
+	/**
+	 * Build and attache items for finalizing the execution overall execution for this template
+	 * e.g. overall success statements, overall workflow execution time, log-references, etc.
+	 */
+	public WorkflowResult finalizeExecution();
 	
 	/**
 	 * 

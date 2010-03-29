@@ -65,6 +65,21 @@ public interface WeeManager {
 	 */
 	public void notify(UUID ticket, WorkflowExecutionStatus status);
 	
+	/**
+	 * The callback method which is used by the execution engine to report back on 
+	 * a wf execution, its status, the current workflowResult and the percent of completed items
+	 * @param wfResult
+	 * @param executionStatus
+	 * @param percentCompleted 0-100
+	 */
+	public void notify(UUID ticket, WorkflowResult wfResult, WorkflowExecutionStatus executionStatus, int percentCompleted);
+	/**
+	 * Returns -1 if status = submitted, completed or failed; 0-100 when execution is running
+	 * @param ticket
+	 * @return
+	 * @throws PlanetsException if ticket is unknown
+	 */
+	public int getProgress(UUID ticket) throws PlanetsException;
 
 	/**
 	 * Method for polling the wf execution results for a given ticket.
