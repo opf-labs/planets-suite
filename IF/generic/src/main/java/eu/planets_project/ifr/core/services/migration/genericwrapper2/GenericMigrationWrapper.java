@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +21,10 @@ import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationInitialisationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterBuilder;
 import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterReader;
+import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Event;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -29,6 +33,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
+import eu.planets_project.services.utils.ServicePerformanceHelper;
 
 /**
  * 
@@ -125,6 +130,9 @@ public class GenericMigrationWrapper {
 	    URI outputFormat, List<Parameter> toolParameters)
 	    throws MigrationException, ConfigurationException {
 
+	final ServicePerformanceHelper servicePerformanceHelper = new ServicePerformanceHelper();
+	final Date migrationStartTime = new Date();
+
 	/*
 	 * Validate that the proper parameters are set for the migration path
 	 * identified by inputFormat and outputFormat
@@ -135,7 +143,7 @@ public class GenericMigrationWrapper {
 	// If called with null parameters, use an empty list instead
 	if (toolParameters == null) {
 	    log.warning("Called with null parameters. Assuming the caller ment"
-		    + " to calle with an empty list.");
+		    + " to call with an empty list.");
 	    toolParameters = new ArrayList<Parameter>();
 	}
 
@@ -230,9 +238,6 @@ public class GenericMigrationWrapper {
 	    } else {
 		builder = new DigitalObject.Builder(Content.byValue(outputFile));
 
-		// TODO: Should we set metadata such as the object title, and if
-		// so, how can one set it?
-
 		// It is now safe to delete the temporary file.
 		outputFile.delete();
 	    }
@@ -251,7 +256,33 @@ public class GenericMigrationWrapper {
 	    }
 	}
 
-	final DigitalObject resultObject = builder.format(outputFormat).build();
+	final double migrationDuration = new Date().getTime()
+		- migrationStartTime.getTime();
+
+	builder.format(outputFormat);
+	final Agent agent = new Agent(toolIdentifier, serviceDescription
+		.getName(), serviceDescription.getType());
+
+	String eventSummary = "Migration carried out by executing the command line:";
+	for (String commandLineFragment : prCommand) {
+	    eventSummary += " " + commandLineFragment;
+	}
+	eventSummary += "\n\nThe migration service was called with these parameters:\n\n";
+	for (Parameter serviceParameter : toolParameters) {
+	    eventSummary += serviceParameter.getName() + " = "
+		    + serviceParameter.getValue() + "\n";
+	}
+
+	servicePerformanceHelper.stop();
+
+	// Add information about the migration event to the digital object.
+	final DateFormat defaultDateFormat = DateFormat.getDateInstance();
+	final Event event = new Event(eventSummary, defaultDateFormat
+		.format(migrationStartTime), migrationDuration, agent,
+		servicePerformanceHelper.getPerformanceProperties());
+	builder.events(event);
+
+	final DigitalObject resultObject = builder.build();
 
 	return buildMigrationResult(migrationPath, digitalObject, resultObject,
 		toolProcessRunner);

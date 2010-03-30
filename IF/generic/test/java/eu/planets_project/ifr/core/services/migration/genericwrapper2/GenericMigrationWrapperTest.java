@@ -73,6 +73,8 @@ public class GenericMigrationWrapperTest {
 		getDigitalTestObject(), sourceFormatURI, destinationFormatURI,
 		testParameters);
 
+	//TODO: Test the contents of the digital object and the metadata.
+	
 	Assert.assertEquals(ServiceReport.Status.SUCCESS, migrationResult
 		.getReport().getStatus());
     }
