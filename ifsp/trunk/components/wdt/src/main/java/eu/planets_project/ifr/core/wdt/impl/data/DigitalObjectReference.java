@@ -12,8 +12,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 
-import eu.planets_project.ifr.core.storage.impl.oai.*;
-
 
 /**
  * 
@@ -93,14 +91,6 @@ public class DigitalObjectReference {
 				}
 				return puri;
 			} else {
-				// Special handling for the digital objects from OAI repository
-				if ((puri != null)
-						&& puri.toString().indexOf(
-								OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI) > -1) {
-					// Special treatment for OAI files!
-					String res = puri.toString();
-					return URI.create(res);
-				}
 				return puri;
 			}
 		}
@@ -179,58 +169,6 @@ public class DigitalObjectReference {
 									+ e.getMessage(), e);
 				}
 			}
-		}
-
-		// OAI DC
-		if (puri.toString().indexOf(
-				OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI) > -1) {
-			// Special treatment for OAI files!
-			String res = puri.toString();
-			if (dom != null) {
-				try {
-					DigitalObject obj = dom
-							.getDigitalObjectManager(
-									DataRegistryFactory
-											.createDataRegistryIdFromName(OAIDigitalObjectManagerDCBase.REGISTRY_NAME))
-							.retrieve(puri);
-
-					if (obj.getTitle() != null) {
-						String title = obj.getTitle();
-						res = title;
-					}
-				} catch (Exception e) {
-					log.log(Level.INFO,
-							"DigitalObjectReference title not found. "
-									+ e.getMessage(), e);
-				}
-			}
-			return res;
-		}
-
-		// OAI KB
-		if (puri.toString().indexOf(
-				OAIDigitalObjectManagerKBBase.OAI_KB_CHILD_URI) > -1) {
-			// Special treatment for OAI KB files!
-			String res = puri.toString();
-			if (dom != null) {
-				try {
-					DigitalObject obj = dom
-							.getDigitalObjectManager(
-									DataRegistryFactory
-											.createDataRegistryIdFromName(OAIDigitalObjectManagerKBBase.REGISTRY_NAME))
-							.retrieve(puri);
-
-					if (obj.getTitle() != null) {
-						String title = obj.getTitle();
-						res = title;
-					}
-				} catch (Exception e) {
-					log.log(Level.INFO,
-							"DigitalObjectReference title not found. "
-									+ e.getMessage(), e);
-				}
-			}
-			return res;
 		}
 
 		if (path == null)
