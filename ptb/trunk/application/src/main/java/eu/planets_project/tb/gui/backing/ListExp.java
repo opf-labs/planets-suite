@@ -323,13 +323,13 @@ public class ListExp extends SortableList {
         public String adminApproveExperiment() {
             ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
             AdminManagerImpl.approveExperimentManually(expBean.getExperiment());
-            return "viewExperimentExeManager";
+            return "exp_scheduler";
         }
         
         public String adminDenyExperiment() {
             ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
             AdminManagerImpl.denyExperimentManually(expBean.getExperiment());
-            return "viewExperimentExeManager";
+            return "exp_scheduler";
         }
         
         public String readerExperimentAction()
