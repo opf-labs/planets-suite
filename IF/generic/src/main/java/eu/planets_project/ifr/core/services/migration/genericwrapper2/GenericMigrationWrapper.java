@@ -51,16 +51,12 @@ public class GenericMigrationWrapper {
 
     private ServiceDescription serviceDescription;
 
-    // TODO: It would probably be nice to pass a factory for creation of
-    // temporary files on order to avoid a tight coupling with the Planets J2EE
-    // way of creating such.
     public GenericMigrationWrapper(Document configuration,
 	    Configuration environmentSettings, String toolIdentifier)
 	    throws MigrationInitialisationException {
 
-	this.toolIdentifier = toolIdentifier; // TODO: Where should we use this
-	// information? Logging?
-	// ServiceDescription? Should it be stored in an instance variable?
+	this.toolIdentifier = toolIdentifier;
+
 	tempFileFactory = new J2EETempFileFactory(toolIdentifier);
 
 	environmentParameters = ParameterBuilder.buid(environmentSettings);
