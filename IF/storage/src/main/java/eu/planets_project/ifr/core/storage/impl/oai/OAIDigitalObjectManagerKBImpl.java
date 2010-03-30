@@ -85,6 +85,10 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
      */
     private static ManagerControl mc;
 
+	/**
+	 * This is a cache for list method.
+	 */
+	private static ArrayList<URI> uriList = new ArrayList<URI>();
 
 
 	/**
@@ -191,32 +195,37 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
      */
     public List<URI> list(URI pdURI) {
     	if (pdURI == null) {
-    		// OAI hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
-	    	ArrayList<URI> resultList = new ArrayList<URI>();
-	    	for (int i = 0 ; i < Articles.length ; i++) {
-	    		String resolver = transferData(OAIDigitalObjectManagerKBBase.DEFAULT_BASE_URL + BRACES + Articles[i] + BRACES);
-//	    	    log.log(Level.INFO, "test() init resolver[" + i +  "]: " + resolver);
-	    		String resolverLink = resolver.substring(resolver.indexOf(RESOLVER_START) + RESOLVER_START.length(), 
-	    										resolver.indexOf(RESOLVER_END));
-	    	    log.log(Level.INFO, "test() resolverLink[" + i +  "]: " + resolverLink);
-	    	    if (resolverLink != null) {
-					// Get an intermediate HTML page and the publication link
-					String publicationLink = retrieveIntermediateHtmlPage(resolverLink);
-	    	    	resultList.add(URI.create(publicationLink));
-
-	    	    	// Retrieve metadata
-	    	    	List<Metadata> metadataList = new ArrayList<Metadata>(0);
-	    	    	for (OaiMetadata emd : OaiMetadata.values()) {
-	    	    		String md = retrieveOaiMetadata(emd, resolver);
-	    	    		if (md != null && md.length() > 0) {
-			    	       Metadata metadata = new Metadata(URI.create(publicationLink), emd.name(), md);
-		    	    	   metadataList.add(metadata);
-	    	    		}
-	    	    	}
-	    	    	metadataMap.put(URI.create(publicationLink), metadataList);
-	    	    }
-	    	}
-	        return resultList;
+    		if (uriList != null && uriList.size() > 0) {
+    			return uriList;
+    		} else {
+	    		// OAI hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
+		    	ArrayList<URI> resultList = new ArrayList<URI>();
+		    	for (int i = 0 ; i < Articles.length ; i++) {
+		    		String resolver = transferData(OAIDigitalObjectManagerKBBase.DEFAULT_BASE_URL + BRACES + Articles[i] + BRACES);
+	//	    	    log.log(Level.INFO, "test() init resolver[" + i +  "]: " + resolver);
+		    		String resolverLink = resolver.substring(resolver.indexOf(RESOLVER_START) + RESOLVER_START.length(), 
+		    										resolver.indexOf(RESOLVER_END));
+		    	    log.log(Level.INFO, "test() resolverLink[" + i +  "]: " + resolverLink);
+		    	    if (resolverLink != null) {
+						// Get an intermediate HTML page and the publication link
+						String publicationLink = retrieveIntermediateHtmlPage(resolverLink);
+		    	    	resultList.add(URI.create(publicationLink));
+	
+		    	    	// Retrieve metadata
+		    	    	List<Metadata> metadataList = new ArrayList<Metadata>(0);
+		    	    	for (OaiMetadata emd : OaiMetadata.values()) {
+		    	    		String md = retrieveOaiMetadata(emd, resolver);
+		    	    		if (md != null && md.length() > 0) {
+				    	       Metadata metadata = new Metadata(URI.create(publicationLink), emd.name(), md);
+			    	    	   metadataList.add(metadata);
+		    	    		}
+		    	    	}
+		    	    	metadataMap.put(URI.create(publicationLink), metadataList);
+		    	    }
+		    	}
+		    	uriList = resultList;
+		        return resultList;
+    		}
     	} else {
     		return new ArrayList<URI>();
     	}
@@ -344,7 +353,7 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 		Iterator<String> i = tmpParameterList.iterator();
 		while (i.hasNext()) {
 			String line = i.next();
-			log.log(Level.INFO, "test() line: " + line);
+//			log.log(Level.INFO, "test() line: " + line);
 			if (line.contains(POST_FORM_VALUE)) {
 				try {
 					String name = URLEncoder.encode(line.substring(0, line.indexOf(POST_FORM_VALUE)), "UTF-8");
@@ -429,7 +438,7 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
         /**
          * The time between consistency check
          */
-        long sleeptime = 120000;
+        long sleeptime = 1200000;
 
         long starttime = 0;
         int counter = 0;

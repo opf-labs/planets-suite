@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.storage.impl.oai;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -8,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dom4j.Element;
+
 import se.kb.oai.pmh.Record;
-import se.kb.oai.OAIException;
 import se.kb.oai.pmh.OaiPmhServer;
+import se.kb.oai.pmh.RecordsList;
 import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryDateRange;
 //import eu.planets_project.ifr.core.storage.api.query.QueryDateRange;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.Content;
@@ -41,6 +42,12 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
      */
     private static ManagerControl mc;
 
+	/**
+	 * This is a cache for list method.
+	 */
+	private static List<URI> uriList = new ArrayList<URI>();
+
+    
 	/**
 	 * @param baseURL The base URL
 	 */
@@ -81,85 +88,129 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 		    	log.info("OAIDigitalObjectManagerDCImpl retrieve() timediff: " + (endtime - starttime));
 				return leafMap.get(pdURI);
 			}
-
-			OaiPmhServer server = new OaiPmhServer(baseURL);
-			Record record = server.getRecord(pdURI.toString(), metaDataPrefix);
-			Element metadata = record.getMetadata();
-			
-			/*
-            OutputFormat screenOutFormat = OutputFormat.createPrettyPrint();
-            XMLWriter writer = new XMLWriter(System.out, screenOutFormat);
-			writer.setIndentLevel(2);
-			writer.write(record.getResponse());
-			*/
-			
-			if (metadata != null) {
-				// Namespace URI
-				URI namespaceURI = null;
-				try {
-					namespaceURI = new URI(metadata.getNamespaceURI());
-				} catch (URISyntaxException e) {
-					log.warning("Error parsing namespace URI: " + metadata.getNamespaceURI() + " (should never happen...)");
-				}
-				
-				// DigitalObject title
-				String title = null;
-				
-				// DigitalObject URL (required)
-				String url = null;
-				
-				for (Object child : metadata.content()) {
-					if (child instanceof Element) {
-						Element c = (Element) child;
-						
-						// Title
-						if (c.getName().equalsIgnoreCase("title"))
-							title = c.getData().toString();
-						
-						// URL (if provided)
-						if (c.getName().equalsIgnoreCase("identifier")) {
-							String id = c.getData().toString();
-							if (id.startsWith("http://"))
-								url = id;
-						}
-					}
-				}
-				
-				if (url != null) {
-					Builder builder = new DigitalObject.Builder(Content.byReference(new URL(url)));
-					builder.title(title);
-					builder.metadata(new Metadata(namespaceURI, record.getMetadataAsString()));
-			    	long endtime = System.currentTimeMillis();
-			    	log.info("OAIDigitalObjectManagerDCImpl retrieve() timediff: " + (endtime - starttime));
-					DigitalObject o = builder.build();
-					if (pdURI != null && !leafMap.containsKey(pdURI)) {
-				    	log.info("OAIDigitalObjectManagerDCImpl retrieve() add to map uri: " + pdURI);
-						leafMap.put(pdURI, o);
-					}
-					return o;
-				}
-			}
-			
 	    	long endtime = System.currentTimeMillis();
 	    	log.info("OAIDigitalObjectManagerDCImpl retrieve() error1: NoHTTP URL available." + " timediff: " + (endtime - starttime));
 			throw new DigitalObjectNotFoundException("No HTTP URL available for this record");
-		} catch (OAIException e) {
+		} catch (Exception e) {
 	    	long endtime = System.currentTimeMillis();
 	    	log.info("OAIDigitalObjectManagerDCImpl retrieve() error2: " + e.getMessage() + " timediff: " + (endtime - starttime));
-			throw new DigitalObjectNotFoundException(e.getMessage());
-		} catch (IOException e) {
-	    	long endtime = System.currentTimeMillis();
-	    	log.info("OAIDigitalObjectManagerDCImpl retrieve() error3: " + e.getMessage() + " timediff: " + (endtime - starttime));
 			throw new DigitalObjectNotFoundException(e.getMessage());
 		}
 	}
 
+	
+	/**
+	 * This method retrieves titles, URIs and metadata from server.
+	 * @param pdURI The parent URI
+	 * @param server The PMH server
+	 * @return The list of the URIs
+	 */
+	private ArrayList<URI> retrieveAll(URI pdURI, OaiPmhServer server) {
+    	ArrayList<URI> resultList = new ArrayList<URI>();
+
+    	long starttime = System.currentTimeMillis();
+    	log.info("OAIDigitalObjectManagerDCImpl retrieveAll() starttime: " + starttime + ", pdURI: " + pdURI);
+    	try {
+	    	RecordsList recordsList;
+	    	recordsList = server.listRecords(metaDataPrefix);	
+	    	for (Record record : recordsList.asList()) {
+	    		Element metadata = record.getMetadata();
+				if (metadata != null) {
+					// Namespace URI
+					URI namespaceURI = null;
+					try {
+						namespaceURI = new URI(metadata.getNamespaceURI());
+				    	log.info("OAIDigitalObjectManagerDCImpl retrieveAll() found namespaceURI: " + namespaceURI);
+					} catch (URISyntaxException e) {
+						log.warning("Error parsing namespace URI: " + metadata.getNamespaceURI() + " (should never happen...)");
+					}
+	
+					// DigitalObject title
+					String title = null;
+					// DigitalObject URL (required)
+					String url = null;
+					
+					for (Object child : metadata.content()) {
+						if (child instanceof Element) {
+							Element c = (Element) child;
+							
+							// Title
+							if (c.getName().equalsIgnoreCase("title")) {
+								title = c.getData().toString();
+						    	log.info("OAIDigitalObjectManagerDCImpl retrieveAll() found title: " + title);
+							}
+							
+							// URL (if provided)
+							if (c.getName().equalsIgnoreCase("identifier")) {
+								String id = c.getData().toString();
+								if (id.startsWith("http://"))
+									url = id;
+							}										
+						}
+					}
+			    	log.info("OAIDigitalObjectManagerDCImpl retrieveAll() found idurl: " + url);
+					if (url != null) {
+		    	    	resultList.add(URI.create(url));
+						Builder builder = new DigitalObject.Builder(Content.byReference(new URL(url)));
+						builder.title(title);
+						builder.metadata(new Metadata(namespaceURI, record.getMetadataAsString()));
+				    	long endtime = System.currentTimeMillis();
+				    	log.info("OAIDigitalObjectManagerDCImpl retrieve() timediff: " + (endtime - starttime));
+						DigitalObject o = builder.build();
+						if (url != null && !leafMap.containsKey(URI.create(url))) {
+					    	log.info("OAIDigitalObjectManagerDCImpl retrieve() add to map uri: " + URI.create(url));
+							leafMap.put(URI.create(url), o);
+						}
+					}
+				}
+	    	}
+    	} catch (Exception e) {
+			log.info("OAIDigitalObjectManagerDCImpl retrieveAll() pdURI: " + pdURI + ", error: " + e.getMessage());    		
+    	}
+    	long endtime = System.currentTimeMillis();
+    	log.info("****** OAIDigitalObjectManagerDCImpl retrieveAll() timediff: " + (endtime - starttime));
+    	
+    	return resultList;		
+	}
+	
+	
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
-		log.info("OAIDigitalObjectManagerDCBase list() URI " + pdURI);
-    	return super.list(pdURI, q);
+		log.info("OAIDigitalObjectManagerDCImpl list() URI " + pdURI);
+		
+    	if (pdURI == null) {
+    		if (uriList != null && uriList.size() > 0) {
+    			return uriList;
+    		} else {
+	    		// OAI hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
+		    	List<URI> resultList = new ArrayList<URI>();
+		    	
+				log.info("OAIDigitalObjectManagerDCImpl pdURI: " + pdURI + ", baseURL: "+ baseURL);
+		    	OaiPmhServer server = new OaiPmhServer(baseURL);
+		    	try {
+		    		if (q == null) {
+		    			log.info("OAIDigitalObjectManagerDCImpl pdURI: " + pdURI + ", metaDataPrefix: "+ metaDataPrefix);
+			    		
+			    		// read titles and metadata
+		    			resultList = retrieveAll(pdURI, server);
+		    		} else {
+		    			log.info("OAIDigitalObjectManagerDCImpl pdURI: " + pdURI + ", q != null");
+		    			if (!(q instanceof QueryDateRange))
+		    				throw new QueryValidationException("Unsupported query type");
+		    			resultList = super.list(pdURI, q);
+		    		}		    		
+		    	} catch (Exception e) {
+		    		log.severe(e.getMessage());
+	    			log.info("OAIDigitalObjectManagerDCImpl pdURI: " + pdURI + ", error: " + e.getMessage());
+		    	}
+		    	uriList = resultList;
+		        return resultList;
+			}
+    	} else {
+    		return new ArrayList<URI>();
+    	}		
     }
 
 

@@ -33,7 +33,7 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 	
 	protected static String DEFAULT_BASE_URL = "http://eprints.whiterose.ac.uk/cgi/oai2";
 	
-	public static String OAI_DC_CHILD_URI = "oai:"; 
+	public static String OAI_DC_CHILD_URI = "eprints.whiterose.ac.uk"; 
 	
 	public static String PREFIX = "oai_dc";
 	

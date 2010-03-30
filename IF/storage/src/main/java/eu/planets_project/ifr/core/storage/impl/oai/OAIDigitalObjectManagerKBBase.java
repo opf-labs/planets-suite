@@ -74,9 +74,11 @@ public class OAIDigitalObjectManagerKBBase extends DigitalObjectManagerBase {
 			log.info("OAIDigitalObjectManagerKBBase pdURI: " + pdURI);	
 
 			try {
-	        	URI _pdURI = null;
-				log.info("OAIDigitalObjectManagerKBBase _pdURI: " + _pdURI);	
-            	retVal = dom.list(_pdURI);
+				if (pdURI.toString().contains(REGISTRY_NAME)) {
+		        	URI _pdURI = null;
+					log.info("OAIDigitalObjectManagerKBBase _pdURI: " + _pdURI);	
+	            	retVal = dom.list(_pdURI);
+				}
             } catch (Exception e) {
                 log.info("OAIDigitalObjectManagerKBBase dom.list error: " + e.getMessage());
             }
