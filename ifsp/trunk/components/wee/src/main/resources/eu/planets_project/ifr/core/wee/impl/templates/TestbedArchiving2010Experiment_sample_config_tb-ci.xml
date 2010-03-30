@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
   <template>
-    <class>eu.planets_project.ifr.core.wee.impl.templates.TestbedArchiving2010Experiment_24032010_v2</class>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.TestbedArchiving2010Experiment</class>
   </template>
   <services>
     <service id="migrate1">

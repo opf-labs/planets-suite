@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.wee.api.WeeManager;
 import eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus;
+import eu.planets_project.ifr.core.wee.api.utils.WFResultUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
@@ -206,11 +207,27 @@ public class WeeManagerImpl implements WeeManager, Serializable {
 			this.mapUUIDtoExecResults.put(ticket, wfResult);
 			this.mapUUIDtoProgress.put(ticket, progress);
 			if((executionStatus.equals(WorkflowExecutionStatus.FAILED))||(executionStatus.equals(WorkflowExecutionStatus.COMPLETED))){
+				//persist the wfResult as file to disk
+				persistWFResultToDisk(ticket, wfResult);
 				//remove workflow from local execution queue - if it's not 'running' or 'submitted'
 				removeWorkflowFromLocalQueue(ticket);
 			}
 		}
 		log.debug("WEEManager: notify called from execution engine on status: "+executionStatus+" wfReult #"+wfResult+" ticket #"+ticket);
+	}
+	
+	/**
+	 * Persists the wfResult to disk
+	 * @param wfResult
+	 * @param progress
+	 */
+	private void persistWFResultToDisk(UUID ticket,WorkflowResult wfResult){
+		//persist the wfResult as local file
+		try{
+			WFResultUtil.marshalWorkflowResultToXMLFile(wfResult,ticket+"");
+		}catch(Exception e){
+			log.debug("error marshalling wfResult->xml to disk");
+		}
 	}
 	
 	/* (non-Javadoc)
