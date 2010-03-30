@@ -81,9 +81,10 @@ public class ExecutionStageRecordImpl implements Serializable {
     private String stage;
     
     // The set of measured properties.
-    // TODO Replace these old forms with the measurement events, below:
     @Lob
     private Vector<MeasurementRecordImpl> measurements = new Vector<MeasurementRecordImpl>();
+
+    // TODO Manual measurements should actually be done as MeasurementEvents (below)
     @Lob
     private Vector<MeasurementRecordImpl> manualMeasurements = new Vector<MeasurementRecordImpl>();
     

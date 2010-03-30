@@ -40,6 +40,7 @@ import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
@@ -130,6 +131,12 @@ public class ExecutionRecordImpl implements Serializable {
     // The 'Report Log' for this digital object
     @Lob
     private Vector<String> reportLog = new Vector<String>();
+    
+    // TODO Add a list measurement events at this higher level, pertaining to overall output?
+    /** The measurements about this invocation */
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="targetExecution", fetch=FetchType.EAGER)
+    private Set<MeasurementEventImpl> measurementEvents = new HashSet<MeasurementEventImpl>();    
+    
 
     /** For JAXB */
     @SuppressWarnings("unused")
@@ -441,5 +448,19 @@ public class ExecutionRecordImpl implements Serializable {
         return serviceCalls;
     }
     */
+
+    /**
+     * @return the measurementEvents
+     */
+    public Set<MeasurementEventImpl> getMeasurementEvents() {
+        return measurementEvents;
+    }
+
+    /**
+     * @param measurementEvents the measurementEvents to set
+     */
+    public void setMeasurementEvents(Set<MeasurementEventImpl> measurementEvents) {
+        this.measurementEvents = measurementEvents;
+    }
 
 }

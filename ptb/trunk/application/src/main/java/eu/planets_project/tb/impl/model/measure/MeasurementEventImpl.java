@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 
 /**
@@ -49,6 +50,10 @@ public class MeasurementEventImpl {
     @ManyToOne //(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     protected ExecutionStageRecordImpl targetInvocation;
 
+    /** If these are measurements about a workflow execution, then this is the execution that was measured. */
+    @ManyToOne //(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    protected ExecutionRecordImpl targetExecution;
+
     /*
      * If the target was one or more digital object(s).
      */
@@ -67,6 +72,8 @@ public class MeasurementEventImpl {
         EXP_PROCESS,
         /** Target being measured is an output to an experiment */
         EXP_OUTPUT,
+        /** Target is the overall experiment execution */
+        EXP_OVERALL,
         /** Target is being measured outside of an experimental context. */
         NO_EXP,
     }
@@ -123,11 +130,21 @@ public class MeasurementEventImpl {
     }
     
     /**
+     * @param The execution this pertains to.
+     */
+    public MeasurementEventImpl(ExecutionRecordImpl targetExecution) {
+        this.targetExecution = targetExecution;
+        this.date = Calendar.getInstance();
+        this.experimentStage = EXP_STAGE.EXP_OVERALL;
+    }
+
+    /**
      * @param iri
      */
     public MeasurementEventImpl(ExecutionStageRecordImpl targetInvocation) {
         this.targetInvocation = targetInvocation;
         this.date = Calendar.getInstance();
+        this.experimentStage = EXP_STAGE.EXP_PROCESS;
     }
 
     /**
@@ -166,4 +183,109 @@ public class MeasurementEventImpl {
         return this.stage;
     }
 
+    /**
+     * @return the digitalObjects
+     */
+    public Vector<String> getDigitalObjects() {
+        return digitalObjects;
+    }
+
+    /**
+     * @param digitalObjects the digitalObjects to set
+     */
+    public void setDigitalObjects(Vector<String> digitalObjects) {
+        this.digitalObjects = digitalObjects;
+    }
+
+    /**
+     * @return the experimentStage
+     */
+    public EXP_STAGE getExperimentStage() {
+        return experimentStage;
+    }
+
+    /**
+     * @param experimentStage the experimentStage to set
+     */
+    public void setExperimentStage(EXP_STAGE experimentStage) {
+        this.experimentStage = experimentStage;
+    }
+
+    /**
+     * @return the stage
+     */
+    public String getStage() {
+        return stage;
+    }
+
+    /**
+     * @param stage the stage to set
+     */
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
+
+    /**
+     * @return the agentType
+     */
+    public AGENT_TYPE getAgentType() {
+        return agentType;
+    }
+
+    /**
+     * @param agentType the agentType to set
+     */
+    public void setAgentType(AGENT_TYPE agentType) {
+        this.agentType = agentType;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @return the date
+     */
+    public Calendar getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
+
+    /**
+     * @return the targetExecution
+     */
+    public ExecutionRecordImpl getTargetExecution() {
+        return targetExecution;
+    }
+
+    /**
+     * @param targetInvocation the targetInvocation to set
+     */
+    public void setTargetInvocation(ExecutionStageRecordImpl targetInvocation) {
+        this.targetInvocation = targetInvocation;
+    }
+
+    /**
+     * @param measurements the measurements to set
+     */
+    public void setMeasurements(Set<MeasurementImpl> measurements) {
+        this.measurements = measurements;
+    }
+    
 }
