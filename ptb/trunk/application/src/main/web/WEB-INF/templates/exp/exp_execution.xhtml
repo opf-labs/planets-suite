@@ -7,6 +7,8 @@
 	<body>
 		<ui:composition rendered="#{ExperimentBean != null}">
 
+          <h:panelGroup rendered="#{ExperimentBean.experiment.approved}">
+
 			<fieldset>
 				<legend>Execute Experiment</legend>
 				<h:panelGroup rendered="#{ReadOnly}">	
@@ -119,6 +121,8 @@
 				</rich:simpleTogglePanel>
 
 			</fieldset>
+      
+     </h:panelGroup>
 
 		</ui:composition>
 	</body>
