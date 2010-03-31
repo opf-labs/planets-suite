@@ -70,16 +70,14 @@ public class JcrStoreTemplate extends WorkflowTemplateHelper implements Workflow
         	DigitalObject tmpDO = dodm.retrieve(permanentUri, true);
             wfResultItem.addLogInfo("result DO from JCR content length: " + tmpDO.getContent().length());
             wfResultItem.addLogInfo("result DO from JCR after retrieve: " + tmpDO.toString());
-            
-			this.getWFResult().setEndTime(System.currentTimeMillis());
-			LogReferenceCreatorWrapper.createLogReferences(this);
-			return this.getWFResult();
+            wfResultItem.setEndTime(System.currentTimeMillis());
 
 		} catch (Exception e) {
-			this.getWFResult().setEndTime(System.currentTimeMillis());
-			LogReferenceCreatorWrapper.createLogReferences(this);
-			return this.getWFResult();
+			wfResultItem.addLogInfo("exception: "+e.toString()+" for DO: "+dgo.toString());
+			wfResultItem.setEndTime(System.currentTimeMillis());
+			
 		}
+		return this.getWFResult();
     }
     
     

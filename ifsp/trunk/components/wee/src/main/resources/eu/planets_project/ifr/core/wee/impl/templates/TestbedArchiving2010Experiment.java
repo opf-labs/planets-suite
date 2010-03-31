@@ -297,7 +297,13 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
 			//document
 			wfResultItem.setServiceParameters(configProperties);
 			wfResultItem.setStartTime(System.currentTimeMillis());
-	        wfResultItem.setServiceEndpoint(comparexcdl1.describe().getEndpoint());
+			// document the endpoint if available - retrieve from WorkflowContext
+			String endpoint = this.getWorkflowContext().getContextObject(
+					comparexcdl1, WorkflowContext.Property_ServiceEndpoint,
+					java.lang.String.class);
+			if (endpoint != null) {
+				wfResultItem.setServiceEndpoint(new URL(endpoint));
+			}
 	        
 	        DigitalObject digo1 = this.getDataRegistry().retrieve(digo1Ref);
 	        DigitalObject digo2 = this.getDataRegistry().retrieve(digo2Ref);
