@@ -28,7 +28,7 @@ import eu.planets_project.services.datatypes.Property;
  * A standardised timing and performance data collection class, used to monitor 
  * performance consistently across services.
  * 
- * To use it, first instanciate this class when your preservation action method starts.
+ * To use it, first instantiate this class when your preservation action method starts.
  * The helper starts timing on construction. This is to prevent accidental re-use 
  * of each instance of the object, in order to avoid copies of the object being 
  * used in an non-thread-safe manner.
