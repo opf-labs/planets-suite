@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.wee.impl.templates;
 
 import java.net.URI;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
@@ -97,8 +98,9 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 				this.processingDigo.getPermanentUri(), 
 				migrationService, 
 				digORef, 
-				new URI("planets://testbed.planets-project.eu:80/dr/experiment-files"),
-				//new URI("planets://localhost:8080/dr/experiment-files"),
+				// FIXME This hard-coded reference should not be necessary.
+                //new URI("planets://localhost:8080/dr/experiment-files"),
+				DataRegistryFactory.createDataRegistryIdFromName("/experiment-files/executions/"),
 				endOfRoundtripp);
 		
 		return migrWrapper.runMigration();
