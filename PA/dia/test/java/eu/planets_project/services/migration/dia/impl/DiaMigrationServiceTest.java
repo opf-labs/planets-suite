@@ -280,17 +280,7 @@ public class DiaMigrationServiceTest extends TestCase {
         assertNotNull("The migration service does not provide a name.",
                 diaServiceDescription.getName());
 
-        // Test code for shedding light on the below problem...
-//        for (MigrationPath path : diaServiceDescription.getPaths()){
-//            System.out.println("!%!$%!#$%!#$% Path and parameters: " + path);
-//        }
-        
-        // TODO: Enable when the IF bug is fixed. For some reason any empty
-        // parameter lists in the migration path instances are 'null' if the
-        // test is executed against a server. Local execution of the test
-        // works fine.
-        // 
-        //verifyMigrationPaths(diaServiceDescription.getPaths());
+        verifyMigrationPaths(diaServiceDescription.getPaths());
 
         assertNotNull(
                 "The migration service does not provide a list of properties.",
