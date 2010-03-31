@@ -55,6 +55,8 @@ public class ServiceProperties {
     /** */
     public static final URI SERVICE_COMPILE_TIME_PROP = URI.create("planets:service/exec/compile");
     /** */
+    public static final URI SERVICE_CLASSES_LOADED_PROP = URI.create("planets:service/exec/classesloaded");
+    /** */
     public static final URI SERVICE_PEAK_HEAP_PROP = URI.create("planets:service/mem/heap/peak");
     /** */
     public static final URI SERVICE_PEAK_NONHEAP_PROP = URI.create("planets:service/mem/non-heap/peak");
@@ -164,7 +166,7 @@ public class ServiceProperties {
     }
     
     public static Property createClassesLoadedProperty( long loaded ) {
-        Property.Builder p = new Property.Builder( SERVICE_COMPILE_TIME_PROP );
+        Property.Builder p = new Property.Builder( SERVICE_CLASSES_LOADED_PROP );
         p.name("Classes loaded");
         p.value(""+loaded);
         p.unit(null);
