@@ -1,5 +1,6 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -41,7 +42,7 @@ import eu.planets_project.services.migrate.Migrate;
 class ServiceDescriptionFactory {
 
     private Logger log = Logger.getLogger(ServiceDescriptionFactory.class
-	    .getName());
+            .getName());
 
     /**
      * <code>XPathFactory</code> instance used through out the code of this
@@ -89,12 +90,12 @@ class ServiceDescriptionFactory {
      *            creation of <code>ServiceDescription</code> instances.
      */
     ServiceDescriptionFactory(String canonicalServiceName,
-	    String serviceProvider, Document wrapperConfiguration) {
+            String serviceProvider, Document wrapperConfiguration) {
 
-	xPathFactory = XPathFactory.newInstance();
-	configuration = wrapperConfiguration;
-	this.serviceProvider = serviceProvider;
-	this.canonicalServiceName = canonicalServiceName;
+        xPathFactory = XPathFactory.newInstance();
+        configuration = wrapperConfiguration;
+        this.serviceProvider = serviceProvider;
+        this.canonicalServiceName = canonicalServiceName;
     }
 
     /**
@@ -110,101 +111,115 @@ class ServiceDescriptionFactory {
      */
     ServiceDescription getServiceDescription() throws ConfigurationException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
-	try {
-	    final Node serviceDescriptionNode = (Node) pathsXPath.evaluate(
-		    ConfigurationFileTagsV1.SERVICE_DESCRIPTION_ELEMENT_XPATH,
-		    configuration, XPathConstants.NODE);
+        final XPath pathsXPath = xPathFactory.newXPath();
+        try {
+            final Node serviceDescriptionNode = (Node) pathsXPath.evaluate(
+                    ConfigurationFileTagsV1.SERVICE_DESCRIPTION_ELEMENT_XPATH,
+                    configuration, XPathConstants.NODE);
 
-	    final String title = getMandatoryElementText(
-		    serviceDescriptionNode,
-		    ConfigurationFileTagsV1.TITLE_ELEMENT);
+            final String title = getMandatoryElementText(
+                    serviceDescriptionNode,
+                    ConfigurationFileTagsV1.TITLE_ELEMENT);
 
-	    // Start the creation of a service description for a migration
-	    // service.
-	    ServiceDescription.Builder builder = new ServiceDescription.Builder(
-		    title, Migrate.class.getCanonicalName());
+            // Start the creation of a service description for a migration
+            // service.
+            ServiceDescription.Builder builder = new ServiceDescription.Builder(
+                    title, Migrate.class.getCanonicalName());
 
-	    Property[] serviceProperties = getServiceProperties(serviceDescriptionNode);
+            Property[] serviceProperties = getServiceProperties(serviceDescriptionNode);
 
-	    builder.author(getMandatoryElementText(serviceDescriptionNode,
-		    ConfigurationFileTagsV1.CREATOR_ELEMENT));
+            builder.author(getMandatoryElementText(serviceDescriptionNode,
+                    ConfigurationFileTagsV1.CREATOR_ELEMENT));
 
-	    builder.classname(canonicalServiceName);
+            builder.classname(canonicalServiceName);
 
-	    // FIXME! How do one obtain a sensible value for calling
-	    // builder.endpoint()?
+            builder.description(getOptionalElementText(serviceDescriptionNode,
+                    ConfigurationFileTagsV1.DESCRIPTION_ELEMENT));
 
-	    builder.description(getOptionalElementText(serviceDescriptionNode,
-		    ConfigurationFileTagsV1.DESCRIPTION_ELEMENT));
+            final String serviceVersion = getOptionalElementText(
+                    serviceDescriptionNode,
+                    ConfigurationFileTagsV1.VERSION_ELEMENT);
 
-	    String identifier = getOptionalElementText(serviceDescriptionNode,
-		    ConfigurationFileTagsV1.IDENTIFIER_ELEMENT);
-	    
-	    if (identifier == null || "".equals(identifier)) {
-		try {
+            final Tool toolDescription = getToolDescriptionElement(serviceDescriptionNode);
 
-		    // FIXME! TSH finish this!
-		    final String identifierString = canonicalServiceName;
-		    
-		    final MessageDigest identDigest = MessageDigest.getInstance("MD5");
-		    identDigest.update(identifierString.getBytes());
-		    identifier = Arrays.toString(identDigest.digest());
-		
-		} catch (NoSuchAlgorithmException nsae) {
-		    // There is nothing we can do...
-		    throw new RuntimeException(nsae);
-		}
-	    }
-	    
-	    builder.identifier(identifier);
+            // Get the migration service identifier or create an identifier if
+            // it has not been specified in the configuration document.
+            String identifier = getOptionalElementText(serviceDescriptionNode,
+                    ConfigurationFileTagsV1.IDENTIFIER_ELEMENT);
 
-	    builder.instructions(getOptionalElementText(serviceDescriptionNode,
-		    ConfigurationFileTagsV1.INSTRUCTIONS_ELEMENT));
+            if (identifier == null || "".equals(identifier)) {
+                
+                // Construct an identifier in the form of a MD5 digest of
+                // the tool ID, the canonical class name of the migration
+                // service and its version number.
+                try {
+                    final MessageDigest identDigest = MessageDigest
+                            .getInstance("MD5");
+                    identDigest.update(canonicalServiceName.getBytes());
 
-	    builder.version(getOptionalElementText(serviceDescriptionNode,
-		    ConfigurationFileTagsV1.VERSION_ELEMENT));
+                    final String versionInfo = (serviceVersion != null) ? serviceVersion
+                            : "";
+                    identDigest.update(versionInfo.getBytes());
 
-	    builder.furtherInfo(getOptionalURIElement(serviceDescriptionNode,
-		    ConfigurationFileTagsV1.FURTHER_INFO_ELEMENT));
+                    final URI toolIDURI = toolDescription.getIdentifier();
+                    final String toolIdentifier = toolIDURI == null ? ""
+                            : toolIDURI.toString();
+                    identDigest.update(toolIdentifier.getBytes());
 
-	    builder.logo(getOptionalURIElement(serviceDescriptionNode,
-		    ConfigurationFileTagsV1.LOGO_ELEMENT));
+                    final BigInteger md5hash = new BigInteger(identDigest.digest());
+                    identifier = md5hash.toString(16);
 
-	    builder.serviceProvider(serviceProvider);
+                } catch (NoSuchAlgorithmException nsae) {
+                    // There is nothing we can do...
+                    throw new RuntimeException(nsae);
+                }
+            }
 
-	    builder.tool(getToolDescriptionElement(serviceDescriptionNode));
+            builder.identifier(identifier);
+            builder.version(serviceVersion);
+            builder.tool(toolDescription);
 
-	    final DBMigrationPathFactory migrationPathFactory = new DBMigrationPathFactory(
-		    configuration);
+            builder.instructions(getOptionalElementText(serviceDescriptionNode,
+                    ConfigurationFileTagsV1.INSTRUCTIONS_ELEMENT));
 
-	    final MigrationPaths migrationPaths = migrationPathFactory
-		    .getAllMigrationPaths();
+            builder.furtherInfo(getOptionalURIElement(serviceDescriptionNode,
+                    ConfigurationFileTagsV1.FURTHER_INFO_ELEMENT));
 
-	    builder
-		    .paths(MigrationPathConverter
-			    .toPlanetsPaths(migrationPaths));
+            builder.logo(getOptionalURIElement(serviceDescriptionNode,
+                    ConfigurationFileTagsV1.LOGO_ELEMENT));
 
-	    builder.inputFormats(migrationPaths.getInputFormatURIs().toArray(
-		    new URI[0]));
+            builder.serviceProvider(serviceProvider);
 
-	    builder.parameters(getUniqueParameters(migrationPaths));
+            final DBMigrationPathFactory migrationPathFactory = new DBMigrationPathFactory(
+                    configuration);
 
-	    builder.properties(serviceProperties);
+            final MigrationPaths migrationPaths = migrationPathFactory
+                    .getAllMigrationPaths();
 
-	    return builder.build();
+            builder
+                    .paths(MigrationPathConverter
+                            .toPlanetsPaths(migrationPaths));
 
-	} catch (XPathExpressionException xPathExpressionException) {
-	    throw new ConfigurationException(String.format(
-		    "Failed parsing the '%s' element in the '%s' element.",
-		    ConfigurationFileTagsV1.SERVICE_DESCRIPTION_ELEMENT_XPATH,
-		    configuration.getNodeName()), xPathExpressionException);
-	} catch (NullPointerException nullPointerException) {
-	    throw new ConfigurationException(String.format(
-		    "Failed parsing the '%s' element in the '%s' element.",
-		    ConfigurationFileTagsV1.SERVICE_DESCRIPTION_ELEMENT_XPATH,
-		    configuration.getNodeName()), nullPointerException);
-	}
+            builder.inputFormats(migrationPaths.getInputFormatURIs().toArray(
+                    new URI[0]));
+
+            builder.parameters(getUniqueParameters(migrationPaths));
+
+            builder.properties(serviceProperties);
+
+            return builder.build();
+
+        } catch (XPathExpressionException xPathExpressionException) {
+            throw new ConfigurationException(String.format(
+                    "Failed parsing the '%s' element in the '%s' element.",
+                    ConfigurationFileTagsV1.SERVICE_DESCRIPTION_ELEMENT_XPATH,
+                    configuration.getNodeName()), xPathExpressionException);
+        } catch (NullPointerException nullPointerException) {
+            throw new ConfigurationException(String.format(
+                    "Failed parsing the '%s' element in the '%s' element.",
+                    ConfigurationFileTagsV1.SERVICE_DESCRIPTION_ELEMENT_XPATH,
+                    configuration.getNodeName()), nullPointerException);
+        }
     }
 
     /**
@@ -223,23 +238,23 @@ class ServiceDescriptionFactory {
      *         optional element or <code>null</code> if it does not exist.
      */
     private String getOptionalElementText(Node nodeWithOptionalElement,
-	    String elementName) {
+            String elementName) {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
-	try {
+        final XPath pathsXPath = xPathFactory.newXPath();
+        try {
 
-	    final Node elementNode = (Node) pathsXPath.evaluate(elementName,
-		    nodeWithOptionalElement, XPathConstants.NODE);
+            final Node elementNode = (Node) pathsXPath.evaluate(elementName,
+                    nodeWithOptionalElement, XPathConstants.NODE);
 
-	    return elementNode.getTextContent().trim();
+            return elementNode.getTextContent().trim();
 
-	} catch (NullPointerException npe) {
-	    // The version is optional, thus ignore exceptions.
-	} catch (XPathExpressionException xpee) {
-	    // The version is optional, thus ignore exceptions.
-	}
+        } catch (NullPointerException npe) {
+            // The version is optional, thus ignore exceptions.
+        } catch (XPathExpressionException xpee) {
+            // The version is optional, thus ignore exceptions.
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -263,23 +278,23 @@ class ServiceDescriptionFactory {
      *             contents of the mandatory element.
      */
     private String getMandatoryElementText(Node nodeWithMandatoryElement,
-	    String elementName) throws ConfigurationException {
+            String elementName) throws ConfigurationException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
-	try {
+        final XPath pathsXPath = xPathFactory.newXPath();
+        try {
 
-	    final Node elementNode = (Node) pathsXPath.evaluate(elementName,
-		    nodeWithMandatoryElement, XPathConstants.NODE);
+            final Node elementNode = (Node) pathsXPath.evaluate(elementName,
+                    nodeWithMandatoryElement, XPathConstants.NODE);
 
-	    return elementNode.getTextContent().trim();
+            return elementNode.getTextContent().trim();
 
-	} catch (Exception exception) {
-	    // This is a mandatory element, thus no exceptions are tolerated.
-	    throw new ConfigurationException(String.format(
-		    "Failed parsing the '%s' element in the '%s' element.",
-		    elementName, nodeWithMandatoryElement.getNodeName()),
-		    exception);
-	}
+        } catch (Exception exception) {
+            // This is a mandatory element, thus no exceptions are tolerated.
+            throw new ConfigurationException(String.format(
+                    "Failed parsing the '%s' element in the '%s' element.",
+                    elementName, nodeWithMandatoryElement.getNodeName()),
+                    exception);
+        }
     }
 
     /**
@@ -301,31 +316,31 @@ class ServiceDescriptionFactory {
      *             <code>URI</code> instance.
      */
     private URI getOptionalURIElement(Node nodeWithOptionalURIElement,
-	    String elementName) throws ConfigurationException {
+            String elementName) throws ConfigurationException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+        final XPath pathsXPath = xPathFactory.newXPath();
 
-	try {
-	    final Node uriElementNode = (Node) pathsXPath.evaluate(elementName,
-		    nodeWithOptionalURIElement, XPathConstants.NODE);
+        try {
+            final Node uriElementNode = (Node) pathsXPath.evaluate(elementName,
+                    nodeWithOptionalURIElement, XPathConstants.NODE);
 
-	    final String uriString = uriElementNode.getTextContent().trim();
-	    if (uriString != null) {
-		return new URI(uriString);
-	    }
-	} catch (XPathExpressionException xpee) {
-	    // The URI element is optional, thus ignore exceptions.
-	} catch (NullPointerException npe) {
-	    // The URI element is optional, thus ignore exceptions.
-	} catch (URISyntaxException uriSyntalException) {
-	    throw new ConfigurationException(String.format(
-		    "Failed parsing the '%s' element and creating a URI, in "
-			    + "the '%s' element.", elementName,
-		    nodeWithOptionalURIElement.getNodeName()),
-		    uriSyntalException);
-	}
+            final String uriString = uriElementNode.getTextContent().trim();
+            if (uriString != null) {
+                return new URI(uriString);
+            }
+        } catch (XPathExpressionException xpee) {
+            // The URI element is optional, thus ignore exceptions.
+        } catch (NullPointerException npe) {
+            // The URI element is optional, thus ignore exceptions.
+        } catch (URISyntaxException uriSyntalException) {
+            throw new ConfigurationException(String.format(
+                    "Failed parsing the '%s' element and creating a URI, in "
+                            + "the '%s' element.", elementName,
+                    nodeWithOptionalURIElement.getNodeName()),
+                    uriSyntalException);
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -347,31 +362,31 @@ class ServiceDescriptionFactory {
      *             <code>URL</code> instance.
      */
     private URL getOptionalURLElement(Node nodeWithOptionalURLElement,
-	    String elementName) throws ConfigurationException {
+            String elementName) throws ConfigurationException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+        final XPath pathsXPath = xPathFactory.newXPath();
 
-	try {
-	    final Node urlElementNode = (Node) pathsXPath.evaluate(elementName,
-		    nodeWithOptionalURLElement, XPathConstants.NODE);
+        try {
+            final Node urlElementNode = (Node) pathsXPath.evaluate(elementName,
+                    nodeWithOptionalURLElement, XPathConstants.NODE);
 
-	    final String urlString = urlElementNode.getTextContent().trim();
-	    if (urlString != null) {
-		return new URL(urlString);
-	    }
-	} catch (XPathExpressionException xpee) {
-	    // The URI element is optional, thus ignore exceptions.
-	} catch (NullPointerException npe) {
-	    // The URI element is optional, thus ignore exceptions.
-	} catch (MalformedURLException malformedURLException) {
-	    throw new ConfigurationException(String.format(
-		    "Failed parsing the '%s' element and creating a URL, in "
-			    + "the '%s' element.", elementName,
-		    nodeWithOptionalURLElement.getNodeName()),
-		    malformedURLException);
-	}
+            final String urlString = urlElementNode.getTextContent().trim();
+            if (urlString != null) {
+                return new URL(urlString);
+            }
+        } catch (XPathExpressionException xpee) {
+            // The URI element is optional, thus ignore exceptions.
+        } catch (NullPointerException npe) {
+            // The URI element is optional, thus ignore exceptions.
+        } catch (MalformedURLException malformedURLException) {
+            throw new ConfigurationException(String.format(
+                    "Failed parsing the '%s' element and creating a URL, in "
+                            + "the '%s' element.", elementName,
+                    nodeWithOptionalURLElement.getNodeName()),
+                    malformedURLException);
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -388,54 +403,54 @@ class ServiceDescriptionFactory {
      *             missing.
      */
     private Property[] getServiceProperties(Node serviceDescriptionNode)
-	    throws ConfigurationException {
+            throws ConfigurationException {
 
-	Node propertyNode = null;
-	try {
-	    final XPath pathsXPath = xPathFactory.newXPath();
-	    final NodeList propertyNodes = (NodeList) pathsXPath.evaluate(
-		    ConfigurationFileTagsV1.PROPERTIES_PROPERTY_XPATH,
-		    serviceDescriptionNode, XPathConstants.NODESET);
+        Node propertyNode = null;
+        try {
+            final XPath pathsXPath = xPathFactory.newXPath();
+            final NodeList propertyNodes = (NodeList) pathsXPath.evaluate(
+                    ConfigurationFileTagsV1.PROPERTIES_PROPERTY_XPATH,
+                    serviceDescriptionNode, XPathConstants.NODESET);
 
-	    ArrayList<Property> properties = new ArrayList<Property>();
-	    for (int propertyIdx = 0; propertyIdx < propertyNodes.getLength(); propertyIdx++) {
-		propertyNode = propertyNodes.item(propertyIdx);
+            ArrayList<Property> properties = new ArrayList<Property>();
+            for (int propertyIdx = 0; propertyIdx < propertyNodes.getLength(); propertyIdx++) {
+                propertyNode = propertyNodes.item(propertyIdx);
 
-		final NamedNodeMap propertyAttributes = propertyNode
-			.getAttributes();
+                final NamedNodeMap propertyAttributes = propertyNode
+                        .getAttributes();
 
-		// Get the values for the mandatory attributes and sub-nodes.
-		final URI propertyID = new URI(propertyAttributes.getNamedItem(
-			ConfigurationFileTagsV1.ID_ATTRIBUTE).getNodeValue());
-		Property.Builder propertyBuilder = new Property.Builder(
-			propertyID);
-		propertyBuilder.name(propertyAttributes.getNamedItem(
-			ConfigurationFileTagsV1.NAME_ATTRIBUTE).getNodeValue());
+                // Get the values for the mandatory attributes and sub-nodes.
+                final URI propertyID = new URI(propertyAttributes.getNamedItem(
+                        ConfigurationFileTagsV1.ID_ATTRIBUTE).getNodeValue());
+                Property.Builder propertyBuilder = new Property.Builder(
+                        propertyID);
+                propertyBuilder.name(propertyAttributes.getNamedItem(
+                        ConfigurationFileTagsV1.NAME_ATTRIBUTE).getNodeValue());
 
-		propertyBuilder = addValue(propertyBuilder, propertyNode);
+                propertyBuilder = addValue(propertyBuilder, propertyNode);
 
-		// Add values from optional attributes and sub-nodes.
-		try {
-		    propertyBuilder.type(propertyAttributes.getNamedItem(
-			    ConfigurationFileTagsV1.TYPE_ATTRIBUTE)
-			    .getNodeValue());
-		} catch (NullPointerException nullPointerException) {
-		    // Ignore. This attribute is optional.
-		}
+                // Add values from optional attributes and sub-nodes.
+                try {
+                    propertyBuilder.type(propertyAttributes.getNamedItem(
+                            ConfigurationFileTagsV1.TYPE_ATTRIBUTE)
+                            .getNodeValue());
+                } catch (NullPointerException nullPointerException) {
+                    // Ignore. This attribute is optional.
+                }
 
-		propertyBuilder.description(getOptionalElementText(
-			propertyNode,
-			ConfigurationFileTagsV1.DESCRIPTION_ELEMENT));
+                propertyBuilder.description(getOptionalElementText(
+                        propertyNode,
+                        ConfigurationFileTagsV1.DESCRIPTION_ELEMENT));
 
-		properties.add(propertyBuilder.build());
-	    }
-	    return properties.toArray(new Property[properties.size()]);
-	} catch (Exception exception) {
-	    throw new ConfigurationException(String.format(
-		    "Failed parsing the '%s' element of the configuration"
-			    + " document.", serviceDescriptionNode
-			    .getNodeName()), exception);
-	}
+                properties.add(propertyBuilder.build());
+            }
+            return properties.toArray(new Property[properties.size()]);
+        } catch (Exception exception) {
+            throw new ConfigurationException(String.format(
+                    "Failed parsing the '%s' element of the configuration"
+                            + " document.", serviceDescriptionNode
+                            .getNodeName()), exception);
+        }
     }
 
     /**
@@ -458,20 +473,20 @@ class ServiceDescriptionFactory {
      *             <code>nodeWithValueElement</code>.
      */
     private Builder addValue(Property.Builder propertyBuilder,
-	    Node nodeWithValueElement) throws XPathExpressionException {
+            Node nodeWithValueElement) throws XPathExpressionException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
-	final Node valueNode = (Node) pathsXPath.evaluate(
-		ConfigurationFileTagsV1.VALUE_ELEMENT, nodeWithValueElement,
-		XPathConstants.NODE);
+        final XPath pathsXPath = xPathFactory.newXPath();
+        final Node valueNode = (Node) pathsXPath.evaluate(
+                ConfigurationFileTagsV1.VALUE_ELEMENT, nodeWithValueElement,
+                XPathConstants.NODE);
 
-	propertyBuilder.value(valueNode.getTextContent().trim());
+        propertyBuilder.value(valueNode.getTextContent().trim());
 
-	NamedNodeMap valueAttributes = valueNode.getAttributes();
-	propertyBuilder.unit(valueAttributes.getNamedItem(
-		ConfigurationFileTagsV1.UNIT_ATTRIBUTE).getNodeValue());
+        NamedNodeMap valueAttributes = valueNode.getAttributes();
+        propertyBuilder.unit(valueAttributes.getNamedItem(
+                ConfigurationFileTagsV1.UNIT_ATTRIBUTE).getNodeValue());
 
-	return propertyBuilder;
+        return propertyBuilder;
     }
 
     /**
@@ -498,27 +513,27 @@ class ServiceDescriptionFactory {
      */
     private List<Parameter> getUniqueParameters(MigrationPaths migrationPaths) {
 
-	final HashMap<String, Parameter> parameterMap = new HashMap<String, Parameter>();
+        final HashMap<String, Parameter> parameterMap = new HashMap<String, Parameter>();
 
-	for (MigrationPath migrationPath : migrationPaths
-		.getAllMigrationPaths()) {
+        for (MigrationPath migrationPath : migrationPaths
+                .getAllMigrationPaths()) {
 
-	    for (Parameter parameter : migrationPath.getToolParameters()) {
+            for (Parameter parameter : migrationPath.getToolParameters()) {
 
-		// Collect the parameter and ignore multiple occurrences.
-		// Parameters having a value will have the value stripped.
-		final String parameterName = parameter.getName();
-		if (!parameterMap.containsKey(parameterName)) {
+                // Collect the parameter and ignore multiple occurrences.
+                // Parameters having a value will have the value stripped.
+                final String parameterName = parameter.getName();
+                if (!parameterMap.containsKey(parameterName)) {
 
-		    Parameter.Builder parameterBuilder = new Parameter.Builder(
-			    parameterName, null);
-		    parameterMap.put(parameterName, parameterBuilder.build());
-		}
-	    }
+                    Parameter.Builder parameterBuilder = new Parameter.Builder(
+                            parameterName, null);
+                    parameterMap.put(parameterName, parameterBuilder.build());
+                }
+            }
 
-	}
+        }
 
-	return new ArrayList<Parameter>(parameterMap.values());
+        return new ArrayList<Parameter>(parameterMap.values());
     }
 
     /**
@@ -535,42 +550,42 @@ class ServiceDescriptionFactory {
      *             description element.
      */
     private Tool getToolDescriptionElement(Node nodeWithToolDescription)
-	    throws ConfigurationException {
+            throws ConfigurationException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
-	Node toolDescriptionNode;
-	try {
-	    toolDescriptionNode = (Node) pathsXPath.evaluate(
-		    ConfigurationFileTagsV1.TOOL_ELEMENT,
-		    nodeWithToolDescription, XPathConstants.NODE);
+        final XPath pathsXPath = xPathFactory.newXPath();
+        Node toolDescriptionNode;
+        try {
+            toolDescriptionNode = (Node) pathsXPath.evaluate(
+                    ConfigurationFileTagsV1.TOOL_ELEMENT,
+                    nodeWithToolDescription, XPathConstants.NODE);
 
-	    final String description = getOptionalElementText(
-		    toolDescriptionNode,
-		    ConfigurationFileTagsV1.DESCRIPTION_ELEMENT);
+            final String description = getOptionalElementText(
+                    toolDescriptionNode,
+                    ConfigurationFileTagsV1.DESCRIPTION_ELEMENT);
 
-	    final String version = getOptionalElementText(toolDescriptionNode,
-		    ConfigurationFileTagsV1.VERSION_ELEMENT);
+            final String version = getOptionalElementText(toolDescriptionNode,
+                    ConfigurationFileTagsV1.VERSION_ELEMENT);
 
-	    final URI identifierURI = getOptionalURIElement(
-		    toolDescriptionNode,
-		    ConfigurationFileTagsV1.IDENTIFIER_ELEMENT);
+            final URI identifierURI = getOptionalURIElement(
+                    toolDescriptionNode,
+                    ConfigurationFileTagsV1.IDENTIFIER_ELEMENT);
 
-	    final String name = getOptionalElementText(toolDescriptionNode,
-		    ConfigurationFileTagsV1.NAME_ELEMENT);
+            final String name = getOptionalElementText(toolDescriptionNode,
+                    ConfigurationFileTagsV1.NAME_ELEMENT);
 
-	    final URL homePageURL = getOptionalURLElement(toolDescriptionNode,
-		    ConfigurationFileTagsV1.HOME_PAGE_ELEMENT);
+            final URL homePageURL = getOptionalURLElement(toolDescriptionNode,
+                    ConfigurationFileTagsV1.HOME_PAGE_ELEMENT);
 
-	    final Tool toolDescription = new Tool(identifierURI, name, version,
-		    description, homePageURL);
+            final Tool toolDescription = new Tool(identifierURI, name, version,
+                    description, homePageURL);
 
-	    return toolDescription;
-	} catch (XPathExpressionException xPathExpressionException) {
-	    throw new ConfigurationException(String.format(
-		    "Failed parsing the '%s' element in the element: %s",
-		    ConfigurationFileTagsV1.TOOL_ELEMENT,
-		    nodeWithToolDescription.getNodeName()),
-		    xPathExpressionException);
-	}
+            return toolDescription;
+        } catch (XPathExpressionException xPathExpressionException) {
+            throw new ConfigurationException(String.format(
+                    "Failed parsing the '%s' element in the element: %s",
+                    ConfigurationFileTagsV1.TOOL_ELEMENT,
+                    nodeWithToolDescription.getNodeName()),
+                    xPathExpressionException);
+        }
     }
 }
