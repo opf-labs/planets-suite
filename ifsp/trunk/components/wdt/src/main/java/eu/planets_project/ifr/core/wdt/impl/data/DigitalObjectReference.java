@@ -12,6 +12,8 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 
+import eu.planets_project.ifr.core.storage.impl.oai.*;
+
 
 /**
  * 
@@ -91,6 +93,21 @@ public class DigitalObjectReference {
 				}
 				return puri;
 			} else {
+				log.log(Level.INFO, "getScreenUri() DC puri: " + puri);
+				// Special handling for the digital objects from OAI DC repository
+				if ((puri != null)
+						&& puri.toString().indexOf(
+								OAIDigitalObjectManagerDCBase.REGISTRY_NAME) > -1) {
+					// Special treatment for OAI files!
+					return OAIDigitalObjectManagerDCBase.getOriginalUri(puri);
+				}
+				// Special handling for the digital objects from OAI KB repository
+				if ((puri != null)
+						&& puri.toString().indexOf(
+								OAIDigitalObjectManagerKBBase.REGISTRY_NAME) > -1) {
+					// Special treatment for OAI files!
+					return OAIDigitalObjectManagerKBBase.getOriginalUri(puri);
+				}
 				return puri;
 			}
 		}

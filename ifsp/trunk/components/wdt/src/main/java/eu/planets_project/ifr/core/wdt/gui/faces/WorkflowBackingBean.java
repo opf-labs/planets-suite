@@ -718,25 +718,21 @@ public class WorkflowBackingBean {
 							o = retrieveDigitalObjectFromRegistry(dobURI, DOJCRConstants.REGISTRY_NAME);
 						} else {
 							// Special handling for the digital objects from OAI repository
-							if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI)) {
-								o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerDCBase.REGISTRY_NAME);
+							if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.REGISTRY_NAME)
+									|| dobURI.toString().contains(OAIDigitalObjectManagerKBBase.REGISTRY_NAME)) {
+								logger.info("addToWorkflow() OAI dobURI: " + dobURI);
+							    o = dr.getDataManager(dobURI).retrieve(dobURI);
 //								o = recreateByValue(o);
 							} else {
-								if (dobURI.toString().contains(OAIDigitalObjectManagerKBBase.OAI_KB_CHILD_URI)) {
-									logger.info("addToWorkflow() dobURI: " + dobURI);
-									o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerKBBase.REGISTRY_NAME);
-//									o = recreateByValue(o, dobURI);
-								} else {
-								    o = dr.getDataManager(dobURI).retrieve(dobURI);
-								
-									// Recreate digital object by value to enable workflow execution. 
-									// At the moment digital object uses a DataHandler. It is not serializable
-									// and it is not possible to execute workflows. 
-									InputStream streamContent = o.getContent().getInputStream();
-									byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
-									DigitalObjectContent content = Content.byValue(byteContent);
-									o = (new DigitalObject.Builder(o)).content(content).title(dor.getLeafname()).build();
-								}
+							    o = dr.getDataManager(dobURI).retrieve(dobURI);
+							
+								// Recreate digital object by value to enable workflow execution. 
+								// At the moment digital object uses a DataHandler. It is not serializable
+								// and it is not possible to execute workflows. 
+								InputStream streamContent = o.getContent().getInputStream();
+								byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
+								DigitalObjectContent content = Content.byValue(byteContent);
+								o = (new DigitalObject.Builder(o)).content(content).title(dor.getLeafname()).build();
 							}
 						}
 
@@ -928,12 +924,16 @@ public class WorkflowBackingBean {
 					   o = retrieveDigitalObjectFromRegistry(dobURI, DOJCRConstants.REGISTRY_NAME);
 					} 
 					// OAI repository
-					if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.OAI_DC_CHILD_URI)) {
-						o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerDCBase.REGISTRY_NAME);
+					if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.REGISTRY_NAME)
+							|| dobURI.toString().contains(OAIDigitalObjectManagerKBBase.REGISTRY_NAME)) {
+						logger.info("showDetails() OAI dobURI: " + dobURI);
+						try {
+							o = dr.getDataManager(dobURI).retrieve(dobURI);
+						} catch (Exception e) {
+							logger.info("showDetails() after OAI retrieve error: " + e.getMessage());							
+						}
 					} 
-					if (dobURI.toString().contains(OAIDigitalObjectManagerKBBase.OAI_KB_CHILD_URI)) {
-						o = retrieveDigitalObjectFromRegistry(dobURI, OAIDigitalObjectManagerKBBase.REGISTRY_NAME);
-					} 
+
 					if (o != null) {
 						fillDetails(o);
 					} else {
