@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:c="http://java.sun.com/jsp/jstl/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:t="http://myfaces.apache.org/tomahawk"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"> 
+  
+<body>
+ <ui:composition rendered="#{f != null}">
+
+  <a4j:commandLink>
+    <h:outputText value="#{f.summary}" />
+    <rich:toolTip>
+      <h:outputText value="#{f.summary}" />
+      <h:panelGroup rendered="#{f.format.extensions != null}">
+        <br />
+        <i><h:outputText value="Extensions: #{f.format.extensions}" /></i>
+      </h:panelGroup>
+      
+      <h:panelGroup rendered="#{f.format.mimeTypes != null}">
+        <br />
+        <i><h:outputText value="MIME Types: #{f.format.mimeTypes}" /></i>
+      </h:panelGroup>
+      
+      <h:panelGroup rendered="#{f.uri != null}">
+        <br />
+        <i><h:outputText value="(URI: #{f.uri})" /></i>
+      </h:panelGroup>
+      
+    </rich:toolTip>
+  </a4j:commandLink>
+
+    <h:panelGroup rendered="#{f.format.registryUrl != null}">
+      <h:outputText value=" "/>
+      <h:outputLink value="#{f.format.registryUrl}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
+    </h:panelGroup>
+  
+ </ui:composition> 
+</body> 
+</html>

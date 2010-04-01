@@ -1099,5 +1099,11 @@ pre.rawServiceDescription {
 .evenRow { 
  background-color: #f8f8f8;
 }
+.equalValue {
+ color: green;
+}
+.differentValue {
+ color: #550000;
+}
 
 

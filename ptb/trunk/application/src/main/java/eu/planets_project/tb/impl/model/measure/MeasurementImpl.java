@@ -5,6 +5,7 @@ package eu.planets_project.tb.impl.model.measure;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Vector;
 
 import javax.persistence.Basic;
@@ -24,6 +25,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.tb.gui.backing.ServiceBrowser;
+import eu.planets_project.tb.gui.backing.service.FormatBean;
+import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
@@ -349,4 +353,26 @@ public class MeasurementImpl implements Serializable {
         return pb.build();
     }
 
+    /**
+     * @return true if this is a 'format' property.
+     */
+    public boolean isFormatProperty() {
+        if( TecRegMockup.PROP_DO_FORMAT.equals( this.getIdentifierUri()) ) return true;
+        return false;
+    }
+
+    /**
+     * @return the Format as a FormatBean, if this is a 'format' property.
+     */
+    public FormatBean getFormat() {
+        if( ! this.isFormatProperty() ) return null;
+        URI fmt;
+        try {
+            fmt = new URI( this.getValue() );
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return new FormatBean( ServiceBrowser.fr.getFormatForUri( fmt ) );
+    }
 }

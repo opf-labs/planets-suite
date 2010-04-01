@@ -548,9 +548,13 @@ public class ServiceBrowser {
      */
     private static SelectItem createServiceSelectItem( ServiceDescription sd ) {
         if( sd.getEndpoint() == null ) return null;
+        String prefix = "";
+        if( sd.getType() != null ) {
+            prefix += sd.getType().substring(sd.getType().lastIndexOf(".")+1)+" using ";
+        }
         String serviceName = sd.getName();
         serviceName += " (@"+sd.getEndpoint().getHost()+")";
-        return new SelectItem( sd.getEndpoint(), serviceName );
+        return new SelectItem( sd.getEndpoint(), prefix+serviceName );
     }
     
     /**

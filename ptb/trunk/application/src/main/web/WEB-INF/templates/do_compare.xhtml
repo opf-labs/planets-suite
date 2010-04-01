@@ -133,15 +133,21 @@
         </rich:column>
         
         <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
-            <h:outputText value="#{m.firstValue}"/>
+            <h:outputText value="#{m.firstValue}" rendered="#{!m.formatProperty}"/>
+            <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
+              <ui:param name="f" value="#{m.firstFormat}"/>
+            </ui:include>
         </rich:column>
         
         <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
-            <h:outputText value="#{m.secondValue}"/>
+            <h:outputText value="#{m.secondValue}" rendered="#{!m.formatProperty}"/>
+            <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
+              <ui:param name="f" value="#{m.secondFormat}"/>
+            </ui:include>
         </rich:column>
         
         <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
-            <h:outputText value="#{m.comparison} "/>
+            <h:outputText value="#{m.comparison}" styleClass="#{m.equal ? 'equalValue' : 'differentValue'}"/>
         </rich:column>
         
         </rich:subTable>

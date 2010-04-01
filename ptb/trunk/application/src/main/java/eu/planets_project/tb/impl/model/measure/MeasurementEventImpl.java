@@ -52,7 +52,7 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 @Entity
 @XmlRootElement(name = "MeasurementEvent")
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class MeasurementEventImpl implements Serializable, Comparable {
+public class MeasurementEventImpl implements Serializable, Comparable<MeasurementEventImpl> {
     /** */
     private static Log log = LogFactory.getLog(MeasurementEventImpl.class);
     
@@ -296,12 +296,9 @@ public class MeasurementEventImpl implements Serializable, Comparable {
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Object o) {
-        if( o instanceof MeasurementEventImpl ) {
-            MeasurementEventImpl other = (MeasurementEventImpl) o;
-            if( this.date != null && other != null )
-                return this.date.compareTo(other.date);
-        }
+    public int compareTo(MeasurementEventImpl o) {
+        if( this.date != null && o != null )
+            return this.date.compareTo(o.date);
         return 0;
     }
     
