@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.storage.impl.oai;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
@@ -13,6 +14,7 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 
 
 /**
@@ -32,8 +34,6 @@ public class OAIDigitalObjectManagerKBBase extends DigitalObjectManagerBase {
 	
 	public static final String DEFAULT_BASE_URL = 
 		"http://jsru.kb.nl/sru?operation=searchRetrieve&version=1.1&x-collection=eDepot&recordSchema=dcx&query=nbn-number%20all";
-	
-	public static final String OAI_KB_CHILD_URI = "http://toegang.kb.nl"; 
 	
 	public static final String PREFIX = "oai_kb";
 	
@@ -70,22 +70,110 @@ public class OAIDigitalObjectManagerKBBase extends DigitalObjectManagerBase {
 		public List<URI> list(URI pdURI) {
 			// The return array of URIs contains the contents for the passed URI
 			List<URI> retVal = null;
-			
-			log.info("OAIDigitalObjectManagerKBBase pdURI: " + pdURI);	
+			log.info("OAIDigitalObjectManagerKBBase list() URI " + pdURI);
 
 			try {
-				if (pdURI.toString().contains(REGISTRY_NAME)) {
-		        	URI _pdURI = null;
-					log.info("OAIDigitalObjectManagerKBBase _pdURI: " + _pdURI);	
-	            	retVal = dom.list(_pdURI);
+				// First lets look at the passed URI, if it's null then we need to return the root 
+				log.info("OAIDigitalObjectManagerKBBase list() Testing for null URI");
+				if (pdURI == null)
+				{
+					log.info("OAIDigitalObjectManagerKBBase list() URI is empty so return root URI only");
+					retVal = new ArrayList<URI>();
+					retVal.add( this.id ); 
+					return retVal; 
 				}
-            } catch (Exception e) {
-                log.info("OAIDigitalObjectManagerKBBase dom.list error: " + e.getMessage());
-            }
+				log.info("OAIDigitalObjectManagerKBBase list() URI is NOT NULL");
+				try {
+			        log.info("Replace HTTP path by registry path: " + pdURI);   
+					URI baseUri = new PDURI(pdURI.normalize()).formDataRegistryRootURI();
+					log.info("OAIDigitalObjectManagerKBBase list() base URI " + baseUri);				
+
+					if (pdURI.equals(baseUri)) {
+						retVal = this.listFileLocation(pdURI);
+					}
+
+					if (retVal != null) {
+						log.info("Listing URIs");
+						for (URI uri : retVal) {
+							log.info("URI in list: " + uri);
+						}
+					} else {
+						log.info("RetVal is NULL");
+					}
+					
+				} catch (URISyntaxException e) {
+					log.severe("URI Syntax exception");
+					log.severe(e.getMessage());
+					log.severe(e.getStackTrace().toString());
+					e.printStackTrace();
+					return null;
+				}
+			} catch (Exception e) {
+				log.info("OAIDigitalObjectManagerKBBase dom.list error: "
+						+ e.getMessage());
+			}
 
 			return retVal;
 		}
+
 		
+		/**
+		 * This code take the actual file location and turns it into a listing.
+		 * 
+		 * @param pdURI
+		 * @param fullPath
+		 * @return
+		 * @throws URISyntaxException
+		 */
+		protected List<URI> listFileLocation(URI pdURI) throws URISyntaxException {
+	        List<URI> retVal = new ArrayList<URI>();
+	        List<URI> tmpRetVal = new ArrayList<URI>();
+	        tmpRetVal = dom.list(pdURI);
+	        log.info("OAIDigitalObjectManagerKBBase listFileLocation() pdURI " + pdURI);
+	        log.info("OAIDigitalObjectManagerKBBase listFileLocation() Contents URI array has " + tmpRetVal.size() + " elements");
+	        for (URI uri : tmpRetVal) {
+	        	String leafname = "";
+	            if(uri != null) {
+	                leafname = uri.getPath();
+	                log.info("OAIDigitalObjectManagerKBBase listFileLocation() uri.getPath(): " + leafname);
+	                if(leafname != null) {
+	                    String[] parts = leafname.split("/");
+	                    if( parts != null && parts.length > 0 )
+	                        leafname = parts[parts.length-1];
+	                }
+	            }
+	            log.info("OAIDigitalObjectManagerKBBase listFileLocation() leafname: " + leafname +
+	            		", pdURI.toString(): " + pdURI.toString() + ", uri.toString(): " + uri.toString());
+
+	           	URI resUri = URI.create(pdURI.toString() +"/"+ leafname).normalize();            
+	        	log.info("OAIDigitalObjectManagerKBBase listFileLocation() Adding URI " + resUri + " to list");
+	            retVal.add( resUri );
+	            }
+	        return retVal;
+		}
+
+
+		/**
+		 * This method evaluates original HTTP URI from registry URI
+		 * @param uri The registry URI
+		 * @return The original HTTP URI
+		 */
+		public static URI getOriginalUri(URI uri) {
+			URI res = uri;
+			try {
+				URI baseUri = new PDURI(uri.normalize()).formDataRegistryRootURI();
+				log.info("OAIDigitalObjectManagerKBBase getOriginalUri() base URI " + baseUri);				
+				URI keyUri = URI.create(uri.toString().replaceAll(baseUri.toString(), "").substring(1));
+				log.info("OAIDigitalObjectManagerKBBase getOriginalUri() keyURI: " + keyUri);
+				res = dom.getOriginalUri(keyUri);
+			} catch (Exception e) {
+				log.info("OAIDigitalObjectManagerKBBase getOriginalUri() error: " + e.getMessage());				
+			}
+
+			return res;		
+		}
+		
+				
 		/**
 		 * {@inheritDoc}
 		 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase#retrieve(java.net.URI)
@@ -95,7 +183,13 @@ public class OAIDigitalObjectManagerKBBase extends DigitalObjectManagerBase {
 				throws DigitalObjectNotFoundException {
 			DigitalObject retObj = null;
 			
-			retObj = dom.retrieve(pdURI);
+			try {
+				URI httpURI = getOriginalUri(pdURI);
+				log.info("OAIDigitalObjectManagerKBBase retrieve() httpURI: " + httpURI);	
+				retObj = dom.retrieve(httpURI);
+			} catch (Exception e) {
+				log.info("OAIDigitalObjectManagerKBBase retrieve() error: " + e.getMessage());				
+			}
 			
 			return retObj;
 		}

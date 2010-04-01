@@ -1,7 +1,6 @@
 package eu.planets_project.ifr.core.storage.impl.oai;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -71,11 +70,6 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 		    };
 			
 	/**
-	 * This map binds URI with corresponding metadata list.
-	 */
-	private static Map<URI, List<Metadata>> metadataMap = new HashMap<URI, List<Metadata>>();
-	
-	/**
 	 * The cache map binds URI with the digital object.
 	 */
 	private static Map<URI, DigitalObject> leafMap = new HashMap<URI, DigitalObject>();
@@ -103,6 +97,33 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 	
 
 	/**
+	 * This method evaluates original HTTP URI from registry URI
+	 * @param uri The registry URI
+	 * @return The original HTTP URI
+	 */
+	public URI getOriginalUri(URI keyUri) {
+		URI res = keyUri;
+		try {
+			if (keyUri != null) {
+		    	log.info("OAIDigitalObjectManagerKBImpl retrieve() find out the original key for uri: " + keyUri);
+		    	for(URI uri : leafMap.keySet()) {
+		    		if (uri.toString().contains(keyUri.toString())) {
+		    			res = uri;
+				    	log.info("OAIDigitalObjectManagerKBImpl retrieve() found: " + res);
+				    	break;
+		    		}
+		    	}
+			}
+
+		} catch (Exception e) {
+			log.info("OAIDigitalObjectManagerKBImpl getOriginalUri() error: " + e.getMessage());				
+		}
+
+		return res;		
+	}
+	
+	
+	/**
 	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
 	 */
@@ -112,51 +133,20 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 		try {
 			log.log(Level.INFO, "OAIDigitalObjectManagerKBImpl retrieve() uri: " + pdURI);
 			
-			if (pdURI != null) {
-				// return digital object if it exists in the map
-				if (leafMap.containsKey(pdURI)) {		
-			    	log.info("OAIDigitalObjectManagerKBImpl retrieve() already exist in map uri: " + pdURI);
-			    	long endtime = System.currentTimeMillis();
-			    	log.info("OAIDigitalObjectManagerKBImpl retrieve() timediff: " + (endtime - starttime));
-					return leafMap.get(pdURI);
-				}
-			}
-
-			List<Metadata> metadataList = metadataMap.get(pdURI);
-			if (metadataList != null) {
-				// DigitalObject title
-				String title = null;
-				
-				Iterator<Metadata> i = metadataList.iterator();
-				while (i.hasNext()) {	
-					Metadata metadata = i.next();
-					// Title
-					if (metadata.getName().equalsIgnoreCase(OaiMetadata.title.name())) {
-						title = metadata.getContent();
-					}
-				}
-				
-				if (pdURI != null && pdURI.toString().length() > 0) {
-					Builder builder = new DigitalObject.Builder(Content.byReference(pdURI.toURL()));
-					builder.title(title);
-					builder.metadata(metadataList.toArray(new Metadata[]{}));
-					
-			    	long endtime = System.currentTimeMillis();
-			    	log.info("OAIDigitalObjectManagerKBImpl retrieve() timediff: " + (endtime - starttime));
-					DigitalObject o = builder.build();
-					if (pdURI != null && !leafMap.containsKey(pdURI)) {
-				    	log.info("OAIDigitalObjectManagerKBImpl retrieve() add to map uri: " + pdURI);
-						leafMap.put(pdURI, o);
-					}
-
-					return o;
-				}
+			URI originalURI = getOriginalUri(pdURI);
+			
+			// return digital object if it exists in the map
+			if (originalURI != null && leafMap.containsKey(originalURI)) {
+		    	log.info("OAIDigitalObjectManagerKBImpl retrieve() already exist in map uri: " + originalURI);
+		    	long endtime = System.currentTimeMillis();
+		    	log.info("OAIDigitalObjectManagerKBImpl retrieve() timediff: " + (endtime - starttime));
+				return leafMap.get(originalURI);
 			}
 			
 	    	long endtime = System.currentTimeMillis();
 	    	log.info("OAIDigitalObjectManagerKBImpl retrieve() error1: NoHTTP URL available." + " timediff: " + (endtime - starttime));
 			throw new DigitalObjectNotFoundException("No HTTP URL available for this record");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new DigitalObjectNotFoundException(e.getMessage());
 		}
 	}
@@ -194,11 +184,13 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
      * @see eu.planets_project.ifr.core.storage.impl.oai.AbstractOAIDigitalObjectManagerImpl#list(java.net.URI)
      */
     public List<URI> list(URI pdURI) {
-    	if (pdURI == null) {
+    	if (pdURI != null) {
     		if (uriList != null && uriList.size() > 0) {
     			return uriList;
     		} else {
-	    		// OAI hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
+    	    	long starttime = System.currentTimeMillis();
+    	    	log.info("OAIDigitalObjectManagerKBImpl list() starttime: " + starttime);
+	    		// OAI hierarchy is flat (no sub-directories)
 		    	ArrayList<URI> resultList = new ArrayList<URI>();
 		    	for (int i = 0 ; i < Articles.length ; i++) {
 		    		String resolver = transferData(OAIDigitalObjectManagerKBBase.DEFAULT_BASE_URL + BRACES + Articles[i] + BRACES);
@@ -206,21 +198,43 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 		    		String resolverLink = resolver.substring(resolver.indexOf(RESOLVER_START) + RESOLVER_START.length(), 
 		    										resolver.indexOf(RESOLVER_END));
 		    	    log.log(Level.INFO, "test() resolverLink[" + i +  "]: " + resolverLink);
-		    	    if (resolverLink != null) {
-						// Get an intermediate HTML page and the publication link
-						String publicationLink = retrieveIntermediateHtmlPage(resolverLink);
-		    	    	resultList.add(URI.create(publicationLink));
-	
-		    	    	// Retrieve metadata
-		    	    	List<Metadata> metadataList = new ArrayList<Metadata>(0);
-		    	    	for (OaiMetadata emd : OaiMetadata.values()) {
-		    	    		String md = retrieveOaiMetadata(emd, resolver);
-		    	    		if (md != null && md.length() > 0) {
-				    	       Metadata metadata = new Metadata(URI.create(publicationLink), emd.name(), md);
-			    	    	   metadataList.add(metadata);
-		    	    		}
-		    	    	}
-		    	    	metadataMap.put(URI.create(publicationLink), metadataList);
+		    	    try {
+			    	    if (resolverLink != null) {
+							// Get an intermediate HTML page and the publication link
+							String publicationLink = retrieveIntermediateHtmlPage(resolverLink);
+			    	    	resultList.add(URI.create(publicationLink));
+		
+			    	    	// Retrieve metadata
+			    	    	String title = "";
+			    	    	List<Metadata> metadataList = new ArrayList<Metadata>(0);
+			    	    	for (OaiMetadata emd : OaiMetadata.values()) {
+			    	    		String md = retrieveOaiMetadata(emd, resolver);
+			    	    		if (md != null && md.length() > 0) {
+					    	       Metadata metadata = new Metadata(URI.create(publicationLink), emd.name(), md);
+				    	    	   metadataList.add(metadata);
+									// Title
+									if (metadata.getName().equalsIgnoreCase(OaiMetadata.title.name())) {
+										title = metadata.getContent();
+									}
+			    	    		}
+			    	    	}
+			    	    							
+							if (publicationLink != null && publicationLink.toString().length() > 0) {
+								Builder builder = new DigitalObject.Builder(Content.byReference(URI.create(publicationLink).toURL()));
+								builder.title(title);
+								builder.metadata(metadataList.toArray(new Metadata[]{}));
+								
+						    	long endtime = System.currentTimeMillis();
+						    	log.info("OAIDigitalObjectManagerKBImpl list() timediff: " + (endtime - starttime));
+								DigitalObject o = builder.build();
+								if (publicationLink != null && !leafMap.containsKey(publicationLink)) {
+							    	log.info("OAIDigitalObjectManagerKBImpl list() add to map uri: " + publicationLink);
+									leafMap.put(URI.create(publicationLink), o);
+								}
+							}
+			    	    }
+		    	    } catch (Exception e) {
+				    	log.info("OAIDigitalObjectManagerKBImpl list() error: " + e.getMessage());		    	    	
 		    	    }
 		    	}
 		    	uriList = resultList;

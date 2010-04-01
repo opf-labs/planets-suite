@@ -13,6 +13,7 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 
@@ -32,8 +33,6 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 	private static OAIDigitalObjectManagerDCImpl dom = null;
 	
 	protected static String DEFAULT_BASE_URL = "http://eprints.whiterose.ac.uk/cgi/oai2";
-	
-	public static String OAI_DC_CHILD_URI = "eprints.whiterose.ac.uk"; 
 	
 	public static String PREFIX = "oai_dc";
 	
@@ -70,13 +69,44 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 	@Override
 	public List<URI> list(URI pdURI) {
 		// The return array of URIs contains the contents for the passed URI
-		List<URI> retVal = new ArrayList<URI>(0);
+		List<URI> retVal = null;
 		log.info("OAIDigitalObjectManagerDCBase list() URI " + pdURI);
 
 		try {
-			if (pdURI.toString().contains(REGISTRY_NAME)) {
-				URI _pdURI = null;
-				retVal = dom.list(_pdURI);
+			// First lets look at the passed URI, if it's null then we need to return the root 
+			log.info("OAIDigitalObjectManagerDCBase list() Testing for null URI");
+			if (pdURI == null)
+			{
+				log.info("OAIDigitalObjectManagerDCBase list() URI is empty so return root URI only");
+				retVal = new ArrayList<URI>();
+				retVal.add( this.id ); 
+				return retVal; 
+			}
+			log.info("OAIDigitalObjectManagerDCBase list() URI is NOT NULL");
+			try {
+		        log.info("Replace HTTP path by registry path: " + pdURI);   
+				URI baseUri = new PDURI(pdURI.normalize()).formDataRegistryRootURI();
+				log.info("OAIDigitalObjectManagerDCBase list() base URI " + baseUri);				
+
+				if (pdURI.equals(baseUri)) {
+					retVal = this.listFileLocation(pdURI);
+				}
+
+				if (retVal != null) {
+					log.info("Listing URIs");
+					for (URI uri : retVal) {
+						log.info("URI in list: " + uri);
+					}
+				} else {
+					log.info("RetVal is NULL");
+				}
+				
+			} catch (URISyntaxException e) {
+				log.severe("URI Syntax exception");
+				log.severe(e.getMessage());
+				log.severe(e.getStackTrace().toString());
+				e.printStackTrace();
+				return null;
 			}
 		} catch (Exception e) {
 			log.info("OAIDigitalObjectManagerDCBase dom.list error: "
@@ -86,6 +116,64 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 		return retVal;
 	}
 		
+	
+	/**
+	 * This code take the actual file location and turns it into a listing.
+	 * 
+	 * @param pdURI
+	 * @param fullPath
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	protected List<URI> listFileLocation(URI pdURI) throws URISyntaxException {
+        List<URI> retVal = new ArrayList<URI>();
+        List<URI> tmpRetVal = new ArrayList<URI>();
+        tmpRetVal = dom.list(pdURI);
+        log.info("OAIDigitalObjectManagerDCBase listFileLocation() pdURI " + pdURI);
+        log.info("OAIDigitalObjectManagerDCBase listFileLocation() Contents URI array has " + tmpRetVal.size() + " elements");
+        for (URI uri : tmpRetVal) {
+        	String leafname = "";
+            if(uri != null) {
+                leafname = uri.getPath();
+                log.info("OAIDigitalObjectManagerDCBase listFileLocation() uri.getPath(): " + leafname);
+                if(leafname != null) {
+                    String[] parts = leafname.split("/");
+                    if( parts != null && parts.length > 0 )
+                        leafname = parts[parts.length-1];
+                }
+            }
+            log.info("OAIDigitalObjectManagerDCBase listFileLocation() leafname: " + leafname +
+            		", pdURI.toString(): " + pdURI.toString() + ", uri.toString(): " + uri.toString());
+
+           	URI resUri = URI.create(pdURI.toString() +"/"+ leafname).normalize();            
+        	log.info("OAIDigitalObjectManagerDCBase listFileLocation() Adding URI " + resUri + " to list");
+            retVal.add( resUri );
+            }
+        return retVal;
+	}
+
+
+	/**
+	 * This method evaluates original HTTP URI from registry URI
+	 * @param uri The registry URI
+	 * @return The original HTTP URI
+	 */
+	public static URI getOriginalUri(URI uri) {
+		URI res = uri;
+		try {
+			URI baseUri = new PDURI(uri.normalize()).formDataRegistryRootURI();
+			log.info("OAIDigitalObjectManagerDCBase getOriginalUri() base URI " + baseUri);				
+			URI keyUri = URI.create(uri.toString().replaceAll(baseUri.toString(), "").substring(1));
+			log.info("OAIDigitalObjectManagerDCBase getOriginalUri() keyURI: " + keyUri);
+			res = dom.getOriginalUri(keyUri);
+		} catch (Exception e) {
+			log.info("OAIDigitalObjectManagerDCBase getOriginalUri() error: " + e.getMessage());				
+		}
+
+		return res;		
+	}
+	
+	
 		/**
 		 * {@inheritDoc}
 		 * 
@@ -96,9 +184,14 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 				throws DigitalObjectNotFoundException {
 			DigitalObject retObj = null;
 			log.info("OAIDigitalObjectManagerDCBase retrieve() URI " + pdURI);
-			
-			retObj = dom.retrieve(pdURI);
-			
+			try {
+				URI httpURI = getOriginalUri(pdURI);
+				log.info("OAIDigitalObjectManagerDCBase retrieve() httpURI: " + httpURI);	
+				retObj = dom.retrieve(httpURI);
+			} catch (Exception e) {
+				log.info("OAIDigitalObjectManagerDCBase retrieve() error: " + e.getMessage());				
+			}
+
 			return retObj;
 		}
 

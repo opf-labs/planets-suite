@@ -75,6 +75,33 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 
 
 	/**
+	 * This method evaluates original HTTP URI from registry URI
+	 * @param uri The registry URI
+	 * @return The original HTTP URI
+	 */
+	public URI getOriginalUri(URI keyUri) {
+		URI res = keyUri;
+		try {
+			if (keyUri != null) {
+		    	log.info("OAIDigitalObjectManagerDCImpl retrieve() find out the original key for uri: " + keyUri);
+		    	for(URI uri : leafMap.keySet()) {
+		    		if (uri.toString().contains(keyUri.toString())) {
+		    			res = uri;
+				    	log.info("OAIDigitalObjectManagerDCImpl retrieve() found: " + res);
+				    	break;
+		    		}
+		    	}
+			}
+
+		} catch (Exception e) {
+			log.info("OAIDigitalObjectManagerDCImpl getOriginalUri() error: " + e.getMessage());				
+		}
+
+		return res;		
+	}
+	
+	
+	/**
 	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
 	 */
@@ -82,11 +109,13 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
     	long starttime = System.currentTimeMillis();
     	log.info("OAIDigitalObjectManagerDCImpl retrieve() starttime: " + starttime);
 		try {
-			if (pdURI != null && leafMap.containsKey(pdURI)) {
-		    	log.info("OAIDigitalObjectManagerDCImpl retrieve() already exist in map uri: " + pdURI);
+			URI originalURI = getOriginalUri(pdURI);
+			
+			if (originalURI != null && leafMap.containsKey(originalURI)) {
+		    	log.info("OAIDigitalObjectManagerDCImpl retrieve() already exist in map uri: " + originalURI);
 		    	long endtime = System.currentTimeMillis();
 		    	log.info("OAIDigitalObjectManagerDCImpl retrieve() timediff: " + (endtime - starttime));
-				return leafMap.get(pdURI);
+				return leafMap.get(originalURI);
 			}
 	    	long endtime = System.currentTimeMillis();
 	    	log.info("OAIDigitalObjectManagerDCImpl retrieve() error1: NoHTTP URL available." + " timediff: " + (endtime - starttime));
@@ -179,12 +208,11 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
      */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
 		log.info("OAIDigitalObjectManagerDCImpl list() URI " + pdURI);
-		
-    	if (pdURI == null) {
+    	if (pdURI != null) {
     		if (uriList != null && uriList.size() > 0) {
     			return uriList;
     		} else {
-	    		// OAI hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
+	    		// OAI hierarchy is flat (no sub-directories)
 		    	List<URI> resultList = new ArrayList<URI>();
 		    	
 				log.info("OAIDigitalObjectManagerDCImpl pdURI: " + pdURI + ", baseURL: "+ baseURL);
