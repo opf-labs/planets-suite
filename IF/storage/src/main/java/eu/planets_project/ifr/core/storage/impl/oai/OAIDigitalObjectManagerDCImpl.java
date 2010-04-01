@@ -40,7 +40,7 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
     /**
      * The manager control thread.
      */
-    private static ManagerControl mc;
+//    private static ManagerControl mc;
 
 	/**
 	 * This is a cache for list method.
@@ -53,9 +53,9 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 	 */
 	public OAIDigitalObjectManagerDCImpl(String baseURL) {
 		super(baseURL, OAIDigitalObjectManagerDCBase.PREFIX);
-        mc = new ManagerControl(this);
-        mc.start();
-        log.info("Manager control thread started.");
+//        mc = new ManagerControl(this);
+//        mc.start();
+//        log.info("Manager control thread started.");
 	}
 	
 
@@ -83,11 +83,11 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 		URI res = keyUri;
 		try {
 			if (keyUri != null) {
-		    	log.info("OAIDigitalObjectManagerDCImpl retrieve() find out the original key for uri: " + keyUri);
+		    	log.info("OAIDigitalObjectManagerDCImpl getOriginalUri() find out the original key for uri: " + keyUri);
 		    	for(URI uri : leafMap.keySet()) {
 		    		if (uri.toString().contains(keyUri.toString())) {
 		    			res = uri;
-				    	log.info("OAIDigitalObjectManagerDCImpl retrieve() found: " + res);
+				    	log.info("OAIDigitalObjectManagerDCImpl getOriginalUri() found: " + res);
 				    	break;
 		    		}
 		    	}

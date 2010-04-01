@@ -1999,6 +1999,39 @@ public class DOJCRManager {
     	} 
     }
     
+
+	/**
+	 * This method evaluates original HTTP URI from registry URI
+	 * @param uri The registry URI
+	 * @return The original HTTP URI
+	 */
+	public URI getOriginalUri(URI keyUri) {
+		URI res = keyUri;
+		try {
+			if (keyUri != null) {
+		    	_log.info("DOJCRManager getOriginalUri() find out the original key for uri: " + keyUri);
+		    	for(URI uri : list(URI.create(PERMANENT_URI))) {
+			    	_log.info("DOJCRManager getOriginalUri() uri: " + uri);
+		    		if (uri.toString().contains(keyUri.toString())) { 
+		    			String [] path = uri.toString().split(DOJCRConstants.JCR_PATH_SEPARATOR);
+		    			// check for last part needed
+		    			if (path[path.length - 1].equals(keyUri.toString())) {
+			    			res = uri;
+					    	_log.info("DOJCRManager getOriginalUri() found: " + res);
+					    	break;
+		    			}
+		    		}
+		    	}
+			}
+
+		} catch (Exception e) {
+			_log.info("DOJCRManager getOriginalUri() error: " + e.getMessage());				
+		}
+
+		return res;		
+	}
+	
+	
     /**
      * Get an array list of permanent URIs held beneath a digital object node 
      * identified by the passed path
@@ -2011,7 +2044,7 @@ public class DOJCRManager {
     public ArrayList<URI> list(URI pathUri) 
     {
     	String path = pathUri.toString();
-    	_log.log(Level.INFO, "DOJCRManager.list() start path: " + path + "path length: " + path.length());
+    	_log.log(Level.INFO, "DOJCRManager.list() start path: " + path + ", path length: " + path.length());
     	ArrayList<URI> _list = new ArrayList<URI>(0);
     	try {
     		// Get a repository session
