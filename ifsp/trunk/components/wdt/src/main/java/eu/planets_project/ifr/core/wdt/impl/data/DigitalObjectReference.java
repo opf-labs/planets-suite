@@ -13,6 +13,7 @@ import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 
 import eu.planets_project.ifr.core.storage.impl.oai.*;
+import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerBase;
 
 
 /**
@@ -82,34 +83,32 @@ public class DigitalObjectReference {
 			}
 			return puri;
 		} else {
+			log.log(Level.INFO, "getScreenUri() puri: " + puri);
+			// Special handling for the digital objects from OAI DC repository
+			if ((puri != null)
+					&& puri.toString().indexOf(
+							OAIDigitalObjectManagerDCBase.REGISTRY_NAME) > -1) {
+				return OAIDigitalObjectManagerDCBase.getOriginalUri(puri);
+			}
+			// Special handling for the digital objects from OAI KB repository
+			if ((puri != null)
+					&& puri.toString().indexOf(
+							OAIDigitalObjectManagerKBBase.REGISTRY_NAME) > -1) {
+				return OAIDigitalObjectManagerKBBase.getOriginalUri(puri);
+			}
 			// Special handling for the digital objects from JCR repository
 			if ((puri != null)
-					&& (puri.toString().indexOf(DOJCRConstants.DOJCR) > -1)) {
+					&& puri.toString().indexOf(
+							DOJCRConstants.REGISTRY_NAME) > -1) {
 				try {
-					return new URI(DOJCRManager.getResolverPath()
-							+ puri.toString());
+					puri = new URI(DOJCRManager.getResolverPath()
+							+ JcrDigitalObjectManagerBase.getOriginalUri(puri).toString());
 				} catch (URISyntaxException e) {
 					log.log(Level.INFO, "SHOULD NEVER HAPPEN!", e);
 				}
 				return puri;
-			} else {
-				log.log(Level.INFO, "getScreenUri() DC puri: " + puri);
-				// Special handling for the digital objects from OAI DC repository
-				if ((puri != null)
-						&& puri.toString().indexOf(
-								OAIDigitalObjectManagerDCBase.REGISTRY_NAME) > -1) {
-					// Special treatment for OAI files!
-					return OAIDigitalObjectManagerDCBase.getOriginalUri(puri);
-				}
-				// Special handling for the digital objects from OAI KB repository
-				if ((puri != null)
-						&& puri.toString().indexOf(
-								OAIDigitalObjectManagerKBBase.REGISTRY_NAME) > -1) {
-					// Special treatment for OAI files!
-					return OAIDigitalObjectManagerKBBase.getOriginalUri(puri);
-				}
-				return puri;
 			}
+			return puri;
 		}
 	}
 
@@ -159,17 +158,14 @@ public class DigitalObjectReference {
 			path = puri.getPath();
 		}
 
-		log.log(Level.INFO, "DigitalObjectReference do perm uri: " + puri
-				+ " index: "
-				+ puri.toString().indexOf(DOJCRManager.PERMANENT_URI));
-		// if it is a digital object from JCR repository
-		if (puri.toString().indexOf(DOJCRManager.PERMANENT_URI) > -1
-				&& puri.toString().indexOf(DOJCRManager.PERMANENT_URI) == 0) {
-			if (puri.toString().equals(DOJCRManager.PERMANENT_URI))
-				return path;
-			// Special treatment for digital object presentation
+		log.log(Level.INFO, "DigitalObjectReference getLeafname() puri: " + puri);
+		
+		// special handling for digital object from JCR repository
+		if (puri.toString().indexOf(
+						DOJCRConstants.REGISTRY_NAME) > -1) {
 			if (dom != null) {
 				try {
+					log.log(Level.INFO, "DigitalObjectReference getLeafname() puri: " + puri);
 					DigitalObject obj = dom
 							.getDigitalObjectManager(
 									DataRegistryFactory

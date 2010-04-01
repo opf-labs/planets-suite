@@ -642,31 +642,6 @@ public class WorkflowBackingBean {
 
 	
 	/**
-	 * This method retrieves a digital object from JCR data registry
-	 * @param uri
-	 * @return digital object
-	 */
-	private DigitalObject retrieveDigitalObjectFromRegistry(URI uri, String registryName)
-	{
-		DigitalObject res = null;
-		
-		try {
-			res = ((DataRegistry) dr.getDataManager(
-				        DataRegistryFactory.createDataRegistryIdFromName(registryName)))
-				.getDigitalObjectManager(
-						DataRegistryFactory.createDataRegistryIdFromName(registryName))
-				.retrieve(uri);
-		} catch (Exception u) {
-			logger.info("\nError! Unable to retrieve selected digital object! Error: " + u.getMessage());
-			errorMessageString.add("\nError! Unable to retrieve selected digital object!");
-	        u.printStackTrace();
-		}
-		
-		return res;
-	}
-	
-	
-	/**
 	 * This method recreates digital object by value to enable workflow execution. 
 	 * @param o The initial digital object
 	 * @return The digital object with content created by value
@@ -712,28 +687,25 @@ public class WorkflowBackingBean {
 					URI dobURI = dob.getUri();
 					DigitalObject o = null;
 					try {
-						// Special handling for the digital objects from JCR repository
+						// Special handling for the digital objects from OAI and JCR repositories
 						// data registry URI and digital object URI is not the same
-						if (dobURI.toString().contains(DOJCRConstants.DOJCR)) {
-							o = retrieveDigitalObjectFromRegistry(dobURI, DOJCRConstants.REGISTRY_NAME);
-						} else {
-							// Special handling for the digital objects from OAI repository
-							if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.REGISTRY_NAME)
-									|| dobURI.toString().contains(OAIDigitalObjectManagerKBBase.REGISTRY_NAME)) {
-								logger.info("addToWorkflow() OAI dobURI: " + dobURI);
-							    o = dr.getDataManager(dobURI).retrieve(dobURI);
+						if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.REGISTRY_NAME)
+								|| dobURI.toString().contains(OAIDigitalObjectManagerKBBase.REGISTRY_NAME)
+								|| dobURI.toString().contains(DOJCRConstants.REGISTRY_NAME)) {
+							logger.info("addToWorkflow() special dobURI: " + dobURI);
+						    o = dr.getDataManager(dobURI).retrieve(dobURI);
 //								o = recreateByValue(o);
-							} else {
-							    o = dr.getDataManager(dobURI).retrieve(dobURI);
-							
-								// Recreate digital object by value to enable workflow execution. 
-								// At the moment digital object uses a DataHandler. It is not serializable
-								// and it is not possible to execute workflows. 
-								InputStream streamContent = o.getContent().getInputStream();
-								byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
-								DigitalObjectContent content = Content.byValue(byteContent);
-								o = (new DigitalObject.Builder(o)).content(content).title(dor.getLeafname()).build();
-							}
+						} else {
+							logger.info("addToWorkflow() dobURI: " + dobURI);
+						    o = dr.getDataManager(dobURI).retrieve(dobURI);
+						
+							// Recreate digital object by value to enable workflow execution. 
+							// At the moment digital object uses a DataHandler. It is not serializable
+							// and it is not possible to execute workflows. 
+							InputStream streamContent = o.getContent().getInputStream();
+							byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
+							DigitalObjectContent content = Content.byValue(byteContent);
+							o = (new DigitalObject.Builder(o)).content(content).title(dor.getLeafname()).build();
 						}
 
 						//DigitalObject.Builder b = new DigitalObject.Builder(o);
@@ -919,14 +891,11 @@ public class WorkflowBackingBean {
 					URI dobURI = dob.getUri();
 					DigitalObject o = null;
 					
-					// JCR repository
-					if (dobURI.toString().contains(DOJCRConstants.DOJCR)) {
-					   o = retrieveDigitalObjectFromRegistry(dobURI, DOJCRConstants.REGISTRY_NAME);
-					} 
-					// OAI repository
+					// OAI and JCR repositories
 					if (dobURI.toString().contains(OAIDigitalObjectManagerDCBase.REGISTRY_NAME)
-							|| dobURI.toString().contains(OAIDigitalObjectManagerKBBase.REGISTRY_NAME)) {
-						logger.info("showDetails() OAI dobURI: " + dobURI);
+							|| dobURI.toString().contains(OAIDigitalObjectManagerKBBase.REGISTRY_NAME)
+							|| dobURI.toString().contains(DOJCRConstants.REGISTRY_NAME)) {
+						logger.info("showDetails() special dobURI: " + dobURI);
 						try {
 							o = dr.getDataManager(dobURI).retrieve(dobURI);
 						} catch (Exception e) {
