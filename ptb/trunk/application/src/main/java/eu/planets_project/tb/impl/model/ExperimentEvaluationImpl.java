@@ -15,6 +15,7 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
@@ -30,6 +31,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * @author alindley
@@ -37,15 +39,17 @@ import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
  */
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
-implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Serializable {
+public class ExperimentEvaluationImpl extends ExperimentPhaseImpl 
+        implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Serializable {
 
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	//Note: HashMap<BenchmarkGoalID, BenchmarkGoal>
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private HashMap<String, BenchmarkGoalImpl> experimentBenchmarkGoals;
 	//Note: URI: inputFile is the key, String: BenchmarkGoalID
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private HashMap<URI,HashMap<String,BenchmarkGoalImpl>> fileBenchmarkGoals;
 	//Note: HashMap<BenchmarkGoalID, BenchmarkGoal>
 
@@ -55,12 +59,15 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	
 	//the property evaluation records for a given inputDigitalObjectRef over all stages
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private HashMap<String, ArrayList<PropertyEvaluationRecordImpl>> propertyEvalRecordsByInputDigoRef = new HashMap<String, ArrayList<PropertyEvaluationRecordImpl>>();
 	//the overall experiment evaluation information HashMap<PropertyURI,Integer>
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private HashMap<String,Integer> overallPropertyEvalWeights = new HashMap<String,Integer>();
 	//contains a list of digital object references that contain external evluation files (e.g. excel sheets, etc.)
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private ArrayList<String> lExternalEvalDocumentents = new ArrayList<String>();
 	
 	//a helper reference pointer, for retrieving the experiment in the phase

@@ -1,6 +1,8 @@
 package eu.planets_project.tb.impl.model.exec;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.commons.logging.Log;
+
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
@@ -44,7 +48,7 @@ public class BatchWorkflowResultLogImpl implements Serializable {
 	private static Log log = LogFactory.getLog(BatchWorkflowResultLogImpl.class);
 	
 	//keeps a JAXB serialized String containing the WorkflowResultLog
-	@Lob //clob
+    @Column(columnDefinition=ExperimentPersistencyImpl.TEXT_TYPE)
 	private String serializedWorkflowResult = new String();
 	
 	//keep even if empty - JPA requires it.

@@ -16,7 +16,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
@@ -32,10 +37,25 @@ import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
+import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
+import eu.planets_project.tb.gui.backing.exp.MeasuredComparisonEventBean;
+import eu.planets_project.tb.gui.backing.exp.MeasurementBean;
+import eu.planets_project.tb.gui.backing.exp.MeasurementEventBean;
+import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementAgent;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
+import eu.planets_project.tb.impl.model.measure.MeasurementAgent.AgentType;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
+import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.ComparePropertiesWrapper;
 import eu.planets_project.tb.impl.services.wrappers.CompareWrapper;
@@ -114,139 +134,13 @@ public class DigitalObjectCompare {
     }
     
     /* -------------------- Additional code for deeper inspection --------------------- */
-    
-    /**
-     * @return
-     */
-    public List<SelectItem> getCharacteriseServiceList() {
-        log.info("IN: getCharacteriseServiceList");
-        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
-/*
-        String input = this.getInputFormat();
-        if( ! this.isInputSet() ) input = null;
-        String output = this.getOutputFormat();
-        if( ! this.isOutputSet() ) output = null;
-*/
-        List<ServiceDescription> sdl = sb.getCharacteriseServices();
-
-        return ServiceBrowser.mapServicesToSelectList( sdl );
-    }
-
-    /** */
-    private String characteriseService;
-    private String characteriseServiceException;
-    private String characteriseServiceStackTrace;
-
-    /**
-     * @return the characteriseService
-     */
-    public String getCharacteriseService() {
-        return characteriseService;
-    }
-
-    /**
-     * @param characteriseService the characteriseService to set
-     */
-    public void setCharacteriseService(String characteriseService) {
-        this.characteriseService = characteriseService;
-    }
-    
-    private CharacteriseResult runCharacteriseService( DigitalObjectTreeNode dob ) {
-        log.info("Looking for properties using: "+this.getCharacteriseService());
-        // Return nothing if no service is selected:
-        if( this.getCharacteriseService() == null ) return null;
-        // Run the service:
-        try {
-            Characterise chr = new CharacteriseWrapper(new URL(this.getCharacteriseService()));
-            CharacteriseResult cr = chr.characterise( dob.getDob(), null);
-            this.characteriseServiceException = null;
-            this.characteriseServiceStackTrace = null;
-            return cr;
-        } catch( Exception e ) {
-            log.error("FAILED! "+e);
-            this.characteriseServiceException = e.toString();
-            this.characteriseServiceStackTrace = this.stackTraceToString(e);
-            return null;
-        }
-    }
-
-    /**
-     * @return
-     */
-    public List<Property> getCharacterise1Properties() {
-        CharacteriseResult cr = this.runCharacteriseService(this.getDob1());
-        if( cr == null ) return null;
-        if( cr.getProperties() != null ) {
-            log.info("Got properties: "+cr.getProperties().size());
-        }
-        return truncatePropertyValues(cr.getProperties());
-    }
-    
-    /**
-     * @return
-     */
-    public String getCharacterise2ServiceReport() {
-        CharacteriseResult cr = this.runCharacteriseService(this.getDob2());
-        if( cr == null ) return null;
-        return ""+cr.getReport();
-    }
-
-    /**
-     * @return
-     */
-    public List<Property> getCharacterise2Properties() {
-        CharacteriseResult cr = this.runCharacteriseService(this.getDob2());
-        if( cr == null ) return null;
-        if( cr.getProperties() != null ) {
-            log.info("Got properties: "+cr.getProperties().size());
-        }
-        return truncatePropertyValues(cr.getProperties());
-    }
-    
-    /**
-     * @return
-     */
-    public String getCharacterise1ServiceReport() {
-        CharacteriseResult cr = this.runCharacteriseService(this.getDob1());
-        if( cr == null ) return null;
-        return ""+cr.getReport();
-    }
-
-    /**
-     * @return
-     */
-    public List<SelectItem> getCompareServiceList() {
-        log.info("IN: getCompareServiceList");
-        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
-/*
-        String input = this.getInputFormat();
-        if( ! this.isInputSet() ) input = null;
-        String output = this.getOutputFormat();
-        if( ! this.isOutputSet() ) output = null;
-*/
-        List<ServiceDescription> sdl = sb.getCompareServices();
-
-        return ServiceBrowser.mapServicesToSelectList( sdl );
-    }
-    
-    /**
-     * @return the characteriseServiceException
-     */
-    public String getCharacteriseServiceException() {
-        return characteriseServiceException;
-    }
-
-    /**
-     * @return the characteriseServiceStackTrace
-     */
-    public String getCharacteriseServiceStackTrace() {
-        return characteriseServiceStackTrace;
-    }
 
     /** */
     private String compareService;
+    private ServiceReport compareServiceReport;
     private String compareServiceException;
     private String compareServiceStackTrace;
+    private MeasurementEventImpl me;
 
     /**
      * @return the compareService
@@ -262,44 +156,132 @@ public class DigitalObjectCompare {
         this.compareService = compareService;
     }
     
-    private CompareResult runCompareService() {
+    public void runCompareService() {
         log.info("Looking for properties using: "+this.getCompareService());
+        
+        // Reset:
+        this.compareServiceReport = null;
+        this.compareServiceException = null;
+        this.compareServiceStackTrace = null;
+        
         // Return nothing if no service is selected:
-        if( this.getCompareService() == null ) return null;
+        if( this.getCompareService() == null ) return;
+        
         // Run the service:
         try {
-            Compare chr = new CompareWrapper(new URL(this.getCompareService()));
-            CompareResult cr = chr.compare( this.getDob1().getDob(), this.getDob2().getDob(), null);
-            this.compareServiceException = null;
-            this.compareServiceStackTrace = null;
-            return cr;
+            URL surl = new URL(this.getCompareService());
+            
+            Map<URL, ServiceDescription> compareServices = this.getCompareServices();
+            ServiceDescription sd = compareServices.get(surl);
+            
+            if( sd.getType().equals(Compare.class.getCanonicalName()) ) {
+
+                Compare chr = new CompareWrapper(surl);
+                CompareResult cr = chr.compare( this.getDob1().getDob(), this.getDob2().getDob(), null);
+                this.compareServiceReport = cr.getReport();
+
+                me = this.createMeasurementEvent();
+                if( me != null ) {
+                    me.setAgent(new MeasurementAgent(chr.describe()));
+                    me.setDate(Calendar.getInstance());
+                    for( Property p : cr.getProperties() ) {
+                        MeasurementImpl m = new MeasurementImpl(me,p);
+                        m.setTarget( new MeasurementTarget() );
+                        m.getTarget().setType(TargetType.DIGITAL_OBJECT_PAIR);
+                        m.getTarget().getDigitalObjects().add( this.getDobUri1() );
+                        m.getTarget().getDigitalObjects().add( this.getDobUri2() );
+                        me.addMeasurement(m);
+                    }
+                    DigitalObjectCompare.persistExperiment();
+                }
+                
+            } else if(sd.getType().equals(Identify.class.getCanonicalName())) {
+                Identify idf = new IdentifyWrapper(surl);
+                IdentifyResult ir1 = idf.identify( this.getDob1().getDob(), null);
+                this.compareServiceReport = ir1.getReport();
+                IdentifyResult ir2 = idf.identify( this.getDob2().getDob(), null);
+                this.compareServiceReport = ir2.getReport();
+                
+                me = this.createMeasurementEvent();
+                if( me != null ) {
+                    me.setAgent(new MeasurementAgent(idf.describe()));
+                    me.setDate(Calendar.getInstance());
+                    this.recordIdentifyMeasurement(me, ir1, this.getDobUri1() );
+                    this.recordIdentifyMeasurement(me, ir2, this.getDobUri2() );
+                    
+                    DigitalObjectCompare.persistExperiment();
+                }
+                
+            } else if(sd.getType().equals(Characterise.class.getCanonicalName())) {
+                Characterise chr = new CharacteriseWrapper( surl );
+                CharacteriseResult cr1 = chr.characterise( this.getDob1().getDob(), null);
+                this.compareServiceReport = cr1.getReport();
+                CharacteriseResult cr2 = chr.characterise( this.getDob2().getDob(), null);
+                this.compareServiceReport = cr2.getReport();
+                
+                me = this.createMeasurementEvent();
+                if( me != null ) {
+                    me.setAgent(new MeasurementAgent(chr.describe()));
+                    me.setDate(Calendar.getInstance());
+                    this.recordPropertyMeasurements(me, cr1.getProperties(), this.getDobUri1() );
+                    this.recordPropertyMeasurements(me, cr2.getProperties(), this.getDobUri2() );
+                    
+                    DigitalObjectCompare.persistExperiment();
+                }
+                
+            } else {
+                this.compareServiceException = "ERROR: Do not know how to invoke this service!";
+                log.error("Could not invoke service: "+this.getCompareService());
+            }
+            
+            return;
         } catch( Exception e ) {
             log.error("FAILED! "+e);
             this.compareServiceException = e.toString();
+            
             this.compareServiceStackTrace = this.stackTraceToString(e);
-            return null;
+            e.printStackTrace();
+            
+            return;
         }
     }
+    
+    private void recordIdentifyMeasurement( MeasurementEventImpl me, IdentifyResult ir, String dob ) {
+        for( URI fmt : ir.getTypes() ) {
+            MeasurementImpl m = new MeasurementImpl(IdentifyWorkflow.MEASURE_IDENTIFY_FORMAT);
+            m.setValue(fmt.toASCIIString());
+            m.setTarget( new MeasurementTarget() );
+            m.getTarget().setType(TargetType.DIGITAL_OBJECT);
+            m.getTarget().getDigitalObjects().add( dob );
+            me.addMeasurement(m);
 
-    /**
-     * @return
-     */
-    public List<Property> getCompareProperties() {
-        CompareResult cr = this.runCompareService();
-        if( cr == null ) return null;
-        if( cr.getProperties() != null ) {
-            log.info("Got properties: "+cr.getProperties().size());
         }
-        return truncatePropertyValues(cr.getProperties());
+        // Also record the method:
+        if( ir.getMethod() != null ) {
+            MeasurementImpl m = new MeasurementImpl(IdentifyWorkflow.MEASURE_IDENTIFY_METHOD);
+            m.setValue(ir.getMethod().name());
+            m.setTarget( new MeasurementTarget() );
+            m.getTarget().setType(TargetType.DIGITAL_OBJECT);
+            m.getTarget().getDigitalObjects().add( dob );
+            me.addMeasurement(m);
+        }
+    }
+    
+    private void recordPropertyMeasurements( MeasurementEventImpl me, List<Property> props, String dob ) {
+        for( Property p : props ) {
+            MeasurementImpl m = new MeasurementImpl(me,p);
+            m.setTarget( new MeasurementTarget() );
+            m.getTarget().setType(TargetType.DIGITAL_OBJECT);
+            m.getTarget().getDigitalObjects().add(dob);
+            me.addMeasurement(m);
+        }
     }
     
     /**
      * @return
      */
-    public String getCompareServiceReport() {
-        CompareResult cr = this.runCompareService();
-        if( cr == null ) return null;
-        return ""+cr.getReport();
+    public ServiceReport getCompareServiceReport() {
+        return compareServiceReport;
     }
 
     /**
@@ -316,42 +298,48 @@ public class DigitalObjectCompare {
         return compareServiceStackTrace;
     }
 
-    /** */
-    private String compareExtractedService;
-    private String compareExtractedServiceException;
-    private String compareExtractedServiceStackTrace;
-
-    /**
-     * @return the compareExtractedService
-     */
-    public String getCompareExtractedService() {
-        return compareExtractedService;
-    }
-
-    /**
-     * @param compareExtractedService the compareExtractedService to set
-     */
-    public void setCompareExtractedService(String compareExtractedService) {
-        this.compareExtractedService = compareExtractedService;
-    }
-    
     /**
      * @return
      */
-    public List<SelectItem> getComparePropertiesServiceList() {
-        log.info("IN: getComparePropertiesServiceList");
-        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
+    public MeasurementEventImpl getMeasurementEvent() {
+        return this.me;
+    }
+
+    /**
+     * @return
+     */
+    public List<SelectItem> getCompareServiceList() {
+        log.info("IN: getCompareServiceList");
 /*
         String input = this.getInputFormat();
         if( ! this.isInputSet() ) input = null;
         String output = this.getOutputFormat();
         if( ! this.isOutputSet() ) output = null;
 */
-        List<ServiceDescription> sdl = sb.getComparePropertiesServices();
+        List<ServiceDescription> sdl = new ArrayList<ServiceDescription>(this.getCompareServices().values());
 
-        return ServiceBrowser.mapServicesToSelectList( sdl );
+        return ServiceBrowser.mapServicesToSelectList( sdl);
     }
     
+    private Map<URL,ServiceDescription> getCompareServices() {
+        Map<URL,ServiceDescription> map = new HashMap<URL,ServiceDescription>();
+        
+        // Find all services:
+        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
+        List<ServiceDescription> sdl = sb.getCompareServices();
+        sdl.addAll(sb.getCharacteriseServices());
+        sdl.addAll(sb.getIdentifyServices());
+
+        // Create map:
+        for( ServiceDescription sd : sdl ) {
+            map.put(sd.getEndpoint(), sd);
+        }
+        
+        return map;
+    }
+    
+    /* ------------------------------------------ */
+
     protected String stackTraceToString( Exception e ) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
@@ -359,168 +347,6 @@ public class DigitalObjectCompare {
         return sw.toString();
     }
     
-    private CompareResult runComparePropertiesService() {
-        if( this.compareExtractedService == null ) return null;
-        try {
-            CompareProperties chr = new ComparePropertiesWrapper(new URL(this.getCompareExtractedService()));
-            CompareResult cr = chr.compare( this.runCharacteriseService(getDob1()), this.runCharacteriseService(getDob2()), null);
-            this.compareExtractedServiceException = null;
-            this.compareExtractedServiceStackTrace = null;
-            return cr;
-        } catch( Exception e ) {
-            log.error("FAILED! "+e);
-            this.compareExtractedServiceException = e.toString();
-            this.compareExtractedServiceStackTrace = this.stackTraceToString(e);
-            return null;
-        }
-     }
-    /**
-     * @return
-     */
-    public List<Property> getCompareExtractedProperties() {
-        CompareResult cr = this.runComparePropertiesService();
-        if( cr == null ) return null;
-        if( cr.getProperties() != null ) {
-            log.info("Got properties: "+cr.getProperties().size());
-        }
-        return truncatePropertyValues(cr.getProperties());
-    }
-    
-    /**
-     * @return
-     */
-    public String getCompareExtractedServiceReport() {
-        CompareResult cr = this.runComparePropertiesService();
-        if( cr == null ) return null;
-        return ""+cr.getReport();
-    }
-
-    /**
-     * @return the compareExtractedServiceException
-     */
-    public String getCompareExtractedServiceException() {
-        return compareExtractedServiceException;
-    }
-
-    /**
-     * @return the compareExtractedServiceStackTrace
-     */
-    public String getCompareExtractedServiceStackTrace() {
-        return compareExtractedServiceStackTrace;
-    }
-    
-    //-------------------- IDENTIFY SERVICE FROM HERE --------------
-
-    /** */
-    private String identifyService;
-    private String identifyServiceException;
-    private String identifyServiceStackTrace;
-
-    /**
-     * @return the characteriseService
-     */
-    public String getIdentifyService() {
-        return identifyService;
-    }
-
-    /**
-     * @param characteriseService the characteriseService to set
-     */
-    public void setIdentifyService(String identifyService) {
-        this.identifyService = identifyService;
-    }
-    
-    private IdentifyResult runIdentifyService( DigitalObjectTreeNode dob ) {
-        log.info("Looking for properties using: "+this.getIdentifyService());
-        // Return nothing if no service is selected:
-        if( this.getIdentifyService() == null ) return null;
-        // Run the service:
-        try {
-            Identify idf = new IdentifyWrapper(new URL(this.getIdentifyService()));
-            IdentifyResult ir = idf.identify( dob.getDob(), null);
-            this.identifyServiceException = null;
-            this.identifyServiceStackTrace = null;
-            return ir;
-        } catch( Exception e ) {
-            log.error("FAILED! "+e);
-            this.identifyServiceException = e.toString();
-            this.identifyServiceStackTrace = this.stackTraceToString(e);
-            return null;
-        }
-    }
-
-    /**
-     * @return
-     */
-    public List<URI> getIdentify1Types() {
-        IdentifyResult ir = this.runIdentifyService(this.getDob1());
-        if( ir == null ) return null;
-        if( ir.getTypes() != null ) {
-            log.info("Got types: "+ir.getTypes().size());
-        }
-        return ir.getTypes();
-    }
-    
-    /**
-     * @return
-     */
-    public String getIdentify2ServiceReport() {
-        IdentifyResult ir = this.runIdentifyService(this.getDob2());
-        if( ir == null ) return null;
-        return ""+ir.getReport();
-    }
-
-    /**
-     * @return
-     */
-    public List<URI> getIdentify2Types() {
-        IdentifyResult ir = this.runIdentifyService(this.getDob2());
-        if( ir == null ) return null;
-        if( ir.getTypes() != null ) {
-            log.info("Got types: "+ir.getTypes().size());
-        }
-        return ir.getTypes();
-    }
-    
-    /**
-     * @return
-     */
-    public String getIdentify1ServiceReport() {
-        IdentifyResult ir = this.runIdentifyService(this.getDob1());
-        if( ir == null ) return null;
-        return ""+ir.getReport();
-    }
-
-    /**
-     * @return
-     */
-    public List<SelectItem> getIdentifyServiceList() {
-        log.info("IN: getIdentifyServiceList");
-        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
-/*
-        String input = this.getInputFormat();
-        if( ! this.isInputSet() ) input = null;
-        String output = this.getOutputFormat();
-        if( ! this.isOutputSet() ) output = null;
-*/
-        List<ServiceDescription> sdl = sb.getIdentifyServices();
-
-        return ServiceBrowser.mapServicesToSelectList( sdl );
-    }
-    
-    /**
-     * @return the characteriseServiceException
-     */
-    public String getIdentifyServiceException() {
-        return identifyServiceException;
-    }
-
-    /**
-     * @return the characteriseServiceStackTrace
-     */
-    public String getIdentifyServiceStackTrace() {
-        return identifyServiceStackTrace;
-    }
     
     /**
      * Truncates the property values at a max. fixed length of 500 chars
@@ -543,4 +369,72 @@ public class DigitalObjectCompare {
         }
     	return ret;
     }
+    
+    /**
+     * Get any stored measurements:
+     * 
+     * @return
+     */
+    public List<MeasurementEventBean> getExperimentMeasurements() {
+        List<MeasurementEventBean> ms = new ArrayList<MeasurementEventBean>();
+        ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(this.getDobUri1());
+        if( res == null || res.getExecutionRecord() == null ) {
+            if( this.me != null ) {
+                log.info("Pulling getExperimentMeasurements from the temporary space.");
+                MeasuredComparisonEventBean mb = new MeasuredComparisonEventBean( this.me, this.getDobUri1(), this.getDobUri2() );
+                ms.add(mb);
+            }
+            log.info("Got getExperimentMeasurements "+ms.size());
+            return ms;
+        }
+        // Otherwise, pull from DB:
+        log.info("Pulling getExperimentMeasurements from the DB.");
+        int i = 0;
+        Set<MeasurementEventImpl> measurementEvents = res.getExecutionRecord().getMeasurementEvents();
+        List<MeasurementEventImpl> mevl = new ArrayList<MeasurementEventImpl>(measurementEvents);
+        Collections.sort(mevl, Collections.reverseOrder());
+        for( MeasurementEventImpl me : mevl ) {
+            if( me.getMeasurements() != null ) {
+                MeasuredComparisonEventBean mb = new MeasuredComparisonEventBean( me, this.getDobUri1(), this.getDobUri2() );
+                mb.setOdd((i%2 == 0));
+                ms.add( mb );
+            }
+            i++;
+        }
+        log.info("Got getExperimentMeasurements "+ms.size());
+        return ms;
+    }
+    
+    private MeasurementEventImpl createMeasurementEvent() {
+        ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(this.getDobUri1());
+        // If there is no experiment, return a non-DB event:
+        if( res == null ) return new MeasurementEventImpl((ExecutionRecordImpl)null);
+        if( res.getExecutionRecord() == null ) return new MeasurementEventImpl((ExecutionRecordImpl)null);
+        
+        // Otherwise, create an event that is attached to the experiment:
+        MeasurementEventImpl me = new MeasurementEventImpl(res.getExecutionRecord());
+        res.getExecutionRecord().getMeasurementEvents().add(me);
+        return me;
+    }
+
+    /**
+     * Persist any changes
+     */
+    public static void persistExperiment() {
+        ExperimentInspector ei = (ExperimentInspector)JSFUtil.getManagedObject("ExperimentInspector");
+        ExperimentBean expBean = ei.getExperimentBean();
+        if(expBean != null ) expBean.updateExperiment();
+    }
+    
+    /**
+     * 
+     */
+    public void redirectBackToCompare() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        if( expBean == null ) {
+            JSFUtil.redirect("/reader/dob_compare.faces?eid=dobUri1="+this.getDobUri1()+"&dobUri2="+this.getDobUri2());
+        }
+        JSFUtil.redirect("/exp/dob_compare.faces?eid="+expBean.getExperiment().getEntityID()+"&dobUri1="+this.getDobUri1()+"&dobUri2="+this.getDobUri2());
+   }
+    
 }

@@ -20,12 +20,22 @@ import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 @Stateless
 public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
+    
+    /* For Hypersonic, use this: */
+    public static final String BLOB_TYPE = "BINARY";
+    public static final String TEXT_TYPE = "VARCHAR";
+    /* For MySQL, use this: */
+    //public static final String BLOB_TYPE = "LONG_BLOB";
+    //public static final String TEXT_TYPE = "VARCHAR(100000)";
+
 	
     private static Log log = LogFactory.getLog(ExperimentPersistencyImpl.class);
     
@@ -54,6 +64,8 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
 
 	public void updateExperiment(Experiment experiment) {
         log.info("Updating experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
+        // FIXME Remove this stack trace:
+        new Exception("Updating experiment...").printStackTrace();
         log.info("Experiment currently has "+experiment.getExperimentExecutable().getNumBatchExecutionRecords()+" batch exec records");
 		manager.merge(experiment);
         log.info("Updated experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
@@ -241,4 +253,46 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
     }
     
 
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.persistency.ExecutionRecordPersistency#findMeasurement(long)
+     */
+    public MeasurementImpl findMeasurement(long id) {
+        return manager.find(MeasurementImpl.class, id);
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.persistency.ExecutionRecordPersistency#removeMeasurement(eu.planets_project.tb.impl.model.measure.MeasurementImpl)
+     */
+    public void removeMeasurement(MeasurementImpl m) {
+        log.info("Removing measurement "+m.getId());
+        if( m.getId() == -1 ) return;
+        // This never seems to work, no matter what I do. Not clear why. Cascade issues?
+        //manager.remove( m );
+        // So, instead, manually clip it out:
+        Query query=manager.createNativeQuery("DELETE FROM MeasurementImpl WHERE id=:id");
+        query.setParameter("id",m.getId());
+        query.executeUpdate();
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.persistency.ExecutionRecordPersistency#findMeasurementEvent(long)
+     */
+    public MeasurementEventImpl findMeasurementEvent(long id) {
+        return manager.find(MeasurementEventImpl.class, id);
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.persistency.ExecutionRecordPersistency#removeMeasurementEvent(eu.planets_project.tb.impl.model.measure.MeasurementEventImpl)
+     */
+    public void removeMeasurementEvent(MeasurementEventImpl me) {
+        // See above for removeMeasurement case and problems with this not working.
+        //manager.remove( me );
+        for( MeasurementImpl m : me.getMeasurements() ) {
+            this.removeMeasurement(m);
+        }
+        Query query=manager.createNativeQuery("DELETE FROM MeasurementEventImpl WHERE id=:id");
+        query.setParameter("id",me.getId());
+        query.executeUpdate();
+    }
+    
 }

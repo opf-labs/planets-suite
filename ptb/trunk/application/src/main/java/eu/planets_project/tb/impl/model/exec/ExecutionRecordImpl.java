@@ -42,6 +42,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -130,6 +131,7 @@ public class ExecutionRecordImpl implements Serializable {
     
     // The 'Report Log' for this digital object
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> reportLog = new Vector<String>();
     
     // TODO Add a list measurement events at this higher level, pertaining to overall output?
@@ -417,7 +419,7 @@ public class ExecutionRecordImpl implements Serializable {
                             iri.addMeasurementEvent(me);
 
                             log.info("Got Stage: "+exsr.getStage());
-                            for( MeasurementRecordImpl mr : exsr.getMeasurements() ) {
+                            for( MeasurementImpl mr : exsr.getMeasurements() ) {
                                 log.info("Got measurement: "+mr);
                                 // Set the back-reference, or retrieval fails:
                                 MeasurementImpl m2 = new MeasurementImpl(me);
@@ -430,7 +432,7 @@ public class ExecutionRecordImpl implements Serializable {
             }
             */
                 /*
-            mev.setAgentType(AGENT_TYPE.WORKFLOW);
+            mev.setAgentType(AgentType.WORKFLOW);
             mev.setStage(MEASUREMENT_STAGE.EXECUTION);
             mev.setExperiment(this);
             this.measurementEvents.add(mev);

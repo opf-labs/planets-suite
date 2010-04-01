@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
@@ -28,6 +29,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 
 /**
@@ -56,6 +58,7 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
     
     //contains a mapping of the TB BenchmarkGoalID to the ID(name) used within the service's BMGoal result
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private HashMap<String, String> mappingGoalIDToPropertyID = new HashMap<String, String>(); 
 	private String sXPathForBMGoalRootNodes = "/*//property";
 	//the extracted property's name

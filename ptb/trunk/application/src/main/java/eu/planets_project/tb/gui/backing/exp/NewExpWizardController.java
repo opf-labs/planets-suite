@@ -68,7 +68,7 @@ import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
@@ -2404,7 +2404,7 @@ public class NewExpWizardController{
 			Calendar c = new GregorianCalendar();
 			c.setTimeInMillis(Long.parseLong(expRunInMillis));
 			
-			//now create or update an MeasurementRecordImpl record
+			//now create or update an MeasurementImpl record
 			this.updateManualPropertyMeasurementRecord(manualpropID, inputDigoRef, stageName, c,value);
 			
 			//store the updated experiment
@@ -2440,7 +2440,7 @@ public class NewExpWizardController{
 	        				if(execStageRec.getStage().equals(stageName)){
 		        				//check if we're operating on the requested manual measurement ID
 	        					boolean bFound = false;
-	        					for(MeasurementRecordImpl mRec : execStageRec.getManualMeasurements()){
+	        					for(MeasurementImpl mRec : execStageRec.getManualMeasurements()){
 		        					if(mRec.getIdentifier().equals(propertyID)){
 		        						mRec.setValue(value);
 		        						bFound = true;
@@ -2449,9 +2449,7 @@ public class NewExpWizardController{
 		        				}
 	        					if(!bFound){
 	        						//no MeasurementRecord exists -> create a new one
-	        						MeasurementRecordImpl mRec = new MeasurementRecordImpl();
-	        						mRec.setIdentifier(propertyID);
-	        						mRec.setValue(value);
+	        						MeasurementImpl mRec = new MeasurementImpl(propertyID, value);
 	        						execStageRec.addManualMeasurement(mRec);
 	        						log.info("created new measurement for input: "+digObjectRefCopy+" time: "+runEndDate.getTimeInMillis()+" stage: "+stageName+" propID: "+propertyID+" value: "+value);
 	        					}

@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
 
 /**
@@ -54,13 +55,16 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	// FIXME: Should this be in the XML? Only can be if a real class (not inner).
     @XmlTransient
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private Vector<ServiceOperationImpl> lAllRegisteredServiceOperations;
 	//all Operation Names within the WSDL not only the registered ones that can be executed via the TB
 	//Note: to persist this object it's impl and not its interface is required here
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private Vector<String> lAllOperationNamesFromWSDL;
     //all tag names and values that have been registered for this service
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private Vector<ServiceTagImpl> lTags;
 	//records the service's first deployment data
 	private Calendar deploymentDate = new GregorianCalendar();

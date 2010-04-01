@@ -2,9 +2,12 @@ package eu.planets_project.tb.impl;
 
 import java.util.Hashtable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 @Entity
 public class TestBean implements java.io.Serializable{
@@ -14,6 +17,7 @@ public class TestBean implements java.io.Serializable{
 	private String description;
 	
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private Hashtable<Integer,String> htable;
 	
 	public TestBean(){

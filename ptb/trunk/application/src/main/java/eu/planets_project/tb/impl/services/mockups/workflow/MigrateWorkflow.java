@@ -40,9 +40,10 @@ import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
@@ -273,7 +274,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
      * @return
      */
     private MeasurementImpl createMeasurementFromProperty( Property p ) {
-        MeasurementImpl m = new MeasurementImpl(null);
+        MeasurementImpl m = new MeasurementImpl();
         
         if( p == null ) return m;
         
@@ -292,9 +293,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         m.setName(p.getName());
         m.setIdentifier(propURI);
         m.setDescription(p.getDescription());
-        // FIXME The TYPES have different meanings here! What should this be recorded as?
-        //m.setType(p.getType());
-        m.setType(MeasurementImpl.TARGET_DIGITALOBJECT);
+        m.setType(p.getType());
+        m.getTarget().setType(MeasurementTarget.TargetType.DIGITAL_OBJECT);
         m.setUnit(p.getUnit());
         m.setValue(p.getValue());
         
@@ -494,7 +494,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
      */
     private void executeMigrateStage( WorkflowResult wr, ExecutionStageRecordImpl migrateStage, DigitalObject dob ) throws Exception {
         // Now prepare the result:
-        List<MeasurementRecordImpl> stage_m = migrateStage.getMeasurements();
+        List<MeasurementImpl> stage_m = migrateStage.getMeasurements();
         
         // Record the endpoint of the service used for this stage.
         migrateStage.setEndpoint(migratorEndpoint);
@@ -518,14 +518,14 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         msAfter = System.currentTimeMillis();
         
         // Compute the run time.
-        stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
+        stage_m.add(new MeasurementImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
         // Add the object size:
-        stage_m.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
+        stage_m.add( new MeasurementImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
 
         // Now record
         if( success && migrated.getDigitalObject() != null ) {
 
-            stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
+            stage_m.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
 
             // Take the digital object, put it in a temp file, and give it a sensible name, using the new format extension.
             File doTmp = File.createTempFile("migrateResult", ".tmp");
@@ -555,7 +555,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Only get to here if there was not a valid result.
         
         // Build in a 'service failed' property, i.e. the call worked, but no result.
-        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
+        stage_m.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
         // ADD a report, so the full set is known.
         wr.logReport(migrated.getReport());
@@ -576,7 +576,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
      */
     private void executeCharacteriseStage( WorkflowResult wr, DigitalObject dob, ExecutionStageRecordImpl  stage, Characterise dp ) throws Exception {
         // Now prepare the result:
-        List<MeasurementRecordImpl> stage_m = stage.getMeasurements();
+        List<MeasurementImpl> stage_m = stage.getMeasurements();
         
         // Invoke the service, timing it along the way:
         boolean success = true;
@@ -612,25 +612,25 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
         
         // Compute the run time.
-        stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
+        stage_m.add(new MeasurementImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
         // Add the object size:
-        stage_m.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
+        stage_m.add( new MeasurementImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
 
         // Record results:
         if( success ) {
-            stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
+            stage_m.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
             if( result != null && result.getProperties() != null ) {
                 log.info("Got "+result.getProperties().size()+" properties");
                 for( Property p : result.getProperties() ) {
                     log.info("Recording measurement: "+p.getUri()+":"+p.getName()+" = "+p.getValue());
-                    stage_m.add(new MeasurementRecordImpl( p.getUri(), p.getValue() ));
+                    stage_m.add(new MeasurementImpl( p.getUri(), p.getValue() ));
                 }
             }
             return;
         }
 
         // FAILED:
-        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
+        stage_m.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
     }
 
@@ -645,7 +645,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private void executeIdentifyStage(WorkflowResult wr, DigitalObject dob,
             ExecutionStageRecordImpl stage, Identify identify) throws Exception {
         // Now prepare the result:
-        List<MeasurementRecordImpl> stage_m = stage.getMeasurements();
+        List<MeasurementImpl> stage_m = stage.getMeasurements();
         
         // Invoke the service, timing it along the way:
         boolean success = true;
@@ -677,14 +677,14 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
         
         // Compute the run time.
-        stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
+        stage_m.add(new MeasurementImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
         // Add the object size:
-        stage_m.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
+        stage_m.add( new MeasurementImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
         
         // Record results:
         if( success ) {
             try {
-                stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
+                stage_m.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
                 log.info("Start with Measurements #"+stage_m.size());
                 IdentifyWorkflow.collectIdentifyResults(stage_m, result, dob);
                 log.info("Afterwards, Measurements #"+stage_m.size());
@@ -695,7 +695,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
 
         // FAILED:
-        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
+        stage_m.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
     }
 

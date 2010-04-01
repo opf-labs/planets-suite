@@ -10,25 +10,40 @@
  */
 package eu.planets_project.tb.impl.model.measure;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
+import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * @author AnJackson
@@ -37,44 +52,47 @@ import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 @Entity
 @XmlRootElement(name = "MeasurementEvent")
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class MeasurementEventImpl {
+public class MeasurementEventImpl implements Serializable, Comparable {
+    /** */
+    private static Log log = LogFactory.getLog(MeasurementEventImpl.class);
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7766240403262452970L;
+
     @Id
     @GeneratedValue
     @XmlTransient
     private long id;
     
-    /* --------------- Target ------------------ */
-    
     /** If these are measurements about a service, then this is the invocation that was measured. */
     @ManyToOne //(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @XmlTransient
     protected ExecutionStageRecordImpl targetInvocation;
 
     /** If these are measurements about a workflow execution, then this is the execution that was measured. */
     @ManyToOne //(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @XmlTransient
     protected ExecutionRecordImpl targetExecution;
+    // FIXME This is needed, but can lead to infinite cycles, so needs to be re-constructed on Load?
 
-    /*
-     * If the target was one or more digital object(s).
-     */
-    
-    /** If this is about one or more digital objects, then the digital objects that were measured go here. 
-     * As Data Registry URIs, stored as Strings. */
-    private Vector<String> digitalObjects = new Vector<String>();
-    
     /* ----------------- Context ------------ */
+
+    /** The date of this Event */
+    private Calendar date;
 
     /** The experiment stage */
     public static enum EXP_STAGE {
-        /** Target being measured is an input to an experiment. */
+        /** MeasurementTarget being measured is an input to an experiment. */
         EXP_INPUT,
-        /** Target being measured is during the execution of a workflow. */
+        /** MeasurementTarget being measured is during the execution of a workflow. */
         EXP_PROCESS,
-        /** Target being measured is an output to an experiment */
+        /** MeasurementTarget being measured is an output to an experiment */
         EXP_OUTPUT,
-        /** Target is the overall experiment execution */
+        /** MeasurementTarget is the overall experiment execution */
         EXP_OVERALL,
-        /** Target is being measured outside of an experimental context. */
+        /** MeasurementTarget is being measured outside of an experimental context. */
         NO_EXP,
     }
     private EXP_STAGE experimentStage;
@@ -94,32 +112,18 @@ public class MeasurementEventImpl {
      */
     
     /* --------------- Agent ------------------ */
+    @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
+    MeasurementAgent agent = new MeasurementAgent();
     
-    /** */
-    public static enum AGENT_TYPE { 
-        /** This measurement event was carried out by a human testbed user. */
-        USER,
-        /** This measurement event was carried out by a service. */
-        SERVICE,
-        /** This measurement event was carried out by workflow. */
-        WORKFLOW
-    }
     
-    // Agent is service, invoked by user?
+    /* --------------- Measurements, as performed by Agent upon the MeasurementTarget ------------------ */
     
-    /** The Agent that took these measurements. */
-    private AGENT_TYPE agentType;
-    
-    /** A record of the identity of the Agent, if it is a User */
-    private String username = null;
-
-    /** The date of this Event */
-    private Calendar date;
-
-    /* --------------- Measurements, as performed by Agent upon the Target ------------------ */
-    
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="event", fetch=FetchType.EAGER)
-    private Set<MeasurementImpl> measurements = new HashSet<MeasurementImpl>();
+    //@OneToMany(cascade=CascadeType.ALL, mappedBy="event", fetch=FetchType.EAGER)
+    //private Set<MeasurementImpl> measurements = new HashSet<MeasurementImpl>();
+    @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
+    private Vector<MeasurementImpl> measurements = new Vector<MeasurementImpl>();
 
     
     /* --------------- Constructors --------------------------- */
@@ -146,6 +150,13 @@ public class MeasurementEventImpl {
         this.date = Calendar.getInstance();
         this.experimentStage = EXP_STAGE.EXP_PROCESS;
     }
+    
+    /**
+     * @return
+     */
+    public long getId() {
+        return this.id;
+    }
 
     /**
      * @return the invocation
@@ -153,11 +164,11 @@ public class MeasurementEventImpl {
     public ExecutionStageRecordImpl getTargetInvocation() {
         return targetInvocation;
     }
-
+    
     /**
-     * @param invocation the invocation to set
+     * @param targetInvocation the targetInvocation to set
      */
-    public void setInvocation(ExecutionStageRecordImpl targetInvocation) {
+    public void setTargetInvocation(ExecutionStageRecordImpl targetInvocation) {
         this.targetInvocation = targetInvocation;
     }
 
@@ -172,29 +183,15 @@ public class MeasurementEventImpl {
     /**
      * @return
      */
-    public Set<MeasurementImpl> getMeasurements() {
+    public Vector<MeasurementImpl> getMeasurements() {
         return this.measurements;
     }
-
+    
     /**
      * @return
      */
     public String getWorkflowStage() {
         return this.stage;
-    }
-
-    /**
-     * @return the digitalObjects
-     */
-    public Vector<String> getDigitalObjects() {
-        return digitalObjects;
-    }
-
-    /**
-     * @param digitalObjects the digitalObjects to set
-     */
-    public void setDigitalObjects(Vector<String> digitalObjects) {
-        this.digitalObjects = digitalObjects;
     }
 
     /**
@@ -228,29 +225,15 @@ public class MeasurementEventImpl {
     /**
      * @return the agentType
      */
-    public AGENT_TYPE getAgentType() {
-        return agentType;
+    public MeasurementAgent getAgent() {
+        return agent;
     }
 
     /**
      * @param agentType the agentType to set
      */
-    public void setAgentType(AGENT_TYPE agentType) {
-        this.agentType = agentType;
-    }
-
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAgent(MeasurementAgent agent) {
+        this.agent = agent;
     }
 
     /**
@@ -274,18 +257,52 @@ public class MeasurementEventImpl {
         return targetExecution;
     }
 
-    /**
-     * @param targetInvocation the targetInvocation to set
-     */
-    public void setTargetInvocation(ExecutionStageRecordImpl targetInvocation) {
-        this.targetInvocation = targetInvocation;
-    }
 
     /**
-     * @param measurements the measurements to set
+     * @param invocation the invocation to set
      */
-    public void setMeasurements(Set<MeasurementImpl> measurements) {
-        this.measurements = measurements;
+    public void setTargetExecution(ExecutionRecordImpl targetExecution) {
+        this.targetExecution = targetExecution;
+    }
+
+    /* Actions */
+    
+    /**
+     * 
+     */
+    public void deleteMeasurementEvent() {
+        log.info("Deleting MeasurementEvent "+this.getId());
+        TestbedManagerImpl tbm = (TestbedManagerImpl) JSFUtil.getManagedObject("TestbedManager");
+        // Now update experiment.
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        BatchExecutionRecordImpl batch = expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords().iterator().next();
+        ExecutionRecordImpl run = batch.getRuns().iterator().next();
+        MeasurementEventImpl toRemove = null;
+        for( MeasurementEventImpl fme : run.getMeasurementEvents() ) {
+            if( fme.getId() == getId()) 
+                toRemove = fme;
+        }
+        if( toRemove != null ) run.getMeasurementEvents().remove(toRemove);
+        // Remove the Event itself:
+        ExperimentPersistencyRemote db = tbm.getExperimentPersistencyRemote();
+        setTargetInvocation(null);
+        setTargetExecution(null);
+        db.removeMeasurementEvent(this);
+        // TODO Remove child measurements?
+        // And save the experiment:
+        DigitalObjectCompare.persistExperiment();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o) {
+        if( o instanceof MeasurementEventImpl ) {
+            MeasurementEventImpl other = (MeasurementEventImpl) o;
+            if( this.date != null && other != null )
+                return this.date.compareTo(other.date);
+        }
+        return 0;
     }
     
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
@@ -55,7 +55,7 @@ public class MeasurementPropertyResultsBean {
 		return results;
 	}
 	
-	public void addResult(Calendar runDate, MeasurementRecordImpl result){
+	public void addResult(Calendar runDate, MeasurementImpl result){
 	    if( this.results != null ) {
 	        this.results.put(runDate.getTimeInMillis(), new RecordBean(result));
 	    }
@@ -93,7 +93,7 @@ public class MeasurementPropertyResultsBean {
 		
 		public RecordBean(){}
 		
-		public RecordBean(MeasurementRecordImpl mrec){
+		public RecordBean(MeasurementImpl mrec){
 			this.setRecordValue(mrec.getValue());
 		}
 		

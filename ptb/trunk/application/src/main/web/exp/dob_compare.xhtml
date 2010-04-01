@@ -31,7 +31,30 @@
         
          <ui:include src="/WEB-INF/templates/do_compare.xhtml">
           <ui:param name="isInExperiment" value="true" />
-         </ui:include>
+         </ui:include>         
+        
+        <div id="leftcol">
+
+        <h3 class="leftcol">Experiment Analysis</h3>
+                <div class="innertube">        
+                    <p class="leftcol">
+                    <h:outputLink value="../exp/exp_stage5.faces">
+                        <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
+                        <h:outputText value="Return to the experiment analysis step."/>
+                    </h:outputLink>
+                </p>
+                </div>
+
+        <!--
+        <h3 class="leftcol">Inspector</h3>
+        <div class="innertube">        
+        <p class="leftcol">
+
+        </p>
+        </div>
+        -->
+        </div>
+
         
 	</ui:define>
 

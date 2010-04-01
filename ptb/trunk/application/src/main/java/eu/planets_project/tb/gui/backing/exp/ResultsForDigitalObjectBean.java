@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import java.util.Vector;
 
@@ -39,31 +40,19 @@ import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 public class ResultsForDigitalObjectBean extends DigitalObjectBean {
     private Log log = LogFactory.getLog(ResultsForDigitalObjectBean.class);
 
-    private List<ExecutionRecordImpl> executionRecords = new ArrayList<ExecutionRecordImpl>();
-
-    private BatchExecutionRecordImpl batch = null;
-    
-    
     /**
      * @param input
      */
     public ResultsForDigitalObjectBean( String input ) {
     	super(input);
-    	this.init(input);
     }
     
-    private void init(String file){
+    private BatchExecutionRecordImpl getBatch(){
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        // Loop over results and patch them in:
-        for( BatchExecutionRecordImpl batch : expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords() ) {
-            for( ExecutionRecordImpl run : batch.getRuns() ) {
-                if( file.equals( run.getDigitalObjectReferenceCopy() ) ) {
-                    getExecutionRecords().add(run);
-                    this.batch = batch;
-                }
-            }
-        }
-        log.info("Result object initialised.");
+        Set<BatchExecutionRecordImpl> batchExecutionRecords = expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords();
+        if( batchExecutionRecords != null && batchExecutionRecords.size() > 0 )
+            return batchExecutionRecords.iterator().next();
+        return null;
     }
     
 
@@ -71,12 +60,23 @@ public class ResultsForDigitalObjectBean extends DigitalObjectBean {
      * @return the executionRecords
      */
     public List<ExecutionRecordImpl> getExecutionRecords() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        List<ExecutionRecordImpl> executionRecords = new ArrayList<ExecutionRecordImpl>();
+        // Loop over results and patch them in:
+        if( this.getBatch() != null  && this.getBatch().getRuns() != null ) {
+            for( ExecutionRecordImpl run : this.getBatch().getRuns() ) {
+                if( this.getDigitalObject().equals( run.getDigitalObjectReferenceCopy() ) ) {
+                    executionRecords.add(run);
+                }
+            }
+        }
         return executionRecords;
     }
 
     public boolean getHasExecuted() {
-        if( this.batch == null ) return false;
-        if( this.batch.getStartDate() == null ) return false;
+        BatchExecutionRecordImpl batch = this.getBatch();
+        if( batch == null ) return false;
+        if( batch.getStartDate() == null ) return false;
         return true;
     }
     
@@ -150,8 +150,9 @@ public class ResultsForDigitalObjectBean extends DigitalObjectBean {
      * @return the report from the batch processor level:
      */
     public String getBatchReport() {
-        if( this.batch == null || this.batch.getWorkflowExecutionLog() == null ) return "No batch report logged.";
-        return this.batch.getWorkflowExecutionLog().getSerializedWorkflowResult();
+        BatchExecutionRecordImpl batch = this.getBatch();
+        if( batch == null || batch.getWorkflowExecutionLog() == null ) return "No batch report logged.";
+        return batch.getWorkflowExecutionLog().getSerializedWorkflowResult();
     }
     
     /**

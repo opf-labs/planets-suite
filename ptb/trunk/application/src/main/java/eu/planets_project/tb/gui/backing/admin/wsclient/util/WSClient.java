@@ -165,7 +165,7 @@ public class WSClient
 			ByteArrayOutputStream msgStream = new ByteArrayOutputStream();
 			msg.writeTo(msgStream);
 
-			log.debug("SOAP Message Target URL: " + endpoint.getURL());
+			log.debug("SOAP Message MeasurementTarget URL: " + endpoint.getURL());
 			log.debug("SOAP Request: " + msgStream.toString());
 
 			// Make the call
@@ -442,7 +442,7 @@ public class WSClient
 			ByteArrayOutputStream msgStream = new ByteArrayOutputStream();
 			msg.writeTo(msgStream);
 
-			log.debug("SOAP Message Target URL: " + endpoint.getURL());
+			log.debug("SOAP Message MeasurementTarget URL: " + endpoint.getURL());
 			log.debug("SOAP Request: " + msgStream.toString());
 
 			// Make the call

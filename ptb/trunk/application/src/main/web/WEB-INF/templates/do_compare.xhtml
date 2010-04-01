@@ -21,6 +21,8 @@
         <div id="mainwrapper">
         <div id="maincol">
         <div class="innertubemain">
+        
+        <h2 class="main">Compare Digital Objects</h2>
 
   
   <div id="digitalObjectRegistryBrowser">
@@ -51,9 +53,11 @@
     
     </h:panelGrid>
     
+    <!-- ********************************************************************** -->
+    
     <rich:panel id="dobCompareDirect">
       <f:facet name="header">
-            <h:outputText value="Compare #{DobCompare.dob1.leafname} against #{DobCompare.dob2.leafname} directly"/>
+            <h:outputText value="Compare using Planets services..."/>
       </f:facet>
       
       <dt><b>Compare</b></dt>
@@ -61,24 +65,14 @@
         <h:selectOneMenu value="#{DobCompare.compareService}">
           <f:selectItem itemValue="" itemLabel="[none]" />
           <f:selectItems value="#{DobCompare.compareServiceList}" />
-          <a4j:support event="onchange" reRender="dobCompareForm" />
+                    
         </h:selectOneMenu>
+        <a4j:commandButton action="#{DobCompare.runCompareService}" reRender="dobCompareDirect,dobCompareMeasurements" value="Run"/>
       </dd>
       <dt>Compare Report:</dt>
       <dd>
         <h:outputText value="#{DobCompare.compareServiceReport}"/>
       </dd>
-      <dt>Compare Result:</dt>
-          <dd>
-            <a4j:repeat value="#{DobCompare.compareProperties}" var="prop">
-             <a4j:commandLink>
-               <h:outputText value=" #{prop.name}"/>
-               <rich:toolTip value="#{prop.uri}"/>
-             </a4j:commandLink>
-             <h:outputText value=" = "/>
-             <i><h:outputText value="#{prop.value}"/></i><br/>
-            </a4j:repeat>
-          </dd>
       <dd>
          <ui:include src="/WEB-INF/templates/fragments/show_error_modal.xhtml">
            <ui:param name="message" value="#{DobCompare.compareServiceException}"/>
@@ -87,202 +81,86 @@
          </ui:include>
       </dd>
       
+      <dt>Measurements:</dt>
           
-    </rich:panel>
+    <!-- ********************************************************************** -->
     
-    <rich:panel id="dobCompare">
-      <f:facet name="header">
-            <h:outputText value="Compare #{DobCompare.dob1.leafname} against #{DobCompare.dob2.leafname} via Characterisation"/>
-      </f:facet>
-    
-      <dt><b>Characterise</b></dt>
-      <dd>
-        <h:selectOneMenu value="#{DobCompare.characteriseService}">
-          <f:selectItem itemValue="" itemLabel="[none]" />
-          <f:selectItems value="#{DobCompare.characteriseServiceList}" />
-          <a4j:support event="onchange" reRender="dobCompareForm" />
-        </h:selectOneMenu>
-      </dd>
-
-  <h:panelGrid columns="2" columnClasses="halfContent">
-    <rich:panel id="dobProperties1">
-      <f:facet name="header">
-            <h:outputText value="#{DobCompare.dob1.leafname}"/>
-      </f:facet>
-
-      <dt>Characterise Report:</dt>
-      <dd>
-        <h:outputText value="#{DobCompare.characterise1ServiceReport}"/>
-      </dd>
-      <dt>Characterise Result:</dt>
-          <dd>
-            <a4j:repeat value="#{DobCompare.characterise1Properties}" var="prop">
-             <a4j:commandLink>
-               <h:outputText value=" #{prop.name}"/>
-               <rich:toolTip value="#{prop.uri}"/>
-             </a4j:commandLink>
-             <h:outputText value=" = "/>
-             <i><h:outputText value="#{prop.value}"/></i><br/>
-            </a4j:repeat>
-          </dd>
-      <dd>
-         <ui:include src="/WEB-INF/templates/fragments/show_error_modal.xhtml">
-           <ui:param name="message" value="#{DobCompare.characteriseServiceException}"/>
-           <ui:param name="exception" value="#{DobCompare.characteriseServiceStackTrace}"/>
-           <ui:param name="uid" value="2"/>
-         </ui:include>
-      </dd>
-    
-    
-    </rich:panel>
-    
-    <rich:panel id="dobProperties2">
-      <f:facet name="header">
-            <h:outputText value="#{DobCompare.dob2.leafname}"/>
-      </f:facet>
-
-      <dt>Characterise Report:</dt>
-      <dd>
-        <h:outputText value="#{DobCompare.characterise2ServiceReport}"/>
-      </dd>
-      <dt>Characterise Result:</dt>
-          <dd>
-            <a4j:repeat value="#{DobCompare.characterise2Properties}" var="prop">
-             <a4j:commandLink>
-               <h:outputText value=" #{prop.name}"/>
-               <rich:toolTip value="#{prop.uri}"/>
-             </a4j:commandLink>
-             <h:outputText value=" = "/>
-             <i><h:outputText value="#{prop.value}"/></i><br/>
-            </a4j:repeat>
-          </dd>
-  
-    
-    </rich:panel>
-  </h:panelGrid>
-
-      <p>
-      <br/>
-      </p> 
+      <rich:dataTable id="dobCompareMeasurements" 
+          onRowMouseOver="this.style.backgroundColor='#{me.odd ? '#eef' : '#eee'}'"
+          onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+          value="#{DobCompare.experimentMeasurements}" var="me" styleClass="tbTable" 
+          rows="#{isInExperiment ? '25' : '0'}" reRender="measurements_ds">
+          
+          <f:facet name="header">
+           <rich:columnGroup>
+            <rich:column>
+              <h:outputText value="Property"/>
+            </rich:column>
+            <rich:column>
+              <h:outputText value="In #{DobCompare.dob1.leafname}"/>
+            </rich:column>
+            <rich:column>
+              <h:outputText value="In #{DobCompare.dob2.leafname}"/>
+            </rich:column>
+            <rich:column>
+              <h:outputText value="Comparison"/>
+            </rich:column>
+           </rich:columnGroup>
+          </f:facet>
       
-      <dt><b>Compare Properties</b></dt>
-      <dd>
-        <h:selectOneMenu value="#{DobCompare.compareExtractedService}">
-          <f:selectItem itemValue="" itemLabel="[none]" />
-          <f:selectItems value="#{DobCompare.comparePropertiesServiceList}" />
-          <a4j:support event="onchange" reRender="dobCompareForm" />
-        </h:selectOneMenu>
-      </dd>
+        <rich:column colspan="4" styleClass="#{me.odd ? 'oddRow' : 'evenRow'}" sortBy="#{me.event.date}" sortOrder="DESCENDING">
+            <f:facet name="header">Measurement Date</f:facet>
+            
+            <h:outputText value="#{me.event.agent.name} "/>
+            
+            <h:outputText value="#{me.event.date.time} " rendered="#{me.event.date != null}">
+                <f:convertDateTime type="time" dateStyle="short"/>
+            </h:outputText>
+            
+            <a4j:commandLink action="#{me.event.deleteMeasurementEvent}" reRender="dobCompareMeasurements" rendered="#{isInExperiment}">
+                <t:graphicImage value="/graphics/user_trash.png" alt="Delete Measurement Event"/>
+            </a4j:commandLink>
+            
+        </rich:column>
+        
+        <!-- SubTable starts... -->
+        <rich:subTable var="m" value="#{me.comparisons}">
+        
+        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
+            <ui:include src="/WEB-INF/templates/fragments/property_def.xhtml">
+              <ui:param name="p" value="#{m.property}"/>
+            </ui:include>
+        </rich:column>
+        
+        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
+            <h:outputText value="#{m.firstValue}"/>
+        </rich:column>
+        
+        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
+            <h:outputText value="#{m.secondValue}"/>
+        </rich:column>
+        
+        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
+            <h:outputText value="#{m.comparison} "/>
+        </rich:column>
+        
+        </rich:subTable>
+        <!-- SubTable ends... -->
+        
+        
+        <f:facet name="footer">
+            <rich:datascroller id="measurements_ds" renderIfSinglePage="false"></rich:datascroller>
+        </f:facet>
+
+      </rich:dataTable>
       
-      <dt>Compare Properties Report:</dt>
-      <dd>
-        <h:outputText value="#{DobCompare.compareExtractedServiceReport}"/>
-      </dd>
-      <dt>Compare Properties Result:</dt>
-          <dd>
-            <a4j:repeat value="#{DobCompare.compareExtractedProperties}" var="prop">
-             <a4j:commandLink>
-               <h:outputText value=" #{prop.name}"/>
-               <rich:toolTip value="#{prop.uri}"/>
-             </a4j:commandLink>
-             <h:outputText value=" = "/>
-             <i><h:outputText value="#{prop.value}"/></i><br/>
-            </a4j:repeat>
-          </dd>
-          
-      <dd>
-         <ui:include src="/WEB-INF/templates/fragments/show_error_modal.xhtml">
-           <ui:param name="message" value="#{DobCompare.compareExtractedServiceException}"/>
-           <ui:param name="exception" value="#{DobCompare.compareExtractedServiceStackTrace}"/>
-           <ui:param name="uid" value="3"/>
-         </ui:include>
-      </dd>
-      <p>
-      <br/>
-      </p>
-          
-    <!-- START WITH IDENTIFY SERVICE HERE -->    
-    <dt><b>Identify</b></dt>
-      <dd>
-        <h:selectOneMenu value="#{DobCompare.identifyService}">
-          <f:selectItem itemValue="" itemLabel="[none]" />
-          <f:selectItems value="#{DobCompare.identifyServiceList}" />
-          <a4j:support event="onchange" reRender="dobCompareForm" />
-        </h:selectOneMenu>
-      </dd>
-      <h:panelGrid columns="2" columnClasses="halfContent">
-    <rich:panel id="dobIdentify1">
-      <f:facet name="header">
-            <h:outputText value="#{DobCompare.dob1.leafname}"/>
-      </f:facet>
-
-      <dt>Identify Report:</dt>
-      <dd>
-        <h:outputText value="#{DobCompare.identify1ServiceReport}"/>
-      </dd>
-      <dt>Identify Result:</dt>
-          <dd>
-            <a4j:repeat value="#{DobCompare.identify1Types}" var="type">
-             <i><h:outputText value="#{type}"/></i><br/>
-            </a4j:repeat>
-          </dd>
-      <dd>
-         <ui:include src="/WEB-INF/templates/fragments/show_error_modal.xhtml">
-           <ui:param name="message" value="#{DobCompare.identifyServiceException}"/>
-           <ui:param name="exception" value="#{DobCompare.identifyServiceStackTrace}"/>
-           <ui:param name="uid" value="4"/>
-         </ui:include>
-      </dd>
-    
-    
     </rich:panel>
     
-    <rich:panel id="dobIdentify2">
-      <f:facet name="header">
-            <h:outputText value="#{DobCompare.dob2.leafname}"/>
-      </f:facet>
-
-      <dt>Identify Report:</dt>
-      <dd>
-        <h:outputText value="#{DobCompare.identify2ServiceReport}"/>
-      </dd>
-      <dt>Identify Result:</dt>
-          <dd>
-            <a4j:repeat value="#{DobCompare.identify2Types}" var="type">
-             <i><h:outputText value="#{type}"/></i><br/>
-            </a4j:repeat>
-          </dd>
-  
+        <!-- ********************************************************************** -->
     
-    </rich:panel>
-  </h:panelGrid>
-    </rich:panel>
+    
     </div>
-    <!--
-    <ui:include src="/WEB-INF/templates/fragments/do_inspection_returns.xhtml"/>
-    -->
-		<h:panelGroup rendered="#{ExperimentInspector.experimentId == null}">
-        <h3 class="leftcol">Data Browser</h3>
-                <div class="innertube">        
-                    <p class="leftcol">
-    <ui:include src="/WEB-INF/templates/fragments/do_inspection_returns.xhtml"/>
-                    </p>
-                </div>
-		</h:panelGroup>
-        
-        <!--  FIXME Use this only in a special comparison page used in exp stage 5 -->
-               
-        <h:panelGroup rendered="#{ExperimentInspector.experimentId != null}">
-        <h3 class="leftcol">Experiment Analysis</h3>
-                <div class="innertube">        
-                    <p class="leftcol">
-                    <h:outputLink value="../exp/exp_stage5.faces">
-                        <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
-                        <h:outputText value="Return to the experiment analysis step."/>
-                    </h:outputLink>
-                </p>
-                </div>
-        </h:panelGroup>
+    
         
         <p>&nbsp;</p>
         <p>&nbsp;</p>
@@ -295,40 +173,6 @@
         </div>
         
         
-        <div id="leftcol">
-
-		<h:panelGroup rendered="#{ExperimentInspector.experimentId == null}">
-        <h3 class="leftcol">Data Browser</h3>
-                <div class="innertube">        
-                    <p class="leftcol">
-    <ui:include src="/WEB-INF/templates/fragments/do_inspection_returns.xhtml"/>
-                    </p>
-                </div>
-		</h:panelGroup>
-        
-        <!--  FIXME Use this only in a special comparison page used in exp stage 5 -->
-               
-        <h:panelGroup rendered="#{ExperimentInspector.experimentId != null}">
-        <h3 class="leftcol">Experiment Analysis</h3>
-                <div class="innertube">        
-                    <p class="leftcol">
-                    <h:outputLink value="../exp/exp_stage5.faces">
-                        <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
-                        <h:outputText value="Return to the experiment analysis step."/>
-                    </h:outputLink>
-                </p>
-                </div>
-        </h:panelGroup>
-        <!--
-        <h3 class="leftcol">Inspector</h3>
-        <div class="innertube">        
-        <p class="leftcol">
-
-        </p>
-        </div>
-        -->
-        </div>
-
  </a4j:form>  
     
   </ui:composition>

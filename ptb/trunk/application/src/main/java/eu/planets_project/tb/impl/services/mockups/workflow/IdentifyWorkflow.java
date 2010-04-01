@@ -26,9 +26,11 @@ import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
 /**
@@ -76,7 +78,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
                 TecRegMockup.PROP_SERVICE_IDENTIFY_METHOD, 
                 "The identification method.", "",
                 "The method the service used to identify the digital object.", 
-                MeasurementImpl.TARGET_SERVICE);
+                null, MeasurementTarget.SERVICE_TARGET );
 
         // Now set up the hash:
         observables = new HashMap<String,List<MeasurementImpl>>();
@@ -117,7 +119,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
                         PROP_IDENTIFY_FORMAT, 
                         "The format of the Digital Object", "",
                         "The format of a Digital Object, specified as a Planets Format URI.", 
-                        STAGE_IDENTIFY, MeasurementImpl.TYPE_DIGITALOBJECT)
+                        STAGE_IDENTIFY, null)
         );
 
         // The identification method employed by the service:
@@ -127,7 +129,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
                         PROP_IDENTIFY_METHOD, 
                         "The identification method.", "",
                         "The method the service used to identify the digital object.", 
-                        STAGE_IDENTIFY, MeasurementImpl.TYPE_SERVICE)
+                        STAGE_IDENTIFY, null)
         );
          */
 
@@ -201,13 +203,13 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         // Record the endpoint of the service used for this stage.  FIXME Can this be done more automatically, from above?
         idStage.setEndpoint(identifierEndpoint);
         
-        List<MeasurementRecordImpl> recs = idStage.getMeasurements();
-        recs.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0) ));
+        List<MeasurementImpl> recs = idStage.getMeasurements();
+        recs.add(new MeasurementImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0) ));
         
         // Now record
         try {
             if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
-                recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
+                recs.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
                 collectIdentifyResults(recs, identify, dob);
                 wr.logReport(identify.getReport());
                 return wr;
@@ -217,7 +219,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         }
 
         // Build in a 'service failed' property.
-        recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
+        recs.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
         // Create a ServiceReport from the exception.
         // TODO can we distinguish tool and install error here?
@@ -232,20 +234,20 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         return wr;
     }
     
-    public static void collectIdentifyResults( List<MeasurementRecordImpl> recs, IdentifyResult ident, DigitalObject dob ) {
+    public static void collectIdentifyResults( List<MeasurementImpl> recs, IdentifyResult ident, DigitalObject dob ) {
         if( ident == null ) return;
         if( ident.getTypes() != null ) {
             for( URI format_uri : ident.getTypes() ) {
                 if( format_uri != null ) {
-                    recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_DO_FORMAT, format_uri.toString()));
+                    recs.add( new MeasurementImpl( TecRegMockup.PROP_DO_FORMAT, format_uri.toString()));
         }
             }
         }
         if( ident.getMethod() != null ) {
-            recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_IDENTIFY_METHOD, ident.getMethod().name() ));
+            recs.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_IDENTIFY_METHOD, ident.getMethod().name() ));
         }
         // Store the size:
-        recs.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+getContentSize(dob) ) );
+        recs.add( new MeasurementImpl(TecRegMockup.PROP_DO_SIZE, ""+getContentSize(dob) ) );
         return;
     }
 

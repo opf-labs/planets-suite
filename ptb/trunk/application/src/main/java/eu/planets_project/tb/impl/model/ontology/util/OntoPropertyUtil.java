@@ -28,7 +28,7 @@ public class OntoPropertyUtil {
      * @return
      */
     public static MeasurementImpl createMeasurementFromOntologyProperty(OntologyProperty p) throws Exception{
-    	 MeasurementImpl m = new MeasurementImpl(null);
+    	 MeasurementImpl m = new MeasurementImpl();
     	 if( p == null ) throw new Exception("invalid OntologyProperty: null");
     	 String propURI = p.getURI();
     	 // Invent a uri if required - shouldn't be the case:

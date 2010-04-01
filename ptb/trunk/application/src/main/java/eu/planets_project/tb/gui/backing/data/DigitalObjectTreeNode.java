@@ -198,16 +198,22 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     public String getMimeType() {
         String mimetype = null;
         
+        // Lookup in this:
+        MimetypesFileTypeMap mimeMap = new MimetypesFileTypeMap();
+        // Ensure the image/png mapping is present, as it appears to be broken in Java 6
+        // See http://furiouspurpose.blogspot.com/2009/01/what-does-java-6-have-against-imagepng.html
+        mimeMap.addMimeTypes("image/png png");
+        
         // Based only on URI:
         if( getUri() != null ) 
-            mimetype =  new MimetypesFileTypeMap().getContentType(getUri().getPath());
-
+            mimetype =  mimeMap.getContentType(getUri().getPath());
+        
         // Return this if it worked.
         if( mimetype != null ) return mimetype;
         
         // Otherwise, inspect content of the Digital Object: Title:
         if( getDob() != null && getDob().getTitle() != null ) 
-            mimetype = new MimetypesFileTypeMap().getContentType(getDob().getTitle());
+            mimetype = mimeMap.getContentType(getDob().getTitle());
         
        return mimetype;
     }
@@ -216,10 +222,12 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      * @return true if this entity can be displayed as a thumbnail.
      */
     public boolean isThumbnailable() {
+        String mimeType = this.getMimeType();
+        log.info("Checking mime type: "+mimeType);
         if( 
-                "image/jpeg".equals(this.getMimeType()) ||
-                "image/gif".equals(this.getMimeType()) ||
-                "image/png".equals(this.getMimeType()) 
+                "image/jpeg".equals(mimeType) ||
+                "image/gif".equals(mimeType) ||
+                "image/png".equals(mimeType) 
                 ) {
             return true;
         }

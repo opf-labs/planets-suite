@@ -203,15 +203,15 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#updateExperiment(eu.planets_project.tb.api.model.Experiment)
 	 */
 	public void updateExperiment(Experiment experiment) {
-	    log.debug("Updating experiment.");
+	    log.debug("Updating experiment "+experiment+" using dao "+edao);
 		if( edao.findExperiment(experiment.getEntityID()) != null ){
 		  //Should this be added in a transaction?
 		    edao.updateExperiment(experiment);
 			ExperimentImpl exp = (ExperimentImpl)edao.findExperiment(experiment.getEntityID());
-		    // Also update the Experiment backing bean to reflect the changes:
-			// FIXME Is this required?
-			//ExperimentInspector.putExperimentIntoSessionExperimentBean( exp );
-            
+		    // Also update the Experiment backing beans to reflect the changes:
+	        ExperimentInspector ei = (ExperimentInspector)JSFUtil.getManagedObject("ExperimentInspector");
+	        ei.setExperimentId(""+exp.getEntityID());
+	        
           //End Transaction
 		} else {
 		    log.error("updateExperiment Failed: No Entity ID for experiment: "+experiment.getExperimentSetup().getBasicProperties().getExperimentName());
@@ -301,6 +301,7 @@ public class TestbedManagerImpl
         Vector<Experiment> vRet = new Vector<Experiment>();
         Collection<Experiment> itExpIDs = this.getAllExperiments();
         for(Experiment exp : itExpIDs ){
+            log.info("Exp: "+exp.getExperimentSetup().getBasicProperties().getExperimentName()+" "+exp.isAwaitingApproval()+" "+exp.isApproved());
             if ( exp.isAwaitingApproval() ){
                 vRet.add(exp);
             }

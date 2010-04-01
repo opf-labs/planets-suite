@@ -11,6 +11,12 @@
 <body>
   <ui:composition rendered="#{dob != null}">
     <dl>
+        <ui:fragment rendered="#{dob.thumbnailable}">
+          <h:panelGrid styleClass="thumbnailPreviewPanel">
+            <h:graphicImage styleClass="thumbnailPreviewImage" value="#{dob.thumbnailUri}"/>
+          </h:panelGrid>
+        </ui:fragment>
+        
         <dt>Name</dt>
         <dd><h:outputText value="#{dob.leafname}"/></dd>
         
@@ -33,14 +39,6 @@
         <dd><h:outputText value="#{dob.size}"/></dd>
         </ui:fragment>
 
-        <ui:fragment rendered="#{dob.thumbnailable}">
-        <dt>Preview</dt>
-        <dd>
-          <h:panelGrid styleClass="thumbnailPreviewPanel">
-            <h:graphicImage styleClass="thumbnailPreviewImage" value="#{dob.thumbnailUri}"/>
-          </h:panelGrid>
-        </dd>
-        </ui:fragment>
         
         <ui:fragment rendered="#{dob.downloadUri != null}">
         <dt>Download</dt>

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -31,6 +32,7 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.ExperimentNotFoundException;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.Log;
@@ -58,16 +60,22 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	private long lExperimentStructureReference;
 	
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> vExpObjectTypes;
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> vExpToolTypes;
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> vExpDigiTypes;
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private Vector<Long> vRefExpIDs;
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private Vector<String>vInvolvedUsers;
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private HashMap<String,Vector<String>> hmLiteratureReference;
 	//private HashMap<Long,Vector<Integer>> hmInvolvedUserSpecialExperimentRoles;
 

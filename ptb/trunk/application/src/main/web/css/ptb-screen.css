@@ -1081,6 +1081,11 @@ pre.rawServiceDescription {
   background-repeat: no-repeat;
   padding-left: 16px;
 }
+.thumbnailPreviewPanel {
+  float: right;
+  display: inline;
+  width: auto !important;
+}
 .thumbnailPreviewPanel img.thumbnailPreviewImage {
   border: 1px solid #ffffff;
 }
@@ -1088,4 +1093,11 @@ pre.rawServiceDescription {
   background-color: #888888 !important;
   border: 1px solid #ffffff;
 }
+.oddRow { 
+ background-color: #ffffff;
+}
+.evenRow { 
+ background-color: #f8f8f8;
+}
+
 

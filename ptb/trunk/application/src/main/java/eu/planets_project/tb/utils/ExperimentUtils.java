@@ -24,7 +24,7 @@ import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
@@ -78,7 +78,7 @@ public class ExperimentUtils {
                 if( exr != null && exr.getStages() != null ) {
                     for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
                         // log.info("Found Stage... "+exsr);
-                        for( MeasurementRecordImpl m : exsr.getMeasurements() ) {
+                        for( MeasurementImpl m : exsr.getMeasurements() ) {
                             // log.info("Looking at result for property "+m.getIdentifier());
                             sa[0] = exp.getExperimentSetup().getBasicProperties().getExperimentName();
                             sa[1] = "" + bi;

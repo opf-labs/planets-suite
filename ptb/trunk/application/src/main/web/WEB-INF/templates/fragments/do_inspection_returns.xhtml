@@ -6,24 +6,24 @@
 	xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 	<body>
 
-		<ui:composition>
+        <ui:composition>
 
-			<h:panelGroup rendered="#{ExperimentInspector.experimentId == null}">
-				<p>
-					<h:commandButton action="browse_data"
-						value="Return to the Data Browser" />
-				</p>
-			</h:panelGroup>
+            <h:panelGroup rendered="#{ExperimentInspector.experimentId == null}">
+                <p>
+                    <h:commandButton action="browse_data"
+                        value="Return to the Data Browser" />
+                </p>
+            </h:panelGroup>
 
-			<h:panelGroup rendered="#{ExperimentInspector.experimentId != null}">
-				<p>
-					<h:commandButton value="Return to Data Browser"
-						actionListener="#{NewExp_Controller.browseForData}">
-					</h:commandButton>
-				</p>
-			</h:panelGroup>
+            <h:panelGroup rendered="#{ExperimentInspector.experimentId != null}">
+                <p>
+                    <h:commandButton value="Return to Data Browser"
+                        actionListener="#{NewExp_Controller.browseForData}">
+                    </h:commandButton>
+                </p>
+            </h:panelGroup>
 
-		</ui:composition>
+        </ui:composition>
 
 	</body>
 

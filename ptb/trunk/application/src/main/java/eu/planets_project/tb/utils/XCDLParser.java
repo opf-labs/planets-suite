@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
 
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 
 /**
@@ -45,8 +45,8 @@ public class XCDLParser {
      * @return
      * @throws XPathExpressionException
      */
-    public static List<MeasurementRecordImpl> parseXCDL(Document xcdlDoc) throws XPathExpressionException {
-        List<MeasurementRecordImpl> props = new Vector<MeasurementRecordImpl>();
+    public static List<MeasurementImpl> parseXCDL(Document xcdlDoc) throws XPathExpressionException {
+        List<MeasurementImpl> props = new Vector<MeasurementImpl>();
 
         XPath xpath = XPathFactory.newInstance().newXPath();
         NodeList nodes = (NodeList) xpath.evaluate("/*//property", xcdlDoc, 
@@ -57,10 +57,11 @@ public class XCDLParser {
             String name = (String) xpath.evaluate( "./name", n,  XPathConstants.STRING);
             String id = (String) xpath.evaluate( "./name/@id", n,  XPathConstants.STRING);
             // Loop through the property definitions and patch them into Property objects.
-            MeasurementRecordImpl m = new MeasurementRecordImpl();
+            MeasurementImpl m = new MeasurementImpl(
+                    makePropertyUri(id, name).toString(),
+                    (String) xpath.evaluate( "./valueSet/labValue/val", n,  XPathConstants.STRING) 
+                    );
             // FIXME Unify this construction: See also XCDLService.createPropertyFromFFProp
-            m.setIdentifier(makePropertyUri(id, name).toString()); 
-            m.setValue( (String) xpath.evaluate( "./valueSet/labValue/val", n,  XPathConstants.STRING) );
 //            m.setType( "xcdl:" + (String) xpath.evaluate( "./valueSet/labValue/type", n,  XPathConstants.STRING) );
             
             props.add(m);
@@ -88,7 +89,7 @@ public class XCDLParser {
      * @throws IOException
      * @throws XPathExpressionException
      */
-    public static List<MeasurementRecordImpl> parseXCDL( File xcdlFile ) 
+    public static List<MeasurementImpl> parseXCDL( File xcdlFile ) 
             throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         String xcdl = FileUtils.readTxtFileIntoString(xcdlFile);
         return XCDLParser.parseXCDL(xcdl);
@@ -103,7 +104,7 @@ public class XCDLParser {
      * @throws IOException
      * @throws XPathExpressionException
      */
-    public static List<MeasurementRecordImpl> parseXCDL( String xcdl ) 
+    public static List<MeasurementImpl> parseXCDL( String xcdl ) 
             throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         DocumentBuilderFactory factory =   DocumentBuilderFactory.newInstance();  
         factory.setNamespaceAware(false);
@@ -123,7 +124,7 @@ public class XCDLParser {
      * @throws SAXException 
      * @throws XPathExpressionException 
      */
-    public static List<MeasurementRecordImpl> parseXCDL(InputStream input) 
+    public static List<MeasurementImpl> parseXCDL(InputStream input) 
             throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
         DocumentBuilderFactory factory =   DocumentBuilderFactory.newInstance();  
         factory.setNamespaceAware(false);

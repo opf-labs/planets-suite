@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -74,12 +75,14 @@ public class ServiceRecordImpl implements Serializable {
     
     private String host;
     
+    @Column(columnDefinition=ExperimentPersistencyImpl.TEXT_TYPE)
     private String serviceDescription;
     
     private Calendar dateFirstSeen;
     
     /** List of experiment IDs that saw this service record. */
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     HashSet<Long> experimentIds = new HashSet<Long>();
     
     /** The service invocation records */

@@ -25,7 +25,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
@@ -134,7 +134,7 @@ public class XCDLService implements Characterise {
         }
         */
 
-        List<MeasurementRecordImpl> list;
+        List<MeasurementImpl> list;
         try {
             list = XCDLParser.parseXCDL(migrateResult.getDigitalObject().getContent().getInputStream());
         } catch (Exception e) {
@@ -143,7 +143,7 @@ public class XCDLService implements Characterise {
         }
         List<Property> mprops = new Vector<Property>();
         if( list != null ) {
-            for( MeasurementRecordImpl m : list ) {
+            for( MeasurementImpl m : list ) {
                 Property p;
                 try {
                     p = new Property( new URI( m.getIdentifier()), m.getIdentifier(), m.getValue() );

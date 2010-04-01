@@ -90,7 +90,7 @@ public class OperationInfo
    }
 
    /**
-    * Sets the Target URL used to make a SOAP invocation for this operation
+    * Sets the MeasurementTarget URL used to make a SOAP invocation for this operation
     *
     * @param   value    The target URL
     */
@@ -100,7 +100,7 @@ public class OperationInfo
    }
 
    /**
-    * Gets the Target URL used to make a SOAP invocation for this operation
+    * Gets the MeasurementTarget URL used to make a SOAP invocation for this operation
     *
     * @return The target URL is returned
     */
@@ -130,7 +130,7 @@ public class OperationInfo
    }
 
    /**
-    * Sets the Target Object's URI used to make an invocation
+    * Sets the MeasurementTarget Object's URI used to make an invocation
     *
     * @param   value    The URI of the target object
     */
@@ -140,7 +140,7 @@ public class OperationInfo
    }
 
    /**
-    * Gets the Target Object's URI
+    * Gets the MeasurementTarget Object's URI
     *
     * @return The URI of the target object
     */

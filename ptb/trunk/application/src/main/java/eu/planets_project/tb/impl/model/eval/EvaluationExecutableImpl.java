@@ -1,5 +1,6 @@
 package eu.planets_project.tb.impl.model.eval;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
@@ -14,6 +15,7 @@ import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.model.ExecutableImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 
 /**
@@ -34,6 +36,7 @@ public class EvaluationExecutableImpl extends ExecutableImpl implements Evaluati
 
 	//no one-to-one annotation, as we want to persist this data by value and not per reference
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private EvaluationTestbedServiceTemplateImpl tbServiceTemplate;
 	private String sXCDLSource, sXCDLTarget, sXCDLComparison;
 	

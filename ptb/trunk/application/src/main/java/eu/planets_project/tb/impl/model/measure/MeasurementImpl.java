@@ -3,11 +3,19 @@
  */
 package eu.planets_project.tb.impl.model.measure;
 
+import java.io.Serializable;
 import java.net.URI;
+import java.util.Vector;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -15,7 +23,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * This is the Testbed's notion of a property measurement.
@@ -25,10 +36,10 @@ import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-@Entity
+@Embeddable
 @XmlRootElement(name = "Measurement")
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class MeasurementImpl extends MeasurementRecordImpl {
+public class MeasurementImpl implements Serializable {
     
     /** */
     private static final long serialVersionUID = 2724034034191132672L;
@@ -38,7 +49,8 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     @XmlTransient
     private long id;
     
-    @ManyToOne
+    //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @XmlTransient
     MeasurementEventImpl event;
     
     protected String identifier;
@@ -46,46 +58,36 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     protected String value;
     
     /** */
-    public static final String TARGET_SERVICE = "Service";
-    public static final String TARGET_DIGITALOBJECT = "Digital Object";
-    public static final String TARGET_DIGITALOBJECT_DIFF = "Comparison of Two Digital Objects";
-    public static final String TARGET_WORKFLOW = "Workflow";
-    /** */
-    protected String targetType;
-    
-    /* ----------------- Data that is looked-up on demand: -------------- */
-
-    @Transient
     protected String name;
     
-    @Transient
+    /** */
     protected String description;
     
-    @Transient
+    /** */
     protected String unit;
-    
-    @Transient
+
+    /** */
     protected String type;
     
+    /*
+     * If the target was one or more digital object(s).
+     */
     
+    /** If this is about one or more digital objects, then the digital objects that were measured go here. 
+     * As Data Registry URIs, stored as Strings. */
+    @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
+    protected MeasurementTarget target = new MeasurementTarget();
+
     /** For JAXB */
     @SuppressWarnings("unused")
-    private MeasurementImpl() { }
+    public MeasurementImpl() { }
 
     /**
      * @param m  
      */
     public MeasurementImpl(MeasurementEventImpl event ) {
         this.event = event;
-    }
-    
-    /**
-     * @param m  
-     */
-    public MeasurementImpl(MeasurementEventImpl event, MeasurementRecordImpl m) {
-        this.event = event;
-        this.identifier = m.getIdentifier();
-        this.value = m.getValue();
     }
     
     /**
@@ -100,6 +102,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
         this.name = m.name;
         this.unit = m.unit;
         this.description = m.description;
+        this.target = m.target;
     }
     
     /**
@@ -110,16 +113,59 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      * @param stage
      * @param type
      */
-    private MeasurementImpl(MeasurementEventImpl event, String identifier, String name, String unit, String description ) {
+    private MeasurementImpl(MeasurementEventImpl event, String identifier, String name, String unit, String description, String type, MeasurementTarget target ) {
         super();
+        this.event = event;
         this.identifier = identifier;
         this.name = name;
         this.unit = unit;
         this.description = description;
+        this.type = type;
+        this.target = target;
     }
     
-    protected MeasurementImpl(MeasurementEventImpl event, URI identifier, String name, String unit, String description ) {
-        this(event, identifier.toASCIIString(), name, unit, description );
+    protected MeasurementImpl(MeasurementEventImpl event, URI identifier, String name, String unit, String description, String type, MeasurementTarget target ) {
+        this(event, identifier.toASCIIString(), name, unit, description, type, target );
+    }
+
+    /**
+     * @param identifier
+     * @param value
+     */
+    public MeasurementImpl(URI identifier, String value) {
+        this.identifier = identifier.toASCIIString();
+        this.value = value;
+    }
+
+    /**
+     * @param identifier
+     * @param value
+     */
+    public MeasurementImpl(String identifier, String value) {
+        this.identifier = identifier;
+        this.value = value;
+    }
+
+    /**
+     * @param m
+     */
+    public MeasurementImpl(MeasurementImpl m) {
+        this(m.event, m.identifier, m.name, m.unit, m.description, m.type, m.target );
+    }
+
+    /**
+     * @param me
+     * @param p
+     */
+    public MeasurementImpl(MeasurementEventImpl event, Property p) {
+        this.event = event;
+        this.identifier = p.getUri().toASCIIString();
+        this.name = p.getName();
+        this.unit = p.getUnit();
+        this.description = p.getDescription();
+        this.type = p.getType();
+        this.value = p.getValue();
+        this.target = null;
     }
 
     /**
@@ -127,15 +173,15 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      * @return
      */
     public MeasurementImpl clone() {
-        return new MeasurementImpl(this.event, this.identifier, this.name, this.unit, this.description );
+        return new MeasurementImpl(this.event, this.identifier, this.name, this.unit, this.description, this.type, this.target );
     }
 
     /**
      * 
      */
     public static MeasurementImpl create( URI identifier, String name, String unit, String description, 
-            String type ) {
-        return new MeasurementImpl( null, identifier, name, unit, description );
+            String type, MeasurementTarget target ) {
+        return new MeasurementImpl( null, identifier, name, unit, description, type, target );
     }
 
 
@@ -207,7 +253,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
     }
 
     /**
-     * @return the unit
+     * @return the unitt
      */
     public String getUnit() {
         return unit;
@@ -239,7 +285,7 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      */
     @Override
     public String toString() {
-        return "[id:"+this.identifier+", name:"+this.name+", unit:"+this.unit+", desc:"+this.description+", type:"+this.type+", value:"+this.value+"]";
+        return "[id:"+this.id+", identifier:"+this.identifier+", name:"+this.name+", unit:"+this.unit+", desc:"+this.description+", type:"+this.type+", value:"+this.value+"]";
     }
     
     /**
@@ -278,6 +324,29 @@ public class MeasurementImpl extends MeasurementRecordImpl {
      */
     public MeasurementEventImpl getEvent() {
         return this.event;
+    }
+
+    /**
+     * @return the targetType
+     */
+    public MeasurementTarget getTarget() {
+        return target;
+    }
+
+    /**
+     * @param target the target to set
+     */
+    public void setTarget(MeasurementTarget target) {
+        this.target = target;
+    }
+
+    /**
+     * @return
+     */
+    public Property toProperty() {
+        Property.Builder pb = new Property.Builder(this.getIdentifierUri());
+        pb.name(name).description(description).type(type).value(value).unit(unit);
+        return pb.build();
     }
 
 }

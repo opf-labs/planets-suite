@@ -10,7 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.tb.gui.backing.exp.MeasurementPropertyResultsBean.RecordBean;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
  * Used to display the per digital object / property evaluation entries in a table line
@@ -30,7 +30,7 @@ public class EvaluationPropertyResultsBean extends MeasurementPropertyResultsBea
 		this.stageNames = stageNames;
 	}
 	
-	public void addMeasurementResult(Calendar runDate, String stageName, MeasurementRecordImpl result){
+	public void addMeasurementResult(Calendar runDate, String stageName, MeasurementImpl result){
 		//fetch the hm and add an additional stageName that shall be compared for the propertyID
 	    if( runDate != null && this.evalresults.get(runDate.getTimeInMillis()) != null) {
 	        this.evalresults.get(runDate.getTimeInMillis()).put(stageName, new EvalRecordBean(result));
@@ -91,7 +91,7 @@ public class EvaluationPropertyResultsBean extends MeasurementPropertyResultsBea
 		
 		public EvalRecordBean(){}
 		
-		public EvalRecordBean(MeasurementRecordImpl mrec){
+		public EvalRecordBean(MeasurementImpl mrec){
 			super(mrec);
 		}
 		
@@ -115,7 +115,7 @@ public class EvaluationPropertyResultsBean extends MeasurementPropertyResultsBea
 	}
 	
 	@Override
-	public void addResult(Calendar runDate, MeasurementRecordImpl result){
+	public void addResult(Calendar runDate, MeasurementImpl result){
 		//this method is not supported by this bean
 	}
 	

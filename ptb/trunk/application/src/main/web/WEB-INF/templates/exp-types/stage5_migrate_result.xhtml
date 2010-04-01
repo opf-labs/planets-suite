@@ -42,7 +42,7 @@
           <f:facet name="header">Analyse Migration</f:facet>
           
           <h:panelGroup rendered="#{res.outputDob != null}">
-                <h:outputLink value="../reader/dob_compare.faces">
+                <h:outputLink value="dob_compare.faces">
                     <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
                     <f:param name="dobUri1" value="#{res.inputDob.uri}"/>
                     <f:param name="dobUri2" value="#{res.outputDob.uri}"/>

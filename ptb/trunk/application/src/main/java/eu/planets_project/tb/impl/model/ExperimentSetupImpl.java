@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
@@ -28,6 +29,7 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * @author alindley
@@ -50,6 +52,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	//private boolean bBenchmarkGoalListFinal;
 	//the structure: HashMap<BenchmarkGoal.getXMLID,BenchmarkGoal>();
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private HashMap<String,BenchmarkGoalImpl> hmBenchmarkGoals;
 	
 	@OneToOne(cascade={CascadeType.ALL})

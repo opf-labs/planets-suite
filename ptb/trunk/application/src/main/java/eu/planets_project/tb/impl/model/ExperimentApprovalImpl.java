@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,6 +23,7 @@ import eu.planets_project.tb.api.model.ExperimentApproval;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 
 /**
@@ -35,8 +37,10 @@ implements ExperimentApproval, java.io.Serializable {
 
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private Vector<Integer> vReqRoles;
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private Vector<String> vApprovalUsers;
 	private String sDecision, sExplanation;
 	private boolean bGo;

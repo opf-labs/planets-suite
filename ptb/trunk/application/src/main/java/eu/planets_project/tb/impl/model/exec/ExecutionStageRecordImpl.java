@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -36,6 +37,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * This is a record of the invocation of a service. 
@@ -82,11 +84,13 @@ public class ExecutionStageRecordImpl implements Serializable {
     
     // The set of measured properties.
     @Lob
-    private Vector<MeasurementRecordImpl> measurements = new Vector<MeasurementRecordImpl>();
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
+    private Vector<MeasurementImpl> measurements = new Vector<MeasurementImpl>();
 
     // TODO Manual measurements should actually be done as MeasurementEvents (below)
     @Lob
-    private Vector<MeasurementRecordImpl> manualMeasurements = new Vector<MeasurementRecordImpl>();
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
+    private Vector<MeasurementImpl> manualMeasurements = new Vector<MeasurementImpl>();
     
     /** The endpoint invoked during this stage */
     @Lob
@@ -104,6 +108,7 @@ public class ExecutionStageRecordImpl implements Serializable {
     
     /** The input digital object(s), as Data Registry URIs stored as Strings */
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> inputs = new Vector<String>();
     
     /** Did the service complete successfully. i.e. produced an {Action}Result and ServiceReport. */
@@ -132,6 +137,7 @@ public class ExecutionStageRecordImpl implements Serializable {
      *   ERROR: Reason.
       */
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> serviceLog = new Vector<String>();
     
     /* FIXME Add other output types? Like the WorkflowResult? Prob not necessary at per-invocation level right now. */
@@ -139,6 +145,7 @@ public class ExecutionStageRecordImpl implements Serializable {
     /** The output digital object(s), as DR URIs, stored as strings: */
     //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> outputs = new Vector<String>();
     
     /** The measurements about this invocation */
@@ -221,7 +228,7 @@ public class ExecutionStageRecordImpl implements Serializable {
     /**
      * @return the service backed measurements
      */
-    public List<MeasurementRecordImpl> getMeasurements() {
+    public List<MeasurementImpl> getMeasurements() {
         return measurements;
     }
     
@@ -229,7 +236,7 @@ public class ExecutionStageRecordImpl implements Serializable {
     /**
      * @return the manual measurements
      */
-    public List<MeasurementRecordImpl> getManualMeasurements() {
+    public List<MeasurementImpl> getManualMeasurements() {
         return this.manualMeasurements;
     }
     
@@ -243,7 +250,7 @@ public class ExecutionStageRecordImpl implements Serializable {
     	
     	// Get the actual measurements:
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        List<MeasurementRecordImpl> mrl;
+        List<MeasurementImpl> mrl;
         HashMap<String, List<MeasurementImpl>> observables;
         
         // Look up the observables and their definitions:
@@ -260,7 +267,7 @@ public class ExecutionStageRecordImpl implements Serializable {
         
         // Patch the descriptions in with the results:
         List<MeasurementImpl> mobs = new ArrayList<MeasurementImpl>();
-        for( MeasurementRecordImpl mr : mrl ) {
+        for( MeasurementImpl mr : mrl ) {
             MeasurementImpl new_m = null;
             
             // Look for matches:
@@ -309,18 +316,18 @@ public class ExecutionStageRecordImpl implements Serializable {
     /**
      * @param measurements the service backed measurements to set
      */
-    public void setMeasurements(List<MeasurementRecordImpl> measurements) {
-        this.measurements = new Vector<MeasurementRecordImpl>(measurements);
+    public void setMeasurements(List<MeasurementImpl> measurements) {
+        this.measurements = new Vector<MeasurementImpl>(measurements);
     }
     
     /**
      * @param measurements the manual measurements to set
      */
-    public void setManualMeasurements(List<MeasurementRecordImpl> measurements) {
-        this.manualMeasurements = new Vector<MeasurementRecordImpl>(measurements);
+    public void setManualMeasurements(List<MeasurementImpl> measurements) {
+        this.manualMeasurements = new Vector<MeasurementImpl>(measurements);
     }
     
-    public void addManualMeasurement(MeasurementRecordImpl record){
+    public void addManualMeasurement(MeasurementImpl record){
     	this.manualMeasurements.add(record);
     }
     
@@ -328,7 +335,7 @@ public class ExecutionStageRecordImpl implements Serializable {
      * @return
      */
     public boolean isMarkedAsSuccessful() {
-        for( MeasurementRecordImpl m : getMeasurements() ) {
+        for( MeasurementImpl m : getMeasurements() ) {
             if( m.getIdentifier().equals( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED.toString() ) ) {
                 boolean result = Boolean.parseBoolean( m.getValue() );
                 if( result == true ) return true;
@@ -343,7 +350,7 @@ public class ExecutionStageRecordImpl implements Serializable {
      */
     public Double getDoubleMeasurement( URI propUri ) {
         if( propUri == null ) return null;
-        for( MeasurementRecordImpl m : getMeasurements() ) {
+        for( MeasurementImpl m : getMeasurements() ) {
             if( m.getIdentifier().equals( propUri.toString()  )) {
                 return Double.parseDouble(m.getValue());
             }
@@ -386,7 +393,7 @@ public class ExecutionStageRecordImpl implements Serializable {
      */
     public void addMeasurementEvent( MeasurementEventImpl me ) {
         this.measurementEvents.add(me);
-        me.setInvocation(this);
+        me.setTargetInvocation(this);
         return;
     }
 

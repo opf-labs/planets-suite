@@ -23,7 +23,7 @@ import eu.planets_project.services.view.CreateViewResult;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
@@ -153,13 +153,13 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         // Record the endpoint of the service used for this stage.  FIXME Can this be done more automatically, from above?
         idStage.setEndpoint(serviceEndpoint);
         
-        List<MeasurementRecordImpl> recs = idStage.getMeasurements();
-        recs.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0) ));
+        List<MeasurementImpl> recs = idStage.getMeasurements();
+        recs.add(new MeasurementImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0) ));
         
         // Now record
         try {
             if( success && view.getViewURL() != null ) {
-                recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
+                recs.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "true"));
                 collectCreateViewResults(recs, view, dob);
                 wr.setMainEndpoint(serviceEndpoint);
                 wr.setResult(view);
@@ -171,7 +171,7 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         }
 
         // Build in a 'service failed' property.
-        recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
+        recs.add( new MeasurementImpl( TecRegMockup.PROP_SERVICE_EXECUTION_SUCEEDED, "false"));
 
         // Create a ServiceReport from the exception.
         // TODO can we distinguish tool and install error here?
@@ -186,10 +186,10 @@ public class ViewerWorkflow implements ExperimentWorkflow {
         return wr;
     }
     
-    public static void collectCreateViewResults( List<MeasurementRecordImpl> recs, CreateViewResult ident, DigitalObject dob ) {
+    public static void collectCreateViewResults( List<MeasurementImpl> recs, CreateViewResult ident, DigitalObject dob ) {
         // Store the size:
         // FIXME: This method has now been added to the Digital Object.  Change it here to dob.getContentSize();
-        recs.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
+        recs.add( new MeasurementImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
         return;
     }
 

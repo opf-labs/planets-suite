@@ -85,7 +85,7 @@ import eu.planets_project.tb.impl.model.PropertyRunEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
@@ -2026,7 +2026,7 @@ public class ExperimentBean {
 						for(ExecutionStageRecordImpl execStageRec : execRec.getStages()){
 							//filter out the selected stage
 							if(execStageRec.getStage().equals(stageName)){
-								List<MeasurementRecordImpl> mRecords=null;
+								List<MeasurementImpl> mRecords=null;
 								if(manualProps){
 									//fetch the manual properties
 									mRecords = execStageRec.getManualMeasurements();
@@ -2035,7 +2035,7 @@ public class ExperimentBean {
 									//fetch the automatically measured properties
 									mRecords = execStageRec.getMeasurements();
 								}
-								for(MeasurementRecordImpl mr : mRecords){
+								for(MeasurementImpl mr : mRecords){
 									if(mr.getIdentifier().equals(propertyID)){
 										//log.info("adding "+inputDigoRef+ " "+runDate.getTimeInMillis()+" "+execStageRec.getStage()+" "+mr.getIdentifier() +" "+ mr.getValue());
 										//found the measurementRecord for this property in this run
@@ -2207,7 +2207,7 @@ public class ExperimentBean {
 								 * from execStageRec.getMeasuredObservables() 
 								 * already has the value contained - accessible through m.getValue
 								 */
-								List<MeasurementRecordImpl> mRecords=null;
+								List<MeasurementImpl> mRecords=null;
 								if(manualProps){
 									//fetch the manual properties
 									mRecords = execStageRec.getManualMeasurements();
@@ -2216,7 +2216,7 @@ public class ExperimentBean {
 									//fetch the automatically measured properties
 									mRecords = execStageRec.getMeasurements();
 								}
-								for(MeasurementRecordImpl mr : mRecords){
+								for(MeasurementImpl mr : mRecords){
 									if(mr.getIdentifier().equals(propertyID)){
 										//found the measurementRecord for this property in this run
 										evalPropResBean.addMeasurementResult(runDate, execStageRec.getStage(), mr);

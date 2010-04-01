@@ -22,7 +22,7 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 
@@ -118,7 +118,7 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
             for( ExecutionRecordImpl exec : this.getExecutionRecords() ) {
                 for( ExecutionStageRecordImpl stage : exec.getStages() ) {
                     if( stage.getStage().equals( IdentifyWorkflow.STAGE_IDENTIFY )) {
-                        for( MeasurementRecordImpl m : stage.getMeasurements() ) {
+                        for( MeasurementImpl m : stage.getMeasurements() ) {
                             if( m.getIdentifier().equals(TecRegMockup.PROP_DO_FORMAT)) {
                                 frb.add(new FormatResultBean(m.getValue()));
                             }

@@ -8,6 +8,8 @@ import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
  * @author alindley
@@ -33,5 +35,11 @@ public interface ExperimentPersistencyRemote {
 	
     public List<ServiceRecordImpl> getServiceRecords();
     public ServiceRecordImpl findServiceRecordByHashcode( String serviceHash );
+
+    public MeasurementImpl findMeasurement( long id );
+    public void removeMeasurement( MeasurementImpl m );
+
+    public MeasurementEventImpl findMeasurementEvent( long id );
+    public void removeMeasurementEvent( MeasurementEventImpl me );
 
 }
