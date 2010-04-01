@@ -33,8 +33,8 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
     public static final String BLOB_TYPE = "BINARY";
     public static final String TEXT_TYPE = "VARCHAR";
     /* For MySQL, use this: */
-    //public static final String BLOB_TYPE = "LONG_BLOB";
-    //public static final String TEXT_TYPE = "VARCHAR(100000)";
+    //public static final String BLOB_TYPE = "LONGBLOB";
+    //public static final String TEXT_TYPE = "LONGTEXT";
 
 	
     private static Log log = LogFactory.getLog(ExperimentPersistencyImpl.class);
