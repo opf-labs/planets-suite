@@ -1,6 +1,9 @@
 package eu.planets_project.tb.impl.system.batch.backends.ifwee;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +29,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus;
+import eu.planets_project.ifr.core.wee.api.utils.WFResultUtil;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
@@ -36,6 +42,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.system.batch.BatchProcessor;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
@@ -261,12 +268,58 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 		//this.setJob(job_key, job);
 		WorkflowResult wfLog=null;
 		try {
-			wfLog = weeService.getResult(UUID.fromString(job_key));
-		} catch (Exception e) {
-			log.debug("error building UUID from String "+job_key+ "processNotify_WorkflowCompleted without a WorkflowResult");
+			//fist try to retrieve the wfResult from the DR
+			wfLog = fetchWFResultFromDR(job_key);
+			log.debug("notifyComplete: fetched wfResult.xml from DR for "+job_key);
+		}catch(Exception e){
+			try {
+				wfLog = weeService.getResult(UUID.fromString(job_key));
+				log.debug("notifyComplete: fetched wfResult.xml from web-service WEE-Manager for "+job_key);
+			} catch (Exception e2) {
+				log.debug("error building UUID from String "+job_key+ "processNotify_WorkflowCompleted without a WorkflowResult"+e2);
+			}
 		}
-		weeTBUpdater.processNotify_WorkflowCompleted(job.getExpID(),wfLog);
-		log.debug("callback notify wee for "+job_key);
+		
+		//check if job object still exists
+		if(job==null){
+			 //when null (e.g. not in memory any more) try to pull in experiment ID from current session
+			 ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	         Experiment exp = expBean.getExperiment();
+	         weeTBUpdater.processNotify_WorkflowCompleted(exp.getEntityID(),wfLog);
+	         log.debug("notifyComplete: complete for "+job_key+" experimentID: "+exp.getEntityID());
+		}else{
+			weeTBUpdater.processNotify_WorkflowCompleted(job.getExpID(),wfLog);
+			log.debug("notifyComplete: complete for "+job_key+" experimentID: "+job.getExpID());
+		}
+	}
+	
+	private WorkflowResult fetchWFResultFromDR(String job_key) throws Exception{
+		//2. get the data registry manager and fetch the digital object containing the wfResult
+		URI drManagerID = DataRegistryFactory.createDataRegistryIdFromName("/experiment-files/executions/").normalize();
+		DigitalObjectManager drExpResults = DataRegistryFactory.getDataRegistry().getDigitalObjectManager(drManagerID);
+		URI wfResultstorageURI =new URI(drManagerID.getScheme(),drManagerID.getAuthority(),drManagerID.getPath()+"/"+job_key+"/wfResult-id-"+job_key+".xml",null,null).normalize();
+		DigitalObject doWFResult = drExpResults.retrieve(wfResultstorageURI);
+		if(doWFResult.getContent()==null){
+			throw new Exception("No workflow xml content available.");
+		}
+		//3. now read the stream into a String and unmarshall the WorkflwoResult object	        
+        StringBuilder sb = new StringBuilder();
+        String line;
+
+        InputStream fis = doWFResult.getContent().getInputStream();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+            		fis , "UTF-8"));
+            
+            while ((line = reader.readLine()) != null) {
+            	sb.append(line).append("\n");
+            }
+        } finally {
+        	fis.close();
+        }
+        
+        //4. call unmarshall xml->WorkflowResult object
+        return WFResultUtil.unmarshalWorkflowResult(sb.toString());
 	}
 	
 	/* (non-Javadoc)

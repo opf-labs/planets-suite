@@ -87,8 +87,10 @@ public class WEEBatchExperimentTestbedUpdater {
 	 * @param weeWFResult
 	 */
 	public void processNotify_WorkflowCompleted(long expID, WorkflowResult weeWFResult){
+		log.info("processing WEEBatchExperiment: processNotify_WorkflowCompleted");
 		Experiment exp = testbedMan.getExperiment(expID);
 		if(weeWFResult==null){
+			log.info("processing WEEBatchExperiment: wfResult = null -> processing notify_WorkflowFailed");
 			this.processNotify_WorkflowFailed(expID, "WorkflowResult not available");
 			return;
 		}
@@ -177,18 +179,18 @@ public class WEEBatchExperimentTestbedUpdater {
 				try{
 					this.updateProperties(actionCounter, p, wfResultItem);
 				}catch(Exception e){
-					log.error("Problems crating execution record properties for a workflowResultItem "+e);
+					log.error("processing WEEBatchExperiment: Problems crating execution record properties for a workflowResultItem "+e);
 				}
 				actionCounter++;
 			}
 			try {
 				execRecord.setPropertiesListResult(p);
 			} catch (IOException e) {
-				log.debug("Problem adding properties to executionRecord: "+e);
+				log.debug("processing WEEBatchExperiment: Problem adding properties to executionRecord: "+e);
 			}
 			
 			//got all information - now add the record for this inputDigo
-			log.info("Adding an execution record: "+inputDigoURI);
+			log.info("processing WEEBatchExperiment: Adding an execution record: "+inputDigoURI);
 			execRecords.add(execRecord);
 		}
 		batchRecord.setRuns(execRecords);
@@ -219,9 +221,9 @@ public class WEEBatchExperimentTestbedUpdater {
 		Experiment exp = testbedMan.getExperiment(expID);
     	exp.getExperimentExecutable().setExecutableInvoked(true);
     	if ( exp.getExperimentExecutable().getBatchExecutionRecords() != null ) {
-            log.info("Updating the experiment 'started': #"+exp.getExperimentExecutable().getBatchExecutionRecords().size());
+            log.info("processNotify_WorkflowStarted: Updating the experiment 'started': #"+exp.getExperimentExecutable().getBatchExecutionRecords().size());
     	} else {
-            log.info("Updating the experiment 'started': "+exp.getExperimentExecutable().getBatchExecutionRecords());
+            log.info("processNotify_WorkflowStarted: Updating the experiment 'started': "+exp.getExperimentExecutable().getBatchExecutionRecords());
     	}
     	//testbedMan.updateExperiment(exp);
     	edao.updateExperiment(exp);
@@ -229,11 +231,11 @@ public class WEEBatchExperimentTestbedUpdater {
 	
 	private void helperUpdateExpWithBatchRecord(Experiment exp,BatchExecutionRecordImpl record){
         if ( exp.getExperimentExecutable().getBatchExecutionRecords() != null ) {
-            log.info("Adding new BatchExecutionRecord to this Experiment: #"+exp.getExperimentExecutable().getBatchExecutionRecords().size());
+            log.info("helperUpdateExpWithBatchRecord: Adding new BatchExecutionRecord to this Experiment: #"+exp.getExperimentExecutable().getBatchExecutionRecords().size());
             if ( exp.getExperimentExecutable().getBatchExecutionRecords().size() > 0 )
-                log.info("Adding new BatchExecutionRecord to this Experiment: #"+exp.getExperimentExecutable().getBatchExecutionRecords().iterator().next().getRuns().size());
+                log.info("helperUpdateExpWithBatchRecord: Adding new BatchExecutionRecord to this Experiment: #"+exp.getExperimentExecutable().getBatchExecutionRecords().iterator().next().getRuns().size());
         } else {
-            log.info("Adding new BatchExecutionRecord to this Experiment: "+exp.getExperimentExecutable().getBatchExecutionRecords());
+            log.info("helperUpdateExpWithBatchRecord: Adding new BatchExecutionRecord to this Experiment: "+exp.getExperimentExecutable().getBatchExecutionRecords());
         }
     	exp.getExperimentExecutable().getBatchExecutionRecords().add(record);
 		exp.getExperimentExecutable().setExecutionCompleted(true);

@@ -118,6 +118,11 @@
 							value="Click to reset this experiment, removing all execution results."
 							action="#{NewExp_Controller.commandResetAfterFailure}" />
 					</p>
+					<p>
+						<h:commandButton
+							value="Pull in wf results manually from the stored xml."
+							action="#{NewExp_Controller.commandPullInWFResultsAfterFailure}" />
+					</p>
 				</rich:simpleTogglePanel>
 
 			</fieldset>

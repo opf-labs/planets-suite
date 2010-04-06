@@ -1,7 +1,13 @@
 package eu.planets_project.tb.gui.backing.exp;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,8 +32,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.richfaces.component.html.HtmlDataTable;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.wee.api.utils.WFResultUtil;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -1574,6 +1589,16 @@ public class NewExpWizardController{
           testbedMan.updateExperiment(exp);
 	      return "success";
 	  }
+	  
+	 public String commandPullInWFResultsAfterFailure(){
+         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+         Experiment exp = expBean.getExperiment();
+         //get the batch processor that's responsible for this job
+         BatchProcessor pb = TestbedBatchProcessorManager.getInstance().getBatchProcessor(exp.getExperimentExecutable().getBatchSystemIdentifier());
+         String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
+         pb.notifyComplete(job_key, pb.getJob(job_key));
+		return "success";
+	 }
 		 
 	 /**
 	  * controller logic for handling the automated evaluation of an experiment
