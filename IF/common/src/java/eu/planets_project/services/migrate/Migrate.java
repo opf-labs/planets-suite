@@ -23,16 +23,36 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
- * Migration of one digital object.
+ * Migration
  * 
- * This is intended to become the generic migration interface for complex migration services.
+ * This is the generic migration interface for digital object format conversion services.
  * 
- * It should:
- *  - Support service description to facilitate discovery.
- *  - Allow multiple input formats and output formats to be dealt with be the same service.
- *  - Allow parameters to be discovered and submitted to control the migration.
- *  - Allow digital objects composed of more than one file/bitstream.
- *  - Allow Files/bitstreams passed by value OR by reference.
+ * In Planets we have settled on the term Migration for this, but it should be 
+ * noted that this is slightly inconsistent with the OAIS terminology. 
+ * 
+ * In OAIS terms, a service that implements this interface is providing a 
+ * Transformation service. In contrast, OAIS Migration covers to a range of 
+ * operations which exactly preserve the bitstream (e.g. Refresh) as well as 
+ * those that do not (e.g. Transformation).
+ * 
+ * Those other OAIS Migration operations cannot be mapped onto stateless services, as they
+ * explicitly involve managing copies of the bitstream (i.e. managing global state).
+ * Therefore, this misalignment of terminology does not cause a major problem within
+ * the Planets frameworks, as all other OAIS Migrations would actually be 
+ * implemented at the Workflow level.
+ * 
+ * Note that although this interface only maps digital objects one-to-one, the 
+ * intension is that resources composed of multiple bitstreams should be contained 
+ * as new digital object types, and so many-to-one, one-to-many, and many-to-many
+ * transformations can be implemented using this interface by defining suitable 
+ * composite digital object types along with appropriate format URIs.
+ * 
+ * A Migration Service:
+ *  - Supports service description to facilitate discovery.
+ *  - Allows multiple input formats and output formats to be dealt with be the same service.
+ *  - Allows parameters to be discovered and submitted to control the migration.
+ *  - Allows digital objects composed of more than one file/bitstream.
+ *  - Allows Files/bitstreams passed by value OR by reference.
  *  
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de), Andrew Jackson <Andrew.Jackson@bl.uk>
  */
