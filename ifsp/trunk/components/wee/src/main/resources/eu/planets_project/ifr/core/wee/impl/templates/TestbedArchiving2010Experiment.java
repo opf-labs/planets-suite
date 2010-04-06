@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowContext;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
@@ -187,8 +188,8 @@ public class TestbedArchiving2010Experiment extends WorkflowTemplateHelper imple
 				this.processingDigo, 
 				migrationService, 
 				digORef, 
-				//new URI("planets://testbed-dev.planets-project.ait.ac.at:80/dr/experiment-files"),
-				  new URI("planets://testbed.planets-project.eu:80/dr/experiment-files"),
+				DataRegistryFactory.createDataRegistryIdFromName("/experiment-files/executions/"),
+				//new URI("planets://testbed.planets-project.eu:80/dr/experiment-files"),
 				endOfRoundtripp);
 		
 		return migrWrapper.runMigration();

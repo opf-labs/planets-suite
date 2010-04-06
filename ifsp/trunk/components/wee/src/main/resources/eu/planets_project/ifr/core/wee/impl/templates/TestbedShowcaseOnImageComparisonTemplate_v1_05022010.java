@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowContext;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
@@ -151,7 +152,7 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 		}
 		
 		//specifying the location where to store migration results
-		migrWrapper.setDataRepository(new URI("planets://localhost:8080/dr/experiment-files"));
+		migrWrapper.setDataRepository(DataRegistryFactory.createDataRegistryIdFromName("/experiment-files/executions/"));
 		
 		return migrWrapper.runMigration();
 	}
