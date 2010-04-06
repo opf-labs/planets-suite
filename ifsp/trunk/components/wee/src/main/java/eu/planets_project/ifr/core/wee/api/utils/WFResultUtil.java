@@ -51,7 +51,7 @@ public class WFResultUtil implements Serializable{
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	public static String marshalWorkflowResultToXMLFile(WorkflowResult wfResult,String wfID) throws JAXBException, IOException, SAXException{
+	public static File marshalWorkflowResultToXMLFile(WorkflowResult wfResult,String wfID) throws JAXBException, IOException, SAXException{
 
 		JAXBContext context;
 		try {
@@ -69,8 +69,8 @@ public class WFResultUtil implements Serializable{
 			//now call the actual marshalling job
 			m.marshal(wfResult,fos);
 	        log.info("created wfResult file: "+temp.getCanonicalPath()+" completed marshalling");
-			String ret = readXMLConfigFileToString(temp);
-			return ret;
+			//String ret = readXMLConfigFileToString(temp);
+			return temp;
 			
 		} catch (JAXBException e) {
 			log.error("marshalWorkflowConfigToXML failed",e);

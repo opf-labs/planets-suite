@@ -3,7 +3,9 @@
  */
 package eu.planets_project.ifr.core.wee.impl;
 
+import java.io.File;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -23,6 +25,8 @@ import javax.rmi.PortableRemoteObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.WeeManager;
 import eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus;
 import eu.planets_project.ifr.core.wee.api.utils.WFResultUtil;
@@ -30,6 +34,10 @@ import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
 import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Event;
+import eu.planets_project.services.datatypes.Metadata;
 
 /**
  * 
@@ -70,6 +78,7 @@ public class WeeManagerImpl implements WeeManager, Serializable {
     //JMS configuration
     private static final String QueueConnectionFactoryName = "ConnectionFactory";
     private static final String QueueName = "queue/wfExecQueue";
+    private DataRegistry dataRegistry = DataRegistryFactory.getDataRegistry();
     
     
     private WeeManagerImpl(){
@@ -224,9 +233,14 @@ public class WeeManagerImpl implements WeeManager, Serializable {
 	private void persistWFResultToDisk(UUID ticket,WorkflowResult wfResult){
 		//persist the wfResult as local file
 		try{
-			WFResultUtil.marshalWorkflowResultToXMLFile(wfResult,ticket+"");
+			File fwfXML = WFResultUtil.marshalWorkflowResultToXMLFile(wfResult,ticket+"");
+			URI drManagerID = DataRegistryFactory.createDataRegistryIdFromName("/experiment-files/executions/").normalize();
+			URI storageURI =new URI(drManagerID.getScheme(),drManagerID.getAuthority(),drManagerID.getPath()+"/"+ticket+"/wfResult-id-"+ticket+".xml",null,null).normalize();
+			DigitalObject digowfXML = new DigitalObject.Builder(Content.byReference(fwfXML)).title("wfResult-id-ticket").build();
+			URI uriStored = dataRegistry.getDigitalObjectManager(drManagerID).storeAsNew(storageURI,digowfXML);
+			log.info("persisted WFResult for: "+ticket+" in: "+drManagerID+" under: "+uriStored);
 		}catch(Exception e){
-			log.debug("error marshalling wfResult->xml to disk");
+			log.debug("error marshalling wfResult->xml to disk "+e);
 		}
 	}
 	
