@@ -33,7 +33,6 @@
 	<property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
 	<import file="${pserv.root.dir}/build.common.xml" />
 
-	<!-- OK, this is the Dia config stuff, this may be fun -->
 	<!-- First copy the test config file(s) from test config area to pserv/test/config -->
 	<echo message="COPYING ${test.config}/* TO ${pserv.test.config}">
 	</echo>
