@@ -59,7 +59,7 @@
 	<classpathentry kind="src" path="PA/mdb2siard/test"/>
 	<classpathentry kind="src" path="PA/msgtext/src/java"/>
 	<classpathentry kind="src" path="PA/msgtext/test/java"/>
-	<classpathentry kind="src" path="PA/netPBM/src/java"/>
+	<classpathentry kind="src" path="PA/netPBM/src/main/java"/>
 	<classpathentry kind="src" path="PA/netPBM/test/java"/>
 	<classpathentry kind="src" path="PA/openXML/src/main/java"/>
 	<classpathentry kind="src" path="PA/openXML/src/test/java"/>
