@@ -33,6 +33,12 @@ import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * XCL extractor service based on the Characterise interface.
+ * 
+ * FIXME Change all clients and this service so that NormData is not expected or output by default.
+ * If you want the NormData, then the XcdlMigrate service is what you want, as including the NormData makes
+ * it a transformation as opposed to a property extraction.
+ * NOTE that if that is done, then the result should not return an empty normDataImage property, but no property at all, otherwise it can look like two images have identical NormData, because they both have empty normDataImage elements.
+ * 
  * @author Peter Melms, Fabian Steeg
  * @see XcdlMigrate
  */
