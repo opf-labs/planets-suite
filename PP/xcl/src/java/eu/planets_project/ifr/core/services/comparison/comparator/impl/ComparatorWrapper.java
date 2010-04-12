@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.CoreExtractor;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.utils.ProcessRunner;
 
@@ -43,9 +44,9 @@ public final class ComparatorWrapper {
     /** The default config file; used when no config is specified. */
     private static final String DEFAULT_CONFIG = COMPARATOR_HOME
     // FIXME This comparator configuration file does not exist, it seems:
-            + "defaultPCR.xml";
+    //        + "defaultPCR.xml";
     // So use this instead? Or will it default sensibly?
-    //		+ "test" + File.separator + "configTest" + File.separator + "cocoImage.xml";
+    		+ "test" + File.separator + "configTest" + File.separator + "cocoImage.xml";
     /** The file names of the result and log files. */
     private static final String LOG_TXT = "log.txt";
     /** The comparator executable, has to be on the path on the server. */
@@ -98,6 +99,10 @@ public final class ComparatorWrapper {
         List<URI> inputFormats = new ArrayList<URI>();
         inputFormats.add(FormatRegistryFactory.getFormatRegistry()
                 .createExtensionUri("XCDL"));
+        // Add formats that the Extractor can cope with:
+        for( URI format : CoreExtractor.getSupportedInputFormats() ) {
+        	inputFormats.add(format);
+        }
         return inputFormats;
     }
 

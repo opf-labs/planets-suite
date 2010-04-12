@@ -75,7 +75,6 @@ public final class XcdlCompare implements Compare {
         String xcdlString = null;
         try {
         	xcdlString = xcdl != null && xcdl.exists() ? read(new DigitalObject.Builder(Content.byReference(xcdl)).build()) : read(object);
-        	log.info("Got XCDL: "+xcdlString.substring(0, 2000));
         } catch ( IllegalArgumentException e ) {
         	log.severe("ERROR when reading XCDL file. "+e);
         	xcdlString = "";
@@ -112,7 +111,7 @@ public final class XcdlCompare implements Compare {
         try {
         	return new ResultPropertiesReader(file).getProperties();
         } catch( IllegalArgumentException e ) {
-        	log.severe("Could not parse properties from string "+result.substring(0, 100)+"\n "+e);
+        	log.severe("Could not parse properties from string "+result+"\n "+e);
         	return new ArrayList<List<Property>>();
         }
     }

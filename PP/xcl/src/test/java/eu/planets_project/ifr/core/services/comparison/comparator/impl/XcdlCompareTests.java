@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 import org.junit.Test;
@@ -27,6 +28,10 @@ public final class XcdlCompareTests {
         Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME, XcdlCompare.class, WSDL);
         ServiceDescription sd = c.describe();
         assertTrue("The service description should not be null", sd != null);
+        System.out.println("Service Description = " + sd);
+        for( URI format : sd.getInputFormats() ) {
+            System.out.println("Service accepts = " + format);
+        }
     }
 
     @Test
@@ -38,7 +43,8 @@ public final class XcdlCompareTests {
     public void imageComparison(){
     	System.out.println("Testing direct image comparison.");
     	testWith(ComparatorWrapperTests.PNG, ComparatorWrapperTests.TIFF, ComparatorWrapperTests.COCO_IMAGE);
-    	testWith(ComparatorWrapperTests.JPG, ComparatorWrapperTests.TIFF, null );
+    	// Testing comparison of identical image files:
+    	testWith(ComparatorWrapperTests.PNG, ComparatorWrapperTests.PNG, null );
     }
     
     //@Test Not yet supported

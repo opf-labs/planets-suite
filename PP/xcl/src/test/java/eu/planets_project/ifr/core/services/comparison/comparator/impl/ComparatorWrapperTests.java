@@ -24,6 +24,7 @@ public final class ComparatorWrapperTests {
     static final String JPG = "PP/xcl/src/test/resources/sample_files/basketball.jpg";
     static final String GIF = "PP/xcl/src/test/resources/sample_files/basketball.gif";
     static final String PNG = "PP/xcl/src/test/resources/sample_files/basketball.png";
+    static final String BMP = "PP/xcl/src/test/resources/sample_files/basketball.bmp";
     static final String TIFF = "PP/xcl/src/test/resources/sample_files/basketball.tiff";
     static final String PDF = "PP/xcl/src/test/resources/sample_files/basi0g01.pdf";
     static final String DOCX = "PP/xcl/src/test/resources/sample_files/basi0g01.docx";
