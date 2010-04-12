@@ -29,7 +29,7 @@ import eu.planets_project.services.utils.ProcessRunner;
 class PRCommandBuilder {
 
     private final Logger log = Logger.getLogger(PRCommandBuilder.class
-	    .getName());
+            .getName());
 
     private final Collection<Parameter> environmentParameters;
 
@@ -44,7 +44,7 @@ class PRCommandBuilder {
      *            built.
      */
     PRCommandBuilder(Collection<Parameter> environmentParameters) {
-	this.environmentParameters = environmentParameters;
+        this.environmentParameters = environmentParameters;
     }
 
     /**
@@ -67,90 +67,96 @@ class PRCommandBuilder {
      *             if any configuration related errors are encountered.
      */
     List<String> buildCommand(MigrationPath migrationPath,
-	    Collection<Parameter> toolParameters,
-	    Map<String, File> tempFileMappings) throws MigrationException,
-	    ConfigurationException {
+            Collection<Parameter> toolParameters,
+            Map<String, File> tempFileMappings) throws MigrationException,
+            ConfigurationException {
 
-	final CommandLine commandLine = migrationPath.getCommandLine();
+        final CommandLine commandLine = migrationPath.getCommandLine();
 
-	// Get a complete list of identifiers used in the command line.
-	final Set<String> commandLineIdentifiers = getIdentifiers(commandLine);
+        // Get a complete list of identifiers used in the command line.
+        final Set<String> commandLineIdentifiers = getIdentifiers(commandLine);
 
-	// Get the key-value pairs from toolParameters that are used in the
-	// command line.
-	Map<String, String> identifierMap = getRelevantParameterMappings(
-		commandLineIdentifiers, toolParameters);
+        // Get the key-value pairs from toolParameters that are used in the
+        // command line.
+        Map<String, String> identifierMap = getRelevantParameterMappings(
+                commandLineIdentifiers, toolParameters);
 
-	// Overwrite any previous registered identifier mappings with a preset
-	// if a preset has been specified in the tool parameters or add settings
-	// from the default preset if no parameters were specified by the
-	// caller.
-	identifierMap = addPresetParameters(identifierMap, toolParameters,
-		migrationPath.getToolPresets());
+        // Overwrite any previous registered identifier mappings with a preset
+        // if a preset has been specified in the tool parameters or add settings
+        // from the default preset if no parameters were specified by the
+        // caller.
+        identifierMap = addPresetParameters(identifierMap, toolParameters,
+                migrationPath.getToolPresets());
 
-	identifierMap = addTempFileMappings(identifierMap, tempFileMappings);
+        identifierMap = addTempFileMappings(identifierMap, tempFileMappings);
 
-	// TODO: Check the parameters and filename mappings for injection
-	// attacks by sanity checking the parameters -
-	// throw exception in case of failure. However, it may be safe omitting
-	// the test for the file name mappings, as they are solely based on the
-	// configuration file and what the generic wrapper is doing.
+        // TODO: Check the parameters and filename mappings for injection
+        // attacks by sanity checking the parameters -
+        // throw exception in case of failure. However, it may be safe omitting
+        // the test for the file name mappings, as they are solely based on the
+        // configuration file and what the generic wrapper is doing.
 
-	// Verify that all identifiers in commandLineIdentifiers are associated
-	// with a value in identifierMap
-	if (!identifierMap.keySet().containsAll(commandLineIdentifiers)) {
-	    commandLineIdentifiers.removeAll(identifierMap.keySet());
-	    throw new ConfigurationException("Cannot build the command line. "
-		    + "Missing values for these identifiers: "
-		    + commandLineIdentifiers);
-	}
+        // Verify that all identifiers in commandLineIdentifiers are associated
+        // with a value in identifierMap
+        if (!identifierMap.keySet().containsAll(commandLineIdentifiers)) {
+            commandLineIdentifiers.removeAll(identifierMap.keySet());
+            throw new ConfigurationException("Cannot build the command line. "
+                    + "Missing values for these identifiers: "
+                    + commandLineIdentifiers);
+        }
 
-	// Replace the identifiers in the command line fragments with their
-	// associated value (parameter, temp. file path etc.).
-	final List<String> executableCommandLine = new ArrayList<String>();
+        // Replace the identifiers in the command line fragments with their
+        // associated value (parameter, temp. file path etc.).
+        final List<String> executableCommandLine = new ArrayList<String>();
 
-	executableCommandLine.add(commandLine.getCommand());
-	executableCommandLine.addAll(commandLine.getParameters());
+        executableCommandLine.add(commandLine.getCommand());
+        executableCommandLine.addAll(commandLine.getParameters());
 
-	for (int commandFragmentIdx = 0; commandFragmentIdx < executableCommandLine
-		.size(); commandFragmentIdx++) {
+        for (int commandFragmentIdx = 0; commandFragmentIdx < executableCommandLine
+                .size(); commandFragmentIdx++) {
 
-	    final String commandFragment = executableCommandLine
-		    .get(commandFragmentIdx);
+            final String commandFragment = executableCommandLine
+                    .get(commandFragmentIdx);
 
-	    final StringTokenizer stringTokenizer = new StringTokenizer(
-		    commandFragment, "#");
+            final StringTokenizer stringTokenizer = new StringTokenizer(
+                    commandFragment, "#");
 
-	    String substitudedString = "";
+            String substitudedString = "";
 
-	    while (stringTokenizer.hasMoreTokens()) {
+            while (stringTokenizer.hasMoreTokens()) {
 
-		String token = stringTokenizer.nextToken();
+                String token = stringTokenizer.nextToken();
 
-		int identifierEnd = token.indexOf(' ');
+                int identifierEnd = token.indexOf(' ');
 
-		if (identifierEnd == -1) {
-		    identifierEnd = token.length();
-		}
+                // Handle identifiers enclosed in double quotes.
+                final int quotePos = token.indexOf('\"') == -1 ? identifierEnd
+                        : token.indexOf('\"');
+                identifierEnd = identifierEnd < quotePos ? identifierEnd
+                        : quotePos;
 
-		final String identifier = token.substring(0, identifierEnd);
+                if (identifierEnd == -1) {
+                    identifierEnd = token.length();
+                }
 
-		final String identifierValue = identifierMap.get(identifier);
-		if (identifierValue != null) {
-		    substitudedString += identifierValue
-			    + token.substring(identifierEnd);
-		} else {
-		    substitudedString += token;
-		}
-	    }
+                final String identifier = token.substring(0, identifierEnd);
 
-	    // Replace the command line fragment with the one where the
-	    // identifiers have been replaced with their respective values.
-	    executableCommandLine.remove(commandFragmentIdx);
-	    executableCommandLine.add(commandFragmentIdx, substitudedString);
-	}
+                final String identifierValue = identifierMap.get(identifier);
+                if (identifierValue != null) {
+                    substitudedString += identifierValue
+                            + token.substring(identifierEnd);
+                } else {
+                    substitudedString += token;
+                }
+            }
 
-	return executableCommandLine;
+            // Replace the command line fragment with the one where the
+            // identifiers have been replaced with their respective values.
+            executableCommandLine.remove(commandFragmentIdx);
+            executableCommandLine.add(commandFragmentIdx, substitudedString);
+        }
+
+        return executableCommandLine;
     }
 
     /**
@@ -170,37 +176,37 @@ class PRCommandBuilder {
      *             encountered while handling the temporary files.
      */
     private Map<String, String> addTempFileMappings(
-	    Map<String, String> identifierMap,
-	    Map<String, File> tempFileMappings) throws MigrationException {
+            Map<String, String> identifierMap,
+            Map<String, File> tempFileMappings) throws MigrationException {
 
-	for (String tempFileLabel : tempFileMappings.keySet()) {
-	    if (identifierMap.containsKey(tempFileLabel)) {
-		throw new MigrationException(String.format(
-			"The identifier map already contains an element with "
-				+ "the key '%s'. Cannot add the temporay file "
-				+ "mapping '%s = %s'.", tempFileLabel,
-			tempFileLabel, tempFileMappings.get(tempFileLabel)));
-	    }
+        for (String tempFileLabel : tempFileMappings.keySet()) {
+            if (identifierMap.containsKey(tempFileLabel)) {
+                throw new MigrationException(String.format(
+                        "The identifier map already contains an element with "
+                                + "the key '%s'. Cannot add the temporay file "
+                                + "mapping '%s = %s'.", tempFileLabel,
+                        tempFileLabel, tempFileMappings.get(tempFileLabel)));
+            }
 
-	    try {
-		identifierMap.put(tempFileLabel, tempFileMappings.get(
-			tempFileLabel).getCanonicalPath());
-	    } catch (SecurityException se) {
-		throw new MigrationException(
-			String.format(
-				"Failed accessing the canonical file path of the "
-					+ "temporary file labeled '%s'",
-				tempFileLabel), se);
-	    } catch (IOException ioe) {
-		throw new MigrationException(
-			String.format(
-				"Failed accessing the canonical file path of the "
-					+ "temporary file labeled '%s'",
-				tempFileLabel), ioe);
-	    }
-	}
+            try {
+                identifierMap.put(tempFileLabel, tempFileMappings.get(
+                        tempFileLabel).getCanonicalPath());
+            } catch (SecurityException se) {
+                throw new MigrationException(
+                        String.format(
+                                "Failed accessing the canonical file path of the "
+                                        + "temporary file labeled '%s'",
+                                tempFileLabel), se);
+            } catch (IOException ioe) {
+                throw new MigrationException(
+                        String.format(
+                                "Failed accessing the canonical file path of the "
+                                        + "temporary file labeled '%s'",
+                                tempFileLabel), ioe);
+            }
+        }
 
-	return identifierMap;
+        return identifierMap;
     }
 
     /**
@@ -223,29 +229,29 @@ class PRCommandBuilder {
      *         exists in <code>relevantIdentifiers</code>.
      */
     private Map<String, String> getRelevantParameterMappings(
-	    Set<String> relevantIdentifiers,
-	    Collection<Parameter> toolParameters) {
+            Set<String> relevantIdentifiers,
+            Collection<Parameter> toolParameters) {
 
-	// Add all parameters from toolParameters that are listed in
-	// relevantIdentifiers.
-	final HashMap<String, String> parameterMappings = new HashMap<String, String>();
-	for (Parameter parameter : toolParameters) {
-	    if (relevantIdentifiers.contains(parameter.getName())) {
-		parameterMappings
-			.put(parameter.getName(), parameter.getValue());
-	    }
-	}
+        // Add all parameters from toolParameters that are listed in
+        // relevantIdentifiers.
+        final HashMap<String, String> parameterMappings = new HashMap<String, String>();
+        for (Parameter parameter : toolParameters) {
+            if (relevantIdentifiers.contains(parameter.getName())) {
+                parameterMappings
+                        .put(parameter.getName(), parameter.getValue());
+            }
+        }
 
-	// Add all parameters from the attribute environmentParameters that are
-	// listed in relevantIdentifiers.
-	for (Parameter environmentParameter : environmentParameters) {
-	    if (relevantIdentifiers.contains(environmentParameter.getName())) {
-		parameterMappings.put(environmentParameter.getName(),
-			environmentParameter.getValue());
-	    }
-	}
+        // Add all parameters from the attribute environmentParameters that are
+        // listed in relevantIdentifiers.
+        for (Parameter environmentParameter : environmentParameters) {
+            if (relevantIdentifiers.contains(environmentParameter.getName())) {
+                parameterMappings.put(environmentParameter.getName(),
+                        environmentParameter.getValue());
+            }
+        }
 
-	return parameterMappings;
+        return parameterMappings;
     }
 
     /**
@@ -272,77 +278,77 @@ class PRCommandBuilder {
      * @throws ConfigurationException
      */
     private Map<String, String> addPresetParameters(
-	    Map<String, String> identifierMap,
-	    Collection<Parameter> toolParameters, ToolPresets toolPresets)
-	    throws ConfigurationException {
+            Map<String, String> identifierMap,
+            Collection<Parameter> toolParameters, ToolPresets toolPresets)
+            throws ConfigurationException {
 
-	// See if the parameters specifies that a preset should be applied.
-	PresetSetting presetSetting = null;
-	String presetCategoryID = null;
-	if (toolParameters.isEmpty()) {
-	    // No parameters have been specified. See if there is a default
-	    // preset available.
-	    presetCategoryID = toolPresets.getDefaultPresetID();
-	    if (presetCategoryID != null) {
-		presetSetting = toolPresets.getPreset(presetCategoryID)
-			.getDefaultSetting();
-	    }
-	} else {
-	    // We have parameters. See if any of them specifies that a preset
-	    // should be applied.
-	    final Collection<String> presetCategories = toolPresets
-		    .getToolPresetNames();
-	    for (Parameter parameter : toolParameters) {
-		if (presetCategories.contains(parameter.getName())) {
-		    // The parameter name specifies a valid preset category.
-		    if (presetSetting == null) {
-			presetCategoryID = parameter.getName();
-			final Preset preset = toolPresets
-				.getPreset(presetCategoryID);
-			presetSetting = preset.getSetting(parameter.getValue());
-			if (presetSetting == null) {
-			    throw new ConfigurationException(String.format(
-				    "The preset '%s = %s' has not been defined"
-					    + " in the configuration.",
-				    parameter.getName(), parameter.getValue()));
-			}
-		    } else {
-			throw new ConfigurationException(String.format(
-				"More than one preset was specified in the "
-					+ "parameters. Found '%s"
-					+ " = %s' and '%s = %s'.",
-				presetCategoryID, presetSetting.getName(),
-				parameter.getName(), parameter.getValue()));
-		    }
-		}
-	    }
-	}
+        // See if the parameters specifies that a preset should be applied.
+        PresetSetting presetSetting = null;
+        String presetCategoryID = null;
+        if (toolParameters.isEmpty()) {
+            // No parameters have been specified. See if there is a default
+            // preset available.
+            presetCategoryID = toolPresets.getDefaultPresetID();
+            if (presetCategoryID != null) {
+                presetSetting = toolPresets.getPreset(presetCategoryID)
+                        .getDefaultSetting();
+            }
+        } else {
+            // We have parameters. See if any of them specifies that a preset
+            // should be applied.
+            final Collection<String> presetCategories = toolPresets
+                    .getToolPresetNames();
+            for (Parameter parameter : toolParameters) {
+                if (presetCategories.contains(parameter.getName())) {
+                    // The parameter name specifies a valid preset category.
+                    if (presetSetting == null) {
+                        presetCategoryID = parameter.getName();
+                        final Preset preset = toolPresets
+                                .getPreset(presetCategoryID);
+                        presetSetting = preset.getSetting(parameter.getValue());
+                        if (presetSetting == null) {
+                            throw new ConfigurationException(String.format(
+                                    "The preset '%s = %s' has not been defined"
+                                            + " in the configuration.",
+                                    parameter.getName(), parameter.getValue()));
+                        }
+                    } else {
+                        throw new ConfigurationException(String.format(
+                                "More than one preset was specified in the "
+                                        + "parameters. Found '%s"
+                                        + " = %s' and '%s = %s'.",
+                                presetCategoryID, presetSetting.getName(),
+                                parameter.getName(), parameter.getValue()));
+                    }
+                }
+            }
+        }
 
-	// Add the parameters from any selected preset, thus overriding any
-	// parameters provided by toolParameters.
-	if (presetSetting != null) {
-	    for (Parameter parameter : presetSetting.getParameters()) {
+        // Add the parameters from any selected preset, thus overriding any
+        // parameters provided by toolParameters.
+        if (presetSetting != null) {
+            for (Parameter parameter : presetSetting.getParameters()) {
 
-		final String previousValue = identifierMap.put(parameter
-			.getName(), parameter.getValue());
-		if (previousValue != null) {
-		    log
-			    .warning(String
-				    .format(
-					    "The parameter '%s' was specified"
-						    + "by the caller while also specifying usage of "
-						    + "the preset '%s = %s'. The specified value: '%s'"
-						    + " has now been overwritten with the value: '%s'"
-						    + " from the preset.",
-					    parameter.getName(),
-					    presetCategoryID, presetSetting
-						    .getName(), previousValue,
-					    parameter.getValue()));
-		}
-	    }
-	}
+                final String previousValue = identifierMap.put(parameter
+                        .getName(), parameter.getValue());
+                if (previousValue != null) {
+                    log
+                            .warning(String
+                                    .format(
+                                            "The parameter '%s' was specified"
+                                                    + "by the caller while also specifying usage of "
+                                                    + "the preset '%s = %s'. The specified value: '%s'"
+                                                    + " has now been overwritten with the value: '%s'"
+                                                    + " from the preset.",
+                                            parameter.getName(),
+                                            presetCategoryID, presetSetting
+                                                    .getName(), previousValue,
+                                            parameter.getValue()));
+                }
+            }
+        }
 
-	return identifierMap;
+        return identifierMap;
     }
 
     /**
@@ -358,26 +364,26 @@ class PRCommandBuilder {
      */
     private Set<String> getIdentifiers(CommandLine commandLine) {
 
-	final Set<String> foundIdentifiers = new HashSet<String>();
-	final List<String> commandParameterStrings = new ArrayList<String>();
-	commandParameterStrings.addAll(commandLine.getParameters());
-	commandParameterStrings.add(commandLine.getCommand());
+        final Set<String> foundIdentifiers = new HashSet<String>();
+        final List<String> commandParameterStrings = new ArrayList<String>();
+        commandParameterStrings.addAll(commandLine.getParameters());
+        commandParameterStrings.add(commandLine.getCommand());
 
-	for (String stringWithIdentifiers : commandParameterStrings) {
+        for (String stringWithIdentifiers : commandParameterStrings) {
 
-	    StringTokenizer stringTokenizer = new StringTokenizer(
-		    stringWithIdentifiers);
+            StringTokenizer stringTokenizer = new StringTokenizer(
+                    stringWithIdentifiers);
 
-	    while (stringTokenizer.hasMoreTokens()) {
-		String token = stringTokenizer.nextToken();
-		if (token.charAt(0) == '#') {
-		    token = token.substring(1);
-		    foundIdentifiers.add(token);
-		}
-	    }
-	}
+            while (stringTokenizer.hasMoreTokens()) {
+                String token = stringTokenizer.nextToken();
+                if (token.charAt(0) == '#') {
+                    token = token.substring(1);
+                    foundIdentifiers.add(token);
+                }
+            }
+        }
 
-	return foundIdentifiers;
+        return foundIdentifiers;
     }
 
 }
