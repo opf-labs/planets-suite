@@ -132,8 +132,8 @@ class PRCommandBuilder {
                 // Handle identifiers enclosed in double quotes.
                 final int quotePos = token.indexOf('\"') == -1 ? identifierEnd
                         : token.indexOf('\"');
-                identifierEnd = identifierEnd < quotePos ? identifierEnd
-                        : quotePos;
+                identifierEnd = (identifierEnd < quotePos)
+                        && (identifierEnd != -1) ? identifierEnd : quotePos;
 
                 if (identifierEnd == -1) {
                     identifierEnd = token.length();
