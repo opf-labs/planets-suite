@@ -14,7 +14,6 @@ import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
-import eu.planets_project.ifr.core.services.AbstractSampleXclUsage;
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.CoreExtractor;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreator;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
@@ -34,7 +33,7 @@ import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * XCL Comparator service. Compares image, text or XCDL files wrapped as digital objects.
- * @see {@link AbstractSampleXclUsage}
+ * @see {@link eu.planets_project.ifr.core.services.AbstractSampleXclUsage}
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @WebService( name = XcdlCompare.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare" )
