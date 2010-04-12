@@ -10,11 +10,11 @@ import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
+import eu.planets_project.ifr.core.services.AbstractSampleXclUsage;
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.CoreExtractor;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreator;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
@@ -42,6 +42,8 @@ import eu.planets_project.services.utils.ServiceUtils;
 @MTOM
 @StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
 public final class XcdlCompare implements Compare {
+    private static Logger log = Logger.getLogger(XcdlCompare.class.getName());
+    
     /***/
     static final String NAME = "XcdlCompare";
 
@@ -55,8 +57,12 @@ public final class XcdlCompare implements Compare {
         if (first == null || second == null) {
             throw new IllegalArgumentException("Digital objects to compare must not be null");
         }
-        String pcr = new ComparatorConfigCreator(config).getComparatorConfigXml();
+        String pcr = null;
+        if( config != null) {
+        	pcr = new ComparatorConfigCreator(config).getComparatorConfigXml();
+        }
         String result = ComparatorWrapper.compare(xcdlFor(first), Arrays.asList(xcdlFor(second)), pcr);
+        log.info("Got Result: "+result);
         List<List<Property>> props = propertiesFrom(result);
         return compareResult(props);
     }
@@ -66,8 +72,15 @@ public final class XcdlCompare implements Compare {
         File xcdl = new CoreExtractor(getClass().getName())
                 .extractXCDL(object, null, null, null);
         // Return either the extracted XCDL (if it exists) or assume the file is an XCDL:
-        return xcdl != null && xcdl.exists()
-                ? read(new DigitalObject.Builder(Content.byReference(xcdl)).build()) : read(object);
+        String xcdlString = null;
+        try {
+        	xcdlString = xcdl != null && xcdl.exists() ? read(new DigitalObject.Builder(Content.byReference(xcdl)).build()) : read(object);
+        	log.info("Got XCDL: "+xcdlString.substring(0, 2000));
+        } catch ( IllegalArgumentException e ) {
+        	log.severe("ERROR when reading XCDL file. "+e);
+        	xcdlString = "";
+        }
+        return xcdlString;
     }
 
     /**
@@ -96,7 +109,12 @@ public final class XcdlCompare implements Compare {
      */
     private List<List<Property>> propertiesFrom(final String result) {
         File file = FileUtils.writeByteArrayToTempFile(result.getBytes());
-        return new ResultPropertiesReader(file).getProperties();
+        try {
+        	return new ResultPropertiesReader(file).getProperties();
+        } catch( IllegalArgumentException e ) {
+        	log.severe("Could not parse properties from string "+result.substring(0, 100)+"\n "+e);
+        	return new ArrayList<List<Property>>();
+        }
     }
 
     /**
@@ -110,7 +128,7 @@ public final class XcdlCompare implements Compare {
         InputStream stream = digitalObject.getContent().getInputStream();
         String xcdl = new String(FileUtils.writeInputStreamToBinary(stream));
         if (!xcdl.toLowerCase().contains("<xcdl")) {
-            throw new IllegalArgumentException("Digital object given is no XCDL: " + xcdl);
+            throw new IllegalArgumentException("Digital object given is not XCDL: " + xcdl.substring(0,100));
         }
         return stream == null ? null : xcdl;
     }

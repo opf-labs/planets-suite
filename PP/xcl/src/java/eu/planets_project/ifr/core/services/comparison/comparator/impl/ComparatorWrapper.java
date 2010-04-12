@@ -40,9 +40,12 @@ public final class ComparatorWrapper {
     										+ File.separator
     										+ "v1.0"
     										+ File.separator).replace(File.separator + File.separator, File.separator);
-    /** The default config file; is used when no config is specified. */
+    /** The default config file; used when no config is specified. */
     private static final String DEFAULT_CONFIG = COMPARATOR_HOME
+    // FIXME This comparator configuration file does not exist, it seems:
             + "defaultPCR.xml";
+    // So use this instead? Or will it default sensibly?
+    //		+ "test" + File.separator + "configTest" + File.separator + "cocoImage.xml";
     /** The file names of the result and log files. */
     private static final String LOG_TXT = "log.txt";
     /** The comparator executable, has to be on the path on the server. */

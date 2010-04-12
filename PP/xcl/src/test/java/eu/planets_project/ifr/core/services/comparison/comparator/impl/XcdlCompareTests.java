@@ -34,18 +34,21 @@ public final class XcdlCompareTests {
         testWith(ComparatorWrapperTests.XCDL1, ComparatorWrapperTests.XCDL2, ComparatorWrapperTests.COCO_IMAGE);
     }
     
-    //@Test Not yet supported
+    @Test
     public void imageComparison(){
-        testWith(ComparatorWrapperTests.GIF, ComparatorWrapperTests.JPG, ComparatorWrapperTests.COCO_IMAGE);
+    	System.out.println("Testing direct image comparison.");
+    	testWith(ComparatorWrapperTests.PNG, ComparatorWrapperTests.TIFF, ComparatorWrapperTests.COCO_IMAGE);
+    	testWith(ComparatorWrapperTests.JPG, ComparatorWrapperTests.TIFF, null );
     }
     
     //@Test Not yet supported
     public void textComparison(){
+    	System.out.println("Testing direct text/document comparison.");
         testWith(ComparatorWrapperTests.DOCX, ComparatorWrapperTests.PDF, ComparatorWrapperTests.COCO_TEXT);
     }
 
     private void testWith(String file1, String file2, String config) {
-        testServices(new File(file1), new File(file2), new File(config));
+        testServices(new File(file1), new File(file2), config == null ? null : new File(config));
     }
 
     /**
@@ -58,8 +61,9 @@ public final class XcdlCompareTests {
         Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME, XcdlCompare.class, WSDL);
         DigitalObject first = new DigitalObject.Builder(Content.byValue(file1)).build();
         DigitalObject second = new DigitalObject.Builder(Content.byValue(file2)).build();
-        DigitalObject configFile = new DigitalObject.Builder(Content.byValue(file3)).build();
-        List<Property> properties = c.compare(first, second, c.convert(configFile)).getProperties();
+        DigitalObject configFile = null;
+        if( file3 != null ) configFile = new DigitalObject.Builder(Content.byValue(file3)).build();
+        List<Property> properties = c.compare(first, second, configFile == null ? null : c.convert(configFile)).getProperties();
         ComparatorWrapperTests.check(properties);
     }
 }
