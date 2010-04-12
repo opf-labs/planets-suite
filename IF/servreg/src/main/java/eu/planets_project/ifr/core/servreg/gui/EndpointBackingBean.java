@@ -57,9 +57,11 @@ public class EndpointBackingBean {
 			if ((this._selectedCategory.equals(EndpointBackingBean.ALL_CATEGORY)) ||
 					(this._selectedCategory.equals(endpoint.getCategory()))) {
 				// If the name or the category of the endpoint match the search string
-				if ((endpoint.getCategory().toLowerCase().indexOf(this._searchStr.toLowerCase()) > -1) ||
-						(endpoint.getName().toLowerCase().indexOf(this._searchStr.toLowerCase()) > -1)) {
+				if (endpoint.getCategory() != null && this._searchStr != null ) {
+					if ((endpoint.getCategory().toLowerCase().indexOf(this._searchStr.toLowerCase()) > -1) ||
+							(endpoint.getName().toLowerCase().indexOf(this._searchStr.toLowerCase()) > -1)) {
 						endpoints.add(endpoint);
+					}
 				}
 			}
 		}
