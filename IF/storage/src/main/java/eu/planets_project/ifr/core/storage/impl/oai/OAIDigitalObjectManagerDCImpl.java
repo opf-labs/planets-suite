@@ -182,6 +182,7 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 		    	    	resultList.add(URI.create(url));
 						Builder builder = new DigitalObject.Builder(Content.byReference(new URL(url)));
 						builder.title(title);
+						builder.permanentUri(URI.create(url));
 						builder.metadata(new Metadata(namespaceURI, record.getMetadataAsString()));
 				    	long endtime = System.currentTimeMillis();
 				    	log.info("OAIDigitalObjectManagerDCImpl retrieve() timediff: " + (endtime - starttime));

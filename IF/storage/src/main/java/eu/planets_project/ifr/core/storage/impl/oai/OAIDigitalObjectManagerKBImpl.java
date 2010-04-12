@@ -222,6 +222,7 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 							if (publicationLink != null && publicationLink.toString().length() > 0) {
 								Builder builder = new DigitalObject.Builder(Content.byReference(URI.create(publicationLink).toURL()));
 								builder.title(title);
+								builder.permanentUri(URI.create(publicationLink));
 								builder.metadata(metadataList.toArray(new Metadata[]{}));
 								
 						    	long endtime = System.currentTimeMillis();
