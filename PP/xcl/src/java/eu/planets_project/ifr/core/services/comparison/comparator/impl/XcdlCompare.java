@@ -57,12 +57,22 @@ public final class XcdlCompare implements Compare {
             throw new IllegalArgumentException("Digital objects to compare must not be null");
         }
         String pcr = null;
-        if( config != null) {
+        if( config != null && config.size() > 0 ) {
         	pcr = new ComparatorConfigCreator(config).getComparatorConfigXml();
         }
-        String result = ComparatorWrapper.compare(xcdlFor(first), Arrays.asList(xcdlFor(second)), pcr);
+        // Set up the default config:
+        /*
+        if( pcr == null || "".equals(pcr.trim())) {
+            pcr = ComparatorWrapper.read(ComparatorWrapper.DEFAULT_CONFIG);
+        }
+        */
+        String xcdl1 = xcdlFor(first);
+        String xcdl2 = xcdlFor(second);
+        String result = ComparatorWrapper.compare(xcdl1, Arrays.asList(xcdl2), pcr);
         log.info("Got Result: "+result);
-        List<List<Property>> props = propertiesFrom(result);
+        // Build the comparison, using properties from extraction and comparison. 
+        List<List<Property>> props = propertiesFrom(xcdl1, xcdl2, result);
+        // Create the result object from the properties.
         return compareResult(props);
     }
 
@@ -88,15 +98,15 @@ public final class XcdlCompare implements Compare {
      */
     static CompareResult compareResult(final List<List<Property>> props) {
         if (props.size() == 1) {
-            return new CompareResult(props.get(0), new ServiceReport(Type.INFO, Status.SUCCESS,
+            return new CompareResult(props.get(0), null, new ServiceReport(Type.INFO, Status.SUCCESS,
                     "Top-level comparison result without embedded results"));
         } else {
             List<CompareResult> embedded = new ArrayList<CompareResult>();
             for (List<Property> list : props) {
-                embedded.add(new CompareResult(list, new ServiceReport(Type.INFO, Status.SUCCESS,
+                embedded.add(new CompareResult(list, null, new ServiceReport(Type.INFO, Status.SUCCESS,
                         "Embedded comparison result")));
             }
-            return new CompareResult(new ArrayList<Property>(), new ServiceReport(Type.INFO,
+            return new CompareResult(new ArrayList<Property>(), null, new ServiceReport(Type.INFO,
                     Status.SUCCESS, "Top-level comparison result with embedded results"), embedded);
         }
     }
@@ -105,7 +115,7 @@ public final class XcdlCompare implements Compare {
      * @param result The comparator result
      * @return The properties found in the result XML
      */
-    private List<List<Property>> propertiesFrom(final String result) {
+    private List<List<Property>> propertiesFrom(final String xcdl1, final String xcdl2, final String result) {
         File file = FileUtils.writeByteArrayToTempFile(result.getBytes());
         try {
         	return new ResultPropertiesReader(file).getProperties();
@@ -113,6 +123,8 @@ public final class XcdlCompare implements Compare {
         	log.severe("Could not parse properties from string "+result+"\n "+e);
         	return new ArrayList<List<Property>>();
         }
+        // FIXME Also grab properties from the XCDL files and merge in with the results:
+        
     }
 
     /**

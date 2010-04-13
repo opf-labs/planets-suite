@@ -24,6 +24,7 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.CompareResult;
+import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;

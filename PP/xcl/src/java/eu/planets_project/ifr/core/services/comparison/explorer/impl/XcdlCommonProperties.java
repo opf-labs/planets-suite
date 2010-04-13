@@ -63,7 +63,7 @@ public final class XcdlCommonProperties implements CommonProperties {
         }
         ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, String.format(
                 "Determined %s union properties for %s format IDs", resultProperties.size(), formatIds.size()));
-        return new CompareResult(new ArrayList<Property>(resultProperties), report);
+        return new CompareResult(new ArrayList<Property>(resultProperties), null, report);
     }
 
     /**
@@ -81,7 +81,7 @@ public final class XcdlCommonProperties implements CommonProperties {
         List<Property> result = intersectionOf(propsOfEach);
         ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, String.format(
                 "Determined %s intersection properties for %s format IDs", result.size(), formatIds.size()));
-        return new CompareResult(result, report);
+        return new CompareResult(result, null, report);
     }
 
     private List<Property> intersectionOf(List<List<Property>> propsOfEach) {

@@ -3,6 +3,7 @@
  */
 package eu.planets_project.services.compare;
 
+import eu.planets_project.services.compare.PropertyComparison.Equivalence;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
 
@@ -20,7 +21,7 @@ import java.util.List;
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public final class CompareResult {
-    private List<Property> properties;
+    private List<PropertyComparison> properties;
     private ServiceReport report;
     private String fragmentID;
     private List<CompareResult> results;
@@ -33,11 +34,11 @@ public final class CompareResult {
      * @param properties The result properties
      * @param report The report
      */
-    public CompareResult(final List<Property> properties, final ServiceReport report) {
+    public CompareResult(final List<PropertyComparison> properties, final ServiceReport report) {
         if( properties != null ) {
-            this.properties = new ArrayList<Property>(properties);
+            this.properties = new ArrayList<PropertyComparison>(properties);
         } else {
-            this.properties = new ArrayList<Property>();
+            this.properties = new ArrayList<PropertyComparison>();
         }
         this.report = report;
         this.results = Collections.unmodifiableList(new ArrayList<CompareResult>());
@@ -49,9 +50,9 @@ public final class CompareResult {
      * @param report The report
      * @param fragmentID the id of the fragment the result refers to
      */
-    public CompareResult(final List<Property> properties, 
+    public CompareResult(final List<PropertyComparison> properties, 
     		final ServiceReport report, final String fragmentID) {
-        this.properties = new ArrayList<Property>(properties);
+        this.properties = new ArrayList<PropertyComparison>(properties);
         this.report = report;
         this.results = Collections.unmodifiableList(new ArrayList<CompareResult>());
         this.fragmentID = fragmentID;
@@ -62,8 +63,8 @@ public final class CompareResult {
      * @param report The report
      * @param results The embedded results
      */
-    public CompareResult(final List<Property> properties, final ServiceReport report, final List<CompareResult> results) {
-        this.properties = new ArrayList<Property>(properties);
+    public CompareResult(final List<PropertyComparison> properties, final ServiceReport report, final List<CompareResult> results) {
+        this.properties = new ArrayList<PropertyComparison>(properties);
         this.report = report;
         this.results = new ArrayList<CompareResult>(results);
         this.fragmentID = null;
@@ -75,19 +76,69 @@ public final class CompareResult {
      * @param results The embedded results
      * @param fragmentID the id of the fragment the result refers to
      */
-    public CompareResult(final List<Property> properties,
+    public CompareResult(final List<PropertyComparison> properties,
     		final ServiceReport report, final List<CompareResult> results,
     		final String fragmentID) {
-        this.properties = new ArrayList<Property>(properties);
+        this.properties = new ArrayList<PropertyComparison>(properties);
         this.report = report;
         this.results = new ArrayList<CompareResult>(results);
         this.fragmentID = fragmentID;
     }
     /**
+     * @param result
+     * @param report2
+     */
+    @Deprecated
+    public CompareResult(List<Property> result, String fragmentID, ServiceReport report) {
+        this.report = report;
+        this.fragmentID = fragmentID;
+        this.results = new ArrayList<CompareResult>();
+        this.importProperties(result);
+    }
+
+    /**
+     * @param arrayList
+     * @param object
+     * @param serviceReport
+     * @param embedded
+     */
+    @Deprecated
+    public CompareResult(ArrayList<Property> props, String fragmentID,
+            ServiceReport report, List<CompareResult> embedded) {
+        this.report = report;
+        this.fragmentID = fragmentID;
+        this.results = new ArrayList<CompareResult>(embedded);
+        this.importProperties(props);
+    }
+
+    /*
+     * 
+     */
+    private void importProperties( List<Property> props ) {
+        // Construct a list of PropertyComparison objects:
+        this.properties = new ArrayList<PropertyComparison>();
+        for( Property p : props ) {
+            properties.add( new PropertyComparison(p, null, null, Equivalence.UNKNOWN ) );
+        }
+    }
+
+    /**
+     * @return An unmodifiable copy of the result comparisons
+     */
+    public List<PropertyComparison> getComparisons() {
+        return properties == null ? Collections.unmodifiableList(new ArrayList<PropertyComparison>()) : properties;
+    }
+
+    /**
      * @return An unmodifiable copy of the result properties
      */
     public List<Property> getProperties() {
-        return properties == null ? Collections.unmodifiableList(new ArrayList<Property>()) : properties;
+        List<Property> props = new ArrayList<Property>();
+        if( this.properties == null ) return props;
+        for( PropertyComparison pc : this.properties ) {
+            props.add( pc.getComparison() );
+        }
+        return props;
     }
 
     /**

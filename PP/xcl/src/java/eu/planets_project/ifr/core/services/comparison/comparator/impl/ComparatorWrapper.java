@@ -42,7 +42,7 @@ public final class ComparatorWrapper {
     										+ "v1.0"
     										+ File.separator).replace(File.separator + File.separator, File.separator);
     /** The default config file; used when no config is specified. */
-    private static final String DEFAULT_CONFIG = COMPARATOR_HOME
+    static final String DEFAULT_CONFIG = COMPARATOR_HOME
     // FIXME This comparator configuration file does not exist, it seems:
     //        + "defaultPCR.xml";
     // So use this instead? Or will it default sensibly?
@@ -124,8 +124,8 @@ public final class ComparatorWrapper {
     private static File createConfigFile(final String pcr) {
         /* The PCR file is optional: */
         File pcrFile = new File(COMPARATOR_HOME + "sentPCR.xml");
-        if (pcr == null) {
-            pcrFile = new File(DEFAULT_CONFIG);
+        if ( pcr == null || pcr.trim().isEmpty() ) {
+            save(pcrFile.getAbsolutePath(), ComparatorWrapper.read(DEFAULT_CONFIG) );
         } else {
             save(pcrFile.getAbsolutePath(), pcr);
         }
