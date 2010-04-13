@@ -114,8 +114,8 @@
 	<classpathentry kind="lib" path="/pserv/lib/jaxws-ri-2.1.4/lib/stax-ex.jar"/>
 	<classpathentry kind="lib" path="/pserv/lib/jaxws-ri-2.1.4/lib/streambuffer.jar"/>
 	<classpathentry kind="lib" path="/pserv/build/pserv-if-servreg-api.jar"/>
-	<classpathentry kind="lib" path="D:/Implementation/Planets/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-api-3.3.2.SR1.jar"/>
-	<classpathentry kind="lib" path="D:/Implementation/Planets/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-impl-3.3.2.SR1.jar"/>
-	<classpathentry kind="lib" path="D:/Implementation/Planets/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-ui-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-api-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-impl-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-ui-3.3.2.SR1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
