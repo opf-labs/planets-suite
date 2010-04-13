@@ -118,7 +118,7 @@ public final class CompareResult {
         // Construct a list of PropertyComparison objects:
         this.properties = new ArrayList<PropertyComparison>();
         for( Property p : props ) {
-            properties.add( new PropertyComparison(p, null, null, Equivalence.UNKNOWN ) );
+            properties.add( new PropertyComparison(p, Equivalence.UNKNOWN ) );
         }
     }
 

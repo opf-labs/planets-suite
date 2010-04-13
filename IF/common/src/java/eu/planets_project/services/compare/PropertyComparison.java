@@ -10,6 +10,7 @@
  */
 package eu.planets_project.services.compare;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -68,6 +69,8 @@ public final class PropertyComparison {
     protected PropertyComparison() { }
 
     /**
+     * This constructor creates general many-to-many property comparison.
+     * 
      * @param comparison
      * @param firstProperties
      * @param secondProperties
@@ -82,6 +85,42 @@ public final class PropertyComparison {
         this.secondProperties = secondProperties;
         this.equivalence = equivalence;
     }
+    
+    /**
+     * This constructor creates simple one-to-one property comparisons.
+     * 
+     * @param comparison
+     * @param first
+     * @param second
+     * @param equivalence
+     */
+    public PropertyComparison(Property comparison,
+            Property first, Property second,
+            Equivalence equivalence) {
+        super();
+        this.comparison = comparison;
+        this.firstProperties = new ArrayList<Property>();
+        this.firstProperties.add(first);
+        this.secondProperties = new ArrayList<Property>();
+        this.secondProperties.add(second);
+        this.equivalence = equivalence;
+    }
+
+    /**
+     * This constructor creates direct comparison properties.
+     * 
+     * @param comparison
+     * @param equivalence
+     */
+    public PropertyComparison(Property comparison,
+            Equivalence equivalence) {
+        super();
+        this.comparison = comparison;
+        this.firstProperties = null;
+        this.secondProperties = null;
+        this.equivalence = equivalence;
+    }
+    
 
     /**
      * @return the comparison
@@ -109,6 +148,83 @@ public final class PropertyComparison {
      */
     public Equivalence getEquivalence() {
         return equivalence;
+    }
+
+    /**
+     * @return
+     */
+    public boolean isEqual() {
+        if( this.equivalence == Equivalence.EQUAL ) return true;
+        return false;
+    }
+    
+    /**
+     * @return
+     */
+    public boolean isMissing() {
+        if( this.equivalence == Equivalence.MISSING ) return true;
+        return false;
+    }
+
+    /**
+     * @return
+     */
+    public boolean isUnknown() {
+        if( this.equivalence == Equivalence.UNKNOWN ) return true;
+        return false;
+    }
+    
+    /**
+     * @return
+     */
+    public boolean isDirectComparision() {
+        if( this.firstProperties == null || this.firstProperties.size() == 0 ) {
+            if( this.secondProperties == null || this.secondProperties.size() == 0 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @return
+     */
+    public boolean isPropertyComparison() {
+        if( this.isDirectComparision() == true ) return false;
+        return true;
+    }
+    
+    /**
+     * @return
+     */
+    public boolean isSinglePropertyComparison() {
+        if( this.isDirectComparision() == true ) return false;
+        if( this.firstProperties.size() == 1 && this.secondProperties.size() == 1 ) {
+            if( this.firstProperties.get(0).getUri().equals( this.secondProperties.get(0).getUri()) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @return
+     */
+    public Property getFirstProperty() {
+        if( this.isSinglePropertyComparison() ) {
+            return this.firstProperties.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * @return
+     */
+    public Property getSecondProperty() {
+        if( this.isSinglePropertyComparison() ) {
+            return this.secondProperties.get(0);
+        }
+        return null;
     }
 
 }
