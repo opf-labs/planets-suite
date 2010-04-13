@@ -12,7 +12,7 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/axis.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/ejb3-persistence.jar"/>
 	<classpathentry kind="lib" path="/pserv/build/pserv-if-common.jar" sourcepath="/pserv/IF/common/src/java"/>
-	<classpathentry kind="lib" path="/pserv/build/pserv-if-storage-api.jar" sourcepath="/pserv/IF/storage/src/java"/>
+	<classpathentry kind="lib" path="/pserv/build/pserv-if-storage-api.jar" sourcepath="/pserv/IF/storage/src"/>
 	<classpathentry kind="lib" path="/pserv/build/pserv-if-techreg-api.jar" sourcepath="/pserv/IF/techreg/src/java"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/castor-xml.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/commons-io-1.4.jar"/>
@@ -114,8 +114,8 @@
 	<classpathentry kind="lib" path="/pserv/lib/jaxws-ri-2.1.4/lib/stax-ex.jar"/>
 	<classpathentry kind="lib" path="/pserv/lib/jaxws-ri-2.1.4/lib/streambuffer.jar"/>
 	<classpathentry kind="lib" path="/pserv/build/pserv-if-servreg-api.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-api-3.3.2.SR1.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-impl-3.3.2.SR1.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-ui-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="D:/Implementation/Planets/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-api-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="D:/Implementation/Planets/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-impl-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="D:/Implementation/Planets/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-ui-3.3.2.SR1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
