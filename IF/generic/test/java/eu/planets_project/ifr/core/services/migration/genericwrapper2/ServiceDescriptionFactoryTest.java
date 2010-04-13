@@ -86,7 +86,7 @@ public class ServiceDescriptionFactoryTest {
 	assertEquals("Un-expected text returned by getFurtherInfo().",
 		expectedFurtherInfoURI, serviceDescription.getFurtherInfo());
 
-	assertEquals("Un-expected identifier.", "Example_custom_identifier",
+	assertEquals("Un-expected identifier.", "-3995df4febea7decc4848e2864b7f863",
 		serviceDescription.getIdentifier());
 
 	assertEquals("Un-expected input formats.", getExpectedInputFormats(),
