@@ -13,6 +13,7 @@ package eu.planets_project.tb.gui.backing.exp;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,10 +76,12 @@ public class MeasuredComparisonEventBean extends MeasurementEventBean {
         }
         // Extract:
         List<MeasuredComparisonBean> cms = new ArrayList<MeasuredComparisonBean>(cmp.values());
+        // Sort:
+        Collections.sort(cms);
         return cms;
     }
 
-    public class MeasuredComparisonBean {
+    public class MeasuredComparisonBean implements Comparable<MeasuredComparisonBean> {
 
         private MeasurementImpl compared;
         private MeasurementImpl measured1;
@@ -96,7 +99,7 @@ public class MeasuredComparisonEventBean extends MeasurementEventBean {
             this.compared = m;
         }
 
-        /**
+        /**{
          * @param m
          */
         public MeasuredComparisonBean(MeasurementImpl m1, MeasurementImpl m2) {
@@ -141,13 +144,27 @@ public class MeasuredComparisonEventBean extends MeasurementEventBean {
         
         public boolean isFormatProperty() {
             if( measured1 != null ) return measured1.isFormatProperty();
+            if( measured2 != null ) return measured2.isFormatProperty();
             return false;
         }
         
         public Property getProperty() {
             if( compared != null ) return compared.toProperty();
             if( measured1 != null ) return measured1.toProperty();
+            if( measured2 != null ) return measured2.toProperty();
             return null;
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Comparable#compareTo(java.lang.Object)
+         */
+        public int compareTo(MeasuredComparisonBean o) {
+            if( o.getProperty() != null && o.getProperty().getName() != null ) {
+                if( this.getProperty() != null && this.getProperty().getName() != null ) {
+                    return this.getProperty().getName().compareTo( o.getProperty().getName() );
+                }
+            }
+            return 0;
         }
         
     }

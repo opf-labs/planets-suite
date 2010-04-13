@@ -350,6 +350,7 @@ public class MeasurementImpl implements Serializable {
     public Property toProperty() {
         Property.Builder pb = new Property.Builder(this.getIdentifierUri());
         pb.name(name).description(description).type(type).value(value).unit(unit);
+        if( name == null || "".equals(name)) pb.name("[unnamed]");
         return pb.build();
     }
 

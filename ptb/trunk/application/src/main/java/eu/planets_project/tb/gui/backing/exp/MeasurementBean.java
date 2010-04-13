@@ -125,6 +125,17 @@ public class MeasurementBean extends MeasurementImpl {
     public void setOdd(boolean odd) {
         this.odd = odd;
     }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.impl.model.measure.MeasurementImpl#getName()
+     */
+    @Override
+    public String getName() {
+        String name = super.getName();
+        if( name == null || "".equals(name)) name = "[unnamed]";
+        return name;
+    }
+
 
     /** ACTIONS **/
 

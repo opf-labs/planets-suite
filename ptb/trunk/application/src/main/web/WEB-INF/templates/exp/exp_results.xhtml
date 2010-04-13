@@ -24,7 +24,7 @@
       <legend>Overall Experiment Execution Results</legend>
 
      <rich:dataTable value="#{ExperimentBean.experimentDigitalObjectResults}" 
-         var="res" styleClass="tbTable" reRender="dolist_ds" rows="50" width="100%">
+         var="res" styleClass="tbTable" reRender="dolist_ds" rows="10" width="100%">
         <rich:column sortBy="#{res.digitalObjectName}">
           <f:facet name="header">Digital Object</f:facet>
           <h:outputLink value="#{res.downloadURL}" styleClass="inTableIcon">

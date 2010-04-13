@@ -12,8 +12,10 @@
 <body>
  <ui:composition rendered="#{p != null}">
 
-  <a4j:commandLink>
-    <h:outputText value="#{p.name}" />
+  <a4j:outputPanel layout="block">
+    <h:outputLink value="#{p.uri}" target="_blank">
+      <h:outputText value="#{p.name}" />
+    </h:outputLink>
     <rich:toolTip>
       <h:outputText value="#{p.description}" />
       <h:panelGroup rendered="#{p.uri != null}">
@@ -21,8 +23,8 @@
         <i><h:outputText value="(URI: #{p.uri})" /></i>
       </h:panelGroup>
     </rich:toolTip>
-  </a4j:commandLink>
-
+  </a4j:outputPanel>
+  
  </ui:composition> 
 </body> 
 </html>
