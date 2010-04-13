@@ -47,6 +47,9 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 	 */
 	private static List<URI> uriList = new ArrayList<URI>();
 
+	
+	private URI baseRegistryURI = null;
+	
     
 	/**
 	 * @param baseURL The base URL
@@ -182,7 +185,21 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 		    	    	resultList.add(URI.create(url));
 						Builder builder = new DigitalObject.Builder(Content.byReference(new URL(url)));
 						builder.title(title);
-						builder.permanentUri(URI.create(url));
+						String filename = "";
+			            if(url != null) {
+			                filename = URI.create(url).getPath();
+			                log.info("OAIDigitalObjectManagerKBImpl list() filename: " + filename);
+			                if(filename != null) {
+			                    String[] parts = filename.split("/");
+			                    if( parts != null && parts.length > 0 )
+			                    	filename = parts[parts.length-1];
+			                }
+			            }
+			            log.info("OAIDigitalObjectManagerKBImpl list() filename: " + filename +
+			            		", pdURI.toString(): " + pdURI.toString() + ", url: " + url);
+
+			           	URI permanentUri = URI.create(getBaseRegistryURI() +"/"+ filename).normalize();            
+						builder.permanentUri(permanentUri);
 						builder.metadata(new Metadata(namespaceURI, record.getMetadataAsString()));
 				    	long endtime = System.currentTimeMillis();
 				    	log.info("OAIDigitalObjectManagerDCImpl retrieve() timediff: " + (endtime - starttime));
@@ -339,4 +356,13 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
         }
     }
 
+
+	public URI getBaseRegistryURI() {
+		return baseRegistryURI;
+	}
+
+
+	public void setBaseRegistryURI(URI _baseRegistryURI) {
+		baseRegistryURI = _baseRegistryURI;
+	}
 }

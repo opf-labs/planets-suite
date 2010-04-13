@@ -51,6 +51,8 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 	private static final String BRACES = "%22";
 	private static final String METADATA_END = "</dc";
 	
+	private URI baseRegistryURI = null;
+
 
 	/**
 	 * This is an enumeration of the OAI article metadata
@@ -222,7 +224,21 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 							if (publicationLink != null && publicationLink.toString().length() > 0) {
 								Builder builder = new DigitalObject.Builder(Content.byReference(URI.create(publicationLink).toURL()));
 								builder.title(title);
-								builder.permanentUri(URI.create(publicationLink));
+								String filename = "";
+					            if(publicationLink != null) {
+					                filename = URI.create(publicationLink).getPath();
+					                log.info("OAIDigitalObjectManagerKBImpl list() filename: " + filename);
+					                if(filename != null) {
+					                    String[] parts = filename.split("/");
+					                    if( parts != null && parts.length > 0 )
+					                    	filename = parts[parts.length-1];
+					                }
+					            }
+					            log.info("OAIDigitalObjectManagerKBImpl list() filename: " + filename +
+					            		", pdURI.toString(): " + pdURI.toString() + ", publicationLink: " + publicationLink);
+
+					           	URI permanentUri = URI.create(getBaseRegistryURI() +"/"+ filename).normalize();            
+								builder.permanentUri(permanentUri);
 								builder.metadata(metadataList.toArray(new Metadata[]{}));
 								
 						    	long endtime = System.currentTimeMillis();
@@ -501,5 +517,15 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
             }
         }
     }
+
+
+	public URI getBaseRegistryURI() {
+		return baseRegistryURI;
+	}
+
+
+	public void setBaseRegistryURI(URI _baseRegistryURI) {
+		baseRegistryURI = _baseRegistryURI;
+	}
 	
 }

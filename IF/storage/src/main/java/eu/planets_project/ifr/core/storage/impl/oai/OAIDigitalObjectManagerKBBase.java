@@ -86,7 +86,10 @@ public class OAIDigitalObjectManagerKBBase extends DigitalObjectManagerBase {
 				try {
 			        log.info("Replace HTTP path by registry path: " + pdURI);   
 					URI baseUri = new PDURI(pdURI.normalize()).formDataRegistryRootURI();
-					log.info("OAIDigitalObjectManagerKBBase list() base URI " + baseUri);				
+					log.info("OAIDigitalObjectManagerKBBase list() base URI " + baseUri);	
+					if (dom != null && baseUri != null) {
+						dom.setBaseRegistryURI(baseUri);
+					}
 
 					if (pdURI.equals(baseUri)) {
 						retVal = this.listFileLocation(pdURI);
