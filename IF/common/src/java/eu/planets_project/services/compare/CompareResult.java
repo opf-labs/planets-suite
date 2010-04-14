@@ -130,8 +130,10 @@ public final class CompareResult {
     }
 
     /**
+     * Note that this skips a lot of important info, and you should use getComparisons() instead.
      * @return An unmodifiable copy of the result properties
      */
+    @Deprecated
     public List<Property> getProperties() {
         List<Property> props = new ArrayList<Property>();
         if( this.properties == null ) return props;

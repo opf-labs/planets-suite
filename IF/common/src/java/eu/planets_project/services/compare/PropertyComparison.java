@@ -233,7 +233,7 @@ public final class PropertyComparison {
     @Override
     public String toString() {
         return "PropertyComparison ["
-                + ", equivalence=" + equivalence
+                + "equivalence=" + equivalence
                 + ", comparison=" + comparison
                 + ", firstProperties=" + firstProperties
                 + ", secondProperties=" + secondProperties
