@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -55,17 +57,22 @@ public final class ResultPropertiesReader {
                 for (Object object : propElems) {
                     Element e = (Element) object;
                     String state = e.getAttributeValue("state");
-                    String description = e.getChild("metrics", NS) != null ? processMetrics(e) : "";
+                    Map<String,String> metrics = processMetrics(e);
+                    String value = "";
+                    for( String key : metrics.keySet() ) {
+                        if( !"equal".equals(key)) {
+                            value += key+"="+metrics.get(key)+" ";
+                        }
+                    }
                     String name = e.getAttributeValue("name");
-                    String desc = "[" + description + "]";
-                    Property result = new Property.Builder(XcdlProperties.makePropertyURI(name)).name(name).value(desc)
-                            .description(state).build();
+                    Property result = new Property.Builder(XcdlProperties.makePropertyURI(name)).name(name).value(value.trim())
+                            .description(state+" property "+name).build();
                     // Work out equivalence:
                     Equivalence eq = Equivalence.UNKNOWN;
                     if( "complete".equals(state) || "partial".equals(state) ) {
-                        if( desc.contains("equal=true") ) {
+                        if( "true".equals( metrics.get("equal") ) ) {
                             eq = Equivalence.EQUAL;
-                        } else if( desc.contains("equal=false") ) {
+                        } else if( "false".equals( metrics.get("equal") ) ) {
                             eq = Equivalence.DIFFERENT;
                         }
                     }
@@ -82,18 +89,20 @@ public final class ResultPropertiesReader {
         return all;
     }
 
-    private String processMetrics(final Element propertyElement) {
-        StringBuilder descriptionBuilder = new StringBuilder();
+    private Map<String,String> processMetrics(final Element propertyElement) {
+        Map<String,String> mmap = new HashMap<String,String>();
         Element metricsElem = propertyElement.getChild("metrics", NS);
+        int count = 0;
         if (metricsElem != null) {
             List<?> metrics = metricsElem.getChildren();
             for (Object mObject : metrics) {
                 Element m = (Element) mObject;
                 String metricName = m.getAttributeValue("name");
                 String resultString = m.getChildText("result", NS);
-                descriptionBuilder.append(String.format(" %s=%s", metricName, resultString));
+                mmap.put(metricName.trim(), resultString.trim());
+                count += 1;
             }
         }
-        return descriptionBuilder.toString().trim();
+        return mmap;
     }
 }
