@@ -13,6 +13,8 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
+import eu.planets_project.services.compare.PropertyComparison;
+import eu.planets_project.services.compare.PropertyComparison.Equivalence;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.utils.FileUtils;
 
@@ -36,8 +38,8 @@ public final class ResultPropertiesReader {
     /**
      * @return The properties in the given CPR file
      */
-    public List<List<Property>> getProperties() {
-        List<List<Property>> all = new ArrayList<List<Property>>();
+    public List<List<PropertyComparison>> getProperties() {
+        List<List<PropertyComparison>> all = new ArrayList<List<PropertyComparison>>();
         SAXBuilder builder = new SAXBuilder();
         try {
             Document doc = builder.build(new StringReader(cprString));
@@ -48,7 +50,7 @@ public final class ResultPropertiesReader {
             @SuppressWarnings("unchecked") // JDOM API
             List<Element> sets = doc.getRootElement().getChildren("set", NS);
             for (Element set : sets) {
-                List<Property> properties = new ArrayList<Property>();
+                List<PropertyComparison> properties = new ArrayList<PropertyComparison>();
                 List<?> propElems = set.getChildren("property", NS);
                 for (Object object : propElems) {
                     Element e = (Element) object;
@@ -56,9 +58,19 @@ public final class ResultPropertiesReader {
                     String description = e.getChild("metrics", NS) != null ? processMetrics(e) : "";
                     String name = e.getAttributeValue("name");
                     String desc = "[" + description + "]";
-                    Property result = new Property.Builder(XcdlProperties.makePropertyURI(name)).name(name).value(state)
-                            .description(desc).build();
-                    properties.add(result);
+                    Property result = new Property.Builder(XcdlProperties.makePropertyURI(name)).name(name).value(desc)
+                            .description(state).build();
+                    // Work out equivalence:
+                    Equivalence eq = Equivalence.UNKNOWN;
+                    if( "complete".equals(state) || "partial".equals(state) ) {
+                        if( desc.contains("equal=true") ) {
+                            eq = Equivalence.EQUAL;
+                        } else if( desc.contains("equal=false") ) {
+                            eq = Equivalence.DIFFERENT;
+                        }
+                    }
+                    if( "missing".equals(state) ) eq = Equivalence.MISSING;
+                    properties.add( new PropertyComparison( result, eq ) );
                 }
                 all.add(properties);
             }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.Property;
 
 /**
@@ -25,10 +26,10 @@ public final class ResultPropertiesReaderTests {
      * @param reader The access to check
      */
     private void check(final ResultPropertiesReader reader) {
-        List<List<Property>> properties = reader.getProperties();
+        List<List<PropertyComparison>> properties = reader.getProperties();
         Assert.assertTrue("No properties extracted by "
                 + reader.getClass().getSimpleName(), properties.size() > 0);
-        for (List<Property> prop : properties) {
+        for (List<PropertyComparison> prop : properties) {
             System.out.println(prop);
         }
     }

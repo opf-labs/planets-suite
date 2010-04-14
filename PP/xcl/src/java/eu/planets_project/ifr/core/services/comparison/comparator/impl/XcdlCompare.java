@@ -1,7 +1,9 @@
 package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,11 +17,14 @@ import javax.xml.ws.soap.MTOM;
 import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.CoreExtractor;
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlParser;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreator;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
+import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -67,11 +72,13 @@ public final class XcdlCompare implements Compare {
         }
         */
         String xcdl1 = xcdlFor(first);
+        //log.info("Got XCDL1: "+xcdl1);
         String xcdl2 = xcdlFor(second);
+        //log.info("Got XCDL2: "+xcdl2);
         String result = ComparatorWrapper.compare(xcdl1, Arrays.asList(xcdl2), pcr);
         log.info("Got Result: "+result);
         // Build the comparison, using properties from extraction and comparison. 
-        List<List<Property>> props = propertiesFrom(xcdl1, xcdl2, result);
+        List<List<PropertyComparison>> props = propertiesFrom(xcdl1, xcdl2, result);
         // Create the result object from the properties.
         return compareResult(props);
     }
@@ -96,17 +103,17 @@ public final class XcdlCompare implements Compare {
      * @return A compare result object with either top-level properties only or without top-level
      *         properties but embedded results
      */
-    static CompareResult compareResult(final List<List<Property>> props) {
+    static CompareResult compareResult(final List<List<PropertyComparison>> props) {
         if (props.size() == 1) {
-            return new CompareResult(props.get(0), null, new ServiceReport(Type.INFO, Status.SUCCESS,
+            return new CompareResult(props.get(0), new ServiceReport(Type.INFO, Status.SUCCESS,
                     "Top-level comparison result without embedded results"));
         } else {
             List<CompareResult> embedded = new ArrayList<CompareResult>();
-            for (List<Property> list : props) {
-                embedded.add(new CompareResult(list, null, new ServiceReport(Type.INFO, Status.SUCCESS,
+            for (List<PropertyComparison> list : props) {
+                embedded.add(new CompareResult(list, new ServiceReport(Type.INFO, Status.SUCCESS,
                         "Embedded comparison result")));
             }
-            return new CompareResult(new ArrayList<Property>(), null, new ServiceReport(Type.INFO,
+            return new CompareResult(new ArrayList<PropertyComparison>(), new ServiceReport(Type.INFO,
                     Status.SUCCESS, "Top-level comparison result with embedded results"), embedded);
         }
     }
@@ -115,15 +122,49 @@ public final class XcdlCompare implements Compare {
      * @param result The comparator result
      * @return The properties found in the result XML
      */
-    private List<List<Property>> propertiesFrom(final String xcdl1, final String xcdl2, final String result) {
+    private List<List<PropertyComparison>> propertiesFrom(final String xcdl1, final String xcdl2, final String result) {
         File file = FileUtils.writeByteArrayToTempFile(result.getBytes());
+        List<List<PropertyComparison>> props = null;
         try {
-        	return new ResultPropertiesReader(file).getProperties();
+        	props = new ResultPropertiesReader(file).getProperties();
         } catch( IllegalArgumentException e ) {
         	log.severe("Could not parse properties from string "+result+"\n "+e);
-        	return new ArrayList<List<Property>>();
+        	props = new ArrayList<List<PropertyComparison>>();
         }
-        // FIXME Also grab properties from the XCDL files and merge in with the results:
+        // FIXME Also grab properties from the XCDL files and merge in with the results: >>>
+        CharacteriseResult c1 = new XcdlParser(new StringReader(xcdl1)).getCharacteriseResult();
+        CharacteriseResult c2 = new XcdlParser(new StringReader(xcdl1)).getCharacteriseResult();
+        if (props.size() >= 1) {
+            patchInProps(props.get(0), c1.getProperties(), c2.getProperties() );
+        }
+        if( props.size() > 1 ) {
+            for( int i = 1; i < props.size(); i++ ) {
+                patchInProps(props.get(i), c1.getResults().get(i-1).getProperties(),
+                        c2.getResults().get(i-1).getProperties());
+            }
+        }
+        return props;
+    }
+
+    /**
+     * @param list
+     * @param properties
+     * @param properties2
+     */
+    private void patchInProps(List<PropertyComparison> pcs,
+            List<Property> props1, List<Property> props2) {
+        for( PropertyComparison pc : pcs ) {
+            for( Property p : props1 ) {
+                if( pc.getComparison().getUri().equals( p.getUri() )) {
+                    pc.getFirstProperties().add(p);
+                }
+            }
+            for( Property p : props2 ) {
+                if( pc.getComparison().getUri().equals( p.getUri() )) {
+                    pc.getSecondProperties().add(p);
+                }
+            }
+        }
         
     }
 

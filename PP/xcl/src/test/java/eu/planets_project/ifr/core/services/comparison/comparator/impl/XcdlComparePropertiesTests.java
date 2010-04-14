@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
 import eu.planets_project.services.compare.CompareProperties;
+import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -69,8 +70,8 @@ public final class XcdlComparePropertiesTests {
         File configFile = FileUtils.writeByteArrayToTempFile(configBytes);
         /* We now convert both into the formats we need using our service: */
         List<Parameter> configProps = new ArrayList<Parameter>(new ComparatorConfigParser(configFile).getProperties());
-        List<Property> properties = new ArrayList<Property>(c.compare(c.convertInput(first), c.convertInput(second),
-                configProps).getProperties());
+        List<PropertyComparison> properties = new ArrayList<PropertyComparison>(c.compare(c.convertInput(first), c.convertInput(second),
+                configProps).getComparisons());
         ComparatorWrapperTests.check(properties);
     }
 }

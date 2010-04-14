@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.Property;
 
 /**
@@ -91,12 +92,13 @@ public final class ComparatorWrapperTests {
     /**
      * @param properties The result properties to check
      */
-    public static void check(final List<Property> properties) {
+    public static void check(final List<PropertyComparison> properties) {
         Assert.assertTrue("Property list should not be empty", properties.size() > 0);
         System.out.println("Comparator returned: ");
-        for (Property prop : properties) {
+        for (PropertyComparison prop : properties) {
             System.out.println(prop);
         }
 
     }
+
 }

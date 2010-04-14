@@ -46,11 +46,11 @@ public final class PropertyComparison {
     
     private Property comparison = null;
     
-    private List<Property> firstProperties = null;
+    private List<Property> firstProperties = new ArrayList<Property>();
     
-    private List<Property> secondProperties = null;
+    private List<Property> secondProperties =  new ArrayList<Property>();
     
-    enum Equivalence { 
+    public enum Equivalence { 
         /** The property was found to be equal. */
         EQUAL, 
         /** The property was found to be different. */
@@ -116,8 +116,8 @@ public final class PropertyComparison {
             Equivalence equivalence) {
         super();
         this.comparison = comparison;
-        this.firstProperties = null;
-        this.secondProperties = null;
+        this.firstProperties =  new ArrayList<Property>();
+        this.secondProperties =  new ArrayList<Property>();
         this.equivalence = equivalence;
     }
     
@@ -225,6 +225,19 @@ public final class PropertyComparison {
             return this.secondProperties.get(0);
         }
         return null;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "PropertyComparison ["
+                + ", equivalence=" + equivalence
+                + ", comparison=" + comparison
+                + ", firstProperties=" + firstProperties
+                + ", secondProperties=" + secondProperties
+                + "]";
     }
 
 }

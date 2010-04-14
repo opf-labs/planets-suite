@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Test;
 
 import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
@@ -43,13 +44,17 @@ public final class XcdlCompareTests {
     public void imageComparison(){
     	System.out.println("Testing direct image comparison.");
     	testWith(ComparatorWrapperTests.PNG, ComparatorWrapperTests.TIFF, ComparatorWrapperTests.COCO_IMAGE);
-    	// Testing comparison of identical image files:
+    	// Testing comparison of identical image files, with the comparator supplying the comparator configuration:
     	testWith(ComparatorWrapperTests.PNG, ComparatorWrapperTests.PNG, null );
     }
     
-    //@Test Not yet supported
+    //@Test
     public void textComparison(){
     	System.out.println("Testing direct text/document comparison.");
+    	// This should work, but complains that Droid cannot identify the file.
+    	// Surely Droid is not relying on the file extension.
+        testWith(ComparatorWrapperTests.PDF, ComparatorWrapperTests.PDF, ComparatorWrapperTests.COCO_TEXT);
+        // DOCX not yet supported
         testWith(ComparatorWrapperTests.DOCX, ComparatorWrapperTests.PDF, ComparatorWrapperTests.COCO_TEXT);
     }
 
@@ -69,7 +74,7 @@ public final class XcdlCompareTests {
         DigitalObject second = new DigitalObject.Builder(Content.byValue(file2)).build();
         DigitalObject configFile = null;
         if( file3 != null ) configFile = new DigitalObject.Builder(Content.byValue(file3)).build();
-        List<Property> properties = c.compare(first, second, configFile == null ? null : c.convert(configFile)).getProperties();
+        List<PropertyComparison> properties = c.compare(first, second, configFile == null ? null : c.convert(configFile)).getComparisons();
         ComparatorWrapperTests.check(properties);
     }
 }
