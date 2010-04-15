@@ -81,8 +81,8 @@ public final class PropertyComparison {
             Equivalence equivalence) {
         super();
         this.comparison = comparison;
-        this.firstProperties = firstProperties;
-        this.secondProperties = secondProperties;
+        this.firstProperties = new ArrayList<Property>(firstProperties);
+        this.secondProperties = new ArrayList<Property>(secondProperties);
         this.equivalence = equivalence;
     }
     

@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import java.io.Serializable;
 import java.net.URI;
 
 /**
@@ -32,7 +34,7 @@ import java.net.URI;
  */
 @XmlType(name = "property", namespace = PlanetsServices.DATATYPES_NS)
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class Property {
+public final class Property implements Serializable {
 
     @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     private URI uri = null;
