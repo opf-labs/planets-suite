@@ -133,13 +133,16 @@ public class DiaMigrationServiceTest extends TestCase {
         // Disabled for now, due to problems obtaining the same checksum when
         // executing the same dia version on different Linux version
         //
-//        final DigitalObject migratedObject = migrationResult.getDigitalObject();
-//        final DigitalObjectContent migratedData = migratedObject.getContent();
-//        final byte[] resultChecksumArray = Checksums.md5(migratedData
-//                .getInputStream());
-//        final BigInteger resultChecksum = new BigInteger(resultChecksumArray);
-//        assertEquals("The checksum of the migration output is incorrect.",
-//                "2c93e0a52493f0f67677988848e8abc8", resultChecksum.toString(16));
+        // final DigitalObject migratedObject =
+        // migrationResult.getDigitalObject();
+        // final DigitalObjectContent migratedData =
+        // migratedObject.getContent();
+        // final byte[] resultChecksumArray = Checksums.md5(migratedData
+        // .getInputStream());
+        // final BigInteger resultChecksum = new
+        // BigInteger(resultChecksumArray);
+        // assertEquals("The checksum of the migration output is incorrect.",
+        // "2c93e0a52493f0f67677988848e8abc8", resultChecksum.toString(16));
     }
 
     /**
@@ -185,13 +188,16 @@ public class DiaMigrationServiceTest extends TestCase {
         // Disabled for now, due to problems obtaining the same checksum when
         // executing the same dia version on different Linux version
         //
-//        final DigitalObject migratedObject = migrationResult.getDigitalObject();
-//        final DigitalObjectContent migratedData = migratedObject.getContent();
-//        final byte[] resultChecksumArray = Checksums.md5(migratedData
-//                .getInputStream());
-//        final BigInteger resultChecksum = new BigInteger(resultChecksumArray);
-//        assertEquals("The checksum of the migration output is incorrect.",
-//                "2f356491a03e754c93692a12df68166d", resultChecksum.toString(16));
+        // final DigitalObject migratedObject =
+        // migrationResult.getDigitalObject();
+        // final DigitalObjectContent migratedData =
+        // migratedObject.getContent();
+        // final byte[] resultChecksumArray = Checksums.md5(migratedData
+        // .getInputStream());
+        // final BigInteger resultChecksum = new
+        // BigInteger(resultChecksumArray);
+        // assertEquals("The checksum of the migration output is incorrect.",
+        // "2f356491a03e754c93692a12df68166d", resultChecksum.toString(16));
     }
 
     /**
@@ -237,13 +243,16 @@ public class DiaMigrationServiceTest extends TestCase {
         // Disabled for now, due to problems obtaining the same checksum when
         // executing the same dia version on different Linux version
         //
-//        final DigitalObject migratedObject = migrationResult.getDigitalObject();
-//        final DigitalObjectContent migratedData = migratedObject.getContent();
-//        final byte[] resultChecksumArray = Checksums.md5(migratedData
-//                .getInputStream());
-//        final BigInteger resultChecksum = new BigInteger(resultChecksumArray);
-//        assertEquals("The checksum of the migration output is incorrect.",
-//                "6aca03cd76603e03e76b8af5ff105e1e", resultChecksum.toString(16));
+        // final DigitalObject migratedObject =
+        // migrationResult.getDigitalObject();
+        // final DigitalObjectContent migratedData =
+        // migratedObject.getContent();
+        // final byte[] resultChecksumArray = Checksums.md5(migratedData
+        // .getInputStream());
+        // final BigInteger resultChecksum = new
+        // BigInteger(resultChecksumArray);
+        // assertEquals("The checksum of the migration output is incorrect.",
+        // "6aca03cd76603e03e76b8af5ff105e1e", resultChecksum.toString(16));
     }
 
     /**
@@ -268,8 +277,9 @@ public class DiaMigrationServiceTest extends TestCase {
         assertEquals("Un-expected text returned by getFurtherInfo().",
                 expectedFurtherInfoURI, diaServiceDescription.getFurtherInfo());
 
-        assertNotNull("The migration service does not provide an identifier.",
-                diaServiceDescription.getIdentifier());
+        assertEquals("Un-expected migration service identifier.",
+                "-5d63eed75f0c4a8a3442749412bf2d66", diaServiceDescription
+                        .getIdentifier());
 
         verifyInputFormats(diaServiceDescription.getInputFormats());
 
