@@ -72,7 +72,9 @@ public class MeasuredComparisonBean
     public String getFirstValue() {
         Property p = this.getFirstMeasured();
         if( p == null ) return "";
-        return p.getValue();
+        String value = p.getValue();
+        if( value.length() > 200 ) value = value.substring(0, 200) + " ...";
+        return value;
     }
 
     public FormatBean getFirstFormat() {
@@ -83,7 +85,9 @@ public class MeasuredComparisonBean
     public String getSecondValue() {
         Property p = this.getSecondMeasured();
         if( p == null ) return "";
-        return p.getValue();
+        String value = p.getValue();
+        if( value.length() > 200 ) value = value.substring(0, 200) + " ...";
+        return value;
     }
     
     public FormatBean getSecondFormat() {
@@ -228,12 +232,14 @@ public class MeasuredComparisonBean
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             // Load the resource bundle:
             ResourceBundle bundle = null;
+            /*
             try {
                 Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
                 bundle = ResourceBundle.getBundle("eu.planets_project.tb.gui.UIResources", locale );
             } catch ( MissingResourceException e ) {
                 log.error("Could not load resource bundle: "+e);
             }
+            */
             Map map = (Map) elContext.getELResolver().getValue(elContext, null, "res");
             // Look up
             String label = state.toString();
@@ -241,7 +247,7 @@ public class MeasuredComparisonBean
             String lookup = "res['"+key+"']";
             String name = (String) map.get(key);
             if( bundle != null && bundle.containsKey(key)) label = bundle.getString(key);
-            log.info("For "+state+" got "+label+" and "+name);
+            //log.info("For "+state+" got "+label+" and "+name);
             if( name != null ) label = name;
             return label;
         } catch( Exception e ) {

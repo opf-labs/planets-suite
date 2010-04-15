@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -539,7 +540,19 @@ public class ServiceBrowser {
             SelectItem si = createServiceSelectItem(sd);
             if( si != null ) slist.add( si );
         }
+        Collections.sort(slist, new SelectItemComparator() );
         return slist;
+    }
+    
+    static class SelectItemComparator implements Comparator<SelectItem> {
+
+        /* (non-Javadoc)
+         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+         */
+        public int compare(SelectItem s1, SelectItem s2) {
+            return s1.getLabel().compareTo(s2.getLabel());
+        }
+        
     }
 
     /**

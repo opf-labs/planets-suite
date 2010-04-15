@@ -96,7 +96,13 @@ public class MeasurementImpl implements Serializable {
     /* ---- User comparison evaluation ---- */
     
     /** This is the list of pre-supplied answers for the userEquivalenceDetail. String mappings
-     * to 'Quite Similar' etc are held in UIResources.properties */
+     * to 'Quite Similar' etc are held in UIResources.properties
+     * TODO Consider simplifying or augmenting? For example There are two kinds of EQUAL:
+     * there is precisely equal (same information in the same encoding), and there is equivalent
+     * (same information in different encodings). All others are different/lossy.
+     * When lossy, does Completely Different really mean Completely Lost/Missing?
+     * There is also 'Supposed to be different', which applies e.g. to format evaluation. 
+     */
     public enum EquivalenceStatement {
         /* The users judges the property is equal across this comparison */
         EQUAL,
@@ -106,10 +112,12 @@ public class MeasurementImpl implements Serializable {
         DIFFERENT,
         /* The users judges the property is completely different across this comparison */
         NOT_EQUAL,
-        /* The users find the property is missing on one side or the other */
+        /* The users find the property is missing on one side or the other. FIXME Same as NOT_EQUAL, i.e. complete loss. */
         MISSING,
-        /* The users judges the property cannot be evaluated. */
+        /* The users judges the property cannot be evaluated. FIXME Is this meaningful? */
+        /*
         INCOMPARABLE,
+        */
         /* The users judges that no such judgement should be made. */
         NOT_APPLICABLE,
     }
