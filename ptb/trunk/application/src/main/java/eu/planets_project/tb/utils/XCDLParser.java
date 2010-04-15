@@ -58,7 +58,7 @@ public class XCDLParser {
             String id = (String) xpath.evaluate( "./name/@id", n,  XPathConstants.STRING);
             // Loop through the property definitions and patch them into Property objects.
             MeasurementImpl m = new MeasurementImpl(
-                    makePropertyUri(id, name).toString(),
+                    makePropertyUri(id, name),
                     (String) xpath.evaluate( "./valueSet/labValue/val", n,  XPathConstants.STRING) 
                     );
             // FIXME Unify this construction: See also XCDLService.createPropertyFromFFProp

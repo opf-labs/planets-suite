@@ -6,8 +6,11 @@ package eu.planets_project.tb.impl.model.measure;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
+import javax.faces.model.SelectItem;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,6 +27,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import eu.planets_project.services.compare.PropertyComparison;
+import eu.planets_project.services.compare.PropertyComparison.Equivalence;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
@@ -57,32 +62,66 @@ public class MeasurementImpl implements Serializable {
     @XmlTransient
     MeasurementEventImpl event;
     
-    protected String identifier;
-    
-    protected String value;
-    
-    /** */
-    protected String name;
-    
-    /** */
-    protected String description;
-    
-    /** */
-    protected String unit;
-
-    /** */
-    protected String type;
-    
-    /*
-     * If the target was one or more digital object(s).
-     */
-    
-    /** If this is about one or more digital objects, then the digital objects that were measured go here. 
-     * As Data Registry URIs, stored as Strings. */
+    /** The property that has been measured. */
     @Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
-    protected MeasurementTarget target = new MeasurementTarget();
+    private Property property = null;
+    
+    /** 
+     * The type of the measurement, used to control how measurements are understood and displayed.
+     * The details about the target of the measurment are stored in the MeasurementTarget, below.
+     */
+    public enum MeasurementType { 
+        /** This measurement is a property related to a service. */
+        SERVICE,
+        /** This measurement is a property determined from a single Digital Object. */
+        DOB,
+        /** This measurement is a property determed by comparing two Digital Objects. */
+        DOB_COMPARE
+    }
+    
+    /** The type of the measurement. */
+    private MeasurementType measurementType;
+    
+    /** This is the entity or entities upon which this Property was measured. */
+    @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
+    private MeasurementTarget target = new MeasurementTarget();
 
+    /* ---- Agent comparison evaluation ---- */
+    
+    /** For comparative measurements, this records the Agent's opinion of the equivalence of the DOBs w.r.t this property. */
+    private Equivalence equivalence = Equivalence.UNKNOWN;
+
+    /* ---- User comparison evaluation ---- */
+    
+    /** This is the list of pre-supplied answers for the userEquivalenceDetail. String mappings
+     * to 'Quite Similar' etc are held in UIResources.properties */
+    public enum EquivalenceStatement {
+        /* The users judges the property is equal across this comparison */
+        EQUAL,
+        /* The users judges the property is similar across this comparison */
+        SIMILAR,
+        /* The users judges the property is different across this comparison */
+        DIFFERENT,
+        /* The users judges the property is completely different across this comparison */
+        NOT_EQUAL,
+        /* The users find the property is missing on one side or the other */
+        MISSING,
+        /* The users judges the property cannot be evaluated. */
+        INCOMPARABLE,
+        /* The users judges that no such judgement should be made. */
+        NOT_APPLICABLE,
+    }
+    
+    /** For comparative measurements, records the Experimenter's opinion of the equivalence of the DOBs w.r.t this property. */
+    private EquivalenceStatement userEquivalence = null;
+    
+    /** For comparative measurements, the Experimenter can record a more detailed statement about the equivalence. */
+    private String userEquivalenceComment = "";
+
+    /* ---- Constructors ---- */
+    
     /** For JAXB */
     @SuppressWarnings("unused")
     public MeasurementImpl() { }
@@ -101,11 +140,7 @@ public class MeasurementImpl implements Serializable {
      */
     public MeasurementImpl(MeasurementEventImpl event, MeasurementImpl m) {
         this.event = event;
-        this.identifier = m.getIdentifier();
-        this.value = m.getValue();
-        this.name = m.name;
-        this.unit = m.unit;
-        this.description = m.description;
+        this.property = new Property.Builder( m.getProperty() ).build();
         this.target = m.target;
     }
     
@@ -117,44 +152,31 @@ public class MeasurementImpl implements Serializable {
      * @param stage
      * @param type
      */
-    private MeasurementImpl(MeasurementEventImpl event, String identifier, String name, String unit, String description, String type, MeasurementTarget target ) {
+    public MeasurementImpl(MeasurementEventImpl event, URI identifier, 
+            String name, String unit, String description, String type, MeasurementTarget target ) {
         super();
         this.event = event;
-        this.identifier = identifier;
-        this.name = name;
-        this.unit = unit;
-        this.description = description;
-        this.type = type;
+        this.property = new Property.Builder(identifier).name(name).unit(unit).description(description).type(type).build();
         this.target = target;
     }
-    
-    protected MeasurementImpl(MeasurementEventImpl event, URI identifier, String name, String unit, String description, String type, MeasurementTarget target ) {
-        this(event, identifier.toASCIIString(), name, unit, description, type, target );
-    }
 
+    public MeasurementImpl(MeasurementEventImpl event, String identifier, String name, String unit, String description, String type, MeasurementTarget target ) {
+        this(event, URI.create(identifier), name, unit, description, type, target );
+    }
+    
     /**
      * @param identifier
      * @param value
      */
     public MeasurementImpl(URI identifier, String value) {
-        this.identifier = identifier.toASCIIString();
-        this.value = value;
-    }
-
-    /**
-     * @param identifier
-     * @param value
-     */
-    public MeasurementImpl(String identifier, String value) {
-        this.identifier = identifier;
-        this.value = value;
+        this.property = new Property.Builder(identifier).value(value).build();
     }
 
     /**
      * @param m
      */
     public MeasurementImpl(MeasurementImpl m) {
-        this(m.event, m.identifier, m.name, m.unit, m.description, m.type, m.target );
+        this(m.event, m.property, m.target );
     }
 
     /**
@@ -163,13 +185,19 @@ public class MeasurementImpl implements Serializable {
      */
     public MeasurementImpl(MeasurementEventImpl event, Property p) {
         this.event = event;
-        this.identifier = p.getUri().toASCIIString();
-        this.name = p.getName();
-        this.unit = p.getUnit();
-        this.description = p.getDescription();
-        this.type = p.getType();
-        this.value = p.getValue();
+        this.property = new Property.Builder(p).build();
         this.target = null;
+    }
+
+    /**
+     * @param event
+     * @param p
+     * @param target
+     */
+    public MeasurementImpl(MeasurementEventImpl event, Property p, MeasurementTarget target ) {
+        this.event = event;
+        this.property = new Property.Builder(p).build();
+        this.target = target;
     }
 
     /**
@@ -177,7 +205,7 @@ public class MeasurementImpl implements Serializable {
      * @return
      */
     public MeasurementImpl clone() {
-        return new MeasurementImpl(this.event, this.identifier, this.name, this.unit, this.description, this.type, this.target );
+        return new MeasurementImpl( this.event, this.property );
     }
 
     /**
@@ -193,95 +221,60 @@ public class MeasurementImpl implements Serializable {
      * @return the identifier
      */
     public String getIdentifier() {
-        return identifier;
+        if( property == null ) return null;
+        return property.getUri().toASCIIString();
     }
     
     public URI getIdentifierUri() {
-        return URI.create( identifier );
-    }
-
-    /**
-     * @param identifier the identifier to set
-     */
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    /**
-     * @param identifier the identifier to set
-     */
-    public void setIdentifier(URI identifier) {
-        this.identifier = identifier.toASCIIString();
+        if( property == null ) return null;
+        return property.getUri();
     }
 
     /**
      * @return the name
      */
     public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
+        if( property == null ) return null;
+        return property.getName();
     }
 
     /**
      * @return the type
      */
     public String getType() {
-        return type;
+        if( property == null ) return null;
+        return property.getType();
     }
 
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-    
     /**
      * @return the value
      */
     public String getValue() {
-        return value;
+        if( property == null ) return null;
+        return property.getValue();
     }
 
     /**
-     * @param value the value to set
+     * @param value
      */
     public void setValue(String value) {
-        this.value = value;
+        this.property = new Property.Builder(this.property).value(value).build();
     }
-
+    
     /**
      * @return the unitt
      */
     public String getUnit() {
-        return unit;
-    }
-
-    /**
-     * @param unit the unit to set
-     */
-    public void setUnit(String unit) {
-        this.unit = unit;
+        if( property == null ) return null;
+        return property.getUnit();
     }
 
     /**
      * @return the description
      */
     public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
+        if( property == null ) return null;
+        return property.getDescription();
     }
 
     /* (non-Javadoc)
@@ -289,7 +282,7 @@ public class MeasurementImpl implements Serializable {
      */
     @Override
     public String toString() {
-        return "[id:"+this.id+", identifier:"+this.identifier+", name:"+this.name+", unit:"+this.unit+", desc:"+this.description+", type:"+this.type+", value:"+this.value+"]";
+        return "[id:"+this.id+", property:"+this.property+"]";
     }
     
     /**
@@ -297,8 +290,8 @@ public class MeasurementImpl implements Serializable {
      * @return
      */
     public boolean isUnitDefined() {
-        if( this.unit == null ) return false;
-        if( "".equals(this.unit)) return false;
+        if( property.getUnit() == null ) return false;
+        if( "".equals(property.getUnit())) return false;
         return true;
     }
 
@@ -348,32 +341,114 @@ public class MeasurementImpl implements Serializable {
      * @return
      */
     public Property toProperty() {
-        Property.Builder pb = new Property.Builder(this.getIdentifierUri());
-        pb.name(name).description(description).type(type).value(value).unit(unit);
-        if( name == null || "".equals(name)) pb.name("[unnamed]");
+        if( this.property == null ) return new Property.Builder(URI.create("planets:uri/null")).build();
+        Property.Builder pb = new Property.Builder(this.property);
+        if( property.getName() == null || "".equals(property.getName()) ) pb.name("[unnamed]");
         return pb.build();
     }
 
     /**
+     * FIXME Move somewhere sensible/shared, e.g. tech-reg.
      * @return true if this is a 'format' property.
      */
-    public boolean isFormatProperty() {
-        if( TecRegMockup.PROP_DO_FORMAT.equals( this.getIdentifierUri()) ) return true;
+    public static boolean isFormatProperty( Property p ) {
+        if( TecRegMockup.PROP_DO_FORMAT.equals( p.getUri()) ) return true;
         return false;
     }
 
     /**
+     * FIXME Move somewhere sensible/shared, e.g. tech-reg.
      * @return the Format as a FormatBean, if this is a 'format' property.
      */
-    public FormatBean getFormat() {
-        if( ! this.isFormatProperty() ) return null;
+    public static FormatBean getFormat( Property p ) {
+        if( ! isFormatProperty(p) ) return null;
         URI fmt;
         try {
-            fmt = new URI( this.getValue() );
+            fmt = new URI( p.getValue() );
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return null;
         }
         return new FormatBean( ServiceBrowser.fr.getFormatForUri( fmt ) );
     }
+
+    /**
+     * @return the property
+     */
+    public Property getProperty() {
+        return property;
+    }
+
+    /**
+     * @param property the property to set
+     */
+    public void setProperty(Property property) {
+        this.property = new Property.Builder(property).build();
+    }
+
+    /**
+     * @return the measurementType
+     */
+    public MeasurementType getMeasurementType() {
+        return measurementType;
+    }
+
+    /**
+     * @param measurementType the measurementType to set
+     */
+    public void setMeasurementType(MeasurementType measurementType) {
+        this.measurementType = measurementType;
+    }
+
+    /**
+     * @return the equivalence
+     */
+    public Equivalence getEquivalence() {
+        return equivalence;
+    }
+
+    /**
+     * @param equivalence the equivalence to set
+     */
+    public void setEquivalence(Equivalence equivalence) {
+        this.equivalence = equivalence;
+    }
+
+    /**
+     * @return the userEquivalence
+     */
+    public EquivalenceStatement getUserEquivalence() {
+        if( userEquivalence == null ) {
+            if( this.getEquivalence() == Equivalence.EQUAL ) {
+                return EquivalenceStatement.EQUAL;
+            } else if( this.getEquivalence() == Equivalence.DIFFERENT ) {
+                return EquivalenceStatement.DIFFERENT;
+            } else if( this.getEquivalence() == Equivalence.MISSING ) {
+                return EquivalenceStatement.MISSING;
+            }
+        }
+        return userEquivalence;
+    }
+
+    /**
+     * @param userEquivalence the userEquivalence to set
+     */
+    public void setUserEquivalence(EquivalenceStatement userEquivalence) {
+        this.userEquivalence = userEquivalence;
+    }
+
+    /**
+     * @return the userEquivalenceComment
+     */
+    public String getUserEquivalenceComment() {
+        return userEquivalenceComment;
+    }
+
+    /**
+     * @param userEquivalenceComment the userEquivalenceComment to set
+     */
+    public void setUserEquivalenceComment(String userEquivalenceComment) {
+        this.userEquivalenceComment = userEquivalenceComment;
+    }
+    
 }

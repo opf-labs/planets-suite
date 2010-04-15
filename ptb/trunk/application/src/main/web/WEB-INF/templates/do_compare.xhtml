@@ -69,9 +69,10 @@
         </h:selectOneMenu>
         <a4j:commandButton action="#{DobCompare.runCompareService}" reRender="dobCompareDirect,dobCompareMeasurements" value="Run"/>
       </dd>
-      <dt>Compare Report:</dt>
+      <dt>Compare Service Report:</dt>
       <dd>
         <h:outputText value="#{DobCompare.compareServiceReport}"/>
+        <h:outputText value="[none]" rendered="#{DobCompare.compareServiceReport == null}"/>
       </dd>
       <dd>
          <ui:include src="/WEB-INF/templates/fragments/show_error_modal.xhtml">
@@ -105,10 +106,13 @@
             <rich:column>
               <h:outputText value="Comparison"/>
             </rich:column>
+            <rich:column>
+              <h:outputText value="Equivalence"/>
+            </rich:column>
            </rich:columnGroup>
           </f:facet>
       
-        <rich:column colspan="4" styleClass="#{me.odd ? 'oddRow' : 'evenRow'}" sortBy="#{me.event.date}" sortOrder="DESCENDING">
+        <rich:column colspan="5" styleClass="#{me.odd ? 'oddRow' : 'evenRow'}" sortBy="#{me.event.date}" sortOrder="DESCENDING">
             <f:facet name="header">Measurement Date</f:facet>
             
             <h:outputText value="#{me.event.agent.name} "/>
@@ -148,6 +152,14 @@
         
         <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
             <h:outputText value="#{m.comparison}" styleClass="#{m.equal ? 'equalValue' : 'differentValue'}"/>
+        </rich:column>
+        
+        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
+            <h:selectOneMenu value="#{m.userEquivalence}" styleClass="equiv-#{m.userEquivalence}">
+              <f:selectItem itemValue="" itemLabel="" />
+              <f:selectItems value="#{m.equivalenceOptions}" />
+              <a4j:support event="onchange" reRender="dobCompareMeasurements" />
+            </h:selectOneMenu>
         </rich:column>
         
         </rich:subTable>

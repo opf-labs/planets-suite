@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
+import eu.planets_project.tb.gui.backing.exp.view.MeasuredComparisonBean;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
@@ -68,9 +69,9 @@ public class MeasuredComparisonEventBean extends MeasurementEventBean {
                     cmp.put(m.getIdentifier(), mcb);
                 }
                 if( this.first.equals(m.getTarget().getDigitalObjects().firstElement())) {
-                    mcb.measured1 = m;
+                    mcb.setFirstMeasured(m);
                 } else if( this.second.equals(m.getTarget().getDigitalObjects().firstElement())) {
-                    mcb.measured2 = m;
+                    mcb.setSecondMeasured(m);
                 }
             }
         }
@@ -81,92 +82,5 @@ public class MeasuredComparisonEventBean extends MeasurementEventBean {
         return cms;
     }
 
-    public class MeasuredComparisonBean implements Comparable<MeasuredComparisonBean> {
-
-        private MeasurementImpl compared;
-        private MeasurementImpl measured1;
-        private MeasurementImpl measured2;
-
-        /**
-         */
-        public MeasuredComparisonBean() {
-        }
-        
-        /**
-         * @param m
-         */
-        public MeasuredComparisonBean(MeasurementImpl m) {
-            this.compared = m;
-        }
-
-        /**{
-         * @param m
-         */
-        public MeasuredComparisonBean(MeasurementImpl m1, MeasurementImpl m2) {
-            this.measured1 = m1;
-            this.measured2 = m1;
-        }
-
-        public String getFirstValue() {
-            if( measured1 != null ) return measured1.getValue();
-            return "-";
-        }
-
-        public FormatBean getFirstFormat() {
-            if( measured1 != null ) return measured1.getFormat();
-            return null;
-        }
-
-        public String getSecondValue() {
-            if( measured2 != null ) return measured2.getValue();
-            return "-";
-        }
-        
-        public FormatBean getSecondFormat() {
-            if( measured2 != null ) return measured2.getFormat();
-            return null;
-        }
-
-
-        public String getComparison() {
-            if( compared != null ) return compared.getValue();
-            if( isEqual() ) return "Equal";
-            return "Different";
-        }
-        
-        public boolean isEqual() {
-//            if( compared != null ) return compared.getValue();
-            if( measured1 != null && measured2 != null ) {
-                if( measured1.getValue().equals(measured2.getValue()) ) return true;
-            }
-            return false;
-        }
-        
-        public boolean isFormatProperty() {
-            if( measured1 != null ) return measured1.isFormatProperty();
-            if( measured2 != null ) return measured2.isFormatProperty();
-            return false;
-        }
-        
-        public Property getProperty() {
-            if( compared != null ) return compared.toProperty();
-            if( measured1 != null ) return measured1.toProperty();
-            if( measured2 != null ) return measured2.toProperty();
-            return null;
-        }
-
-        /* (non-Javadoc)
-         * @see java.lang.Comparable#compareTo(java.lang.Object)
-         */
-        public int compareTo(MeasuredComparisonBean o) {
-            if( o.getProperty() != null && o.getProperty().getName() != null ) {
-                if( this.getProperty() != null && this.getProperty().getName() != null ) {
-                    return this.getProperty().getName().compareTo( o.getProperty().getName() );
-                }
-            }
-            return 0;
-        }
-        
-    }
 
 }

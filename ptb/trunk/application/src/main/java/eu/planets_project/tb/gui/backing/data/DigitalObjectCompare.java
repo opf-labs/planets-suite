@@ -35,6 +35,7 @@ import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
+import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -182,16 +183,7 @@ public class DigitalObjectCompare {
 
                 me = this.createMeasurementEvent();
                 if( me != null ) {
-                    me.setAgent(new MeasurementAgent(chr.describe()));
-                    me.setDate(Calendar.getInstance());
-                    for( Property p : cr.getProperties() ) {
-                        MeasurementImpl m = new MeasurementImpl(me,p);
-                        m.setTarget( new MeasurementTarget() );
-                        m.getTarget().setType(TargetType.DIGITAL_OBJECT_PAIR);
-                        m.getTarget().getDigitalObjects().add( this.getDobUri1() );
-                        m.getTarget().getDigitalObjects().add( this.getDobUri2() );
-                        me.addMeasurement(m);
-                    }
+                    this.fillComparisonEvent(me, chr, cr);
                     DigitalObjectCompare.persistExperiment();
                 }
                 
@@ -206,8 +198,7 @@ public class DigitalObjectCompare {
                 if( me != null ) {
                     me.setAgent(new MeasurementAgent(idf.describe()));
                     me.setDate(Calendar.getInstance());
-                    this.recordIdentifyMeasurement(me, ir1, this.getDobUri1() );
-                    this.recordIdentifyMeasurement(me, ir2, this.getDobUri2() );
+                    this.recordIdentifyComparison(me, ir1, this.getDobUri1(), ir2, this.getDobUri2() );
                     
                     DigitalObjectCompare.persistExperiment();
                 }
@@ -223,8 +214,7 @@ public class DigitalObjectCompare {
                 if( me != null ) {
                     me.setAgent(new MeasurementAgent(chr.describe()));
                     me.setDate(Calendar.getInstance());
-                    this.recordPropertyMeasurements(me, cr1.getProperties(), this.getDobUri1() );
-                    this.recordPropertyMeasurements(me, cr2.getProperties(), this.getDobUri2() );
+                    this.recordPropertyComparison(me, cr1.getProperties(), this.getDobUri1(), cr2.getProperties(), this.getDobUri2() );
                     
                     DigitalObjectCompare.persistExperiment();
                 }
@@ -246,6 +236,43 @@ public class DigitalObjectCompare {
         }
     }
     
+    /**
+     * @param me 
+     * @param chr
+     * @param cr
+     */
+    private void fillComparisonEvent(MeasurementEventImpl me, Compare chr, CompareResult cr) {
+        me.setAgent(new MeasurementAgent(chr.describe()));
+        me.setDate(Calendar.getInstance());
+        for( PropertyComparison pc : cr.getComparisons() ) {
+            MeasurementImpl m = new MeasurementImpl(me, pc.getComparison());
+            MeasurementTarget mt = new MeasurementTarget();
+            mt.setType(TargetType.DIGITAL_OBJECT_PAIR);
+            // Get data on the first object:
+            mt.getDigitalObjects().add(0, this.getDobUri1() );
+            mt.setDigitalObjectProperties(0, pc.getFirstProperties());
+            log.info("Got PC1: "+pc.getFirstProperties());
+            // Get data on the second object:
+            mt.getDigitalObjects().add(1, this.getDobUri2() );
+            mt.setDigitalObjectProperties(1, pc.getSecondProperties());
+            log.info("Got PC2: "+pc.getSecondProperties());
+            // Add to the measurement:
+            m.setTarget( mt );
+            // Equivalence Data:
+            m.setEquivalence(pc.getEquivalence());
+            me.addMeasurement(m);
+        }
+    }
+
+    /**
+     */
+    private void recordIdentifyComparison(MeasurementEventImpl me,
+            IdentifyResult ir1, String dobUri1, IdentifyResult ir2,
+            String dobUri2) {
+        this.recordIdentifyMeasurement(me, ir1, dobUri1);
+        this.recordIdentifyMeasurement(me, ir2, dobUri2);
+    }
+
     private void recordIdentifyMeasurement( MeasurementEventImpl me, IdentifyResult ir, String dob ) {
         for( URI fmt : ir.getTypes() ) {
             MeasurementImpl m = new MeasurementImpl(IdentifyWorkflow.MEASURE_IDENTIFY_FORMAT);
@@ -267,6 +294,13 @@ public class DigitalObjectCompare {
         }
     }
     
+    private void recordPropertyComparison(MeasurementEventImpl me,
+            List<Property> properties1, String dobUri1,
+            List<Property> properties2, String dobUri2) {
+        this.recordPropertyMeasurements(me, properties1, dobUri1);
+        this.recordPropertyMeasurements(me, properties2, dobUri2);
+    }
+
     private void recordPropertyMeasurements( MeasurementEventImpl me, List<Property> props, String dob ) {
         for( Property p : props ) {
             MeasurementImpl m = new MeasurementImpl(me,p);

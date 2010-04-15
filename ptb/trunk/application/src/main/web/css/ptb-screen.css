@@ -1105,5 +1105,10 @@ pre.rawServiceDescription {
 .differentValue {
  color: #550000;
 }
-
-
+.equiv-EQUAL { color: #008800; }
+.equiv-SIMILAR { color: #004400; }
+.equiv-DIFFERENT { color: #880000; }
+.equiv-NOT_EQUAL { color: #aa0000; }
+.equiv-MISSING { color: #aa0000; }
+.equiv-INCOMPARABLE { color: #008800; }
+.equiv-NOT_APPLICABLE { color: #000000; }

@@ -44,6 +44,7 @@ import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
+import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
@@ -287,15 +288,14 @@ public class MigrateWorkflow implements ExperimentWorkflow {
                 e.printStackTrace();
                 return m;
             }
+            // Rebuild the property:
+            p = new Property.Builder(propURI).name(p.getName()).description(p.getDescription())
+            .type(p.getType()).unit(p.getUnit()).value(p.getValue()).build();
         }
         
         // Copy in:
-        m.setName(p.getName());
-        m.setIdentifier(propURI);
-        m.setDescription(p.getDescription());
-        m.setType(p.getType());
+        m.setProperty(p);
         m.getTarget().setType(MeasurementTarget.TargetType.DIGITAL_OBJECT);
-        m.setUnit(p.getUnit());
         m.setValue(p.getValue());
         
         return m;

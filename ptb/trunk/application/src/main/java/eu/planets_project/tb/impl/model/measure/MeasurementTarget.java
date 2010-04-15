@@ -2,6 +2,7 @@ package eu.planets_project.tb.impl.model.measure;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Vector;
 
 import javax.persistence.Column;
@@ -11,13 +12,29 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.planets_project.ifr.core.storage.impl.util.PDURI;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
+ * This encapsulates a reference to the entity that the measurement pertains to.
+ * 
+ * The target of the measurement can be:
+ *  - A service.
+ *  - A digital object.
+ *  - A comparison of two digital objects.
+ *  - A workflow.
+|* 
+ * In the case of a comparison of two digital objects, the IDs of the digital objects
+ * are held in the digitalObjects field.
+ * 
+ * If the comparative measurement was reached based on one or more properties of each
+ * DigObj, then these properties are also indicated here, via getDigitalObjectProperties(i).
+ * 
+ * This is closely related to the PropertyComparison object that the Compare interface returns, 
+ * which is mapped into a MeasurementImpl object with an appropriate MeasurementTarget.
  * 
  */
 @Embeddable
@@ -67,11 +84,18 @@ public class MeasurementTarget  implements Serializable {
         }
     }
     
-    /** */
+    /** If this is about one or more digital objects, then the digital objects that were measured go here. 
+     * As Data Registry URIs, stored as Strings. */
     @Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     protected Vector<String> digitalObjects = new Vector<String>();
-    
+
+    /** If this is about comparing particular properties of one or more digital objects, then
+     * the properties that were compared should be stored here. */
+    @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
+    private Vector<Vector<Property>> digitalObjectProperties = new Vector<Vector<Property>>();
+
     /** */
     @Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
@@ -144,6 +168,26 @@ public class MeasurementTarget  implements Serializable {
         }
         return dorb.getName();
         
+    }
+
+    /**
+     * @param i
+     * @param secondProperties
+     */
+    public void setDigitalObjectProperties(int i,
+            List<Property> props) {
+        if( this.digitalObjectProperties == null ) 
+            this.digitalObjectProperties = new Vector<Vector<Property>>();
+        this.digitalObjectProperties.add(i, new Vector<Property>(props) );
+    }
+    
+    /**
+     * @param i
+     * @return
+     */
+    public Vector<Property> getDigitalObjectProperties( int i ) {
+        if( this.digitalObjectProperties == null ) return null;
+        return this.digitalObjectProperties.get(i);
     }
 
 }

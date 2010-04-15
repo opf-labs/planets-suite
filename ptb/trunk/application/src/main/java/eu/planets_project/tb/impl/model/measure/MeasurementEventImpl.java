@@ -37,6 +37,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
+import eu.planets_project.tb.gui.backing.exp.MeasuredComparisonEventBean;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
@@ -301,5 +302,5 @@ public class MeasurementEventImpl implements Serializable, Comparable<Measuremen
             return this.date.compareTo(o.date);
         return 0;
     }
-    
+
 }

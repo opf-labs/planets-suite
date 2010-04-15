@@ -2474,7 +2474,7 @@ public class NewExpWizardController{
 		        				}
 	        					if(!bFound){
 	        						//no MeasurementRecord exists -> create a new one
-	        						MeasurementImpl mRec = new MeasurementImpl(propertyID, value);
+	        						MeasurementImpl mRec = new MeasurementImpl(URI.create(propertyID), value);
 	        						execStageRec.addManualMeasurement(mRec);
 	        						log.info("created new measurement for input: "+digObjectRefCopy+" time: "+runEndDate.getTimeInMillis()+" stage: "+stageName+" propID: "+propertyID+" value: "+value);
 	        					}
