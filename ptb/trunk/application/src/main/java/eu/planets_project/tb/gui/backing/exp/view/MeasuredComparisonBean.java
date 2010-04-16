@@ -246,7 +246,7 @@ public class MeasuredComparisonBean
             String key = "exp_stage5.evaluation."+label;
             String lookup = "res['"+key+"']";
             String name = (String) map.get(key);
-            if( bundle != null && bundle.containsKey(key)) label = bundle.getString(key);
+            if( bundle != null) label = bundle.getString(key);
             //log.info("For "+state+" got "+label+" and "+name);
             if( name != null ) label = name;
             return label;
