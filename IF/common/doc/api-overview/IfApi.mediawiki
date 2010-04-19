@@ -62,7 +62,7 @@ Fig. 3: Planets IF services: Java classes and interfaces
 
 If implementing one of the preservation verb interfaces is not feasible or automatic support for discovery by workflows is not required, a service could also directly implement the <code>PlanetsService</code> interface. This allows the service to be stored in a Planets service registry. It can be queried based on all the properties set in the service description, but will not automatically be interoperable on a workflow level with Planets services (see Fig. 3 above). 
 
-Planets services are only registered indirectly in a service registry, using a <code>ServiceDescription</code> object (see Fig. 3 above and details in the following section). These objects can be serialized to XML. To register a non-Java service in a Planets service registry, an XML representation conforming to the Planets service description schema can be generated and stored in a Planets service registry using its WSDL interface.
+Planets services are only registered indirectly in a service registry, using a <code>ServiceDescription</code> object (see Fig. 3 above and details in the following section). These objects can be serialized to XML. To register a non-Java service in a Planets service registry, an XML representation conforming to the Planets service description schema can be generated and stored in a Planets service registry.
 
 === Using Planets services ===
 
@@ -77,7 +77,7 @@ See the API documentation for further details on this.
 If you want to access remote Planets web services from Java, you can use JAX-WS to hide the SOAP layer and retrieve a proxy object from a server that will conform to the interface (i.e. you will work with an instance of a class that implements the interface, e.g. <code>Migrate</code>).
 
  URL wsdl = new URL("http://127.0.0.1:8080/pserv-pa-jtidy/JTidy?wsdl");
- Migrate jtidy = ServiceUtils.createService(Migrate.QNAME, JTidy.class, wsdl);
+ Migrate jtidy = ServiceUtils.createService(Migrate.QNAME, Migrate.class, wsdl);
 
 To access Planets services from non-Java platforms, you can either generate stubs from the WSDL exposed for the service or directly create SOAP messages conforming to the web service schemas (for service descriptions, digital objects, etc).
 
@@ -107,16 +107,22 @@ Given a running and configured Planets Services (PSERV) project, the local servi
 
 To connect to a remote service registry, supply the location of the WSDL to the factory method.
 
-Using the service registry instance, <code>ServiceDescription</code> objects can be registered and the registry can be queried. Queries are submitted using a ''query by example'' mechanism: a <code>ServiceDescription</code> object describing the services to find is created and passed to the query method, e.g. to find services by name:
+Using the service registry instance, <code>ServiceDescription</code> objects can be registered and the registry can be queried. Queries are submitted using a ''query by example'' mechanism: a <code>ServiceDescription</code> object describing the services to find is created and passed to the query method, e.g. to find identification services by name:
 
-  registry.query(new ServiceDescription.Builder("DROID", null).build());
+  registry.query(new ServiceDescription.Builder("DROID", Identify.class.getName()).build());
   
 The given values of the service description can be matched using different modes: exact (default), wildcard, and regular expression matching, e.g. for finding services by name and using wildcard matching:
 
   registry.queryWithMode(
-    new ServiceDescription.Builder("DROID*", null).build(), MatchingMode.WILDCARD);
+    new ServiceDescription.Builder("DROID*", Identify.class.getName()).build(), MatchingMode.WILDCARD);
   
 Fig. 3 shows the structure of the <code>ServiceDescription</code> objects used as examples in the queries. Any combination of these attributes can be set in the query example, allowing flexible and customizable service queries (e.g. ''find migration services that can migrate PNF to TIFF based on the ImageMagick tool'').
+
+The query methods of the service regisatry return a list of ServiceDescription objects. these service descriptions contain the information required to instantiate a service (in particular, the service endpoint). The IF offers convenience API to instantiate a service from a service description in a Java environment, e.g. for identification service from the sample above:
+
+  Identify service = ServiceUtils.createService(serviceDescription);
+
+See ''RemoteServiceCreationTests'' in the code repository for a complete example on using the service creation utility methods.
 
 === SOAP API ===
 
@@ -195,6 +201,10 @@ Fig. 7: Digital Object Event XML Schema Definition
 The data registry enables storage and retrieval of digital objects. The <code>DigitalObjectManager</code> interface can be implemented for different concrete storage solutions.
 
 === Java API ===
+
+A data registry is instantiated using a DataRegistryFactory:
+
+  DataRegistry registry = DataRegistryFactory.getDataRegistry();
 
 As a client of the Planets Java API, the data registry can be used directly to store digital objects using an ID, represented as a URI:
 
