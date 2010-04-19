@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,8 +9,9 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
+
+import org.apache.commons.io.FileUtils;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -26,7 +28,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -92,7 +93,13 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @return The properties found in the result XML
      */
     private List<List<PropertyComparison>> propertiesFrom(final String result) {
-        File file = FileUtils.writeByteArrayToTempFile(result.getBytes());
+        File file = null;
+        try {
+            file = File.createTempFile("xcl", null);
+            FileUtils.writeStringToFile(file, result);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
         return new ResultPropertiesReader(file).getProperties();
     }
 

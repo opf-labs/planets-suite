@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -12,8 +13,9 @@ import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
+
+import org.apache.commons.io.FileUtils;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -24,12 +26,11 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.CompareResult;
-import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -60,9 +61,6 @@ public final class XcdlCharacterise implements Characterise, Serializable {
      */
     public static final String OUT_DIR = NAME.toUpperCase() + "_OUT" + File.separator;
 
-    public static final File XCDL_CHARACTERISE_TMP = FileUtils.createFolderInWorkFolder(FileUtils
-            .getPlanetsTmpStoreFolder(), NAME + "_TMP");
-
     /**
      * the logger.
      */
@@ -80,7 +78,7 @@ public final class XcdlCharacterise implements Characterise, Serializable {
     public CharacteriseResult characterise(final DigitalObject digitalObject, final List<Parameter> parameters) {
         String optionalFormatXCEL = null;
         CoreExtractor coreExtractor = new CoreExtractor(XcdlCharacterise.NAME);
-        File xcelFile = new File(XCDL_CHARACTERISE_TMP, FileUtils.randomizeFileName("xcel_input.xml"));
+        File xcelFile = DigitalObjectUtils.toFile(digitalObject);
         File result = null;
 
         if (parameters != null && parameters.size() != 0) {
@@ -88,7 +86,11 @@ public final class XcdlCharacterise implements Characterise, Serializable {
                 String currentName = currentParameter.getName();
                 if (currentName.equalsIgnoreCase("optionalXCELString")) {
                     optionalFormatXCEL = currentParameter.getValue();
-                    FileUtils.writeStringToFile(optionalFormatXCEL, xcelFile);
+                    try {
+                        FileUtils.writeStringToFile(xcelFile, optionalFormatXCEL);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 }
             }

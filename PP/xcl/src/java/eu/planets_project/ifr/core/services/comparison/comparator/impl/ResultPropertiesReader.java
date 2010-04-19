@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -18,7 +19,6 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.Xcdl
 import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.compare.PropertyComparison.Equivalence;
 import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Access to CPR (the XCDL comparator result format) properties.
@@ -34,7 +34,11 @@ public final class ResultPropertiesReader {
      * @param cprFile The CPR comparator result file
      */
     public ResultPropertiesReader(final File cprFile) {
-        this.cprString = FileUtils.readTxtFileIntoString(cprFile);
+        try {
+            this.cprString = FileUtils.readFileToString(cprFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }               
 
     /**

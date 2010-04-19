@@ -3,9 +3,11 @@ package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
@@ -14,9 +16,8 @@ import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -43,12 +44,13 @@ public final class XcdlComparePropertiesTests {
 
     /**
      * Tests PP comparator comparison using the XCDL comparator.
+     * @throws IOException 
      */
     @Test
-    public void testService() {
-        byte[] data1 = FileUtils.readFileIntoByteArray(new File(ComparatorWrapperTests.XCDL1));
-        byte[] data2 = FileUtils.readFileIntoByteArray(new File(ComparatorWrapperTests.XCDL2));
-        byte[] configData = FileUtils.readFileIntoByteArray(new File(ComparatorWrapperTests.COCO_IMAGE));
+    public void testService() throws IOException {
+        byte[] data1 = FileUtils.readFileToByteArray(new File(ComparatorWrapperTests.XCDL1));
+        byte[] data2 = FileUtils.readFileToByteArray(new File(ComparatorWrapperTests.XCDL2));
+        byte[] configData = FileUtils.readFileToByteArray(new File(ComparatorWrapperTests.COCO_IMAGE));
         testServices(data1, data2, configData);
     }
 
@@ -66,8 +68,7 @@ public final class XcdlComparePropertiesTests {
         DigitalObject second = new DigitalObject.Builder(Content.byValue(data2)).build();
         /* The actual config file: */
         DigitalObject configDigitalObject = new DigitalObject.Builder(Content.byValue(configData)).build();
-        byte[] configBytes = FileUtils.writeInputStreamToBinary(configDigitalObject.getContent().getInputStream());
-        File configFile = FileUtils.writeByteArrayToTempFile(configBytes);
+        File configFile = DigitalObjectUtils.toFile(configDigitalObject);
         /* We now convert both into the formats we need using our service: */
         List<Parameter> configProps = new ArrayList<Parameter>(new ComparatorConfigParser(configFile).getProperties());
         List<PropertyComparison> properties = new ArrayList<PropertyComparison>(c.compare(c.convertInput(first), c.convertInput(second),

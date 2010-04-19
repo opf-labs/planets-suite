@@ -1,5 +1,6 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.junit.Test;
@@ -15,7 +16,7 @@ import eu.planets_project.services.datatypes.MigrationPath;
 public class XcdlMigrateAllPathsTests extends XcdlMigrateTests{
 
     @Test
-    public void testAllPossibleMigrationPathways() throws URISyntaxException {
+    public void testAllPossibleMigrationPathways() throws URISyntaxException, IOException {
         System.out.println("Testing all possible pathways...START");
         for (int i = 0; i < migrationPaths.length; i++) {
             MigrationPath path = migrationPaths[i];

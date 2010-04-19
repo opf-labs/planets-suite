@@ -3,12 +3,14 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,7 +26,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -36,7 +38,7 @@ public class XcdlMigrateTests {
     private static final String WSDL = "/pserv-xcl/XcdlMigrate?wsdl";
     private static Migrate extractor;
     private static String testOut = null;
-    private static File testOutFolder = null;
+//    private static File testOutFolder = null;
 
     static MigrationPath[] migrationPaths;
 
@@ -48,7 +50,7 @@ public class XcdlMigrateTests {
     @BeforeClass
     public static void setup() {
         testOut = XcdlMigrateUnitHelper.XCDL_EXTRACTOR_LOCAL_TEST_OUT;
-        testOutFolder = FileUtils.createWorkFolderInSysTemp(testOut);
+//        testOutFolder = FileUtils.createWorkFolderInSysTemp(testOut);
         extractor = ServiceCreator.createTestService(Migrate.QNAME, XcdlMigrate.class, WSDL);
         migrationPaths = extractor.describe().getPaths().toArray(new MigrationPath[] {});
     }
@@ -69,7 +71,7 @@ public class XcdlMigrateTests {
     }
 
     @Test
-    public void testMigration() throws URISyntaxException {
+    public void testMigration() throws URISyntaxException, IOException {
         testPath(migrationPaths[0]);
     }
 
@@ -87,7 +89,7 @@ public class XcdlMigrateTests {
         Assert.assertEquals(null, result.getDigitalObject());
     }
 
-    protected void testPath(MigrationPath path) throws URISyntaxException {
+    protected void testPath(MigrationPath path) throws URISyntaxException, IOException {
         URI inputFormat = path.getInputFormat();
         URI outputFormat = path.getOutputFormat();
 
@@ -167,40 +169,31 @@ public class XcdlMigrateTests {
         return parameterList;
     }
 
-    private String getTestXCEL(String srcExtension) {
+    private String getTestXCEL(String srcExtension) throws IOException {
         if (srcExtension.equalsIgnoreCase("TIFF")) {
-            return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.TIFF_XCEL);
+            return FileUtils.readFileToString(XcdlMigrateUnitHelper.TIFF_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("BMP")) {
             return null;
-            // return FileUtils
-            // .readTxtFileIntoString(XcdlMigrateUnitHelper.BMP_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("GIF")) {
             return null;
-            // return FileUtils
-            // .readTxtFileIntoString(XcdlMigrateUnitHelper.GIF_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("PDF")) {
-            return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.PDF_XCEL);
+            return FileUtils.readFileToString(XcdlMigrateUnitHelper.PDF_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("JPEG") || srcExtension.equalsIgnoreCase("JPG")) {
             return null;
-            // return FileUtils
-            // .readTxtFileIntoString(XcdlMigrateUnitHelper.JPEG_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("PNG")) {
-            return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.PNG_XCEL);
+            return FileUtils.readFileToString(XcdlMigrateUnitHelper.PNG_XCEL);
         }
 
-        // if (srcExtension.equalsIgnoreCase("DOC")) {
-        // return XcdlExtractorUnitHelper.DOC_INPUT;
-        // }
         return null;
     }
 
@@ -230,10 +223,6 @@ public class XcdlMigrateTests {
         if (srcExtension.equalsIgnoreCase("PNG")) {
             return XcdlMigrateUnitHelper.PNG_INPUT;
         }
-
-        // if (srcExtension.equalsIgnoreCase("DOC")) {
-        // return XcdlExtractorUnitHelper.DOC_INPUT;
-        // }
 
         System.err.println("Found no file matching extension: " + srcExtension);
         return null;
@@ -268,10 +257,7 @@ public class XcdlMigrateTests {
 
             assertTrue("Resulting digital object is null.", doOut != null);
 
-            File formatFolder = FileUtils.createFolderInWorkFolder(testOutFolder, extension);
-
-            File result = FileUtils.writeInputStreamToFile(doOut.getContent().getInputStream(), formatFolder, "xcdlMigrateTest_"
-                    + extension + ".xcdl");
+            File result = DigitalObjectUtils.toFile(doOut); // TODO extension required?
 
             System.out.println("Resulting file size: " + result.length() + " KB.");
             System.out.println("Resulting file path: " + result.getAbsolutePath());

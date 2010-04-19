@@ -20,7 +20,7 @@
   
     <!-- Define the API part-->
     <!-- Allow other Planets components to use the Xcdl parser. -->
-    <property name="src.api.includes" value="eu/planets_project/ifr/core/services/characterisation/extractor/xcdl/**" />
+    <property name="src.api.includes" value="eu/planets_project/ifr/core/services/**" />
 
 	<!-- Include the build targets etc -->
 	<property name="pserv.root.dir" value="../.." />

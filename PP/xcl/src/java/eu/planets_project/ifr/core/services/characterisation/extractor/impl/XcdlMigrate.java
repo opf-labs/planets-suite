@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,9 @@ import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
+
+import org.apache.commons.io.FileUtils;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -25,7 +27,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -46,7 +48,7 @@ public final class XcdlMigrate implements Migrate {
      */
     public static final String NAME = "XcdlMigrateExtractor";
     
-    public static File XCDL_MIGRATE_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), NAME + "_TMP");
+//    public static File XCDL_MIGRATE_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), NAME + "_TMP");
     /**
      * the logger.
      */
@@ -123,7 +125,7 @@ public final class XcdlMigrate implements Migrate {
         }
         log.info("Working on digital object: " + digitalObject);
 
-        File xcelFile = new File(XCDL_MIGRATE_TMP, FileUtils.randomizeFileName("xcel_input.xml"));
+        File xcelFile = DigitalObjectUtils.toFile(digitalObject);
 
         DigitalObject resultDigOb = null;
 
@@ -140,7 +142,11 @@ public final class XcdlMigrate implements Migrate {
 
                     if (currentName.equalsIgnoreCase("optionalXCELString")) {
                         optionalFormatXCEL = currentParameter.getValue();
-                        FileUtils.writeStringToFile(optionalFormatXCEL, xcelFile);
+                        try {
+                            FileUtils.writeStringToFile(xcelFile, optionalFormatXCEL);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     }
                 }

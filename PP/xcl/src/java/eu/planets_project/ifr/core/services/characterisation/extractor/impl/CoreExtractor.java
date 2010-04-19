@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,7 +16,6 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 
 /**
@@ -29,11 +29,6 @@ public class CoreExtractor {
 											+ "extractor"
 											+ File.separator).replace(File.separator + File.separator, File.separator);
     private static final String EXTRACTOR_TOOL = "extractor";
-    private String extractorWork = null;
-    private static String EXTRACTOR_IN = "INPUT";
-    private static String EXTRACTOR_OUT = "OUTPUT";
-    private String defaultInputFileName = "xcdlMigrateInput.bin";
-    private String outputFileName;
     private String thisExtractorName;
     private static Logger log = Logger.getLogger(CoreExtractor.class.getName());
     private static String NO_NORM_DATA_FLAG = "disableNormDataInXCDL";
@@ -48,7 +43,7 @@ public class CoreExtractor {
      */
     public CoreExtractor(String extractorName) {
         thisExtractorName = extractorName;
-        extractorWork = extractorName.toUpperCase();
+//        extractorWork = extractorName.toUpperCase();
     }
 
     public static List<URI> getSupportedInputFormats() {
@@ -95,46 +90,7 @@ public class CoreExtractor {
 
         List<String> extractor_arguments = null;
         
-//        File xcelFile = null;
-        File extractor_work_folder = null;
-        File extractor_in_folder = null;
-        File extractor_out_folder = null;
-
-        extractor_work_folder = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), extractorWork);
-
-//		plogger.info(thisExtractorName + " work folder created: "
-//		        + extractorWork);
-
-		extractor_in_folder = FileUtils.createFolderInWorkFolder(
-		        extractor_work_folder, EXTRACTOR_IN);
-//		plogger.info(thisExtractorName + " input folder created: "
-//		        + EXTRACTOR_IN);
-
-		extractor_out_folder = FileUtils.createFolderInWorkFolder(
-		        extractor_work_folder, EXTRACTOR_OUT);
-//		plogger.info(thisExtractorName + " output folder created: "
-//		        + EXTRACTOR_OUT);
-		
-		String inputFileName = DigitalObjectUtils.getFileNameFromDigObject(input, inputFormat);
-		
-		if(inputFileName==null || inputFileName.equalsIgnoreCase("")) {
-			inputFileName = FileUtils.randomizeFileName(defaultInputFileName);
-		}
-		else {
-			inputFileName = FileUtils.randomizeFileName(inputFileName);
-		}
-        
-		outputFileName = getOutputFileName(inputFileName, format.createExtensionUri("xcdl"));
-        
-        File srcFile = new File(extractor_in_folder, inputFileName);
-		FileUtils.writeInputStreamToFile(input.getContent().getInputStream(), srcFile);
-
-//            srcFile = new File(extractor_in_folder, "extractor_image_in.bin");
-//            FileOutputStream fos = new FileOutputStream(srcFile);
-//            fos.write(inputFile);
-//            fos.flush();
-//            fos.close();
-
+        File srcFile = DigitalObjectUtils.toFile(input);
 
         ProcessRunner shell = new ProcessRunner();
         log.info("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
@@ -147,10 +103,13 @@ public class CoreExtractor {
         log.info("Input-Image file path: " + srcFilePath);
         extractor_arguments.add(srcFilePath);
 
-        String outputFilePath = extractor_out_folder.getAbsolutePath()
-                + File.separator + outputFileName;
-        outputFilePath = outputFilePath.replace('\\', '/');
-
+        File output = null;
+        try {
+            output = File.createTempFile("xcl", ".xcdl");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String outputFilePath = output.getAbsolutePath();
         /* If we have no XCEL, let the extractor find the appropriate one: */
         if (xcelFile != null) {
             String xcelFilePath = xcelFile.getAbsolutePath().replace('\\', '/');
@@ -230,28 +189,13 @@ public class CoreExtractor {
         }
 
         log.info("Creating File to return...");
-//        System.out.println("Output-file path: " + outputFilePath);
-        File resultXCDL = new File(outputFilePath);
-        if(!resultXCDL.exists()) {
-            log.severe("File doesn't exist: " + resultXCDL.getAbsolutePath());
+        if(!output.exists()) {
+            log.severe("File doesn't exist: " + output.getAbsolutePath());
         	return null;
         }
-        return resultXCDL;
+        return output;
     }
     
-    private String getOutputFileName(String inputFileName, URI outputFormat) {
-		String fileName = null;
-		String outputExt = format.getFirstExtension(outputFormat);
-		if(inputFileName.contains(".")) {
-			fileName = inputFileName.substring(0, inputFileName.lastIndexOf(".")) + "." + outputExt;
-		}
-		else {
-			fileName = inputFileName + "." + outputExt;
-		}
-		return fileName;
-	}
-    
-
     /**
      * @param inputFormat The format
      * @return A service report indicating the format is not supported

@@ -1,7 +1,7 @@
 package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URI;
@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.soap.MTOM;
+
+import org.apache.commons.io.FileUtils;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -33,7 +35,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -123,7 +125,13 @@ public final class XcdlCompare implements Compare {
      * @return The properties found in the result XML
      */
     private List<List<PropertyComparison>> propertiesFrom(final String xcdl1, final String xcdl2, final String result) {
-        File file = FileUtils.writeByteArrayToTempFile(result.getBytes());
+        File file = null;
+        try {
+            file = File.createTempFile("xcl", null);
+            FileUtils.writeStringToFile(file, result);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
         List<List<PropertyComparison>> props = null;
         try {
         	props = new ResultPropertiesReader(file).getProperties();
@@ -177,7 +185,12 @@ public final class XcdlCompare implements Compare {
             throw new IllegalArgumentException("Digital object is null!");
         }
         InputStream stream = digitalObject.getContent().getInputStream();
-        String xcdl = new String(FileUtils.writeInputStreamToBinary(stream));
+        String xcdl = null;
+        try {
+            xcdl = FileUtils.readFileToString(DigitalObjectUtils.toFile(digitalObject));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (!xcdl.toLowerCase().contains("<xcdl")) {
             throw new IllegalArgumentException("Digital object given is not XCDL: " + xcdl.substring(0,100));
         }

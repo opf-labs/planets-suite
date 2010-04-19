@@ -3,12 +3,14 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +24,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -48,13 +49,13 @@ public abstract class AbstractXcdlCharacteriseTests {
 
     /**
      * Set up the testing environment: create files and directories for testing.
-     * @throws MalformedURLException When creating the input digital object fails
+     * @throws IOException 
      */
     @Before
-    public void setup() throws MalformedURLException {
+    public void setup() throws IOException {
         File inputImage = new File(getInputFile());
         File inputXcel = new File(getXcelFile());
-        xcelString = FileUtils.readTxtFileIntoString(inputXcel);
+        xcelString = FileUtils.readFileToString(inputXcel);
         digitalObject = new DigitalObject.Builder(Content.byReference(inputImage)).title(inputImage.getName()).format(
                 getUriForFile(inputImage)).build();
         extractor = ServiceCreator.createTestService(Characterise.QNAME, XcdlCharacterise.class, WSDL);

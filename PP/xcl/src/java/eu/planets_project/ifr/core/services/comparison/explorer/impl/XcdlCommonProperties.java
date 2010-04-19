@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.comparison.explorer.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,8 +12,9 @@ import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
+
+import org.apache.commons.io.FileUtils;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -27,7 +29,6 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServiceUtils;
 
@@ -127,7 +128,13 @@ public final class XcdlCommonProperties implements CommonProperties {
         String processError = shell.getProcessErrorAsString();
         log.info("Process Output: " + processOutput);
         log.severe("Process Error: " + processError);
-        String result = FileUtils.readTxtFileIntoString(new File(XCLEXPLORER_HOME + FPMTOOL_OUT));
+        String result;
+        try {
+            result = FileUtils.readFileToString(new File(XCLEXPLORER_HOME + FPMTOOL_OUT));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Could not read Comparator result file";
+        }
         log.info("Returning joint file format properties, starts with: "
                 + result.substring(0, Math.min(200, result.length())) + "...");
         return result;

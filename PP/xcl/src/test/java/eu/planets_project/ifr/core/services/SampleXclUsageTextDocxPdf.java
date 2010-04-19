@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,11 +9,12 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.apache.commons.io.FileUtils;
+
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Sample XCL services usage implementation using text files.
@@ -68,8 +70,12 @@ public class SampleXclUsageTextDocxPdf extends AbstractSampleXclUsage {
     @Override
     protected List<List<Parameter>> parameters() {
         ArrayList<List<Parameter>> list = new ArrayList<List<Parameter>>();
-        list.add(Arrays.asList(new Parameter("optionalXCELString", FileUtils.readTxtFileIntoString(new File(
-                "PP/xcl/src/test/resources/sample_files/xcel_docx.xml")))));
+        try {
+            list.add(Arrays.asList(new Parameter("optionalXCELString", FileUtils.readFileToString(new File(
+                    "PP/xcl/src/test/resources/sample_files/xcel_docx.xml")))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         list.add(null); // no parameters for PDF extraction
         return list;
     }
@@ -81,7 +87,7 @@ public class SampleXclUsageTextDocxPdf extends AbstractSampleXclUsage {
     @Override
     protected void checkCompareResult(CompareResult result) {
         Assert.assertTrue("Text file comparison result should contain only embedded results", result
-                .getProperties().size() == 0
+                .getComparisons().size() == 0
                 && result.getResults().size() > 0);
 
     }

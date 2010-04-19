@@ -13,18 +13,19 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.io.IOUtils;
+
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlCreator.PropertyName;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue;
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue.Val;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.NormData;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.ValueSet;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Xcdl;
-import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue.Val;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Access to a complete XCDL, via JAXB-generated classes.
@@ -44,7 +45,7 @@ public final class XcdlParser implements XcdlAccess {
             this.xcdl = (Xcdl) createUnmarshaller().unmarshal(xcdl);
         } catch (JAXBException e) {
             e.printStackTrace();
-            FileUtils.close(fileReader);
+            IOUtils.closeQuietly(fileReader);
             throw new IllegalArgumentException("Could not load XCDL from " + xcdl);
         }
     }
