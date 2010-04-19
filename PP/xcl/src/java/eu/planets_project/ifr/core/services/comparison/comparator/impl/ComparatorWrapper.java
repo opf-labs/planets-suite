@@ -124,7 +124,7 @@ public final class ComparatorWrapper {
     private static File createConfigFile(final String pcr) {
         /* The PCR file is optional: */
         File pcrFile = new File(COMPARATOR_HOME + "sentPCR.xml");
-        if ( pcr == null || pcr.trim().isEmpty() ) {
+        if ( pcr == null || pcr.trim().length() == 0 ) {
             save(pcrFile.getAbsolutePath(), ComparatorWrapper.read(DEFAULT_CONFIG) );
         } else {
             save(pcrFile.getAbsolutePath(), pcr);
