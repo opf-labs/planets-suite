@@ -92,7 +92,7 @@ public class ServiceProperties {
     }
      
     /**
-     * @param elapsed time in milliseconds
+     * @param elapsedMillis time in milliseconds
      * @return A Property for this value.
      */
     public static Property createWallclockTimeProperty(double elapsedMillis ) {
@@ -106,7 +106,7 @@ public class ServiceProperties {
 
     /**
      * @param elapsedMillis
-     * @return
+     * @return A property representing the given elapsed transfer time
      */
     public static Property createWallclockTransferTimeProperty(double elapsedMillis ) {
         Property.Builder p = new Property.Builder( SERVICE_WALLCLOCK_TRANSFER_PROP );
@@ -119,7 +119,7 @@ public class ServiceProperties {
 
     /**
      * @param elapsedMillis
-     * @return
+     * @return A property representing the given elapsed load time
      */
     public static Property createWallclockLoadTimeProperty(double elapsedMillis ) {
         Property.Builder p = new Property.Builder( SERVICE_WALLCLOCK_LOAD_PROP );

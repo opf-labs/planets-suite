@@ -27,17 +27,17 @@ import eu.planets_project.services.datatypes.Property;
 /**
  * A standardised timing and performance data collection class, used to monitor 
  * performance consistently across services.
- * 
+ * <p/>
  * To use it, first instantiate this class when your preservation action method starts.
  * The helper starts timing on construction. This is to prevent accidental re-use 
  * of each instance of the object, in order to avoid copies of the object being 
  * used in an non-thread-safe manner.
- * 
+ * <p/>
  * When the service has finished it's work, and before creating the final ServiceReport, 
  * call the .stop() method to halt the timer. Then use getPerformanceProperties() to get
  * the results, which should be added to the ServiceReport (not the return object specific
  * to that preservation action.
- * 
+ * <p/>
  * As well as measuring how long the process took (wall-clock time), these methods also measure 
  * how much CPU time this current thread required (e.g. half the wall-clock time if this process 
  * is only getting 50% of the CPU time). Note that this will only give meaningful
@@ -47,31 +47,28 @@ import eu.planets_project.services.datatypes.Property;
  * the main 'interesting' cases, e.g. when your service is passed a large file. A 
  * number of standard system properties are also measured, in order to understand the 
  * context of the execution process.
- * 
+ * <p/>
  * Additionally, this helper provides two methods by which the caller can record when it 
  * has finished transferring the input arguments (e.g. one or more DigitalObjects) from 
  * the caller (.transferred()), and/or record when the input arguments have been 
  * loaded into memory (.loaded()), if that is relevant. Note that the .loaded() 
  * time should include the .transferred() time. If the input streams are loaded 
  * directly into memory, the calling code should only record the .loaded() time.
- * 
- * For examples of how these calls should be used:
- * 
- *  @see eu.planets_project.services.java_se.image.JavaImageIOCompare 
- *  @see eu.planets_project.services.java_se.image.JavaImageIOMigrate 
- *  @see eu.planets_project.services.java_se.image.JavaImageIOIdentify 
- * 
+ * <p/>
+ * For examples of how these calls should be used see JavaImageIOCompare, JavaImageIOMigrate 
+ * and JavaImageIOIdentify in the PA/java-se component.
+ * <p/>
  * Note that we use System.nanoTime() rather than System.currentTimeMills() because 
  * that call generally more accurate. In particular, on Windows, the currentTimeMillis 
- * is often rounded rather coarsely. See also:
- * 
- *  @see http://savvyduck.blogspot.com/2008/06/java-getting-thread-time-with.html
- *  @see http://java.sun.com/javase/6/docs/api/java/lang/System.html#currentTimeMillis%28%29
- *  @see http://nadeausoftware.com/articles/2008/03/java_tip_how_get_cpu_and_user_time_benchmarking
- *  @see http://stackoverflow.com/questions/351565/system-currenttimemillis-vs-system-nanotime
- *  @see http://blogs.sun.com/dholmes/entry/inside_the_hotspot_vm_clocks
- *  @see http://stackoverflow.com/questions/47177/how-to-monitor-the-computers-cpu-memory-and-disk-usage-in-java
- * 
+ * is often rounded rather coarsely. See below for details.
+ * <p/>
+ * @see <a href="http://savvyduck.blogspot.com/2008/06/java-getting-thread-time-with.html">http://savvyduck.blogspot.com/2008/06/java-getting-thread-time-with.html</a>
+ * @see <a href="http://java.sun.com/javase/6/docs/api/java/lang/System.html#currentTimeMillis%28%29">http://java.sun.com/javase/6/docs/api/java/lang/System.html#currentTimeMillis%28%29</a>
+ * @see <a href="http://nadeausoftware.com/articles/2008/03/java_tip_how_get_cpu_and_user_time_benchmarking">http://nadeausoftware.com/articles/2008/03/java_tip_how_get_cpu_and_user_time_benchmarking</a>
+ * @see <a href="http://stackoverflow.com/questions/351565/system-currenttimemillis-vs-system-nanotime">http://stackoverflow.com/questions/351565/system-currenttimemillis-vs-system-nanotime</a>
+ * @see <a href="http://blogs.sun.com/dholmes/entry/inside_the_hotspot_vm_clocks">http://blogs.sun.com/dholmes/entry/inside_the_hotspot_vm_clocks</a>
+ * @see <a href="http://stackoverflow.com/questions/47177/how-to-monitor-the-computers-cpu-memory-and-disk-usage-in-java">http://stackoverflow.com/questions/47177/how-to-monitor-the-computers-cpu-memory-and-disk-usage-in-java</a>
+ * <p/>
  * @author Andrew.Jackson@bl.uk
  *
  */

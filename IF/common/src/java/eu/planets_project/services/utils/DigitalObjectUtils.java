@@ -499,14 +499,11 @@ public final class DigitalObjectUtils {
 	}
 	
 	/**
-	 * This method changes the content value in digital object and returns changed
-	 * digital object with new content value. 
-	 * 
 	 * @param digitalObject
-	 *        This is a digital object to be updated
-	 * @param newContent
-	 *        This is a new digital object content
-	 * @return changed digital object with new content value
+	 *        The digital object to be updated
+	 * @param newEvent
+	 *        The event to add to the digital object
+	 * @return changed digital object with new event
 	 */
 	public static DigitalObject addEvent(DigitalObject digitalObject, Event newEvent)
     {
