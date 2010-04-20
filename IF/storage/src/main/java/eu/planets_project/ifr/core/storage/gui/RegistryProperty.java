@@ -3,20 +3,14 @@ package eu.planets_project.ifr.core.storage.gui;
 import java.util.List;
 
 /**
- * This is the Testbed's interface of an ontology property.
- * It only contains fields that are used for rendering within the application
- * all others can be requested by using it's identifier and querying the
- * RegistryPropertyHandler
- * 
- * @author <a href="mailto:Andrew.Lindley@arcs.ac.at">Andrew Lindley</a>
- * @since 02.March.2009
+ * This is the interface of an registry property.
  *
  */
 public interface RegistryProperty {
 	
 	
 	 	/**
-	 	 * @return the properties OWL model identifier
+	 	 * @return the properties identifier
 	 	 */
 	 	public String getURI();
 	 	
@@ -27,14 +21,13 @@ public interface RegistryProperty {
 
 	 	
 	    /**
-	     * @return the Property's name as defined by the ontology
+	     * @return the Property's name 
 	     */
 	    public String getName();
 
 
 	    /**
 	     * @return a human readable label for the parent-type
-	     * e.g. PDF1.3_Properties
 	     */
 	    public String getParentType();
 	    
@@ -64,29 +57,10 @@ public interface RegistryProperty {
 	    public String getUnit();
 	    
 	    /**
-	     * @return a human readable list of 'is_same_as' relationship of this individual, OWLNamedClasses names 
+	     * @return a human readable list of 'is_same_as' relationship of this individual
 	     */
 	    public List<String> getIsSameAsNames();
-	    
-	    /**
-	     * @return a list of individuals that are connected via 'is_same_as' relationship. Also resolving 
-	     * symmetric object property relationships.  
-	     */
-//	    public List<RDFIndividual> getIsSameAs();
-	    
-	    
-	    /**
-	     * Queries the RegistryProperty's individual by the RDFProperty of the String
-	     * @param rdfString to build the RDFProperty with.
-	     * @return
-	     */
-//	    public Object getRDFProperty(String rdfString);
-	    
-	    /**
-	     * The OWLIndividual element the implementing property object uses to extract its data from
-	     * @return
-	     */
-//	    public RDFIndividual getRDFIndividual();
+
 
 	    
 	    public boolean isUnitDefined();

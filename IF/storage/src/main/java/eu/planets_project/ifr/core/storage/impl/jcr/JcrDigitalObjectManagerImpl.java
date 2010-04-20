@@ -18,7 +18,6 @@ import javax.jcr.RepositoryException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
-import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -227,24 +226,6 @@ public class JcrDigitalObjectManagerImpl implements DigitalObjectManager
 	public DigitalObject retrieve(URI pdURI)
 			throws DigitalObjectNotFoundException {
 		return retrieve(pdURI, true);
-	}
-
-
-	/**
-	 * This method evaluates original HTTP URI from registry URI
-	 * @param uri The registry URI
-	 * @return The original HTTP URI
-	 */
-	public URI getOriginalUri(URI keyUri) {
-		URI res = keyUri;
-		try {
-			_log.info("JcrDigitalObjectManagerImpl getOriginalUri() keyURI: " + keyUri);
-			res = jcrManager.getOriginalUri(keyUri);
-		} catch (Exception e) {
-			_log.info("JcrDigitalObjectManagerImpl getOriginalUri() error: " + e.getMessage());				
-		}
-
-		return res;		
 	}
 	
 	

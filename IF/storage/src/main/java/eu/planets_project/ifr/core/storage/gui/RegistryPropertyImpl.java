@@ -12,19 +12,15 @@ import eu.planets_project.ifr.core.storage.impl.data.StorageDigitalObjectReferen
 
 
 /**
+ * This is an object used to present nodes in registries tree.
  */
 @XmlRootElement(name = "Property")
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class RegistryPropertyImpl implements RegistryProperty, Cloneable, Serializable {
 
     @XmlTransient
-    private long id;
     private StorageDigitalObjectReference individual;
-    //FIXME This information is currently hardcoded and must come from the Testbed ontology extension
     private static final String TYPE_DIGITAL_OBJECT = "Digital Object";
-    private static final String TYPE_SERVICE = "Service";
-    //the ProtegeReasoner that's connected to the given owl model
-    private String xclOntologyLocation = "";
     
     
     /**

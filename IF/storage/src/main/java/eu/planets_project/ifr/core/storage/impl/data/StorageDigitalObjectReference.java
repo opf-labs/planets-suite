@@ -13,12 +13,9 @@ import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 
 /**
- * 
+ * This class calculates tree leafs.
  * This actually a reference to a digital object (URI), and does not contain an actual Digital Object.
  * This is used for walking the tree of stored data, and the DigitalObjectManager is used to actually retrieve the thing.
- * 
- * @author AnJackson
- *
  */
 public class StorageDigitalObjectReference {
     // A logger for this:
@@ -132,30 +129,37 @@ public class StorageDigitalObjectReference {
         	path = puri.getPath();
         }
         
-		log.log(Level.INFO,
-				"StorageDigitalObjectReference do perm uri: " + puri + " index: "
-						+ puri.toString().indexOf(DOJCRManager.PERMANENT_URI));
-        // if it is a digital object from JCR repository
-		if (puri.toString().indexOf(DOJCRManager.PERMANENT_URI) > -1
-				&& puri.toString().indexOf(DOJCRManager.PERMANENT_URI) == 0) {
-			if (puri.toString().equals(DOJCRManager.PERMANENT_URI)) return path.substring(1);
-			// Special treatment for digital object presentation
-			if (dom != null) {
-				try { 
-					if (puri.toString().contains(DOJCRConstants.DOJCR)) {
-					DigitalObject obj = dom.getDigitalObjectManager(
-							DataRegistryFactory.createDataRegistryIdFromName(DOJCRConstants.REGISTRY_NAME)).retrieve(puri);
-
-					if (obj.getTitle() != null)
-					{
-						String title = obj.getTitle();
-						path = path.concat("_" + title);
+		log.log(Level.INFO, "StorageDigitalObjectReference getLeafname() puri: " + puri);
+		
+		// special handling for digital object from JCR repository
+		if (puri.toString().indexOf(
+						DOJCRConstants.REGISTRY_NAME) > -1) {
+	//		log.log(Level.INFO,
+	//				"StorageDigitalObjectReference do perm uri: " + puri + " index: "
+	//						+ puri.toString().indexOf(DOJCRManager.PERMANENT_URI));
+			int indexRoot = puri.toString().indexOf(DOJCRManager.PERMANENT_URI);
+			if (indexRoot >= 0) {
+		        // if it is a digital object from JCR repository
+				if (puri.toString().indexOf(DOJCRManager.PERMANENT_URI) > -1) {
+					if (puri.toString().equals(DOJCRManager.PERMANENT_URI)) return path.substring(1);
+					// Special treatment for digital object presentation
+					if (dom != null) {
+						try { 
+//							log.log(Level.INFO, "StorageDigitalObjectReference getLeafname() dom != null, puri: " + puri);
+							if (puri.toString().contains(DOJCRConstants.DOJCR)) {
+							DigitalObject obj = dom.getDigitalObjectManager(
+									DataRegistryFactory.createDataRegistryIdFromName(DOJCRConstants.REGISTRY_NAME)).retrieve(puri);		
+								if (obj.getTitle() != null) {
+									String title = obj.getTitle();
+									path = path.concat("_" + title);
+								}
+							}
+						} catch (Exception e) {
+							log.log(Level.INFO,
+									"StorageDigitalObjectReference title not found. "
+											+ e.getMessage(), e);
+						}
 					}
-					}
-				} catch (Exception e) {
-					log.log(Level.INFO,
-							"StorageDigitalObjectReference title not found. "
-									+ e.getMessage(), e);
 				}
 			}
 		} 

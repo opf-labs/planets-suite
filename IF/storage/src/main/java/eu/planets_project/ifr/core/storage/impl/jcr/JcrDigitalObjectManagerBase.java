@@ -77,7 +77,7 @@ public class JcrDigitalObjectManagerBase extends DigitalObjectManagerBase {
 
 			try {
 				// First lets look at the passed URI, if it's null then we need to return the root 
-				log.info("JcrDigitalObjectManagerBase list() Testing for null URI");
+//				log.info("JcrDigitalObjectManagerBase list() Testing for null URI");
 				if (pdURI == null)
 				{
 					log.info("JcrDigitalObjectManagerBase list() URI is empty so return root URI only");
@@ -85,18 +85,18 @@ public class JcrDigitalObjectManagerBase extends DigitalObjectManagerBase {
 					retVal.add( this.id ); 
 					return retVal; 
 				}
-				log.info("JcrDigitalObjectManagerBase list() URI is NOT NULL");
+//				log.info("JcrDigitalObjectManagerBase list() URI is NOT NULL");
 				try {
-			        log.info("Replace HTTP path by registry path: " + pdURI);   
+//			        log.info("Replace HTTP path by registry path: " + pdURI);   
 					URI baseUri = new PDURI(pdURI.normalize()).formDataRegistryRootURI();
-					log.info("JcrDigitalObjectManagerBase list() base URI " + baseUri);				
+//					log.info("JcrDigitalObjectManagerBase list() base URI " + baseUri);				
 
 					if (pdURI.equals(baseUri)) {
 						retVal = this.listFileLocation(pdURI);
 					}
 
 					if (retVal != null) {
-						log.info("Listing URIs");
+//						log.info("Listing URIs");
 						for (URI uri : retVal) {
 							log.info("URI in list: " + uri);
 						}
@@ -136,24 +136,20 @@ public class JcrDigitalObjectManagerBase extends DigitalObjectManagerBase {
 	        List<URI> tmpRetVal = new ArrayList<URI>();
 			URI rootURI = ((JcrDigitalObjectManagerImpl)dom).getRootURI();
 	        tmpRetVal = dom.list(rootURI);
-	        log.info("JcrDigitalObjectManagerBase listFileLocation() pdURI " + pdURI);
-	        log.info("JcrDigitalObjectManagerBase listFileLocation() Contents URI array has " + tmpRetVal.size() + " elements");
+//	        log.info("JcrDigitalObjectManagerBase listFileLocation() pdURI " + pdURI);
+//	        log.info("JcrDigitalObjectManagerBase listFileLocation() Contents URI array has " + 
+//	        		tmpRetVal.size() + " elements");
 	        for (URI uri : tmpRetVal) {
 	        	String leafname = "";
 	            if(uri != null) {
 	                leafname = uri.getPath();
-	                log.info("JcrDigitalObjectManagerBase listFileLocation() uri.getPath(): " + leafname);
-	                if(leafname != null) {
-	                    String[] parts = leafname.split("/");
-	                    if( parts != null && parts.length > 0 )
-	                        leafname = parts[parts.length-1];
-	                }
+//	                log.info("JcrDigitalObjectManagerBase listFileLocation() uri.getPath(): " + leafname);
 	            }
-	            log.info("JcrDigitalObjectManagerBase listFileLocation() leafname: " + leafname +
-	            		", pdURI.toString(): " + pdURI.toString() + ", uri.toString(): " + uri.toString());
+//	            log.info("JcrDigitalObjectManagerBase listFileLocation() leafname: " + leafname +
+//	            		", pdURI.toString(): " + pdURI.toString() + ", uri.toString(): " + uri.toString());
 
 	           	URI resUri = URI.create(pdURI.toString() +"/"+ leafname).normalize();            
-	        	log.info("JcrDigitalObjectManagerBase listFileLocation() Adding URI " + resUri + " to list");
+//	        	log.info("JcrDigitalObjectManagerBase listFileLocation() Adding URI " + resUri + " to list");
 	            retVal.add( resUri );
 	            }
 	        return retVal;
@@ -169,11 +165,11 @@ public class JcrDigitalObjectManagerBase extends DigitalObjectManagerBase {
 			URI res = uri;
 			try {
 				URI baseUri = new PDURI(uri.normalize()).formDataRegistryRootURI();
-				log.info("JcrDigitalObjectManagerBase getOriginalUri() base URI " + baseUri);
+//				log.info("JcrDigitalObjectManagerBase getOriginalUri() base URI " + baseUri);
 				if (!uri.equals(baseUri)) {
-					URI keyUri = URI.create(uri.toString().replaceAll(baseUri.toString(), "").substring(1));
-					log.info("JcrDigitalObjectManagerBase getOriginalUri() keyURI: " + keyUri);
-					res = dom.getOriginalUri(keyUri);
+					URI keyUri = URI.create(uri.toString().replaceAll(baseUri.toString(), ""));
+//					log.info("JcrDigitalObjectManagerBase getOriginalUri() keyURI: " + keyUri);
+					res = keyUri;
 				} 
 			} catch (Exception e) {
 				log.info("JcrDigitalObjectManagerBase getOriginalUri() error: " + e.getMessage());				
