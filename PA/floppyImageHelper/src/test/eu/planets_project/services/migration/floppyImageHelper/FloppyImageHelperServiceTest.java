@@ -6,10 +6,12 @@ package eu.planets_project.services.migration.floppyImageHelper;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,8 +25,9 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperService;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.Fat_Imgen;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VirtualFloppyDrive;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ZipResult;
 import eu.planets_project.services.utils.ZipUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
@@ -66,14 +69,15 @@ public class FloppyImageHelperServiceTest {
         
 		// Config the logger:	
         Logger.getLogger(FloppyImageHelperService.class.getName()).setLevel( Level.INFO );
-        OUT_DIR = FileUtils.createWorkFolderInSysTemp(OUT_DIR_NAME); 
+        OUT_DIR = new File(Fat_Imgen.SYSTEM_TEMP_FOLDER, OUT_DIR_NAME);
+        FileUtils.forceMkdir(OUT_DIR);
         FLOPPY_IMAGE_HELPER = ServiceCreator.createTestService(Migrate.QNAME, FloppyImageHelperService.class, WSDL);
         
 	}
 	
 	@Test
 	public void testListAvailableDriveLetters() {
-		List<String> letters = FileUtils.listAvailableDriveLetters();
+		List<String> letters = VirtualFloppyDrive.listAvailableDriveLetters();
 		for (String string : letters) {
 			System.out.println(string);
 		}
@@ -98,11 +102,11 @@ public class FloppyImageHelperServiceTest {
 	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyImageHelperWin#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)}.
 	 */
 	@Test
-	public void testMigrateAndCreateImage() {
+	public void testMigrateAndCreateImage() throws IOException {
 		System.out.println("****************************************************");
 		System.out.println("* Testing: Create Floppy Image and Inject Files... *");
 		System.out.println("****************************************************");
-		FileUtils.deleteAllFilesInFolder(OUT_DIR);
+		FileUtils.cleanDirectory(OUT_DIR);
 		ZipResult zipResult = ZipUtils.createZipAndCheck(FILES_TO_INJECT, OUT_DIR, "test.zip", false); 
 		File zipFile = zipResult.getZipFile();
 //		DigitalObjectContent content = Content.byReference(zipFile).withChecksum(zipResult.getChecksum());
@@ -113,7 +117,7 @@ public class FloppyImageHelperServiceTest {
 		assertTrue("Resulting DigitalObject should NOT be NULL!!!", migrateResult.getDigitalObject()!=null);
 		DigitalObject resultDigObj = migrateResult.getDigitalObject();
 		RESULT_FILE = new File(OUT_DIR, resultDigObj.getTitle());
-		FileUtils.writeInputStreamToFile(resultDigObj.getContent().getInputStream(), RESULT_FILE);
+		DigitalObjectUtils.toFile(resultDigObj, RESULT_FILE);
 	}
 	
 	
@@ -130,7 +134,7 @@ public class FloppyImageHelperServiceTest {
 		assertTrue("Resulting DigitalObject should NOT be NULL!!!", migrateResult.getDigitalObject()!=null);
 		DigitalObject resultDigObj = migrateResult.getDigitalObject();
 		File resultFile = new File(OUT_DIR, resultDigObj.getTitle());
-		FileUtils.writeInputStreamToFile(resultDigObj.getContent().getInputStream(), resultFile);
+		DigitalObjectUtils.toFile(resultDigObj, resultFile);
 		DigitalObjectContent resultContent = resultDigObj.getContent();
 //		long resultChecksum = Long.parseLong(resultContent.getChecksum().getValue());
 		ZipUtils.checkAndUnzipTo(resultFile, OUT_DIR, resultContent.getChecksum());

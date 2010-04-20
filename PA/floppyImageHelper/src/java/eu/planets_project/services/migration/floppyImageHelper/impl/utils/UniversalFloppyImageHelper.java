@@ -1,10 +1,13 @@
 package eu.planets_project.services.migration.floppyImageHelper.impl.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import org.apache.commons.io.FileUtils;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -16,15 +19,14 @@ import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.migration.floppyImageHelper.api.FloppyImageHelper;
 import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperService;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 import eu.planets_project.services.utils.ZipResult;
 import eu.planets_project.services.utils.ZipUtils;
@@ -46,7 +48,7 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
 	private String TEMP_FOLDER_NAME = "UFIH_TMP";
 	
 	private File EXTRACTED_FILES = null;
-	private String sessionID = FileUtils.randomizeFileName("");
+	private String sessionID = Fat_Imgen.randomize("floppy");
 	private String EXTRACTED_FILES_DIR = "EXTRACTED_FILES" + sessionID;
 	
 	private String DEFAULT_INPUT_NAME = "inputFile" + sessionID;
@@ -62,9 +64,15 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
     
     public UniversalFloppyImageHelper() {
     	// clean the temp folder for this app at startup...
-		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-		FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
-		EXTRACTED_FILES = FileUtils.createFolderInWorkFolder(TEMP_FOLDER, EXTRACTED_FILES_DIR);
+		TEMP_FOLDER = new File(Fat_Imgen.SYSTEM_TEMP_FOLDER, TEMP_FOLDER_NAME);
+		try {
+            FileUtils.forceMkdir(TEMP_FOLDER);
+            FileUtils.cleanDirectory(TEMP_FOLDER);
+            EXTRACTED_FILES = new File(TEMP_FOLDER, EXTRACTED_FILES_DIR);
+            FileUtils.forceMkdir(EXTRACTED_FILES);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
     
     
@@ -136,7 +144,8 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
 			fileName = DEFAULT_INPUT_NAME + "." + inFormat;
 		}
 		
-		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), TEMP_FOLDER, fileName);
+		File inputFile = new File(TEMP_FOLDER, fileName);
+		DigitalObjectUtils.toFile(digitalObject, inputFile);
 		
 		File imageFile = null;
 		

@@ -14,8 +14,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
@@ -24,7 +22,6 @@ import javax.xml.ws.soap.SOAPBinding;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -43,7 +40,6 @@ import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * A really simple class that allows a Planets Service to be invoked from the command line.
@@ -120,7 +116,7 @@ public class PlanetsCommand {
             
             System.out.println("ServiceReport: "+result.getReport());
             
-            FileUtils.writeInputStreamToFile( result.getDigitalObject().getContent().getInputStream(), new File("output" ) );
+            DigitalObjectUtils.toFile( result.getDigitalObject(), new File("output" ) );
             
         } else if( pse.getQName().equals( Identify.QNAME ) ) {
             System.out.println("Is an Identify service. ");

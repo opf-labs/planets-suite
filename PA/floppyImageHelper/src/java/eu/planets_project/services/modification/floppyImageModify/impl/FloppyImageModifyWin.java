@@ -4,14 +4,17 @@
 package eu.planets_project.services.modification.floppyImageModify.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -23,16 +26,17 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.datatypes.Tool;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.Fat_Imgen;
 import eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyHelperResult;
 import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VirtualFloppyDrive;
 import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VirtualFloppyDriveResult;
 import eu.planets_project.services.modification.floppyImageModify.api.FloppyImageModify;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -54,7 +58,8 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	
 	private File TEMP_FOLDER = null;
 	private String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_MODIFY";
-	private String sessionID = FileUtils.randomizeFileName("");
+	
+	private String sessionID = Fat_Imgen.randomize("floppy");
 	private String DEFAULT_INPUT_NAME = "floppy144" + sessionID + ".ima";
 	private String INPUT_EXT = null;
 	
@@ -69,8 +74,13 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
     
     public FloppyImageModifyWin() {
     	// clean the temp folder for this app at startup...
-		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-		FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
+		TEMP_FOLDER = new File(Fat_Imgen.SYSTEM_TEMP_FOLDER, TEMP_FOLDER_NAME);
+		try {
+            FileUtils.forceMkdir(TEMP_FOLDER);
+            FileUtils.cleanDirectory(TEMP_FOLDER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	
@@ -131,7 +141,8 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 					"\nSorry, returning with error!", null);
 		}
 		
-		File originalImageFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), TEMP_FOLDER, fileName);
+		File originalImageFile = new File(TEMP_FOLDER, fileName);
+		DigitalObjectUtils.toFile(digitalObject, originalImageFile);
 		
 		FloppyHelperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile);
 		
@@ -142,7 +153,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		if(modifiedImage!=null) {
 			result = new DigitalObject.Builder(Content.byReference(modifiedImage))
 									.title(modifiedImage.getName())
-									.format(formatRegistry.createExtensionUri(FileUtils.getExtensionFromFile(modifiedImage)))
+									.format(formatRegistry.createExtensionUri(FilenameUtils.getExtension(modifiedImage.getName())))
 									.build();
 		}
 		else {

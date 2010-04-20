@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *             low level IO operations. Use DigitalObjectUtils.toFile(...) to store digital objects as
  *             files. Use DigitalObject.Builder(Content) to create digital objects from files.
  */
-public final class FileUtils {
+final class FileUtils {
 
     private static Logger log = Logger.getLogger(FileUtils.class.getName());
 

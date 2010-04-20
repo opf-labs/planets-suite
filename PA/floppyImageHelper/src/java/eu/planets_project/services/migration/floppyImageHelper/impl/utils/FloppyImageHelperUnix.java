@@ -1,10 +1,13 @@
 package eu.planets_project.services.migration.floppyImageHelper.impl.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import org.apache.commons.io.FileUtils;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -16,15 +19,14 @@ import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.migration.floppyImageHelper.api.FloppyImageHelper;
 import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperService;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServiceUtils;
 import eu.planets_project.services.utils.ZipResult;
@@ -58,15 +60,21 @@ import eu.planets_project.services.utils.ZipUtils;
 public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 	
 	public FloppyImageHelperUnix() {
-		sessionID = FileUtils.randomizeFileName("");
+		sessionID = Fat_Imgen.randomize("floppy");
 		DEFAULT_FLOPPY_IMAGE_NAME = "floppy144" + sessionID + ".ima";
-		if(TEMP_FOLDER.exists()) {
-			FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
-		}
+		TEMP_FOLDER = new File(Fat_Imgen.SYSTEM_TEMP_FOLDER, TEMP_FOLDER_NAME);
+		try {
+		    if(TEMP_FOLDER.exists()) {
+                FileUtils.cleanDirectory(TEMP_FOLDER);
+            }
+            FileUtils.forceMkdir(TEMP_FOLDER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 	                 
 	private static String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER_UNIX";
-	private static File TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
+	private static File TEMP_FOLDER = null;
 	private static String sessionID = null;
 	private String DEFAULT_INPUT_NAME = "inputFile" + sessionID;
 	private String inputExt = null;
@@ -137,13 +145,14 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		if(fileName == null) 
 		{
 			inputExt = formatReg.getFirstExtension(inputFormat);
-			fileName = FileUtils.randomizeFileName(DEFAULT_INPUT_NAME + "." + inputExt);
+			fileName = Fat_Imgen.randomize(DEFAULT_INPUT_NAME + "." + inputExt);
 		}
 		else {
-			fileName = FileUtils.randomizeFileName(fileName);  
+			fileName = Fat_Imgen.randomize(fileName);  
 		}
 		
-		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), TEMP_FOLDER, fileName);
+		File inputFile = new File(TEMP_FOLDER, fileName);
+		DigitalObjectUtils.toFile(digitalObject, inputFile);
 		
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
 			ZipResult zippedResult = FloppyImageHelperUnix.extractFilesFromFloppyImage(inputFile);
@@ -214,7 +223,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		log.info("image: " + image + " mounted to " + mountlabel);
 		File srcdir = new File(mountlabel);
-		ZipResult result = ZipUtils.createZipAndCheck(srcdir, TEMP_FOLDER, FileUtils.randomizeFileName("extractedFiles.zip"), false);
+		ZipResult result = ZipUtils.createZipAndCheck(srcdir, TEMP_FOLDER, Fat_Imgen.randomize("extractedFiles.zip"), false);
 
 		umount(mountlabel);
 		unbindLoop(loopdev);
@@ -227,14 +236,14 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		int loopdev;
 		String mountlabel;
 
-		if(FileUtils.filesTooLargeForMedium(files, FLOPPY_SIZE)) 
+		if(Fat_Imgen.filesTooLargeForMedium(files, FLOPPY_SIZE)) 
 		{
 			log.severe("Sorry! File set too large to be written to a Floppy (1.44 MB).");
 			return null;
 		}
 			
 //		File image = new File("/tmp", DEFAULT_FLOPPY_IMAGE_NAME);
-		File image = new File(FileUtils.getSystemTempFolder(), DEFAULT_FLOPPY_IMAGE_NAME);
+		File image = new File(Fat_Imgen.SYSTEM_TEMP_FOLDER, DEFAULT_FLOPPY_IMAGE_NAME);
 		createFloppy(image);
 		if(!image.exists()) 
 		{

@@ -4,12 +4,14 @@
 package eu.planets_project.services.migration.floppyImageHelper.impl.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import eu.planets_project.services.utils.FileUtils;
+import org.apache.commons.io.FileUtils;
+
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ZipResult;
 import eu.planets_project.services.utils.ZipUtils;
@@ -26,9 +28,9 @@ public class VirtualFloppyDrive {
 	
 	private File TEMP_FOLDER = null;
 	private String TEMP_FOLDER_NAME = "VIRTUAL_FLOPPY_DRIVE_TMP";
-	private String DEFAULT_FLOPPY_IMAGE_NAME = FileUtils.randomizeFileName("floppy144.ima");
+	private String DEFAULT_FLOPPY_IMAGE_NAME = Fat_Imgen.randomize("floppy144.ima");
 	private File EXTRACTED_FILES_DIR = null;
-	private String EXTRACTION_OUT_FOLDER_NAME = FileUtils.randomizeFileName("EXTRACTED_FILES");
+	private String EXTRACTION_OUT_FOLDER_NAME = Fat_Imgen.randomize("EXTRACTED_FILES");
 	
 	private static final long FLOPPY_SIZE = 1474560;
 	
@@ -41,12 +43,18 @@ public class VirtualFloppyDrive {
 	private static Logger log = Logger.getLogger(VirtualFloppyDrive.class.getName());
 	
 	public VirtualFloppyDrive() {
-		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-		if(TEMP_FOLDER.exists()) {
-			FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
-		}
+		TEMP_FOLDER = new File(Fat_Imgen.SYSTEM_TEMP_FOLDER, TEMP_FOLDER_NAME);
+		try {
+            FileUtils.forceMkdir(TEMP_FOLDER);
+            if(TEMP_FOLDER.exists()) {
+            	FileUtils.cleanDirectory(TEMP_FOLDER);
+            }
 //		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-		EXTRACTED_FILES_DIR = FileUtils.createFolderInWorkFolder(TEMP_FOLDER, EXTRACTION_OUT_FOLDER_NAME);
+            EXTRACTED_FILES_DIR = new File(TEMP_FOLDER, EXTRACTION_OUT_FOLDER_NAME);
+            FileUtils.forceMkdir(EXTRACTED_FILES_DIR);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public FloppyHelperResult createImageAndInjectFiles(List<File> filesToInject) {
@@ -54,7 +62,7 @@ public class VirtualFloppyDrive {
 			return this.returnWithError(process_error.toString());
 		}
 		
-		if(FileUtils.filesTooLargeForMedium(filesToInject, FLOPPY_SIZE)) {
+		if(Fat_Imgen.filesTooLargeForMedium(filesToInject, FLOPPY_SIZE)) {
 			process_error.append("Sorry! File compilation too large to be written to a Floppy (1.44 MB).");
 			log.severe("Sorry! File compilation too large to be written to a Floppy (1.44 MB).");
 			return this.returnWithError(process_error.toString());
@@ -99,7 +107,11 @@ public class VirtualFloppyDrive {
 		// Copy the files in the ZIP file to the floppy drive
 		for (File currentFile : filesToInject) {
 			File target = new File(floppy, currentFile.getName());
-			FileUtils.copyFileTo(currentFile, target);
+			try {
+                FileUtils.copyFile(currentFile, target);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 		}
 		
 		// save the content of the floppy drive to an image file
@@ -179,12 +191,16 @@ public class VirtualFloppyDrive {
 		for (File file : filesOnFloppy) {
 			File dest = new File(EXTRACTED_FILES_DIR, file.getName());
 			log.info("Copy file: " + file.getAbsolutePath() + " to : " + dest.getAbsolutePath());
-			FileUtils.copyFileTo(file, dest);
+			try {
+                FileUtils.copyFile(file, dest);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 		}
 		
 		// create a ZIP containing the files on the floppy disk...
 //		ZipResult zip = FileUtils.createZipFileWithChecksum(EXTRACTED_FILES_DIR, TEMP_FOLDER, "extracedFiles.zip");
-		ZipResult zip = ZipUtils.createZipAndCheck(EXTRACTED_FILES_DIR, TEMP_FOLDER, FileUtils.randomizeFileName("extracedFiles.zip"), false);
+		ZipResult zip = ZipUtils.createZipAndCheck(EXTRACTED_FILES_DIR, TEMP_FOLDER, Fat_Imgen.randomize("extracedFiles.zip"), false);
 		cmd.setCommand(closeImage());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
@@ -240,7 +256,7 @@ public class VirtualFloppyDrive {
 		
 		allFiles.addAll(filesOnFloppy);
 		
-		boolean filesTooLarge = FileUtils.filesTooLargeForMedium(allFiles, FLOPPY_SIZE);
+		boolean filesTooLarge = Fat_Imgen.filesTooLargeForMedium(allFiles, FLOPPY_SIZE);
 		
 		if(!filesTooLarge) {
 			List<File> afterCopy = Arrays.asList(floppy.listFiles());
@@ -278,7 +294,7 @@ public class VirtualFloppyDrive {
 	 * @return the first unused drive letter on your system to map it to the floppy drive
 	 */
 	private String getDriveLetter() {
-		List<String> freeDriveLetters = FileUtils.listAvailableDriveLetters();
+		List<String> freeDriveLetters = listAvailableDriveLetters();
 		String driveLetter = null;
 		if(freeDriveLetters!=null) {
 			driveLetter = freeDriveLetters.get(0);
@@ -291,6 +307,49 @@ public class VirtualFloppyDrive {
 		return driveLetter;
 	}
 
+	/**
+     * This method returns all the free/available Drive letters on your System,
+     * based on File.listRoots().
+     * @return a List of String containing all free drive letters on a windows
+     *         system OR null, if all letters are beeing used. NOTE: On
+     *         Unix/Linux based systems "/" the root is returned, as we don't
+     *         have drive letters.
+     */
+    public static List<String> listAvailableDriveLetters() {
+        ArrayList<String> freeLetters = new ArrayList<String>();
+        if (!System.getProperty("os.name").toLowerCase().contains("windows")) {
+            freeLetters.add("/");
+            log
+                    .info("Running on Non-Windows OS, so we don't have DriveLetters ;-)");
+            return freeLetters;
+        }
+        File[] roots = File.listRoots();
+
+        ArrayList<String> usedLetters = new ArrayList<String>(roots.length);
+
+        for (int i = 0; i < roots.length; i++) {
+            usedLetters.add(roots[i].getAbsolutePath());
+        }
+
+        // Fill the template Arraylist
+        for (char ch = 'A'; ch <= 'Z'; ch++) {
+            freeLetters.add(ch + ":\\");
+        }
+
+        // Remove the used letters from our template list of ALL possible
+        // letters
+        for (String currentLetter : usedLetters) {
+            if (freeLetters.contains(currentLetter)) {
+                freeLetters.remove(currentLetter);
+            }
+        }
+        // return the un-used letters for further use ;-)
+        if (freeLetters.size() > 0) {
+            return freeLetters;
+        } else {
+            return null;
+        }
+    }
 
 
 

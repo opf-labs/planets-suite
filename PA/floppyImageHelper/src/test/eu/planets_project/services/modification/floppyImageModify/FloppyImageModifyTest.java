@@ -12,19 +12,21 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.Fat_Imgen;
 import eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModifyWin;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -62,7 +64,8 @@ public class FloppyImageModifyTest {
         
 		// Config the logger:
         Logger.getLogger("").setLevel( Level.FINE );
-        OUT_DIR = FileUtils.createWorkFolderInSysTemp(OUT_DIR_NAME); 
+        OUT_DIR = new File(Fat_Imgen.SYSTEM_TEMP_FOLDER, OUT_DIR_NAME);
+        FileUtils.forceMkdir(OUT_DIR);
         FLOPPY_IMAGE_MODIFY = ServiceCreator.createTestService(Modify.QNAME, FloppyImageModifyWin.class, WSDL);
         
 	}
@@ -86,22 +89,47 @@ public class FloppyImageModifyTest {
 	
 	@Test
 	public void testModify() throws URISyntaxException {
-		List<File> fileList = FileUtils.listAllFilesAndFolders(FILES_FOR_MODIFICATION, new ArrayList<File>());
+		List<File> fileList = listAllFilesAndFolders(FILES_FOR_MODIFICATION, new ArrayList<File>());
 		fileList.remove(FLOPPY_IMAGE);
 //		fileList.remove(new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification/FLOPPY144.IMA"));
 		FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
         DigitalObject inputDigObj = new DigitalObject.Builder(Content.byReference(FLOPPY_IMAGE))
 									.title(FLOPPY_IMAGE.getName())
-									.format(format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)))
+									.format(format.createExtensionUri(FilenameUtils.getExtension(FLOPPY_IMAGE.getName())))
 									.build();
-		ModifyResult result = FLOPPY_IMAGE_MODIFY.modify(inputDigObj, format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)), null);
+		ModifyResult result = FLOPPY_IMAGE_MODIFY.modify(inputDigObj, format.createExtensionUri(FilenameUtils.getExtension(FLOPPY_IMAGE.getName())), null);
 		
 		System.out.println("Got report: " + result.getReport());
 		DigitalObject digObjres = result.getDigitalObject();
 		assertTrue("Resulting DigitalObject should not be NULL", digObjres!=null);
 		System.out.println("DigitalObject: " + digObjres);
 		File out = new File(OUT_DIR, digObjres.getTitle());
-		FileUtils.writeInputStreamToFile(digObjres.getContent().getInputStream(), out);
+		DigitalObjectUtils.toFile(digObjres, out);
 		System.out.println("Please find the floppy image here: " + out.getAbsolutePath());
 	}
+	
+	private List<File> listAllFilesAndFolders(final File dir,
+            final List<File> list) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                File currentFile = files[i];
+                boolean currentFileIsDir = currentFile.isDirectory();
+                if (currentFileIsDir) {
+                    // Ignore hidden folders
+                    if (currentFile.isHidden()) {
+                        continue;
+                    }
+                    if (currentFile.getName().equalsIgnoreCase("CVS")) {
+                        continue;
+                    }
+                    list.add(currentFile);
+                    listAllFilesAndFolders(currentFile, list);
+                } else {
+                    list.add(currentFile);
+                }
+            }
+        }
+        return list;
+    }
 }
