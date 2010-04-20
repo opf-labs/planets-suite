@@ -32,18 +32,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-//import javax.imageio.spi.ServiceRegistry;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.XMLConstants;
-//import javax.xml.soap.DetailEntry;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.apache.myfaces.custom.tree2.TreeModel;
 import org.apache.myfaces.custom.tree2.TreeModelBase;
@@ -58,6 +57,14 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
+import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
+import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRConstants;
+import eu.planets_project.ifr.core.storage.impl.oai.OAIDigitalObjectManagerDCBase;
+import eu.planets_project.ifr.core.storage.impl.oai.OAIDigitalObjectManagerKBBase;
+import eu.planets_project.ifr.core.wdt.impl.data.DetailEntry;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister.RegistryType;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectReference;
@@ -66,27 +73,13 @@ import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.datatypes.Agent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.Event;
 import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
-
-import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
-import eu.planets_project.ifr.core.servreg.api.ServiceRegistry;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.ifr.core.wdt.impl.data.DetailEntry;
-import eu.planets_project.ifr.core.storage.impl.jcr.DOJCRConstants;
-
-
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObjectContent;
-import eu.planets_project.services.utils.FileUtils;
-
-import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
-import eu.planets_project.ifr.core.storage.api.DataRegistry;
-
-import eu.planets_project.ifr.core.storage.impl.oai.*;
 
 
 /**
@@ -703,7 +696,12 @@ public class WorkflowBackingBean {
 							// At the moment digital object uses a DataHandler. It is not serializable
 							// and it is not possible to execute workflows. 
 							InputStream streamContent = o.getContent().getInputStream();
-							byte[] byteContent = FileUtils.writeInputStreamToBinary(streamContent);
+							byte[] byteContent = null;
+                            try {
+                                byteContent = IOUtils.toByteArray(streamContent);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 							DigitalObjectContent content = Content.byValue(byteContent);
 							o = (new DigitalObject.Builder(o)).content(content).title(dor.getLeafname()).build();
 						}

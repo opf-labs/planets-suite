@@ -5,10 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
+
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Level;
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Creates a workflow report. Used by the {@link ReportingLog}
@@ -79,7 +80,13 @@ final class WorkflowReporter {
     String reportAsString() {
         String content = builder.toString();
         InputStream stream = this.getClass().getResourceAsStream(TEMPLATE);
-        String template = new String(FileUtils.writeInputStreamToBinary(stream));
+        String template;
+        try {
+            template = IOUtils.toString(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
         String result = template.replace(CONTENT_MARKER, content);
         return result;
     }
@@ -97,7 +104,7 @@ final class WorkflowReporter {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            FileUtils.close(writer);
+            IOUtils.closeQuietly(writer);
         }
         return file;
     }
