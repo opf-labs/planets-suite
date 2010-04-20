@@ -1,8 +1,9 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import java.io.File;
+import java.io.IOException;
 
-import eu.planets_project.services.utils.FileUtils;
+import org.apache.commons.io.FileUtils;
 
 /**
  * Temporary file factory working with the PLANETS IF framework.
@@ -15,8 +16,7 @@ class J2EETempFileFactory implements TemporaryFileFactory {
 
     /**
      * Create a factory for creation of temporary files. The files will be
-     * created in the default system dir used by <code>{@link FileUtils}</code>
-     * .
+     * created in the default system dir.
      * <p/>
      * This constructor accepts a human readable ID which will be included in
      * the name of the directory containing the temporary files produced. The
@@ -28,12 +28,16 @@ class J2EETempFileFactory implements TemporaryFileFactory {
      */
     J2EETempFileFactory(String tempFileDirID) {
 
-	final String randomizedTempFileDirName = FileUtils
-		.randomizeFileName(tempFileDirID);
-	tempFileDir = FileUtils
-		.createWorkFolderInSysTemp(randomizedTempFileDirName);
-    }
+        final String randomizedTempFileDirName = randomize(tempFileDirID);
+        tempFileDir = new File(System.getProperty("java.io.tmpdir"), randomizedTempFileDirName);
+        try {
+            FileUtils.forceMkdir(tempFileDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+    }
+	
     /**
      * Get the path to the temporary directory where the temporary files,
      * created by this factory, are created.
@@ -76,10 +80,9 @@ class J2EETempFileFactory implements TemporaryFileFactory {
      *         folder.
      */
     public File prepareRandomNamedTempFile(String humanReadableID) {
-	final String randomizedName = FileUtils
-		.randomizeFileName(humanReadableID);
-
-	return prepareTempFile(randomizedName);
+    final String randomizedName = randomize(humanReadableID);
+    
+    return prepareTempFile(randomizedName);
     }
 
     /**
@@ -114,5 +117,17 @@ class J2EETempFileFactory implements TemporaryFileFactory {
 	}
 
 	return new File(getTempFileDir(), desiredName);
+    }
+    
+    private String randomize(String humanReadableID) {
+        String randomizedName = null;
+        try {
+            final File tempFile = File.createTempFile(humanReadableID, null);
+            randomizedName = tempFile.getName();
+            FileUtils.deleteQuietly(tempFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return randomizedName;
     }
 }

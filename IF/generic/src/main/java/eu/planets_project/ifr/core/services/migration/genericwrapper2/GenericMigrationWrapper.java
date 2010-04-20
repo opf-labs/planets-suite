@@ -31,7 +31,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServicePerformanceHelper;
 
@@ -159,8 +159,7 @@ public class GenericMigrationWrapper {
 	    // Serve the digital object through a temporary input file.
 	    File inputTempFile = temporaryFileMappings.get(inputIOProfile
 		    .getCommandLineFileLabel());
-	    FileUtils.writeInputStreamToFile(digitalObject.getContent()
-		    .getInputStream(), inputTempFile);
+	    DigitalObjectUtils.toFile(digitalObject, inputTempFile);
 	}
 
 	// Create an executable command line for the process runner.

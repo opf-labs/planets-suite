@@ -17,10 +17,12 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import org.apache.commons.io.FileUtils;
+
 import eu.planets_project.ifr.core.services.migration.generic.common.MultiProperties;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -28,7 +30,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServiceUtils;
 
@@ -86,11 +88,10 @@ public class GenericMigration implements Migrate, Serializable {
         }
         Map<String, String> toolParams = mp.get(params.get("tool-name"));
         try {
-            File inputFile = FileUtils.writeInputStreamToTmpFile(dob
-                    .getContent().getInputStream(), "generic-input", "tmp");
+            File inputFile = DigitalObjectUtils.toFile(dob);
 
             File outputFile = File.createTempFile("generic-output", "tmp");
-            FileUtils.delete(outputFile);
+            FileUtils.deleteQuietly(outputFile);
 
             String commandString = toolParams.get("path") + File.separator
                     + toolParams.get("command");
@@ -108,8 +109,8 @@ public class GenericMigration implements Migrate, Serializable {
             ProcessRunner pr = new ProcessRunner(strings);
             pr.run();
 
-            FileUtils.delete(inputFile);
-            FileUtils.delete(outputFile);
+            FileUtils.deleteQuietly(inputFile);
+            FileUtils.deleteQuietly(outputFile);
 
             boolean toolError = pr.getReturnCode() == -1;
             ServiceReport log;

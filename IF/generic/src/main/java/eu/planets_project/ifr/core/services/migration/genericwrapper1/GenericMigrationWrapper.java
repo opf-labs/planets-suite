@@ -1,5 +1,16 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.apache.commons.io.FileUtils;
+import org.w3c.dom.Document;
+
 import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationInitialisationException;
 import eu.planets_project.services.datatypes.Content;
@@ -10,17 +21,8 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ProcessRunner;
-import org.w3c.dom.Document;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class GenericMigrationWrapper {
 
@@ -223,18 +225,18 @@ public class GenericMigrationWrapper {
                                       File workfolder) throws IOException {
         TempFile sourcetempfile = migrationPath.getTempSourceFile();
         File realtemp = createTemp(workfolder,sourcetempfile);
-        FileUtils.writeInputStreamToFile(sourceObject.getContent().getInputStream(),realtemp);
+        DigitalObjectUtils.toFile(sourceObject,realtemp);
         sourcetempfile.setFile(realtemp);
     }
 
-    private File handleTempfiles(MigrationPath migrationPath) {
+    private File handleTempfiles(MigrationPath migrationPath) throws IOException {
         log.info("Entering handleTempFiles");
 
         //if useTempFiles
-        //create work folder
-        File workfolder = FileUtils.createWorkFolderInSysTemp(FileUtils.randomizeFileName(serviceDescription.getName()));
+        //get work folder (if unique folder needed, see J2EETempFileFactory for sample)
+        File workfolder = File.createTempFile(serviceDescription.getName(), null).getParentFile();
 
-        log.info("Created workfolder "+ workfolder.getAbsolutePath());
+        log.info("Using workfolder "+ workfolder.getAbsolutePath());
 
         //for each normal tempfile,
         List<TempFile> tempfiles = migrationPath.getTempFileDeclarations();
@@ -246,19 +248,17 @@ public class GenericMigrationWrapper {
     }
 
     private File createTemp(File workfolder, TempFile tempfile){
-
-        String name = tempfile.getRequestedName();
-        if ("".equals(name)){
-            name = FileUtils.randomizeFileName(tempfile.getCodename());
+        File uncreatedfile = null;
+        try {
+            uncreatedfile = File.createTempFile(tempfile.getCodename(), null, workfolder);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        File uncreatedfile = new File(workfolder.getAbsolutePath() + File.separator + name);
         log.info("For tempfile "
                  +tempfile.getCodename()
                  +" created tempfile in workfolder: "
                  +uncreatedfile.getAbsolutePath());
         return uncreatedfile;
-
     }
 
     /**
