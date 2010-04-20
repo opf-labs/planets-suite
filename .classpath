@@ -111,11 +111,16 @@
 	<classpathentry kind="src" path="PC/javadigest/src/test/java"/>
 	<classpathentry kind="src" path="WF/dlppa/src/main/java"/>
 	<classpathentry kind="src" path="WF/dlppa/src/test/java"/>
+	<classpathentry kind="src" path="PA/qemu/src/java"/>
+	<classpathentry kind="src" path="IF/command/src/main/java"/>
+	<classpathentry kind="src" path="IF/command/src/test/java"/>
 	<classpathentry kind="lib" path="PC/odfvalidator/lib/jdom.jar" sourcepath="E:/JDOM/jdom-1.1.1.zip"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar"/>
 	<classpathentry kind="lib" path="IF/common/lib/commons-io-1.4.jar" sourcepath="IF/common/lib/commons-io-1.4-sources.jar"/>
 	<classpathentry kind="lib" path="IF/common/lib/commons-codec-1.4.jar"/>
+	<classpathentry kind="lib" path="PA/pdfbox/lib/fontbox-0.1.0.jar"/>
+	<classpathentry kind="lib" path="IF/command/lib/commons-cli-1.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
