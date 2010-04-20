@@ -194,7 +194,7 @@ public class StorageBackingBean {
 	private static String ALL_REGISTRIES = "all_registries";
 	private static String selectedRegistry = ALL_REGISTRIES;
 	private static String selectedRegistryOld = null;
-	private static String NODE_ID = "1";
+	private static String NODE_ID = "0";
 	private static String CHILD_NODE_ID = "1.1";
 
 	private Map<String, TreeNode> dndSelNodes = new HashMap<String, TreeNode>();
@@ -660,12 +660,6 @@ public class StorageBackingBean {
     	private static TreeNode addNode(TreeNode node, String parentName, String value) {
 //            log.info("StorageBackingBean DoTreeView addNode() parentName: " + parentName + ", value: " + value);
     		TreeNodeImpl childNode = (TreeNodeImpl) addNode(node, parentName);
-//            TreeNodeImpl childNode = new TreeNodeImpl();
-//            childNode.setData(parentName);
-//            childNode.setParent(node);
-//            node.removeChild(parentName + NODE_ID);
-//            node.addChild(parentName + NODE_ID, childNode);
-
             TreeNodeImpl childChildNode1 = new TreeNodeImpl();
             if (value != null) {
 //	            log.info("#### StorageBackingBean DoTreeView standardTraverseTree() value: " + value);
@@ -685,15 +679,31 @@ public class StorageBackingBean {
     	 * @param parentName The parent name
     	 * @return The child node
     	 */
-    	private static TreeNode addNode(TreeNode node, String parentName) {
+    	private static TreeNode addNodeExt(TreeNode node, String parentName, int index) {
 //            log.info("StorageBackingBean DoTreeView addNode() parentName: " + parentName);
             TreeNodeImpl childNode = new TreeNodeImpl();
             childNode.setData(parentName);
             childNode.setParent(node);
-            node.removeChild(parentName + NODE_ID);
-            node.addChild(parentName + NODE_ID, childNode);
+            String idxStr = NODE_ID;
+            if (index >= 0) {
+            	idxStr = Integer.toString(index);
+            }
+            node.removeChild(parentName + idxStr);
+            node.addChild(parentName + idxStr, childNode);
 
             return childNode;
+    	}
+
+    	
+    	/**
+    	 * This method adds child node without value - only directory
+    	 * @param node The parent node
+    	 * @param parentName The parent name
+    	 * @return The child node
+    	 */
+    	private static TreeNode addNode(TreeNode node, String parentName) {
+//            log.info("StorageBackingBean DoTreeView addNode() parentName: " + parentName);
+    		return addNodeExt(node, parentName, 0);
     	}
 
     	
@@ -710,10 +720,11 @@ public class StorageBackingBean {
                 if (metadataList.size() > 0) 
                 {
                 	TreeNode metadatasNode = addNode(childNode, ModelConfiguration.DigitalObjectModel.METADATA_LIST.name());
+                	int index = 0;
         			while(iterMeta.hasNext())
         			{
-                    	TreeNode metadataNode = addNode(metadatasNode, 
-                    		ModelConfiguration.DigitalObjectModel.MetadataList.METADATA.name());
+                    	TreeNode metadataNode = addNodeExt(metadatasNode, 
+                    		ModelConfiguration.DigitalObjectModel.MetadataList.METADATA.name(), index);
         				Metadata metadataObj = iterMeta.next();
         				try
         				{
@@ -733,6 +744,7 @@ public class StorageBackingBean {
         				{
         					log.log(Level.INFO, "metadataList error: " + e.getMessage(), e);
         				}
+        				index++;
         			}
                 }
         	}    	
@@ -752,10 +764,11 @@ public class StorageBackingBean {
                 if (metadataList.size() > 0) 
                 {
                 	TreeNode metadatasNode = addNode(childNode, ModelConfiguration.PremisModel.SIGNIFICANT_PROPERTIES.name());
+                	int index = 0;
         			while(iterMeta.hasNext())
         			{
-                    	TreeNode metadataNode = addNode(metadatasNode, 
-                    		ModelConfiguration.PremisModel.SignificantProperties.SIGNIFICANT_PROPERTY.name());
+                    	TreeNode metadataNode = addNodeExt(metadatasNode, 
+                    		ModelConfiguration.PremisModel.SignificantProperties.SIGNIFICANT_PROPERTY.name(), index);
         				Metadata metadataObj = iterMeta.next();
         				try
         				{
@@ -775,6 +788,7 @@ public class StorageBackingBean {
         				{
         					log.log(Level.INFO, "metadataList error: " + e.getMessage(), e);
         				}
+        				index++;
         			}
                 }
         	}    	
@@ -860,10 +874,11 @@ public class StorageBackingBean {
                 {
                 	TreeNode propertiesNode = addNode(eventNode, 
                 			ModelConfiguration.DigitalObjectModel.EventsList.Event.PROPERTIES.name());
-        			while(iter.hasNext())
+                	int index = 0;
+                	while(iter.hasNext())
         			{
-                    	TreeNode propertyNode = addNode(propertiesNode, 
-                    			ModelConfiguration.DigitalObjectModel.EventsList.Event.PropertiesList.PROPERTY.name());
+                    	TreeNode propertyNode = addNodeExt(propertiesNode, 
+                    			ModelConfiguration.DigitalObjectModel.EventsList.Event.PropertiesList.PROPERTY.name(), index);
         				Property propertyObj = iter.next();
         				try
         				{
@@ -895,6 +910,7 @@ public class StorageBackingBean {
         				{
         					log.log(Level.INFO, "propertyList error: " + e.getMessage(), e);
         				}
+        				index++;
         			}
                 }
         	}
@@ -915,10 +931,12 @@ public class StorageBackingBean {
                 {
                 	TreeNode propertiesNode = addNode(eventNode, 
                 			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LINKING_OBJECT_IDENTIFIER.name());
-        			while(iter.hasNext())
+                	int index = 0;
+                	while(iter.hasNext())
         			{
-                    	TreeNode propertyNode = addNode(propertiesNode, 
-                    			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.SIGNIFICANT_PROPERTY.name());
+                    	TreeNode propertyNode = addNodeExt(propertiesNode, 
+                    			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.SIGNIFICANT_PROPERTY.name(),
+                    			index);
         				Property propertyObj = iter.next();
         				try
         				{                        	
@@ -950,6 +968,7 @@ public class StorageBackingBean {
         				{
         					log.log(Level.INFO, "propertyList error: " + e.getMessage(), e);
         				}
+        				index++;
         			}
                 }
         	}
@@ -970,9 +989,11 @@ public class StorageBackingBean {
                 if (eventList.size() > 0) 
                 {
                 	TreeNode eventsNode = addNode(childNode, ModelConfiguration.DigitalObjectModel.EVENTS.name());
+                	int index = 0;
         			while(iter.hasNext())
         			{
-                    	TreeNode eventNode = addNode(eventsNode, ModelConfiguration.DigitalObjectModel.EventsList.EVENT.name());
+                    	TreeNode eventNode = addNodeExt(
+                    			eventsNode, ModelConfiguration.DigitalObjectModel.EventsList.EVENT.name(), index);
         				Event eventObj = iter.next();
         				try
         				{
@@ -991,6 +1012,7 @@ public class StorageBackingBean {
         				{
         					log.log(Level.INFO, "eventList error: " + e.getMessage(), e);
         				}
+        				index++;
         			}
                 }
         	}
@@ -1011,10 +1033,12 @@ public class StorageBackingBean {
                 if (eventList.size() > 0) 
                 {
                 	TreeNode eventsNode = addNode(childNode, ModelConfiguration.PremisModel.LINKING_EVENT_IDENTIFIERS.name());
+                	int index = 0;
         			while(iter.hasNext())
         			{
-                    	TreeNode eventNode = addNode(eventsNode, 
-                    			ModelConfiguration.PremisModel.LinkingEventIdentifier.LINKING_EVENT_IDENTIFIER.name());
+                    	TreeNode eventNode = addNodeExt(eventsNode, 
+                    			ModelConfiguration.PremisModel.LinkingEventIdentifier.LINKING_EVENT_IDENTIFIER.name(), 
+                    			index);
         				Event eventObj = iter.next();
         				try
         				{
@@ -1040,6 +1064,7 @@ public class StorageBackingBean {
         				{
         					log.log(Level.INFO, "eventList error: " + e.getMessage(), e);
         				}
+        				index++;
         			}
                 }
         	}
