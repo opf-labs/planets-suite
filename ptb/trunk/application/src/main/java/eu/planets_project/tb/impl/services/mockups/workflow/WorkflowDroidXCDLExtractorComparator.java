@@ -14,6 +14,9 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.Compare;
@@ -23,7 +26,7 @@ import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.api.services.mockups.workflow.Workflow;
 import eu.planets_project.tb.impl.model.eval.EvaluationExecutableImpl;
@@ -191,7 +194,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
         Service service = Service.create(url, new QName(PlanetsServices.NS,
                 Identify.NAME));
         Identify droid = service.getPort(Identify.class);
-        byte[] array = FileUtils.readFileIntoByteArray(f1);
+        byte[] array = FileUtils.readFileToByteArray(f1);
         
         //invoke the service and extract results
         IdentifyResult identify = droid.identify(new DigitalObject.Builder(Content.byValue(array)).build(), null);
@@ -233,14 +236,13 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	        Migrate extractor = service.getPort(Migrate.class);
 	        
 	        //the service's input
-	        byte[] array = FileUtils.readFileIntoByteArray(f1);
+	        byte[] array = FileUtils.readFileToByteArray(f1);
 	        
 	        //the service call and it's result
             DigitalObject digitalObject = extractor.migrate(
                     new DigitalObject.Builder(Content.byValue(array))
                             .build(), null, null, null).getDigitalObject();
-            byte[] results = FileUtils.writeInputStreamToBinary(digitalObject
-                    .getContent().getInputStream());
+            byte[] results = IOUtils.toByteArray(digitalObject.getContent().getInputStream());
 			String xcdl = new String(results,"UTF-8");
 			
 			if(xcdl==null){

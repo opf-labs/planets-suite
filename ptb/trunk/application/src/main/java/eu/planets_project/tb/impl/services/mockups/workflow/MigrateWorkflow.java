@@ -19,9 +19,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.techreg.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
@@ -35,16 +35,13 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
-import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
@@ -530,7 +527,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             // Take the digital object, put it in a temp file, and give it a sensible name, using the new format extension.
             File doTmp = File.createTempFile("migrateResult", ".tmp");
             doTmp.deleteOnExit();
-            FileUtils.writeInputStreamToFile(migrated.getDigitalObject().getContent().getInputStream(), doTmp);
+            DigitalObjectUtils.toFile(migrated.getDigitalObject(), doTmp);
             DigitalObject.Builder newdob = new DigitalObject.Builder(migrated.getDigitalObject());
             newdob.content( Content.byReference(doTmp) );
             // FIXME The above need to be a full recursive storage operation!

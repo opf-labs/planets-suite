@@ -5,7 +5,6 @@ package eu.planets_project.tb.impl.data.util;
  */
 
 import java.awt.Frame;
-
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -15,14 +14,15 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
+
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Creates a reduced jpeg version (thumbnail) of an image using the Java 2D API
@@ -144,7 +144,7 @@ public class ImageThumbnail {
     public static void createThumb(DigitalObject dob, OutputStream out) throws Exception {
         log.info("Loading in the image...");
         File imgFile = DigitalObjectUtils.getAsTmpFile(dob);
-        byte[] data = FileUtils.readFileIntoByteArray(imgFile);
+        byte[] data = FileUtils.readFileToByteArray(imgFile);
         log.info("Writing image to stream...");
         ImageThumbnail
                 .createThumb(data, THUMB_WIDTH, THUMB_HEIGHT, out);

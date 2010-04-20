@@ -22,16 +22,15 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.io.FileUtils;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -91,7 +90,7 @@ public class XCDLParser {
      */
     public static List<MeasurementImpl> parseXCDL( File xcdlFile ) 
             throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
-        String xcdl = FileUtils.readTxtFileIntoString(xcdlFile);
+        String xcdl = FileUtils.readFileToString(xcdlFile);
         return XCDLParser.parseXCDL(xcdl);
     }
 

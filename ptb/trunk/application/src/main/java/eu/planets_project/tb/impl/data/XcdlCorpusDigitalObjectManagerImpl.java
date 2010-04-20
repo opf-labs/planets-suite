@@ -18,11 +18,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
-
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl;
@@ -32,7 +32,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
@@ -163,7 +162,7 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
             _log.debug("Looking for "+xcdlf.getCanonicalPath());
             /* Attach XCDL as metadata, with a identifying URI */
             if( xcdlf.exists() && xcdlf.canRead() && xcdlf.isFile() ) {
-                    String xcdls = FileUtils.readTxtFileIntoString(xcdlf);
+                    String xcdls = FileUtils.readFileToString(xcdlf);
                     dob.metadata( new Metadata( XCDL_MD_URI, xcdls ) );
             }
             
