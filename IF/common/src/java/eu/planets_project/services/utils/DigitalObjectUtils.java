@@ -8,12 +8,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
@@ -21,7 +26,6 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Checksum;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.Event;
 import eu.planets_project.services.datatypes.Metadata;
 
@@ -30,6 +34,8 @@ import eu.planets_project.services.datatypes.Metadata;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
 public final class DigitalObjectUtils {
+    static final String SYSTEM_TEMP_DIR = System.getProperty("java.io.tmpdir");
+
     private DigitalObjectUtils() {/* Util classes are not instantiated */}
 
     private static final Logger log = Logger.getLogger(DigitalObjectUtils.class.getName());
@@ -39,7 +45,16 @@ public final class DigitalObjectUtils {
     
     private static final URI zipType = format.createExtensionUri("zip");
     
-    private static File utils_tmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "dig-ob-utils-tmp".toUpperCase());
+    private static File utils_tmp = null;
+    
+    static {
+        utils_tmp = new File(SYSTEM_TEMP_DIR, "dig-ob-utils-tmp".toUpperCase());
+        try {
+            FileUtils.forceMkdir(utils_tmp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * @return The total size, in bytes, of the bytestream contained or referred
@@ -65,7 +80,44 @@ public final class DigitalObjectUtils {
         // Return the total:
         return bytes;
     }
-
+    
+    /**
+     * @param object The digital object to copy to a temporary file
+     * @return The temporary file the digital object's byte stream was written to
+     */
+    public static File toFile(final DigitalObject object) {
+        try {
+            /* TODO: use format registry to set the extension? */
+            /* TODO: use data registry to store the content? */
+            File file = File.createTempFile("planets", null);
+            file.deleteOnExit();
+            toFile(object, file);
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException("Could not copy digital object: " + object);
+    }
+    
+    /**
+     * @param object The digital object to copy to a file
+     * @param file The file to copy the digital object's byte stream to
+     * @return The number of bytes copied
+     */
+    public static long toFile(final DigitalObject object, final File file) {
+        try {
+            FileOutputStream fOut = new FileOutputStream(file);
+            long bytesCopied = IOUtils.copyLarge(object.getContent().getInputStream(), fOut);
+            fOut.close();
+            return bytesCopied;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
     /**
      * These cases: <br/>
      * - A compound DO, zip as Content, with MD outside the zip, pointing into
@@ -98,43 +150,6 @@ public final class DigitalObjectUtils {
         }
     }
     
-    
-
-
-        /**
-	 * Creates a tmp-file from the content of a DigitalObject.
-	 * 
-	 * @param digitalObject The digital object
-	 * @return A temporary file containing the content of the given digital
-	 *         object (Note: As a temporary file, this file will not persist)
-	 */
-	public static File getAsTmpFile(final DigitalObject digitalObject) {
-	    File inputFile = FileUtils.getTempFile("digital-object-content", "bin");
-	    FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(),
-	            inputFile);
-	    return inputFile;
-	}
-	
-	
-	/**
-	 * Creates a file for the content of a given DigitalObject
-	 * @param digitalObject the DigitalObject containing the Content to be written to a File
-	 * @param destFolder the Folder to write the File into
-	 * @param fileName the name the file should have. If no fileName is specified, a randomized default name will be used (dig-ob-content.bin).
-	 * @return the File for the given Content
-	 */
-	public static File getAsFile(final DigitalObject digitalObject, File destFolder, String fileName) {
-		if(fileName==null) {
-			fileName = digitalObject.getTitle();
-			if(fileName==null || fileName.equalsIgnoreCase("")) {
-				fileName = FileUtils.randomizeFileName("dig-ob-content.bin"); 
-			}
-		}
-		File contentFile = new File(destFolder, FileUtils.randomizeFileName(fileName));
-		FileUtils.writeInputStreamToFile(digitalObject.getContent().getInputStream(), contentFile);
-		return contentFile;
-	}
-	
 	/**
      * A utility method that creates files for the content of "contained"-DigObs in a DigOb.
      * This method returns all contained DigObs one level deep.
@@ -150,8 +165,9 @@ public final class DigitalObjectUtils {
             for (DigitalObject currentDigObj : listOfDigObjs) {
                 String name = getFileNameFromDigObject(currentDigObj, null);
                 log.info("name of dig obj is: "+name);
-                containedFiles.add(FileUtils.writeInputStreamToFile(
-                        currentDigObj.getContent().getInputStream(), targetFolder, name));
+                File file = new File(targetFolder, name);
+                toFile(currentDigObj, file);
+                containedFiles.add(file);
             }
         }
         log.info(String.format("Returning %s files", containedFiles.size()));
@@ -192,9 +208,13 @@ public final class DigitalObjectUtils {
     		return null;
     	}
     	// Do all the tmpFolder related stuff....
-    	String tmpfolderName = FileUtils.randomizeFileName(getFolderNameFromDigObject(digOb));
-    	File digObTmp = FileUtils.createFolderInWorkFolder(utils_tmp, tmpfolderName);
-//    	FileUtils.deleteAllFilesInFolder(digObTmp);
+    	String tmpfolderName = randomizeFileName(getFolderNameFromDigObject(digOb));
+    	File digObTmp = new File(utils_tmp, tmpfolderName);
+    	try {
+            FileUtils.forceMkdir(digObTmp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     	File zip = getZipAsFile(digOb);
     	
     	File target = ZipUtils.getFileFrom(zip, fragment, digObTmp);    	
@@ -318,12 +338,18 @@ public final class DigitalObjectUtils {
 		else {
 			title = title + "." + ext;
 		}
-		return FileUtils.randomizeFileName(title);
+		return randomizeFileName(title);
 		
 	}
 
 	public static boolean cleanDigObUtilsTmp() {
-		return FileUtils.deleteAllFilesInFolder(utils_tmp);
+	    try {
+            FileUtils.cleanDirectory(utils_tmp);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+		return true;
 	}
 
 	/**
@@ -351,16 +377,19 @@ public final class DigitalObjectUtils {
 	    			zipName = destZipName + ".zip";
 	    		}
 	    	}
-	//    	FileUtils.deleteAllFilesInFolder(utils_tmp);
-	    	File zip_tmp = FileUtils.createFolderInWorkFolder(utils_tmp, FileUtils.randomizeFileName("zip_from_folder_tmp"));
-	//    	FileUtils.deleteAllFilesInFolder(zip_tmp);
+	    	File zip_tmp = new File(utils_tmp, randomizeFileName("zip_from_folder_tmp"));
+	    	try {
+                FileUtils.forceMkdir(zip_tmp);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 	    	
 	    	if(withChecksum) {
 		    	ZipResult zipResult = ZipUtils.createZipAndCheck(folder, zip_tmp, zipName, compress);
 		    	
 		    	if(createByReference) {
 		    		DigitalObject digOb = null;
-					digOb = new DigitalObject.Builder(Content.byReference(FileUtils.getUrlFromFile(zipResult.getZipFile()))
+					digOb = new DigitalObject.Builder(Content.byReference(getUrlFromFile(zipResult.getZipFile()))
 							.withChecksum(zipResult.getChecksum()))
 							.title(zipName)
 							.format(format.createExtensionUri("zip"))
@@ -383,7 +412,7 @@ public final class DigitalObjectUtils {
 	    		
 	    		if(createByReference) {
 		    		DigitalObject digOb = null;
-					digOb = new DigitalObject.Builder(Content.byReference(FileUtils.getUrlFromFile(result)))
+					digOb = new DigitalObject.Builder(Content.byReference(getUrlFromFile(result)))
 							.title(zipName)
 							.format(format.createExtensionUri("zip"))
 							.fragments(ZipUtils.getAllFragments(result))
@@ -420,7 +449,7 @@ public final class DigitalObjectUtils {
 				e.printStackTrace();
 			}
 			if(createByReference) {
-				digOb = new DigitalObject.Builder(Content.byReference(FileUtils.getUrlFromFile(zipFile))
+				digOb = new DigitalObject.Builder(Content.byReference(getUrlFromFile(zipFile))
 						.withChecksum(checksum))
 						.title(zipFile.getName())
 						.format(format.createExtensionUri("zip"))
@@ -440,7 +469,7 @@ public final class DigitalObjectUtils {
 		}
 		else {
 			if(createByReference) {
-				digOb = new DigitalObject.Builder(Content.byReference(FileUtils.getUrlFromFile(zipFile)))
+				digOb = new DigitalObject.Builder(Content.byReference(getUrlFromFile(zipFile)))
 						.title(zipFile.getName())
 						.format(format.createExtensionUri("zip"))
 						// lists all entries in this zip file and includes them as "fragments"
@@ -460,16 +489,45 @@ public final class DigitalObjectUtils {
 	}
 
 	private static File getZipAsFile(DigitalObject digOb) {
-	    String folderName = FileUtils.randomizeFileName(getFolderNameFromDigObject(digOb));
+	    String folderName = randomizeFileName(getFolderNameFromDigObject(digOb));
 	    
-		File tmpFolder = FileUtils.createFolderInWorkFolder(utils_tmp, folderName);
-		
-		File zip = new File(tmpFolder, getFileNameFromDigObject(digOb, null));
-		
-		FileUtils.writeInputStreamToFile(digOb.getContent().getInputStream(), zip);
+		File tmpFolder = new File(utils_tmp, folderName);
+		File zip = null;
+        try {
+            FileUtils.forceMkdir(tmpFolder);
+            
+            zip = new File(tmpFolder, getFileNameFromDigObject(digOb, null));
+            
+            FileOutputStream out = new FileOutputStream(zip);
+            IOUtils.copyLarge(digOb.getContent().getInputStream(), out);
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 		
 		return zip;
 	}
+	
+	static String randomizeFileName(String name) {
+        Random random = new Random();
+        String prefix = null;
+        String postfix = null;
+        String randomName = null;
+        if(name==null) {
+            name = "";
+        }
+        if(name.contains(".")) {
+            prefix = name.substring(0, name.lastIndexOf(".")) + "_";
+            postfix = name.substring(name.lastIndexOf("."));
+            randomName = prefix + random.nextInt(Integer.MAX_VALUE) + postfix;
+        }
+        else {
+            randomName = name + "_" + random.nextInt(Integer.MAX_VALUE);
+        }
+        return randomName;
+    }
 
 	/**
 	 * Creates a ZIP-type DigitalObject from a given file, by reference or as stream
@@ -480,7 +538,7 @@ public final class DigitalObjectUtils {
 	private static DigitalObject createDigitalObject(File file, boolean createByReference) {
 		DigitalObject result = null;
 		if(file.isDirectory()) {
-			result = createZipTypeDigitalObjectFromFolder(file, FileUtils.getFileNameWithoutExtension(file), createByReference, true, true);
+			result = createZipTypeDigitalObjectFromFolder(file, FilenameUtils.getBaseName(file.getName()), createByReference, true, true);
 			return result;
 		}
 		else if(ZipUtils.isZipFile(file)) {
@@ -489,7 +547,7 @@ public final class DigitalObjectUtils {
 		}
 		else {
 			if(createByReference) {
-				result = new DigitalObject.Builder(Content.byReference(FileUtils.getUrlFromFile(file))).title(file.getName()).build();
+				result = new DigitalObject.Builder(Content.byReference(getUrlFromFile(file))).title(file.getName()).build();
 			}
 			else {
 				result = new DigitalObject.Builder(Content.byReference(file)).title(file.getName()).build();
@@ -497,6 +555,21 @@ public final class DigitalObjectUtils {
 		}
 		return result;
 	}
+	
+	 /**
+     * Convenience method that creates a URL from a file in a proper (i.e. not deprecated) way, using the toURI().toURL() way. 
+     * Hiding the Exception, so you don't have to put it in a try-catch block.
+     * @param file
+     * @return The URL for the given file
+     */
+    private static URL getUrlFromFile(File file) {
+        try {
+            return file.toURI().toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 	
 	/**
 	 * @param digitalObject
@@ -594,40 +667,4 @@ public final class DigitalObjectUtils {
 		
 		return res;
 	}
-	
-	/**
-     * @param object The digital object to copy to a file
-     * @param file The file to copy the digital object's byte stream to
-     * @return The number of bytes copied
-     */
-    public static long toFile(final DigitalObject object, final File file) {
-        try {
-            FileOutputStream fOut = new FileOutputStream(file);
-            long bytesCopied = IOUtils.copyLarge(object.getContent().getInputStream(), fOut);
-            fOut.close();
-            return bytesCopied;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-    
-    /**
-     * @param object The digital object to copy to a temporary file
-     * @return The temporary file the digital object's byte stream was written to
-     */
-    public static File toFile(final DigitalObject object) {
-        try {
-            /* TODO: use format registry to set the extension? */
-            File file = File.createTempFile("planets", null);
-            file.deleteOnExit();
-            toFile(object, file);
-            return file;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        throw new IllegalStateException("Could not copy digital object: " + object);
-    }
 }

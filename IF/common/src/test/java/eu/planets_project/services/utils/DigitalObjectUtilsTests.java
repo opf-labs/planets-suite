@@ -11,8 +11,10 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.services.datatypes.Content;
@@ -27,7 +29,30 @@ public class DigitalObjectUtilsTests {
 	static File testFolder = new File("tests/test-files/documents/test_pdf");
 	File testZip = new File("tests/test-files/archives/test_pdf.zip");
 	File removeZip = new File("tests/test-files/archives/insertFragmentTest.zip");
-	File work_folder = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtilsTest_TMP".toUpperCase()); 
+	static File work_folder = null;
+	
+	@BeforeClass
+	public static void setup() throws IOException{
+	    work_folder = new File(DigitalObjectUtils.SYSTEM_TEMP_DIR, "DigitalObjectUtilsTest_TMP".toUpperCase());
+	    FileUtils.forceMkdir(work_folder);
+	}
+	
+	@Test
+    public void toFileDigitalObjectFile() throws IOException {
+        DigitalObject object = new DigitalObject.Builder(Content.byReference(testZip)).build();
+        File file = File.createTempFile("planets", null);
+        DigitalObjectUtils.toFile(object, file);
+        Assert.assertTrue(IOUtils.contentEquals(object.getContent().getInputStream(), file.toURI()
+                .toURL().openStream()));
+    }
+    
+    @Test
+    public void toFileDigitalObject() throws MalformedURLException, IOException {
+        DigitalObject object = new DigitalObject.Builder(Content.byReference(testZip)).build();
+        File file = DigitalObjectUtils.toFile(object);
+        Assert.assertTrue(IOUtils.contentEquals(object.getContent().getInputStream(), file.toURI()
+                .toURL().openStream()));
+    }
 	
 	@Test
 	public void testCreateZipTypeDigObFolder() {
@@ -37,7 +62,7 @@ public class DigitalObjectUtilsTests {
 		assertTrue("DigitalObject should NOT be NULL!", result!=null);
 		printDigOb(result);
 		File resultFile = new File(work_folder, result.getTitle());
-		FileUtils.writeInputStreamToFile(result.getContent().getInputStream(), resultFile);
+		DigitalObjectUtils.toFile(result, resultFile);
 		System.out.println("Result size: " + resultFile.length());
 	}
 	
@@ -85,7 +110,7 @@ public class DigitalObjectUtilsTests {
 		DigitalObject result = DigitalObjectUtils.createZipTypeDigitalObject(removeZip, "removeFragmentTest.zip", false, false, true);
 		printDigOb(result);
 		DigitalObject removeResult = DigitalObjectUtils.removeFragment(result, new String("insertedFiles\\images\\laptop.gif"), false);
-		FileUtils.writeInputStreamToFile(removeResult.getContent().getInputStream(), new File(work_folder, removeResult.getTitle()));
+		DigitalObjectUtils.toFile(removeResult, new File(work_folder, removeResult.getTitle()));
 		printDigOb(removeResult);
 	}
 	
@@ -130,22 +155,5 @@ public class DigitalObjectUtilsTests {
 			printFragments(digOb);
 		}
 	}
-
-	@Test
-	public void toFileDigitalObjectFile() throws IOException {
-	    DigitalObject object = new DigitalObject.Builder(Content.byReference(testZip)).build();
-	    File file = File.createTempFile("planets", null);
-	    DigitalObjectUtils.toFile(object, file);
-        Assert.assertTrue(IOUtils.contentEquals(object.getContent().getInputStream(), file.toURI()
-                .toURL().openStream()));
-    }
-	
-	@Test
-	public void toFileDigitalObject() throws MalformedURLException, IOException {
-	    DigitalObject object = new DigitalObject.Builder(Content.byReference(testZip)).build();
-        File file = DigitalObjectUtils.toFile(object);
-        Assert.assertTrue(IOUtils.contentEquals(object.getContent().getInputStream(), file.toURI()
-                .toURL().openStream()));
-    }
 
 }

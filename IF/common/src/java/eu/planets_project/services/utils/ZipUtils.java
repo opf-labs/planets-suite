@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.ZipException;
 import java.util.logging.Logger;
+import java.util.zip.ZipException;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import ch.enterag.utils.zip.EntryInputStream;
 import ch.enterag.utils.zip.EntryOutputStream;
@@ -148,7 +151,7 @@ public class ZipUtils {
 			fileOut = new FileOutputStream(target);
 			log.info("[readFileEntry] writing entry: " + fileEntry.getName() + " to file: " + target.getAbsolutePath());
 			EntryInputStream entryReader = zip64File.openEntryInputStream(fileEntry.getName());
-			FileUtils.writeInputStreamToOutputStream(entryReader, fileOut);
+			IOUtils.copyLarge(entryReader, fileOut);
 			entryReader.close();
 			fileOut.close();
 		} catch (FileNotFoundException e) {
@@ -369,7 +372,7 @@ public class ZipUtils {
 					log.info("[insertFileInto] Finished writing entry: " + targetPath);
 					
 					List<String> containedPaths = normalizePaths(toInsert);
-					List<File> containedFiles = FileUtils.listAllFilesAndFolders(toInsert, new ArrayList<File>());
+					List<File> containedFiles = listAllFilesAndFolders(toInsert, new ArrayList<File>());
 					
 					log.info("[insertFileInto] Added entry is a folder.");
 					log.info("[insertFileInto] Adding all nested files: ");
@@ -385,7 +388,7 @@ public class ZipUtils {
 						}
 						if(currentFile.isFile()) {
 							InputStream loop_in = new FileInputStream(currentFile);
-							FileUtils.writeInputStreamToOutputStream(loop_in, loop_out);
+							IOUtils.copyLarge(loop_in, loop_out);
 							loop_in.close();
 						}
 						log.info("[insertFileInto] Added: " + currentPath);
@@ -395,7 +398,7 @@ public class ZipUtils {
 				}
 				else {
 					InputStream in = new FileInputStream(toInsert);
-					FileUtils.writeInputStreamToOutputStream(in, out);
+					IOUtils.copyLarge(in, out);
 					in.close();
 					out.flush();
 					out.close();
@@ -416,7 +419,7 @@ public class ZipUtils {
 					log.info("[insertFileInto] Finished writing entry: " + targetPath);
 					
 					List<String> containedPaths = normalizePaths(toInsert);
-					List<File> containedFiles = FileUtils.listAllFilesAndFolders(toInsert, new ArrayList<File>());
+					List<File> containedFiles = listAllFilesAndFolders(toInsert, new ArrayList<File>());
 					
 					log.info("[insertFileInto] Added entry is a folder.");
 					log.info("[insertFileInto] Adding all nested files: ");
@@ -434,7 +437,7 @@ public class ZipUtils {
 						
 						if(currentFile.isFile()) {
 							InputStream loop_in = new FileInputStream(currentFile);
-							FileUtils.writeInputStreamToOutputStream(loop_in, loop_out);
+							IOUtils.copyLarge(loop_in, loop_out);
 							loop_in.close();
 						}
 						log.info("[insertFileInto] Added: " + currentPath);
@@ -444,7 +447,7 @@ public class ZipUtils {
 				}
 				else {
 					InputStream in = new FileInputStream(toInsert);
-					FileUtils.writeInputStreamToOutputStream(in, out);
+					IOUtils.copyLarge(in, out);
 					in.close();
 					out.flush();
 					out.close();
@@ -686,7 +689,7 @@ public class ZipUtils {
 			
 			if(!targetPath.isDirectory()) {
 				in = new FileInputStream(toWrite);
-				FileUtils.writeInputStreamToOutputStream(in, out);
+				IOUtils.copyLarge(in, out);
 				in.close();
 			}
 			out.flush();
@@ -950,5 +953,35 @@ public class ZipUtils {
 	    }
 	    return normalizedPaths;
 	}
+    
+    /**
+     * @param dir The dir to list
+     * @param list The list to add the contents of dir to
+     * @return The given list, with the contents of dir added, including files and folders
+     */
+    static List<File> listAllFilesAndFolders(final File dir,
+            final List<File> list) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                File currentFile = files[i];
+                boolean currentFileIsDir = currentFile.isDirectory();
+                if (currentFileIsDir) {
+                    // Ignore hidden folders
+                    if (currentFile.isHidden()) {
+                        continue;
+                    }
+                    if (currentFile.getName().equalsIgnoreCase("CVS")) {
+                        continue;
+                    }
+                    list.add(currentFile);
+                    listAllFilesAndFolders(currentFile, list);
+                } else {
+                    list.add(currentFile);
+                }
+            }
+        }
+        return list;
+    }
 
 }

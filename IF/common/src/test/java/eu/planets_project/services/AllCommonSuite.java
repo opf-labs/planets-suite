@@ -12,7 +12,6 @@ import eu.planets_project.services.datatypes.PropertyTests;
 import eu.planets_project.services.datatypes.ServiceDescriptionTest;
 import eu.planets_project.services.datatypes.ServiceReportTests;
 import eu.planets_project.services.utils.DigitalObjectUtilsTests;
-import eu.planets_project.services.utils.FileUtilsZipTest;
 import eu.planets_project.services.utils.test.FileAccessTests;
 
 /**
@@ -24,6 +23,6 @@ import eu.planets_project.services.utils.test.FileAccessTests;
 @Suite.SuiteClasses( { ChecksumTests.class, DigitalObjectTests.class,
         DigitalObjectUtilsTests.class, MetadataTests.class, ContentTests.class,
         ServiceDescriptionTest.class, ServiceReportTests.class, PropertyTests.class,
-        PropertyTests.class, FileUtilsZipTest.class, FileAccessTests.class,
+        PropertyTests.class, FileAccessTests.class,
         CharacteriseResultTests.class } )
 public class AllCommonSuite {}
