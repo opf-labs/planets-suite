@@ -56,6 +56,8 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentReportImpl report;
 	private boolean bExpSetupImputValuesSet;
+	private int experimentRating;
+	private int serviceRating;
 	
 	//the property evaluation records for a given inputDigitalObjectRef over all stages
     @Lob
@@ -80,6 +82,10 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 		this.experimentBenchmarkGoals = new HashMap<String, BenchmarkGoalImpl>();
 		this.fileBenchmarkGoals = new HashMap<URI,HashMap<String,BenchmarkGoalImpl>>();
 		report = new ExperimentReportImpl();
+		
+		experimentRating = 0;
+		serviceRating = 0;
+		
 		lExperimentIDRef = -1;
 		bExpSetupImputValuesSet = false;
 		
@@ -255,6 +261,30 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	 */
 	public void setExperimentReport(ExperimentReport report) {
 		this.report = (ExperimentReportImpl)report;
+	}
+	
+	/* (non-Javadoc)
+	 */
+	public int getExperimentRating() {
+		return this.experimentRating;
+	}
+
+	/* (non-Javadoc)
+	 */
+	public void setExperimentRating(int rating) {
+		this.experimentRating = rating;
+	}
+	
+	/* (non-Javadoc)
+	 */
+	public int getServiceRating() {
+		return this.serviceRating;
+	}
+
+	/* (non-Javadoc)
+	 */
+	public void setServiceRating(int rating) {
+		this.serviceRating = rating;
 	}
 
 

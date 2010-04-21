@@ -178,6 +178,9 @@ public class ExperimentBean {
     
     private String ereportTitle;
     private String ereportBody;
+	
+	private int expRating = 0;
+	private int serviceRating = 0;
     
     //a list of added annotationTagNames to restrict the displayed services
     private Map<String,ServiceTag> mapAnnotTagVals = new HashMap<String,ServiceTag>();
@@ -413,6 +416,10 @@ public class ExperimentBean {
         this.ereportTitle = exp.getExperimentEvaluation().getExperimentReport().getHeader();
         this.ereportBody = exp.getExperimentEvaluation().getExperimentReport().getBodyText();
         this.evaluationData = exp.getExperimentEvaluation().getExternalEvaluationDocuments();
+		
+		//deal with ratings
+		this.expRating = exp.getExperimentEvaluation().getExperimentRating();
+		this.serviceRating = exp.getExperimentEvaluation().getServiceRating();
     }
     //END OF FILL METHOD
 
@@ -1392,7 +1399,28 @@ public class ExperimentBean {
     	}
     	
     }
+	
+    public int getExpRating() {
+        return this.expRating;
+    }
     
+    public void setExpRating(int rating) {
+	
+		this.expRating = rating;
+		this.getExperiment().getExperimentEvaluation().setExperimentRating(this.expRating);
+		
+    }
+    
+    public int getServiceRating() {
+        return this.serviceRating;
+    }
+    
+    public void setServiceRating(int rating) {
+	
+		this.serviceRating = rating;
+		this.getExperiment().getExperimentEvaluation().setServiceRating(this.serviceRating);
+    }
+	
     /**
      * Helper to load already entered input data from the experiment's executable
      * into this backing bean

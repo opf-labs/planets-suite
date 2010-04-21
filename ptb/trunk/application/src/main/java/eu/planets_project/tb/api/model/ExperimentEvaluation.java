@@ -51,6 +51,12 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	public ExperimentReport getExperimentReport();
 	public File getExperimentReportFile();
 	
+	public void setExperimentRating(int rating);
+	public int getExperimentRating();
+	
+	public void setServiceRating(int rating);
+	public int getServiceRating();
+	
 	/**
 	 * Goals to evaluate the entire experiment
 	 * @param addedBenchmarkGoal
