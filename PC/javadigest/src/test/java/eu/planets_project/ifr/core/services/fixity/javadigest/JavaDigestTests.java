@@ -43,7 +43,7 @@ public class JavaDigestTests {
     @BeforeClass
     public static void setup() {
         javaDigest = ServiceCreator.createTestService(Fixity.QNAME, JavaDigest.class,
-                "/pserv-pc-javadigest/javaDigest?wsdl");
+                "/pserv-pc-javadigest/JavaDigest?wsdl");
     }
     
     /*
