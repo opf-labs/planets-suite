@@ -10,7 +10,7 @@
 	<property name="appName" value="${ant.project.name}" />
 	<property name="appDir" location="." />
     <!-- Specify the build type: ejb, war or ear. -->
-    <property name="pserv.app.build.type" value="ejb"/>
+    <property name="pserv.app.build.type" value="war"/>
 
     <!-- Specify if this application requires further software to be installed -->
     <property name="pserv.app.deploy.mode" value="pure-java" />
@@ -19,6 +19,7 @@
 	<property name="lib.dir" location="${appDir}/lib" />
 	<property name="src.resources" location="${appDir}/src/main/resources" />
 	<property name="src.config" location="${appDir}/src/main/config" />
+	<property name="src.web" value="${appDir}/src/main/web" />
   
     <property name="test.src.dir" location="${appDir}/src/test/java" />
 	<property name="test.resources" location="${appDir}/src/test/resources" />

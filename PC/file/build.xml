@@ -11,11 +11,12 @@
 	  <property name="appDir" value="."/>
 
       <!-- Specify the build type: ejb, war or ear. -->
-	  <property name="pserv.app.build.type" value="ejb"/>
+	  <property name="pserv.app.build.type" value="war"/>
 
 	  <property name="src.dir" value="${appDir}/src/java"/>
 	  <property name="lib.dir" value="${appDir}/lib"/>
 	  <property name="src.resources" value="${appDir}/src/resources"/>
+	  <property name="src.web" value="${appDir}/src/web" />
 	  
 	  <!-- Unit testing definitions -->
 	  <property name="test.src.dir" value="${appDir}/test/java" />
