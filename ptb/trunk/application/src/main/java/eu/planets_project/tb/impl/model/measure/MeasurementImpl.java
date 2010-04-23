@@ -101,7 +101,7 @@ public class MeasurementImpl implements Serializable {
      * there is precisely equal (same information in the same encoding), and there is equivalent
      * (same information in different encodings). All others are different/lossy.
      * When lossy, does Completely Different really mean Completely Lost/Missing?
-     * There is also 'Supposed to be different', which applies e.g. to format evaluation. 
+     * There is also 'Supposed to be different', which applies e.g. to format identification under migration. 
      */
     public enum EquivalenceStatement {
         /* The users judges the property is equal across this comparison */
