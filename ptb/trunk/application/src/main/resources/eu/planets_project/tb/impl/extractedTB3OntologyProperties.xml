@@ -1,0 +1,10 @@
+<extractedTB3ontologyProperties>
+	<property tburi="planets://testbed/properties/TB3ontology/TestName1">
+		<name>TestName1</name>
+		<description>TestDescription1</description>
+	</property>
+	<property tburi="planets://testbed/properties/TB3ontology/TestName2">
+		<name>TestName2</name>
+		<description>TestDescription2</description>
+	</property>
+</extractedTB3ontologyProperties>

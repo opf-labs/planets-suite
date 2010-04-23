@@ -50,6 +50,7 @@ import eu.planets_project.tb.impl.model.eval.EvaluationExecutableImpl;
  * therefore is marked as mockup
  *
  */
+@Deprecated
 public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	
 	private static final String URL_DROID = "http://localhost:8080/pserv-pc-droid/Droid?wsdl";
