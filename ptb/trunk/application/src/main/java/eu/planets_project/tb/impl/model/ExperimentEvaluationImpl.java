@@ -55,9 +55,12 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentReportImpl report;
+	
 	private boolean bExpSetupImputValuesSet;
-	private int experimentRating;
-	private int serviceRating;
+	
+	private Integer experimentRating;
+	
+	private Integer serviceRating;
 	
 	//the property evaluation records for a given inputDigitalObjectRef over all stages
     @Lob
@@ -266,6 +269,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 */
 	public int getExperimentRating() {
+	    if( this.experimentRating == null ) return 0;
 		return this.experimentRating;
 	}
 
@@ -278,6 +282,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 */
 	public int getServiceRating() {
+        if( this.serviceRating == null ) return 0;
 		return this.serviceRating;
 	}
 
