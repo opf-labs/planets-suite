@@ -1728,7 +1728,7 @@ public class DOJCRManager {
 	              storeStringValue( node
 	            		          , newObject.getTitle()
 	            		          , DOJCRConstants.DOJCR_TITLE);   
-	       if (newObject.getFormat().toString() != null)
+	       if (newObject.getFormat() != null)
 	           if (!newObject.getFormat().toString().equals(_format))
 	              storeStringValue( node
 	            		          , newObject.getFormat().toString()
