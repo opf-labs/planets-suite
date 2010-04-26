@@ -46,7 +46,7 @@ class MigrationPaths {
 	 * @return the input format <code>URI<code>.
 	 */
 	URI getInputFormatURI() {
-	    return inputFormat;
+	    return this.inputFormat;
 	}
 
 	/**
@@ -56,7 +56,7 @@ class MigrationPaths {
 	 * @return the output format <code>URI<code>.
 	 */
 	URI getOutputFormatURI() {
-	    return outputFormat;
+	    return this.outputFormat;
 	}
 
 	/*
@@ -70,9 +70,9 @@ class MigrationPaths {
 	    int result = 1;
 	    result = prime * result + getOuterType().hashCode();
 	    result = prime * result
-		    + ((outputFormat == null) ? 0 : outputFormat.hashCode());
+		    + ((this.outputFormat == null) ? 0 : this.outputFormat.hashCode());
 	    result = prime * result
-		    + ((inputFormat == null) ? 0 : inputFormat.hashCode());
+		    + ((this.inputFormat == null) ? 0 : this.inputFormat.hashCode());
 	    return result;
 	}
 
@@ -92,15 +92,15 @@ class MigrationPaths {
 	    PathKey other = (PathKey) obj;
 	    if (!getOuterType().equals(other.getOuterType()))
 		return false;
-	    if (outputFormat == null) {
+	    if (this.outputFormat == null) {
 		if (other.outputFormat != null)
 		    return false;
-	    } else if (!outputFormat.equals(other.outputFormat))
+	    } else if (!this.outputFormat.equals(other.outputFormat))
 		return false;
-	    if (inputFormat == null) {
+	    if (this.inputFormat == null) {
 		if (other.inputFormat != null)
 		    return false;
-	    } else if (!inputFormat.equals(other.inputFormat))
+	    } else if (!this.inputFormat.equals(other.inputFormat))
 		return false;
 	    return true;
 	}
@@ -113,7 +113,7 @@ class MigrationPaths {
     private HashMap<PathKey, MigrationPath> migrationPaths;
 
     MigrationPaths() {
-	migrationPaths = new HashMap<PathKey, MigrationPath>();
+	this.migrationPaths = new HashMap<PathKey, MigrationPath>();
     }
 
     /**
@@ -136,7 +136,7 @@ class MigrationPaths {
 	    throws NoSuchPathException {
 
 	final PathKey pathKey = new PathKey(inputFormat, outputFormat);
-	final MigrationPath migrationPath = migrationPaths.get(pathKey);
+	final MigrationPath migrationPath = this.migrationPaths.get(pathKey);
 	if (migrationPath == null) {
 	    throw new NoSuchPathException(
 		    "No migration path found for input format URI=\""
@@ -162,7 +162,7 @@ class MigrationPaths {
 	final PathKey pathKey = new PathKey(migrationPath.getInputFormat(),
 		migrationPath.getOutputFormat());
 
-	return migrationPaths.put(pathKey, migrationPath);
+	return this.migrationPaths.put(pathKey, migrationPath);
     }
 
     /**
@@ -175,7 +175,7 @@ class MigrationPaths {
      *            <code>List</code> of <code>MigrationPath</code> instances to
      *            add to this container.
      */
-    void addAll(List<MigrationPath> migrationPaths) {
+    void addAll(@SuppressWarnings("hiding") List<MigrationPath> migrationPaths) {
 	for (MigrationPath path : migrationPaths) {
 	    addMigrationPath(path);
 	}
@@ -190,7 +190,7 @@ class MigrationPaths {
      *         instance.
      */
     Collection<MigrationPath> getAllMigrationPaths() {
-	return Collections.unmodifiableCollection(migrationPaths.values());
+	return Collections.unmodifiableCollection(this.migrationPaths.values());
     }
 
     /**
@@ -203,7 +203,7 @@ class MigrationPaths {
     Set<URI> getInputFormatURIs() {
 
 	final HashSet<URI> inputFormatURIs = new HashSet<URI>();
-	for (PathKey pathKey : migrationPaths.keySet()) {
+	for (PathKey pathKey : this.migrationPaths.keySet()) {
 	    inputFormatURIs.add(pathKey.getInputFormatURI());
 	}
 
@@ -220,7 +220,7 @@ class MigrationPaths {
     Set<URI> getOutputFormatURIs() {
 
 	final HashSet<URI> outputFormatURIs = new HashSet<URI>();
-	for (PathKey pathKey : migrationPaths.keySet()) {
+	for (PathKey pathKey : this.migrationPaths.keySet()) {
 	    outputFormatURIs.add(pathKey.getOutputFormatURI());
 	}
 

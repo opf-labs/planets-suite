@@ -37,23 +37,23 @@ class Preset {
 	}
 
 	String getName() {
-		return name;
+		return this.name;
 	}
 
 	PresetSetting getDefaultSetting() {
-		return settings.get(defaultSettingName);
+		return this.settings.get(this.defaultSettingName);
 	}
 
 	Collection<PresetSetting> getAllSettings() {
-		return settings.values();
+		return this.settings.values();
 	}
 
 	Set<String> getAllSettingNames() {
-		return settings.keySet();
+		return this.settings.keySet();
 	}
 
 	PresetSetting getSetting(String settingName) {
-		return settings.get(settingName);
+		return this.settings.get(settingName);
 	}
 
 	/**
@@ -63,7 +63,7 @@ class Preset {
 	 * @return <code>String</code> containing the description
 	 */
 	String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	/**

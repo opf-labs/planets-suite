@@ -8,7 +8,6 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,7 +40,8 @@ import eu.planets_project.services.migrate.Migrate;
  */
 class ServiceDescriptionFactory {
 
-    private Logger log = Logger.getLogger(ServiceDescriptionFactory.class
+    @SuppressWarnings("unused")
+	private Logger log = Logger.getLogger(ServiceDescriptionFactory.class
             .getName());
 
     /**
@@ -92,8 +92,8 @@ class ServiceDescriptionFactory {
     ServiceDescriptionFactory(String canonicalServiceName,
             String serviceProvider, Document wrapperConfiguration) {
 
-        xPathFactory = XPathFactory.newInstance();
-        configuration = wrapperConfiguration;
+        this.xPathFactory = XPathFactory.newInstance();
+        this.configuration = wrapperConfiguration;
         this.serviceProvider = serviceProvider;
         this.canonicalServiceName = canonicalServiceName;
     }
@@ -111,11 +111,11 @@ class ServiceDescriptionFactory {
      */
     ServiceDescription getServiceDescription() throws ConfigurationException {
 
-        final XPath pathsXPath = xPathFactory.newXPath();
+        final XPath pathsXPath = this.xPathFactory.newXPath();
         try {
             final Node serviceDescriptionNode = (Node) pathsXPath.evaluate(
                     ConfigurationFileTagsV1.SERVICE_DESCRIPTION_ELEMENT_XPATH,
-                    configuration, XPathConstants.NODE);
+                    this.configuration, XPathConstants.NODE);
 
             final String title = getMandatoryElementText(
                     serviceDescriptionNode,
@@ -131,7 +131,7 @@ class ServiceDescriptionFactory {
             builder.author(getMandatoryElementText(serviceDescriptionNode,
                     ConfigurationFileTagsV1.CREATOR_ELEMENT));
 
-            builder.classname(canonicalServiceName);
+            builder.classname(this.canonicalServiceName);
 
             builder.description(getOptionalElementText(serviceDescriptionNode,
                     ConfigurationFileTagsV1.DESCRIPTION_ELEMENT));
@@ -155,7 +155,7 @@ class ServiceDescriptionFactory {
                 try {
                     final MessageDigest identDigest = MessageDigest
                             .getInstance("MD5");
-                    identDigest.update(canonicalServiceName.getBytes());
+                    identDigest.update(this.canonicalServiceName.getBytes());
 
                     final String versionInfo = (serviceVersion != null) ? serviceVersion
                             : "";
@@ -188,10 +188,10 @@ class ServiceDescriptionFactory {
             builder.logo(getOptionalURIElement(serviceDescriptionNode,
                     ConfigurationFileTagsV1.LOGO_ELEMENT));
 
-            builder.serviceProvider(serviceProvider);
+            builder.serviceProvider(this.serviceProvider);
 
             final DBMigrationPathFactory migrationPathFactory = new DBMigrationPathFactory(
-                    configuration);
+                    this.configuration);
 
             final MigrationPaths migrationPaths = migrationPathFactory
                     .getAllMigrationPaths();
@@ -213,12 +213,12 @@ class ServiceDescriptionFactory {
             throw new ConfigurationException(String.format(
                     "Failed parsing the '%s' element in the '%s' element.",
                     ConfigurationFileTagsV1.SERVICE_DESCRIPTION_ELEMENT_XPATH,
-                    configuration.getNodeName()), xPathExpressionException);
+                    this.configuration.getNodeName()), xPathExpressionException);
         } catch (NullPointerException nullPointerException) {
             throw new ConfigurationException(String.format(
                     "Failed parsing the '%s' element in the '%s' element.",
                     ConfigurationFileTagsV1.SERVICE_DESCRIPTION_ELEMENT_XPATH,
-                    configuration.getNodeName()), nullPointerException);
+                    this.configuration.getNodeName()), nullPointerException);
         }
     }
 
@@ -240,7 +240,7 @@ class ServiceDescriptionFactory {
     private String getOptionalElementText(Node nodeWithOptionalElement,
             String elementName) {
 
-        final XPath pathsXPath = xPathFactory.newXPath();
+        final XPath pathsXPath = this.xPathFactory.newXPath();
         try {
 
             final Node elementNode = (Node) pathsXPath.evaluate(elementName,
@@ -280,7 +280,7 @@ class ServiceDescriptionFactory {
     private String getMandatoryElementText(Node nodeWithMandatoryElement,
             String elementName) throws ConfigurationException {
 
-        final XPath pathsXPath = xPathFactory.newXPath();
+        final XPath pathsXPath = this.xPathFactory.newXPath();
         try {
 
             final Node elementNode = (Node) pathsXPath.evaluate(elementName,
@@ -318,7 +318,7 @@ class ServiceDescriptionFactory {
     private URI getOptionalURIElement(Node nodeWithOptionalURIElement,
             String elementName) throws ConfigurationException {
 
-        final XPath pathsXPath = xPathFactory.newXPath();
+        final XPath pathsXPath = this.xPathFactory.newXPath();
 
         try {
             final Node uriElementNode = (Node) pathsXPath.evaluate(elementName,
@@ -364,7 +364,7 @@ class ServiceDescriptionFactory {
     private URL getOptionalURLElement(Node nodeWithOptionalURLElement,
             String elementName) throws ConfigurationException {
 
-        final XPath pathsXPath = xPathFactory.newXPath();
+        final XPath pathsXPath = this.xPathFactory.newXPath();
 
         try {
             final Node urlElementNode = (Node) pathsXPath.evaluate(elementName,
@@ -407,7 +407,7 @@ class ServiceDescriptionFactory {
 
         Node propertyNode = null;
         try {
-            final XPath pathsXPath = xPathFactory.newXPath();
+            final XPath pathsXPath = this.xPathFactory.newXPath();
             final NodeList propertyNodes = (NodeList) pathsXPath.evaluate(
                     ConfigurationFileTagsV1.PROPERTIES_PROPERTY_XPATH,
                     serviceDescriptionNode, XPathConstants.NODESET);
@@ -475,7 +475,7 @@ class ServiceDescriptionFactory {
     private Builder addValue(Property.Builder propertyBuilder,
             Node nodeWithValueElement) throws XPathExpressionException {
 
-        final XPath pathsXPath = xPathFactory.newXPath();
+        final XPath pathsXPath = this.xPathFactory.newXPath();
         final Node valueNode = (Node) pathsXPath.evaluate(
                 ConfigurationFileTagsV1.VALUE_ELEMENT, nodeWithValueElement,
                 XPathConstants.NODE);
@@ -552,7 +552,7 @@ class ServiceDescriptionFactory {
     private Tool getToolDescriptionElement(Node nodeWithToolDescription)
             throws ConfigurationException {
 
-        final XPath pathsXPath = xPathFactory.newXPath();
+        final XPath pathsXPath = this.xPathFactory.newXPath();
         Node toolDescriptionNode;
         try {
             toolDescriptionNode = (Node) pathsXPath.evaluate(

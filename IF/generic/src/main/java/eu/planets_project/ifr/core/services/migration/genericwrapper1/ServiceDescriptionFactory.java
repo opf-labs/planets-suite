@@ -23,9 +23,17 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class ServiceDescriptionFactory {
-    private static Logger log = Logger.getLogger(ServiceDescriptionFactory.class.getName());
+    @SuppressWarnings("unused")
+	private static Logger log = Logger.getLogger(ServiceDescriptionFactory.class.getName());
 
 
+    /**
+     * @param configuration
+     * @param paths
+     * @param canonicalName
+     * @return the service description
+     * @throws ConfigurationException
+     */
     public ServiceDescription getServiceDescription(
             Document configuration,
             List<eu.planets_project.services.datatypes.MigrationPath> paths, String canonicalName)

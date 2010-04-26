@@ -33,8 +33,8 @@ class MigrationPathImpl implements MigrationPath {
      * factories.
      */
     MigrationPathImpl() {
-	parameters = new HashMap<String, Parameter>();
-	tempFiles = new HashMap<String, String>();
+	this.parameters = new HashMap<String, Parameter>();
+	this.tempFiles = new HashMap<String, String>();
     }
 
     /*
@@ -45,7 +45,7 @@ class MigrationPathImpl implements MigrationPath {
      * #getCommandLine()
      */
     public CommandLine getCommandLine() {
-	return commandLine;
+	return this.commandLine;
     }
 
     /**
@@ -72,7 +72,7 @@ class MigrationPathImpl implements MigrationPath {
      * #getOutputFormat()
      */
     public URI getOutputFormat() {
-	return outputFormatURI;
+	return this.outputFormatURI;
     }
 
     /**
@@ -94,7 +94,7 @@ class MigrationPathImpl implements MigrationPath {
      * #getInputFormat()
      */
     public URI getInputFormat() {
-	return inputFormatURI;
+	return this.inputFormatURI;
     }
 
     /**
@@ -116,7 +116,7 @@ class MigrationPathImpl implements MigrationPath {
      * #getTempFileDeclarations()
      */
     public Map<String, String> getTempFileDeclarations() {
-	return tempFiles;
+	return this.tempFiles;
     }
 
     /**
@@ -134,7 +134,7 @@ class MigrationPathImpl implements MigrationPath {
     void setTempFilesDeclarations(
 	    Map<String, String> tempFileDeclarations) {
 
-	tempFiles = tempFileDeclarations;
+	this.tempFiles = tempFileDeclarations;
     }
 
     /**
@@ -152,7 +152,7 @@ class MigrationPathImpl implements MigrationPath {
     void addTempFilesDeclarations(
 	    Map<String, String> tempFileDeclarations) {
 
-	tempFiles.putAll(tempFileDeclarations);
+	this.tempFiles.putAll(tempFileDeclarations);
     }
 
     /**
@@ -165,9 +165,6 @@ class MigrationPathImpl implements MigrationPath {
      * however, if the specified label has already been used in the internal map
      * of this migration path, then the previous mapping will be removed.
      * 
-     * @param tempFileDeclarations
-     *            a map containing a paring of temp. file labels and optionally
-     *            a file name to be added to the internal map.
      * @return the value previously associated with <code>label</code> or
      *         <code>null</code> if no value was associated with it. However, it
      *         may also indicate that <code>label</code> was actually associated
@@ -175,7 +172,7 @@ class MigrationPathImpl implements MigrationPath {
      */
     String addTempFilesDeclaration(String label, String filename) {
 
-	return tempFiles.put(label, filename);
+	return this.tempFiles.put(label, filename);
     }
 
     /**
@@ -196,7 +193,7 @@ class MigrationPathImpl implements MigrationPath {
      * #getToolInputProfile()
      */
     public ToolIOProfile getToolInputProfile() {
-	return toolInputProfile;
+	return this.toolInputProfile;
     }
 
     /**
@@ -215,7 +212,7 @@ class MigrationPathImpl implements MigrationPath {
      * #getToolOutputProfile()
      */
     public ToolIOProfile getToolOutputProfile() {
-	return toolOutputProfile;
+	return this.toolOutputProfile;
     }
 
     /*
@@ -226,7 +223,7 @@ class MigrationPathImpl implements MigrationPath {
      * #getToolParameters()
      */
     public Collection<Parameter> getToolParameters() {
-	return parameters.values();
+	return this.parameters.values();
     }
 
     /**
@@ -239,10 +236,10 @@ class MigrationPathImpl implements MigrationPath {
      *            actual command to execute.
      */
     void setToolParameters(Collection<Parameter> toolParameters) {
-	parameters = new HashMap<String, Parameter>();
+	this.parameters = new HashMap<String, Parameter>();
 
 	for (Parameter parameter : toolParameters) {
-	    parameters.put(parameter.getName(), parameter);
+	    this.parameters.put(parameter.getName(), parameter);
 	}
     }
 
@@ -255,7 +252,7 @@ class MigrationPathImpl implements MigrationPath {
      */
     public ToolPresets getToolPresets() {
 
-	return toolPresets;
+	return this.toolPresets;
     }
 
     /**
@@ -271,9 +268,10 @@ class MigrationPathImpl implements MigrationPath {
 	this.toolPresets = toolPresets;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
 
-	return "MigrationPathImpl: " + inputFormatURI + " -> "
-		+ outputFormatURI + " Command line: " + commandLine;
+	return "MigrationPathImpl: " + this.inputFormatURI + " -> "
+		+ this.outputFormatURI + " Command line: " + this.commandLine;
     }
 }

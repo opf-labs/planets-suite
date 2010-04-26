@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -34,24 +33,27 @@ public class DBMigrationPathFactoryTest {
     private MigrationPathFactory migrationPathFactory;
     private final HashMap<String, Parameter> environmentParameters;
 
+    /**
+     * 
+     */
     public DBMigrationPathFactoryTest() {
-	environmentParameters = new HashMap<String, Parameter>();
+	this.environmentParameters = new HashMap<String, Parameter>();
 	Parameter.Builder parameterBuilder = new Parameter.Builder(
 		"shellcommand", "sh");
 	Parameter parameter = parameterBuilder.build();
-	environmentParameters.put(parameter.getName(), parameter);
+	this.environmentParameters.put(parameter.getName(), parameter);
 
 	parameterBuilder = new Parameter.Builder("shellcommandoption", "-c");
 	parameter = parameterBuilder.build();
-	environmentParameters.put(parameter.getName(), parameter);
+	this.environmentParameters.put(parameter.getName(), parameter);
 
 	parameterBuilder = new Parameter.Builder("catcommand", "cat");
 	parameter = parameterBuilder.build();
-	environmentParameters.put(parameter.getName(), parameter);
+	this.environmentParameters.put(parameter.getName(), parameter);
 
 	parameterBuilder = new Parameter.Builder("trcommand", "tr");
 	parameter = parameterBuilder.build();
-	environmentParameters.put(parameter.getName(), parameter);
+	this.environmentParameters.put(parameter.getName(), parameter);
     }
 
     /**
@@ -61,33 +63,28 @@ public class DBMigrationPathFactoryTest {
     public void setUp() throws Exception {
 	DocumentLocator documentLocator = new DocumentLocator(TEST_CONFIG_FILE);
 	Document testConfiguration = documentLocator.getDocument();
-	migrationPathFactory = new DBMigrationPathFactory(testConfiguration);
-    }
-
-    /**
-     * @throws java.lang.Exception
-     */
-    @After
-    public void tearDown() throws Exception {
+	this.migrationPathFactory = new DBMigrationPathFactory(testConfiguration);
     }
 
     // TODO: Do also test a series of broken configuration files.
 
     /**
      * Test method for
-     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper2.DBMigrationPathFactory#getAllMigrationPaths(org.w3c.dom.Document)}
+     * @see eu.planets_project.ifr.core.services.migration.genericwrapper2.DBMigrationPathFactory#getAllMigrationPaths()
      * . Test on valid configuration file.
      * 
      * This test verifies that the factory produces the correct number of
      * migration paths from the test configuration file and fetches a specific
      * migration path from it to verify that all its information is correct.
+     * @throws Exception 
      */
-    @Test
+    @SuppressWarnings("boxing")
+	@Test
     public void testGetMigrationPaths() throws Exception {
 
 	// TODO: This test has become pretty bloated and ugly. It needs a
 	// makeover.
-	MigrationPaths migrationPaths = migrationPathFactory
+	MigrationPaths migrationPaths = this.migrationPathFactory
 		.getAllMigrationPaths();
 	assertNotNull(migrationPaths);
 
@@ -208,7 +205,7 @@ public class DBMigrationPathFactoryTest {
 	expectedCommandFragments
 		.add("cat -n /tmp/bogusTempSrcFile > /tmp/bogusInterimFile && cat /tmp/bogusInterimFile | tr '[:lower:]' '[:upper:]' > /tmp/bogusTempDstFile");
 	commandLineTest(migrationPath, testParameters.values(),
-		environmentParameters.values(), testFileDeclarations,
+		this.environmentParameters.values(), testFileDeclarations,
 		expectedCommandFragments);
 
 	// Verify the tool presets.
@@ -292,14 +289,11 @@ public class DBMigrationPathFactoryTest {
      * 
      * @param migrationPath
      *            Migration path to test the command line for.
-     * @param expectedCommandFragments
-     *            A list of the expected command and associated parameters to
-     *            use for the test.
      * @throws Exception if anything goes wrong in the test.
      */
     private void commandLineTest(MigrationPath migrationPath,
 	    Collection<Parameter> toolParameters,
-	    Collection<Parameter> environmentParameters,
+	    @SuppressWarnings("hiding") Collection<Parameter> environmentParameters,
 	    Map<String, File> tempFileDeclarations,
 	    List<String> expectedCommandLine) throws Exception {
 

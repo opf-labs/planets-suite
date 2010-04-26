@@ -44,14 +44,8 @@ interface MigrationPath {
      * by this time, as the absolute location of these files are replaced into
      * the command line
      * 
-     * @param toolParameters
-     *            the parameters to the tool
      * @return String containing the processed command line, ready for
      *         execution.
-     * @throws MigrationException
-     *             if not all necessary parameters, or temporary files were
-     *             defined in order to substitute all the identifiers in the
-     *             command line.
      */
     CommandLine getCommandLine();
 
@@ -77,7 +71,7 @@ interface MigrationPath {
      * files with the actual names of these. However, not all labels (keys in
      * the map) are guaranteed to be associated with a file name, thus the
      * caller of this method will have to add these mappings before passing them
-     * on to the {@link getCommandLine} method.
+     * on to the @link getCommandLine method.
      * 
      * @return a map containing a paring of temp. file labels and optionally a
      *         file name.

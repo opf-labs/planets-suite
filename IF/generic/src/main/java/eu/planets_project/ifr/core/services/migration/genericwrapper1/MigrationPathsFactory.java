@@ -34,6 +34,7 @@ public class MigrationPathsFactory {
     /**
      * Create a <code>CliMigrationPaths</code> object containing the migration
      * paths described by the <code>pathConfiguration</code> document.
+     * @param pathConfiguration 
      * 
      * @return A <code>CliMigrationPaths</code> object containing all the paths
      *         configured in the configuration document specified.
@@ -45,7 +46,7 @@ public class MigrationPathsFactory {
 
 	MigrationPaths migrationPaths = new MigrationPaths();
 
-	log.info("Entering getInstance with configuration");
+	this.log.info("Entering getInstance with configuration");
 
 	// TODO: I realise that the current way of parsing the configuration is
 	// not optimal. This factory should be refactored to apply a SAX parser
@@ -68,7 +69,7 @@ public class MigrationPathsFactory {
 		    migrationPaths.addAll(pathlist);
 		}
 	    }
-	    log.info("Leaving getInstance");
+	    this.log.info("Leaving getInstance");
 	    return migrationPaths;
 	} catch (Exception e) {
 	    throw new MigrationPathConfigException(
@@ -94,7 +95,7 @@ public class MigrationPathsFactory {
     private List<MigrationPath> createCliMigrationPathList(Node pathElement)
 	    throws URISyntaxException, MigrationPathConfigException {
 
-	log.info("Entering createCliMigrationPathList");
+	this.log.info("Entering createCliMigrationPathList");
 	final NodeList subNodes = pathElement.getChildNodes();
 	MigrationPath pathTemplate = new MigrationPath();
 
@@ -149,7 +150,7 @@ public class MigrationPathsFactory {
 
 	List<MigrationPath> result = createCliMigrationPathInstances(
 		pathTemplate, inputformatURIs, outputformatURI);
-	log.info("Leaving createCliMigrationPathList");
+	this.log.info("Leaving createCliMigrationPathList");
 	return result;
     }
 
@@ -340,10 +341,11 @@ public class MigrationPathsFactory {
      *             if any errors were encountered in the
      *             <code>tempFilesNode</code> node.
      */
-    private MigrationPath configureTempFileDeclarations(Node tempFilesNode,
+    @SuppressWarnings("deprecation")
+	private MigrationPath configureTempFileDeclarations(Node tempFilesNode,
 	    MigrationPath pathToConfigure) throws MigrationPathConfigException {
 
-	log.info("Entering configureTempFileDeclarations");
+	this.log.info("Entering configureTempFileDeclarations");
 	final NodeList tempFileNodes = tempFilesNode.getChildNodes();
 	for (int tempFileNodeIndex = 0; tempFileNodeIndex < tempFileNodes
 		.getLength(); tempFileNodeIndex++) {
@@ -352,13 +354,13 @@ public class MigrationPathsFactory {
 		    .toLowerCase();
 	    if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
 
-		log.info("Found temp file declaration");
+		this.log.info("Found temp file declaration");
 
 		NamedNodeMap attrs = currentNode.getAttributes();
 
 		TempFile tempfile = new TempFile(attrs.getNamedItem("label")
 			.getNodeValue());
-		log.info("Made new tempfile with code "
+		this.log.info("Made new tempfile with code "
 			+ tempfile.getCodename());
 
 		Node name = attrs.getNamedItem("name");
@@ -367,22 +369,22 @@ public class MigrationPathsFactory {
 		}
 
 		if (Constants.TEMP_INPUT_FILE_ELEMENT.equals(currentNodeName)) {
-		    log.info("This is the input file");
+		    this.log.info("This is the input file");
 		    pathToConfigure.setTempInputFile(tempfile);
 
 		} else if (Constants.TEMP_OUTPUT_FILE_ELEMENT
 			.equals(currentNodeName)) {
 		    pathToConfigure.setTempOutputFile(tempfile);
-		    log.info("This is the output file");
+		    this.log.info("This is the output file");
 
 		} else if (Constants.TEMP_FILE_ELEMENT.equals(currentNodeName)) {
 		    pathToConfigure.addTempFilesDeclaration(tempfile);
-		    log.info("This is just a temp file");
+		    this.log.info("This is just a temp file");
 		}
 	    }
 	}
 
-	log.info("Leaving configureTempFileDeclarations");
+	this.log.info("Leaving configureTempFileDeclarations");
 	return pathToConfigure;
     }
 
@@ -423,7 +425,7 @@ public class MigrationPathsFactory {
 
 	    newPath.setSourceFormat(sourceFormatUri);
 	    newPath.setDestinationFormat(destinationFormatURI);
-	    log.fine("Creating CliMigrationPath instance for the path: "
+	    this.log.fine("Creating CliMigrationPath instance for the path: "
 		    + sourceFomatURIs + " -> " + destinationFormatURI);
 	    paths.add(newPath);
 	}

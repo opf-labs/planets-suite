@@ -10,5 +10,4 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { DBMigrationPathFactoryTest.class, J2EETempFileFactoryTest.class, GenericMigrationWrapperTest.class, ServiceDescriptionFactoryTest.class })
-public class GenericWrapperTestSuite {
-}
+public class GenericWrapperTestSuite {/** intentionally empty */}

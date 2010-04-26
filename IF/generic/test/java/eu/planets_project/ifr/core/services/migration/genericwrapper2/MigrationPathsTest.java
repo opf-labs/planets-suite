@@ -4,8 +4,6 @@ import java.net.URI;
 
 import junit.framework.Assert;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -24,33 +22,22 @@ public class MigrationPathsTest {
     private static final String TEST_CONFIGURATION_FILE_NAME = "IF/generic/test/resources/GenericWrapperConfigFileExample.xml";
     private final MigrationPaths migrationPathsToTest;
 
+    /**
+     * @throws Exception
+     */
     public MigrationPathsTest() throws Exception {
         final DocumentLocator documentLocator = new DocumentLocator(
                 TEST_CONFIGURATION_FILE_NAME);
         final Document pathsConfiguration = documentLocator.getDocument();
 
         final MigrationPathFactory migrationPathsFactory = new DBMigrationPathFactory(pathsConfiguration);
-        migrationPathsToTest = migrationPathsFactory
+        this.migrationPathsToTest = migrationPathsFactory
                 .getAllMigrationPaths();
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    /**
-     * @throws java.lang.Exception
-     */
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    /**
+     /**
      * Test method for
-     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper2.V1MigrationPathFactory#getAllMigrationPaths(org.w3c.dom.Document)}
+     * @throws Exception 
      * Verify that we can get migration path instances for all known paths in
      * the configuration file used by this test class.
      */
@@ -59,14 +46,14 @@ public class MigrationPathsTest {
 
         URI inputFormat = new URI("info:test/lowercase");
         URI outputFormat = new URI("info:test/uppercase");
-        migrationPathsToTest.getMigrationPath(inputFormat, outputFormat);
+        this.migrationPathsToTest.getMigrationPath(inputFormat, outputFormat);
 
         // Verify that the opposite path does not exist in the configuration.
         genericGetInstanceFailCheck(outputFormat, inputFormat);
 
         inputFormat = new URI("info:test/foo");
         outputFormat = new URI("info:test/bar");
-        migrationPathsToTest.getMigrationPath(inputFormat, outputFormat);
+        this.migrationPathsToTest.getMigrationPath(inputFormat, outputFormat);
 
         // Verify that the opposite path does not exist in the configuration.
         genericGetInstanceFailCheck(outputFormat, inputFormat);
@@ -86,7 +73,7 @@ public class MigrationPathsTest {
         final URI inputFormatURI = new URI("info:test/lowercase");
         final URI outputFormatURI = new URI("info:test/uppercase");
 
-        MigrationPath migrationPath = migrationPathsToTest.getMigrationPath(
+        MigrationPath migrationPath = this.migrationPathsToTest.getMigrationPath(
                 inputFormatURI, outputFormatURI);
         Assert
                 .assertEquals(
@@ -117,7 +104,7 @@ public class MigrationPathsTest {
             URI outputFormat) {
         try {
             // Just trash the return value, it is unimportant.
-            migrationPathsToTest.getMigrationPath(inputFormat,
+            this.migrationPathsToTest.getMigrationPath(inputFormat,
                     outputFormat);
             Assert
                     .fail("Did not expect to find a migration path for input URI: "

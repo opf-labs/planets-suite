@@ -15,5 +15,4 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { GenericMigrationWrapperTest.class,
 	MigrationPathsTest.class, MigrationPathsTest.class })
-public class GenericWrapperTestSuite {
-}
+public class GenericWrapperTestSuite {/** Intentionally empty */}

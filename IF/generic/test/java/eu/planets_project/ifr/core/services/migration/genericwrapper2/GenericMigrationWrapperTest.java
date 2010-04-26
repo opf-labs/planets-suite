@@ -6,7 +6,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,12 +31,16 @@ public class GenericMigrationWrapperTest {
     private List<Parameter> testParameters;
 
     /**
+     * @throws Exception 
      */
     public GenericMigrationWrapperTest() throws Exception {
-	sourceFormatURI = new URI("planets:fmt/ext/lowercase");
-	destinationFormatURI = new URI("planets:fmt/ext/uppercase");
+	this.sourceFormatURI = new URI("planets:fmt/ext/lowercase");
+	this.destinationFormatURI = new URI("planets:fmt/ext/uppercase");
     }
 
+    /**
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
 
@@ -47,31 +50,33 @@ public class GenericMigrationWrapperTest {
 	final DocumentLocator documentLocator = new DocumentLocator(
 		"GenericWrapperConfigFileExample.xml");
 
-	genericWrapper = new GenericMigrationWrapper(documentLocator
+	this.genericWrapper = new GenericMigrationWrapper(documentLocator
 		.getDocument(), environmentConfiguration, this.getClass()
 		.getCanonicalName());
 
-	testParameters = new ArrayList<Parameter>();
+	this.testParameters = new ArrayList<Parameter>();
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
+    /**
+     * 
+     */
     @Test
     public void testDescribe() {
 	// FIXME! Make a meaningful implementation.
-	ServiceDescription sb = genericWrapper.describe();
+	ServiceDescription sb = this.genericWrapper.describe();
 	sb.getAuthor(); // Now sb is used :-)
     }
 
+    /**
+     * @throws Exception
+     */
     @Test
     public void testMigrateUsingTempFiles() throws Exception {
-	testParameters.add(new Parameter("mode", "complete"));
+	this.testParameters.add(new Parameter("mode", "complete"));
 
-	MigrateResult migrationResult = genericWrapper.migrate(
-		getDigitalTestObject(), sourceFormatURI, destinationFormatURI,
-		testParameters);
+	MigrateResult migrationResult = this.genericWrapper.migrate(
+		getDigitalTestObject(), this.sourceFormatURI, this.destinationFormatURI,
+		this.testParameters);
 
 	//TODO: Test the contents of the digital object and the metadata.
 	
@@ -86,7 +91,7 @@ public class GenericMigrationWrapperTest {
 
 	DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
 		Content.byValue(digitalObjectData));
-	digitalObjectBuilder.format(sourceFormatURI);
+	digitalObjectBuilder.format(this.sourceFormatURI);
 	digitalObjectBuilder.title("Lowercase test text");
 	return digitalObjectBuilder.build();
     }

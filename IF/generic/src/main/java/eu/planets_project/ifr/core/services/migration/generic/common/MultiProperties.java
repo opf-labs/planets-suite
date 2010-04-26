@@ -37,7 +37,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public void clear()
 	{
-		props.clear();
+		this.props.clear();
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public boolean containsKey(Object key_)
 	{
-		return props.containsKey(key_);
+		return this.props.containsKey(key_);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public boolean containsValue(Object value_)
 	{
-		return props.containsValue(value_);
+		return this.props.containsValue(value_);
 	}
 
 	/**
@@ -64,16 +64,17 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public Set<Entry<String, Map<String, String>>> entrySet()
 	{
-		return props.entrySet();
+		return this.props.entrySet();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object o_)
 	{
-		return props.equals(o_);
+		return this.props.equals(o_);
 	}
 
 	/**
@@ -82,16 +83,17 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public Map<String, String> get(Object key_)
 	{
-		return props.get(key_);
+		return this.props.get(key_);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode()
 	{
-		return props.hashCode();
+		return this.props.hashCode();
 	}
 
 	/**
@@ -109,7 +111,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public Set<String> keySet()
 	{
-		return props.keySet();
+		return this.props.keySet();
 	}
 
 	/**
@@ -118,7 +120,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public Map<String, String> put(String key_, Map<String, String> value_)
 	{
-		return props.put(key_, value_);
+		return this.props.put(key_, value_);
 	}
 
 	/**
@@ -127,7 +129,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public void putAll(Map<? extends String, ? extends Map<String, String>> t_)
 	{
-		props.putAll(t_);
+		this.props.putAll(t_);
 	}
 
 	/**
@@ -136,7 +138,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public Map<String, String> remove(Object key_)
 	{
-		return props.remove(key_);
+		return this.props.remove(key_);
 	}
 
 	/**
@@ -145,7 +147,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public int size()
 	{
-		return props.size();
+		return this.props.size();
 	}
 
 	/**
@@ -154,7 +156,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	 */
 	public Collection<Map<String, String>> values()
 	{
-		return props.values();
+		return this.props.values();
 	}
 
 	private Map<String, Map<String, String>> props = new HashMap<String, Map<String, String>>();

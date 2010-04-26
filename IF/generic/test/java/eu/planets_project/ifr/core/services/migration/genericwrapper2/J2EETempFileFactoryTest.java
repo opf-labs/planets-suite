@@ -23,7 +23,7 @@ public class J2EETempFileFactoryTest {
      */
     @Before
     public void setUp() throws Exception {
-	tempFileFactory = new J2EETempFileFactory(this.getClass()
+	this.tempFileFactory = new J2EETempFileFactory(this.getClass()
 		.getCanonicalName());
     }
 
@@ -32,7 +32,7 @@ public class J2EETempFileFactoryTest {
      */
     @After
     public void tearDown() throws Exception {
-	tempFileFactory.getTempFileDir().delete();
+	this.tempFileFactory.getTempFileDir().delete();
     }
 
     /**
@@ -43,7 +43,7 @@ public class J2EETempFileFactoryTest {
     @Test
     public void testPrepareRandomNamedTempFile() {
 
-	final File tempFile = tempFileFactory.prepareRandomNamedTempFile();
+	final File tempFile = this.tempFileFactory.prepareRandomNamedTempFile();
 
 	assertNotNull("The generated temporary file path should not be null",
 		tempFile.getPath());
@@ -58,7 +58,7 @@ public class J2EETempFileFactoryTest {
     public void testPrepareRandomNamedTempFileString() {
 
 	final String humanReadableID = "humanReadable";
-	final File tempFile = tempFileFactory
+	final File tempFile = this.tempFileFactory
 		.prepareRandomNamedTempFile(humanReadableID);
 
 	assertNotNull("The generated temporary file path should not be null",
@@ -78,7 +78,7 @@ public class J2EETempFileFactoryTest {
 
 	final String desiredFileName = "myOddlyNamedFile";
 
-	final File tempFile = tempFileFactory.prepareTempFile(desiredFileName);
+	final File tempFile = this.tempFileFactory.prepareTempFile(desiredFileName);
 
 	assertNotNull("The generated temporary file path should not be null",
 		tempFile.getPath());

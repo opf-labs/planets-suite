@@ -39,6 +39,7 @@ import eu.planets_project.services.utils.ServicePerformanceHelper;
  * 
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
+@SuppressWarnings("deprecation")
 public class GenericMigrationWrapper {
 
     private Logger log = Logger.getLogger(GenericMigrationWrapper.class
@@ -51,25 +52,31 @@ public class GenericMigrationWrapper {
 
     private ServiceDescription serviceDescription;
 
+    /**
+     * @param configuration
+     * @param environmentSettings
+     * @param toolIdentifier
+     * @throws MigrationInitialisationException
+     */
     public GenericMigrationWrapper(Document configuration,
 	    Configuration environmentSettings, String toolIdentifier)
 	    throws MigrationInitialisationException {
 
 	this.toolIdentifier = toolIdentifier;
 
-	tempFileFactory = new J2EETempFileFactory(toolIdentifier);
+	this.tempFileFactory = new J2EETempFileFactory(toolIdentifier);
 
-	environmentParameters = ParameterBuilder.buid(environmentSettings);
+	this.environmentParameters = ParameterBuilder.buid(environmentSettings);
 
 	try {
 	    MigrationPathFactory pathsFactory = new DBMigrationPathFactory(
 		    configuration);
-	    migrationPaths = pathsFactory.getAllMigrationPaths();
+	    this.migrationPaths = pathsFactory.getAllMigrationPaths();
 
 	    String serviceProvider = "Undefined - please assign the correct "
 		    + "service provider identifier to the \"serviceprovider\""
 		    + " property in the property file for this service.";
-	    for (Parameter environmentParameter : environmentParameters) {
+	    for (Parameter environmentParameter : this.environmentParameters) {
 		if ("serviceprovider".equals(environmentParameter.getName())) {
 		    serviceProvider = environmentParameter.getValue();
 		}
@@ -77,7 +84,7 @@ public class GenericMigrationWrapper {
 
 	    final ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory(
 		    toolIdentifier, serviceProvider, configuration);
-	    serviceDescription = serviceFactory.getServiceDescription();
+	    this.serviceDescription = serviceFactory.getServiceDescription();
 	} catch (Exception e) {
 	    throw new MigrationInitialisationException(
 		    "Failed initialising migration path data from the configuration document: "
@@ -91,7 +98,7 @@ public class GenericMigrationWrapper {
      * @return the serviceDescription
      */
     public ServiceDescription describe() {
-	return serviceDescription;
+	return this.serviceDescription;
     }
 
     /**
@@ -122,7 +129,8 @@ public class GenericMigrationWrapper {
      *             this method.
      *@throws ConfigurationException
      */
-    public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
+    @SuppressWarnings("boxing")
+	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 	    URI outputFormat, List<Parameter> toolParameters)
 	    throws MigrationException, ConfigurationException {
 
@@ -133,12 +141,12 @@ public class GenericMigrationWrapper {
 	 * Validate that the proper parameters are set for the migration path
 	 * identified by inputFormat and outputFormat
 	 */
-	final MigrationPath migrationPath = migrationPaths.getMigrationPath(
+	final MigrationPath migrationPath = this.migrationPaths.getMigrationPath(
 		inputFormat, outputFormat);
 
 	// If called with null parameters, use an empty list instead
 	if (toolParameters == null) {
-	    log.warning("Called with null parameters. Assuming the caller ment"
+	    this.log.warning("Called with null parameters. Assuming the caller ment"
 		    + " to call with an empty list.");
 	    toolParameters = new ArrayList<Parameter>();
 	}
@@ -164,16 +172,16 @@ public class GenericMigrationWrapper {
 
 	// Create an executable command line for the process runner.
 	final PRCommandBuilder commandBuilder = new PRCommandBuilder(
-		environmentParameters);
+		this.environmentParameters);
 	final List<String> prCommand = commandBuilder.buildCommand(
 		migrationPath, toolParameters, temporaryFileMappings);
 
-	if (log.isLoggable(Level.INFO)) {
+	if (this.log.isLoggable(Level.INFO)) {
 	    String fullCommandLine = "";
 	    for (String cmdfrag : prCommand) {
 		fullCommandLine += cmdfrag + " ";
 	    }
-	    log.info("Executing command line: " + fullCommandLine);
+	    this.log.info("Executing command line: " + fullCommandLine);
 	}
 
 	// Execute the tool
@@ -255,8 +263,8 @@ public class GenericMigrationWrapper {
 		- migrationStartTime.getTime();
 
 	builder.format(outputFormat);
-	final Agent agent = new Agent(toolIdentifier, serviceDescription
-		.getName(), serviceDescription.getType());
+	final Agent agent = new Agent(this.toolIdentifier, this.serviceDescription
+		.getName(), this.serviceDescription.getType());
 
 	String eventSummary = "Migration carried out by executing the command line:";
 	for (String commandLineFragment : prCommand) {
@@ -356,7 +364,7 @@ public class GenericMigrationWrapper {
 
 		final String tempFileLabel = toolInputProfile
 			.getCommandLineFileLabel();
-		log.info(String.format("Created a temporary input file. "
+		this.log.info(String.format("Created a temporary input file. "
 			+ "Label = '%s'. " + "File name: '%s'", tempFileLabel,
 			temporaryFileMappings.get(tempFileLabel)
 				.getCanonicalPath()));
@@ -373,7 +381,7 @@ public class GenericMigrationWrapper {
 
 		final String tempFileLabel = toolOutputProfile
 			.getCommandLineFileLabel();
-		log.info(String.format("Created a temporary output file. "
+		this.log.info(String.format("Created a temporary output file. "
 			+ "Label = '%s'. " + "File name: '%s'", tempFileLabel,
 			temporaryFileMappings.get(tempFileLabel)
 				.getCanonicalPath()));
@@ -425,11 +433,11 @@ public class GenericMigrationWrapper {
 	    // No desired name has been specified. Create a file with a random
 	    // name having the file label added to give a clue in case of
 	    // debugging becomes necessary.
-	    temporaryFile = tempFileFactory
+	    temporaryFile = this.tempFileFactory
 		    .prepareRandomNamedTempFile(fileLabel);
 	} else {
 	    // Create a temporary file with the desired base name.
-	    temporaryFile = tempFileFactory.prepareTempFile(desiredFileName);
+	    temporaryFile = this.tempFileFactory.prepareTempFile(desiredFileName);
 	}
 
 	tempFileMap.put(fileLabel, temporaryFile);

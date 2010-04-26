@@ -35,6 +35,8 @@ private Logger log = Logger.getLogger(MigrationPaths.class.getName());
          * Create a <code>PathKey</code> for a migration path with the
          * <code>sourceFormat URI</code> and the
          * <code>destinationFormat URI</code>.
+         * @param sourceFormatURI 
+         * @param destinationFormatURI 
          */
         public PathKey(URI sourceFormatURI, URI destinationFormatURI) {
             this.sourceFormat = sourceFormatURI;
@@ -53,10 +55,10 @@ private Logger log = Logger.getLogger(MigrationPaths.class.getName());
             result = prime * result + getOuterType().hashCode();
             result = prime
                     * result
-                    + ((destinationFormat == null) ? 0 : destinationFormat
+                    + ((this.destinationFormat == null) ? 0 : this.destinationFormat
                             .hashCode());
             result = prime * result
-                    + ((sourceFormat == null) ? 0 : sourceFormat.hashCode());
+                    + ((this.sourceFormat == null) ? 0 : this.sourceFormat.hashCode());
             return result;
         }
 
@@ -76,15 +78,15 @@ private Logger log = Logger.getLogger(MigrationPaths.class.getName());
             PathKey other = (PathKey) obj;
             if (!getOuterType().equals(other.getOuterType()))
                 return false;
-            if (destinationFormat == null) {
+            if (this.destinationFormat == null) {
                 if (other.destinationFormat != null)
                     return false;
-            } else if (!destinationFormat.equals(other.destinationFormat))
+            } else if (!this.destinationFormat.equals(other.destinationFormat))
                 return false;
-            if (sourceFormat == null) {
+            if (this.sourceFormat == null) {
                 if (other.sourceFormat != null)
                     return false;
-            } else if (!sourceFormat.equals(other.sourceFormat))
+            } else if (!this.sourceFormat.equals(other.sourceFormat))
                 return false;
             return true;
         }
@@ -96,8 +98,11 @@ private Logger log = Logger.getLogger(MigrationPaths.class.getName());
 
     private HashMap<PathKey, MigrationPath> migrationPaths;
 
+    /**
+     * 
+     */
     public MigrationPaths() {
-        migrationPaths = new HashMap<PathKey, MigrationPath>();
+        this.migrationPaths = new HashMap<PathKey, MigrationPath>();
     }
 
     /**
@@ -112,14 +117,13 @@ private Logger log = Logger.getLogger(MigrationPaths.class.getName());
      *            <code>URI</code> identifying the destination format of the
      *            path to get.
      * @return the migration path found.
-     * @throws MigrationException
-     *             if no matching path was found.
+     * @throws NoSuchPathException 
      */
     public MigrationPath getMigrationPath(URI sourceFormat,
             URI destinationFormat) throws NoSuchPathException {
 
         final PathKey pathKey = new PathKey(sourceFormat, destinationFormat);
-        final MigrationPath migrationPath = migrationPaths.get(pathKey);
+        final MigrationPath migrationPath = this.migrationPaths.get(pathKey);
         if (migrationPath == null) {
             throw new NoSuchPathException(
                     "No migration path found for source format URI=\""
@@ -157,21 +161,27 @@ private Logger log = Logger.getLogger(MigrationPaths.class.getName());
     public MigrationPath addMigrationPath(MigrationPath migrationPath) {
         final PathKey pathKey = new PathKey(migrationPath.getSourceFormat(),
                 migrationPath.getDestinationFormat());
-        return migrationPaths.put(pathKey, migrationPath);
+        return this.migrationPaths.put(pathKey, migrationPath);
     }
 
 
+    /**
+     * @param migrationpaths
+     */
     public void addAll(List<MigrationPath> migrationpaths){
         for (MigrationPath path:migrationpaths){
             addMigrationPath(path);
         }
     }
 
+    /**
+     * @return the list of migration paths
+     */
     public List<eu.planets_project.services.datatypes.MigrationPath> getAsPlanetsPaths(){
 
         List<eu.planets_project.services.datatypes.MigrationPath> planetspaths
                 = new ArrayList<eu.planets_project.services.datatypes.MigrationPath>();
-        for (MigrationPath migrationPath : migrationPaths.values()) {
+        for (MigrationPath migrationPath : this.migrationPaths.values()) {
             planetspaths.add(migrationPath.getAsPlanetsPath());
 
         }

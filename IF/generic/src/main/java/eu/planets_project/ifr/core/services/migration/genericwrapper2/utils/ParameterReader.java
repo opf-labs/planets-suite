@@ -29,9 +29,9 @@ public class ParameterReader {
      */
     public ParameterReader(List<Parameter> parameters) {
 
-	parameterMap = new HashMap<String, Parameter>();
+	this.parameterMap = new HashMap<String, Parameter>();
 	for (Parameter parameter : parameters) {
-	    parameterMap.put(parameter.getName(), parameter);
+	    this.parameterMap.put(parameter.getName(), parameter);
 	}
     }
 
@@ -77,7 +77,7 @@ public class ParameterReader {
      */
     public boolean getBooleanParameter(String parameterName) {
 
-	final String parameterValue = parameterMap.get(parameterName)
+	final String parameterValue = this.parameterMap.get(parameterName)
 		.getValue();
 	if (parameterValue == null) {
 	    throw new NoSuchElementException(String.format("Could not find a "

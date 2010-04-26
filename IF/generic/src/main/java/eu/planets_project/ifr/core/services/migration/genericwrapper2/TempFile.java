@@ -13,28 +13,46 @@ public class TempFile {
 
     private File file = null;
 
+    /**
+     * @param codename
+     */
     public TempFile(String codename) {
         this.codename = codename;
     }
 
+    /**
+     * @param requestedName
+     */
     public void setRequestedName(String requestedName) {
         this.requestedName = requestedName;
     }
 
+    /**
+     * @param file
+     */
     public void setFile(File file) {
         this.file = file;
     }
 
+    /**
+     * @return the code name of the temp file
+     */
     public String getCodename() {
-        return codename;
+        return this.codename;
     }
 
+    /**
+     * @return the requested name of the temp file
+     */
     public String getRequestedName() {
-        return requestedName;
+        return this.requestedName;
     }
 
+    /**
+     * @return the temp file java.io.File object
+     */
     public File getFile() {
-        return file;
+        return this.file;
     }
 
 

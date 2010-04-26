@@ -30,7 +30,7 @@ class PresetSetting {
      * @return <code>String</code> with the name.
      */
     String getName() {
-	return name;
+	return this.name;
     }
 
     /**
@@ -40,7 +40,7 @@ class PresetSetting {
      *         defining this preset setting.
      */
     Collection<Parameter> getParameters() {
-	return parameters;
+	return this.parameters;
     }
 
     /**
@@ -50,7 +50,7 @@ class PresetSetting {
      * @return the description
      */
     String getDescription() {
-	return description;
+	return this.description;
     }
 
     /**

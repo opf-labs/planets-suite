@@ -1,18 +1,24 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper1.GenericMigrationWrapper;
-import eu.planets_project.ifr.core.services.migration.genericwrapper1.utils.DocumentLocator;
-import eu.planets_project.services.datatypes.*;
-import eu.planets_project.services.migrate.MigrateResult;
-import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.utils.DocumentLocator;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.migrate.MigrateResult;
 
 /**
  * 
@@ -36,39 +42,46 @@ public class GenericMigrationWrapperTest {
     final List<Parameter> testParameters = new ArrayList<Parameter>();
 
     /**
+     * @throws Exception 
      */
     public GenericMigrationWrapperTest() throws Exception {
-	sourceFormatURI = new URI("info:test/lowercase");
-	destinationFormatURI = new URI("info:test/uppercase");
+	this.sourceFormatURI = new URI("info:test/lowercase");
+	this.destinationFormatURI = new URI("info:test/uppercase");
     }
 
+    /**
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
 
-	testParameters.add(new Parameter("mode", "complete"));
+	this.testParameters.add(new Parameter("mode", "complete"));
 
 	DocumentLocator documentLocator = new DocumentLocator(
 		"deprecatedGenericWrapperV1ExampleConfigFile.xml");
-	genericWrapper = new GenericMigrationWrapper(documentLocator
+	this.genericWrapper = new GenericMigrationWrapper(documentLocator
 		.getDocument(), this.getClass().getCanonicalName());
 
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
+    /**
+     * 
+     */
     @Test
     public void testDescribe() {
-	ServiceDescription sb = genericWrapper.describe();
+	ServiceDescription sb = this.genericWrapper.describe();
+	assertNotNull(sb);
     }
 
+    /**
+     * @throws Exception
+     */
     @Test
     public void testMigrateUsingTempFiles() throws Exception {
 
-	MigrateResult migrationResult = genericWrapper.migrate(
-		getDigitalTestObject(), sourceFormatURI, destinationFormatURI,
-		testParameters);
+	MigrateResult migrationResult = this.genericWrapper.migrate(
+		getDigitalTestObject(), this.sourceFormatURI, this.destinationFormatURI,
+		this.testParameters);
 
 	Assert.assertEquals(ServiceReport.Status.SUCCESS, migrationResult
 		.getReport().getStatus());
@@ -79,7 +92,7 @@ public class GenericMigrationWrapperTest {
 
 	DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
 		Content.byValue(diaTestFile));
-	digitalObjectBuilder.format(sourceFormatURI);
+	digitalObjectBuilder.format(this.sourceFormatURI);
 	digitalObjectBuilder.title(TEST_FILE_NAME);
 	return digitalObjectBuilder.build();
 

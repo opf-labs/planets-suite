@@ -100,5 +100,8 @@ public class Constants {
     static final String NAME = "name";
     static final String HOMEPAGE = "homepage";
     static final String TITLE = "title";
+    /**
+     * 
+     */
     public static final String SERVICE_DESCRIPTION = "serviceDescription";
 }

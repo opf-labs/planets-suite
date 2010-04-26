@@ -46,7 +46,7 @@ class CommandLine {
      * @return the command line string.
      */
     String getCommand() {
-	return new String(command);
+	return new String(this.command);
     }
 
     /**
@@ -62,9 +62,9 @@ class CommandLine {
      * @return <code>List</code> containing an <code>Parameter</code> instance
      *         for each parameter that must be defined in order be able to
      *         produce an executable command line from the string returned by
-     *         <code>{@link getCommand()} .
+     *         <code>@link getCommand().
      */
     List<String> getParameters() {
-	return parameters;
+	return this.parameters;
     }
 }

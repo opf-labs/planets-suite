@@ -47,9 +47,8 @@ class ToolIOProfileImpl implements ToolIOProfile {
     public String getCommandLineFileLabel() {
 	if (usePipedIO()) {
 	    return null;
-	} else {
-	    return tempFileLabel;
 	}
+	return this.tempFileLabel;
     }
 
     /**
@@ -59,12 +58,9 @@ class ToolIOProfileImpl implements ToolIOProfile {
      * <p/>
      * This value must be <code>null</code> (or un-set) if
      * <code>{@link #usePipedIO()}</code> returns <code>true</code>.
-     * 
-     * @param tempFileLabel
-     *            the label identifying the temporary file.
      */
     void setCommandLineFileLabel(String fileLabel) {
-	tempFileLabel = fileLabel;
+	this.tempFileLabel = fileLabel;
     }
 
     /*
@@ -77,9 +73,8 @@ class ToolIOProfileImpl implements ToolIOProfile {
     public String getDesiredTempFileName() {
 	if (usePipedIO()) {
 	    return null;
-	} else {
-	    return desiredTempFileName;
 	}
+	return this.desiredTempFileName;
     }
 
     /**
@@ -106,7 +101,7 @@ class ToolIOProfileImpl implements ToolIOProfile {
      * #usePipedIO()
      */
     public boolean usePipedIO() {
-	return usePipedIO;
+	return this.usePipedIO;
     }
 
     /**
@@ -119,12 +114,10 @@ class ToolIOProfileImpl implements ToolIOProfile {
      * standard input/output and if it set <code>false</code> then it expects it
      * to be passed as a temporary file. In the latter case a command line label
      * for identification of this file must be specified by calling
-     * <code>{@link #setCommandLineFileLabel()}</code> and optionally also a
+     * <code>@link #setCommandLineFileLabel()</code> and optionally also a
      * desired name for the temporary file, by calling the
-     * <code>{@link #setDesiredTempFileName()}</code> if the tool requires a
+     * <code>@link #setDesiredTempFileName()</code> if the tool requires a
      * specific file name.
-     * 
-     * @return
      * 
      * @param usePipedIO
      *            <code>boolean</code> flag indicating whether the tool expects

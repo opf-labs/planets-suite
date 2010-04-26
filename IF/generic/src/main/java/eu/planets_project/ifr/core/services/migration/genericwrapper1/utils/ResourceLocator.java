@@ -55,14 +55,14 @@ public class ResourceLocator {
 
         final ClassLoader classLoader = Thread.currentThread()
                 .getContextClassLoader();
-        final URL resourceURL = classLoader.getResource(resourcePath);
+        final URL resourceURL = classLoader.getResource(this.resourcePath);
         if (resourceURL != null) {
             resourceInputStream = resourceURL.openStream();
-        } else if (new File(resourcePath).isFile()) {
-            resourceInputStream = new FileInputStream(resourcePath);
+        } else if (new File(this.resourcePath).isFile()) {
+            resourceInputStream = new FileInputStream(this.resourcePath);
         } else {
             throw new FileNotFoundException("Could not locate resource: "
-                    + resourcePath);
+                    + this.resourcePath);
         }
 
         return resourceInputStream;

@@ -14,7 +14,7 @@ class ToolPresets {
     private String defaultPresetID;
 
     ToolPresets() {
-	presets = new HashMap<String, Preset>();
+	this.presets = new HashMap<String, Preset>();
     }
 
     /**
@@ -24,7 +24,7 @@ class ToolPresets {
      * @return ID of the default preset category
      */
     String getDefaultPresetID() {
-	return defaultPresetID;
+	return this.defaultPresetID;
     }
 
     /**
@@ -35,12 +35,12 @@ class ToolPresets {
      *         available preset categories.
      */
     Collection<String> getToolPresetNames() {
-	return presets.keySet();
+	return this.presets.keySet();
     }
 
     //FIXME! Doc!
     Collection<Preset> getAllToolPresets() {
-	return presets.values();
+	return this.presets.values();
     }
 
     /**
@@ -63,14 +63,14 @@ class ToolPresets {
      */
     void setToolPresets(Collection<Preset> toolPresets) {
 
-	presets = new HashMap<String, Preset>();
+	this.presets = new HashMap<String, Preset>();
 	for (Preset preset : toolPresets) {
-	    presets.put(preset.getName(), preset);
+	    this.presets.put(preset.getName(), preset);
 	}
     }
 
     Preset getPreset(String presetName) {
-	return presets.get(presetName);
+	return this.presets.get(presetName);
     }
 
 }

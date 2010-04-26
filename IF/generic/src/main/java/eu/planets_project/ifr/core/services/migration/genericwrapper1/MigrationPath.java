@@ -38,10 +38,10 @@ public class MigrationPath implements Cloneable {
      * factories.
      */
     MigrationPath() {
-        parameters = new HashMap<String, Parameter>();
-        presets = new HashMap<String, Preset>();
-        tempFiles = new ArrayList<TempFile>();
-        newTempFiles = new HashMap<String, String>();
+        this.parameters = new HashMap<String, Parameter>();
+        this.presets = new HashMap<String, Preset>();
+        this.tempFiles = new ArrayList<TempFile>();
+        this.newTempFiles = new HashMap<String, String>();
     }
 
     /**
@@ -53,7 +53,7 @@ public class MigrationPath implements Cloneable {
      *         file and otherwise <code>false</code>
      */
     public boolean useTempSourceFile() {
-        return tempSourceFile != null;
+        return this.tempSourceFile != null;
     }
 
     /**
@@ -62,7 +62,7 @@ public class MigrationPath implements Cloneable {
      * @return the temp file
      */
     public TempFile getTempSourceFile() {
-        return tempSourceFile;
+        return this.tempSourceFile;
     }
 
     /**
@@ -84,19 +84,20 @@ public class MigrationPath implements Cloneable {
      *         created for its output and otherwise <code>false</code>
      */
     public boolean useTempDestinationFile() {
-        return tempOutputFile != null;
+        return this.tempOutputFile != null;
     }
 
     /**
      * Get the temp output file
+     * @return the temporary output file
      */
     public TempFile getTempOutputFile() {
-
-        return tempOutputFile;
+        return this.tempOutputFile;
     }
 
     /**
      * Set the temp file
+     * @param tempOutputFile 
      */
     public void setTempOutputFile(TempFile tempOutputFile) {
         this.tempOutputFile = tempOutputFile;
@@ -125,9 +126,9 @@ public class MigrationPath implements Cloneable {
     public List<String> getCommandLine(Collection<Parameter> toolParameters)
             throws MigrationException {
 
-        log.info("Entering getCommandLine");
+        this.log.info("Entering getCommandLine");
         // Get a complete list of identifiers in the command line.
-        final Set<String> usedIdentifiers = getIdentifiers(commandLine);
+        final Set<String> usedIdentifiers = getIdentifiers(this.commandLine);
 
         // TODO: Work with other presets than the default one
 
@@ -137,7 +138,7 @@ public class MigrationPath implements Cloneable {
         for (Parameter toolparam : toolParameters) {
             if (toolparam.getName().equals(defaultpreset)) {
                 setDefault = true;
-                Collection<Parameter> presetparams = presets.get(defaultpreset)
+                Collection<Parameter> presetparams = this.presets.get(defaultpreset)
                         .getParameters(toolparam.getValue());
                 toolParameters.addAll(presetparams);
                 break;
@@ -148,7 +149,7 @@ public class MigrationPath implements Cloneable {
         if (!setDefault) {
             // lookup the value of the default preset
             // get the param names and values from there
-            Preset preset = presets.get(defaultpreset);
+            Preset preset = this.presets.get(defaultpreset);
             if (preset != null) {
                 Collection<Parameter> defaultparams = preset
                         .getDefaultParameters();
@@ -160,26 +161,26 @@ public class MigrationPath implements Cloneable {
 
         final Set<String> validIdentifiers = getValidParameterNames(toolParameters);
 
-        log.info("Found these valid identifiers");
-        log.info(validIdentifiers.toString());
+        this.log.info("Found these valid identifiers");
+        this.log.info(validIdentifiers.toString());
 
-        log.info(tempSourceFile.toString());
-        for (TempFile tempfile : tempFiles) {
-            log.info("Adding tempfile " + tempfile.getCodename()
+        this.log.info(this.tempSourceFile.toString());
+        for (TempFile tempfile : this.tempFiles) {
+            this.log.info("Adding tempfile " + tempfile.getCodename()
                     + " as valid identifier");
             validIdentifiers.add(tempfile.getCodename());
         }
 
         if (useTempSourceFile()) {
-            log.info("Adding temp input file as valid identifier "
-                    + tempSourceFile.getCodename());
-            validIdentifiers.add(tempSourceFile.getCodename());
+            this.log.info("Adding temp input file as valid identifier "
+                    + this.tempSourceFile.getCodename());
+            validIdentifiers.add(this.tempSourceFile.getCodename());
         }
 
         if (useTempDestinationFile()) {
-            log.info("Adding temp dest file as valid identifier: "
-                    + tempOutputFile.getCodename());
-            validIdentifiers.add(tempOutputFile.getCodename());
+            this.log.info("Adding temp dest file as valid identifier: "
+                    + this.tempOutputFile.getCodename());
+            validIdentifiers.add(this.tempOutputFile.getCodename());
         }
 
         // TODO: Check the parameters and filename mappings for injection
@@ -196,23 +197,23 @@ public class MigrationPath implements Cloneable {
         }
 
         List<String> executableCommandLine = new ArrayList<String>();
-        for (String cmd : commandLine) {
+        for (String cmd : this.commandLine) {
             for (Parameter parameter : toolParameters) {
                 cmd = cmd.replaceAll("#" + parameter.getName(), parameter
                         .getValue());
             }
 
-            for (TempFile tempFile : tempFiles) {
+            for (TempFile tempFile : this.tempFiles) {
                 cmd = cmd.replaceAll("#" + tempFile.getCodename(), tempFile
                         .getFile().getAbsolutePath());
             }
             if (useTempSourceFile()) {
-                cmd = cmd.replaceAll("#" + tempSourceFile.getCodename(),
-                        tempSourceFile.getFile().getAbsolutePath());
+                cmd = cmd.replaceAll("#" + this.tempSourceFile.getCodename(),
+                        this.tempSourceFile.getFile().getAbsolutePath());
             }
             if (useTempDestinationFile()) {
-                cmd = cmd.replaceAll("#" + tempOutputFile.getCodename(),
-                        tempOutputFile.getFile().getAbsolutePath());
+                cmd = cmd.replaceAll("#" + this.tempOutputFile.getCodename(),
+                        this.tempOutputFile.getFile().getAbsolutePath());
             }
             executableCommandLine.add(cmd);
         }
@@ -231,7 +232,7 @@ public class MigrationPath implements Cloneable {
      * @return a <code>Set</code> containing the names of all the parameters
      *         from <code>parameters</code> that have a value.
      */
-    private Set<String> getValidParameterNames(Collection<Parameter> parameters) {
+    private Set<String> getValidParameterNames(@SuppressWarnings("hiding") Collection<Parameter> parameters) {
         Set<String> validParameters = new HashSet<String>();
         for (Parameter parameter : parameters) {
             final String parameterName = parameter.getName();
@@ -279,7 +280,7 @@ public class MigrationPath implements Cloneable {
      *         parameter identifiers/keys.
      */
     public List<String> getCommandLine() {
-        return commandLine;
+        return this.commandLine;
     }
 
     /**
@@ -303,7 +304,7 @@ public class MigrationPath implements Cloneable {
      * @return ID of the default preset category
      */
     public String getDefaultPreset() {
-        return defaultPreset;
+        return this.defaultPreset;
     }
 
     /**
@@ -324,7 +325,7 @@ public class MigrationPath implements Cloneable {
      *         migration path.
      */
     public URI getDestinationFormat() {
-        return destinationFormatURI;
+        return this.destinationFormatURI;
     }
 
     /**
@@ -345,7 +346,7 @@ public class MigrationPath implements Cloneable {
      *         path.
      */
     public URI getSourceFormat() {
-        return sourceFormatURI;
+        return this.sourceFormatURI;
     }
 
     /**
@@ -365,16 +366,17 @@ public class MigrationPath implements Cloneable {
      * @return a list of temp files.
      */
     public List<TempFile> getTempFileDeclarations() {
-        return tempFiles;
+        return this.tempFiles;
     }
 
     /**
      * Add a list of temp files
+     * @param tempFileDeclarations 
      * @deprecated {@link MigrationPath#addTempFilesDeclarations(Map)} will replace this method
      */
     @Deprecated
     public void addTempFilesDeclarations(List<TempFile> tempFileDeclarations) {
-        tempFiles.addAll(tempFileDeclarations);
+        this.tempFiles.addAll(tempFileDeclarations);
 
     }
     
@@ -393,13 +395,16 @@ public class MigrationPath implements Cloneable {
     public void addTempFilesDeclarations(
             Map<String, String> tempFileDeclarations) {
 
-        newTempFiles.putAll(tempFileDeclarations);
+        this.newTempFiles.putAll(tempFileDeclarations);
     }
 
     //TODO: Kill when the time is right.
+    /**
+     * @param tempFileDeclaration
+     */
     @Deprecated
     public void addTempFilesDeclaration(TempFile tempFileDeclaration) {
-        tempFiles.add(tempFileDeclaration);
+        this.tempFiles.add(tempFileDeclaration);
 
     }
 
@@ -412,10 +417,9 @@ public class MigrationPath implements Cloneable {
      * calls to this method will just add more mappings to the internal map,
      * however, if the specified label has already been used in the internal map
      * of this migration path, then the previous mapping will be removed.
+     * @param label 
+     * @param filename 
      * 
-     * @param tempFileDeclarations
-     *            a map containing a paring of temp. file labels and optionally
-     *            a file name to be added to the internal map.
      * @return the value previously associated with <code>label</code> or
      *         <code>null</code> if no value was associated with it. However, it
      *         may also indicate that <code>label</code> was actually associated
@@ -423,7 +427,7 @@ public class MigrationPath implements Cloneable {
      */
     public String addTempFilesDeclaration(String label, String filename) {
 
-        return newTempFiles.put(label, filename);
+        return this.newTempFiles.put(label, filename);
     }
 
     /**
@@ -438,7 +442,7 @@ public class MigrationPath implements Cloneable {
      *         execute the command line of this migration path.
      */
     public Collection<Parameter> getToolParameters() {
-        return parameters.values();
+        return this.parameters.values();
     }
 
     /**
@@ -452,7 +456,7 @@ public class MigrationPath implements Cloneable {
      */
     public void setToolParameters(Collection<Parameter> toolParameters) {
         for (Parameter parameter : toolParameters) {
-            parameters.put(parameter.getName(), parameter);
+            this.parameters.put(parameter.getName(), parameter);
         }
     }
 
@@ -464,12 +468,13 @@ public class MigrationPath implements Cloneable {
      *         available preset categories.
      */
     public Collection<String> getToolPresetCategories() {
-        return presets.keySet();
+        return this.presets.keySet();
     }
 
-    public String toString() {
-        return "CliMigrationPath: " + sourceFormatURI + " -> "
-                + destinationFormatURI + " Command: " + commandLine;
+    @Override
+	public String toString() {
+        return "CliMigrationPath: " + this.sourceFormatURI + " -> "
+                + this.destinationFormatURI + " Command: " + this.commandLine;
     }
 
     // TODO: clone() will probably be obsolete with the introduction of the new
@@ -480,19 +485,25 @@ public class MigrationPath implements Cloneable {
                               // Settings | File Templates.
     }
 
+    /**
+     * @return the Migration Path
+     */
     public eu.planets_project.services.datatypes.MigrationPath getAsPlanetsPath() {
         URI outformat = getDestinationFormat();
         URI informat = getSourceFormat();
         List<Parameter> params = new ArrayList<Parameter>();
 
-        for (Preset preset : presets.values()) {
+        for (Preset preset : this.presets.values()) {
             params.add(preset.getAsPlanetsParameter());
         }
         return new eu.planets_project.services.datatypes.MigrationPath(
                 informat, outformat, params);
     }
 
+    /**
+     * @param preset
+     */
     public void addPreset(Preset preset) {
-        presets.put(preset.getName(), preset);
+        this.presets.put(preset.getName(), preset);
     }
 }

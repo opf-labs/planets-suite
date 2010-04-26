@@ -54,7 +54,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
      *            migration paths to produce.
      */
     DBMigrationPathFactory(Document genericWrapperConfiguration) {
-	xPathFactory = XPathFactory.newInstance();
+	this.xPathFactory = XPathFactory.newInstance();
 	this.genericWrapperConfiguration = genericWrapperConfiguration;
     }
 
@@ -78,16 +78,16 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 
 	// First, make sure that the version of the configuration document is
 	// compatible with this factory.
-	verifyConfigurationVersion(genericWrapperConfiguration);
+	verifyConfigurationVersion(this.genericWrapperConfiguration);
 
 	final MigrationPaths migrationPaths = new MigrationPaths();
 
 	try {
 	    // Get the XML element containing the migration path configurations.
-	    final XPath pathsXPath = xPathFactory.newXPath();
+	    final XPath pathsXPath = this.xPathFactory.newXPath();
 	    final NodeList pathNodes = (NodeList) pathsXPath.evaluate(
 		    ConfigurationFileTagsV1.PATH_ELEMENT_XPATH,
-		    genericWrapperConfiguration, XPathConstants.NODESET);
+		    this.genericWrapperConfiguration, XPathConstants.NODESET);
 
 	    // Process each of the migration path configurations.
 	    for (int nodeIndex = 0; nodeIndex < pathNodes.getLength(); nodeIndex++) {
@@ -210,7 +210,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 	    String toolIOProfileElementName)
 	    throws MigrationPathConfigException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+	final XPath pathsXPath = this.xPathFactory.newXPath();
 	final ToolIOProfileImpl toolIOProfile = new ToolIOProfileImpl();
 
 	try {
@@ -279,7 +279,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 	    String nameOfElementWithDefaultAttribute)
 	    throws MigrationPathConfigException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+	final XPath pathsXPath = this.xPathFactory.newXPath();
 
 	try {
 	    final Node elementWithDefaultAttribute = (Node) pathsXPath
@@ -320,7 +320,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
     private ToolPresets getToolPresets(Node pathNode, String presetsElementName)
 	    throws MigrationPathConfigException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+	final XPath pathsXPath = this.xPathFactory.newXPath();
 
 	try {
 	    final NodeList presetNodes = (NodeList) pathsXPath.evaluate(
@@ -382,7 +382,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
     private Collection<PresetSetting> getPresetSettings(Node presetNode)
 	    throws MigrationPathConfigException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+	final XPath pathsXPath = this.xPathFactory.newXPath();
 	final Collection<PresetSetting> presetSettings = new ArrayList<PresetSetting>();
 
 	try {
@@ -433,7 +433,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 	    String nameOfElementContainingParameters)
 	    throws MigrationPathConfigException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+	final XPath pathsXPath = this.xPathFactory.newXPath();
 	final Collection<Parameter> toolParameters = new ArrayList<Parameter>();
 
 	try {
@@ -485,7 +485,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
     private Collection<Parameter> getSettingsParameters(Node settingsNode)
 	    throws MigrationPathConfigException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+	final XPath pathsXPath = this.xPathFactory.newXPath();
 	final Collection<Parameter> settingsParameters = new ArrayList<Parameter>();
 
 	try {
@@ -544,7 +544,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 	    String tempFilesElementName) throws MigrationPathConfigException {
 
 	final HashMap<String, String> tempFileMappings = new HashMap<String, String>();
-	final XPath pathsXPath = xPathFactory.newXPath();
+	final XPath pathsXPath = this.xPathFactory.newXPath();
 
 	try {
 	    final NodeList tempFileNodes = (NodeList) pathsXPath.evaluate(
@@ -608,7 +608,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
     private CommandLine getCommandLine(Node pathNode,
 	    String commandLineElementName) throws MigrationPathConfigException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+	final XPath pathsXPath = this.xPathFactory.newXPath();
 
 	try {
 	    final Node commandNode = (Node) pathsXPath.evaluate(
@@ -661,26 +661,16 @@ class DBMigrationPathFactory implements MigrationPathFactory {
      * Create <code>URI</code> objects for all <code>&lt;uri&gt;</code> elements
      * in <code>uriListNode</code>.
      * 
-     * @param uriListNode
-     *            Node expected to contain a list of URI elements.
      * @return List containing an <code>URI</code> instance for each URI element
      *         found in <code>uriListNode</code>.
      * @throws MigrationPathConfigException
      *             if an error occurred while parsing the configuration
      *             described by <code>uriListNode</code>
-     * 
-     * 
-     * 
-     * 
-     * @param pathNode
-     * @param string
-     * @return
-     * @throws stuff
      */
     private List<URI> getURIList(Node pathNode, String uriListElementName)
 	    throws MigrationPathConfigException {
 
-	final XPath pathsXPath = xPathFactory.newXPath();
+	final XPath pathsXPath = this.xPathFactory.newXPath();
 	try {
 	    final NodeList uriNodes = (NodeList) pathsXPath.evaluate(
 		    uriListElementName + "/"
@@ -744,7 +734,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
      * Verify that the version number of the configuration document
      * <code>pathConfiguration</code> is compatible with this factory. The
      * validation is a case-insensitive comparison between the constant
-     * <code>{@link ConfigurationFileTagsV1.CONFIGURATION_FORMAT_VERSION}</code>
+     * <code>@link ConfigurationFileTagsV1.CONFIGURATION_FORMAT_VERSION</code>
      * and the value of the <code>version</code> attribute of the
      * <code>&lt;serviceWrapping&gt;</code> root element of the configuration
      * document.
@@ -761,7 +751,7 @@ class DBMigrationPathFactory implements MigrationPathFactory {
 	String versionNumber = "";
 
 	try {
-	    final XPath pathsXPath = xPathFactory.newXPath();
+	    final XPath pathsXPath = this.xPathFactory.newXPath();
 
 	    final Node serviceWrappingNode = (Node) pathsXPath.evaluate(
 		    ConfigurationFileTagsV1.CONFIGURATION_ROOT_ELEMENT_XPATH,

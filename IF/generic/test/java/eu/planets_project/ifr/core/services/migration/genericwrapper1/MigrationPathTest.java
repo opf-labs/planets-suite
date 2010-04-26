@@ -1,16 +1,14 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper1.MigrationPath;
-import eu.planets_project.ifr.core.services.migration.genericwrapper1.TempFile;
-import eu.planets_project.services.datatypes.Parameter;
-import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import junit.framework.Assert;
+
+import org.junit.Test;
+
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
@@ -19,26 +17,14 @@ import java.util.Arrays;
 public class MigrationPathTest {
 
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    /**
-     * @throws java.lang.Exception
-     */
-    @After
-    public void tearDown() throws Exception {
-    }
-
     // final URI sourceFormat = new URI("info:test/lowercase");
     // final URI destinationFormat = new URI("info:test/uppercase");
 
     /**
+     * @throws Exception 
      */
-    @Test
+    @SuppressWarnings("deprecation")
+	@Test
     public void testSetGetCommandLine() throws Exception {
         final String originalCommandLine = "cat #param1 #tempSource > "
                 + "#myInterimFile && tr #param2 #myInterimFile > "
