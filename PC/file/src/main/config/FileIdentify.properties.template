@@ -1,0 +1,5 @@
+# Cygwin error for no file found
+cygwin.message.nofile=(No such file or directory)
+# Cygwin location and command (usually 
+cygwin.location=DEFAULT
+

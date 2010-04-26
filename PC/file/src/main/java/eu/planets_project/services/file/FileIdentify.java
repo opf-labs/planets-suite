@@ -20,7 +20,6 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.file.util.FileServiceSetup;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.DigitalObjectUtils;
@@ -68,12 +67,12 @@ public class FileIdentify implements Identify {
         }
 
         // Now check that windows, we won't work on none windows at the moment
-        if (!FileServiceSetup.isWindows()) {
+        if (!FileServiceUtilities.isWindows()) {
             return this.returnWithErrorMessage("OS detected not windows based, this service only runs on windows.", 1);
         }
 
         // Finally check that the cygwin file command cannot be found
-        if (!FileServiceSetup.isCygwinFileDetected()) {
+        if (!FileServiceUtilities.isCygwinFileDetected()) {
             return this.returnWithErrorMessage("Cygwin file.exe not found at location given in cygwin.file.location property.", 1);
         }
 
@@ -81,8 +80,7 @@ public class FileIdentify implements Identify {
         File tmpInFile = DigitalObjectUtils.toFile(digitalObject);
 
         // Right we'll need to create a suitable command line
-        // String[] commands = new String[] {FileServiceSetup.getProperties().getProperty("cygwin.file.location"),
-		String[] commands = new String[] {FileServiceSetup.getFileLocation(),
+		String[] commands = new String[] {FileServiceUtilities.getFileLocation(),
         								  "-i",
         								  "-b",
         								  tmpInFile.getAbsolutePath()};
@@ -101,7 +99,7 @@ public class FileIdentify implements Identify {
         // Get the MIME type from the process output 
         String mime = runner.getProcessOutputAsString().trim();
         // Let's check that it found the file, this should never happen but who knows
-        if (mime.indexOf(FileServiceSetup.getProperties().getProperty("cygwin.message.nofile")) != -1) {
+        if (mime.indexOf(FileServiceUtilities.getConfiguration().getString("cygwin.message.nofile")) != -1) {
         	FileIdentify.log.fine("File failed to find an error");
         	return this.returnWithErrorMessage(mime, 1);
         }
@@ -109,7 +107,7 @@ public class FileIdentify implements Identify {
         // Create the service report
         ServiceReport rep = new ServiceReport(Type.INFO, Status.SUCCESS, "OK");
         List<URI> types = new ArrayList<URI>();
-        URI mimeURI = FormatRegistryFactory.getFormatRegistry().createMimeUri(mime);
+        URI mimeURI = FormatRegistryFactory.getFormatRegistry().createMimeUri(mime.split(";")[0]);
         types.add(mimeURI);
         return new IdentifyResult(types, IdentifyResult.Method.MAGIC, rep);
 	}
@@ -125,7 +123,7 @@ public class FileIdentify implements Identify {
 	 * @return
 	 * 		The IdentifyResult, correctly populated
 	 */
-    private IdentifyResult returnWithErrorMessage(String message, int errorState) {
+    private IdentifyResult returnWithErrorMessage(String message, @SuppressWarnings("unused") int errorState) {
     	// Create and empty service report and a null type list
         List<URI> type = null;
         // Log the message

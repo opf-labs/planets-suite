@@ -4,6 +4,7 @@
 package eu.planets_project.services.file.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -11,7 +12,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.file.FileIdentify;
-import eu.planets_project.services.file.util.FileServiceSetup;
+import eu.planets_project.services.file.FileServiceUtilities;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
@@ -45,17 +45,8 @@ public class FileIdentifyTest {
      */
     @Before
     public void setUp() throws Exception {
-        doi = ServiceCreator.createTestService(Identify.QNAME, FileIdentify.class,
+        this.doi = ServiceCreator.createTestService(Identify.QNAME, FileIdentify.class,
         									   FileIdentifyTest.wsdlLoc);
-    }
-
-    /**
-     * 
-     * @throws Exception 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @After
-    public void tearDown() throws Exception {
     }
 
     /**
@@ -64,10 +55,10 @@ public class FileIdentifyTest {
     @Test
     public void testDescribe() {
         System.out.println("Test description");
-        ServiceDescription desc = doi.describe();
-        System.out.println("Received service description: ");
-        assertTrue("The ServiceDescription should not be NULL.", desc != null);
-        System.out.println(desc.toXml());
+        ServiceDescription desc = this.doi.describe();
+        assertNotNull("The ServiceDescription should not be NULL.", desc);
+        if (desc != null)
+        	System.out.println(desc.toXml());
     }
     
     /**
@@ -78,13 +69,13 @@ public class FileIdentifyTest {
     @Test
     public void testIdentify() throws MalformedURLException, URISyntaxException {
     	// Run the tests if on a windows box, they'll currently fail otherwise
-    	if ((FileServiceSetup.isWindows()) && (FileServiceSetup.isCygwinFileDetected())) {
+    	if ((FileServiceUtilities.isWindows()) && (FileServiceUtilities.isCygwinFileDetected())) {
     		System.out.println("OS is windows based and cygwin file.exe detected so run the tests");
-	        testIdentifyThis(new File("PC/file/test/resources/test_word.doc").toURI(), new URI("planets:fmt/mime/application/msword"));
-	        testIdentifyThis(new File("PC/file/test/resources/test_pdf.pdf").toURI(), new URI("planets:fmt/mime/application/pdf"));
-	        testIdentifyThis(new File("PC/file/test/resources/test_jpeg.jpg").toURI(), new URI("planets:fmt/mime/image/jpeg"));
-	        testIdentifyThis(new File("PC/file/test/resources/test_png.png").toURI(), new URI("planets:fmt/mime/image/png"));
-    	} else if (FileServiceSetup.isWindows()) {
+	        testIdentifyThis(new File("PC/file/src/test/resources/test_word.doc").toURI(), new URI("planets:fmt/mime/application/msword"));
+	        testIdentifyThis(new File("PC/file/src/test/resources/test_pdf.pdf").toURI(), new URI("planets:fmt/mime/application/pdf"));
+	        testIdentifyThis(new File("PC/file/src/test/resources/test_jpeg.jpg").toURI(), new URI("planets:fmt/mime/image/jpeg"));
+	        testIdentifyThis(new File("PC/file/src/test/resources/test_png.png").toURI(), new URI("planets:fmt/mime/image/png"));
+    	} else if (FileServiceUtilities.isWindows()) {
     		System.out.println("OS is windows but cygwin file exe is not detected.");
     		System.out.println("No identification tests run.");
     	} else {
