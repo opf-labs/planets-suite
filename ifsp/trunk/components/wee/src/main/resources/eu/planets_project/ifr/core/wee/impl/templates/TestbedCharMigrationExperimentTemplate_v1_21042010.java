@@ -69,6 +69,12 @@ public class TestbedCharMigrationExperimentTemplate_v1_21042010 extends
 				"back to the repository.";
 	}
 
+	@Override
+	public WorkflowResult initializeExecution() {
+		this.getWFResult().setStartTime(System.currentTimeMillis());
+		return this.getWFResult();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

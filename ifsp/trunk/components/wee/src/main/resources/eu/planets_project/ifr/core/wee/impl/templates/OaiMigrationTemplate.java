@@ -34,6 +34,12 @@ public class OaiMigrationTemplate extends
 		return "This template performs the migration of the OAI regitry data";
 	}
 
+	@Override
+	public WorkflowResult initializeExecution() {
+		this.getWFResult().setStartTime(System.currentTimeMillis());
+		return this.getWFResult();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

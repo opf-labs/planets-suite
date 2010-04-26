@@ -11,6 +11,10 @@ import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManager
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.wee.api.ReportingLog;
+import eu.planets_project.ifr.core.wee.api.workflow.ServiceCallConfigs;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowContext;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -26,31 +30,37 @@ import eu.planets_project.services.datatypes.DigitalObject;
  */
 public interface WorkflowTemplate extends Serializable{
 	
-	 /** External property keys */
 	//TODO: this should be included into the properties registry
+	/** External property key for original file format for migration */
 	public static final String SER_PARAM_MIGRATE_FROM = "planets:service/migration/input/migrate_from_fmt";
+	/** External property key for target file format for migration */
 	public static final String SER_PARAM_MIGRATE_TO = "planets:service/migration/input/migrate_to_fmt";
+	/** External property key for service parameters */
 	public static final String SER_PARAMS = "planets:service/input/parameters";
 	 
 	 /**
-	  * Defines the usage of a given parameter. It can either be uses as configuration for:
+	  * Defines the usage of a given parameter.
+	  * It can either be uses as configuration for:
 	  * a) a given WorkflowService
-	  * b) general Parameter (currently not available)
+	  * b) a general Parameter (currently not available)
 	  */
-	 public static enum ParameterType {ServiceParameter,GeneralParameter};
+	 public static enum ParameterType {
+		  /** Service Parameter type */ ServiceParameter,
+		  /** General Parameter type */ GeneralParameter
+     }
 	
 	/**
 	 * Checks if a given Object Type is in the range of valid PlanetsServiceTypes e.g.
 	 * //e.g. eu.planets_project.services.identify.Identify
 	 * This information is extracted by calling: f.getType().getCanonicalName();
 	 * @param declaredServiceField
-	 * @return
+	 * @return true if service type is supported 
 	 */
 	public boolean isServiceTypeSupported(Field declaredServiceField);
 	
 	/**
 	 * Returns a list of all supported PlanetsServiceTypes
-	 * @return
+	 * @return a java.util.List of Strings denoting supported service types
 	 */
 	public List<String> getSupportedServiceTypes();
 
@@ -66,16 +76,21 @@ public interface WorkflowTemplate extends Serializable{
 	
 	/**
 	 * Reflects a list of all declared services names
-	 * @see getDeclaredWFServices()
-	 * @return
+	 * @see #getDeclaredWFServices()
+	 * @return A java.util.List of Strings giving the declared workflow service names
 	 */
 	public List<String> getDeclaredWFServiceNames();
 	
 	/**
-	 * A setter and getter for the workflow's payload to start upon.
-	 * @param data
+	 * A setter for the workflow's payload to start upon.
+	 * @param data The java.util.List of DigitalObjects to use as payload
 	 */
 	public void setData(List<DigitalObject> data);
+
+	/**
+	 * A getter for the workflow's payload to start upon.
+	 * @return the payload java.util.List of DigitalObjects 
+	 */
 	public List<DigitalObject> getData();
 	
 	/*
@@ -84,17 +99,26 @@ public interface WorkflowTemplate extends Serializable{
 	 * is a need for a separate WorkflowInstance interface and implementation.
 	 */
 	/**
-	 * provide access to the WorkflowInstance's UUID here
-	 * @param id
+	 * Setter for the WorkflowInstance's java.util.UUID
+	 * @param id the WorkflowInstance java.util.UUID to be used
 	 */
 	public void setWorkflowInstanceID(UUID id);
+	/**
+	 * Getter for the WorkflowInstance's UUID
+	 * @return the WorkflowInstance's java.util.UUID
+	 */
 	public UUID getWorklowInstanceID();
 	
 	/**
 	 * Returns an Agent that describes the WEE the template is processed by
-	 * @return
+	 * @return the Agent
 	 */
 	public Agent getWEEAgent();
+
+	/**
+	 * SSet the Agent here
+	 * @param agent
+	 */
 	public void setWEEAgent(Agent agent);
 	
 	/**
@@ -105,6 +129,10 @@ public interface WorkflowTemplate extends Serializable{
 	 * @param serCallConfigs
 	 */
 	public void setServiceCallConfigs(PlanetsService forService, ServiceCallConfigs serCallConfigs);
+	/**
+	 * @param forService the service for which call information requested
+	 * @return the service call config information
+	 */
 	public ServiceCallConfigs getServiceCallConfigs(PlanetsService forService);
 	
 	/**
@@ -112,6 +140,9 @@ public interface WorkflowTemplate extends Serializable{
 	 * @param wfContext
 	 */
 	public void setWorkflowContext(WorkflowContext wfContext);
+	/**
+	 * @return the template's WorkflowContext
+	 */
 	public WorkflowContext getWorkflowContext();
 	
 	
@@ -131,41 +162,52 @@ public interface WorkflowTemplate extends Serializable{
      * takes a digital object and stores it within the default DataRegistry (i.e. default DigitalObjectManager)
      * @param digoToStore
      * @see WorkflowTemplate#getDataRegistry()
-     * @return
+     * @return the URI identifying the the Digital Object Stored 
+     * @throws DigitalObjectManagerNotFoundException 
+     * @throws DigitalObjectNotStoredException 
      */
     public URI storeDigitalObject(DigitalObject digoToStore) throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException;
     
-       /**
+    /**
      * a shortcut for storing a digital object in a specified data repository
      * @param digoToStore
      * @param repositoryID the data repository identifier specified in the planets:// namespace.
      * e.g. 'planets://localhost:8080/dr/planets-jcr'
      * @param objectLocation The suggested URI to associate with the stored object
-     * @return
+     * @return The URI identifying the object stored 
      * @throws DigitalObjectManagerNotFoundException
      * @throws DigitalObjectNotStoredException
      */
     public URI storeDigitalObjectInRepository(URI objectLocation, DigitalObject digoToStore, URI repositoryID) throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException;
+
+    /**
+     * @param digoToStore
+     * @param repositoryID
+     * @return The URI identifying the object stored 
+     * @throws DigitalObjectManagerNotFoundException
+     * @throws DigitalObjectNotStoredException
+     */
     public URI storeDigitalObjectInRepository(DigitalObject digoToStore, URI repositoryID) throws DigitalObjectManagerNotFoundException, DigitalObjectNotStoredException;
 
     
     /**
      * returns a handle to the DataRegistry which can then be used to subsequently storing digital objects
      * in a workflow template
-     * @return
+     * @return a DataRegistry interface
      */
     public DataRegistry getDataRegistry();
     
     /**
      * a shortcut for retrieving a digital object stored within a data registry
-     * @param digitalObjectRef
-     * @return
+     * @param digitalObjectRef A java.net.URI identifying a DigitalObject
+     * @return a digital object stored within a data registry
+     * @throws DigitalObjectNotFoundException 
      */
     public DigitalObject retrieveDigitalObjectDataRegistryRef(URI digitalObjectRef) throws DigitalObjectNotFoundException;
     
     /**
      * Get the workflowResult object that's used to record information for this call
-     * @return
+     * @return the workflowResult object that's used to record information for this call
      */
     public WorkflowResult getWFResult();
     
@@ -177,16 +219,24 @@ public interface WorkflowTemplate extends Serializable{
     
     /**
      * Returns a ReportingLog object that's being used to record the workflow's execution
-     * @return
+     * @return a ReportingLog object that's being used to record the workflow's execution
      */
     public ReportingLog getWorkflowReportingLogger();
     
-	/**
+    /**
+     * This method is used for setting up a workflow, used to avoid repetition
+     * in the execute method. 
+     * @return the initialised WorkflowResult
+     */
+    public WorkflowResult initializeExecution();
+    
+    /**
 	 * This method contains the workflow's logic: e.g. branching, decision making etc. is pre-defined within this method
 	 * - mapping of service inputs and outputs
 	 * - writing results to the registries and data model
 	 * - calling workflow services on the available digitalObjects (data)
-	 * @return
+	 * @param dio a digital object
+	 * @return the WorkflowResult post execution
 	 * no Exceptions thrown - all information on execution success, etc. is contained within the WorkflowResult
 	 */
 	public WorkflowResult execute(DigitalObject dio);
@@ -194,12 +244,12 @@ public interface WorkflowTemplate extends Serializable{
 	/**
 	 * Build and attache items for finalizing the execution overall execution for this template
 	 * e.g. overall success statements, overall workflow execution time, log-references, etc.
+	 * @return The final WorkflowResult
 	 */
 	public WorkflowResult finalizeExecution();
 	
 	/**
-	 * 
-	 * @return
+	 * @return A java.lang.String description of the workflow
 	 */
 	public String describe();
 	

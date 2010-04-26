@@ -132,7 +132,7 @@ public class WorkflowExecutionEngineImpl implements MessageListener {
 	    weeManager.notify(uuid,WorkflowExecutionStatus.RUNNING);
 
         //3) executeWorkflow and get WF Result
-	    WorkflowResult ret = null;
+	    WorkflowResult ret = wf.initializeExecution();
 	    try {
 	    	log.debug("WorkflowExecutionEngine: start executing wf ID: " + wf.getWorkflowID());
 	    	

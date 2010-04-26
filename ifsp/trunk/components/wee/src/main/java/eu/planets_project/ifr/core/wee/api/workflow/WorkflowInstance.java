@@ -28,7 +28,9 @@ public interface WorkflowInstance extends Serializable{
 	
 	public List<DigitalObject> getData();
 	
+	public WorkflowResult initializeExecution();
+
 	public WorkflowResult execute(DigitalObject digo);
-	
+
 	public WorkflowResult finalizeExecution();
 }

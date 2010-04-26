@@ -36,6 +36,12 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 		return "This template performs the migration step of the Testbed's 'Migration' experiment type";
 	}
 
+	@Override
+	public WorkflowResult initializeExecution() {
+		this.getWFResult().setStartTime(System.currentTimeMillis());
+		return this.getWFResult();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

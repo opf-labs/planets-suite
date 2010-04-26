@@ -13,38 +13,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
-import javax.xml.bind.annotation.XmlTransient;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
-import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.ReportingLog;
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.Agent;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.DigitalObjectContent;
-import eu.planets_project.services.datatypes.Event;
-import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
-import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.LogReferenceCreatorWrapper;
 
 /**
  * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
@@ -57,28 +42,30 @@ public abstract class WorkflowTemplateHelper implements Serializable {
 	private Map<PlanetsService, ServiceCallConfigs> serviceInvocationConfigs = new HashMap<PlanetsService, ServiceCallConfigs>();
     private List<DigitalObject> data = new ArrayList<DigitalObject>();
     private UUID wfInstanceUUID = null;
-    //FIXME: change this to DigitalObjectManager after the interface has been updated
-    //private JcrDigitalObjectManagerImpl dom = (JcrDigitalObjectManagerImpl)JcrDigitalObjectManagerImpl.getInstance();
     private WorkflowContext wfContext = null;
     private DataRegistry dataRegistry = DataRegistryFactory.getDataRegistry();
+    private Agent agentWEE = null;
+    private ReportingLog wfLogger = null;
     
     /*
      * All services with a Planets interface can be used within a given
      * worklowTemplate
      */
-    private static final String[] supportedPlanetsServiceTypes = { "eu.planets_project.services.identify.Identify",
-            "eu.planets_project.services.characterise.Characterise",
-            "eu.planets_project.services.characterise.DetermineProperties",
-            "eu.planets_project.services.compare.BasicCompareFormatPropertie",
-            "eu.planets_project.services.migrate.Migrate", "eu.planets_project.services.modify.Modify",
-            "eu.planets_project.services.migrate.MigrateAsync", "eu.planets_project.services.compare.Compare",
-            "eu.planets_project.services.compare.CompareProperties", "eu.planets_project.services.validate.Validate",
-            "eu.planets_project.services.view.CreateView"};
+    private static final String[] supportedPlanetsServiceTypes = 
+       {"eu.planets_project.services.identify.Identify",
+        "eu.planets_project.services.characterise.Characterise",
+        "eu.planets_project.services.characterise.DetermineProperties",
+        "eu.planets_project.services.compare.BasicCompareFormatProperties",
+        "eu.planets_project.services.migrate.Migrate",
+        "eu.planets_project.services.modify.Modify",
+        "eu.planets_project.services.migrate.MigrateAsync",
+        "eu.planets_project.services.compare.Compare",
+        "eu.planets_project.services.compare.CompareProperties",
+        "eu.planets_project.services.validate.Validate",
+        "eu.planets_project.services.view.CreateView"};
     
-    /*
-     * (non-Javadoc)
-     * @seeeu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#
-     * getDeclaredWFServices()
+	/* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getDeclaredWFServices()
      */
     @SuppressWarnings("unchecked")
     public List<Field> getDeclaredWFServices() {
@@ -93,18 +80,12 @@ public abstract class WorkflowTemplateHelper implements Serializable {
                 ret.add(f);
             }
         }
-        /*
-         * for(int i=0; i<clazz.getDeclaredFields().length; i++){
-         * System.out.println
-         * (clazz.getDeclaredFields()[i].getType().getCanonicalName()); }
-         */
+
         return ret;
     }
 
-    /*
-     * (non-Javadoc)
-     * @seeeu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#
-     * getDeclaredWFServiceNames()
+	/* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getDeclaredWFServiceNames()
      */
     public List<String> getDeclaredWFServiceNames() {
         List<String> ret = new ArrayList<String>();
@@ -114,19 +95,15 @@ public abstract class WorkflowTemplateHelper implements Serializable {
         return ret;
     }
 
-    /*
-     * (non-Javadoc)
-     * @seeeu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#
-     * getSupportedServiceTypes
+	/* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getSupportedServiceTypes
      */
     public List<String> getSupportedServiceTypes() {
         return Arrays.asList(supportedPlanetsServiceTypes);
     }
 
-    /*
-     * (non-Javadoc)
-     * @seeeu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#
-     * isServiceTypeSupported(java.lang.reflect.Field)
+	/* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#isServiceTypeSupported(java.lang.reflect.Field)
      */
     public boolean isServiceTypeSupported(Field f) {
         if (getSupportedServiceTypes().contains(f.getType().getCanonicalName())) {
@@ -135,55 +112,43 @@ public abstract class WorkflowTemplateHelper implements Serializable {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * @seeeu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#
-     * setServiceCallConfigs(eu.planets_project.services.PlanetsService,
-     * eu.planets_project.ifr.core.wee.impl.workflow.ServiceCallConfigs)
+	/* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#setServiceCallConfigs(eu.planets_project.services.PlanetsService, eu.planets_project.ifr.core.wee.api.workflow.ServiceCallConfigs)
      */
     public void setServiceCallConfigs(PlanetsService forService, ServiceCallConfigs serCallConfigs) {
         this.serviceInvocationConfigs.put(forService, serCallConfigs);
     }
 
-    /*
-     * (non-Javadoc)
-     * @seeeu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#
-     * getServiceCallConfigs(eu.planets_project.services.PlanetsService)
+	/* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getServiceCallConfigs(eu.planets_project.services.PlanetsService)
      */
     public ServiceCallConfigs getServiceCallConfigs(PlanetsService forService) {
         return this.serviceInvocationConfigs.get(forService);
     }
 
-    /*
-     * (non-Javadoc)
+	/* (non-Javadoc)
      * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#setWorkflowContext(WorkflowContext)
      */
 	public void setWorkflowContext(WorkflowContext wfContext){
 		this.wfContext = wfContext;
 	}
 	
-    /*
-     * (non-Javadoc)
+	/* (non-Javadoc)
      * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getWorkflowContext()
      */
 	public WorkflowContext getWorkflowContext(){
 		return this.wfContext;
 	}
 	
-    /*
-     * (non-Javadoc)
-     * @see
-     * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getData()
+	/* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getData()
      */
     public List<DigitalObject> getData() {
-        return data;
+        return this.data;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#setData
-     * (java.util.List)
+	/* (non-Javadoc)
+     *  @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#setData(java.util.List)
      */
     public void setData(List<DigitalObject> data) {
         this.data = data;
@@ -195,7 +160,8 @@ public abstract class WorkflowTemplateHelper implements Serializable {
      * @return References to the given digital object, stored in the given
      *         folder
      */
-    public static List<URL> reference(List<DigitalObject> objects, File folder) {
+    @SuppressWarnings("deprecation")
+	public static List<URL> reference(List<DigitalObject> objects, File folder) {
         List<URL> urls = new ArrayList<URL>();
         List<File> files = DigitalObjectUtils.getDigitalObjectsAsFiles(objects, folder);
         for (File f : files) {
@@ -237,7 +203,7 @@ public abstract class WorkflowTemplateHelper implements Serializable {
     
     /**
      * Returns host and port of the system the wee is running on as configured through AppServer installation
-     * @return
+     * @return the host authority as a java.lang.String
      * @throws URISyntaxException
      */
     public static String getHostAuthority() throws URISyntaxException{
@@ -246,31 +212,34 @@ public abstract class WorkflowTemplateHelper implements Serializable {
     }
 
     private WorkflowResult wfResult = null;
-    private void setWFResult(WorkflowResult wfResult){
+    @SuppressWarnings("unused")
+	private void setWFResult(WorkflowResult wfResult){
     	wfResult = new WorkflowResult();
     }
     
-    /**
+	/* (non-Javadoc)
      * @see WorkflowTemplate#getWFResult()
      */
     public WorkflowResult getWFResult(){
-    	if(wfResult==null)
-    		wfResult = new WorkflowResult(this.getWorkflowReportingLogger());
-    	return wfResult;
+    	if(this.wfResult==null)
+    		this.wfResult = new WorkflowResult(this.getWorkflowReportingLogger());
+    	return this.wfResult;
     }
     
-    /**
+	/* (non-Javadoc)
      * @see WorkflowTemplate#addWFResultItem(WorkflowResultItem)
      */
     public void addWFResultItem(WorkflowResultItem wfResultItem){
     	this.getWFResult().addWorkflowResultItem(wfResultItem);
     }
     
-    private ReportingLog wfLogger;
+    /**
+     * @return The ReportingLog
+     */
     public ReportingLog getWorkflowReportingLogger(){
-    	if(wfLogger==null)
-    		wfLogger = new ReportingLog(Logger.getLogger(WorkflowResult.class),this.getWorklowInstanceID()+"");
-    	return wfLogger;
+    	if(this.wfLogger==null)
+    		this.wfLogger = new ReportingLog(Logger.getLogger(WorkflowResult.class),this.getWorklowInstanceID()+"");
+    	return this.wfLogger;
     }
     
     /**
@@ -281,12 +250,14 @@ public abstract class WorkflowTemplateHelper implements Serializable {
     	this.wfInstanceUUID = id;
     }
     
+    /**
+     * @return the UUID identifying the WorkflowInstance
+     */
     public UUID getWorklowInstanceID(){
     	return this.wfInstanceUUID;
     }
     
-    /**
-     * 
+    /*
      * @see WorkflowTemplate#storeDigitalObjectInJCR(DigitalObject)
      * @return
      */
@@ -314,8 +285,7 @@ public abstract class WorkflowTemplateHelper implements Serializable {
 		return resDo;
     }*/
     
-    /*
-     * (non-Javadoc)
+	/* (non-Javadoc)
      * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#storeDigitalObject
      */
     public URI storeDigitalObject(DigitalObject digoToStore) 
@@ -324,8 +294,7 @@ public abstract class WorkflowTemplateHelper implements Serializable {
     	return this.getDataRegistry().getDefaultDigitalObjectManager().storeAsNew(digoToStore);
     }
        
-    /*
-     * (non-Javadoc)
+	/* (non-Javadoc)
      * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#storeDigitalObject
      */
     public URI storeDigitalObjectInRepository(DigitalObject digoToStore, URI repositoryID) 
@@ -334,8 +303,7 @@ public abstract class WorkflowTemplateHelper implements Serializable {
     	return this.getDataRegistry().getDigitalObjectManager(repositoryID).storeAsNew(digoToStore);
     }
     
-    /*
-     * (non-Javadoc)
+	/* (non-Javadoc)
      * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#storeDigitalObject
      */
     public URI storeDigitalObjectInRepository(URI objectLocation, DigitalObject digoToStore, URI repositoryID) 
@@ -344,38 +312,35 @@ public abstract class WorkflowTemplateHelper implements Serializable {
     	return this.getDataRegistry().getDigitalObjectManager(repositoryID).storeAsNew(objectLocation,digoToStore);
     }
     
-    /*
-     * (non-Javadoc)
+	/* (non-Javadoc)
      * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#getDataRegistry
      */
     public DataRegistry getDataRegistry(){
     	return this.dataRegistry;
     }
     
-    /*
-     * (non-Javadoc)
+	/* (non-Javadoc)
      * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#retrieveDigitalObjectDataRegistryRef
      */
     public DigitalObject retrieveDigitalObjectDataRegistryRef(URI digitalObjectRef) throws DigitalObjectNotFoundException{
     	return this.getDataRegistry().retrieve(digitalObjectRef);
     }
     
-    
-    
     /**
      * Returns the Agent of the batch processor the template is currently executed by.
-     * @return
+     * @return the Agent
      */
     public Agent getWEEAgent(){
-    	if(agentWEE==null)
-    		agentWEE = new Agent("Planets-WEE-v1.0", "The Planets Workflow Execution Engine", "planets://workflow/processor");
-    	return agentWEE;
+    	if(this.agentWEE==null)
+    		this.agentWEE = new Agent("Planets-WEE-v1.0", "The Planets Workflow Execution Engine", "planets://workflow/processor");
+    	return this.agentWEE;
     }
     
-    Agent agentWEE = null;
+	/* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#setWEEAgent
+     */
     public void setWEEAgent(Agent agent){
     	//FIXME: AL: this should actually be provided by the WEE at runtime
     	this.agentWEE = agent;
     }
-    
 }

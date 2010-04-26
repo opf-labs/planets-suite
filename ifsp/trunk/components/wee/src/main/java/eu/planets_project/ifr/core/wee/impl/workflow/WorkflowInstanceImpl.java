@@ -43,6 +43,10 @@ public class WorkflowInstanceImpl implements WorkflowInstance{
 		return this.wfTemplate;
 	}
 
+	public WorkflowResult initializeExecution() {
+		return this.wfTemplate.initializeExecution();
+	}
+	
 	public List<DigitalObject> getData() {
 		return this.wfTemplate.getData();
 	}
