@@ -667,6 +667,10 @@ public class DigitalObjectCompare {
     public void setAddManPropDesc(String addManPropDesc) {
         this.addManPropDesc = addManPropDesc;
     }
+    
+    public void updateManualMeasurment(){
+    	//TODO method missing!!
+    }
 
     /**
      * 
@@ -686,7 +690,7 @@ public class DigitalObjectCompare {
         // And persist it:
         ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
         mm.addManualUserProperty(user.getUserid(), mp );
-        log.info("Created user property: "+mp);
+        log.info("Created user property: "+mp+" for user: "+user.getUserid());
         this.newManProp = mp.getURI();
         // And clear the fields.
         this.setAddManPropName("");
@@ -712,6 +716,7 @@ public class DigitalObjectCompare {
     public void setManualMeasurementEnvironment( String env ) {
         this.getManualMeasurementEvent().getAgent().setUserEnvironmentDescription(env);
     }
+    
 
     /**
      * @return

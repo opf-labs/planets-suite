@@ -133,7 +133,7 @@ public class ManuallyMeasuredPropertyHandlerImpl {
 	}
 	
 	/**
-	 * A static utility method to create ManuallyMeasuredProperties for a given user
+	 * A static utility method to create (!=store) ManuallyMeasuredProperties for a given user
 	 * @param userName
 	 * @param pName
 	 * @param pDescription
@@ -227,7 +227,11 @@ public class ManuallyMeasuredPropertyHandlerImpl {
 			
 			//2. add new property and write back to disk
 			if(userProps.contains(p)){
-				log.info("user property already contained");
+				log.info("user property already contained - updating definition");
+				//in this case we're updating
+				userProps.remove(p);
+				userProps.add(p);
+				
 			}else{
 				userProps.add(p);
 				log.info("added user property: "+p.toString()+"overall user created properties: "+userProps.size());
@@ -275,12 +279,19 @@ public class ManuallyMeasuredPropertyHandlerImpl {
 	/**
 	 * removes a specific property from the user's config space for manual properties
 	 * @param userName
-	 * @param p
+	 * @param name property name or URI
 	 */
 	public void removeManualUserProperty(String userName, String name){
-		ManuallyMeasuredProperty p = this.createUserProperty(userName, name, null);
-		this.removeManualUserProperty(userName, p);
+        //check if name or uri, when uri extract the proeprty's name from it
+        if((name!=null)&&(userName!=null)){
+        	if(name.lastIndexOf("/")!=-1){
+        		name = name.substring(name.lastIndexOf("/")+1);
+        	}
+        	ManuallyMeasuredProperty p = this.createUserProperty(userName, name, null);
+        	this.removeManualUserProperty(userName, p);
+        }
 	}
+	
 
 	/**
 	 * removes all user created properties from his config space for manual properties
