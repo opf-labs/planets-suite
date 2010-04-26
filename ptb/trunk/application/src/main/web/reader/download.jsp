@@ -1,4 +1,4 @@
-<%@ page import= "java.io.*, java.net.URLDecoder, java.net.URI, eu.planets_project.services.utils.FileUtils, eu.planets_project.tb.impl.data.util.DataHandlerImpl, eu.planets_project.tb.api.data.util.DigitalObjectRefBean" %><% 
+<%@ page import= "java.io.*, java.net.URLDecoder, java.net.URI, eu.planets_project.tb.impl.data.util.DataHandlerImpl, eu.planets_project.tb.api.data.util.DigitalObjectRefBean" %><% 
 
 // Pick up the parameters:
 String fid = request.getParameter("fid");

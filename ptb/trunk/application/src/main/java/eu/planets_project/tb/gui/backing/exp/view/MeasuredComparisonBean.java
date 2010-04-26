@@ -73,7 +73,7 @@ public class MeasuredComparisonBean
         Property p = this.getFirstMeasured();
         if( p == null ) return "";
         String value = p.getValue();
-        if( value.length() > 200 ) value = value.substring(0, 200) + " ...";
+        if( value != null && value.length() > 200 ) value = value.substring(0, 200) + " ...";
         return value;
     }
 

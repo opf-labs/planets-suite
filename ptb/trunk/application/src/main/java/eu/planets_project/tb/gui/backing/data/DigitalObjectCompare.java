@@ -579,29 +579,40 @@ public class DigitalObjectCompare {
             log.error("No property ["+this.newManProp+"] found!");
             return;
         }
-        // Store
+        // Make the property
+        Property p = new Property.Builder( URI.create(mp.getURI()) ).description(mp.getDescription()).name(mp.getName()).build();
+        this.createMeasurement(p, this.dobUri1, this.newManVal1 );
+        this.createMeasurement(p, this.dobUri2, this.newManVal2 );
+        DigitalObjectCompare.persistExperiment();
+    }
+
+    /**
+     * A single-property measurement:
+     * @param p
+     * @param dobUri
+     * @param value
+     */
+    private void createMeasurement(Property p, String dobUri, String value ) {
+        // Make
         MeasurementEventImpl me = this.getManualMeasurementEvent();
         MeasurementImpl m = new MeasurementImpl(me);
         // Create a property from the manual one:
-        Property p = new Property.Builder( URI.create(mp.getURI()) ).description(mp.getDescription()).name(mp.getName()).build();
-        m.setProperty(p);
-        m.setUserEquivalence(this.newManEqu);
-        m.setEquivalence(Equivalence.UNKNOWN);
-        m.setMeasurementType( MeasurementType.DOB_COMPARE );
+        m.setProperty( new Property.Builder(p).build() );
+        //m.setUserEquivalence(this.newManEqu);
+        m.setEquivalence( Equivalence.UNKNOWN );
+        m.setMeasurementType( MeasurementType.DOB );
+        m.setValue(value);
         MeasurementTarget target = new MeasurementTarget();
-        target.setType(TargetType.DIGITAL_OBJECT_PAIR);
-        target.getDigitalObjects().add(0, dobUri1);
-        target.getDigitalObjects().add(1, dobUri2);
+        target.setType(TargetType.DIGITAL_OBJECT);
+        target.getDigitalObjects().add(0, dobUri);
+        /*
         target.setDigitalObjectProperty( 0, 
-                    new Property.Builder( p ).value(this.newManVal1).build()
+                    new Property.Builder( p ).value(value).build()
                 );
-        target.setDigitalObjectProperty( 1,
-                    new Property.Builder( p ).value(this.newManVal2).build()
-                );
+        */
         m.setTarget(target);
         // And add it, and persist:
         me.addMeasurement(m);
-        DigitalObjectCompare.persistExperiment();
     }
     
     /**
