@@ -2220,7 +2220,7 @@ public class NewExpWizardController{
         for( String stage: measurements.keySet() ) {
             if( selectedStage == null || selectedStage.equals(stage) ) {
                 for( MeasurementImpl measurement : measurements.get(stage) ) {
-                    MeasurementBean measurebean =  new MeasurementBean(measurement);
+                    MeasurementBean measurebean =  new MeasurementBean(null, measurement);
                     measurebean.setSelected(true);
                     measurebean.setStage(stage);
                     mbeans.add(measurebean);

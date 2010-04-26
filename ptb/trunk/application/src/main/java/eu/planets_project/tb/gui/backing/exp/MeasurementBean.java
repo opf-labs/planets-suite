@@ -46,23 +46,16 @@ public class MeasurementBean extends MeasurementImpl {
     /** Copy of the measurement DB record */
     private long measurementRecordId = -1;
     
-    /**
-     * @param measurement
-     */
-    public MeasurementBean(MeasurementImpl measurement) {
-        super(null, measurement);
-        if( measurement.getEvent() != null ) {
-            this.stage = measurement.getEvent().getWorkflowStage();
-        }
-        this.measurementRecordId = measurement.getId();
-    }
-
+    /** The Measurement Event */
+    MeasurementEventImpl event = null;
+    
     /**
      * @param me
      * @param m
      */
     public MeasurementBean(MeasurementEventImpl me, MeasurementImpl m) {
         super(me, m);
+        this.event = me;
         this.measurementRecordId = m.getId();
     }
 
@@ -95,6 +88,13 @@ public class MeasurementBean extends MeasurementImpl {
     }
     
     /**
+     * @return the event
+     */
+    public MeasurementEventImpl getEvent() {
+        return event;
+    }
+
+    /**
      * @return
      */
     public MeasurementAgent getAgent() {
@@ -103,7 +103,7 @@ public class MeasurementBean extends MeasurementImpl {
         }
         return null;
     }
-
+    
     /**
      * @return
      */

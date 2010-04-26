@@ -60,7 +60,7 @@ public class MeasurementImpl implements Serializable {
     
     //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @XmlTransient
-    MeasurementEventImpl event;
+    //MeasurementEventImpl event;
     
     /** The property that has been measured. */
     @Lob
@@ -138,7 +138,7 @@ public class MeasurementImpl implements Serializable {
      * @param m  
      */
     public MeasurementImpl(MeasurementEventImpl event ) {
-        this.event = event;
+//        this.event = event;
     }
     
     /**
@@ -147,7 +147,7 @@ public class MeasurementImpl implements Serializable {
      * @param m
      */
     public MeasurementImpl(MeasurementEventImpl event, MeasurementImpl m) {
-        this.event = event;
+//        this.event = event;
         this.property = new Property.Builder( m.getProperty() ).build();
         this.target = m.target;
     }
@@ -163,7 +163,7 @@ public class MeasurementImpl implements Serializable {
     public MeasurementImpl(MeasurementEventImpl event, URI identifier, 
             String name, String unit, String description, String type, MeasurementTarget target ) {
         super();
-        this.event = event;
+//        this.event = event;
         this.property = new Property.Builder(identifier).name(name).unit(unit).description(description).type(type).build();
         this.target = target;
     }
@@ -184,7 +184,8 @@ public class MeasurementImpl implements Serializable {
      * @param m
      */
     public MeasurementImpl(MeasurementImpl m) {
-        this(m.event, m.property, m.target );
+//        this(m.event, m.property, m.target );
+        this(null, m.property, m.target );
     }
 
     /**
@@ -192,7 +193,7 @@ public class MeasurementImpl implements Serializable {
      * @param p
      */
     public MeasurementImpl(MeasurementEventImpl event, Property p) {
-        this.event = event;
+//        this.event = event;
         this.property = new Property.Builder(p).build();
         this.target = null;
     }
@@ -203,7 +204,7 @@ public class MeasurementImpl implements Serializable {
      * @param target
      */
     public MeasurementImpl(MeasurementEventImpl event, Property p, MeasurementTarget target ) {
-        this.event = event;
+//        this.event = event;
         this.property = new Property.Builder(p).build();
         this.target = target;
     }
@@ -213,7 +214,8 @@ public class MeasurementImpl implements Serializable {
      * @return
      */
     public MeasurementImpl clone() {
-        return new MeasurementImpl( this.event, this.property );
+//        return new MeasurementImpl( this.event, this.property );
+        return new MeasurementImpl( null, this.property );
     }
 
     /**
@@ -320,16 +322,20 @@ public class MeasurementImpl implements Serializable {
     /**
      * @param measurementEventImpl
      */
+    /*
     public void setEvent(MeasurementEventImpl event) {
        this.event = event;
     }
+    */
 
     /**
      * @return
      */
+    /*
     public MeasurementEventImpl getEvent() {
         return this.event;
     }
+    */
 
     /**
      * @return the targetType

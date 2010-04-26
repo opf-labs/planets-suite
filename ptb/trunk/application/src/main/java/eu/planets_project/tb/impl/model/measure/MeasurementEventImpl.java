@@ -178,7 +178,7 @@ public class MeasurementEventImpl implements Serializable, Comparable<Measuremen
      */
     public void addMeasurement(MeasurementImpl m) {
         this.measurements.add(m);
-        m.setEvent(this);
+//        m.setEvent(this);
     }
 
     /**

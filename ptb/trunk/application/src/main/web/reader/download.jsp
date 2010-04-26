@@ -1,4 +1,4 @@
-<%@ page import= "java.io.*, java.net.URLDecoder, java.net.URI, eu.planets_project.tb.impl.data.util.DataHandlerImpl, eu.planets_project.tb.api.data.util.DigitalObjectRefBean" %><% 
+<%@ page import= "java.io.*, java.net.URLDecoder, java.net.URI, org.apache.commons.io.IOUtils, eu.planets_project.tb.impl.data.util.DataHandlerImpl, eu.planets_project.tb.api.data.util.DigitalObjectRefBean" %><% 
 
 // Pick up the parameters:
 String fid = request.getParameter("fid");
@@ -21,8 +21,8 @@ response.setContentType( (mimetype != null) ? mimetype : "application/octet-stre
 if( dh.getSize() >= 0 ) {
     response.setContentLength( ((Long)dh.getSize()).intValue() );
 }
-// This should allow the content to be rendered by the browser, but the filename is ignored.
-response.setHeader( "Content-Disposition", "inline; filename=\"" + filename + "\"" );
+// This should allow the content to be rendered by the browser, but the filename is ignored and confuses some browsers.
+response.setHeader( "Content-Disposition", "inline;");// filename=\"" + filename + "\"" );
 // The following alternative forces a download:
 //response.setHeader( "Content-Disposition", "attachment; filename=\"" + filename + "\"" );
 
@@ -32,7 +32,7 @@ ServletOutputStream op = response.getOutputStream();
 
 try {
     
-    FileUtils.writeInputStreamToOutputStream(in,op);
+    IOUtils.copyLarge(in,op);
     
 } finally {
     if( in != null ) in.close();

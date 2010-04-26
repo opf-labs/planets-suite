@@ -59,6 +59,7 @@ public class MeasuredComparisonEventBean extends MeasurementEventBean {
      */
     public List<MeasuredComparisonBean> getComparisons() {
         Map<String,MeasuredComparisonBean> cmp = new HashMap<String,MeasuredComparisonBean>();
+        log.info("Looking for comparisons out of "+this.getEvent().getMeasurements().size());
         for( MeasurementImpl m : this.getEvent().getMeasurements() ) {
             if(m.getTarget().getType() == TargetType.DIGITAL_OBJECT_PAIR ) {
                 cmp.put( m.getIdentifier(), new MeasuredComparisonBean(m) );

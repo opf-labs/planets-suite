@@ -447,7 +447,7 @@ public class DigitalObjectCompare {
             }
             i++;
         }
-        log.info("Got getExperimentMeasurements "+ms.size());
+        log.info("Got getExperimentMeasurements from Events, "+ms.size()+" out of "+mevl.size());
         return ms;
     }
     
@@ -474,6 +474,7 @@ public class DigitalObjectCompare {
         }
         // If none, create one and pass it back.
         if( me == null ) {
+            log.info("Creating Manual Measurement Event.");
             me = this.createMeasurementEvent();
             UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
             me.setAgent( new MeasurementAgent( user ));
@@ -579,10 +580,12 @@ public class DigitalObjectCompare {
             log.error("No property ["+this.newManProp+"] found!");
             return;
         }
+        // Lookup the event:
+        MeasurementEventImpl mev = this.getManualMeasurementEvent();
         // Make the property
         Property p = new Property.Builder( URI.create(mp.getURI()) ).description(mp.getDescription()).name(mp.getName()).build();
-        this.createMeasurement(p, this.dobUri1, this.newManVal1 );
-        this.createMeasurement(p, this.dobUri2, this.newManVal2 );
+        this.createMeasurement(mev, p, this.dobUri1, this.newManVal1 );
+        this.createMeasurement(mev, p, this.dobUri2, this.newManVal2 );
         DigitalObjectCompare.persistExperiment();
     }
 
@@ -592,10 +595,9 @@ public class DigitalObjectCompare {
      * @param dobUri
      * @param value
      */
-    private void createMeasurement(Property p, String dobUri, String value ) {
+    private void createMeasurement(MeasurementEventImpl mev, Property p, String dobUri, String value ) {
         // Make
-        MeasurementEventImpl me = this.getManualMeasurementEvent();
-        MeasurementImpl m = new MeasurementImpl(me);
+        MeasurementImpl m = new MeasurementImpl(mev);
         // Create a property from the manual one:
         m.setProperty( new Property.Builder(p).build() );
         //m.setUserEquivalence(this.newManEqu);
@@ -612,12 +614,13 @@ public class DigitalObjectCompare {
         */
         m.setTarget(target);
         // And add it, and persist:
-        me.addMeasurement(m);
+        mev.addMeasurement(m);
     }
     
     /**
      */
     public void updateManualMeasurement() {
+        log.info("Updating manual measurement.");
         DigitalObjectCompare.persistExperiment();
     }
 
