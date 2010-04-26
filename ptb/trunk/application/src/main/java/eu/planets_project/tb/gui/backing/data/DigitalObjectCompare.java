@@ -482,25 +482,25 @@ public class DigitalObjectCompare {
         return me;
     }
     
-    private ManuallyMeasuredProperty newManProp;
+    private String newManProp;
     private String addManPropName;
     private String addManPropDesc;
     private String newManVal1;
     private String newManVal2;
-    private String newManCmp;
+    //private String newManCmp;
     private EquivalenceStatement newManEqu;
     
     /**
      * @return the newManProp
      */
-    public ManuallyMeasuredProperty getNewManProp() {
+    public String getNewManProp() {
         return newManProp;
     }
 
     /**
      * @param newManProp the newManProp to set
      */
-    public void setNewManProp(ManuallyMeasuredProperty newManProp) {
+    public void setNewManProp(String newManProp) {
         this.newManProp = newManProp;
     }
 
@@ -535,16 +535,20 @@ public class DigitalObjectCompare {
     /**
      * @return the newManCmp
      */
+    /*
     public String getNewManCmp() {
         return newManCmp;
     }
+    */
 
     /**
      * @param newManCmp the newManCmp to set
      */
+    /*
     public void setNewManCmp(String newManCmp) {
         this.newManCmp = newManCmp;
     }
+    */
 
     /**
      * @return the newManEqu
@@ -563,11 +567,24 @@ public class DigitalObjectCompare {
     /**
      */
     public void storeManualMeasurement() {
+        // Look up the definition:
+        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        List<ManuallyMeasuredProperty> mps = mm.loadAllManualProperties(user.getUserid());
+        ManuallyMeasuredProperty mp = null;
+        for( ManuallyMeasuredProperty amp : mps ) {
+            if( amp.getURI().equals(this.newManProp)) mp = amp;
+        }
+        if( mp == null ) {
+            log.error("No property ["+this.newManProp+"] found!");
+            return;
+        }
+        // Store
         MeasurementEventImpl me = this.getManualMeasurementEvent();
         MeasurementImpl m = new MeasurementImpl(me);
         // Create a property from the manual one:
-        Property mp = new Property.Builder( URI.create( newManProp.getURI()) ).description(this.newManProp.getDescription()).name(this.newManProp.getName()).build();
-        m.setProperty(mp);
+        Property p = new Property.Builder( URI.create(mp.getURI()) ).description(mp.getDescription()).name(mp.getName()).build();
+        m.setProperty(p);
         m.setUserEquivalence(this.newManEqu);
         m.setEquivalence(Equivalence.UNKNOWN);
         m.setMeasurementType( MeasurementType.DOB_COMPARE );
@@ -576,10 +593,10 @@ public class DigitalObjectCompare {
         target.getDigitalObjects().add(0, dobUri1);
         target.getDigitalObjects().add(1, dobUri2);
         target.setDigitalObjectProperty( 0, 
-                    new Property.Builder( mp ).value(this.newManVal1).build()
+                    new Property.Builder( p ).value(this.newManVal1).build()
                 );
         target.setDigitalObjectProperty( 1,
-                    new Property.Builder( mp ).value(this.newManVal2).build()
+                    new Property.Builder( p ).value(this.newManVal2).build()
                 );
         m.setTarget(target);
         // And add it, and persist:
@@ -603,7 +620,7 @@ public class DigitalObjectCompare {
         // Build select list:
         List<SelectItem> mpsl = new ArrayList<SelectItem>();
         for( ManuallyMeasuredProperty mp : mps ) {
-            mpsl.add(new SelectItem(mp, mp.getName()) );
+            mpsl.add(new SelectItem(mp.getURI(), mp.getName()) );
         }
         log.info("Returning "+mpsl.size()+" properties.");
         return mpsl;
@@ -650,12 +667,13 @@ public class DigitalObjectCompare {
             log.error("Could not create new manual property: No description.");
             return;
         }
-        this.newManProp = ManuallyMeasuredPropertyHandlerImpl.createUserProperty(
+        ManuallyMeasuredProperty mp = ManuallyMeasuredPropertyHandlerImpl.createUserProperty(
                 user.getUserid(), this.getAddManPropName(), this.getAddManPropDesc() );
         // And persist it:
         ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
-        mm.addManualUserProperty(user.getUserid(), this.newManProp);
-        log.info("Created user property: "+this.newManProp);
+        mm.addManualUserProperty(user.getUserid(), mp );
+        log.info("Created user property: "+mp);
+        this.newManProp = mp.getURI();
         // And clear the fields.
         this.setAddManPropName("");
         this.setAddManPropDesc("");

@@ -198,10 +198,10 @@
         <rich:simpleTogglePanel switchType="client" opened="false" label="Create a new property...">
         <fieldset>
         <p><h:outputLabel value="Name" for="newPropName"/>
-          <h:inputText required="true" size="80" id="newPropName" value="#{DobCompare.addManPropName}"/>
+          <h:inputText size="80" id="newPropName" value="#{DobCompare.addManPropName}"/>
         </p>
         <p><h:outputLabel value="Description" for="newPropDesc"/>
-          <h:inputTextarea required="true" rows="5" cols="80" id="newPropDesc" value="#{DobCompare.addManPropDesc}"/>
+          <h:inputTextarea rows="5" cols="80" id="newPropDesc" value="#{DobCompare.addManPropDesc}"/>
         </p>
         
         <a4j:commandButton action="#{DobCompare.createNewManualMeasurementProperty}" reRender="dobManualCompare" value="Add"/>
@@ -217,10 +217,11 @@
     <p><h:outputLabel value="Value in #{DobCompare.dob2.leafname}" for="newValueTwo" styleClass="auto"/>
           <h:inputText id="newValueTwo" value="#{DobCompare.newManVal2}"/>
     </p>
-    
+<!-- Lets stick to simple property extraction for now. Comparative properties are hard.
     <p><h:outputLabel value="Comparative Value" for="newValueCmp" styleClass="auto"/>
-          <h:inputText id="newValueCmp" value="#{DobCompare.newManCmp}"/>
+          <h:inputText id="newValueCmp" value="# {DobCompare.newManCmp}"/>
     </p>
+ -->
     
         <a4j:commandButton action="#{DobCompare.storeManualMeasurement}" reRender="dobManualCompare,dobCompareMeasurements" value="Store" />
         

@@ -292,7 +292,7 @@
   </target>
 
   <target name="deploy:ds" description="Deploy the TB data source.">
-    <copy file="${src.resources}/META-INF/testbed-ds.xml" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+    <copy file="${src.resources}/META-INF/testbed-ds.xml" todir="${jboss.home}/server/default/deploy" />
   </target>
   
   <target name="deploy:doms" description="Deploy the Testbed-specific Data Registry configuration files.">
