@@ -1,10 +1,306 @@
 <extractedTB3ontologyProperties>
-	<property tburi="planets://testbed/properties/TB3ontology/TestName1">
-		<name>TestName1</name>
-		<description>TestDescription1</description>
-	</property>
-	<property tburi="planets://testbed/properties/TB3ontology/TestName2">
-		<name>TestName2</name>
-		<description>TestDescription2</description>
-	</property>
+<property tburi="planets://testbed/properties/ontology/Footer_font_colour">
+<name>Footer_font_colour</name>
+<description>Identifies the font colour of footers.. The font colour of footers. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Footer_font_size">
+<name>Footer_font_size</name>
+<description>Font size of footers.. The font size of footers. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Footer_font_style">
+<name>Footer_font_style</name>
+<description>Font style of footers.. The font style of footers. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Footer_spacing-bottom">
+<name>Footer_spacing-bottom</name>
+<description>Identifies the space from bottom of footer to element below. . Space from right of footer to element below. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Header_font_size">
+<name>Header_font_size</name>
+<description>Font size of headers.. The font size of headers. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Header_line_spacing">
+<name>Header_line_spacing</name>
+<description>Identifies the line spacing of headers.. The spacing between two lines of headers. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Header_spacing-bottom">
+<name>Header_spacing-bottom</name>
+<description>Identifies the space from bottom of header to element below. . Space from right of header to element below. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Header_spacing-left">
+<name>Header_spacing-left</name>
+<description>Identifies the space from left of Header to element at the left. . Space from left of header to element at the left. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Letter_or_word_spacing">
+<name>Letter_or_word_spacing</name>
+<description>Identifies the letter / word spacing of plain text. . Indicate if the white space of a line is evenly distributed between the letters or words. If there are several values for this property, choose one to focus on. proportional / absolute (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_columns">
+<name>Number_of_columns</name>
+<description>Identifies the number of columns.. Count the number of columns on a page. No columns means the number is 1. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_different_headers">
+<name>Number_of_different_headers</name>
+<description>Indicates the number of different headers used in the text.. Count the number of different headers, e.g. each chapter could have a different header.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_footnote_references_indicators">
+<name>Number_of_footnote_references_indicators</name>
+<description>Indicates the number of footnote references (indicators). Count the number of footnote references (indicators) in the entire text.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_footnotes">
+<name>Number_of_footnotes</name>
+<description>Indicates the number of footnotes in the text.. Count the number of footnotes in the entire text.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_formulas">
+<name>Number_of_formulas</name>
+<description>Indicates the number of formulas used in the text.. Count the number of formulas.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_graphics">
+<name>Number_of_graphics</name>
+<description>Indicates the number of graphics used in the text.. Count the number of graphics.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_image_captions">
+<name>Number_of_image_captions</name>
+<description>Indicates the number of images used in the text.. Count the number of images.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_images">
+<name>Number_of_images</name>
+<description>Indicates the number of image captions used in the text.. Count the number of image captions.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_table_captions">
+<name>Number_of_table_captions</name>
+<description>Indicates the number of table captions.. Count the number of table captions.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Page_margin-bottom">
+<name>Page_margin-bottom</name>
+<description>Unused space at the bottom of the document above the text... appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Page_margin-left">
+<name>Page_margin-left</name>
+<description>Unused space at the left of the document above the text... appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Page_margin-right">
+<name>Page_margin-right</name>
+<description>Unused space at the right of the document above the text... appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Paragraph_font_size">
+<name>Paragraph_font_size</name>
+<description>Font size of plain text.. The font size of plain text. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Paragraph_spacing-left">
+<name>Paragraph_spacing-left</name>
+<description>Identifies the space from left of paragraph to element at the left. . Space from left of paragraph to element at the left. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Paragraph_spacing-right">
+<name>Paragraph_spacing-right</name>
+<description>Identifies the space from right of paragraph to element at the right.. Space from right of paragraph to element at the right. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Use_of_footers">
+<name>Use_of_footers</name>
+<description>Indicates whether or not footers are used in the text.. Yes if (one or more) footers are used, no if not.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Use_of_watermarks_or_background_images">
+<name>Use_of_watermarks_or_background_images</name>
+<description>Indicates whether or not the text contains a watermark or background image.. Yes if text contains (one ore more) watermarks or background images. . structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Color_depth">
+<name>Color_depth</name>
+<description>Describes the number of bits used to represent the colour of a single pixel;Can not be determined by visual inspection (you cannot simply see it) but only by a tool.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Colour_space_defined">
+<name>Colour_space_defined</name>
+<description>Indicates whether or not the colour space has been defined.;The colour space defines how an application interprets the value of a colour. Can not be determined by visual inspection (you cannot simply see it) but only by a tool.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Image_height">
+<name>Image_height</name>
+<description>Identifies the height of the image.. Size from top to bottom.. appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Audio_resolution">
+<name>Audio_resolution</name>
+<description>Describes the band-width;Describes the band-width</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Columns_spacing">
+<name>Columns_spacing</name>
+<description>Identifies the white space between two columns. . Define the unused space between two columns. If there are several values for this property, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Drop-Out">
+<name>Drop-Out</name>
+<description>Short periods during which the sound is interrupted;Count or estimate of the average number of drop-outs per minute in the audio record.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Duration_audio">
+<name>Duration_audio</name>
+<description>Length of recording. Length of recording, induding "silence" before and after sound."</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Dynamic">
+<name>Dynamic</name>
+<description>Defines the difference between the loudest and the softest sounds.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Footer_line_spacing">
+<name>Footer_line_spacing</name>
+<description>Identifies the line spacing of footers.. The spacing between two lines of footers. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Footer_spacing-left">
+<name>Footer_spacing-left</name>
+<description>Identifies the space from left of footer to element at the left. . Space from left of footer to element at the left. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Footer_spacing-right">
+<name>Footer_spacing-right</name>
+<description>Identifies the space from right of footer to element at the right.. Space from right of footer to element at the right. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Footer_spacing-top">
+<name>Footer_spacing-top</name>
+<description>Identifies the space from top of footer to element above.. Space from top of footer to element above. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Frame_rate">
+<name>Frame_rate</name>
+<description>The speed of change between the pictures;In frames per second</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Header_font_colour">
+<name>Header_font_colour</name>
+<description>Identifies the font colour of headers.. The font colour of headers. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Header_font_style">
+<name>Header_font_style</name>
+<description>Font style of headers.. The font style of headers. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Header_spacing-right">
+<name>Header_spacing-right</name>
+<description>Identifies the space from right of header to element at the right.. Space from right of header to element at the right. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Header_spacing-top">
+<name>Header_spacing-top</name>
+<description>Identifies the space from top of header to element above.. Space from top of header to element above. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/High_Definition">
+<name>High_Definition</name>
+<description>Defines if the video conforms to the High Definition standard.;The amount of information transmitted to the screen. High Definition is the upcoming standard for television sets.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Human_readability">
+<name>Human_readability</name>
+<description>Indicates how well the text is readable.;Grade how well the text is readable. 1 is completely different, 10 is excellent.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Image_width">
+<name>Image_width</name>
+<description>Identifies the width of the image.. Size from left to right.. appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Machine_readability">
+<name>Machine_readability</name>
+<description>Indicates which percentage of the characters of the text are machine readable.;Define this value with a reference application, e.g. an OCR-application. 0% means nothing readable, 100% means every character readable.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_characters">
+<name>Number_of_characters</name>
+<description>Defines the number of characters.. Count the number of characters.. appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_different_footers">
+<name>Number_of_different_footers</name>
+<description>Indicates the number of different footers used in the text.. Count the number of different footers e.g. each chapter could have a different footer.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_graphics_captions">
+<name>Number_of_graphics_captions</name>
+<description>Indicates the number of graphic captions used in the text.. Count the number of graphic captions.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_level_1_subdivisions">
+<name>Number_of_level_1_subdivisions</name>
+<description>Identifies the number of highest level parts the text is divided in.. If the text has a table of contents, a preface and 3 chapters, this number could be 5. Makes it possible to decide whether the structure has been preserved / characterised, and e.g. no chapters have been lost.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_levels">
+<name>Number_of_levels</name>
+<description>Defines the number of subdivision levels beneath the highest level in a text.. If the text is e.g. divided in parts, which each have chapters, which are divided in paragraphs, the number of levels would be 3. For most emails, the number of levels will be 0 if they are not subdivided. Makes it possible to decide whether the structure has been preserved / characterised.. structure."</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_lines">
+<name>Number_of_lines</name>
+<description>Defines the number of lines.. Count the number of lines. . appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_pages">
+<name>Number_of_pages</name>
+<description>Defines the number of pages.. Count the number of pages, including the front page.. appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_tables">
+<name>Number_of_tables</name>
+<description>Indicates the number of tables used in the text.. Count the number of tables.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Number_of_working_hyperlinks">
+<name>Number_of_working_hyperlinks</name>
+<description>Indicates the number of working hyperlinks used in the text.. Count the number of working hyperlinks.. behaviour.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Page_height">
+<name>Page_height</name>
+<description>Total height of the page... appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Page_margin-top">
+<name>Page_margin-top</name>
+<description>Unused space at the top of the document above the text... appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Page_width">
+<name>Page_width</name>
+<description>Total width of the page... appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Paragraph_font_colour">
+<name>Paragraph_font_colour</name>
+<description>Identifies the font colour of plain text.. The font colour of plain text. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Paragraph_font_style">
+<name>Paragraph_font_style</name>
+<description>Font style of plain text.. The font style of plain text. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Paragraph_indentation">
+<name>Paragraph_indentation</name>
+<description>Identifies the space from page margin to left of first line of paragraph.. Space from the page margin to the left of the first line of the paragraph. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Paragraph_line_spacing">
+<name>Paragraph_line_spacing</name>
+<description>Identifies the line spacing of plain text.. The spacing between two lines of plain text. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Paragraph_spacing-bottom">
+<name>Paragraph_spacing-bottom</name>
+<description>Identifies the space from bottom of paragraph to element below. . Space from right of paragraph to element below. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Paragraph_spacing-top">
+<name>Paragraph_spacing-top</name>
+<description>Identifies the space from top of paragraph to element above.. Space from top of paragraph to element above. If there are several instances of "plain text" with different values, choose one to focus on. (for first version). appearance.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Picture_Aspect_Ratio">
+<name>Picture_Aspect_Ratio</name>
+<description>Relation of width to length of a picture</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Picture_Drop-Out">
+<name>Picture_Drop-Out</name>
+<description>Small errors in the picture stream, e.g. a short black screen.;Count or estimate of the avarage number of drop-outs per minute in the video record.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Signal-to-noise-ratio">
+<name>Signal-to-noise-ratio</name>
+<description>Compares the level of a desired signal (such as music) to the level of background noise. The higher the ratio, the less obtrusive the background noise is.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Signal_representation">
+<name>Signal_representation</name>
+<description>Indicates the colour representation scheme, such as RGB</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Size_of_smallest_detail">
+<name>Size_of_smallest_detail</name>
+<description>Defines the smallest detail that can be distinguished in an image.;Can be resolution in a .jpeg or .bmp image, but different for a vector image.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Sound_Drop-Out">
+<name>Sound_Drop-Out</name>
+<description>Small errors in the sound, such as no sound for a short term;Count or estimate of the avarage number of drop-outs per minute in the video record.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Stereo">
+<name>Stereo</name>
+<description>Describes whether files are opened with one or two sound channels;yes for stereo, no for mono.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Tracking">
+<name>Tracking</name>
+<description></description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Use_of_headers">
+<name>Use_of_headers</name>
+<description>Indicates whether or not headers are used in the text.. Yes if (one or more) headers are used, no if not.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Use_of_signatures">
+<name>Use_of_signatures</name>
+<description>Indicates whether or not the text contains any signatures.. Yes if text contains one ore more signatures, no otherwise. Can be in any form, e.g. digital signature ir watermark-like.. structure.</description>
+</property>
+<property tburi="planets://testbed/properties/ontology/Water_marking">
+<name>Water_marking</name>
+<description>Describes if the object contains a watermark;Cannot de defined manually, tool needed.</description>
+</property>
 </extractedTB3ontologyProperties>
