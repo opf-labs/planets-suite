@@ -9,6 +9,7 @@ import java.net.URI;
  * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
 public interface DataRegistry extends DigitalObjectManager {
+	/**	The property key for the default DigitalObjectManager ID */
 	public final static String DEFAULT_KEY = "manager.default";
 
 	/**
@@ -19,29 +20,30 @@ public interface DataRegistry extends DigitalObjectManager {
 	public DigitalObjectManager getDigitalObjectManager(URI uri) throws DigitalObjectManagerNotFoundException;
 	
 	/**
-	 * @return
+	 * @return the default DigitalObjectManager for the DataRegistry
 	 * @throws DigitalObjectManagerNotFoundException
 	 */
 	public DigitalObjectManager getDefaultDigitalObjectManager() throws DigitalObjectManagerNotFoundException;
 
 	/**
-	 * @return
+	 * @return the java.net.URI id of the default DigitalObjectManager
 	 */
 	public URI getDefaultDigitalObjectManagerId();
 	
 	/**
-	 * @param uri
-	 * @return
+	 * @param uri the java.net.URI identifier for a DigitalObjectManager
+	 * @return the java.net.String name of the DigitalObjectManger 
 	 * @throws DigitalObjectManagerNotFoundException
 	 */
 	public String getName(URI uri) throws DigitalObjectManagerNotFoundException;
 
 	/**
-	 * @param uri
-	 * @return
+	 * @param uri the java.net.URI identifier for a DigitalObjectManager
+	 * @return the java.net.String description of the DigitalObjectManger 
 	 * @throws DigitalObjectManagerNotFoundException
 	 */
 	public String getDescription(URI uri) throws DigitalObjectManagerNotFoundException;
+
 	/**
 	 * @param uri - the identifier of the DigitalObjectManager to be queried
 	 * @return true if the DataRegistry knows of DigitalObjectManger with identifier
@@ -55,7 +57,7 @@ public interface DataRegistry extends DigitalObjectManager {
 	public int countDigitalObjectMangers();
 	
 	/**
-	 * @param uri - the identifier of the DigitalObjectManager to be added
+	 * @param name - the name of the DigitalObjectManager to be added
 	 * @param dom - the DigitalObjectManager to be added
 	 * @return true if added successfully, otherwise false
 	 */

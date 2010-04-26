@@ -21,8 +21,9 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 	/** The logger instance */
     private static Logger log = Logger.getLogger(DigitalObjectManagerBase.class.getName());
 
-	/** Public statics for the property names used to configure an instance */
+	/** Public static for the property name used to name an instance */
 	public final static String NAME_KEY = "manager.name";
+	/** Public static for the property name used to describe an instance */
 	public final static String DESC_KEY = "manager.description";
 
 	protected URI id = null;
@@ -30,11 +31,11 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 	protected String description = "";
 
 	@SuppressWarnings("unused")
-	private DigitalObjectManagerBase(){/** We don't want no arg constructors*/};
+	private DigitalObjectManagerBase(){/** We don't want no arg constructors*/}
 
 	protected DigitalObjectManagerBase(Configuration config) {
 		try {
-			String name = config.getString(NAME_KEY);
+			String nam = config.getString(NAME_KEY);
 
 			// We don't care if there's no description
 			try {
@@ -42,9 +43,9 @@ public abstract class DigitalObjectManagerBase implements DigitalObjectManager {
 			} catch (NoSuchElementException e) {
 				this.description = "";
 			}
-			this.checkConstructorArguments(name);
-			this.id = DataRegistryFactory.createDataRegistryIdFromName(name).normalize();
-			this.name = name;
+			this.checkConstructorArguments(nam);
+			this.id = DataRegistryFactory.createDataRegistryIdFromName(nam).normalize();
+			this.name = nam;
 		} catch (NoSuchElementException e) {
 			throw new IllegalArgumentException("Every DOM properties file must have a " +
 					NAME_KEY + " property for a String name", e);

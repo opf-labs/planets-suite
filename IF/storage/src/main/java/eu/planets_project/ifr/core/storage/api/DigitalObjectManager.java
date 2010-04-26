@@ -44,6 +44,7 @@ public interface DigitalObjectManager {
      * @param digitalObject the information to update with
      * @return the id of the updated object
      * @throws DigitalObjectNotStoredException if the storing somehow failed
+     * @throws DigitalObjectNotFoundException 
      */
     public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException, DigitalObjectNotFoundException;
 

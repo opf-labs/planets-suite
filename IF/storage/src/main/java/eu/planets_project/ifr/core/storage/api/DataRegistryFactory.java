@@ -12,8 +12,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
  */
 public final class DataRegistryFactory {
 
-    /** Enforce non-instantiability with a private constructor. */
-    private DataRegistryFactory() {}
+    private DataRegistryFactory() {/** Enforce non-instantiability with a private constructor. */}
 
     /**
      * Factory method, this is the way to get a DataRegistry instance.
