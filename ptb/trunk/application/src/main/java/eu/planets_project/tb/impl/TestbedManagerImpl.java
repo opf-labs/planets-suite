@@ -38,8 +38,23 @@ import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.system.ServiceExecutionHandler;
 
 /**
- * @author alindley
- *
+ * 
+ * The EntityManager we use to talk to the DB is handled differently in
+ * different parts of the code, and that some of the ways we do this may be
+ * causing problems. 
+ * 
+ * Most importantly, the main Experiment updating code,
+ * performed by the TestbedManagerImpl, uses a copy of the EntityManager that is
+ * constructed when the TB application starts up and is shared across sessions
+ * (application scope). 
+ * 
+ * Unfortunately, the EntityManager is not thread-safe, and
+ * therefore there should be a single instance of it per DB transaction (e.g.
+ * request scope perhaps). Currently, the same EntityManager is shared between
+ * requests at the moment, and so is liable to get confused.
+ * 
+ * @author alindley, Andrew.Jackson@bl.uk
+ * 
  */
 public class TestbedManagerImpl 
 	implements eu.planets_project.tb.api.TestbedManager, java.io.Serializable{
@@ -49,6 +64,8 @@ public class TestbedManagerImpl
 	private long lTestbedManagerID;
 	private static TestbedManagerImpl instance;
 	//e.g. used within the serviceTemplate importer and exporter
+	
+	// FIXME Caching and re-use of this entity is probably broken. See above.
 	ExperimentPersistencyRemote edao;
 	
 	// The version number of the Testbed.  Can be overridden in BackendResources.properties.

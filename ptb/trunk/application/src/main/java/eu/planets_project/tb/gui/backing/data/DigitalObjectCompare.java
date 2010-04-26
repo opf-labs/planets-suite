@@ -21,12 +21,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.el.ELContext;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import bsh.This;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
@@ -36,11 +41,14 @@ import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.compare.PropertyComparison;
+import eu.planets_project.services.compare.PropertyComparison.Equivalence;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.tb.api.properties.ManuallyMeasuredProperty;
+import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
@@ -55,7 +63,11 @@ import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
 import eu.planets_project.tb.impl.model.measure.MeasurementAgent.AgentType;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl.EquivalenceStatement;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl.MeasurementType;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
+import eu.planets_project.tb.impl.properties.ManuallyMeasuredPropertyHandlerImpl;
+import eu.planets_project.tb.impl.properties.ManuallyMeasuredPropertyImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.ComparePropertiesWrapper;
@@ -439,6 +451,239 @@ public class DigitalObjectCompare {
         return ms;
     }
     
+    /**
+     * @return
+     */
+    public MeasuredComparisonEventBean getManualMeasurementEventBean() {
+        MeasurementEventImpl me = this.getManualMeasurementEvent();
+        MeasuredComparisonEventBean meb = new MeasuredComparisonEventBean( me, this.getDobUri1(), this.getDobUri2() );
+        return meb;
+    }
+    
+    /**
+     * @return
+     */
+    private MeasurementEventImpl getManualMeasurementEvent() {
+        MeasurementEventImpl me = null;
+        ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(this.getDobUri1());
+        Set<MeasurementEventImpl> measurementEvents = res.getExecutionRecord().getMeasurementEvents();
+        for( MeasurementEventImpl mee : measurementEvents ) {
+            if( mee.getAgent() != null && mee.getAgent().getType() == AgentType.USER ) {
+                me = mee;
+            }
+        }
+        // If none, create one and pass it back.
+        if( me == null ) {
+            me = this.createMeasurementEvent();
+            UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+            me.setAgent( new MeasurementAgent( user ));
+            DigitalObjectCompare.persistExperiment();
+        }
+        return me;
+    }
+    
+    private ManuallyMeasuredProperty newManProp;
+    private String addManPropName;
+    private String addManPropDesc;
+    private String newManVal1;
+    private String newManVal2;
+    private String newManCmp;
+    private EquivalenceStatement newManEqu;
+    
+    /**
+     * @return the newManProp
+     */
+    public ManuallyMeasuredProperty getNewManProp() {
+        return newManProp;
+    }
+
+    /**
+     * @param newManProp the newManProp to set
+     */
+    public void setNewManProp(ManuallyMeasuredProperty newManProp) {
+        this.newManProp = newManProp;
+    }
+
+    /**
+     * @return the newManVal1
+     */
+    public String getNewManVal1() {
+        return newManVal1;
+    }
+
+    /**
+     * @param newManVal1 the newManVal1 to set
+     */
+    public void setNewManVal1(String newManVal1) {
+        this.newManVal1 = newManVal1;
+    }
+
+    /**
+     * @return the newManVal2
+     */
+    public String getNewManVal2() {
+        return newManVal2;
+    }
+
+    /**
+     * @param newManVal2 the newManVal2 to set
+     */
+    public void setNewManVal2(String newManVal2) {
+        this.newManVal2 = newManVal2;
+    }
+
+    /**
+     * @return the newManCmp
+     */
+    public String getNewManCmp() {
+        return newManCmp;
+    }
+
+    /**
+     * @param newManCmp the newManCmp to set
+     */
+    public void setNewManCmp(String newManCmp) {
+        this.newManCmp = newManCmp;
+    }
+
+    /**
+     * @return the newManEqu
+     */
+    public EquivalenceStatement getNewManEqu() {
+        return newManEqu;
+    }
+
+    /**
+     * @param newManEqu the newManEqu to set
+     */
+    public void setNewManEqu(EquivalenceStatement newManEqu) {
+        this.newManEqu = newManEqu;
+    }
+
+    /**
+     */
+    public void storeManualMeasurement() {
+        MeasurementEventImpl me = this.getManualMeasurementEvent();
+        MeasurementImpl m = new MeasurementImpl(me);
+        // Create a property from the manual one:
+        Property mp = new Property.Builder( URI.create( newManProp.getURI()) ).description(this.newManProp.getDescription()).name(this.newManProp.getName()).build();
+        m.setProperty(mp);
+        m.setUserEquivalence(this.newManEqu);
+        m.setEquivalence(Equivalence.UNKNOWN);
+        m.setMeasurementType( MeasurementType.DOB_COMPARE );
+        MeasurementTarget target = new MeasurementTarget();
+        target.setType(TargetType.DIGITAL_OBJECT_PAIR);
+        target.getDigitalObjects().add(0, dobUri1);
+        target.getDigitalObjects().add(1, dobUri2);
+        target.setDigitalObjectProperty( 0, 
+                    new Property.Builder( mp ).value(this.newManVal1).build()
+                );
+        target.setDigitalObjectProperty( 1,
+                    new Property.Builder( mp ).value(this.newManVal2).build()
+                );
+        m.setTarget(target);
+        // And add it, and persist:
+        me.addMeasurement(m);
+        DigitalObjectCompare.persistExperiment();
+    }
+    
+    /**
+     */
+    public void updateManualMeasurement() {
+        DigitalObjectCompare.persistExperiment();
+    }
+
+    /**
+     * @return
+     */
+    public List<SelectItem> getAllManualMeasurementProperties() {
+        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        List<ManuallyMeasuredProperty> mps = mm.loadAllManualProperties(user.getUserid());
+        // Build select list:
+        List<SelectItem> mpsl = new ArrayList<SelectItem>();
+        for( ManuallyMeasuredProperty mp : mps ) {
+            mpsl.add(new SelectItem(mp, mp.getName()) );
+        }
+        log.info("Returning "+mpsl.size()+" properties.");
+        return mpsl;
+    }
+
+    /**
+     * @return the addManPropName
+     */
+    public String getAddManPropName() {
+        return addManPropName;
+    }
+
+    /**
+     * @param addManPropName the addManPropName to set
+     */
+    public void setAddManPropName(String addManPropName) {
+        this.addManPropName = addManPropName;
+    }
+
+    /**
+     * @return the addManPropDesc
+     */
+    public String getAddManPropDesc() {
+        return addManPropDesc;
+    }
+
+    /**
+     * @param addManPropDesc the addManPropDesc to set
+     */
+    public void setAddManPropDesc(String addManPropDesc) {
+        this.addManPropDesc = addManPropDesc;
+    }
+
+    /**
+     * 
+     */
+    public void createNewManualMeasurementProperty() {
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        if( this.getAddManPropName() == null || this.getAddManPropName().trim().equals("") ) {
+            log.error("Could not create new manual property: No name.");
+            return;
+        }
+        if( this.getAddManPropDesc() == null || this.getAddManPropDesc().trim().equals("") ) {
+            log.error("Could not create new manual property: No description.");
+            return;
+        }
+        this.newManProp = ManuallyMeasuredPropertyHandlerImpl.createUserProperty(
+                user.getUserid(), this.getAddManPropName(), this.getAddManPropDesc() );
+        // And persist it:
+        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
+        mm.addManualUserProperty(user.getUserid(), this.newManProp);
+        log.info("Created user property: "+this.newManProp);
+        // And clear the fields.
+        this.setAddManPropName("");
+        this.setAddManPropDesc("");
+    }
+    
+    /**
+     * 
+     */
+    public void removeManualMeasurementProperty() {
+        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        mm.removeManualUserProperty(user.getUserid(), newManProp );
+        this.newManProp = null;
+    }
+    
+    /**
+     * @return
+     */
+    public String getManualMeasurementEnvironment() {
+        return this.getManualMeasurementEvent().getAgent().getUserEnvironmentDescription();
+    }
+    public void setManualMeasurementEnvironment( String env ) {
+        this.getManualMeasurementEvent().getAgent().setUserEnvironmentDescription(env);
+    }
+
+    /**
+     * @return
+     */
     private MeasurementEventImpl createMeasurementEvent() {
         ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(this.getDobUri1());
         // If there is no experiment, return a non-DB event:
@@ -470,5 +715,51 @@ public class DigitalObjectCompare {
         }
         JSFUtil.redirect("/exp/dob_compare.faces?eid="+expBean.getExperiment().getEntityID()+"&dobUri1="+this.getDobUri1()+"&dobUri2="+this.getDobUri2());
    }
+    
+    /**
+     * This is a bit horrible. Loading the resource bundle should work, but I can't get it to 
+     * stick to the right locale, so hacking into the resource bundle via EL works better.
+     * 
+     * TODO Forget this, and just hardcode the types into the comparison page?
+     * 
+     * @return A list of select items corresponding to the different evaluation types.
+     */
+    public List<SelectItem> getEquivalenceOptions() {
+        // Build up select items:
+        List<SelectItem> selects = new ArrayList<SelectItem>();
+        for( EquivalenceStatement state : EquivalenceStatement.values() ) {
+            selects.add(new SelectItem( state, lookupName(state) ));
+        }
+        return selects;
+    }
+    
+    private static String lookupName( EquivalenceStatement state ) {
+        try {
+            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+            // Load the resource bundle:
+            ResourceBundle bundle = null;
+            /*
+            try {
+                Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+                bundle = ResourceBundle.getBundle("eu.planets_project.tb.gui.UIResources", locale );
+            } catch ( MissingResourceException e ) {
+                log.error("Could not load resource bundle: "+e);
+            }
+            */
+            Map map = (Map) elContext.getELResolver().getValue(elContext, null, "res");
+            // Look up
+            String label = state.toString();
+            String key = "exp_stage5.evaluation."+label;
+            String lookup = "res['"+key+"']";
+            String name = (String) map.get(key);
+            if( bundle != null ) label = bundle.getString(key);
+            //log.info("For "+state+" got "+label+" and "+name);
+            if( name != null ) label = name;
+            return label;
+        } catch( Exception e ) {
+            log.error("Failure when looking up "+state+" :: "+e);
+            return state.toString();
+        }
+    }
     
 }

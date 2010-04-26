@@ -26,6 +26,10 @@ import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 
+ * @author Andrew Jackson <Andrew.Jackson@bl.uk>
+ */
 @Stateless
 public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
     
@@ -65,7 +69,7 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
 	public void updateExperiment(Experiment experiment) {
         log.info("Updating experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
         // FIXME Remove this stack trace:
-        new Exception("Updating experiment...").printStackTrace();
+        //new Exception("Updating experiment...").printStackTrace();
         log.info("Experiment currently has "+experiment.getExperimentExecutable().getNumBatchExecutionRecords()+" batch exec records");
 		manager.merge(experiment);
         log.info("Updated experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
@@ -287,9 +291,11 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
     public void removeMeasurementEvent(MeasurementEventImpl me) {
         // See above for removeMeasurement case and problems with this not working.
         //manager.remove( me );
+        /* No longer done this way.
         for( MeasurementImpl m : me.getMeasurements() ) {
             this.removeMeasurement(m);
         }
+        */
         Query query=manager.createNativeQuery("DELETE FROM MeasurementEventImpl WHERE id=:id");
         query.setParameter("id",me.getId());
         query.executeUpdate();

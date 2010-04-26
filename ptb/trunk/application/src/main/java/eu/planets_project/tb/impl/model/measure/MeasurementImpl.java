@@ -76,7 +76,7 @@ public class MeasurementImpl implements Serializable {
         SERVICE,
         /** This measurement is a property determined from a single Digital Object. */
         DOB,
-        /** This measurement is a property determed by comparing two Digital Objects. */
+        /** This measurement is a property determined by comparing two Digital Objects. */
         DOB_COMPARE
     }
     

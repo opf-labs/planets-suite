@@ -190,4 +190,14 @@ public class MeasurementTarget  implements Serializable {
         return this.digitalObjectProperties.get(i);
     }
 
+    /**
+     * @param i
+     * @param property
+     */
+    public void setDigitalObjectProperty(int i, Property property) {
+        Vector<Property> props = new Vector<Property>();
+        props.add(property);
+        this.setDigitalObjectProperties(i, props);
+    }
+
 }

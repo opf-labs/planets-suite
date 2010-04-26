@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
@@ -43,6 +44,9 @@ public class MeasurementAgent  implements Serializable {
     /** A record of the identity of the Agent, if it is a User */
     private String username;
     
+    /** A record of the user's environment. */
+    private String userEnvironmentDescription;
+    
     /** Record the identity of the Agent, if it is a Service */
     private String serviceName;
     private URL serviceEndpoint;
@@ -55,6 +59,13 @@ public class MeasurementAgent  implements Serializable {
         /// TODO ...
         this.serviceName = sd.getName();
         this.serviceEndpoint = sd.getEndpoint();
+    }
+    
+    public MeasurementAgent(UserBean user) {
+        this.type = AgentType.USER;
+        if( user != null ) {
+            this.username = user.getUserid();
+        }
     }
 
     /** */
@@ -86,6 +97,20 @@ public class MeasurementAgent  implements Serializable {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * @return the userEnvironmentDescription
+     */
+    public String getUserEnvironmentDescription() {
+        return userEnvironmentDescription;
+    }
+
+    /**
+     * @param userEnvironmentDescription the userEnvironmentDescription to set
+     */
+    public void setUserEnvironmentDescription(String userEnvironmentDescription) {
+        this.userEnvironmentDescription = userEnvironmentDescription;
     }
 
     /**

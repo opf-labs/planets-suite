@@ -67,7 +67,7 @@
           <f:selectItems value="#{DobCompare.compareServiceList}" />
                     
         </h:selectOneMenu>
-        <a4j:commandButton action="#{DobCompare.runCompareService}" reRender="dobCompareDirect,dobCompareMeasurements" value="Run"/>
+        <a4j:commandButton action="#{DobCompare.runCompareService}" reRender="dobCompareDirect,dobCompareMeasurements" value="Run" disabled="#{ReadOnly}"/>
       </dd>
       <dt>Compare Service Report:</dt>
       <dd>
@@ -157,7 +157,7 @@
         <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
             <h:selectOneMenu value="#{m.userEquivalence}" styleClass="equiv-#{m.userEquivalence}">
               <f:selectItem itemValue="" itemLabel="" />
-              <f:selectItems value="#{m.equivalenceOptions}" />
+              <f:selectItems value="#{DobCompare.equivalenceOptions}" />
               <a4j:support event="onchange" reRender="dobCompareMeasurements" />
             </h:selectOneMenu>
         </rich:column>
@@ -171,6 +171,77 @@
         </f:facet>
 
       </rich:dataTable>
+      
+    </rich:panel>
+    
+    <rich:panel id="dobManualCompare">
+      <f:facet name="header">
+            <h:outputText value="Compare manually..."/>
+      </f:facet>
+      
+  <!-- Manual evaluation: -->
+  <!-- 
+  <ui:include src="/WEB-INF/templates/exp_stage5_manual_properties.xhtml"/>
+   -->
+    <h:panelGroup rendered="#{!ReadOnly}">
+    
+    <fieldset>
+    <legend>Add a property measurement</legend>
+    
+    <p><h:outputLabel value="Property" for="newProperty"/>
+        <h:selectOneMenu id="newProperty" value="#{DobCompare.newManProp}">
+            <f:selectItem itemValue="" itemLabel="Please select a property, or add a new one..." />
+            <f:selectItems value="#{DobCompare.allManualMeasurementProperties}" />
+        </h:selectOneMenu>
+    </p>
+
+        <rich:simpleTogglePanel switchType="client" opened="false" label="Create a new property...">
+        <fieldset>
+        <p><h:outputLabel value="Name" for="newPropName"/>
+          <h:inputText required="true" size="80" id="newPropName" value="#{DobCompare.addManPropName}"/>
+        </p>
+        <p><h:outputLabel value="Description" for="newPropDesc"/>
+          <h:inputTextarea required="true" rows="5" cols="80" id="newPropDesc" value="#{DobCompare.addManPropDesc}"/>
+        </p>
+        
+        <a4j:commandButton action="#{DobCompare.createNewManualMeasurementProperty}" reRender="dobManualCompare" value="Add"/>
+        </fieldset>
+        </rich:simpleTogglePanel>
+    
+    <br/>    
+    
+    <p><h:outputLabel value="Value in #{DobCompare.dob1.leafname}" for="newValueOne" styleClass="auto"/>
+          <h:inputText id="newValueOne" value="#{DobCompare.newManVal1}"/>
+    </p>
+    
+    <p><h:outputLabel value="Value in #{DobCompare.dob2.leafname}" for="newValueTwo" styleClass="auto"/>
+          <h:inputText id="newValueTwo" value="#{DobCompare.newManVal2}"/>
+    </p>
+    
+    <p><h:outputLabel value="Comparative Value" for="newValueCmp" styleClass="auto"/>
+          <h:inputText id="newValueCmp" value="#{DobCompare.newManCmp}"/>
+    </p>
+    
+        <a4j:commandButton action="#{DobCompare.storeManualMeasurement}" reRender="dobManualCompare,dobCompareMeasurements" value="Store" />
+        
+    </fieldset>
+    <fieldset>
+    <legend> <h:outputText value="#{res['exp_stage5.environment']} "/></legend>
+        <p>If you manually measure any properties it is important that you document 
+        the environment where these measurements were made.  Values recorded may vary 
+        considerably depending on the renderer, codecs, software, operating system and 
+        hardware environment.  Ideally you should record such information for every piece 
+        of software you use to measure a property in the box below.</p>
+               
+        <p>
+        <h:inputTextarea rows="5" cols="80" required="false" id="envReport" value="#{DobCompare.manualMeasurementEnvironment}" />
+        </p>
+        
+        <a4j:commandButton action="#{DobCompare.updateManualMeasurment}" reRender="dobManualCompare,dobCompareMeasurements" value="Store" />
+        
+     </fieldset>
+    </h:panelGroup>
+      
       
     </rich:panel>
     

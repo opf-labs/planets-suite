@@ -27,8 +27,9 @@ public interface ServiceRecordPersistencyRemote {
 
     public long persistServiceRecord(ServiceRecordImpl serviceRecord);
     public void updateServiceRecord(ServiceRecordImpl serviceRecord);
-    public void deleteServiceRecord(long id);
-    public void deleteServiceRecord(ServiceRecordImpl serviceRecord);
+    // Service records should not be deleted, as shared between experiments.
+    //public void deleteServiceRecord(long id);
+    //public void deleteServiceRecord(ServiceRecordImpl serviceRecord);
     
     public ServiceRecordImpl findServiceRecord(long id);
     public ServiceRecordImpl findServiceRecordByHashcode(String serviceHash);

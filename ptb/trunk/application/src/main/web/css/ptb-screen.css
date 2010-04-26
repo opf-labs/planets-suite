@@ -445,6 +445,10 @@ margin-right:0.5em;
 text-align:right;
 width:100px;
 }
+label.auto {
+  float:none;
+  width: auto;
+}
 p.glinks {
 color:#000000;
 font-family:arial,helvetica,sans-serif;
