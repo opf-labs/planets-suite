@@ -29,7 +29,7 @@
   <h:panelGrid columns="2" columnClasses="halfContent">
     <rich:panel id="dobSummary1">
       <f:facet name="header">
-            <h:outputText value="#{DobCompare.dob1.leafname}"/>
+            <h:outputText value="First Object: #{DobCompare.dob1.leafname}"/>
       </f:facet>
 
          <ui:include src="/WEB-INF/templates/do_summary.xhtml">
@@ -41,17 +41,104 @@
     
     <rich:panel id="dobSummary2">
       <f:facet name="header">
-            <h:outputText value="#{DobCompare.dob2.leafname}"/>
+            <h:outputText value="Second Object: #{DobCompare.dob2.leafname}"/>
       </f:facet>
 
          <ui:include src="/WEB-INF/templates/do_summary.xhtml">
            <ui:param name="dob" value="#{DobCompare.dob2}"/>
          </ui:include>
-  
     
     </rich:panel>
     
     </h:panelGrid>
+    
+    <!-- ********************************************************************** -->
+    <br/>
+    
+      <rich:dataTable id="dobCompareMeasurements" 
+          onRowMouseOver="this.style.backgroundColor='#{me.odd ? '#eef' : '#eee'}'"
+          onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+          value="#{DobCompare.measurementComparisons}" var="m" styleClass="tbTable" 
+          rows="#{isInExperiment ? '25' : '0'}" reRender="measurements_ds">
+          
+        <rich:column sortBy="#{m.property.name}">
+            <f:facet name="header">
+               <h:outputText value="Property"/>
+            </f:facet>
+            <ui:include src="/WEB-INF/templates/fragments/property_def.xhtml">
+              <ui:param name="p" value="#{m.property}"/>
+            </ui:include>
+        </rich:column>
+        
+        <rich:column sortBy="#{m.event.agent.name}" sortOrder="DESCENDING">
+            <f:facet name="header">
+              <h:outputText value="Agent"/>
+            </f:facet>
+
+               <h:outputText value="#{m.event.agent.name}"/>
+        </rich:column>
+        
+        <rich:column sortBy="#{m.event.date.time}" sortOrder="DESCENDING">
+            <f:facet name="header">
+              <h:outputText value="Date"/>
+            </f:facet>
+
+            <h:outputText value="#{m.event.date.time} " rendered="#{m.event.date != null}">
+                <f:convertDateTime type="time" dateStyle="short"/>
+            </h:outputText>
+            
+            <a4j:commandLink action="#{m.event.deleteMeasurementEvent}" reRender="dobCompareMeasurements" rendered="#{!ReadOnly}">
+                <t:graphicImage value="/graphics/user_trash.png" alt="Delete Measurement Event"/>
+            </a4j:commandLink>
+            
+        </rich:column>
+        
+        <rich:column>
+            <f:facet name="header">
+              <h:outputText value="In First Object"/>
+            </f:facet>
+            <h:outputText value="#{m.firstValue}" rendered="#{!m.formatProperty}"/>
+            <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
+              <ui:param name="f" value="#{m.firstFormat}"/>
+            </ui:include>
+        </rich:column>
+        
+        <rich:column>
+            <f:facet name="header">
+              <h:outputText value="In Second Object"/>
+            </f:facet>
+            <h:outputText value="#{m.secondValue}" rendered="#{!m.formatProperty}"/>
+            <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
+              <ui:param name="f" value="#{m.secondFormat}"/>
+            </ui:include>
+        </rich:column>
+        
+        <rich:column>
+            <f:facet name="header">
+              <h:outputText value="Comparison"/>
+            </f:facet>
+            <h:outputText value="#{m.comparison}" styleClass="#{m.equal ? 'equalValue' : 'differentValue'}"/>
+        </rich:column>
+        
+        <rich:column>
+            <f:facet name="header">
+              <h:outputText value="Equivalence"/>
+            </f:facet>
+            <h:selectOneMenu value="#{m.userEquivalence}" styleClass="equiv-#{m.userEquivalence}" disabled="#{ReadOnly}">
+              <f:selectItem itemValue="" itemLabel="" />
+              <f:selectItems value="#{DobCompare.equivalenceOptions}" />
+              <a4j:support event="onchange" reRender="dobCompareMeasurements" />
+            </h:selectOneMenu>
+        </rich:column>
+        
+        
+        <f:facet name="footer">
+            <rich:datascroller id="measurements_ds" renderIfSinglePage="false"></rich:datascroller>
+        </f:facet>
+
+      </rich:dataTable>
+      
+    <br/>
     
     <!-- ********************************************************************** -->
     
@@ -81,98 +168,10 @@
            <ui:param name="uid" value="1"/>
          </ui:include>
       </dd>
-      
-      <dt>Measurements:</dt>
-          
-    <!-- ********************************************************************** -->
-    
-      <rich:dataTable id="dobCompareMeasurements" 
-          onRowMouseOver="this.style.backgroundColor='#{me.odd ? '#eef' : '#eee'}'"
-          onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
-          value="#{DobCompare.experimentMeasurements}" var="me" styleClass="tbTable" 
-          rows="#{isInExperiment ? '25' : '0'}" reRender="measurements_ds">
-          
-          <f:facet name="header">
-           <rich:columnGroup>
-            <rich:column>
-              <h:outputText value="Property"/>
-            </rich:column>
-            <rich:column>
-              <h:outputText value="In #{DobCompare.dob1.leafname}"/>
-            </rich:column>
-            <rich:column>
-              <h:outputText value="In #{DobCompare.dob2.leafname}"/>
-            </rich:column>
-            <rich:column>
-              <h:outputText value="Comparison"/>
-            </rich:column>
-            <rich:column>
-              <h:outputText value="Equivalence"/>
-            </rich:column>
-           </rich:columnGroup>
-          </f:facet>
-      
-        <rich:column colspan="5" styleClass="#{me.odd ? 'oddRow' : 'evenRow'}" sortBy="#{me.event.date}" sortOrder="DESCENDING">
-            <f:facet name="header">Measurement Date</f:facet>
             
-            <h:outputText value="#{me.event.agent.name} "/>
-            
-            <h:outputText value="#{me.event.date.time} " rendered="#{me.event.date != null}">
-                <f:convertDateTime type="time" dateStyle="short"/>
-            </h:outputText>
-            
-            <a4j:commandLink action="#{me.event.deleteMeasurementEvent}" reRender="dobCompareMeasurements" rendered="#{!ReadOnly}">
-                <t:graphicImage value="/graphics/user_trash.png" alt="Delete Measurement Event"/>
-            </a4j:commandLink>
-            
-        </rich:column>
-        
-        <!-- SubTable starts... -->
-        <rich:subTable var="m" value="#{me.comparisons}">
-        
-        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
-            <ui:include src="/WEB-INF/templates/fragments/property_def.xhtml">
-              <ui:param name="p" value="#{m.property}"/>
-            </ui:include>
-        </rich:column>
-        
-        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
-            <h:outputText value="#{m.firstValue}" rendered="#{!m.formatProperty}"/>
-            <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
-              <ui:param name="f" value="#{m.firstFormat}"/>
-            </ui:include>
-        </rich:column>
-        
-        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
-            <h:outputText value="#{m.secondValue}" rendered="#{!m.formatProperty}"/>
-            <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
-              <ui:param name="f" value="#{m.secondFormat}"/>
-            </ui:include>
-        </rich:column>
-        
-        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
-            <h:outputText value="#{m.comparison}" styleClass="#{m.equal ? 'equalValue' : 'differentValue'}"/>
-        </rich:column>
-        
-        <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
-            <h:selectOneMenu value="#{m.userEquivalence}" styleClass="equiv-#{m.userEquivalence}" disabled="#{ReadOnly}">
-              <f:selectItem itemValue="" itemLabel="" />
-              <f:selectItems value="#{DobCompare.equivalenceOptions}" />
-              <a4j:support event="onchange" reRender="dobCompareMeasurements" />
-            </h:selectOneMenu>
-        </rich:column>
-        
-        </rich:subTable>
-        <!-- SubTable ends... -->
-        
-        
-        <f:facet name="footer">
-            <rich:datascroller id="measurements_ds" renderIfSinglePage="false"></rich:datascroller>
-        </f:facet>
-
-      </rich:dataTable>
-      
     </rich:panel>
+    
+    <!-- ********************************************************************** -->
     
     <rich:panel id="dobManualCompare">
       <f:facet name="header">

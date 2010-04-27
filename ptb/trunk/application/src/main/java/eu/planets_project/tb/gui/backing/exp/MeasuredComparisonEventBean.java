@@ -58,29 +58,7 @@ public class MeasuredComparisonEventBean extends MeasurementEventBean {
      * @return the measurements in this event, as a set of comparisons between two objects
      */
     public List<MeasuredComparisonBean> getComparisons() {
-        Map<String,MeasuredComparisonBean> cmp = new HashMap<String,MeasuredComparisonBean>();
-        log.info("Looking for comparisons out of "+this.getEvent().getMeasurements().size());
-        for( MeasurementImpl m : this.getEvent().getMeasurements() ) {
-            if(m.getTarget().getType() == TargetType.DIGITAL_OBJECT_PAIR ) {
-                cmp.put( m.getIdentifier(), new MeasuredComparisonBean(m) );
-            } else if( m.getTarget().getType() == TargetType.DIGITAL_OBJECT ) {
-                MeasuredComparisonBean mcb = cmp.get(m.getIdentifier());
-                if( mcb == null ) {
-                    mcb = new MeasuredComparisonBean();
-                    cmp.put(m.getIdentifier(), mcb);
-                }
-                if( this.first.equals(m.getTarget().getDigitalObjects().firstElement())) {
-                    mcb.setFirstMeasured(m);
-                } else if( this.second.equals(m.getTarget().getDigitalObjects().firstElement())) {
-                    mcb.setSecondMeasured(m);
-                }
-            }
-        }
-        // Extract:
-        List<MeasuredComparisonBean> cms = new ArrayList<MeasuredComparisonBean>(cmp.values());
-        // Sort:
-        Collections.sort(cms);
-        return cms;
+        return MeasuredComparisonBean.createFromEvent(getEvent(), first, second);
     }
 
 

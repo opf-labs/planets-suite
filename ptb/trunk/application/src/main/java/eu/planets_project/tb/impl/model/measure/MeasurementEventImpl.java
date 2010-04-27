@@ -12,20 +12,14 @@ package eu.planets_project.tb.impl.model.measure;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Vector;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,8 +31,6 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
-import eu.planets_project.tb.gui.backing.exp.MeasuredComparisonEventBean;
-import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -269,7 +261,7 @@ public class MeasurementEventImpl implements Serializable, Comparable<Measuremen
     /* Actions */
     
     /**
-     * 
+     * NOTE that this may not work if the event has been updated and persisted during the same POST.
      */
     public void deleteMeasurementEvent() {
         log.info("Deleting MeasurementEvent "+this.getId());
@@ -278,18 +270,29 @@ public class MeasurementEventImpl implements Serializable, Comparable<Measuremen
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         BatchExecutionRecordImpl batch = expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords().iterator().next();
         ExecutionRecordImpl run = batch.getRuns().iterator().next();
-        MeasurementEventImpl toRemove = null;
-        for( MeasurementEventImpl fme : run.getMeasurementEvents() ) {
-            if( fme.getId() == getId()) 
-                toRemove = fme;
-        }
-        if( toRemove != null ) run.getMeasurementEvents().remove(toRemove);
+        
         // Remove the Event itself:
         ExperimentPersistencyRemote db = tbm.getExperimentPersistencyRemote();
         setTargetInvocation(null);
         setTargetExecution(null);
         db.removeMeasurementEvent(this);
-        // TODO Remove child measurements?
+        log.info("deleteMeasurementEvent: Removed the event, now updating the experiment");
+        
+        // And clip it out of the parent:
+        MeasurementEventImpl toRemove = null;
+        for( MeasurementEventImpl fme : run.getMeasurementEvents() ) {
+            if( fme.getId() == getId()) 
+                toRemove = fme;
+        }
+        if( toRemove != null ) {
+            boolean removed = run.getMeasurementEvents().remove(toRemove);
+            if( removed == false ) {
+                log.error("Removing the measurement event failed!");
+            }
+        } else {
+            log.error("Could not find event id "+this.getId()+" in the experiment's list of events.");
+        }
+        
         // And save the experiment:
         DigitalObjectCompare.persistExperiment();
     }

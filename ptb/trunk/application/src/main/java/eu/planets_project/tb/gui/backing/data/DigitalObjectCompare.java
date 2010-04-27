@@ -56,6 +56,7 @@ import eu.planets_project.tb.gui.backing.exp.MeasuredComparisonEventBean;
 import eu.planets_project.tb.gui.backing.exp.MeasurementBean;
 import eu.planets_project.tb.gui.backing.exp.MeasurementEventBean;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
+import eu.planets_project.tb.gui.backing.exp.view.MeasuredComparisonBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementAgent;
@@ -417,6 +418,36 @@ public class DigitalObjectCompare {
     }
     
     /**
+     * @return
+     */
+    public List<MeasuredComparisonBean> getMeasurementComparisons() {
+        List<MeasuredComparisonBean> ms = new ArrayList<MeasuredComparisonBean>();
+        ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(this.getDobUri1());
+        if( res == null || res.getExecutionRecord() == null ) {
+            if( this.me != null ) {
+                log.info("Pulling getExperimentMeasurements from the temporary space.");
+                ms.addAll( MeasuredComparisonBean.createFromEvent(this.me, this.getDobUri1(), this.getDobUri2()) );
+            }
+            log.info("Got getExperimentMeasurements "+ms.size());
+            return ms;
+        }
+        // Otherwise, pull from DB:
+        log.info("Pulling getExperimentMeasurements from the DB.");
+        int i = 0;
+        Set<MeasurementEventImpl> measurementEvents = res.getExecutionRecord().getMeasurementEvents();
+        List<MeasurementEventImpl> mevl = new ArrayList<MeasurementEventImpl>(measurementEvents);
+        Collections.sort(mevl, Collections.reverseOrder());
+        for( MeasurementEventImpl me : mevl ) {
+            if( me.getMeasurements() != null ) {
+                ms.addAll( MeasuredComparisonBean.createFromEvent( me, this.getDobUri1(), this.getDobUri2()) );
+            }
+            i++;
+        }
+        log.info("Got getExperimentMeasurements from Events, "+ms.size()+" out of "+mevl.size());
+        return ms;
+    }
+    
+    /**
      * Get any stored measurements:
      * 
      * @return
@@ -740,6 +771,7 @@ public class DigitalObjectCompare {
         ExperimentInspector ei = (ExperimentInspector)JSFUtil.getManagedObject("ExperimentInspector");
         ExperimentBean expBean = ei.getExperimentBean();
         if(expBean != null ) expBean.updateExperiment();
+        new Exception("Who is the caller?").printStackTrace();
     }
     
     /**

@@ -181,7 +181,7 @@ public class DigitalObjectRefBean {
 
     private URI createDownloadUri( String id, String prefix ) {        
         // Define the download URI:
-        log.info("Creating the download URL.");
+        log.debug("Creating the download URL.");
         String context = "/testbed";
         if( FacesContext.getCurrentInstance() != null ) {
             HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -203,7 +203,7 @@ public class DigitalObjectRefBean {
             e.printStackTrace();
             download = null;
         }
-        log.info("Created download URI: " + download);
+        log.debug("Created download URI: " + download);
         return download;
     }
 }

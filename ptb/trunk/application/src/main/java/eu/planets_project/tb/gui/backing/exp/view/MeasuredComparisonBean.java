@@ -11,6 +11,8 @@
 package eu.planets_project.tb.gui.backing.exp.view;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -31,8 +33,10 @@ import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.compare.PropertyComparison.Equivalence;
 import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl.EquivalenceStatement;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 
 /**
  * 
@@ -43,7 +47,8 @@ public class MeasuredComparisonBean
                     implements Comparable<MeasuredComparisonBean> {
     
     static private Log log = LogFactory.getLog(MeasuredComparisonBean.class);
-    
+
+    private MeasurementEventImpl event;
 
     private MeasurementImpl compared;
     private MeasurementImpl measured1;
@@ -51,22 +56,32 @@ public class MeasuredComparisonBean
 
     /**
      */
-    public MeasuredComparisonBean() {
+    public MeasuredComparisonBean( MeasurementEventImpl event ) {
+        this.event = event;
     }
     
     /**
      * @param m
      */
-    public MeasuredComparisonBean(MeasurementImpl m) {
+    public MeasuredComparisonBean( MeasurementEventImpl event, MeasurementImpl m) {
+        this.event = event;
         this.compared = m;
     }
 
     /**{
      * @param m
      */
-    public MeasuredComparisonBean(MeasurementImpl m1, MeasurementImpl m2) {
+    public MeasuredComparisonBean( MeasurementEventImpl event, MeasurementImpl m1, MeasurementImpl m2) {
+        this.event = event;
         this.setFirstMeasured(m1);
         this.setSecondMeasured(m1);
+    }
+
+    /**
+     * @return the event
+     */
+    public MeasurementEventImpl getEvent() {
+        return event;
     }
 
     public String getFirstValue() {
@@ -198,8 +213,11 @@ public class MeasuredComparisonBean
      */
     public void setUserEquivalence( EquivalenceStatement es ) {
         if( compared == null ) return;
-        compared.setUserEquivalence(es);
-        DigitalObjectCompare.persistExperiment();
+        // Update if needed.
+        if( compared.getUserEquivalence() != es ) {
+            compared.setUserEquivalence(es);
+            DigitalObjectCompare.persistExperiment();
+        }
     }
     
     /**
@@ -208,6 +226,39 @@ public class MeasuredComparisonBean
     public String getUserEquivalenceComment() {
         if( compared == null ) return "";
         return compared.getUserEquivalenceComment();
+    }
+
+    /**
+     * @param me
+     * @param dobUri1
+     * @param dobUri2
+     * @return
+     */
+    public static List<MeasuredComparisonBean> createFromEvent(
+            MeasurementEventImpl me, String dobUri1, String dobUri2) {
+        Map<String,MeasuredComparisonBean> cmp = new HashMap<String,MeasuredComparisonBean>();
+        log.info("Looking for comparisons out of "+me.getMeasurements().size());
+        for( MeasurementImpl m : me.getMeasurements() ) {
+            if(m.getTarget().getType() == TargetType.DIGITAL_OBJECT_PAIR ) {
+                cmp.put( m.getIdentifier(), new MeasuredComparisonBean(me, m) );
+            } else if( m.getTarget().getType() == TargetType.DIGITAL_OBJECT ) {
+                MeasuredComparisonBean mcb = cmp.get(m.getIdentifier());
+                if( mcb == null ) {
+                    mcb = new MeasuredComparisonBean(me);
+                    cmp.put(m.getIdentifier(), mcb);
+                }
+                if( dobUri1.equals(m.getTarget().getDigitalObjects().firstElement())) {
+                    mcb.setFirstMeasured(m);
+                } else if( dobUri2.equals(m.getTarget().getDigitalObjects().firstElement())) {
+                    mcb.setSecondMeasured(m);
+                }
+            }
+        }
+        // Extract:
+        List<MeasuredComparisonBean> cms = new ArrayList<MeasuredComparisonBean>(cmp.values());
+        // Sort:
+        Collections.sort(cms);
+        return cms;
     }
     
 }
