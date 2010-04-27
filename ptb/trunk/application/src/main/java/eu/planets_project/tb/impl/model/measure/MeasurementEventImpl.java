@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.ibm.icu.text.DateFormat;
+
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
@@ -234,6 +236,13 @@ public class MeasurementEventImpl implements Serializable, Comparable<Measuremen
      */
     public Calendar getDate() {
         return date;
+    }
+    
+    /**
+     * @return The date as a briefly formatted string. Done here because f:convertDateTime does not seem to be working.
+     */
+    public String getShortDate() {
+        return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format( date.getTime() );
     }
 
     /**
