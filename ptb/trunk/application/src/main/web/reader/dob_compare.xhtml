@@ -29,7 +29,10 @@
             </f:facet>
         </a4j:status>
 
-             <ui:include src="/WEB-INF/templates/do_compare.xhtml" />
+         <ui:include src="/WEB-INF/templates/do_compare.xhtml">
+          <ui:param name="isInExperiment" value="true" />
+          <ui:param name="ReadOnly" value="true" />
+         </ui:include>       
 
              
         

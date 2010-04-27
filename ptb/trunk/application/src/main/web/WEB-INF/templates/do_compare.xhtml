@@ -62,7 +62,7 @@
       
       <dt><b>Compare</b></dt>
       <dd>
-        <h:selectOneMenu value="#{DobCompare.compareService}">
+        <h:selectOneMenu value="#{DobCompare.compareService}" disabled="#{ReadOnly}">
           <f:selectItem itemValue="" itemLabel="[none]" />
           <f:selectItems value="#{DobCompare.compareServiceList}" />
                     
@@ -121,7 +121,7 @@
                 <f:convertDateTime type="time" dateStyle="short"/>
             </h:outputText>
             
-            <a4j:commandLink action="#{me.event.deleteMeasurementEvent}" reRender="dobCompareMeasurements" rendered="#{isInExperiment}">
+            <a4j:commandLink action="#{me.event.deleteMeasurementEvent}" reRender="dobCompareMeasurements" rendered="#{!ReadOnly}">
                 <t:graphicImage value="/graphics/user_trash.png" alt="Delete Measurement Event"/>
             </a4j:commandLink>
             
@@ -155,7 +155,7 @@
         </rich:column>
         
         <rich:column styleClass="#{me.odd ? 'oddRow' : 'evenRow'}">
-            <h:selectOneMenu value="#{m.userEquivalence}" styleClass="equiv-#{m.userEquivalence}">
+            <h:selectOneMenu value="#{m.userEquivalence}" styleClass="equiv-#{m.userEquivalence}" disabled="#{ReadOnly}">
               <f:selectItem itemValue="" itemLabel="" />
               <f:selectItems value="#{DobCompare.equivalenceOptions}" />
               <a4j:support event="onchange" reRender="dobCompareMeasurements" />
@@ -183,7 +183,7 @@
   <!-- 
   <ui:include src="/WEB-INF/templates/exp_stage5_manual_properties.xhtml"/>
    -->
-    <h:panelGroup rendered="#{!ReadOnly}">
+    <h:panelGroup>
     
     
     <fieldset>
@@ -212,7 +212,7 @@
     
     <br/>    
     
-    <h:panelGrid columns="2" style="width:120px;">
+    <h:panelGrid columns="2" style="width:120px;" rendered="#{!ReadOnly}">
     	<h:outputLabel value="Value in #{DobCompare.dob1.leafname}" for="newValueOne" styleClass="auto"/>
     	<h:outputLabel value="Value in #{DobCompare.dob2.leafname}" for="newValueTwo" styleClass="auto"/>
     	
@@ -226,7 +226,7 @@
     </p>
  -->
     
-        <a4j:commandButton action="#{DobCompare.storeManualMeasurement}" reRender="dobCompareMeasurements" value="Store" />
+        <a4j:commandButton action="#{DobCompare.storeManualMeasurement}" reRender="dobCompareMeasurements" value="Store" disabled="#{ReadOnly}"/>
         
     </fieldset>
     <fieldset>
@@ -238,10 +238,10 @@
         of software you use to measure a property in the box below.</p>
                
         <p>
-        <h:inputTextarea rows="5" cols="80" required="false" id="envReport" value="#{DobCompare.manualMeasurementEnvironment}" />
+        <h:inputTextarea rows="5" cols="80" required="false" id="envReport" value="#{DobCompare.manualMeasurementEnvironment}" disabled="#{ReadOnly}"/>
         </p>
         
-        <a4j:commandButton action="#{DobCompare.updateManualMeasurment}" reRender="dobManualCompare" value="Store" />
+        <a4j:commandButton action="#{DobCompare.updateManualMeasurment}" reRender="dobManualCompare" value="Store" disabled="#{ReadOnly}"/>
         
      </fieldset>
  	</h:panelGroup>

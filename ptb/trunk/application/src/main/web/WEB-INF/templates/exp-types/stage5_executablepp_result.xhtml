@@ -26,7 +26,13 @@
 	        <h:outputLink value="#{mdo.digitalObjectDownloadURL}">
 	          <h:outputText value="#{mdo.digitalObjectResult}"/>
 	        </h:outputLink>
-	        <h:outputLink value="../reader/dob_compare.faces">
+	        <h:outputLink value="dob_compare.faces" rendered="#{!ReadOnly}">
+                    <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
+                    <f:param name="dobUri1" value="#{res.digitalObject}"/>
+                    <f:param name="dobUri2" value="#{mdo.digitalObjectURI}"/>
+                    <h:outputText value="[-->Compare with input object.]"/>
+            </h:outputLink>
+            <h:outputLink value="../reader/dob_compare.faces" rendered="#{ReadOnly}">
                     <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
                     <f:param name="dobUri1" value="#{res.digitalObject}"/>
                     <f:param name="dobUri2" value="#{mdo.digitalObjectURI}"/>
@@ -42,8 +48,14 @@
 		         	<h:outputLink value="#{imr.downloadURL}">
 		        		<h:outputText value="intermediate.migration.result #{count}: #{imr.digitalObjectName}"/>
 		        	</h:outputLink>
-		        	<h:outputLink value="../reader/dob_compare.faces">
+		        	<h:outputLink value="dob_compare.faces" rendered="#{!ReadOnly}">
 	                    <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
+	                    <f:param name="dobUri1" value="#{res.digitalObject}"/>
+	                    <f:param name="dobUri2" value="#{imr.digitalObject}"/>
+	                    <h:outputText value="[-->Compare with input object.]"/>
+            		</h:outputLink>
+            		<h:outputLink value="../reader/dob_compare.faces" rendered="#{ReadOnly}">
+	                   <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
 	                    <f:param name="dobUri1" value="#{res.digitalObject}"/>
 	                    <f:param name="dobUri2" value="#{imr.digitalObject}"/>
 	                    <h:outputText value="[-->Compare with input object.]"/>

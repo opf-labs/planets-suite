@@ -35,7 +35,7 @@
 
     <ui:include src="/WEB-INF/templates/exp/exp_results.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-       <ui:param name="ReadOnly" value="#{false}" />
+       <ui:param name="ReadOnly" value="#{ExperimentBean.finished}" />
     </ui:include>
 
 
