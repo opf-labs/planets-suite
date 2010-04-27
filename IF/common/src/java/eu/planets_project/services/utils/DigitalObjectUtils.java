@@ -87,8 +87,8 @@ public final class DigitalObjectUtils {
      */
     public static File toFile(final DigitalObject object) {
         try {
-            /* TODO: use format registry to set the extension? */
-            /* TODO: use data registry to store the content? */
+            /* TODO: use format registry to set the extension? The framework should not presume user needs or perform preservation actions silently. */
+            /* TODO: use data registry to store the content? Maybe, but TMP files are needed too: toTmpFile.*/
             File file = File.createTempFile("planets", null);
             file.deleteOnExit();
             toFile(object, file);
