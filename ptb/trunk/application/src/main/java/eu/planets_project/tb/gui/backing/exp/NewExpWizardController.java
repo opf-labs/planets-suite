@@ -883,6 +883,8 @@ public class NewExpWizardController{
         
         // Clear out the results:
         ExperimentExecutableImpl.clearExecutionRecords( (ExperimentExecutableImpl) exp.getExperimentExecutable() );
+        ExperimentEvaluationImpl.clearExperimentEvaluationRecords((ExperimentEvaluationImpl)exp.getExperimentEvaluation());
+        
         // Pair back to the 'editor' stage.
         ExperimentImpl.resetToApprovedStage(exp);
         ExperimentImpl.resetToEditingStage(exp);

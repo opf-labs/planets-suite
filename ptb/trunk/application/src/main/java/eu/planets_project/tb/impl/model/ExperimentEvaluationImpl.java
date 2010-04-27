@@ -31,6 +31,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
@@ -114,6 +115,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateExperimentBenchmarkGoal(java.lang.String, java.lang.String, java.lang.String)
 	 */
+    @Deprecated
 	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID,
 			String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException{
 		
@@ -174,6 +176,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedExperimentBenchmarkGoals(java.util.List)
 	 */
+    @Deprecated
 	public void setEvaluatedExperimentBenchmarkGoals (
 			List<BenchmarkGoal> lBMGoals) throws InvalidInputException{
 		if((lBMGoals!=null)&&(lBMGoals.size()>0)){
@@ -205,6 +208,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedExperimentSourceBenchmarkGoals(java.util.List)
 	 */
+    @Deprecated
 	public void setEvaluatedExperimentSourceBenchmarkGoals (
 			List<BenchmarkGoal> addedSourceBMGoals) throws InvalidInputException{
 		
@@ -226,6 +230,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedExperimentTargetBenchmarkGoals(java.util.List)
 	 */
+    @Deprecated
 	public void setEvaluatedExperimentTargetBenchmarkGoals (
 			List<BenchmarkGoal> addedTargetBMGoals) throws InvalidInputException{
 		
@@ -296,6 +301,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateFileBenchmarkGoal(java.util.Map.Entry, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Deprecated
 	public void evaluateFileBenchmarkGoal(Entry<URI, URI> ioFile,
 			String addedBenchmarkGoalID, String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException{
 		
@@ -359,6 +365,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateFileBenchmarkGoal(java.net.URI, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Deprecated
 	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID,
 			String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException{
 		
@@ -431,6 +438,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedFileBenchmarkGoals(java.util.Map)
 	 */
+	@Deprecated
 	public void setEvaluatedFileBenchmarkGoals(
 			Map<URI, List<BenchmarkGoal>> addedFileBMGoals) throws InvalidInputException{
 
@@ -471,6 +479,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedExperimentBenchmarkGoal(java.lang.String)
 	 */
+	@Deprecated
 	public BenchmarkGoal getEvaluatedExperimentBenchmarkGoal(String goalXMLID) {
 		if(this.experimentBenchmarkGoals.keySet().contains(goalXMLID)){
 			return this.experimentBenchmarkGoals.get(goalXMLID);
@@ -481,6 +490,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedExperimentBenchmarkGoals()
 	 */
+	@Deprecated
 	public Collection<BenchmarkGoal> getEvaluatedExperimentBenchmarkGoals() {
 	    Collection<BenchmarkGoal> bmgs = new Vector<BenchmarkGoal>();
 		if(this.experimentBenchmarkGoals.keySet().size()>0){
@@ -493,6 +503,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedFileBenchmarkGoal(java.net.URI, java.lang.String)
 	 */
+	@Deprecated
 	public BenchmarkGoal getEvaluatedFileBenchmarkGoal(URI inputFile,
 			String goalXMLID) {
 		if(this.fileBenchmarkGoals.keySet().contains(inputFile)){
@@ -507,6 +518,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedFileBenchmarkGoals(java.net.URI)
 	 */
+	@Deprecated
 	public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals(URI inputFile) {
 	    Collection<BenchmarkGoal> bmgs =  new Vector<BenchmarkGoal>();
 
@@ -525,6 +537,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedFileBenchmarkGoals()
      */
+	@Deprecated
     public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals() {
         if( this.fileBenchmarkGoals.keySet().iterator().hasNext() ) {
           return this.getEvaluatedFileBenchmarkGoals(this.fileBenchmarkGoals.keySet().iterator().next());
@@ -537,6 +550,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
     /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getInputBenchmarkGoals()
 	 */
+	@Deprecated
 	public Collection<String> getInputBenchmarkGoalIDs() {
 		return this.getInputBenchmarkGoals().keySet();
 	}
@@ -613,6 +627,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	 * Fetches the ExperimentSetup phase and extracts the InputBenchmarkGoals from it.
 	 * @return HashMap<BenchmarkGoalXMLID, BenchmarkGoal>
 	 */
+	@Deprecated
 	private HashMap<String, BenchmarkGoal> getInputBenchmarkGoals(){
 		HashMap<String,BenchmarkGoal> hmRet = new HashMap<String,BenchmarkGoal>();
 		if(this.lExperimentIDRef!=-1){
@@ -639,6 +654,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getAllAcceptedEvaluationValues()
 	 */
+	@Deprecated
 	public List<String> getAllAcceptedEvaluationValues() {
 		Vector<String> vRet = new Vector<String>();
 		vRet.add(0,this.EVALUATION_VALUE_VERY_GOOD);
@@ -654,6 +670,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setInputExperimentBenchmarkGoals(java.util.Collection)
 	 */
+	@Deprecated
 	public void setInputExperimentBenchmarkGoals(
 			Collection<BenchmarkGoal> addedOverallBMGoals) {
 		for(BenchmarkGoal bmg : addedOverallBMGoals){
@@ -666,6 +683,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setInputFileBenchmarkGoals(java.util.Map)
 	 */
+	@Deprecated
 	public void setInputFileBenchmarkGoals(
 			Map<URI, Collection<BenchmarkGoal>> addedFileBMGoals) {
 		for(URI inputFileURI : addedFileBMGoals.keySet()){
@@ -683,6 +701,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#addPropertyEvaluation(eu.planets_project.tb.api.model.PropertyEvaluationRecord)
 	 */
+	@Deprecated
 	public void addPropertyEvaluation(String inputDigoRef, PropertyEvaluationRecordImpl propEval) {
 		if(this.propertyEvalRecordsByInputDigoRef!=null){
 			if(propertyEvalRecordsByInputDigoRef.get(inputDigoRef)==null){
@@ -701,6 +720,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getPropertyEvaluations()
 	 */
+	@Deprecated
 	public HashMap<String,ArrayList<PropertyEvaluationRecordImpl>> getPropertyEvaluations() {
 		if(this.propertyEvalRecordsByInputDigoRef==null){
 			return new HashMap<String,ArrayList<PropertyEvaluationRecordImpl>>();
@@ -712,6 +732,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getPropertyEvaluation(java.lang.String)
 	 */
+	@Deprecated
 	public ArrayList<PropertyEvaluationRecordImpl> getPropertyEvaluation(String inputDigitalObjectRef){
 		if(this.propertyEvalRecordsByInputDigoRef!=null){
 			if(this.propertyEvalRecordsByInputDigoRef.get(inputDigitalObjectRef)==null){
@@ -727,6 +748,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#addOverallPropertyEvalWeights(java.lang.String, java.lang.Integer)
 	 */
+	@Deprecated
 	public void addOverallPropertyEvalWeights(String propertyID, Integer weight) {
 		if(overallPropertyEvalWeights!=null){
 			this.overallPropertyEvalWeights.put(propertyID, weight);
@@ -737,6 +759,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getOverallPropertyEvalWeights()
 	 */
+	@Deprecated
 	public HashMap<String, Integer> getOverallPropertyEvalWeights() {
 		if(overallPropertyEvalWeights!=null){
 			return overallPropertyEvalWeights;
@@ -747,6 +770,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getOverallPropertyEvalWeight(java.lang.String)
 	 */
+	@Deprecated
 	public Integer getOverallPropertyEvalWeight(String propertyID){
 		if(overallPropertyEvalWeights!=null){
 			return this.overallPropertyEvalWeights.get(propertyID);
@@ -760,6 +784,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setOverallPropertyEvalWeights(java.util.HashMap)
 	 */
+	@Deprecated
 	public void setOverallPropertyEvalWeights(HashMap<String, Integer> propertyWeights) {
 		this.overallPropertyEvalWeights = propertyWeights;
 	}
@@ -785,5 +810,16 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	public void setExternalEvaluationDocuments(ArrayList<String> records) {
 		this.lExternalEvalDocumentents = records;
 	}
+	
+	/**
+	 * A 'clean' method is called when copying an experiment using the 'save_as' button
+     * @param experimentExecutable
+     */
+    public static void clearExperimentEvaluationRecords( ExperimentEvaluationImpl exEvalImpl ) {
+    	exEvalImpl.setExperimentReport(new ExperimentReportImpl());
+    	exEvalImpl.setExperimentRating(0);
+    	exEvalImpl.setServiceRating(0);
+    	exEvalImpl.setExternalEvaluationDocuments(new ArrayList<String>());
+    }
 
 }
