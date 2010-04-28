@@ -69,7 +69,7 @@ public class FileIdentifyTest {
     @Test
     public void testIdentify() throws MalformedURLException, URISyntaxException {
     	// Run the tests if on a windows box, they'll currently fail otherwise
-    	if ((FileServiceUtilities.isWindows()) && (FileServiceUtilities.isCygwinFileDetected())) {
+    	if ((FileServiceUtilities.isLinux()) || (FileServiceUtilities.isWindows()) && (FileServiceUtilities.isCygwinFileDetected())) {
     		System.out.println("OS is windows based and cygwin file.exe detected so run the tests");
 	        testIdentifyThis(new File("PC/file/src/test/resources/test_word.doc").toURI(), new URI("planets:fmt/mime/application/msword"));
 	        testIdentifyThis(new File("PC/file/src/test/resources/test_pdf.pdf").toURI(), new URI("planets:fmt/mime/application/pdf"));

@@ -44,7 +44,10 @@ public class FileIdentify implements Identify {
 
 	/** The service name */
     public static final String NAME = "FileIdentify";
-
+    
+    /** The path to the File command (cygwin or linux) */
+    private String commandPath = null;
+    
 	/**
 	 * @see eu.planets_project.services.identify.Identify#describe()
 	 */
@@ -66,21 +69,28 @@ public class FileIdentify implements Identify {
             return this.returnWithErrorMessage("The Content of the DigitalObject should not be NULL.", 1);
         }
 
-        // Now check that windows, we won't work on none windows at the moment
-        if (!FileServiceUtilities.isWindows()) {
-            return this.returnWithErrorMessage("OS detected not windows based, this service only runs on windows.", 1);
+        // Now check that we're running on windows, this means we need cygwin
+        if (FileServiceUtilities.isWindows()) {
+            // Check that the cygwin file command cannot be found
+            if (!FileServiceUtilities.isCygwinFileDetected()) {
+                return this.returnWithErrorMessage("Cygwin file.exe not found at location given in cygwin.file.location property.", 1);
+            }
+            // Cygwin command String needs to be obtained from utilities
+            this.commandPath = FileServiceUtilities.getCygwinFileLocation();
+        } else if (FileServiceUtilities.isLinux()) {
+        	// Command string set to linux
+        	this.commandPath = FileServiceUtilities.getlinuxFileCommand();
+        // Not windows or linux so fail nicely
+        } else {
+            return this.returnWithErrorMessage("OS detected not linux or windows, this service only runs on linux or windows.", 1);
         }
 
-        // Finally check that the cygwin file command cannot be found
-        if (!FileServiceUtilities.isCygwinFileDetected()) {
-            return this.returnWithErrorMessage("Cygwin file.exe not found at location given in cygwin.file.location property.", 1);
-        }
 
         // write digital object to temporary file
         File tmpInFile = DigitalObjectUtils.toFile(digitalObject);
 
         // Right we'll need to create a suitable command line
-		String[] commands = new String[] {FileServiceUtilities.getFileLocation(),
+		String[] commands = new String[] {commandPath,
         								  "-i",
         								  "-b",
         								  tmpInFile.getAbsolutePath()};

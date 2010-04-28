@@ -1,5 +1,7 @@
 # Cygwin error for no file found
 cygwin.message.nofile=(No such file or directory)
-# Cygwin location and command (usually c:/cygwin/bin/file.exe)
+# Cygwin location and command (usually c:/cygwin/bin/file.exe).
+# Change this if your cygwin installation is elsewhere
 cygwin.file.location=c:/cygwin/bin/file.exe
-
+# linux file command (just file, should be found by path)
+linux.file.command=file

@@ -39,7 +39,7 @@ public class FileServiceUtilities {
 	 * 		True is running on a linux box, false otherwise
 	 */
 	public static boolean isLinux() {
-		return System.getProperty(OS_NAME_KEY).toLowerCase().contains("");
+		return System.getProperty(OS_NAME_KEY).toLowerCase().contains("linux");
 	}
 
 	/**
@@ -47,18 +47,26 @@ public class FileServiceUtilities {
 	 * 		true if the cygwin file command exists on this box, false otherwise
 	 */
 	public static boolean isCygwinFileDetected () {
-		File cygwinFile = new File(FileServiceUtilities.getFileLocation());
+		File cygwinFile = new File(FileServiceUtilities.getCygwinFileLocation());
 		return cygwinFile.exists();
+	}
+	
+	/**
+	 * @return
+	 * 		The pathname of the linux command
+	 */
+	public static String getCygwinFileLocation() {
+		return new File(configuration.getString("cygwin.file.location")).getAbsolutePath();
 	}
 	
 	/**
 	 * @return
 	 * 		The absolute pathname of the executable
 	 */
-	public static String getFileLocation() {
-		return new File(configuration.getString("cygwin.file.location")).getAbsolutePath();
+	public static String getlinuxFileCommand() {
+		return configuration.getString("linux.file.command");
 	}
-	
+
 	/**
 	 * @return
 	 * 		The configuration object for the service
