@@ -249,15 +249,16 @@
           <include name="oai4j-0.6b1.jar" />
           <include name="dom4j-1.6.1.jar" />
           <include name="jaxen-1.1.1.jar" />
-          <!-- additional libs jena/pellet reasoning -->
+                   <!-- additional libs jena/pellet reasoning -->
           <include name="jena.jar" />
           <include name="protege*.jar" />
           <include name="pellet*.jar" />
           <include name="xsdlib.jar" />
           <include name="aterm-java-1.6.jar" />
           <include name="relaxngDatatype.jar" />
-           <include name="slf4j*.jar" />
-           <include name="owlapi-bin.jar" />
+          <include name="slf4j*.jar" />
+          <include name="owlapi-bin.jar" />
+          <include name="primefaces-1.0.1.jar" />
 		</fileset>
 	</move>
 

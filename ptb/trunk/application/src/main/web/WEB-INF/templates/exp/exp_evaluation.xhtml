@@ -38,17 +38,17 @@
  <h:outputText value="#{res['exp_stage6.experimentRatings']} "/>
  </legend>
  <p>Supply a rating for your experiment and for the principal service your experiment focussed on.</p>
- <p>The <b>experiment rating</b> should represent how useful you consider the current experiment to be.  Note that even if a service failed to perform the required task the experiment itself could still be considered to be useful in demonstrating this failure.</p>
- <p>The <b>service rating</b> should represent how effecively you consider the principal service on which your experiment focussed met your expectations and specific requirements.</p>
+ <p>The <b>experiment rating</b> should represent how useful you consider the current experiment to be.  Note that even if a service failed to perform the required task the experiment itself could still be considered to be useful in demonstrating this failure. [1..not very useful - 5 very useful]</p>
+ <p>The <b>service rating</b> should represent how effecively you consider the principal service on which your experiment focussed met your expectations and specific requirements. [1..did not - 5 fully did] </p>
  
  <h2 class="main">Experiment Rating</h2>
  <p>
  <h:selectOneRadio id="expRating" value="#{ExperimentBean.expRating}" disabled="#{ReadOnly}">
-  <f:selectItem id="eitem1" itemLabel="1" itemValue="1" />
+  <f:selectItem id="eitem1" itemLabel="[not useful] 1" itemValue="1" />
   <f:selectItem id="eitem2" itemLabel="2" itemValue="2" />
   <f:selectItem id="eitem3" itemLabel="3" itemValue="3" />
   <f:selectItem id="eitem4" itemLabel="4" itemValue="4" />
-  <f:selectItem id="eitem5" itemLabel="5" itemValue="5" />
+  <f:selectItem id="eitem5" itemLabel="[very useful] 5" itemValue="5" />
 </h:selectOneRadio>
 </p>
 
@@ -57,11 +57,11 @@
  <h2 class="main">Service Rating</h2>
  <p>
  <h:selectOneRadio id="serviceRating" value="#{ExperimentBean.serviceRating}"  disabled="#{ReadOnly}">
-  <f:selectItem id="sitem1" itemLabel="1" itemValue="1" />
+  <f:selectItem id="sitem1" itemLabel="[did not] 1" itemValue="1" />
   <f:selectItem id="sitem2" itemLabel="2" itemValue="2" />
   <f:selectItem id="sitem3" itemLabel="3" itemValue="3" />
   <f:selectItem id="sitem4" itemLabel="4" itemValue="4" />
-  <f:selectItem id="sitem5" itemLabel="5" itemValue="5" />
+  <f:selectItem id="sitem5" itemLabel="[fully did] 5" itemValue="5" />
 </h:selectOneRadio>
 </p>
  

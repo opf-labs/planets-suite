@@ -25,7 +25,6 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
-import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
 
 import java.util.Collection;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -244,8 +243,8 @@ public class ListExp extends SortableList {
                 }
                 if (column.equals("relevance"))
 				{
-                    return ascending ? new Integer( c2.getExperimentEvaluation().getExperimentRating()).compareTo(new Integer( c1.getExperimentEvaluation().getExperimentRating()))
-                            : new Integer( c1.getExperimentEvaluation().getExperimentRating()).compareTo(new Integer( c2.getExperimentEvaluation().getExperimentRating()));
+                    return ascending ? new Integer( c2.getAverageUserExperimentRatings()).compareTo(new Integer( c1.getAverageUserExperimentRatings()))
+                            : new Integer( c1.getAverageUserExperimentRatings()).compareTo(new Integer( c2.getAverageUserExperimentRatings()));
 				}
 				else
 					return 0;
@@ -595,5 +594,5 @@ public class ListExp extends SortableList {
                 log.info("Deletion email sending failed. Details: "+ e);
             }
         }
-
+  
 }

@@ -20,6 +20,8 @@
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/velocity-1.4.jar"/>
 	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/primefaces-1.0.1.jar"/>
+	<classpathentry kind="lib" path="application/src/main/web/WEB-INF/lib/primefaces-1.0.1-sources.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jsf-facelets.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jsp-api.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/servlet-api.jar"/>

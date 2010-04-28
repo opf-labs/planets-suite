@@ -8,7 +8,8 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:a4j="http://richfaces.org/a4j"
-    xmlns:rich="http://richfaces.org/rich">
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:p="http://primefaces.prime.com.tr/ui">
 
 <head>
     <link rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/ptb-screen.css" type="text/css" media="screen" />
@@ -17,6 +18,8 @@
     <link rel="stylesheet" href="#{PlanetsSharedBean.sharedFileContext}css/planets-top-nav.css" type="text/css" media="screen" />
 	<title><ui:insert name="title">Placeholder Title</ui:insert></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- required to add this for PrimeFaces and JSF 1.2 -->
+    <p:resources />  
 </head>
 
 <body>

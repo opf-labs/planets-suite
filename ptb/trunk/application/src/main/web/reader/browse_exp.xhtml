@@ -137,14 +137,14 @@
         <t:column>
 	        <f:facet name="header">
 	          <t:commandSortHeader id="sortHeader_relevance" columnName="relevance" arrow="true" immediate="false" styleClass="tableHeaderSel">
-	    	      #{res['expList.colHeader.expRating']}
+	    	      #{res['expList.colHeader.userExpRating']}
 		  </t:commandSortHeader>
 			</f:facet>
             <h:panelGroup>
-	            <t:graphicImage value="/graphics/rating/#{exp.experimentEvaluation.experimentRating}-star.png" rendered="#{exp.experimentEvaluation.experimentRating lt 1}" title="no experiment rating available" 
+	            <t:graphicImage value="/graphics/rating/#{exp.averageUserExperimentRatings}-star.png" rendered="#{exp.averageUserExperimentRatings lt 1}" title="no experiment rating available" 
 	            alt="no experiment rating available" style="float: right; padding: 1px 5px;" />
-	            <t:graphicImage value="/graphics/rating/#{exp.experimentEvaluation.experimentRating}-star.png" rendered="#{exp.experimentEvaluation.experimentRating gt 0}" title="Experiment Rating #{exp.experimentEvaluation.experimentRating}/5" 
-	            alt="Experiment Rating #{exp.experimentEvaluation.experimentRating}/5'}" style="float: right; padding: 1px 5px;" />
+	            <t:graphicImage value="/graphics/rating/#{exp.averageUserExperimentRatings}-star.png" rendered="#{exp.averageUserExperimentRatings gt 0}" title="Experiment Rating #{exp.averageUserExperimentRatings}/5" 
+	            alt="Experiment Rating #{exp.averageUserExperimentRatings}/5" style="float: right; padding: 1px 5px;" />
             </h:panelGroup>
         </t:column>
         <t:column>

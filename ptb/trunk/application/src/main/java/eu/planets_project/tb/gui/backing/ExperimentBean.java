@@ -1407,8 +1407,11 @@ public class ExperimentBean {
     public void setExpRating(int rating) {
 	
 		this.expRating = rating;
+		//set the rating for this experiment
 		this.getExperiment().getExperimentEvaluation().setExperimentRating(this.expRating);
-		
+		//also treat the experimenter's rating as first user vote
+        UserBean currentUser = (UserBean) JSFUtil.getManagedObject("UserBean");
+		this.getExperiment().setUserRatingForExperiment(currentUser.getUserid(), (double)this.expRating);
     }
     
     public int getServiceRating() {

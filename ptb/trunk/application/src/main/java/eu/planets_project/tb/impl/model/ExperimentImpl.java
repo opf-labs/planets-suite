@@ -3,7 +3,10 @@
  */
 package eu.planets_project.tb.impl.model;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -26,6 +29,8 @@ import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
@@ -33,13 +38,13 @@ import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
- * @author alindley
+ * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
  *
  */
 @Entity
 @XmlRootElement(name = "Experiment", namespace = "http://www.planets-project.eu/testbed/experiment")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder={"version", "expSetup", "executable" , "expApproval", "expExecution", "expEvaluation" })
+@XmlType(propOrder={"version", "expSetup", "executable" , "expApproval", "expExecution", "expEvaluation", "mCommunityExperimentRatings" })
 public class ExperimentImpl extends ExperimentPhaseImpl
 		implements Experiment, java.io.Serializable {
     
@@ -64,6 +69,9 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	private ExperimentExecutableImpl executable;
     //get's instantiated within the experimentSetup phase
 	
+	//HashMap<UserName, expRating>
+	private HashMap<String, Double> mCommunityExperimentRatings;
+	
     @XmlTransient
     private static final long serialVersionUID = 123497123479L;
     
@@ -80,6 +88,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 		executable = new ExperimentExecutableImpl();
 //		this.getExperimentSetup().getBasicProperties().getExperimenter();
 		expSetup.setState(ExperimentSetup.STATE_IN_PROGRESS);
+		mCommunityExperimentRatings = new HashMap<String,Double>();
 		log.debug("ExperimentImpl initialised.");
 	}
 	
@@ -344,6 +353,10 @@ public class ExperimentImpl extends ExperimentPhaseImpl
         for( BatchExecutionRecordImpl b : exp.getExperimentExecutable().getBatchExecutionRecords() ) {
             b.setExecutable(null);
         }
+        for(String key : exp.getAllUserRatingsOfExperiment().keySet()){
+        	exp.getAllUserRatingsOfExperiment().remove(key);
+        }
+        
     	//exp.getExperimentExecutable().getBatchExecutionRecords().clear();
     	exp.getExperimentExecutable().setBatchExecutionIdentifier(null);
     	// Set the state
@@ -362,5 +375,52 @@ public class ExperimentImpl extends ExperimentPhaseImpl
     	// And revert further:
         AdminManagerImpl.toEditFromDenied(exp);
     }
+
+    
+    // --- start: allow users to rate the experiment --
+    
+	/** {@inheritDoc} */
+	public Map<String, Double> getAllUserRatingsOfExperiment() {
+		if(mCommunityExperimentRatings==null){
+			return new HashMap<String,Double>();
+		}else{
+			return mCommunityExperimentRatings;
+		}
+	}
+
+	/** {@inheritDoc} */
+	public Double getUserRatingOfExperiment(String userID) {
+		if(getAllUserRatingsOfExperiment().containsKey(userID)){
+			return getAllUserRatingsOfExperiment().get(userID);
+		}else{
+			return new Double(0);
+		}
+	}
+
+	/** {@inheritDoc} */
+	public void setUserRatingForExperiment(String userID, Double rating) {
+		if((mCommunityExperimentRatings!=null) &&(userID!=null) &&(rating!=null)){
+			this.getAllUserRatingsOfExperiment().put(userID, rating);
+		}
+	}
+	
+	public int getAverageUserExperimentRatings(){
+        int numberOfRatings = getNumberOfUserExperimentRatings();
+        double ratingValues=0;
+        Collection<Double> cRatingValues = this.getAllUserRatingsOfExperiment().values();
+        for(Double ratingVal :cRatingValues){
+        	ratingValues+=ratingVal;
+        }
+        if(numberOfRatings>0 && ratingValues>0){
+        	return (int)Math.round(ratingValues/numberOfRatings);
+        }else{
+        	return 0;
+        }
+	}
+	
+	public int getNumberOfUserExperimentRatings(){
+        return this.getAllUserRatingsOfExperiment().size();
+	}
+	// --- end: allow users to rate the experiment --
     
 }

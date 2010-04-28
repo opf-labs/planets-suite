@@ -30,6 +30,7 @@ import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.primefaces.event.RateEvent;
 import org.richfaces.component.html.HtmlDataTable;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
@@ -2706,4 +2707,60 @@ public class NewExpWizardController{
 			log.debug(err,e);
 		}
     }
+    
+
+	private Double userRating = Double.valueOf(0);  
+    /**
+     * takes a given experiment rating and stores it within the expeirment's user ratings
+     */
+    public void handleUserExperimentRating(){
+    	 ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+         Experiment exp = expBean.getExperiment();
+         
+         //get the current logged-in user
+         UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+         exp.setUserRatingForExperiment(user.getUserid(), getUserExperimentRating());
+         Double rating = exp.getUserRatingOfExperiment(user.getUserid());
+         log.info("added community rating for the experiment: "+exp.getEntityID()+" from user: "+user.getUserid()+" name: "+user.getFullname()+" rating: "+rating);
+         
+         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+         testbedMan.updateExperiment(exp);
+         
+         //reset the rating
+         userRating = Double.valueOf(0); 
+    }
+    
+    /**
+     * Loads an existing experiment rating for the user at hand
+     * @return
+     */
+    public int getUserExpRatingFromDB(){
+    	 ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+         Experiment exp = expBean.getExperiment();
+         //get the current logged-in user
+         UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+         return (int)Math.round(exp.getUserRatingOfExperiment(user.getUserid()));
+    }
+    
+    public void setUserExpRatingFromDB(int i){
+    	//
+    }
+
+	public Double getUserExperimentRating() {
+		return userRating;
+	}
+
+	/**
+	 * users are able to rate the relevance of an experiment 
+	 * @param rating1
+	 */
+	public void setUserExperimentRating(Double rating) {
+		this.userRating = rating;
+	}
+	
+	public Experiment getExperimentAtHand(){
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	    return expBean.getExperiment();
+	}
+
 }

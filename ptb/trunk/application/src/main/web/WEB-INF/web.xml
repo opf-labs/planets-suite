@@ -174,8 +174,15 @@
     	<servlet-name>ExternalDigoContentResolver</servlet-name>
     	<servlet-class>eu.planets_project.tb.impl.data.util.TBDigitalObjectContentResolver</servlet-class>
   	</servlet>    
-
-	
+  	<!-- PrimeFaces -->
+  	<servlet>  
+        <servlet-name>Resource Servlet</servlet-name>  
+        <servlet-class>  
+            org.primefaces.resource.ResourceServlet  
+        </servlet-class>  
+    </servlet>  
+      
+    	
 	<servlet-mapping>
 		<servlet-name>local_default</servlet-name>
 		<url-pattern>/</url-pattern>
@@ -196,6 +203,10 @@
         <servlet-name>ExternalDigoContentResolver</servlet-name>
         <url-pattern>/external/digitalObjectContentResolver</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>  
+        <servlet-name>Resource Servlet</servlet-name>  
+       <url-pattern>/primefaces_resource/*</url-pattern>  
+   </servlet-mapping>  
 
 
 	<mime-mapping>
