@@ -9,9 +9,11 @@ import java.util.Calendar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
+import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -136,6 +138,20 @@ public class MeasurementBean extends MeasurementImpl {
         return name;
     }
 
+    public String getValueString() {
+        String value = this.getValue();
+        if( value != null && value.length() > 200 ) value = value.substring(0, 200) + " ...";
+        return value;
+    }
+
+    public FormatBean getAsFormat() {
+        return MeasurementImpl.getFormat( this.getProperty() );
+    }
+
+    public boolean isFormatProperty() {
+        return MeasurementImpl.isFormatProperty( this.getProperty() );
+    }
+    
 
     /** ACTIONS **/
 

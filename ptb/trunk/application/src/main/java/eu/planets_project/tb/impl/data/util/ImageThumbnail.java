@@ -129,9 +129,9 @@ public class ImageThumbnail {
                 RenderingHints.VALUE_ANTIALIAS_ON );
         graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
         // save thumbnail image to out stream
-        log.info("Start writing rescaled image...");
+        log.debug("Start writing rescaled image...");
         ImageIO.write(thumbImage, "png", out);
-        log.info("DONE writing rescaled image...");
+        log.debug("DONE writing rescaled image...");
     }
 
     /**
@@ -142,13 +142,13 @@ public class ImageThumbnail {
      * @throws Exception
      */
     public static void createThumb(DigitalObject dob, OutputStream out) throws Exception {
-        log.info("Loading in the image...");
+        log.debug("Loading in the image...");
         File imgFile = DigitalObjectUtils.toFile(dob);
         byte[] data = FileUtils.readFileToByteArray(imgFile);
-        log.info("Writing image to stream...");
+        log.debug("Writing image to stream...");
         ImageThumbnail
                 .createThumb(data, THUMB_WIDTH, THUMB_HEIGHT, out);
-        log.info("Image has been written to stream.");
+        log.debug("Image has been written to stream.");
         return;
     }
 

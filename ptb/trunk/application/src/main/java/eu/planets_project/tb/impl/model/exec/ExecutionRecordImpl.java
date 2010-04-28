@@ -40,6 +40,7 @@ import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.model.eval.PropertyEvaluation;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
@@ -134,11 +135,15 @@ public class ExecutionRecordImpl implements Serializable {
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> reportLog = new Vector<String>();
     
-    // TODO Add a list measurement events at this higher level, pertaining to overall output?
-    /** The measurements about this invocation */
+    // A list measurement events at this higher level, pertaining to overall output of the exp process.
+    /** The measurements about this execution */
     @OneToMany(cascade=CascadeType.ALL, mappedBy="targetExecution", fetch=FetchType.EAGER)
-    private Set<MeasurementEventImpl> measurementEvents = new HashSet<MeasurementEventImpl>();    
-    
+    private Set<MeasurementEventImpl> measurementEvents = new HashSet<MeasurementEventImpl>();
+
+    /** The user's evaluation of the properties of this execution. */
+    @Lob
+    @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
+    private Vector<PropertyEvaluation> propertyEvaluation = new Vector<PropertyEvaluation>();
 
     /** For JAXB */
     @SuppressWarnings("unused")
@@ -463,6 +468,20 @@ public class ExecutionRecordImpl implements Serializable {
      */
     public void setMeasurementEvents(Set<MeasurementEventImpl> measurementEvents) {
         this.measurementEvents = measurementEvents;
+    }
+
+    /**
+     * @return the propertyEvaluation
+     */
+    public Vector<PropertyEvaluation> getPropertyEvaluation() {
+        return propertyEvaluation;
+    }
+
+    /**
+     * @param propertyEvaluation the propertyEvaluation to set
+     */
+    public void setPropertyEvaluation(Vector<PropertyEvaluation> propertyEvaluation) {
+        this.propertyEvaluation = propertyEvaluation;
     }
 
 }

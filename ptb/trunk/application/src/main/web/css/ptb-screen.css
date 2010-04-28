@@ -1097,11 +1097,19 @@ pre.rawServiceDescription {
   background-color: #888888 !important;
   border: 1px solid #ffffff;
 }
-.oddRow { 
+.evenRow { 
  background-color: #ffffff;
 }
-.evenRow { 
+.oddRow { 
  background-color: #f8f8f8;
+}
+.evenPropRow { 
+ display: block;
+ height: 20px;
+}
+.oddPropRow { 
+ display: block;
+ height: 20px;
 }
 .equalValue {
  color: green;

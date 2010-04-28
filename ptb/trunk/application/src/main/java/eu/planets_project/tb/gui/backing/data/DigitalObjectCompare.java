@@ -58,14 +58,14 @@ import eu.planets_project.tb.gui.backing.exp.MeasurementEventBean;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.backing.exp.view.MeasuredComparisonBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.model.eval.PropertyEvaluation;
+import eu.planets_project.tb.impl.model.eval.PropertyEvaluation.EquivalenceStatement;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementAgent;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
 import eu.planets_project.tb.impl.model.measure.MeasurementAgent.AgentType;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl.EquivalenceStatement;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl.MeasurementType;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 import eu.planets_project.tb.impl.properties.ManuallyMeasuredPropertyHandlerImpl;
 import eu.planets_project.tb.impl.properties.ManuallyMeasuredPropertyImpl;
@@ -258,7 +258,7 @@ public class DigitalObjectCompare {
         me.setAgent(new MeasurementAgent(chr.describe()));
         me.setDate(Calendar.getInstance());
         for( PropertyComparison pc : cr.getComparisons() ) {
-            MeasurementImpl m = new MeasurementImpl(me, pc.getComparison());
+            MeasurementImpl m = new MeasurementImpl( me, pc.getComparison());
             MeasurementTarget mt = new MeasurementTarget();
             mt.setType(TargetType.DIGITAL_OBJECT_PAIR);
             // Get data on the first object:
@@ -426,23 +426,17 @@ public class DigitalObjectCompare {
         if( res == null || res.getExecutionRecord() == null ) {
             if( this.me != null ) {
                 log.info("Pulling getExperimentMeasurements from the temporary space.");
-                ms.addAll( MeasuredComparisonBean.createFromEvent(this.me, this.getDobUri1(), this.getDobUri2()) );
+                ms.addAll( MeasuredComparisonBean.createFromEvents( this.getDobUri1(), this.getDobUri2(), null, this.me ) );
             }
             log.info("Got getExperimentMeasurements "+ms.size());
             return ms;
         }
         // Otherwise, pull from DB:
         log.info("Pulling getExperimentMeasurements from the DB.");
-        int i = 0;
         Set<MeasurementEventImpl> measurementEvents = res.getExecutionRecord().getMeasurementEvents();
         List<MeasurementEventImpl> mevl = new ArrayList<MeasurementEventImpl>(measurementEvents);
         Collections.sort(mevl, Collections.reverseOrder());
-        for( MeasurementEventImpl me : mevl ) {
-            if( me.getMeasurements() != null ) {
-                ms.addAll( MeasuredComparisonBean.createFromEvent( me, this.getDobUri1(), this.getDobUri2()) );
-            }
-            i++;
-        }
+        ms.addAll( MeasuredComparisonBean.createFromEvents( this.getDobUri1(), this.getDobUri2(), res.getExecutionRecord().getPropertyEvaluation(), mevl.toArray(new MeasurementEventImpl[mevl.size()] ) ) );
         log.info("Got getExperimentMeasurements from Events, "+ms.size()+" out of "+mevl.size());
         return ms;
     }
@@ -452,14 +446,13 @@ public class DigitalObjectCompare {
      * 
      * @return
      */
-    public List<MeasurementEventBean> getExperimentMeasurements() {
-        List<MeasurementEventBean> ms = new ArrayList<MeasurementEventBean>();
+    public List<MeasurementEventImpl> getMeasurementEvents() {
+        List<MeasurementEventImpl> ms = new ArrayList<MeasurementEventImpl>();
         ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(this.getDobUri1());
         if( res == null || res.getExecutionRecord() == null ) {
             if( this.me != null ) {
                 log.info("Pulling getExperimentMeasurements from the temporary space.");
-                MeasuredComparisonEventBean mb = new MeasuredComparisonEventBean( this.me, this.getDobUri1(), this.getDobUri2() );
-                ms.add(mb);
+                ms.add(this.me);
             }
             log.info("Got getExperimentMeasurements "+ms.size());
             return ms;
@@ -468,17 +461,7 @@ public class DigitalObjectCompare {
         log.info("Pulling getExperimentMeasurements from the DB.");
         int i = 0;
         Set<MeasurementEventImpl> measurementEvents = res.getExecutionRecord().getMeasurementEvents();
-        List<MeasurementEventImpl> mevl = new ArrayList<MeasurementEventImpl>(measurementEvents);
-        Collections.sort(mevl, Collections.reverseOrder());
-        for( MeasurementEventImpl me : mevl ) {
-            if( me.getMeasurements() != null ) {
-                MeasuredComparisonEventBean mb = new MeasuredComparisonEventBean( me, this.getDobUri1(), this.getDobUri2() );
-                mb.setOdd((i%2 == 0));
-                ms.add( mb );
-            }
-            i++;
-        }
-        log.info("Got getExperimentMeasurements from Events, "+ms.size()+" out of "+mevl.size());
+        ms.addAll(measurementEvents);
         return ms;
     }
     
@@ -633,7 +616,6 @@ public class DigitalObjectCompare {
         m.setProperty( new Property.Builder(p).build() );
         //m.setUserEquivalence(this.newManEqu);
         m.setEquivalence( Equivalence.UNKNOWN );
-        m.setMeasurementType( MeasurementType.DOB );
         m.setValue(value);
         MeasurementTarget target = new MeasurementTarget();
         target.setType(TargetType.DIGITAL_OBJECT);
@@ -784,51 +766,11 @@ public class DigitalObjectCompare {
         }
         JSFUtil.redirect("/exp/dob_compare.faces?eid="+expBean.getExperiment().getEntityID()+"&dobUri1="+this.getDobUri1()+"&dobUri2="+this.getDobUri2());
    }
-    
+
     /**
-     * This is a bit horrible. Loading the resource bundle should work, but I can't get it to 
-     * stick to the right locale, so hacking into the resource bundle via EL works better.
-     * 
-     * TODO Forget this, and just hardcode the types into the comparison page?
-     * 
-     * @return A list of select items corresponding to the different evaluation types.
+     * @return
      */
     public List<SelectItem> getEquivalenceOptions() {
-        // Build up select items:
-        List<SelectItem> selects = new ArrayList<SelectItem>();
-        for( EquivalenceStatement state : EquivalenceStatement.values() ) {
-            selects.add(new SelectItem( state, lookupName(state) ));
-        }
-        return selects;
+        return PropertyEvaluation.getEquivalenceOptions();
     }
-    
-    private static String lookupName( EquivalenceStatement state ) {
-        try {
-            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-            // Load the resource bundle:
-            ResourceBundle bundle = null;
-            /*
-            try {
-                Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-                bundle = ResourceBundle.getBundle("eu.planets_project.tb.gui.UIResources", locale );
-            } catch ( MissingResourceException e ) {
-                log.error("Could not load resource bundle: "+e);
-            }
-            */
-            Map map = (Map) elContext.getELResolver().getValue(elContext, null, "res");
-            // Look up
-            String label = state.toString();
-            String key = "exp_stage5.evaluation."+label;
-            String lookup = "res['"+key+"']";
-            String name = (String) map.get(key);
-            if( bundle != null ) label = bundle.getString(key);
-            //log.info("For "+state+" got "+label+" and "+name);
-            if( name != null ) label = name;
-            return label;
-        } catch( Exception e ) {
-            log.error("Failure when looking up "+state+" :: "+e);
-            return state.toString();
-        }
-    }
-    
 }

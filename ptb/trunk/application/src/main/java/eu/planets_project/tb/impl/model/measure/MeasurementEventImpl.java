@@ -181,6 +181,14 @@ public class MeasurementEventImpl implements Serializable, Comparable<Measuremen
     public Vector<MeasurementImpl> getMeasurements() {
         return this.measurements;
     }
+
+    /**
+     * @return
+     */
+    public int getMeasurmentsSize() {
+        if( this.measurements == null ) return 0;
+        return this.measurements.size();
+    }
     
     /**
      * @return

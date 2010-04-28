@@ -72,7 +72,7 @@ public class TecRegMockup {
                         PROP_SERVICE_EXECUTION_SUCEEDED, 
                         "Service succeeded", "",
                         "Did this service execute successfully? i.e. no warnings or errors, even if  Value is true/false.", 
-                        null, MeasurementTarget.SERVICE_TARGET)
+                        null, MeasurementTarget.SERVICE_TARGET )
         );
         // The service response was valid?
         observables.put( 
@@ -81,7 +81,7 @@ public class TecRegMockup {
                         PROP_SERVICE_VALID_RESPONSE, 
                         "Service returned a valid response.", "",
                         "Did this service execute appropriately? Was the response appropriate, given the parameters? For example, if a migration service produced a result, but should not have done so as the arguments were not valid, then this should be set to 'false'. Value is true/false.", 
-                        null, MeasurementTarget.SERVICE_TARGET)
+                        null, MeasurementTarget.SERVICE_TARGET )
         );
         // The service result was valid?
         observables.put( 
@@ -90,7 +90,7 @@ public class TecRegMockup {
                         PROP_SERVICE_VALID_RESULT, 
                         "Service returned a valid result.", "",
                         "Was the result of the service operation valid. e.g. may be determined to be true if a user thinks the result of a migration is a good one. Value is true/false.", 
-                        null, MeasurementTarget.SERVICE_TARGET)
+                        null, MeasurementTarget.SERVICE_TARGET )
         );
         // The service time
         observables.put( 
@@ -99,7 +99,7 @@ public class TecRegMockup {
                         PROP_SERVICE_TIME, 
                         "Service execution time", "seconds",
                         "The wall-clock time taken to execute the service, in seconds.", 
-                        null, MeasurementTarget.SERVICE_TARGET)
+                        null, MeasurementTarget.SERVICE_TARGET )
         );
 
         // The measured type
@@ -109,7 +109,7 @@ public class TecRegMockup {
                         PROP_DO_FORMAT, 
                         "The format of the Digital Object", "",
                         "The format of a Digital Object, specified as a Planets Format URI.", 
-                        null, MeasurementTarget.SERVICE_DOB)
+                        null, MeasurementTarget.SERVICE_DOB )
         );
 
         // The size
@@ -119,7 +119,7 @@ public class TecRegMockup {
                         PROP_DO_SIZE, 
                         "The size of the Digital Object", "bytes",
                         "The total size of a particular Digital Object.", 
-                        null, MeasurementTarget.SERVICE_DOB)
+                        null, MeasurementTarget.SERVICE_DOB )
         );
     }
 

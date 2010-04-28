@@ -55,6 +55,7 @@ public class MeasurementTarget  implements Serializable {
     public static final String TARGET_SERVICE = "Service";
     public static final String TARGET_DIGITALOBJECT = "Digital Object";
     public static final String TARGET_DIGITALOBJECT_DIFF = "Comparison of Two Digital Objects";
+    public static final String TARGET_DIGITALOBJECT_PROP = "Digital Object Properties";
     public static final String TARGET_WORKFLOW = "Workflow";
 
     /** */
@@ -69,6 +70,9 @@ public class MeasurementTarget  implements Serializable {
         DIGITAL_OBJECT_PAIR,
         
         /** */
+        DIGITAL_OBJECT_PROPERTIES,
+        
+        /** */
         WORKFLOW;
 
         /* (non-Javadoc)
@@ -79,6 +83,7 @@ public class MeasurementTarget  implements Serializable {
             if( this.equals( SERVICE )) return TARGET_SERVICE;
             if( this.equals( DIGITAL_OBJECT )) return TARGET_DIGITALOBJECT;
             if( this.equals( DIGITAL_OBJECT_PAIR )) return TARGET_DIGITALOBJECT_DIFF;
+            if( this.equals( DIGITAL_OBJECT_PROPERTIES )) return TARGET_DIGITALOBJECT_PROP;
             if( this.equals( WORKFLOW )) return TARGET_WORKFLOW;
             return super.toString();
         }

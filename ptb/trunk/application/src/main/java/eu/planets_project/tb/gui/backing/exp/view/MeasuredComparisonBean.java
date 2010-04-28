@@ -10,6 +10,8 @@
  */
 package eu.planets_project.tb.gui.backing.exp.view;
 
+import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
@@ -32,10 +35,13 @@ import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.compare.PropertyComparison.Equivalence;
 import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
+import eu.planets_project.tb.gui.backing.exp.MeasurementBean;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
+import eu.planets_project.tb.impl.model.eval.PropertyEvaluation;
+import eu.planets_project.tb.impl.model.eval.PropertyEvaluation.EquivalenceStatement;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl.EquivalenceStatement;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 
 /**
@@ -44,79 +50,25 @@ import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
  *
  */
 public class MeasuredComparisonBean 
-                    implements Comparable<MeasuredComparisonBean> {
+                    implements Serializable, Comparable<MeasuredComparisonBean> {
     
+    private static final long serialVersionUID = 8134383234470113727L;
+
     static private Log log = LogFactory.getLog(MeasuredComparisonBean.class);
-
-    private MeasurementEventImpl event;
-
-    private MeasurementImpl compared;
-    private MeasurementImpl measured1;
-    private MeasurementImpl measured2;
+    
+    private Property property;
+    
+    protected List<MeasurementBean> first = new ArrayList<MeasurementBean>();
+    protected List<MeasurementBean> second = new ArrayList<MeasurementBean>();
+    protected List<MeasurementBean> compared = new ArrayList<MeasurementBean>();
 
     /**
+     * @param propertyUri
      */
-    public MeasuredComparisonBean( MeasurementEventImpl event ) {
-        this.event = event;
+    public MeasuredComparisonBean( Property property ) {
+        this.property = property;
     }
-    
-    /**
-     * @param m
-     */
-    public MeasuredComparisonBean( MeasurementEventImpl event, MeasurementImpl m) {
-        this.event = event;
-        this.compared = m;
-    }
-
-    /**{
-     * @param m
-     */
-    public MeasuredComparisonBean( MeasurementEventImpl event, MeasurementImpl m1, MeasurementImpl m2) {
-        this.event = event;
-        this.setFirstMeasured(m1);
-        this.setSecondMeasured(m1);
-    }
-
-    /**
-     * @return the event
-     */
-    public MeasurementEventImpl getEvent() {
-        return event;
-    }
-
-    public String getFirstValue() {
-        Property p = this.getFirstMeasured();
-        if( p == null ) return "";
-        String value = p.getValue();
-        if( value != null && value.length() > 200 ) value = value.substring(0, 200) + " ...";
-        return value;
-    }
-
-    public FormatBean getFirstFormat() {
-        if( getFirstMeasured() != null ) return MeasurementImpl.getFormat( getFirstMeasured() );
-        return null;
-    }
-
-    public String getSecondValue() {
-        Property p = this.getSecondMeasured();
-        if( p == null ) return "";
-        String value = p.getValue();
-        if( value.length() > 200 ) value = value.substring(0, 200) + " ...";
-        return value;
-    }
-    
-    public FormatBean getSecondFormat() {
-        if( getSecondMeasured() != null ) return MeasurementImpl.getFormat( getSecondMeasured() );
-        return null;
-    }
-
-
-    public String getComparison() {
-        if( compared != null ) return compared.getValue();
-        if( isEqual() ) return "Equal";
-        return "Different";
-    }
-    
+        
     public boolean isEqual() {
         if( this.getUserEquivalence() == EquivalenceStatement.EQUAL ) {
             return true;
@@ -124,17 +76,32 @@ public class MeasuredComparisonBean
         return false;
     }
     
-    public boolean isFormatProperty() {
-        if( getFirstMeasured() != null ) return MeasurementImpl.isFormatProperty( getFirstMeasured() );
-        if( getSecondMeasured() != null ) return MeasurementImpl.isFormatProperty( getSecondMeasured() );
-        return false;
-    }
-    
+    /**
+     * @return the property
+     */
     public Property getProperty() {
-        if( compared != null ) return compared.toProperty();
-        if( getFirstMeasured() != null ) return getFirstMeasured();
-        if( getSecondMeasured() != null ) return getSecondMeasured();
-        return null;
+        return property;
+    }
+
+    /**
+     * @return the compared
+     */
+    public List<MeasurementBean> getCompared() {
+        return compared;
+    }
+
+    /**
+     * @return the firstMeasured
+     */
+    public List<MeasurementBean> getFirst() {
+        return first;
+    }
+
+    /**
+     * @return the secondMeasured
+     */
+    public List<MeasurementBean> getSecond() {
+        return second;
     }
 
     /* (non-Javadoc)
@@ -148,74 +115,57 @@ public class MeasuredComparisonBean
         }
         return 0;
     }
-
+    
     /**
-     * @param measured1 the measured1 to set
+     * @return 
      */
-    public void setFirstMeasured(MeasurementImpl measured1) {
-        this.measured1 = measured1;
+    public List<MeasurementBean> getAllFirstMeasured() {
+        List<MeasurementBean> mb = new ArrayList<MeasurementBean>(this.first);
+        for( MeasurementBean cm : compared ) {
+            if( cm.getTarget().getDigitalObjectProperties(0) != null && 
+                cm.getTarget().getDigitalObjectProperties(0).size() > 0 ) 
+             mb.add( new MeasurementBean( cm.getEvent(), 
+                     new MeasurementImpl( cm.getEvent(), cm.getTarget().getDigitalObjectProperties(0).get(0) ) ) );
+        }
+        return mb;
     }
-
+    
     /**
-     * @return the measured1
+     * @return
      */
-    public Property getFirstMeasured() {
-        if( compared != null && compared.getTarget().getDigitalObjectProperties(0) != null && 
-               compared.getTarget().getDigitalObjectProperties(0).size() > 0 ) 
-            return compared.getTarget().getDigitalObjectProperties(0).get(0);
-        if( measured1 != null  ) return measured1.getProperty();
-        return null;
-    }
-
-    /**
-     * @param measured2 the measured2 to set
-     */
-    public void setSecondMeasured(MeasurementImpl measured2) {
-        this.measured2 = measured2;
-    }
-
-    /**
-     * @return the measured2
-     */
-    public Property getSecondMeasured() {
-        if( compared != null && compared.getTarget().getDigitalObjectProperties(1) != null && 
-                compared.getTarget().getDigitalObjectProperties(1).size() > 0 )  
-            return compared.getTarget().getDigitalObjectProperties(1).get(0);
-        if( measured2 != null  ) return measured2.getProperty();
-        return null;
+    public List<MeasurementBean> getAllSecondMeasured() {
+        List<MeasurementBean> mb = new ArrayList<MeasurementBean>(this.second);
+        for( MeasurementBean cm : compared ) {
+            if( cm.getTarget().getDigitalObjectProperties(1) != null && 
+                cm.getTarget().getDigitalObjectProperties(1).size() > 0 ) 
+             mb.add( new MeasurementBean( cm.getEvent(), 
+                     new MeasurementImpl( cm.getEvent(), cm.getTarget().getDigitalObjectProperties(1).get(1) ) ) );
+        }
+        return mb;
     }
 
     /**
      * @return
      */
-    public MeasurementImpl getCompared() {
+    public List<MeasurementBean> getAllCompared() {
+        // FIXME Add dumb comparisons of properties here?
         return compared;
     }
     
     /**
      * @return
      */
-    public Equivalence getEquivalence() {
-        if( compared == null ) return Equivalence.UNKNOWN;
-        return compared.getEquivalence();
-    }
-    
-    /**
-     * @return
-     */
     public EquivalenceStatement getUserEquivalence() {
-        if( compared == null ) return EquivalenceStatement.NOT_APPLICABLE;
-        return compared.getUserEquivalence();
+        return getPropertyEvaluation().getUserEquivalence();
     }
     
     /**
      * @return
      */
     public void setUserEquivalence( EquivalenceStatement es ) {
-        if( compared == null ) return;
         // Update if needed.
-        if( compared.getUserEquivalence() != es ) {
-            compared.setUserEquivalence(es);
+        if( getPropertyEvaluation().getUserEquivalence() != es ) {
+            getPropertyEvaluation().setUserEquivalence(es);
             DigitalObjectCompare.persistExperiment();
         }
     }
@@ -224,33 +174,40 @@ public class MeasuredComparisonBean
      * @return
      */
     public String getUserEquivalenceComment() {
-        if( compared == null ) return "";
-        return compared.getUserEquivalenceComment();
+        if( getPropertyEvaluation() == null ) return "";
+        return getPropertyEvaluation().getUserEquivalenceComment();
     }
 
     /**
      * @param me
      * @param dobUri1
      * @param dobUri2
+     * @param peval 
      * @return
      */
-    public static List<MeasuredComparisonBean> createFromEvent(
-            MeasurementEventImpl me, String dobUri1, String dobUri2) {
+    public static List<MeasuredComparisonBean> createFromEvents(
+            String dobUri1, String dobUri2, Vector<PropertyEvaluation> peval, MeasurementEventImpl ... mes ) {
         Map<String,MeasuredComparisonBean> cmp = new HashMap<String,MeasuredComparisonBean>();
-        log.info("Looking for comparisons out of "+me.getMeasurements().size());
-        for( MeasurementImpl m : me.getMeasurements() ) {
-            if(m.getTarget().getType() == TargetType.DIGITAL_OBJECT_PAIR ) {
-                cmp.put( m.getIdentifier(), new MeasuredComparisonBean(me, m) );
-            } else if( m.getTarget().getType() == TargetType.DIGITAL_OBJECT ) {
-                MeasuredComparisonBean mcb = cmp.get(m.getIdentifier());
-                if( mcb == null ) {
-                    mcb = new MeasuredComparisonBean(me);
-                    cmp.put(m.getIdentifier(), mcb);
-                }
-                if( dobUri1.equals(m.getTarget().getDigitalObjects().firstElement())) {
-                    mcb.setFirstMeasured(m);
-                } else if( dobUri2.equals(m.getTarget().getDigitalObjects().firstElement())) {
-                    mcb.setSecondMeasured(m);
+        for( MeasurementEventImpl me : mes ) {
+            if( me.getMeasurements() != null ) {
+                log.info("Looking for comparisons out of "+me.getMeasurements().size());
+                for( MeasurementImpl m : me.getMeasurements() ) {
+                    if(m.getTarget().getType() == TargetType.DIGITAL_OBJECT_PAIR ) {
+                        MeasuredComparisonBean mb = new MeasuredComparisonBean(m.getProperty());
+                        mb.getCompared().add(new MeasurementBean(me, m) );
+                        cmp.put( m.getIdentifier(), mb );
+                    } else if( m.getTarget().getType() == TargetType.DIGITAL_OBJECT ) {
+                        MeasuredComparisonBean mcb = cmp.get(m.getIdentifier());
+                        if( mcb == null ) {
+                            mcb = new MeasuredComparisonBean(m.getProperty());
+                            cmp.put(m.getIdentifier(), mcb);
+                        }
+                        if( dobUri1.equals(m.getTarget().getDigitalObjects().firstElement())) {
+                            mcb.getFirst().add(new MeasurementBean(me,m));
+                        } else if( dobUri2.equals(m.getTarget().getDigitalObjects().firstElement())) {
+                            mcb.getSecond().add(new MeasurementBean(me,m));
+                        }
+                    }
                 }
             }
         }
@@ -259,6 +216,38 @@ public class MeasuredComparisonBean
         // Sort:
         Collections.sort(cms);
         return cms;
+    }
+    
+    /**
+     * @return
+     */
+    private PropertyEvaluation getPropertyEvaluation() {
+        // TODO Look up the property evaluation associated with this.
+        PropertyEvaluation propertyEvaluation = new PropertyEvaluation( this.getProperty().getUri() );
+        // If not set, default to the equivalence from the measurement.
+        if( propertyEvaluation.getUserEquivalence() == null ) {
+            Equivalence eqv = this.getEquivalence();
+            if( eqv == Equivalence.EQUAL ) {
+                propertyEvaluation.setUserEquivalence( EquivalenceStatement.EQUAL );
+            } else if( eqv == Equivalence.DIFFERENT ) {
+                propertyEvaluation.setUserEquivalence( EquivalenceStatement.DIFFERENT );
+            } else if( eqv == Equivalence.MISSING ) {
+                propertyEvaluation.setUserEquivalence( EquivalenceStatement.MISSING );
+            }
+        }
+        return propertyEvaluation;
+    }
+
+    /**
+     * @return
+     */
+    private Equivalence getEquivalence() {
+        if( this.compared != null && this.compared.size() > 0 ) {
+            log.info("Compared: "+this.compared.size()+" "+this.compared.get(0).getName()+" "+this.compared.get(0).getEquivalence());
+            return this.compared.get(0).getEquivalence();
+        }
+        log.info("Compared: "+this.compared);
+        return null;
     }
     
 }

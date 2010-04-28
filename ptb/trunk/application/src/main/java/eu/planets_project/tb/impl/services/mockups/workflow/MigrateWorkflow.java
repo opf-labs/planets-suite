@@ -515,7 +515,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         msAfter = System.currentTimeMillis();
         
         // Compute the run time.
-        stage_m.add(new MeasurementImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
+        stage_m.add( new MeasurementImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
         // Add the object size:
         stage_m.add( new MeasurementImpl(TecRegMockup.PROP_DO_SIZE, ""+IdentifyWorkflow.getContentSize(dob) ) );
 

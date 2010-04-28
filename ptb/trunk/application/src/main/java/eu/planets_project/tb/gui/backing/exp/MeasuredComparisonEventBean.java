@@ -58,7 +58,7 @@ public class MeasuredComparisonEventBean extends MeasurementEventBean {
      * @return the measurements in this event, as a set of comparisons between two objects
      */
     public List<MeasuredComparisonBean> getComparisons() {
-        return MeasuredComparisonBean.createFromEvent(getEvent(), first, second);
+        return MeasuredComparisonBean.createFromEvents( first, second, null, getEvent() );
     }
 
 

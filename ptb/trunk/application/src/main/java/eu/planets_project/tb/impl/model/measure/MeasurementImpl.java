@@ -67,22 +67,6 @@ public class MeasurementImpl implements Serializable {
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Property property = null;
     
-    /** 
-     * The type of the measurement, used to control how measurements are understood and displayed.
-     * The details about the target of the measurment are stored in the MeasurementTarget, below.
-     */
-    public enum MeasurementType { 
-        /** This measurement is a property related to a service. */
-        SERVICE,
-        /** This measurement is a property determined from a single Digital Object. */
-        DOB,
-        /** This measurement is a property determined by comparing two Digital Objects. */
-        DOB_COMPARE
-    }
-    
-    /** The type of the measurement. */
-    private MeasurementType measurementType;
-    
     /** This is the entity or entities upon which this Property was measured. */
     @Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
@@ -92,41 +76,6 @@ public class MeasurementImpl implements Serializable {
     
     /** For comparative measurements, this records the Agent's opinion of the equivalence of the DOBs w.r.t this property. */
     private Equivalence equivalence = Equivalence.UNKNOWN;
-
-    /* ---- User comparison evaluation ---- */
-    
-    /** This is the list of pre-supplied answers for the userEquivalenceDetail. String mappings
-     * to 'Quite Similar' etc are held in UIResources.properties
-     * TODO Consider simplifying or augmenting? For example There are two kinds of EQUAL:
-     * there is precisely equal (same information in the same encoding), and there is equivalent
-     * (same information in different encodings). All others are different/lossy.
-     * When lossy, does Completely Different really mean Completely Lost/Missing?
-     * There is also 'Supposed to be different', which applies e.g. to format identification under migration. 
-     */
-    public enum EquivalenceStatement {
-        /* The users judges the property is equal across this comparison */
-        EQUAL,
-        /* The users judges the property is similar across this comparison */
-        SIMILAR,
-        /* The users judges the property is different across this comparison */
-        DIFFERENT,
-        /* The users judges the property is completely different across this comparison */
-        NOT_EQUAL,
-        /* The users find the property is missing on one side or the other. FIXME Same as NOT_EQUAL, i.e. complete loss. */
-        MISSING,
-        /* The users judges the property cannot be evaluated. FIXME Is this meaningful? */
-        /*
-        INCOMPARABLE,
-        */
-        /* The users judges that no such judgement should be made. */
-        NOT_APPLICABLE,
-    }
-    
-    /** For comparative measurements, records the Experimenter's opinion of the equivalence of the DOBs w.r.t this property. */
-    private EquivalenceStatement userEquivalence = null;
-    
-    /** For comparative measurements, the Experimenter can record a more detailed statement about the equivalence. */
-    private String userEquivalenceComment = "";
 
     /* ---- Constructors ---- */
     
@@ -150,6 +99,7 @@ public class MeasurementImpl implements Serializable {
 //        this.event = event;
         this.property = new Property.Builder( m.getProperty() ).build();
         this.target = m.target;
+        this.equivalence = m.equivalence;
     }
     
     /**
@@ -186,6 +136,7 @@ public class MeasurementImpl implements Serializable {
     public MeasurementImpl(MeasurementImpl m) {
 //        this(m.event, m.property, m.target );
         this(null, m.property, m.target );
+        this.equivalence = m.equivalence;
     }
 
     /**
@@ -401,20 +352,6 @@ public class MeasurementImpl implements Serializable {
     }
 
     /**
-     * @return the measurementType
-     */
-    public MeasurementType getMeasurementType() {
-        return measurementType;
-    }
-
-    /**
-     * @param measurementType the measurementType to set
-     */
-    public void setMeasurementType(MeasurementType measurementType) {
-        this.measurementType = measurementType;
-    }
-
-    /**
      * @return the equivalence
      */
     public Equivalence getEquivalence() {
@@ -426,43 +363,6 @@ public class MeasurementImpl implements Serializable {
      */
     public void setEquivalence(Equivalence equivalence) {
         this.equivalence = equivalence;
-    }
-
-    /**
-     * @return the userEquivalence
-     */
-    public EquivalenceStatement getUserEquivalence() {
-        if( userEquivalence == null ) {
-            if( this.getEquivalence() == Equivalence.EQUAL ) {
-                return EquivalenceStatement.EQUAL;
-            } else if( this.getEquivalence() == Equivalence.DIFFERENT ) {
-                return EquivalenceStatement.DIFFERENT;
-            } else if( this.getEquivalence() == Equivalence.MISSING ) {
-                return EquivalenceStatement.MISSING;
-            }
-        }
-        return userEquivalence;
-    }
-
-    /**
-     * @param userEquivalence the userEquivalence to set
-     */
-    public void setUserEquivalence(EquivalenceStatement userEquivalence) {
-        this.userEquivalence = userEquivalence;
-    }
-
-    /**
-     * @return the userEquivalenceComment
-     */
-    public String getUserEquivalenceComment() {
-        return userEquivalenceComment;
-    }
-
-    /**
-     * @param userEquivalenceComment the userEquivalenceComment to set
-     */
-    public void setUserEquivalenceComment(String userEquivalenceComment) {
-        this.userEquivalenceComment = userEquivalenceComment;
     }
     
 }

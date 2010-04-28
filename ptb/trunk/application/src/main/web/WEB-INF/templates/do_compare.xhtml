@@ -56,73 +56,79 @@
     <br/>
     
       <rich:dataTable id="dobCompareMeasurements" 
-          onRowMouseOver="this.style.backgroundColor='#{me.odd ? '#eef' : '#eee'}'"
+          onRowMouseOver="this.style.backgroundColor='#eee'"
           onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
-          value="#{DobCompare.measurementComparisons}" var="m" styleClass="tbTable" 
+          value="#{DobCompare.measurementComparisons}" var="mc" styleClass="tbTable" 
           rows="#{isInExperiment ? '25' : '0'}" reRender="measurements_ds">
           
-        <rich:column sortBy="#{m.property.name}">
+        <rich:column sortBy="#{mc.property.name}" sortOrder="DESCENDING">
             <f:facet name="header">
                <h:outputText value="Property"/>
             </f:facet>
             <ui:include src="/WEB-INF/templates/fragments/property_def.xhtml">
-              <ui:param name="p" value="#{m.property}"/>
+              <ui:param name="p" value="#{mc.property}"/>
             </ui:include>
-        </rich:column>
-        
-        <rich:column sortBy="#{m.event.agent.name}" sortOrder="DESCENDING">
-            <f:facet name="header">
-              <h:outputText value="Agent"/>
-            </f:facet>
-
-               <h:outputText value="#{m.event.agent.name}"/>
-        </rich:column>
-        
-        <rich:column sortBy="#{m.event.date.time}" sortOrder="DESCENDING">
-            <f:facet name="header">
-              <h:outputText value="Date"/>
-            </f:facet>
-
-            <h:outputText value="#{m.event.shortDate} " rendered="#{m.event.date != null}"/>
-            
-            <a4j:commandLink action="#{m.event.deleteMeasurementEvent}" reRender="dobCompareMeasurements" rendered="#{!ReadOnly}">
-                <t:graphicImage value="/graphics/user_trash.png" alt="Delete Measurement Event"/>
-            </a4j:commandLink>
-            
         </rich:column>
         
         <rich:column>
             <f:facet name="header">
               <h:outputText value="In First Object"/>
             </f:facet>
-            <h:outputText value="#{m.firstValue}" rendered="#{!m.formatProperty}"/>
-            <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
-              <ui:param name="f" value="#{m.firstFormat}"/>
+            <a4j:repeat value="#{mc.allFirstMeasured}" var="m" rowKeyVar="mi">
+            <h:panelGroup styleClass="#{mi%2==0 ? 'evenPropRow' : 'oddPropRow'}">
+             <h:outputText value="#{m.value}" rendered="#{!m.formatProperty}"/>
+             <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
+              <ui:param name="f" value="#{m.asFormat}"/>
+             </ui:include>
+             <h:outputText value="  "/>
+            <ui:include src="/WEB-INF/templates/fragments/measurement_tooltip.xhtml">
+              <ui:param name="m" value="#{m}"/>
             </ui:include>
+              <br/>
+              </h:panelGroup>
+            </a4j:repeat>
         </rich:column>
         
         <rich:column>
             <f:facet name="header">
               <h:outputText value="In Second Object"/>
             </f:facet>
-            <h:outputText value="#{m.secondValue}" rendered="#{!m.formatProperty}"/>
+            <a4j:repeat value="#{mc.allSecondMeasured}" var="m" rowKeyVar="mi">
+            <h:panelGroup styleClass="#{mi%2==0 ? 'evenPropRow' : 'oddPropRow'}">
+            <h:outputText value="#{m.value}" rendered="#{!m.formatProperty}"/>
             <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
-              <ui:param name="f" value="#{m.secondFormat}"/>
+              <ui:param name="f" value="#{m.asFormat}"/>
             </ui:include>
+             <h:outputText value="  "/>
+            <ui:include src="/WEB-INF/templates/fragments/measurement_tooltip.xhtml">
+              <ui:param name="m" value="#{m}"/>
+            </ui:include>
+            <br/>
+            </h:panelGroup>
+            </a4j:repeat>
         </rich:column>
         
-        <rich:column>
+        <rich:column sortBy="#{mc.comparison}">
             <f:facet name="header">
               <h:outputText value="Comparison"/>
             </f:facet>
-            <h:outputText value="#{m.comparison}" styleClass="#{m.equal ? 'equalValue' : 'differentValue'}"/>
+            <a4j:repeat value="#{mc.allCompared}" var="m" rowKeyVar="mi">
+            <h:panelGroup styleClass="#{mi%2==0 ? 'evenPropRow' : 'oddPropRow'}">
+             <h:outputText value="#{m.value}" styleClass="#{mc.equal ? 'equalValue' : 'differentValue'}"/>
+             <h:outputText value="  "/>
+            <ui:include src="/WEB-INF/templates/fragments/measurement_tooltip.xhtml">
+              <ui:param name="m" value="#{m}"/>
+            </ui:include>
+             <br/>
+             </h:panelGroup>
+            </a4j:repeat>
         </rich:column>
         
-        <rich:column>
+        <rich:column sortBy="#{mc.userEquivalence}">
             <f:facet name="header">
               <h:outputText value="Equivalence"/>
             </f:facet>
-            <h:selectOneMenu value="#{m.userEquivalence}" styleClass="equiv-#{m.userEquivalence}" disabled="#{ReadOnly}">
+            <h:selectOneMenu value="#{mc.userEquivalence}" styleClass="equiv-#{mc.userEquivalence}" disabled="#{ReadOnly}">
               <f:selectItem itemValue="" itemLabel="" />
               <f:selectItems value="#{DobCompare.equivalenceOptions}" />
               <a4j:support event="onchange" reRender="dobCompareMeasurements" />
@@ -140,10 +146,7 @@
     
     <!-- ********************************************************************** -->
     
-    <rich:panel id="dobCompareDirect">
-      <f:facet name="header">
-            <h:outputText value="Compare using Planets services..."/>
-      </f:facet>
+    <rich:simpleTogglePanel id="dobCompareDirect" switchType="client" opened="true" label="Compare using Planets services...">
       
       <dt><b>Compare</b></dt>
       <dd>
@@ -152,7 +155,7 @@
           <f:selectItems value="#{DobCompare.compareServiceList}" />
                     
         </h:selectOneMenu>
-        <a4j:commandButton action="#{DobCompare.runCompareService}" reRender="dobCompareDirect" value="Run" disabled="#{ReadOnly}"/>
+        <a4j:commandButton action="#{DobCompare.runCompareService}" reRender="dobCompareDirect,dobCompareMeasurements" value="Run" disabled="#{ReadOnly}"/>
       </dd>
       <dt>Compare Service Report:</dt>
       <dd>
@@ -167,14 +170,11 @@
          </ui:include>
       </dd>
             
-    </rich:panel>
+    </rich:simpleTogglePanel>
     
     <!-- ********************************************************************** -->
     
-    <rich:panel id="dobManualCompare">
-      <f:facet name="header">
-            <h:outputText value="Compare manually..."/>
-      </f:facet>
+    <rich:simpleTogglePanel id="dobManualCompare" switchType="client" opened="true" label="Compare manually...">
       
   <!-- Manual evaluation: -->
   <!-- 
@@ -202,16 +202,16 @@
           <h:inputTextarea rows="5" cols="78" id="newPropDesc" value="#{DobCompare.addManPropDesc}"/>
         </p>
         
-        <a4j:commandButton action="#{DobCompare.createNewManualMeasurementProperty}" reRender="dobManualCompare" value="Add"/>
-        <a4j:commandButton action="#{DobCompare.removeManualMeasurementProperty}" reRender="dobManualCompare" value="Remove"/>
+        <a4j:commandButton action="#{DobCompare.createNewManualMeasurementProperty}" reRender="dobManualCompare,dobCompareMeasurements" value="Add"/>
+        <a4j:commandButton action="#{DobCompare.removeManualMeasurementProperty}" reRender="dobManualCompare,dobCompareMeasurements" value="Remove"/>
         </fieldset>
         </rich:simpleTogglePanel>
     
     <br/>    
     
     <h:panelGrid columns="2" style="width:120px;" rendered="#{!ReadOnly}">
-    	<h:outputLabel value="Value in #{DobCompare.dob1.leafname}" for="newValueOne" styleClass="auto"/>
-    	<h:outputLabel value="Value in #{DobCompare.dob2.leafname}" for="newValueTwo" styleClass="auto"/>
+    	<h:outputLabel value="Value in first object: #{DobCompare.dob1.leafname}" for="newValueOne" styleClass="auto"/>
+    	<h:outputLabel value="Value in second object: #{DobCompare.dob2.leafname}" for="newValueTwo" styleClass="auto"/>
     	
         <h:inputText id="newValueOne" value="#{DobCompare.newManVal1}"/>
         <h:inputText id="newValueTwo" value="#{DobCompare.newManVal2}"/>
@@ -238,16 +238,72 @@
         <h:inputTextarea rows="5" cols="80" required="false" id="envReport" value="#{DobCompare.manualMeasurementEnvironment}" disabled="#{ReadOnly}"/>
         </p>
         
-        <a4j:commandButton action="#{DobCompare.updateManualMeasurment}" reRender="dobManualCompare" value="Store" disabled="#{ReadOnly}"/>
+        <a4j:commandButton action="#{DobCompare.updateManualMeasurment}" reRender="dobManualCompare,dobCompareMeasurements" value="Store" disabled="#{ReadOnly}"/>
         
      </fieldset>
  	</h:panelGroup>
       
       
-  </rich:panel>
+  </rich:simpleTogglePanel>
     
         <!-- ********************************************************************** -->
+
+    <br/>
     
+      <rich:dataTable id="dobCompareMeasurementEvents" 
+          onRowMouseOver="this.style.backgroundColor='#eee'"
+          onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+          value="#{DobCompare.measurementEvents}" var="me" styleClass="tbTable" 
+          rows="#{isInExperiment ? '25' : '0'}" reRender="measurement_events_ds">
+                  
+        <rich:column sortBy="#{me.agent.name}">
+            <f:facet name="header">
+              <h:outputText value="Agent"/>
+            </f:facet>
+
+               <h:outputText value="#{me.agent.name}"/>
+        </rich:column>
+        
+        <rich:column sortBy="#{me.agent.type}">
+            <f:facet name="header">
+              <h:outputText value="Agent Type"/>
+            </f:facet>
+
+               <h:outputText value="#{me.agent.type}"/>
+        </rich:column>
+        
+        <rich:column sortBy="#{me.date.time}" sortOrder="DESCENDING">
+            <f:facet name="header">
+              <h:outputText value="Date"/>
+            </f:facet>
+
+            <h:outputText value="#{me.shortDate} " rendered="#{me.date != null}"/>
+            
+        </rich:column>
+        
+        <rich:column>
+            <f:facet name="header">
+              <h:outputText value="Delete"/>
+            </f:facet>
+
+            <a4j:commandLink action="#{me.deleteMeasurementEvent}" reRender="dobCompareMeasurementEvents,dobCompareMeasurements" rendered="#{!ReadOnly}">
+                <t:graphicImage value="/graphics/user_trash.png" alt="Delete Measurement Event"/>
+                <rich:toolTip>
+                    <h:outputText value="Delete all measurements (#{me.measurmentsSize}) associated with this event?"/>
+                </rich:toolTip>
+            </a4j:commandLink>
+            
+        </rich:column>
+        
+        <f:facet name="footer">
+            <rich:datascroller id="measurement_events_ds" renderIfSinglePage="false"></rich:datascroller>
+        </f:facet>
+
+      </rich:dataTable>
+      
+    <br/>
+    
+    <!-- ********************************************************************** -->
     
     </div>
     
