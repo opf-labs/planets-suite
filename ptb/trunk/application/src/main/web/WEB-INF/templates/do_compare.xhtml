@@ -155,7 +155,7 @@
           <f:selectItems value="#{DobCompare.compareServiceList}" />
                     
         </h:selectOneMenu>
-        <a4j:commandButton action="#{DobCompare.runCompareService}" reRender="dobCompareDirect,dobCompareMeasurements" value="Run" disabled="#{ReadOnly}"/>
+        <a4j:commandButton action="#{DobCompare.runCompareService}" reRender="dobCompareDirect,dobCompareMeasurements,dobCompareMeasurementEvents" value="Run" disabled="#{ReadOnly}"/>
       </dd>
       <dt>Compare Service Report:</dt>
       <dd>
@@ -202,7 +202,7 @@
           <h:inputTextarea rows="5" cols="78" id="newPropDesc" value="#{DobCompare.addManPropDesc}"/>
         </p>
         
-        <a4j:commandButton action="#{DobCompare.createNewManualMeasurementProperty}" reRender="dobManualCompare,dobCompareMeasurements" value="Add"/>
+        <a4j:commandButton action="#{DobCompare.createNewManualMeasurementProperty}" reRender="dobManualCompare,dobCompareMeasurements,dobCompareMeasurementEvents" value="Add"/>
         <a4j:commandButton action="#{DobCompare.removeManualMeasurementProperty}" reRender="dobManualCompare,dobCompareMeasurements" value="Remove"/>
         </fieldset>
         </rich:simpleTogglePanel>
