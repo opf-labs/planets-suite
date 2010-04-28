@@ -10,6 +10,7 @@
  */
 package eu.planets_project.tb.impl.model.eval;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,10 @@ import java.util.ResourceBundle;
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.persistence.Embeddable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +32,13 @@ import org.apache.commons.logging.LogFactory;
  * @author anj
  *
  */
-public class PropertyEvaluation {
+@Embeddable
+@XmlRootElement(name = "PropertyEvaluation")
+@XmlAccessorType(XmlAccessType.FIELD) 
+public class PropertyEvaluation implements Serializable {
+    
+    private static final long serialVersionUID = -5048743251625684368L;
+
     static private Log log = LogFactory.getLog(PropertyEvaluation.class);
     
     /** The property that has been evaluated */
@@ -75,6 +86,13 @@ public class PropertyEvaluation {
      */
     public PropertyEvaluation(URI uri) {
         this.propertyUri = uri;
+    }
+
+    /**
+     * @return the propertyUri
+     */
+    public URI getPropertyUri() {
+        return propertyUri;
     }
 
     /**

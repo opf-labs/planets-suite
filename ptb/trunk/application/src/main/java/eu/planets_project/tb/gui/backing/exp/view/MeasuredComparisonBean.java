@@ -57,6 +57,7 @@ public class MeasuredComparisonBean
     static private Log log = LogFactory.getLog(MeasuredComparisonBean.class);
     
     private Property property;
+    private PropertyEvaluation propertyEvaluation;
     
     protected List<MeasurementBean> first = new ArrayList<MeasurementBean>();
     protected List<MeasurementBean> second = new ArrayList<MeasurementBean>();
@@ -65,8 +66,9 @@ public class MeasuredComparisonBean
     /**
      * @param propertyUri
      */
-    public MeasuredComparisonBean( Property property ) {
+    public MeasuredComparisonBean( Property property, PropertyEvaluation propertyEvaluation ) {
         this.property = property;
+        this.propertyEvaluation = propertyEvaluation;
     }
         
     public boolean isEqual() {
@@ -186,20 +188,25 @@ public class MeasuredComparisonBean
      * @return
      */
     public static List<MeasuredComparisonBean> createFromEvents(
-            String dobUri1, String dobUri2, Vector<PropertyEvaluation> peval, MeasurementEventImpl ... mes ) {
+            String dobUri1, String dobUri2, Vector<PropertyEvaluation> pevals, MeasurementEventImpl ... mes ) {
         Map<String,MeasuredComparisonBean> cmp = new HashMap<String,MeasuredComparisonBean>();
         for( MeasurementEventImpl me : mes ) {
             if( me.getMeasurements() != null ) {
                 log.info("Looking for comparisons out of "+me.getMeasurements().size());
                 for( MeasurementImpl m : me.getMeasurements() ) {
+                    // Create the comparison object:
                     if(m.getTarget().getType() == TargetType.DIGITAL_OBJECT_PAIR ) {
-                        MeasuredComparisonBean mb = new MeasuredComparisonBean(m.getProperty());
+                        MeasuredComparisonBean mb = new MeasuredComparisonBean( 
+                                m.getProperty(),
+                                findPropertyEvaluation(pevals,m) );
                         mb.getCompared().add(new MeasurementBean(me, m) );
                         cmp.put( m.getIdentifier(), mb );
                     } else if( m.getTarget().getType() == TargetType.DIGITAL_OBJECT ) {
                         MeasuredComparisonBean mcb = cmp.get(m.getIdentifier());
                         if( mcb == null ) {
-                            mcb = new MeasuredComparisonBean(m.getProperty());
+                            mcb = new MeasuredComparisonBean( 
+                                    m.getProperty(),
+                                    findPropertyEvaluation(pevals,m) );
                             cmp.put(m.getIdentifier(), mcb);
                         }
                         if( dobUri1.equals(m.getTarget().getDigitalObjects().firstElement())) {
@@ -218,12 +225,24 @@ public class MeasuredComparisonBean
         return cms;
     }
     
+    private static PropertyEvaluation findPropertyEvaluation( Vector<PropertyEvaluation> pevals, MeasurementImpl m ) {
+        for( PropertyEvaluation peval : pevals ) {
+            if( peval.getPropertyUri().equals( m.getIdentifierUri() ) ) return peval;
+        }
+        // Or make a new one:
+        PropertyEvaluation peval = new PropertyEvaluation(m.getIdentifierUri());
+        pevals.add(peval);
+        return peval;
+    }
+    
     /**
      * @return
      */
     private PropertyEvaluation getPropertyEvaluation() {
-        // TODO Look up the property evaluation associated with this.
-        PropertyEvaluation propertyEvaluation = new PropertyEvaluation( this.getProperty().getUri() );
+        // Look up the property evaluation associated with this.
+        if( this.propertyEvaluation == null ) {
+            propertyEvaluation = new PropertyEvaluation( this.getProperty().getUri() );
+        }
         // If not set, default to the equivalence from the measurement.
         if( propertyEvaluation.getUserEquivalence() == null ) {
             Equivalence eqv = this.getEquivalence();

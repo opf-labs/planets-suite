@@ -474,14 +474,9 @@ public class ExecutionRecordImpl implements Serializable {
      * @return the propertyEvaluation
      */
     public Vector<PropertyEvaluation> getPropertyEvaluation() {
+        if( propertyEvaluation == null ) propertyEvaluation = new Vector<PropertyEvaluation>();
+        log.info("PropertyEvaluations: "+propertyEvaluation.size());
         return propertyEvaluation;
-    }
-
-    /**
-     * @param propertyEvaluation the propertyEvaluation to set
-     */
-    public void setPropertyEvaluation(Vector<PropertyEvaluation> propertyEvaluation) {
-        this.propertyEvaluation = propertyEvaluation;
     }
 
 }
