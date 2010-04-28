@@ -25,13 +25,23 @@ public class FileServiceUtilities {
     private static Logger log = Logger.getLogger(FileServiceUtilities.class.getName());
     /** The configuration */
 	private static Configuration configuration = ServiceConfig.getConfiguration(FileIdentify.NAME);
+	/** System property key for os name */
+	private final static String OS_NAME_KEY = "os.name";
 
 	/**
 	 * @return
 	 * 		True if running on a windows box, false otherwise
 	 */
 	public static boolean isWindows() {
-		return System.getProperty("os.name").toLowerCase().contains("windows");
+		return System.getProperty(OS_NAME_KEY).toLowerCase().contains("windows");
+	}
+
+	/**
+	 * @return
+	 * 		True is running on a linux box, false otherwise
+	 */
+	public static boolean isLinux() {
+		return System.getProperty(OS_NAME_KEY).toLowerCase().contains("");
 	}
 
 	/**
