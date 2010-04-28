@@ -4,8 +4,6 @@
 package eu.planets_project.services.file;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
@@ -49,8 +47,7 @@ public class FileServiceUtilities {
 	 * 		true if the cygwin file command exists on this box, false otherwise
 	 */
 	public static boolean isCygwinFileDetected () {
-		// File cygwinFile = new File(_properties.getProperty("cygwin.file.location"));
-		File cygwinFile = new File(configuration.getString("cygwin.file.location"));
+		File cygwinFile = new File(FileServiceUtilities.getFileLocation());
 		return cygwinFile.exists();
 	}
 	
@@ -62,6 +59,10 @@ public class FileServiceUtilities {
 		return new File(configuration.getString("cygwin.file.location")).getAbsolutePath();
 	}
 	
+	/**
+	 * @return
+	 * 		The configuration object for the service
+	 */
 	public static Configuration getConfiguration() {
 		return configuration;
 	}

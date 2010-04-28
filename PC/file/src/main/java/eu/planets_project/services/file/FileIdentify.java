@@ -56,7 +56,7 @@ public class FileIdentify implements Identify {
         return mds.build();
 	}
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
      */
     public IdentifyResult identify(DigitalObject digitalObject, List<Parameter> parameters) {
