@@ -242,6 +242,11 @@ public class ListExp extends SortableList {
                     else
                         return 0;
                 }
+                if (column.equals("relevance"))
+				{
+                    return ascending ? new Integer( c2.getExperimentEvaluation().getExperimentRating()).compareTo(new Integer( c1.getExperimentEvaluation().getExperimentRating()))
+                            : new Integer( c1.getExperimentEvaluation().getExperimentRating()).compareTo(new Integer( c2.getExperimentEvaluation().getExperimentRating()));
+				}
 				else
 					return 0;
 			}			

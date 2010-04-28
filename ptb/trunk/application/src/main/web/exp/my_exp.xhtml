@@ -134,6 +134,19 @@
             <h:outputText value="#{exp.currentPhase.phaseName}" /><h:panelGroup rendered="#{exp.denied}" >: <strong><h:outputText value="#{res['approve_exp.denied']}" /></strong></h:panelGroup>
             </h:panelGroup>
         </t:column>
+        <t:column>
+	        <f:facet name="header">
+	          <t:commandSortHeader id="sortHeader_relevance" columnName="relevance" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	    	      #{res['expList.colHeader.expRating']}
+		  </t:commandSortHeader>
+			</f:facet>
+            <h:panelGroup>
+	            <t:graphicImage value="/graphics/rating/#{exp.experimentEvaluation.experimentRating}-star.png" rendered="#{exp.experimentEvaluation.experimentRating lt 1}" title="no experiment rating available" 
+	            alt="no experiment rating available" style="float: right; padding: 1px 5px;" />
+	            <t:graphicImage value="/graphics/rating/#{exp.experimentEvaluation.experimentRating}-star.png" rendered="#{exp.experimentEvaluation.experimentRating gt 0}" title="Experiment Rating #{exp.experimentEvaluation.experimentRating}/5" 
+	            alt="Experiment Rating #{exp.experimentEvaluation.experimentRating}/5'}" style="float: right; padding: 1px 5px;" />
+            </h:panelGroup>
+        </t:column>
         <!--
         <t:column>
             expList.colHeader.download#{res['expList.colHeader.lastUpdateDate']}</f:facet>
