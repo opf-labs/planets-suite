@@ -126,7 +126,7 @@ public class StorageBackingBean {
 		}
 
 		public enum DigitalObjectModel {
-			PERMANENT_URI, 
+			PLANETS_URI, 
 			TITLE,
 			FORMAT,
 			MANIFESTATION_OF,
@@ -1111,7 +1111,7 @@ public class StorageBackingBean {
 	                		addNode(childNode, ModelConfiguration.DigitalObjectModel.TITLE.name(), o.getTitle());
 	                	}
 	                	if (o.getPermanentUri() != null) {
-	                		addNode(childNode, ModelConfiguration.DigitalObjectModel.PERMANENT_URI.name(), 
+	                		addNode(childNode, ModelConfiguration.DigitalObjectModel.PLANETS_URI.name(), 
 	                				o.getPermanentUri().toString());
 	                	}
 	                	if (o.getFormat() != null) {
