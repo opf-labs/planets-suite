@@ -45,14 +45,15 @@ public class MeasurementTarget  implements Serializable {
     /** */
     private static final long serialVersionUID = -2968639008752447069L;
     
-    /** */
+    /** Only used to define property measurment types. */
     public static MeasurementTarget SERVICE_TARGET = new MeasurementTarget(TargetType.SERVICE);
     public static MeasurementTarget SERVICE_DOB = new MeasurementTarget(TargetType.DIGITAL_OBJECT);
     public static MeasurementTarget SERVICE_DOB_PAIR = new MeasurementTarget(TargetType.DIGITAL_OBJECT_PAIR);
     public static MeasurementTarget SERVICE_WORKFLOW = new MeasurementTarget(TargetType.WORKFLOW);
 
-    /** */
+    /** Strings to map to. */
     public static final String TARGET_SERVICE = "Service";
+    public static final String TARGET_VIEW = "View";
     public static final String TARGET_DIGITALOBJECT = "Digital Object";
     public static final String TARGET_DIGITALOBJECT_DIFF = "Comparison of Two Digital Objects";
     public static final String TARGET_DIGITALOBJECT_PROP = "Digital Object Properties";
@@ -60,17 +61,14 @@ public class MeasurementTarget  implements Serializable {
 
     /** */
     public enum TargetType {
-        /** */
+        /** Measurement about a service. */
         SERVICE,
         
-        /** */
+        /** Measurement of a property of a digital object. */
         DIGITAL_OBJECT,
         
-        /** */
+        /** Measurement of the comparison of two digital objects. */
         DIGITAL_OBJECT_PAIR,
-        
-        /** */
-        DIGITAL_OBJECT_PROPERTIES,
         
         /** */
         WORKFLOW;
@@ -83,7 +81,6 @@ public class MeasurementTarget  implements Serializable {
             if( this.equals( SERVICE )) return TARGET_SERVICE;
             if( this.equals( DIGITAL_OBJECT )) return TARGET_DIGITALOBJECT;
             if( this.equals( DIGITAL_OBJECT_PAIR )) return TARGET_DIGITALOBJECT_DIFF;
-            if( this.equals( DIGITAL_OBJECT_PROPERTIES )) return TARGET_DIGITALOBJECT_PROP;
             if( this.equals( WORKFLOW )) return TARGET_WORKFLOW;
             return super.toString();
         }

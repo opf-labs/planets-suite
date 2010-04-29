@@ -174,7 +174,7 @@
     
     <!-- ********************************************************************** -->
     
-    <rich:simpleTogglePanel id="dobManualCompare" switchType="client" opened="true" label="Compare manually...">
+    <rich:simpleTogglePanel id="dobManualCompare" switchType="client" opened="true" label="Compare manually..." rendered="#{!ReadOnly}">
       
   <!-- Manual evaluation: -->
   <!-- 
@@ -208,6 +208,29 @@
         </rich:simpleTogglePanel>
     
     <br/>    
+    
+    <dt><b>Selected Property:</b></dt>
+    <h:panelGroup rendered="#{DobCompare.manualPropertySelected}">
+    <dd>
+        <h:outputLink value="#{DobCompare.manualProperty.URI}" target="_blank">
+            <h:outputText value="#{DobCompare.manualProperty.name}"/>
+        </h:outputLink>
+    </dd>
+    <dd>
+        <h:outputText value="#{DobCompare.manualProperty.description}"/>
+    </dd>
+    <dd>
+        <h:outputText value="This property was created by a user." rendered="#{DobCompare.manualProperty.userCreated}"/>
+        <h:outputText value="This is a standard property (not user-created)." rendered="#{! DobCompare.manualProperty.userCreated}"/>
+    </dd>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{!DobCompare.manualPropertySelected}">
+    <dd>
+        <h:outputText value="No property selected."/>
+    </dd>
+    </h:panelGroup>
+    
+    <br/>
     
     <h:panelGrid columns="2" style="width:120px;" rendered="#{!ReadOnly}">
     	<h:outputLabel value="Value in first object: #{DobCompare.dob1.leafname}" for="newValueOne" styleClass="auto"/>

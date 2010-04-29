@@ -480,6 +480,7 @@ public class DigitalObjectCompare {
     private MeasurementEventImpl getManualMeasurementEvent() {
         MeasurementEventImpl me = null;
         ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(this.getDobUri1());
+        if( res == null || res.getExecutionRecord() == null ) return null;
         Set<MeasurementEventImpl> measurementEvents = res.getExecutionRecord().getMeasurementEvents();
         for( MeasurementEventImpl mee : measurementEvents ) {
             if( mee.getAgent() != null && mee.getAgent().getType() == AgentType.USER ) {
@@ -510,6 +511,20 @@ public class DigitalObjectCompare {
      */
     public String getNewManProp() {
         return newManProp;
+    }
+    
+    public boolean isManualPropertySelected() {
+        if( this.getManualProperty() == null ) return false;
+        return true;
+    }
+    
+    public ManuallyMeasuredProperty getManualProperty() {
+        for( ManuallyMeasuredProperty mp : this.getManuallyMeasuredProperties() ) {
+            if( mp.getURI().equals( this.newManProp ) ) {
+                return mp;
+            }
+        }
+        return null;
     }
 
     /**
@@ -641,16 +656,20 @@ public class DigitalObjectCompare {
      * @return
      */
     public List<SelectItem> getAllManualMeasurementProperties() {
-        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
-        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
-        List<ManuallyMeasuredProperty> mps = mm.loadAllManualProperties(user.getUserid());
         // Build select list:
         List<SelectItem> mpsl = new ArrayList<SelectItem>();
-        for( ManuallyMeasuredProperty mp : mps ) {
+        for( ManuallyMeasuredProperty mp : this.getManuallyMeasuredProperties() ) {
             mpsl.add(new SelectItem(mp.getURI(), mp.getName()) );
         }
         log.info("Returning "+mpsl.size()+" properties.");
         return mpsl;
+    }
+    
+    private List<ManuallyMeasuredProperty> getManuallyMeasuredProperties() {
+        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        List<ManuallyMeasuredProperty> mps = mm.loadAllManualProperties(user.getUserid());
+        return mps;
     }
 
     /**
@@ -724,6 +743,7 @@ public class DigitalObjectCompare {
      * @return
      */
     public String getManualMeasurementEnvironment() {
+        if( this.getManualMeasurementEvent() == null ) return "";
         return this.getManualMeasurementEvent().getAgent().getUserEnvironmentDescription();
     }
     public void setManualMeasurementEnvironment( String env ) {

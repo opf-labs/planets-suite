@@ -21,8 +21,8 @@ response.setContentType( (mimetype != null) ? mimetype : "application/octet-stre
 if( dh.getSize() >= 0 ) {
     response.setContentLength( ((Long)dh.getSize()).intValue() );
 }
-// This should allow the content to be rendered by the browser, but the filename is ignored and confuses some browsers.
-response.setHeader( "Content-Disposition", "inline;");// filename=\"" + filename + "\"" );
+// This should allow the content to be rendered by the browser.
+response.setHeader( "Content-Disposition", "inline; filename=\"" + filename + "\"" );
 // The following alternative forces a download:
 //response.setHeader( "Content-Disposition", "attachment; filename=\"" + filename + "\"" );
 
