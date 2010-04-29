@@ -5,16 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import eu.planets_project.ifr.core.storage.api.DataRegistry;
-import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
-import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
 import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.LogReferenceCreatorWrapper;
-import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.MigrationWFWrapper;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Event;
 import eu.planets_project.services.datatypes.Metadata;
@@ -23,19 +19,6 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.migrate.Migrate;
-
-import java.io.*;
-import java.util.zip.ZipOutputStream;
-import java.util.zip.ZipEntry;
-
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-
-import com.sun.org.apache.xml.internal.serialize.*;
-
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
 
 
 /**
@@ -50,25 +33,12 @@ public class IdentifyJcrTemplate extends
 	private static final long serialVersionUID = 1L;
 
 	/** URI to use for digital object repository creation. */
-	private static final URI PERMANENT_URI_PATH = URI.create("/ait/data");
-	
-	private static final String MIGRATION_METADATA = "Migration result metadata";
-	private static final String CHARACTERISATION_METADATA = "Characterisation metadata";
-
-	private static String DATE_FORMAT = "yyyyMMdd";
-	private static String METADATA_XML = "/metadata.xml";
-	private static String SIP_NAME = "SIP_archive_";
-	private static String SIP_FORMAT = ".zip";
+	private static final URI PERMANENT_URI_PATH = URI.create("/ait/data/exp");
 	
     /**
      * Identify service to execute
      */
     private Identify identify;
-
-	/**
-	 * The migration service to execute
-	 */
-	private Migrate migrate;
 
 	private DigitalObject processingDigo;
 
