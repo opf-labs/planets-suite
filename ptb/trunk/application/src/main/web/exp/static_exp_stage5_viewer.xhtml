@@ -16,7 +16,7 @@
 <body>
 
 <ui:fragment rendered="#{EmulationInspector.viewResultBean != null}">
-<a4j:form>
+<h:form id="viewerPage">
 
 <input type="hidden" name="eid" value="#{EmulationInspector.experimentId}"/>
 <input type="hidden" name="sid" value="#{EmulationInspector.sessionId}"/>
@@ -24,20 +24,31 @@
 <table id="pageTable">
 <tr id="headerRow">
 <td id="header" height="24">
- <h:outputLink value="exp_stage5.faces" title="Return to experiment '#{EmulationInspector.experimentName}'.">
+ <h:outputLink class="homeButton" value="exp_stage5.faces" title="Return to experiment '#{EmulationInspector.experimentName}'.">
     <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
   <t:graphicImage value="/graphics/planets-testbed-vsml-cropped.png" alt="Return to experiment '#{EmulationInspector.experimentName}'"/>
  </h:outputLink>
- <h:panelGroup styleClass="headerControls">
  
-  <h:outputLink class="homeButton" value="exp_stage5.faces" title="Return to experiment '#{EmulationInspector.experimentName}'">
-    <f:param name="eid" value="#{ExperimentInspector.experimentId}"/>
-    <t:graphicImage value="/graphics/toolbar_home.png" alt="Return to experiment '#{EmulationInspector.experimentName}'"/>
-  </h:outputLink>
+ <h:panelGroup styleClass="headerControls">
 
-  <a4j:commandLink styleClass="actionButton" action="#{EmulationInspector.doShutdownAction}" title="Action">
-    <t:graphicImage value="/graphics/preferences-system.png" alt="Action"/>
+  <a4j:outputPanel layout="block" id="viewHeaderControlPanel" ajaxRendered="true">
+
+  <h:panelGroup rendered="#{!EmulationInspector.propertyPanelEnabled}">
+  <a4j:commandLink styleClass="actionButton" action="#{EmulationInspector.enablePropertyPanel}"
+      title="Show Properties">
+    <h:outputText value="#{EmulationInspector.propertyPanelEnabled}" rendered="false"/>
+    <t:graphicImage value="/graphics/preferences-system.png" alt="Show Properties"/>
   </a4j:commandLink>
+  </h:panelGroup>
+  <h:panelGroup rendered="#{EmulationInspector.propertyPanelEnabled}">
+  <a4j:commandLink styleClass="actionButton" style="opacity: 0.5;" action="#{EmulationInspector.disablePropertyPanel}"
+      title="Hide Properties">
+    <h:outputText value="#{EmulationInspector.propertyPanelEnabled}" rendered="false"/>
+    <t:graphicImage value="/graphics/preferences-system.png" alt="Hide Properties"/>
+  </a4j:commandLink>
+  </h:panelGroup>
+  
+  <!--  Status -->
  
   <t:graphicImage value="/graphics/state_ok.gif" styleClass="statusButton"
     title="View status: #{EmulationInspector.viewStatus}" rendered="#{EmulationInspector.viewActive}"/>
@@ -47,17 +58,76 @@
     
   <t:graphicImage value="/graphics/toolbar_help.png" styleClass="statusButton"
     title="View status: #{EmulationInspector.viewStatus}" rendered="#{EmulationInspector.viewUnknown}"/>
+
+  </a4j:outputPanel>
       
  </h:panelGroup>
 </td>
 </tr>
+
+<tr id="measureRow">
+<td id="measure">
+
+<a4j:outputPanel id="viewPropertiesPanel" ajaxRendered="true">
+<h:panelGrid columns="2" width="100%" columnClasses="propertyPanel,measurementPanel"
+    styleClass="#{EmulationInspector.propertyPanelEnabled ? 'visible' : 'hidden'}">
+
+  <h:panelGroup>
+      <rich:dataTable id="dobViewerMeasurements" 
+          onRowMouseOver="this.style.backgroundColor='#eee'"
+          onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+          value="#{EmulationInspector.manualMeasurementEvent.measurements}" 
+          var="m" styleClass="tbTable" rows="5" reRender="measurements_ds">
+          
+        <rich:column sortBy="#{m.property.name}" sortOrder="DESCENDING">
+            <f:facet name="header">
+               <h:outputText value="Property"/>
+            </f:facet>
+            <ui:include src="/WEB-INF/templates/fragments/property_def.xhtml">
+              <ui:param name="p" value="#{m.property}"/>
+            </ui:include>
+        </rich:column>
+        
+        <rich:column sortBy="#{m.value}">
+            <f:facet name="header">
+               <h:outputText value="Value"/>
+            </f:facet>
+            <h:outputText value="#{m.value}" />
+        </rich:column>
+        
+        <f:facet name="footer">
+            <rich:datascroller id="measurements_ds" renderIfSinglePage="false"></rich:datascroller>
+        </f:facet>
+
+      </rich:dataTable>
+  </h:panelGroup>
+
+  <h:panelGroup>
+    <fieldset>
+    <legend>Add a property measurement</legend>
+
+    <ui:include src="/WEB-INF/templates/fragments/manual_property_selector.xhtml"/>
+
+        <h:outputLabel value="Value" for="newValue" styleClass="auto"/>
+        <h:inputText id="newValue" value="#{EmulationInspector.newManVal}"/>
+    
+        <a4j:commandButton action="#{EmulationInspector.storeManualMeasurement}" reRender="dobViewerMeasurements" value="Store" disabled="#{ReadOnly}"/>
+    
+    </fieldset>
+  </h:panelGroup>
+
+</h:panelGrid>
+</a4j:outputPanel>
+
+</td>
+</tr>
+
 <tr id="frameRow"><td height="100%">
-<iframe src="#{EmulationInspector.viewResultBean.viewUrl}" frameborder="0" width="100%" height="100%">
-</iframe>
+<iframe src="#{EmulationInspector.viewResultBean.viewUrl}" frameborder="0" border="0" marginheight="0" marginwidth="0" width="100%" height="100%" cellspacing="0" style="border-style: none; width: 100%; height: 100%;"></iframe>
 </td></tr>
 </table>
 
-</a4j:form>
+</h:form>
 </ui:fragment>
 
 <ui:fragment rendered="#{EmulationInspector.viewResultBean == null}">

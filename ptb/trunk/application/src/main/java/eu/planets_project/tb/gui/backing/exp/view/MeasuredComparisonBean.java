@@ -34,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.compare.PropertyComparison.Equivalence;
-import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
+import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 import eu.planets_project.tb.gui.backing.exp.MeasurementBean;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.impl.model.eval.PropertyEvaluation;
@@ -168,7 +168,7 @@ public class MeasuredComparisonBean
         // Update if needed.
         if( getPropertyEvaluation().getUserEquivalence() != es ) {
             getPropertyEvaluation().setUserEquivalence(es);
-            DigitalObjectCompare.persistExperiment();
+            ExperimentInspector.persistExperiment();
         }
     }
     

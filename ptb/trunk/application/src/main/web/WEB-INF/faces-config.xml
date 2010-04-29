@@ -135,7 +135,11 @@
             <value>#{param['sid']}</value>
         </managed-property>
     </managed-bean>
-	
+    <managed-bean>
+        <managed-bean-name>ManualMeasurementBackingBean</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.exp.utils.ManualMeasurementBackingBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>	
 	<managed-bean>
 		<managed-bean-name>ServiceInspector</managed-bean-name>
 		<managed-bean-class>eu.planets_project.tb.gui.backing.service.ServiceInspector</managed-bean-class>

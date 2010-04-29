@@ -185,50 +185,8 @@
     
     <fieldset>
     <legend>Add a property measurement</legend>
-    <p><h:outputLabel value="Property" for="newProperty" id="manualproperties"/>
-        <h:selectOneMenu id="newProperty" value="#{DobCompare.newManProp}">
-            <f:selectItem itemValue="" itemLabel="Please select a property, or add a new one..." />
-            <f:selectItems value="#{DobCompare.allManualMeasurementProperties}" />
-            <a4j:support event="onchange" reRender="dobManualCompare"/>
-        </h:selectOneMenu>
-    </p>
-
-        <rich:simpleTogglePanel id="addPropToggle" switchType="client" opened="false" label="Manage user properties...">
-        <fieldset>
-        <p><h:outputLabel value="Name" for="newPropName"/>
-          <h:inputText size="80" id="newPropName" value="#{DobCompare.addManPropName}"/>
-        </p>
-        <p><h:outputLabel value="Description" for="newPropDesc"/>
-          <h:inputTextarea rows="5" cols="78" id="newPropDesc" value="#{DobCompare.addManPropDesc}"/>
-        </p>
-        
-        <a4j:commandButton action="#{DobCompare.createNewManualMeasurementProperty}" reRender="dobManualCompare,dobCompareMeasurements,dobCompareMeasurementEvents" value="Add"/>
-        <a4j:commandButton action="#{DobCompare.removeManualMeasurementProperty}" reRender="dobManualCompare,dobCompareMeasurements" value="Remove"/>
-        </fieldset>
-        </rich:simpleTogglePanel>
     
-    <br/>    
-    
-    <dt><b>Selected Property:</b></dt>
-    <h:panelGroup rendered="#{DobCompare.manualPropertySelected}">
-    <dd>
-        <h:outputLink value="#{DobCompare.manualProperty.URI}" target="_blank">
-            <h:outputText value="#{DobCompare.manualProperty.name}"/>
-        </h:outputLink>
-    </dd>
-    <dd>
-        <h:outputText value="#{DobCompare.manualProperty.description}"/>
-    </dd>
-    <dd>
-        <h:outputText value="This property was created by a user." rendered="#{DobCompare.manualProperty.userCreated}"/>
-        <h:outputText value="This is a standard property (not user-created)." rendered="#{! DobCompare.manualProperty.userCreated}"/>
-    </dd>
-    </h:panelGroup>
-    <h:panelGroup rendered="#{!DobCompare.manualPropertySelected}">
-    <dd>
-        <h:outputText value="No property selected."/>
-    </dd>
-    </h:panelGroup>
+    <ui:include src="/WEB-INF/templates/fragments/manual_property_selector.xhtml"/>
     
     <br/>
     

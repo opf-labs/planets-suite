@@ -2,6 +2,8 @@ package eu.planets_project.tb.impl.properties;
 
 import java.io.Serializable;
 
+import org.kohsuke.rngom.util.Uri;
+
 import eu.planets_project.tb.api.properties.ManuallyMeasuredProperty;
 
 /**
@@ -58,7 +60,7 @@ public class ManuallyMeasuredPropertyInstance extends ManuallyMeasuredPropertyIm
 	
 	public String getURI() {
 		if(mURI!=null)
-			return mURI;
+			return Uri.escapeDisallowedChars(mURI);
 		return "";
 	}
 	

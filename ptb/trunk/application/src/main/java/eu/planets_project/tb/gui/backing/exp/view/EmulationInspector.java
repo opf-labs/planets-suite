@@ -3,9 +3,11 @@
  */
 package eu.planets_project.tb.gui.backing.exp.view;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.faces.context.FacesContext;
@@ -14,16 +16,31 @@ import javax.xml.ws.Service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.services.compare.PropertyComparison.Equivalence;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.view.CreateView;
 import eu.planets_project.services.view.ViewStatus;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.api.properties.ManuallyMeasuredProperty;
+import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
+import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
+import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
+import eu.planets_project.tb.gui.backing.exp.utils.ManualMeasurementBackingBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementAgent;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
+import eu.planets_project.tb.impl.model.measure.MeasurementAgent.AgentType;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
+import eu.planets_project.tb.impl.properties.ManuallyMeasuredPropertyHandlerImpl;
 
 
 /**
@@ -49,6 +66,9 @@ public class EmulationInspector {
     private CreateView viewService = null;
     
     private ViewStatus.Status viewStatus = ViewStatus.Status.UNKNOWN;
+    
+    private String newManVal;
+    
     /**
      * @return the experimentId
      */
@@ -138,9 +158,9 @@ public class EmulationInspector {
      */
     public String getViewTitle() {
         if(  this.isValid() ) {
-            return "PLANETS Testbed Emulation Experiment: "+this.getExperimentName();
+            return "Planets Testbed Emulation Experiment: "+this.getExperimentName();
         } else {
-            return "PLANETS Testbed Emulation Experiment: No view found.";
+            return "Planets Testbed Emulation Experiment: No view found.";
         }
     }
     
@@ -206,4 +226,124 @@ public class EmulationInspector {
         return this.viewStatus.equals(ViewStatus.Status.UNKNOWN);
     }
 
+    /**
+     * @return the propertyPanelEnabled
+     */
+    public boolean isPropertyPanelEnabled() {
+        Boolean enab = (Boolean) FacesContext.getCurrentInstance().getExternalContext()
+        .getSessionMap().get("ManualPropertyPanelEnabled");
+        if( enab == null ) return false;
+        return enab;
+    }
+
+    /**
+     * @param propertyPanelEnabled the propertyPanelEnabled to set
+     */
+    public void setPropertyPanelEnabled(boolean propertyPanelEnabled) {
+        FacesContext.getCurrentInstance().getExternalContext()
+        .getSessionMap().put("ManualPropertyPanelEnabled", propertyPanelEnabled);
+    }
+    
+    /**
+     * @return
+     */
+    private ExecutionRecordImpl getExecutionRecordForSessionId() {
+        ExperimentInspector ei = (ExperimentInspector)JSFUtil.getManagedObject("ExperimentInspector");
+        Experiment exp = ei.getExperimentBean().getExperiment();
+        if(  this.isValid() && exp.getExperimentExecutable().getNumBatchExecutionRecords() > 0 ) {
+            for( ExecutionRecordImpl exec : exp.getExperimentExecutable().getBatchExecutionRecords().iterator().next().getRuns() ) {
+                ViewResultBean vrb = ViewResultBean.createViewResultBeanFromExecutionRecord(exec);
+                if( vrb != null ) {
+                    if( this.getSessionId().equals( vrb.getSessionId() )) {
+                        return exec;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return
+     */
+    public MeasurementEventImpl getManualMeasurementEvent() {
+        MeasurementEventImpl me = null;
+        ExecutionRecordImpl res = this.getExecutionRecordForSessionId();
+        if( res == null ) return null;
+        Set<MeasurementEventImpl> measurementEvents = res.getMeasurementEvents();
+        for( MeasurementEventImpl mee : measurementEvents ) {
+            if( mee.getAgent() != null && mee.getAgent().getType() == AgentType.USER ) {
+                me = mee;
+            }
+        }
+        // If none, create one and pass it back.
+        if( me == null ) {
+            log.info("Creating Manual Measurement Event.");
+            me = new MeasurementEventImpl(res);
+            res.getMeasurementEvents().add(me);
+            UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+            me.setAgent( new MeasurementAgent( user ));
+            ExperimentPersistencyRemote edao = ExperimentPersistencyImpl.getInstance();
+            ExperimentInspector.persistExperiment();
+        }
+        me.getMeasurements();
+        return me;
+    }
+    
+    /**
+     * @return the newManVal
+     */
+    public String getNewManVal() {
+        return newManVal;
+    }
+
+    /**
+     * @param newManVal the newManVal to set
+     */
+    public void setNewManVal(String newManVal) {
+        this.newManVal = newManVal;
+    }
+
+    /**
+     */
+    public void storeManualMeasurement() {
+        // Look up the definition:
+        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        ManualMeasurementBackingBean mmbb = (ManualMeasurementBackingBean)JSFUtil.getManagedObject("ManualMeasurementBackingBean");
+        List<ManuallyMeasuredProperty> mps = mm.loadAllManualProperties(user.getUserid());
+        ManuallyMeasuredProperty mp = null;
+        for( ManuallyMeasuredProperty amp : mps ) {
+            if( amp.getURI().equals(mmbb.getNewManProp()) ) mp = amp;
+        }
+        if( mp == null ) {
+            log.error("No property ["+mmbb.getNewManProp()+"] found!");
+            return;
+        }
+        // Lookup the event:
+        MeasurementEventImpl mev = this.getManualMeasurementEvent();
+        // Make the property
+        Property p = new Property.Builder( URI.create(mp.getURI()) ).description(mp.getDescription()).name(mp.getName()).build();
+        DigitalObjectCompare.createMeasurement(mev, p, this.sessionId, this.newManVal );
+        ExperimentInspector.persistExperiment();
+    }
+    
+    /**
+     * Actions
+     */
+    
+    /**
+     * 
+     */
+    public void disablePropertyPanel() {
+        this.setPropertyPanelEnabled( false );
+    }
+    
+    /**
+     * 
+     */
+    public void enablePropertyPanel() {
+        this.setPropertyPanelEnabled( true );
+    }
+    
 }

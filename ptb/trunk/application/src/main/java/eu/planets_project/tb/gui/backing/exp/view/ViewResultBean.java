@@ -75,33 +75,41 @@ public class ViewResultBean {
     public static List<ViewResultBean> createResultsFromExecutionRecords( List<ExecutionRecordImpl> execs ) {
         List<ViewResultBean> vurl = new ArrayList<ViewResultBean>();
         for( ExecutionRecordImpl exec : execs ) {
-            Properties p = null;
-            try {
-                p = exec.getPropertiesListResult();
-            } catch (IOException e) {
-                e.printStackTrace();
+            ViewResultBean vrb = ViewResultBean.createViewResultBeanFromExecutionRecord(exec);
+            if( vrb != null ) {
+                vurl.add( vrb );
             }
-            if( p != null ) {
-                vurl.add( 
-                   new ViewResultBean( 
-                        p.getProperty( ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_ENDPOINT_URL),
-                        p.getProperty( ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_SESSION_ID ),
-                        p.getProperty( ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_VIEW_URL ) 
-                ));
-            }
-            /*
-            for( ExecutionStageRecordImpl stage : exec.getStages() ) {
-                if( stage.getStage().equals( IdentifyWorkflow.STAGE_IDENTIFY )) {
-                    for( MeasurementImpl m : stage.getMeasurements() ) {
-                        if( m.getIdentifier().equals(TecRegMockup.URI_DO_PROP_ROOT+"basic/format")) {
-                            frb.add(new FormatResultBean(m.getValue()));
-                        }
+        }
+        return vurl;
+    }
+    
+    public static ViewResultBean createViewResultBeanFromExecutionRecord( ExecutionRecordImpl exec ) {
+        Properties p = null;
+        try {
+            p = exec.getPropertiesListResult();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if( p != null ) {
+            return 
+               new ViewResultBean( 
+                    p.getProperty( ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_ENDPOINT_URL),
+                    p.getProperty( ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_SESSION_ID ),
+                    p.getProperty( ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_VIEW_URL ) 
+            );
+        }
+        /*
+        for( ExecutionStageRecordImpl stage : exec.getStages() ) {
+            if( stage.getStage().equals( IdentifyWorkflow.STAGE_IDENTIFY )) {
+                for( MeasurementImpl m : stage.getMeasurements() ) {
+                    if( m.getIdentifier().equals(TecRegMockup.URI_DO_PROP_ROOT+"basic/format")) {
+                        frb.add(new FormatResultBean(m.getValue()));
                     }
                 }
             }
-            */
         }
-        return vurl;
+        */
+        return null;
     }
     
 }

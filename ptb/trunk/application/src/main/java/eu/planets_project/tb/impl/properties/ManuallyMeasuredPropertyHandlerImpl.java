@@ -140,6 +140,7 @@ public class ManuallyMeasuredPropertyHandlerImpl {
 	 * @return
 	 */
 	public static ManuallyMeasuredProperty createUserProperty(String userName, String pName, String pDescription){
+	    // FIXME This should escape problematic characters, like spaces.
 		String uri = "planets://testbed/properties/"+userName+"/"+pName;
 		ManuallyMeasuredProperty ret = new ManuallyMeasuredPropertyImpl(pName,pDescription,uri,true);
 		return ret;

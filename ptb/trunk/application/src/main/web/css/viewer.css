@@ -1,15 +1,10 @@
-iframe {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  border: none;
-}
 html,body,form,#pageTable {
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
+}
+#pageTable {
   border-collapse: collapse;
 }
 #pageTable tr, #pageTable td {
@@ -21,8 +16,8 @@ html,body,form,#pageTable {
   background: transparent url('/images/PlanetsColourBar.png') center repeat-x;
   overflow: hidden;
 }
-#header:hover {
-/*  height: 32px;*/
+#header {
+  height: 24px;
 }
 #header a {
   float: left;
@@ -30,23 +25,49 @@ html,body,form,#pageTable {
 #header img {
   border: none;
 }
+.homeButton {
+height: 24px;  
+}
 .headerControls {
   float: right;
   padding-right: 10px;
 }
-.headerControls .homeButton {
-  padding: 3px 10px;
-}
 .headerControls .actionButton {
-  padding: 3px 10px;
+  padding: 3px 10px 0 10px;
 }
 .headerControls .statusButton {
-  padding: 3px 10px;
+  padding: 3px 10px 0 10px;
 }
+#measure {
+  border-top: 1px solid black;
+  min-height: 1px;
+}  
 #frameRow {
-  top: 24px;
+  /*  top: 24px;*/
 }
 #frameRow iframe {
-/*  border: 1px solid red;*/
+  width: 100%;
   height: 100%;
+  padding: 0;
+  margin: 0;
+  margin-top: 2px;
+  border: none;
+}
+.hidden {
+  display: none;
+}
+.visible {
+  width: 100%;
+}
+.visible td {
+  vertical-align: top;
+}
+.propertyPanel {
+  width: 50%;
+}
+.propertyPanel table { 
+ width: 100%;
+}
+.measurementPanel {
+  width: 50%;
 }

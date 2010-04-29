@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
-import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
@@ -173,7 +172,7 @@ public class MeasurementBean extends MeasurementImpl {
             this.getEvent().getMeasurements().remove(m);
             db.removeMeasurement(m);
             // Now update experiment.
-            DigitalObjectCompare.persistExperiment();
+            ExperimentInspector.persistExperiment();
         }
     }
     

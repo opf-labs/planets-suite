@@ -119,6 +119,16 @@ public class ExperimentInspector {
     
      /* -------------------------------  */
     
+    /**
+     * Persist any changes
+     */
+    public static void persistExperiment() {
+        ExperimentInspector ei = (ExperimentInspector)JSFUtil.getManagedObject("ExperimentInspector");
+        ExperimentBean expBean = ei.getExperimentBean();
+        if(expBean != null ) expBean.updateExperiment();
+        new Exception("Who is the caller?").printStackTrace();
+    }
+
     /** */
     static final String EXP_BEAN_IN_SESSION_DEPRECATED = "ExperimentBeanInSession";
     static final String EXP_BEAN_IN_REQUEST = "ExperimentBean";
@@ -180,4 +190,5 @@ public class ExperimentInspector {
     private static void resetExpTypeBeanForExperimentInSession(){
     	ExpTypeBackingBean.resetExpTypeBean();
     }
+    
 }

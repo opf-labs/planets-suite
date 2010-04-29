@@ -32,7 +32,7 @@ import com.ibm.icu.text.DateFormat;
 
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
-import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
+import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -311,7 +311,7 @@ public class MeasurementEventImpl implements Serializable, Comparable<Measuremen
         }
         
         // And save the experiment:
-        DigitalObjectCompare.persistExperiment();
+        ExperimentInspector.persistExperiment();
     }
 
     /* (non-Javadoc)

@@ -56,6 +56,7 @@ import eu.planets_project.tb.gui.backing.exp.MeasuredComparisonEventBean;
 import eu.planets_project.tb.gui.backing.exp.MeasurementBean;
 import eu.planets_project.tb.gui.backing.exp.MeasurementEventBean;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
+import eu.planets_project.tb.gui.backing.exp.utils.ManualMeasurementBackingBean;
 import eu.planets_project.tb.gui.backing.exp.view.MeasuredComparisonBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.eval.PropertyEvaluation;
@@ -197,7 +198,7 @@ public class DigitalObjectCompare {
                 me = this.createMeasurementEvent();
                 if( me != null ) {
                     this.fillComparisonEvent(me, chr, cr);
-                    DigitalObjectCompare.persistExperiment();
+                    ExperimentInspector.persistExperiment();
                 }
                 
             } else if(sd.getType().equals(Identify.class.getCanonicalName())) {
@@ -213,7 +214,7 @@ public class DigitalObjectCompare {
                     me.setDate(Calendar.getInstance());
                     this.recordIdentifyComparison(me, ir1, this.getDobUri1(), ir2, this.getDobUri2() );
                     
-                    DigitalObjectCompare.persistExperiment();
+                    ExperimentInspector.persistExperiment();
                 }
                 
             } else if(sd.getType().equals(Characterise.class.getCanonicalName())) {
@@ -229,7 +230,7 @@ public class DigitalObjectCompare {
                     me.setDate(Calendar.getInstance());
                     this.recordPropertyComparison(me, cr1.getProperties(), this.getDobUri1(), cr2.getProperties(), this.getDobUri2() );
                     
-                    DigitalObjectCompare.persistExperiment();
+                    ExperimentInspector.persistExperiment();
                 }
                 
             } else {
@@ -493,47 +494,16 @@ public class DigitalObjectCompare {
             me = this.createMeasurementEvent();
             UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
             me.setAgent( new MeasurementAgent( user ));
-            DigitalObjectCompare.persistExperiment();
+            ExperimentInspector.persistExperiment();
         }
         return me;
     }
     
-    private String newManProp;
-    private String addManPropName;
-    private String addManPropDesc;
     private String newManVal1;
     private String newManVal2;
     //private String newManCmp;
-    private EquivalenceStatement newManEqu;
+    //private EquivalenceStatement newManEqu;
     
-    /**
-     * @return the newManProp
-     */
-    public String getNewManProp() {
-        return newManProp;
-    }
-    
-    public boolean isManualPropertySelected() {
-        if( this.getManualProperty() == null ) return false;
-        return true;
-    }
-    
-    public ManuallyMeasuredProperty getManualProperty() {
-        for( ManuallyMeasuredProperty mp : this.getManuallyMeasuredProperties() ) {
-            if( mp.getURI().equals( this.newManProp ) ) {
-                return mp;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param newManProp the newManProp to set
-     */
-    public void setNewManProp(String newManProp) {
-        this.newManProp = newManProp;
-    }
-
     /**
      * @return the newManVal1
      */
@@ -562,37 +532,6 @@ public class DigitalObjectCompare {
         this.newManVal2 = newManVal2;
     }
 
-    /**
-     * @return the newManCmp
-     */
-    /*
-    public String getNewManCmp() {
-        return newManCmp;
-    }
-    */
-
-    /**
-     * @param newManCmp the newManCmp to set
-     */
-    /*
-    public void setNewManCmp(String newManCmp) {
-        this.newManCmp = newManCmp;
-    }
-    */
-
-    /**
-     * @return the newManEqu
-     */
-    public EquivalenceStatement getNewManEqu() {
-        return newManEqu;
-    }
-
-    /**
-     * @param newManEqu the newManEqu to set
-     */
-    public void setNewManEqu(EquivalenceStatement newManEqu) {
-        this.newManEqu = newManEqu;
-    }
 
     /**
      */
@@ -600,22 +539,23 @@ public class DigitalObjectCompare {
         // Look up the definition:
         ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
         UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        ManualMeasurementBackingBean mmbb = (ManualMeasurementBackingBean)JSFUtil.getManagedObject("ManualMeasurementBackingBean");
         List<ManuallyMeasuredProperty> mps = mm.loadAllManualProperties(user.getUserid());
         ManuallyMeasuredProperty mp = null;
         for( ManuallyMeasuredProperty amp : mps ) {
-            if( amp.getURI().equals(this.newManProp)) mp = amp;
+            if( amp.getURI().equals(mmbb.getNewManProp()) ) mp = amp;
         }
         if( mp == null ) {
-            log.error("No property ["+this.newManProp+"] found!");
+            log.error("No property ["+mmbb.getNewManProp()+"] found!");
             return;
         }
         // Lookup the event:
         MeasurementEventImpl mev = this.getManualMeasurementEvent();
         // Make the property
         Property p = new Property.Builder( URI.create(mp.getURI()) ).description(mp.getDescription()).name(mp.getName()).build();
-        this.createMeasurement(mev, p, this.dobUri1, this.newManVal1 );
-        this.createMeasurement(mev, p, this.dobUri2, this.newManVal2 );
-        DigitalObjectCompare.persistExperiment();
+        DigitalObjectCompare.createMeasurement(mev, p, this.dobUri1, this.newManVal1 );
+        DigitalObjectCompare.createMeasurement(mev, p, this.dobUri2, this.newManVal2 );
+        ExperimentInspector.persistExperiment();
     }
 
     /**
@@ -624,7 +564,7 @@ public class DigitalObjectCompare {
      * @param dobUri
      * @param value
      */
-    private void createMeasurement(MeasurementEventImpl mev, Property p, String dobUri, String value ) {
+    public static void createMeasurement(MeasurementEventImpl mev, Property p, String dobUri, String value ) {
         // Make
         MeasurementImpl m = new MeasurementImpl(mev);
         // Create a property from the manual one:
@@ -645,99 +585,6 @@ public class DigitalObjectCompare {
         mev.addMeasurement(m);
     }
     
-    /**
-     */
-    public void updateManualMeasurement() {
-        log.info("Updating manual measurement.");
-        DigitalObjectCompare.persistExperiment();
-    }
-
-    /**
-     * @return
-     */
-    public List<SelectItem> getAllManualMeasurementProperties() {
-        // Build select list:
-        List<SelectItem> mpsl = new ArrayList<SelectItem>();
-        for( ManuallyMeasuredProperty mp : this.getManuallyMeasuredProperties() ) {
-            mpsl.add(new SelectItem(mp.getURI(), mp.getName()) );
-        }
-        log.info("Returning "+mpsl.size()+" properties.");
-        return mpsl;
-    }
-    
-    private List<ManuallyMeasuredProperty> getManuallyMeasuredProperties() {
-        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
-        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
-        List<ManuallyMeasuredProperty> mps = mm.loadAllManualProperties(user.getUserid());
-        return mps;
-    }
-
-    /**
-     * @return the addManPropName
-     */
-    public String getAddManPropName() {
-        return addManPropName;
-    }
-
-    /**
-     * @param addManPropName the addManPropName to set
-     */
-    public void setAddManPropName(String addManPropName) {
-        this.addManPropName = addManPropName;
-    }
-
-    /**
-     * @return the addManPropDesc
-     */
-    public String getAddManPropDesc() {
-        return addManPropDesc;
-    }
-
-    /**
-     * @param addManPropDesc the addManPropDesc to set
-     */
-    public void setAddManPropDesc(String addManPropDesc) {
-        this.addManPropDesc = addManPropDesc;
-    }
-    
-    public void updateManualMeasurment(){
-    	//TODO method missing!!
-    }
-
-    /**
-     * 
-     */
-    public void createNewManualMeasurementProperty() {
-        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
-        if( this.getAddManPropName() == null || this.getAddManPropName().trim().equals("") ) {
-            log.error("Could not create new manual property: No name.");
-            return;
-        }
-        if( this.getAddManPropDesc() == null || this.getAddManPropDesc().trim().equals("") ) {
-            log.error("Could not create new manual property: No description.");
-            return;
-        }
-        ManuallyMeasuredProperty mp = ManuallyMeasuredPropertyHandlerImpl.createUserProperty(
-                user.getUserid(), this.getAddManPropName(), this.getAddManPropDesc() );
-        // And persist it:
-        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
-        mm.addManualUserProperty(user.getUserid(), mp );
-        log.info("Created user property: "+mp+" for user: "+user.getUserid());
-        this.newManProp = mp.getURI();
-        // And clear the fields.
-        this.setAddManPropName("");
-        this.setAddManPropDesc("");
-    }
-    
-    /**
-     * 
-     */
-    public void removeManualMeasurementProperty() {
-        ManuallyMeasuredPropertyHandlerImpl mm = ManuallyMeasuredPropertyHandlerImpl.getInstance();
-        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
-        mm.removeManualUserProperty(user.getUserid(), newManProp );
-        this.newManProp = null;
-    }
     
     /**
      * @return
@@ -746,10 +593,10 @@ public class DigitalObjectCompare {
         if( this.getManualMeasurementEvent() == null ) return "";
         return this.getManualMeasurementEvent().getAgent().getUserEnvironmentDescription();
     }
+    
     public void setManualMeasurementEnvironment( String env ) {
         this.getManualMeasurementEvent().getAgent().setUserEnvironmentDescription(env);
     }
-    
 
     /**
      * @return
@@ -764,18 +611,8 @@ public class DigitalObjectCompare {
         MeasurementEventImpl me = new MeasurementEventImpl(res.getExecutionRecord());
         res.getExecutionRecord().getMeasurementEvents().add(me);
         return me;
-    }
+    }    
 
-    /**
-     * Persist any changes
-     */
-    public static void persistExperiment() {
-        ExperimentInspector ei = (ExperimentInspector)JSFUtil.getManagedObject("ExperimentInspector");
-        ExperimentBean expBean = ei.getExperimentBean();
-        if(expBean != null ) expBean.updateExperiment();
-        new Exception("Who is the caller?").printStackTrace();
-    }
-    
     /**
      * 
      */
