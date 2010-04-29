@@ -33,7 +33,7 @@ public class OAIDigitalObjectManagerKBBase extends DigitalObjectManagerBase {
 	private static OAIDigitalObjectManagerKBImpl dom = null;
 	
 	public static final String DEFAULT_BASE_URL = 
-		"http://jsru.kb.nl/sru?operation=searchRetrieve&version=1.1&x-collection=eDepot&recordSchema=dcx&query=nbn-number%20all";
+		"default_base_uri_place_holder";
 	
 	public static final String PREFIX = "oai_kb";
 	

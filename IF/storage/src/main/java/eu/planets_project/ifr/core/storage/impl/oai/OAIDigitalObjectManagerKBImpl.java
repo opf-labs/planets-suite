@@ -43,13 +43,14 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 	private static final String POST_FORM_VALUE = "\" value=\"";
 	private static final String LINK_START = "Open de <a href=\"";
 	private static final String LINK_END = "\" target=\"_self\">publicatie";
-	private static final String DOMAIN_NAME = "http://toegang.kb.nl";	
+	private static final String DOMAIN_NAME = "domain_name_place_holder";	
 	private static final String COMMENT_START = "<!--";
 	private static final String COMMENT_END = "-->";
 	private static final String AND_CHAR = "&";
 	private static final String GLEICH_CHAR = "=";
 	private static final String BRACES = "%22";
 	private static final String METADATA_END = "</dc";
+	private static final String METADATA_TYPE = "dcx";
 	
 	private URI baseRegistryURI = null;
 
@@ -195,7 +196,8 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 	    		// OAI hierarchy is flat (no sub-directories)
 		    	ArrayList<URI> resultList = new ArrayList<URI>();
 		    	for (int i = 0 ; i < Articles.length ; i++) {
-		    		String resolver = transferData(OAIDigitalObjectManagerKBBase.DEFAULT_BASE_URL + BRACES + Articles[i] + BRACES);
+		    		String resolver = transferData(OAIDigitalObjectManagerKBBase.DEFAULT_BASE_URL + BRACES + 
+		    				Articles[i] + BRACES);
 	//	    	    log.log(Level.INFO, "test() init resolver[" + i +  "]: " + resolver);
 		    		String resolverLink = resolver.substring(resolver.indexOf(RESOLVER_START) + RESOLVER_START.length(), 
 		    										resolver.indexOf(RESOLVER_END));
@@ -212,7 +214,7 @@ public class OAIDigitalObjectManagerKBImpl extends AbstractOAIDigitalObjectManag
 			    	    	for (OaiMetadata emd : OaiMetadata.values()) {
 			    	    		String md = retrieveOaiMetadata(emd, resolver);
 			    	    		if (md != null && md.length() > 0) {
-					    	       Metadata metadata = new Metadata(URI.create(publicationLink), emd.name(), md);
+					    	       Metadata metadata = new Metadata(URI.create(METADATA_TYPE), emd.name(), md);
 				    	    	   metadataList.add(metadata);
 									// Title
 									if (metadata.getName().equalsIgnoreCase(OaiMetadata.title.name())) {

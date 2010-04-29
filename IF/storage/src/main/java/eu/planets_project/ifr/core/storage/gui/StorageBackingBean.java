@@ -65,7 +65,7 @@ public class StorageBackingBean {
 			ORIGINAL_NAME,
 			OBJECT_CHARACTERISTICS,
 			RELATIONSHIP,
-			SIGNIFICANT_PROPERTIES,
+			DESCRIPTIVE_METADATA_LIST,
 			LINKING_EVENT_IDENTIFIERS;
 			public enum ObjectIdentifier {
 				TYPE,
@@ -81,9 +81,9 @@ public class StorageBackingBean {
 					VALUE;
 				}
 			}
-			public enum SignificantProperties {
-				SIGNIFICANT_PROPERTY; 
-				public enum SignificantProperty {
+			public enum DescriptiveMetadataList {
+				DESCRIPTIVE_METADATA; 
+				public enum DescriptiveMetadata {
 					TYPE, 
 					VALUE, 
 					EXTENSION;
@@ -763,26 +763,27 @@ public class StorageBackingBean {
     		
                 if (metadataList.size() > 0) 
                 {
-                	TreeNode metadatasNode = addNode(childNode, ModelConfiguration.PremisModel.SIGNIFICANT_PROPERTIES.name());
+                	TreeNode metadatasNode = addNode(childNode, 
+                			ModelConfiguration.PremisModel.DESCRIPTIVE_METADATA_LIST.name());
                 	int index = 0;
         			while(iterMeta.hasNext())
         			{
                     	TreeNode metadataNode = addNodeExt(metadatasNode, 
-                    		ModelConfiguration.PremisModel.SignificantProperties.SIGNIFICANT_PROPERTY.name(), index);
+                    		ModelConfiguration.PremisModel.DescriptiveMetadataList.DESCRIPTIVE_METADATA.name(), index);
         				Metadata metadataObj = iterMeta.next();
         				try
         				{
                         	if (metadataObj.getType() != null) {
                         		addNode(metadataNode, 
-                        			ModelConfiguration.PremisModel.SignificantProperties.SignificantProperty.TYPE.name(), metadataObj.getType().toString());
+                        			ModelConfiguration.PremisModel.DescriptiveMetadataList.DescriptiveMetadata.TYPE.name(), metadataObj.getType().toString());
                         	}
                         	if (metadataObj.getContent() != null) {
                         		addNode(metadataNode, 
-                        			ModelConfiguration.PremisModel.SignificantProperties.SignificantProperty.VALUE.name(), metadataObj.getContent());
+                        			ModelConfiguration.PremisModel.DescriptiveMetadataList.DescriptiveMetadata.VALUE.name(), metadataObj.getContent());
                         	}
                         	if (metadataObj.getName() != null) {
                         		addNode(metadataNode, 
-                        			ModelConfiguration.PremisModel.SignificantProperties.SignificantProperty.EXTENSION.name(), metadataObj.getName());
+                        			ModelConfiguration.PremisModel.DescriptiveMetadataList.DescriptiveMetadata.EXTENSION.name(), metadataObj.getName());
                         	}
         				} catch (Exception e)
         				{
