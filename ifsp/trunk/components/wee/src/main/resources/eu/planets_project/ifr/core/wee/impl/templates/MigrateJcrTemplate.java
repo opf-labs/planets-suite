@@ -57,6 +57,14 @@ public class MigrateJcrTemplate extends
 		       "It implements digiatal object migration, insert in JCR and update in JCR.";
 	}
 
+	
+
+	public WorkflowResult initializeExecution() {
+		this.getWFResult().setStartTime(System.currentTimeMillis());
+		return this.getWFResult();
+	}
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -82,6 +90,8 @@ public class MigrateJcrTemplate extends
 			// Migration service
 			DigitalObject dgoB = null;
         	wfResultItem.addLogInfo("STEP 1: Starting migration");
+        	wfResultItem.addLogInfo("processingDigo.getPermanentUri(): " + processingDigo.getPermanentUri() + 
+        			", dgoA.getPermanentUri(): " + dgoA.getPermanentUri());
 			URI dgoBRef = runMigration(migrate, dgoA.getPermanentUri(), true);
 			wfResultItem.addLogInfo("Completed migration. URI: " + dgoBRef);
 			

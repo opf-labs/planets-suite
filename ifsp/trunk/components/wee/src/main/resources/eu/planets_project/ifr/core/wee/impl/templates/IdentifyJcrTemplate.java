@@ -56,6 +56,13 @@ public class IdentifyJcrTemplate extends
 				"of the Testbed's experiment. It implements insert in JCR repository.";
 	}
 
+	
+	public WorkflowResult initializeExecution() {
+		this.getWFResult().setStartTime(System.currentTimeMillis());
+		return this.getWFResult();
+	}
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
