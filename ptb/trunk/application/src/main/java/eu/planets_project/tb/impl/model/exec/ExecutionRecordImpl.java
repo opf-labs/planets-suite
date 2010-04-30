@@ -112,13 +112,20 @@ public class ExecutionRecordImpl implements Serializable {
     // A fixity check for this digital object.
     private String digitalObjectFixity;
     
+    // There have been problems storing the data as times, because MySQL only allows seconds of accuracy.
+    // So, we add fields here that hold the millisecond portion:
+    
     // The start date of this invocation:
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar startDate;
+    private Long startMillis;
     
     // The end date of this invocation:
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar endDate;
+    private Long endMillis;
+    
+    
     
     /** The sequence of stages of this experiment. */
     @OneToMany(cascade=CascadeType.ALL, mappedBy="execution", fetch=FetchType.EAGER)
@@ -249,14 +256,19 @@ public class ExecutionRecordImpl implements Serializable {
      * @return the date
      */
     public Calendar getEndDate() {
-        return endDate;
+        Calendar c = (Calendar) endDate.clone();
+        if( this.endMillis != null )
+            c.add(Calendar.MILLISECOND, this.endMillis.intValue());
+        return c;
     }
 
     /**
      * @param date the date to set
      */
     public void setEndDate(Calendar date) {
-        this.endDate = date;
+        this.endDate = (Calendar) date.clone();
+        this.endMillis = new Long( this.endDate.get(Calendar.MILLISECOND));
+        this.endDate.clear(Calendar.MILLISECOND);
     }
     
     /**

@@ -382,14 +382,30 @@ public class ExperimentChartServlet extends HttpServlet {
                              
                     ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(exr.getDigitalObjectReferenceCopy());
                     Double time = null;
-                    if(res.getExecutionDuration()!=null){
+                    boolean success = false;
+                    // First, attempt to pull from stage records:
+                    // FIXME: Note that this record is really at the wrong level.
+                    /*
+                    if( exr.getStages().size() == 1 ) {
+                        for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
+                            Double stageTime = exsr.getDoubleMeasurement( TecRegMockup.PROP_SERVICE_TIME );
+                            if( stageTime != null ) {
+                                time = stageTime;
+                                success = exsr.isMarkedAsSuccessful();
+                            }
+                        }
+                    }
+                    */
+                    // Pick up from record duration:
+                    if( time == null && res.getExecutionDuration()!=null){
                     	//convert from milli seconds to seconds
                     	time = (double)res.getExecutionDuration()/1000.0;
+                    	success = res.getHasExecutionSucceededOK();
                     }
                     log.info("Found DOB: {"+exr.getDigitalObjectReferenceCopy()+"} {"+dobName+"} w/ time "+time);
                     log.info("Timing: "+res.getExecutionRecord().getStartDate()+" "+res.getExecutionRecord().getEndDate());
                     if( time != null ) {
-                        if( res.getHasExecutionSucceededOK()) {
+                        if( success ) {
                             dataset.addValue( time, "Succeeded", dobName);
                             hasSuccesses = true;
                         } else {
@@ -397,21 +413,6 @@ public class ExperimentChartServlet extends HttpServlet {
                             hasFails = true;
                         }
                     }
-
-                    //QUESTION AL: Are we still using the ExecutionStageRecordImpl entity??
-                    /*for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
-                        Double time = exsr.getDoubleMeasurement( TecRegMockup.PROP_SERVICE_TIME );
-                        // Look for timing:
-                        if( time != null ) {
-                            if( exsr.isMarkedAsSuccessful() ) {
-                                dataset.addValue( time, "Succeeded", dobName);
-                                hasSuccesses = true;
-                            } else {
-                                dataset.addValue( time, "Failed", dobName);
-                                hasFails = true;
-                            }
-                        }
-                    }*/
                 }
                 // Increment, for the next run.
                 i++;
