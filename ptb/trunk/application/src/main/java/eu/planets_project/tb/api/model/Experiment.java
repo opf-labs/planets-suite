@@ -71,6 +71,8 @@ public interface Experiment extends ExperimentPhase{
      */
     public Map<String,Double> getAllUserRatingsOfExperiment();
     
+    public void removeAllUserRatingsFromExperiment();
+    
     /**
      * A Math.round average over all user experiment ratings
      * @return

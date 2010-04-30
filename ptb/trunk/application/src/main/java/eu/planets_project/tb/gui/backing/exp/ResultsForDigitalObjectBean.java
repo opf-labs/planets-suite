@@ -57,6 +57,7 @@ public class ResultsForDigitalObjectBean extends DigitalObjectBean {
     
 
     /**
+     * returns the ExecutionRecords for a given input digital object reference
      * @return the executionRecords
      */
     public List<ExecutionRecordImpl> getExecutionRecords() {
@@ -72,6 +73,7 @@ public class ResultsForDigitalObjectBean extends DigitalObjectBean {
         }
         return executionRecords;
     }
+   
 
     public boolean getHasExecuted() {
         BatchExecutionRecordImpl batch = this.getBatch();

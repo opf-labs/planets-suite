@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
@@ -50,6 +51,9 @@ public class MeasurementAgent  implements Serializable {
     /** Record the identity of the Agent, if it is a Service */
     private String serviceName;
     private URL serviceEndpoint;
+    
+    /** Record the identity of the Agent, for all AgentTypes */
+    private String agentID;
 
     /**
      * @param describe
@@ -66,6 +70,12 @@ public class MeasurementAgent  implements Serializable {
         if( user != null ) {
             this.username = user.getUserid();
         }
+    }
+    
+    public MeasurementAgent(Agent agent, AgentType type){
+    	this.type = type;
+    	this.serviceName= agent.getName();
+    	this.agentID = agent.getId();
     }
 
     /** */
@@ -143,5 +153,9 @@ public class MeasurementAgent  implements Serializable {
         return "MeasurementAgent [type=" + type + ", name=" + getName()
                 + "]";
     }
+
+	public String getAgentID() {
+		return agentID;
+	}
 
 }

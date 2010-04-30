@@ -1,6 +1,5 @@
 package eu.planets_project.tb.impl.system.batch.backends.ifwee;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -9,29 +8,31 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
+import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.CompareResult;
+import eu.planets_project.services.compare.PropertyComparison;
+import eu.planets_project.services.compare.PropertyComparison.Equivalence;
+import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.view.CreateViewResult;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
-import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
@@ -39,13 +40,21 @@ import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.BatchWorkflowResultLogImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
+//import eu.planets_project.tb.impl.model.measure.MeasurementImpl.MeasurementType;
+import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.serialization.JaxbUtil;
-import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
 
 
 /**
  * workflow processor specific actions for storing/extracting results when notified by the MDB.
+ *  - responsible for parsing the WEE's result and builds up the TB specific Measurements and Events 
+ * 
+ * Note: The idea was that Measurements performed on Services during the Workflow Execution are stored on the ExecutionStageRecords.
+ * Whereas the Analysis operations are stored as MeasurementEvents on the ExecutionRecord
+ * 
  * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
  * @since 22.10.2009
  *
@@ -167,7 +176,7 @@ public class WEEBatchExperimentTestbedUpdater {
 				}
 			
 				//1b. every service action gets persisted as a stage record
-				ExecutionStageRecordImpl stageRecord = fillInExecutionStageRecord(wfResultItem,execRecord,action,exp.getEntityID());
+				ExecutionStageRecordImpl stageRecord = fillInExecutionStageRecord(wfResultItem,actionCounter,execRecord,action,exp.getEntityID());
 	            execRecord.getStages().add(stageRecord);
 				
 				//2. or about some general reporting information
@@ -210,7 +219,7 @@ public class WEEBatchExperimentTestbedUpdater {
 		batchRecord.setBatchRunSucceeded(false);
 		
 		this.helperUpdateExpWithBatchRecord(exp, batchRecord);
-		//TODO AL: any more fields to set?
+		//TODO AL: any more fields/events/measurements to extract?
 	}
 	
 	/**
@@ -246,60 +255,6 @@ public class WEEBatchExperimentTestbedUpdater {
 	}
 	
 	
-	/*private ExecutionRecordImpl createExecutionRecordToExperiment(long eid, WorkflowResult wfr, String filename) {
-        DataHandler dh = new DataHandlerImpl();
-        try {
-            ExecutionRecordImpl rec = new ExecutionRecordImpl();
-            rec.setDigitalObjectReferenceCopy(filename);
-            try {
-                rec.setDigitalObjectSource(dh.get(filename).getName());
-            } catch (FileNotFoundException e) {
-                rec.setDigitalObjectSource(filename);
-            }
-            // FIXME Set this in the job somewhere:
-            rec.setDate(Calendar.getInstance());
-            List<ExecutionStageRecordImpl> stages = rec.getStages();
-            
-            if( wfr != null && wfr.getStages() != null ) {
-                // Examine the result:
-                if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wfr.getResultType())) {
-                    rec.setDigitalObjectResult( (DigitalObject) wfr.getResult(), exp );
-                    
-                } else if(WorkflowResult.RESULT_CREATEVIEW_RESULT.equals(wfr.getResultType()) ) {
-                    CreateViewResult cvr = (CreateViewResult) wfr.getResult( );
-                    Properties vp = new Properties();
-                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_SESSION_ID, cvr.getSessionIdentifier());
-                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_VIEW_URL, cvr.getViewURL().toString());
-                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_ENDPOINT_URL, wfr.getMainEndpoint().toString() );
-                    rec.setPropertiesListResult(vp);
-                    
-                } else {
-                    rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
-                }
-                
-                // Now pull out the stages, which include the measurements etc:
-                for( ExecutionStageRecordImpl stage : wfr.getStages() ) {
-                    // FIXME Can this be done from the session's Service Registry instead, please!?
-                    if( stage.getEndpoint() != null ) {
-                        log.info("Recording info about endpoint: "+stage.getEndpoint());
-                        stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( eid, stage.getEndpoint(), Calendar.getInstance() ) );
-                    }
-                    // Re-reference this stage object from the Experiment:
-                    stages.add(stage);
-                }
-            }
-
-            batch.getRuns().add(rec);
-            log.info("Added records ("+batch.getRuns().size()+") for "+rec.getDigitalObjectSource());
-        } catch( Exception e ) {
-            log.error("Exception while parsing Execution Record.");
-            e.printStackTrace();
-        }
-        
-    }*/
-
-	
-
 	/**
 	 * Takes a Wee WorkflowResult object and creates a map with DigoPermanentURI of the inputDigital object
 	 * and all of it's WorkflowResultItems that were created. Please note: it does not take the InputDigos the TB submitted the job with,
@@ -378,7 +333,7 @@ public class WEEBatchExperimentTestbedUpdater {
 	
 	/**
 	 * Looks at the given set of extracted properties (for a given input digo)
-	 * and aabuilds up the ResultLog if available. (i.e. log on how the workflow was processed on this item, 
+	 * and builds up the ResultLog if available. (i.e. log on how the workflow was processed on this item, 
 	 * e.g. A->B, B->C, C did not terminate properly
 	 * @param p
 	 * @return
@@ -399,9 +354,9 @@ public class WEEBatchExperimentTestbedUpdater {
 	 * @param stageName a stage name to store this information for
 	 * @return
 	 */
-	private ExecutionStageRecordImpl fillInExecutionStageRecord(WorkflowResultItem wfResultItem, ExecutionRecordImpl execRecord, String stageName, long eid){
-		 ExecutionStageRecordImpl stage = new ExecutionStageRecordImpl(execRecord,stageName);
-         //for now just filling in the endpoint and serviceRecord information
+	private ExecutionStageRecordImpl fillInExecutionStageRecord(WorkflowResultItem wfResultItem, int actionCounter, ExecutionRecordImpl execRecord, String stageName, long eid){
+		 ExecutionStageRecordImpl stage = new ExecutionStageRecordImpl(execRecord,"["+actionCounter+"] "+stageName);
+		 //TODO: AL: for now just filling in the endpoint and serviceRecord information
          try {
         	 //1. set the stage's endpoint
 			 stage.setEndpoint(new URL(wfResultItem.getServiceEndpoint()));
@@ -416,9 +371,227 @@ public class WEEBatchExperimentTestbedUpdater {
 		} catch (MalformedURLException e) {
 			log.debug("can't set stage's endpoint."+e);
 		}
+		
+		//3. record the wfResultItems's information as Testbed Measurements (e.g. extractedInformation, executionTimes, etc.)
+		recordMeasurements(stage, stageName, wfResultItem);
+		
 		return stage;
 		
 	}
+	
+	private void recordMeasurements(ExecutionStageRecordImpl stage, String actionIdentifier, WorkflowResultItem wfResultItem){
+		log.debug("extracting Measurements for stage-record: "+stage.getStage());
+		
+		if(actionIdentifier.equals(WorkflowResultItem.SERVICE_ACTION_IDENTIFICATION)){
+			createMeasurementAboutIdentification(stage,wfResultItem.getInputDigitalObjectRef()+"", wfResultItem.getExtractedInformation());
+		}
+		if((actionIdentifier.equals(WorkflowResultItem.SERVICE_ACTION_MIGRATION))||(stage.getStage().equals(WorkflowResultItem.SERVICE_ACTION_FINAL_MIGRATION))){
+			createMeasurementAboutMigration(stage, wfResultItem.getInputDigitalObjectRef()+"", wfResultItem.getOutputDigitalObjectRef()+"", wfResultItem);
+		}
+		if(actionIdentifier.equals(WorkflowResultItem.SERVICE_ACTION_COMPARE)){
+			createMeasurementAboutComparison(stage, wfResultItem.getInputDigitalObjectRef()+"", wfResultItem.getOutputDigitalObjectRef()+"", wfResultItem.getExtractedInformation());
+		}
+		if(actionIdentifier.equals(WorkflowResultItem.GENERAL_WORKFLOW_ACTION)){
+			//TODO decide what to pull out here
+		}else{
+			//record the service execution time
+			createMeasurementAboutServiceExecTime(stage,wfResultItem.getStartTime(), wfResultItem.getEndTime(),wfResultItem.getInputDigitalObjectRef()+"", wfResultItem.getOutputDigitalObjectRef()+"");
 
+		}
+	}
+	
+	/**
+	 * Takes information about an extracted identification workflow operation and updates the Testbed's Measurement model
+	 * @param mev
+	 * @param dobURI1: the digital object URI the measurement was about
+	 * @param value: the extracted value
+	 */
+	private void createMeasurementAboutIdentification(ExecutionStageRecordImpl execStageRec, String dobURI1, List<String> extractedInformation){
+		log.debug("extracting Measurement about identification operation for digo: "+dobURI1);
+		//This encapsulates a reference to the entity that the measurement belongs to.
+        MeasurementTarget target = new MeasurementTarget();
+        target.setType(TargetType.DIGITAL_OBJECT);
+        target.getDigitalObjects().add(0, dobURI1);
+        
+        //add the extracted information
+		for(String value : extractedInformation){
+	    	MeasurementImpl m = new MeasurementImpl();
+	    	String actionIdentifier = WorkflowResultItem.SERVICE_ACTION_IDENTIFICATION;
+	        Property p = new Property.Builder(helperCreatePropertyURI(actionIdentifier)).value(value).description("Planets "+actionIdentifier+" Service Operation Result").name(actionIdentifier).build(); 
+	    	m.setProperty(p);
+	        //m.setMeasurementType( MeasurementType.DOB);
+	        m.setTarget(target);
+	        execStageRec.addMeasurement(m);
+	    }
+	}
+	
+	private void createMeasurementAboutServiceExecTime(ExecutionStageRecordImpl execStageRec, long start, long end, String inputDigoRef, String outputDigoRef){
+		MeasurementTarget target = new MeasurementTarget();
+        target.setType(TargetType.SERVICE);
+        Vector<String> aboutObjects = new Vector<String>();
+        if(inputDigoRef!=null)
+        	aboutObjects.add(inputDigoRef);
+        if(outputDigoRef!=null)
+        	aboutObjects.add(outputDigoRef);
+        if(aboutObjects.size()>0)
+        	target.setDigitalObjects(aboutObjects);
+        
+        URI execStartURI = URI.create("planets://workflow/service/execution/start");
+        URI execEndURI = URI.create("planets://workflow/service/execution/end");
+        Property pStart = new Property.Builder(execStartURI).value(start+"").description("Planets Service Wrapper Execution start-time measured in milli-seconds").name("service execution start time").build(); 
+        Property pEnd = new Property.Builder(execEndURI).value(end+"").description("Planets Service Wrapper Execution end-time measured in milli-seconds").name("service execution end time").build(); 
+       
+        MeasurementImpl mStart = new MeasurementImpl();
+        //mStart.setMeasurementType( MeasurementType.SERVICE);  
+        mStart.setProperty(pStart);
+        mStart.setTarget(target);
+        execStageRec.addMeasurement(mStart);
+        
+        MeasurementImpl mEnd = new MeasurementImpl();
+        //mEnd.setMeasurementType( MeasurementType.SERVICE);  
+        mEnd.setProperty(pEnd);
+        mEnd.setTarget(target);
+        execStageRec.addMeasurement(mEnd);
+	}
+	
+	private URI helperCreatePropertyURI(String propName){
+		return URI.create("planets://workflow/"+propName);
+	}
+	
+	private void createMeasurementAboutMigration(ExecutionStageRecordImpl execStageRec, String inputDigoRef, String outputDigoRef, WorkflowResultItem wfResItem) {
+		//extract the information about the system's memory, etc.
+		if((wfResItem.getServiceReport()!=null)&&(wfResItem.getServiceReport().getProperties()!=null)){
+			
+			MeasurementTarget target = new MeasurementTarget();
+	        target.setType(TargetType.SERVICE);
+	        Vector<String> aboutObjects = new Vector<String>();
+	        if(inputDigoRef!=null)
+	        	aboutObjects.add(inputDigoRef);
+	        if(outputDigoRef!=null)
+	        	aboutObjects.add(outputDigoRef);
+	        if(aboutObjects.size()>0)
+	        	target.setDigitalObjects(aboutObjects);
+	        
+			for(Property p : wfResItem.getServiceReport().getProperties()){
+				MeasurementImpl m = new MeasurementImpl();
+		        //m.setMeasurementType( MeasurementType.SERVICE); 
+		        m.setProperty(p);
+		        m.setTarget(target);
+		        execStageRec.addMeasurement(m);
+			}
+		}
+	}
+	
+    private void createMeasurementAboutComparison(ExecutionStageRecordImpl execStageRec, String inputDigoRef, String outputDigoRef, List<String> extractedInformation) {
+    	MeasurementTarget target = new MeasurementTarget();
+        target.setType(TargetType.SERVICE);
+        Vector<String> aboutObjects = new Vector<String>();
+        if(inputDigoRef!=null)
+        	aboutObjects.add(inputDigoRef);
+        if(outputDigoRef!=null)
+        	aboutObjects.add(outputDigoRef);
+        if(aboutObjects.size()>0)
+        	target.setDigitalObjects(aboutObjects);
+    	
+    	//add the extracted information
+		for(String value : extractedInformation){
+	    	MeasurementImpl m = new MeasurementImpl();
+	    	String actionIdentifier = WorkflowResultItem.SERVICE_ACTION_COMPARE;
+	        Property p = new Property.Builder(helperCreatePropertyURI(actionIdentifier)).value(value).description("Planets "+actionIdentifier+" Service Operation Result").name(actionIdentifier).build(); 
+	    	m.setProperty(p);
+	        //m.setMeasurementType( MeasurementType.DOB);
+	        m.setTarget(target);
+	        execStageRec.addMeasurement(m);
+	    }
+    }
+	
+
+    /**
+     * creates an event that's about the workflow in general
+     * @param execRec
+     * @return
+     */
+    /*private MeasurementEventImpl createGeneralWFMeasurementEvent(ExecutionRecordImpl execRec) {
+        MeasurementEventImpl me = new MeasurementEventImpl(execRec);
+        MeasurementAgent agent = new MeasurementAgent(this.getWEEAgent(),MeasurementAgent.AgentType.WORKFLOW);
+        execRec.getMeasurementEvents().add(me);
+        return me;
+    }*/
+    
+    /**
+     * creates an event that's about a workflow service
+     * @param execStageRec
+     * @return
+     */
+    /*private MeasurementEventImpl createWFServiceMeasurementEvent(ExecutionStageRecordImpl execStageRec) {
+    	MeasurementEventImpl me = new MeasurementEventImpl(execStageRec);
+    	MeasurementAgent agent = new MeasurementAgent(this.getServiceAgent(),MeasurementAgent.AgentType.SERVICE);
+    	me.setAgent(agent);
+    	execStageRec.getMeasurementEvents().add(me);
+    	return me;
+    }*/
+    
+    /*private Agent getWEEAgent(){
+    	Agent agentWEE = new Agent("Planets-WEE-v1.0", "The Planets Workflow Execution Engine", "planets://workflow/processor");
+    	return agentWEE;
+    }
+    
+    private Agent getServiceAgent(){
+    	Agent agentService = new Agent("Planets-Service", "A Planets Service called by the Planets Workflow Execution Engine", "planets://workflow/service");
+    	return agentService;
+    }*/
+    
+    
+	/*private ExecutionRecordImpl createExecutionRecordToExperiment(long eid, WorkflowResult wfr, String filename) {
+    DataHandler dh = new DataHandlerImpl();
+    try {
+        ExecutionRecordImpl rec = new ExecutionRecordImpl();
+        rec.setDigitalObjectReferenceCopy(filename);
+        try {
+            rec.setDigitalObjectSource(dh.get(filename).getName());
+        } catch (FileNotFoundException e) {
+            rec.setDigitalObjectSource(filename);
+        }
+        // FIXME Set this in the job somewhere:
+        rec.setDate(Calendar.getInstance());
+        List<ExecutionStageRecordImpl> stages = rec.getStages();
+        
+        if( wfr != null && wfr.getStages() != null ) {
+            // Examine the result:
+            if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wfr.getResultType())) {
+                rec.setDigitalObjectResult( (DigitalObject) wfr.getResult(), exp );
+                
+            } else if(WorkflowResult.RESULT_CREATEVIEW_RESULT.equals(wfr.getResultType()) ) {
+                CreateViewResult cvr = (CreateViewResult) wfr.getResult( );
+                Properties vp = new Properties();
+                vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_SESSION_ID, cvr.getSessionIdentifier());
+                vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_VIEW_URL, cvr.getViewURL().toString());
+                vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_ENDPOINT_URL, wfr.getMainEndpoint().toString() );
+                rec.setPropertiesListResult(vp);
+                
+            } else {
+                rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
+            }
+            
+            // Now pull out the stages, which include the measurements etc:
+            for( ExecutionStageRecordImpl stage : wfr.getStages() ) {
+                // FIXME Can this be done from the session's Service Registry instead, please!?
+                if( stage.getEndpoint() != null ) {
+                    log.info("Recording info about endpoint: "+stage.getEndpoint());
+                    stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( eid, stage.getEndpoint(), Calendar.getInstance() ) );
+                }
+                // Re-reference this stage object from the Experiment:
+                stages.add(stage);
+            }
+        }
+
+        batch.getRuns().add(rec);
+        log.info("Added records ("+batch.getRuns().size()+") for "+rec.getDigitalObjectSource());
+    } catch( Exception e ) {
+        log.error("Exception while parsing Execution Record.");
+        e.printStackTrace();
+    }
+    
+}*/
 }
 

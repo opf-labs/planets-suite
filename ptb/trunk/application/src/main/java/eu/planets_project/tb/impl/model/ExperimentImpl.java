@@ -353,9 +353,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
         for( BatchExecutionRecordImpl b : exp.getExperimentExecutable().getBatchExecutionRecords() ) {
             b.setExecutable(null);
         }
-        for(String key : exp.getAllUserRatingsOfExperiment().keySet()){
-        	exp.getAllUserRatingsOfExperiment().remove(key);
-        }
+        exp.removeAllUserRatingsFromExperiment();
         
     	//exp.getExperimentExecutable().getBatchExecutionRecords().clear();
     	exp.getExperimentExecutable().setBatchExecutionIdentifier(null);
@@ -422,5 +420,10 @@ public class ExperimentImpl extends ExperimentPhaseImpl
         return this.getAllUserRatingsOfExperiment().size();
 	}
 	// --- end: allow users to rate the experiment --
+
+	public void removeAllUserRatingsFromExperiment() {
+		mCommunityExperimentRatings = new HashMap<String, Double>();
+		
+	}
     
 }

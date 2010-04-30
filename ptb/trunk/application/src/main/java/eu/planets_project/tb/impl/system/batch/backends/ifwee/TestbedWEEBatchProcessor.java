@@ -267,6 +267,25 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	public synchronized void notifyComplete(String job_key, TestbedBatchJob job) {
 		//this.setJob(job_key, job);
 		WorkflowResult wfLog=null;
+		
+		//check if job object still exists
+		if(job==null){
+			 //when null (e.g. not in memory any more) try to pull in experiment ID from current session
+			 ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	         Experiment exp = expBean.getExperiment();
+	         //in the case the server has already been shut down and in memory allocation is missing
+	         wfLog = retrieveWorkflowResult(exp.getExperimentExecutable().getBatchExecutionIdentifier());
+	         weeTBUpdater.processNotify_WorkflowCompleted(exp.getEntityID(),wfLog);
+	         log.debug("notifyComplete: complete for "+job_key+" experimentID: "+exp.getEntityID());
+		}else{
+			wfLog = retrieveWorkflowResult(job_key);
+			weeTBUpdater.processNotify_WorkflowCompleted(job.getExpID(),wfLog);
+			log.debug("notifyComplete: complete for "+job_key+" experimentID: "+job.getExpID());
+		}
+	}
+	
+	private WorkflowResult retrieveWorkflowResult(String job_key){
+		WorkflowResult wfLog = null;
 		try {
 			//fist try to retrieve the wfResult from the DR
 			wfLog = fetchWFResultFromDR(job_key);
@@ -279,18 +298,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 				log.debug("error building UUID from String "+job_key+ "processNotify_WorkflowCompleted without a WorkflowResult"+e2);
 			}
 		}
-		
-		//check if job object still exists
-		if(job==null){
-			 //when null (e.g. not in memory any more) try to pull in experiment ID from current session
-			 ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-	         Experiment exp = expBean.getExperiment();
-	         weeTBUpdater.processNotify_WorkflowCompleted(exp.getEntityID(),wfLog);
-	         log.debug("notifyComplete: complete for "+job_key+" experimentID: "+exp.getEntityID());
-		}else{
-			weeTBUpdater.processNotify_WorkflowCompleted(job.getExpID(),wfLog);
-			log.debug("notifyComplete: complete for "+job_key+" experimentID: "+job.getExpID());
-		}
+		return wfLog;
 	}
 	
 	private WorkflowResult fetchWFResultFromDR(String job_key) throws Exception{

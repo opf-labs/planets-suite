@@ -21,9 +21,10 @@
   <!-- ****************** -->
   <h2>Measurements</h2>
 
-  <rich:dataTable value="#{dor.resultsByStage}" var="sr"
-    styleClass="tbTable" rendered="#{dor.hasExecutionRecord}">
-    <rich:column>
+  <rich:dataTable id="measurements_table" value="#{dor.resultsByStage}" var="sr"
+    styleClass="tbTable" rendered="#{dor.hasExecutionRecord}"
+    rows="10" reRender="measurements_ds">
+    <rich:column sortBy="#{sr.stage.stage}" sortOrder="DESCENDING">
       <f:facet name="header">Stage</f:facet>
       <h:outputText value="#{sr.stage.stage}" />
     </rich:column>
@@ -58,6 +59,9 @@
       <h:outputText value=" [#{sr.measurement.unit}]"
         rendered="#{sr.measurement.unitDefined}" />
     </rich:column>
+	  <f:facet name="footer">
+	      <rich:datascroller id="measurements_ds" renderIfSinglePage="false" reRender="measurements_table,exp_do_result_inspector"></rich:datascroller>
+	  </f:facet>
   </rich:dataTable>
 
   <h:outputText value="No measurements taken."

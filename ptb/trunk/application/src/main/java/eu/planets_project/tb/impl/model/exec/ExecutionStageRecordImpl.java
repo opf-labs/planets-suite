@@ -331,6 +331,10 @@ public class ExecutionStageRecordImpl implements Serializable {
     	this.manualMeasurements.add(record);
     }
     
+    public void addMeasurement(MeasurementImpl record){
+    	this.measurements.add(record);
+    }
+    
     /**
      * @return
      */

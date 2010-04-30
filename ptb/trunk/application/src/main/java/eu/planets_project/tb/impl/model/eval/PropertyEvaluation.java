@@ -45,6 +45,10 @@ public class PropertyEvaluation implements Serializable {
     URI propertyUri = null;
     
     
+    public PropertyEvaluation(){
+    	//no arg default constructor required by ExperimentViaJAXB
+    }
+    
     /* ---- User comparison evaluation ---- */
     
     /** This is the list of pre-supplied answers for the userEquivalenceDetail. String mappings

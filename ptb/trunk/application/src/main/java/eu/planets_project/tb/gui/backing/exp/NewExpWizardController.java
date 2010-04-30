@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1599,6 +1600,15 @@ public class NewExpWizardController{
          //get the batch processor that's responsible for this job
          BatchProcessor pb = TestbedBatchProcessorManager.getInstance().getBatchProcessor(exp.getExperimentExecutable().getBatchSystemIdentifier());
          String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
+         
+         //clean out the old BatchExecutionRecords (as Measurements, etc.)
+         Iterator<BatchExecutionRecordImpl> iter = exp.getExperimentExecutable().getBatchExecutionRecords().iterator();
+         while(iter.hasNext()) {
+        	 iter.next();
+        	 iter.remove();
+         } //FIXME: this isn't properly updated in the db and the old records don't get deleted 
+         
+         //now call the notifyComplete to pull in the results
          pb.notifyComplete(job_key, pb.getJob(job_key));
 		return "success";
 	 }
