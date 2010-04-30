@@ -122,6 +122,9 @@
              <br/>
              </h:panelGroup>
             </a4j:repeat>
+             <h:panelGroup rendered="#{mc.allComparedEmpty}">
+               <h:outputText value="#{mc.equivalence}"/>
+             </h:panelGroup>
         </rich:column>
         
         <rich:column sortBy="#{mc.userEquivalence}">

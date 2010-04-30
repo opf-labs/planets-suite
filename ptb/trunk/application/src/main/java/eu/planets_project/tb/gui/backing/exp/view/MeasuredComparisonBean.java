@@ -157,6 +157,14 @@ public class MeasuredComparisonBean
     /**
      * @return
      */
+    public boolean isAllComparedEmpty() {
+        if( this.compared == null || this.compared.size() == 0 ) return true;
+        return false;
+    }
+    
+    /**
+     * @return
+     */
     public EquivalenceStatement getUserEquivalence() {
         return getPropertyEvaluation().getUserEquivalence();
     }
@@ -260,13 +268,40 @@ public class MeasuredComparisonBean
     /**
      * @return
      */
-    private Equivalence getEquivalence() {
+    public Equivalence getEquivalence() {
+        // Default to the first comparison property:
         if( this.compared != null && this.compared.size() > 0 ) {
             log.info("Compared: "+this.compared.size()+" "+this.compared.get(0).getName()+" "+this.compared.get(0).getEquivalence());
             return this.compared.get(0).getEquivalence();
         }
+        // Otherwise, look at the property sets
+        if( this.first != null && this.second !=null ) {
+            if( this.first.size() == this.second.size() ) {
+                // FIXME This should clone the second list and remove them as the matches come.
+                int diffs = 0;
+                int misses = 0;
+                for( MeasurementBean m1 : first ) {
+                    // Look for matching MeasurementBean
+                    boolean matched = false;
+                    for( MeasurementBean m2 : second ) {
+                        if( m1.getProperty().getUri().equals( m2.getProperty().getUri()) ) {
+                            matched = true;
+                            if( ! m1.getValue().equals( m2.getValue()) ) {
+                                diffs++;
+                            }
+                        }
+                    }
+                    if( !matched ) misses++;
+                }
+                if( misses > 0 ) return Equivalence.MISSING;
+                if( diffs > 0 ) return Equivalence.DIFFERENT;
+                return Equivalence.EQUAL;
+            } else {
+                return Equivalence.MISSING;
+            }
+        }
         log.info("Compared: "+this.compared);
-        return null;
+        return Equivalence.UNKNOWN;
     }
     
 }
