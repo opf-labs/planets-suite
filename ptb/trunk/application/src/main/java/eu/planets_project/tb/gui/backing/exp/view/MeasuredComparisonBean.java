@@ -277,20 +277,26 @@ public class MeasuredComparisonBean
         // Otherwise, look at the property sets
         if( this.first != null && this.second !=null ) {
             if( this.first.size() == this.second.size() ) {
-                // FIXME This should clone the second list and remove them as the matches come.
+                // Clone the second list, so we can remove them as the matches come.
+                List<MeasurementBean> secondClone = new ArrayList<MeasurementBean>(second); 
+                // Now look for matches and differences:
                 int diffs = 0;
                 int misses = 0;
                 for( MeasurementBean m1 : first ) {
                     // Look for matching MeasurementBean
                     boolean matched = false;
-                    for( MeasurementBean m2 : second ) {
+                    MeasurementBean match = null;
+                    for( MeasurementBean m2 : secondClone ) {
                         if( m1.getProperty().getUri().equals( m2.getProperty().getUri()) ) {
                             matched = true;
+                            match = m2;
                             if( ! m1.getValue().equals( m2.getValue()) ) {
                                 diffs++;
                             }
+                            break;
                         }
                     }
+                    if( matched ) secondClone.remove(match);
                     if( !matched ) misses++;
                 }
                 if( misses > 0 ) return Equivalence.MISSING;
