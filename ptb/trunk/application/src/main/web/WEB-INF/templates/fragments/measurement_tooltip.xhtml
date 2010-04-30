@@ -18,7 +18,7 @@
           <ui:include src="/WEB-INF/templates/fragments/property_def.xhtml">
             <ui:param name="p" value="#{mc.property}"/>
           </ui:include>
-          <h:outputText value="Value = #{m.value}"/><br/>
+          <h:outputText value="Value = #{m.valueString}"/><br/>
           <h:outputText value="Measured by #{m.event.agent.name}"/><br/>
           <h:outputText value="On #{m.event.date.time}">
             <f:convertDateTime type="both" dateStyle="medium" timeStyle="medium"/>

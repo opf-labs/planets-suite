@@ -76,7 +76,7 @@
             </f:facet>
             <a4j:repeat value="#{mc.allFirstMeasured}" var="m" rowKeyVar="mi">
             <h:panelGroup styleClass="#{mi%2==0 ? 'evenPropRow' : 'oddPropRow'}">
-             <h:outputText value="#{m.value}" rendered="#{!m.formatProperty}"/>
+             <h:outputText value="#{m.valueString}" rendered="#{!m.formatProperty}"/>
              <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
               <ui:param name="f" value="#{m.asFormat}"/>
              </ui:include>
@@ -95,7 +95,7 @@
             </f:facet>
             <a4j:repeat value="#{mc.allSecondMeasured}" var="m" rowKeyVar="mi">
             <h:panelGroup styleClass="#{mi%2==0 ? 'evenPropRow' : 'oddPropRow'}">
-            <h:outputText value="#{m.value}" rendered="#{!m.formatProperty}"/>
+            <h:outputText value="#{m.valueString}" rendered="#{!m.formatProperty}"/>
             <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
               <ui:param name="f" value="#{m.asFormat}"/>
             </ui:include>
