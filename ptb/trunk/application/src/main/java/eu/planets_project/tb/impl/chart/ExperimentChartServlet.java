@@ -82,8 +82,8 @@ public class ExperimentChartServlet extends HttpServlet {
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
         public int compare(ExecutionRecordImpl arg0, ExecutionRecordImpl arg1) {
-            if( arg0 != null && arg1 != null && arg0.getDigitalObjectReferenceCopy() != null ) {
-                return arg0.getDigitalObjectReferenceCopy().compareTo(arg1.getDigitalObjectReferenceCopy());
+            if( arg0 != null && arg1 != null && arg0.getStartDate() != null ) {
+                return arg0.getStartDate().compareTo(arg1.getStartDate());
             }
             return 0;
         }
