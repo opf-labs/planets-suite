@@ -139,7 +139,7 @@ public class MeasurementBean extends MeasurementImpl {
 
     public String getValueString() {
         String value = this.getValue();
-        if( value != null && value.length() > 200 ) value = value.substring(0, 200) + " ...";
+        if( value != null && value.length() > 100 ) value = value.substring(0, 100) + " ...";
         return value;
     }
     
