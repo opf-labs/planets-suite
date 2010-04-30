@@ -4,17 +4,18 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
 import eu.planets_project.ifr.core.wee.api.workflow.jobwrappers.LogReferenceCreatorWrapper;
+import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Event;
 import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
@@ -35,8 +36,8 @@ public class IdentifyJcrTemplate extends
 	/** URI to use for digital object repository creation. */
 	private static final URI PERMANENT_URI_PATH = URI.create("/ait/data/exp");
 
-	private static final String FORMAT_EVENT_METADATA = "Format event metadata";
 	private static final String FORMAT_EVENT_TYPE = "JCRupdate";
+	private static final String IDENTIFY_EVENT = "planets://repository/event/identify";
 	
     /**
      * Identify service to execute
@@ -111,9 +112,8 @@ public class IdentifyJcrTemplate extends
 				}			
 
 				if (types[0] != null) {
-					Metadata formatMetadata = new Metadata(
-							URI.create(FORMAT_EVENT_TYPE), FORMAT_EVENT_METADATA, types[0].toString());
-					dgoB = addMetadata(dgoB, formatMetadata, URI.create(types[0]));
+	    			Event eIdentifyFormat = buildEvent(URI.create(types[0].toString()));
+					dgoB = addEvent(dgoB, eIdentifyFormat, URI.create(types[0]));
 	         	}
          	}
 
@@ -141,22 +141,44 @@ public class IdentifyJcrTemplate extends
 	
 	
 	/**
-	 * This method changes the metadata list value in digital object and returns changed
-	 * digital object with new metadata list value. 
+	 * Create an identification event.
+	 * @return The created event
+	 */
+	public Event buildEvent(URI format){
+		List<Property> pList = new ArrayList<Property>();
+		Property pIdentificationContent = new Property.Builder(URI.create(FORMAT_EVENT_TYPE))
+        	.name("content by reference")
+        	.value(format.toString())
+        	.description("This is a format fo initial document identified by identification service")
+        	.unit("URI")
+        	.type("digital object format")
+        	.build();
+		pList.add(pIdentificationContent);
+		Event eIdentifyFormat = new Event(
+				IDENTIFY_EVENT, System.currentTimeMillis() + "", new Double(100), 
+				new Agent("JCR Repository v1.0", "The Planets Jackrabbit Content Repository", "planets://data/repository"), 
+				pList);
+		return eIdentifyFormat;
+	}
+
+	
+	/**
+	 * This method changes the content value in digital object and returns changed
+	 * digital object with new content value. 
 	 * 
 	 * @param digitalObject
 	 *        This is a digital object to be updated
-	 * @param newMetadata
-	 *        This is a new digital object metadata object
+	 * @param newContent
+	 *        This is a new digital object content
 	 * @param identifiedFormat
 	 *        This is a format identified by identification service
-	 * @return changed digital object with new metadata list value
+	 * @return changed digital object with new content value
 	 */
-	public static DigitalObject addMetadata(DigitalObject digitalObject, Metadata newMetadata, URI identifiedFormat)
+	public static DigitalObject addEvent(DigitalObject digitalObject, Event newEvent, URI identifiedFormat)
     {
 		DigitalObject res = null;
 		
-    	if (digitalObject != null && newMetadata != null)
+    	if (digitalObject != null && newEvent != null)
     	{
 	    	DigitalObject.Builder b = new DigitalObject.Builder(digitalObject.getContent());
 		    if (digitalObject.getTitle() != null) b.title(digitalObject.getTitle());
@@ -168,13 +190,13 @@ public class IdentifyJcrTemplate extends
 		    }
 		    if (digitalObject.getManifestationOf() != null) 
 		    	b.manifestationOf(digitalObject.getManifestationOf());
-		    if (digitalObject.getEvents() != null) 
-		    	b.events((Event[]) digitalObject.getEvents().toArray(new Event[0]));
-		    if (digitalObject.getMetadata() != null)
+		    if (digitalObject.getMetadata() != null) 
+		    	b.metadata((Metadata[]) digitalObject.getMetadata().toArray(new Metadata[0]));
+		    if (digitalObject.getEvents() != null)
 		    {
-				List<Metadata> metadataList = digitalObject.getMetadata();
-				metadataList.add(newMetadata);
-		    	b.metadata((Metadata[]) metadataList.toArray(new Metadata[0]));
+				List<Event> eventList = digitalObject.getEvents();
+				eventList.add(newEvent);
+		    	b.events((Event[]) eventList.toArray(new Event[0]));
 		    }
             res = b.build();
     	}
