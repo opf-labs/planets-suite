@@ -703,7 +703,9 @@ public class WorkflowBackingBean {
                                 e.printStackTrace();
                             }
 							DigitalObjectContent content = Content.byValue(byteContent);
-							o = (new DigitalObject.Builder(o)).content(content).title(dor.getLeafname()).build();
+							o = (new DigitalObject.Builder(o)).content(content)
+									.title(dor.getLeafname()).permanentUri(
+											dobURI).build();
 						}
 
 						//DigitalObject.Builder b = new DigitalObject.Builder(o);
