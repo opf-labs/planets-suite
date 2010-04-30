@@ -34,6 +34,9 @@ public class IdentifyJcrTemplate extends
 
 	/** URI to use for digital object repository creation. */
 	private static final URI PERMANENT_URI_PATH = URI.create("/ait/data/exp");
+
+	private static final String FORMAT_EVENT_METADATA = "Format event metadata";
+	private static final String FORMAT_EVENT_TYPE = "JCRupdate";
 	
     /**
      * Identify service to execute
@@ -100,6 +103,26 @@ public class IdentifyJcrTemplate extends
       	    DigitalObject dgoB = dodm.store(PERMANENT_URI_PATH, dgoA, true);
          	wfResultItem.addLogInfo("Completed storing in JCR repository: " + dgoB.toString());
             
+         	// Enrich digital object with format information from identification service
+         	if (types != null) {
+         		wfResultItem.addLogInfo("Identified formats count: " + types.length);
+				for (int i=0; i<types.length; i++) {
+					wfResultItem.addLogInfo("type[" + i + "]: " + types[i]);
+				}			
+
+				if (types[0] != null) {
+					Metadata formatMetadata = new Metadata(
+							URI.create(FORMAT_EVENT_TYPE), FORMAT_EVENT_METADATA, types[0].toString());
+					dgoB = addMetadata(dgoB, formatMetadata, URI.create(types[0]));
+	         	}
+         	}
+
+			// Update digital object in JCR repository
+            wfResultItem.addLogInfo("STEP 3: Update digital object in JCR repository. initial digital object: " + 
+            		dgoB.toString());
+         	dgoB = dodm.updateDigitalObject(dgoB, false);
+         	wfResultItem.addLogInfo("Completed update in JCR repository. result digital object: " + dgoB.toString());
+
             wfResultItem.setEndTime(System.currentTimeMillis());
 
 			wfResultItem
@@ -125,9 +148,11 @@ public class IdentifyJcrTemplate extends
 	 *        This is a digital object to be updated
 	 * @param newMetadata
 	 *        This is a new digital object metadata object
+	 * @param identifiedFormat
+	 *        This is a format identified by identification service
 	 * @return changed digital object with new metadata list value
 	 */
-	public static DigitalObject addMetadata(DigitalObject digitalObject, Metadata newMetadata)
+	public static DigitalObject addMetadata(DigitalObject digitalObject, Metadata newMetadata, URI identifiedFormat)
     {
 		DigitalObject res = null;
 		
@@ -136,7 +161,11 @@ public class IdentifyJcrTemplate extends
 	    	DigitalObject.Builder b = new DigitalObject.Builder(digitalObject.getContent());
 		    if (digitalObject.getTitle() != null) b.title(digitalObject.getTitle());
 		    if (digitalObject.getPermanentUri() != null) b.permanentUri(digitalObject.getPermanentUri());
-		    if (digitalObject.getFormat() != null) b.format(digitalObject.getFormat());
+		    if (identifiedFormat != null) {
+		    	b.format(identifiedFormat);
+		    } else {
+		    	if (digitalObject.getFormat() != null) b.format(digitalObject.getFormat());
+		    }
 		    if (digitalObject.getManifestationOf() != null) 
 		    	b.manifestationOf(digitalObject.getManifestationOf());
 		    if (digitalObject.getEvents() != null) 
@@ -191,8 +220,7 @@ public class IdentifyJcrTemplate extends
         
         //document the end-time and input digital object and the params
         wfResultItem.setEndTime(System.currentTimeMillis());
-        wfResultItem.setInputDigitalObject(digo);
-//        wfResultItem.setInputDigitalObjectRef(digo.getPermanentUri());
+        wfResultItem.setInputDigitalObjectRef(digo.getPermanentUri());
         wfResultItem.setServiceParameters(parameterList);
         wfResultItem.setServiceEndpoint(identify.describe().getEndpoint());
         
