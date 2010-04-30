@@ -59,7 +59,7 @@ public class MeasurementImpl implements Serializable {
     private long id;
     
     //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    @XmlTransient
+    //@XmlTransient
     //MeasurementEventImpl event;
     
     /** The property that has been measured. */
