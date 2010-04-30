@@ -14,6 +14,8 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -79,6 +81,24 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
  *
  */
 public class ExperimentChartServlet extends HttpServlet {
+
+    /**
+     * @author anj
+     */
+    public class RunComparator implements Comparator<ExecutionRecordImpl> {
+
+        /* (non-Javadoc)
+         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+         */
+        public int compare(ExecutionRecordImpl arg0, ExecutionRecordImpl arg1) {
+            if( arg0 != null && arg1 != null && arg0.getDigitalObjectReferenceCopy() != null ) {
+                return arg0.getDigitalObjectReferenceCopy().compareTo(arg1.getDigitalObjectReferenceCopy());
+            }
+            return 0;
+        }
+
+    }
+
     /** */
     private static Log log = LogFactory.getLog(ExperimentChartServlet.class);
 
@@ -359,7 +379,9 @@ public class ExperimentChartServlet extends HttpServlet {
 
         for( BatchExecutionRecordImpl batch : exp.getExperimentExecutable().getBatchExecutionRecords() ) {
             int i = 1;
-            for( ExecutionRecordImpl exr : batch.getRuns() ) {
+            List<ExecutionRecordImpl> runs = new ArrayList<ExecutionRecordImpl>(batch.getRuns());
+            Collections.sort(runs, new RunComparator() );
+            for( ExecutionRecordImpl exr : runs ) {
                 //log.info("Found Record... "+exr+" stages: "+exr.getStages());
                 if( exr != null && exr.getStages() != null ) {
                     // Look up the object, so we can get the name.
