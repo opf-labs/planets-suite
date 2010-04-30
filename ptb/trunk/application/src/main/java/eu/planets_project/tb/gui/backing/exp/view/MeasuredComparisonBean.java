@@ -139,7 +139,7 @@ public class MeasuredComparisonBean
         List<MeasurementBean> mb = new ArrayList<MeasurementBean>(this.second);
         for( MeasurementBean cm : compared ) {
             if( cm.getTarget().getDigitalObjectProperties(1) != null && 
-                cm.getTarget().getDigitalObjectProperties(1).size() > 0 ) 
+                cm.getTarget().getDigitalObjectProperties(1).size() > 1 ) 
              mb.add( new MeasurementBean( cm.getEvent(), 
                      new MeasurementImpl( cm.getEvent(), cm.getTarget().getDigitalObjectProperties(1).get(1) ) ) );
         }

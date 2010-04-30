@@ -45,7 +45,17 @@
         
         </c:if>
 
-  
+      <fieldset>
+      <legend>Download Raw Analysis Results</legend>
+    <p>         
+        <h:outputLink value="/testbed/reader/results.jsp">
+          <f:param name="eid" value="#{ExperimentBean.experiment.entityID}"/>
+          <f:param name="set" value="ana"/>
+          <h:outputText value="Click here to download analysis data, in CSV format..."/>
+        </h:outputLink>
+    </p>
+      </fieldset>
+      
   </ui:composition>
 </body>
 </html>

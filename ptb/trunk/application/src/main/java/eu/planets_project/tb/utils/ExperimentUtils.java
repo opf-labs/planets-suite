@@ -24,6 +24,7 @@ import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
@@ -101,6 +102,62 @@ public class ExperimentUtils {
             bi++;
         }
 
+    }
+    
+    public static void outputAnalysis( OutputStream os, String expId, DATA_FORMAT format ) throws IOException {
+        log.info("Writing out experiment "+expId+" as "+format);
+
+        Writer out = new BufferedWriter( new OutputStreamWriter( os, "UTF-8" ) );
+        CSVWriter writer = new CSVWriter(out);
+
+        long id = Long.parseLong(expId);
+
+        ExperimentPersistencyRemote edao = ExperimentPersistencyImpl.getInstance();
+        Experiment exp = edao.findExperiment(id);
+
+        // The string array 
+        String sa[] = new String[8];
+        sa[0] = "Name";
+        sa[1] = "Digital Object #";
+        sa[2] = "Digital Object Source";
+        sa[3] = "Agent Type";
+        sa[4] = "Agent Name";
+        sa[5] = "User Environment Description";
+        sa[6] = "Property Identifier";
+        sa[7] = "Property Value";
+        // write the headers out:
+        writer.writeNext(sa);
+        
+        // Loop through:
+        int bi = 1;
+        for( BatchExecutionRecordImpl batch : exp.getExperimentExecutable().getBatchExecutionRecords() ) {
+            // log.info("Found batch... "+batch);
+            int doi = 1;
+            for( ExecutionRecordImpl exr : batch.getRuns() ) {
+                // log.info("Found Record... "+exr+" stages: "+exr.getStages());
+                if( exr != null ) {
+                    for( MeasurementEventImpl me : exr.getMeasurementEvents() ) {
+                        for( MeasurementImpl m : me.getMeasurements() ) {
+                            sa[0] = exp.getExperimentSetup().getBasicProperties().getExperimentName();
+                            sa[1] = "" + doi;
+                            sa[2] = exr.getDigitalObjectSource();
+                            sa[3] = me.getAgent().getType().toString();
+                            sa[4] = me.getAgent().getName();
+                            sa[5] = me.getAgent().getUserEnvironmentDescription();
+                            sa[6] = m.getIdentifier();
+                            sa[7] = m.getValue();
+                            // Write out CSV:
+                            writer.writeNext( sa );
+                        }
+                    }
+                }
+                // Increment, for the next DO.
+                doi++;
+                out.flush();
+            }
+            // Increment to the next batch:
+            bi++;
+        }
     }
     
     /** The Digest/fixity algorithm to use. If you change this, all files will appear to have 'changed'. */

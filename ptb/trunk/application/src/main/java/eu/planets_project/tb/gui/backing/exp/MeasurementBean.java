@@ -142,6 +142,12 @@ public class MeasurementBean extends MeasurementImpl {
         if( value != null && value.length() > 200 ) value = value.substring(0, 200) + " ...";
         return value;
     }
+    
+    public boolean isValueEmpty() {
+        if( this.getValue() == null || "".equals( this.getValue().trim() ))
+            return true;
+        return false;
+    }
 
     public FormatBean getAsFormat() {
         return MeasurementImpl.getFormat( this.getProperty() );

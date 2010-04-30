@@ -113,8 +113,8 @@
               <h:outputText value="Comparison"/>
             </f:facet>
             <a4j:repeat value="#{mc.allCompared}" var="m" rowKeyVar="mi">
-            <h:panelGroup styleClass="#{mi%2==0 ? 'evenPropRow' : 'oddPropRow'}">
-             <h:outputText value="#{m.value}" styleClass="#{mc.equal ? 'equalValue' : 'differentValue'}"/>
+            <h:panelGroup styleClass="#{mi%2==0 ? 'evenPropRow' : 'oddPropRow'}" rendered="#{!m.valueEmpty}">
+             <h:outputText value="#{m.valueString}" styleClass="#{mc.equal ? 'equalValue' : 'differentValue'}"/>
              <h:outputText value="  "/>
             <ui:include src="/WEB-INF/templates/fragments/measurement_tooltip.xhtml">
               <ui:param name="m" value="#{m}"/>
