@@ -149,7 +149,7 @@ public class IdentifyJcrTemplate extends
 		Property pIdentificationContent = new Property.Builder(URI.create(FORMAT_EVENT_TYPE))
         	.name("content by reference")
         	.value(format.toString())
-        	.description("This is a format fo initial document identified by identification service")
+        	.description("This is a format for initial document identified by identification service")
         	.unit("URI")
         	.type("digital object format")
         	.build();

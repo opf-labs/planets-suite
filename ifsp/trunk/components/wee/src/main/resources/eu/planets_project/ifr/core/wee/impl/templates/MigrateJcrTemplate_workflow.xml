@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
+  <template>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.MigrateJcrTemplate</class>
+  </template>
+  <services>
+    <service id="migrate">
+      <endpoint>http://testbed-dev.planets-project.ait.ac.at:80/pserv-pa-sanselan/SanselanMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_from_fmt</name>
+          <value>planets:fmt/ext/tif</value>
+        </param>
+        <param>
+          <name>planets:service/migration/input/migrate_to_fmt</name>
+          <value>planets:fmt/ext/gif</value>
+        </param>
+      </parameters>
+    </service>
+  </services>
+</workflowConf>
