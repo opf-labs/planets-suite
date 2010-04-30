@@ -51,28 +51,28 @@
      </rich:modalPanel>
           
         </rich:column>
-        <rich:column style="text-align: center;">
+        <rich:column sortBy="#{res.hasExecuted}" style="text-align: center;">
           <f:facet name="header">Execution</f:facet>
           <h:graphicImage value="/graphics/ose-tick.png" title="Executed" rendered="#{res.hasExecuted}"/>
           <h:graphicImage value="/graphics/ose-error-passive.png" title="Not Executed" rendered="#{!res.hasExecuted}"/>
         </rich:column>        
-        <rich:column style="text-align: center;">
+        <rich:column sortBy="#{res.executionRecord.startDate}" sortOrder="ASCENDING" style="text-align: center;">
           <f:facet name="header">Execution Started</f:facet>
             <h:outputText value="#{res.executionRecord.startDate.time}">
                 <f:convertDateTime type="both" dateStyle="short"/>
             </h:outputText>
         </rich:column>        
-        <rich:column style="text-align: center;">
+        <rich:column sortBy="#{res.executionRecord.endDate}" style="text-align: center;">
           <f:facet name="header">Execution Ended</f:facet>
             <h:outputText value="#{res.executionRecord.endDate.time}">
                 <f:convertDateTime type="both" dateStyle="short"/>
             </h:outputText>
         </rich:column>
         
-        <rich:column style="text-align: center;">
+        <rich:column sortBy="#{res.hasExecutionSucceededOK}" style="text-align: center;">
           <f:facet name="header">Success</f:facet>
-          <h:graphicImage value="/graphics/ose-tick.png" title="Execution Succeeded" rendered="#{res.hasExecutionSucceededOK}"/>
-          <h:graphicImage value="/graphics/ose-error.png" title="Execution Failed" rendered="#{!res.hasExecutionSucceededOK}"/>
+          <h:graphicImage value="/graphics/ose-tick.png" title="Execution Succeeded - Valid Result" rendered="#{res.hasExecutionSucceededOK}"/>
+          <h:graphicImage value="/graphics/ose-error.png" title="Execution Failed - No Result" rendered="#{!res.hasExecutionSucceededOK}"/>
         </rich:column>
         
         <rich:column style="text-align: center;">

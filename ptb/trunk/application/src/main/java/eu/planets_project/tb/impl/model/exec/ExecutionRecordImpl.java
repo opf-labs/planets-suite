@@ -242,14 +242,19 @@ public class ExecutionRecordImpl implements Serializable {
      * @return the date
      */
     public Calendar getStartDate() {
-        return startDate;
+        Calendar c = (Calendar) startDate.clone();
+        if( this.startMillis != null )
+            c.add(Calendar.MILLISECOND, this.startMillis.intValue());
+        return c;
     }
 
     /**
      * @param date the date to set
      */
     public void setStartDate(Calendar date) {
-        this.startDate = date;
+        this.startDate = (Calendar) date.clone();
+        this.startMillis = new Long( this.startDate.get(Calendar.MILLISECOND));
+        this.startDate.clear(Calendar.MILLISECOND);
     }
     
     /**
