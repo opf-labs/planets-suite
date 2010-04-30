@@ -93,8 +93,9 @@
 	                switchType="client" id="propertytree" value="#{StorageBackingBean.treeNode}" var="item" 
 	                dragIndicator="indicator2"  adviseNodeOpened="#{StorageBackingBean.adviseNodeOpened}"
 	                treeNodeVar="treeNode"  nodeFace="#{empty item.type == true ? 'node' : 'leaf'}">
-	                <rich:treeNode type="node" icon="/images/iconFolder.gif" iconLeaf="/images/iconFolder.gif">
+	                <rich:treeNode action="#{StorageBackingBean.triggerReloadTree}" reRender="treepanel" eventsQueue="foo" immediate="true" type="node" icon="/images/iconFolder.gif" iconLeaf="/images/iconFolder.gif">
 						<h:outputText value="#{item.name}" id="treenodeitemname"/>
+						<a4j:support event="ondblclick" action="#{StorageBackingBean.triggerReloadTree}" reRender="treepanel" eventsQueue="foo" immediate="true" rendered="true"/>
 					</rich:treeNode>
 					<rich:treeNode id="treeLeafNode" type="leaf" dragType="props" iconLeaf="/images/iconLeaf.gif"> 
 		                 <rich:dndParam name="label" type="drag">property: #{item.name}</rich:dndParam>

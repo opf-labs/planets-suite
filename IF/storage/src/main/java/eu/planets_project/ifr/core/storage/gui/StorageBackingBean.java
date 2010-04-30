@@ -348,6 +348,14 @@ public class StorageBackingBean {
 	}
 
 	/**
+	 * This method can be triggered from within the GUI to check for an update
+	 * of the underlying data source
+	 */
+	public void triggerReloadTree() {
+		this.loadTree();
+	}
+	
+	/**
 	 * Indicates if the selected registry was changed
 	 * since the tree was updated the last time.
 	 */
