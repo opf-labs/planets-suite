@@ -60,7 +60,6 @@
 					        <f:selectItems value="#{StorageBackingBean.dataRegistryOptions}"/>
 					        <a4j:support event="onselect" reRender="propertytree"/>
 					    </rich:comboBox>
-    				    
                     </h:panelGrid> 
 						
 			
@@ -154,7 +153,7 @@
             	<!-- digital object info panel -->
 	            <rich:simpleTogglePanel id="doInfoPanel" switchType="client" label="digital object information panel" style="margin:2px;">
 	            	<rich:tree style="width:300px" nodeSelectListener="#{StorageBackingBean.processSelection}" 
-		                reRender="" ajaxSubmitSelection="true" ignoreDupResponses="false" eventsQueue="foo"
+		                reRender="" ajaxSubmitSelection="false" ignoreDupResponses="false" eventsQueue="foo"
 		                switchType="client" id="dopropertytree" value="#{StorageBackingBean.doTreeNode}" var="item" 
 		                dragIndicator="indicator2"  adviseNodeOpened="#{StorageBackingBean.adviseNodeOpened}"
 		                treeNodeVar="treeNode">
@@ -163,7 +162,6 @@
 						</rich:treeNode>
 						<rich:treeNode id="doTreeLeafNode" type="leaf" dragType="props" iconLeaf="/images/iconLeaf.gif"> 
 			                 <rich:dndParam name="label" type="drag">property: #{item.name}</rich:dndParam>
-			                 <a4j:support  event="ondblclick" actionListener="#{StorageBackingBean.processPropertyDblClick}" reRender="" eventsQueue="foo" rendered="true"/>
 			                 <h:outputText value="#{item.humanReadableName}"/>
 			            </rich:treeNode>
 		            </rich:tree>    

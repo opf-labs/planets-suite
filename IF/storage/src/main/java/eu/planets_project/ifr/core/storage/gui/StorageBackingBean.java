@@ -37,6 +37,7 @@ import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.Property;
 
 
+
 /**
  * This is the controller class for the storage JSF web application.
  */
@@ -510,6 +511,7 @@ public class StorageBackingBean {
 	}
     
     
+
     public int getSelNodesSize(){
     	return this.dndSelNodes.size();
     }    
@@ -1067,21 +1069,24 @@ public class StorageBackingBean {
     			TreeNode node, TreeNode _node, DataModelConfiguration currentConfiguration) {
 	           DigitalObject o = null;
             	
+	           boolean proceedOk = true;
+	           
                if (_node != null) {
 	                if (_node.getData() != null) {
-	                   URI uri = ((RegistryPropertyImpl)_node.getData()).getUri();
-	    	            log.info("#### StorageBackingBean DoTreeView standardTraverseTree() uri: " + uri);
 						try {
+	                       URI uri = ((RegistryPropertyImpl)_node.getData()).getUri();
+	    	               log.info("#### StorageBackingBean DoTreeView standardTraverseTree() uri: " + uri);
 						   o = dr.getDataManager(uri).retrieve(uri);
 						} catch (Exception e) {
 							log.info("StorageBackingBean DoTreeView standardTraverseTree() error: " + e.getMessage());
+							proceedOk = false;
 						}
 	                   if (o != null)
 	                   log.info("StorageBackingBean DoTreeView standardTraverseTree() digitalObject: " + o.toString());
 	                }
                }
 
-               if (o != null) {
+               if (o != null && proceedOk) {
                    log.info("StorageBackingBean DoTreeView standardTraverseTree() o != null currentConfiguration: " + currentConfiguration);
             	   if (currentConfiguration.equals(DataModelConfiguration.PLANETS)) {
 		                TreeNodeImpl childNode = new TreeNodeImpl();
