@@ -37,7 +37,7 @@ public class MigrateJcrTemplate extends
 	/** URI to use for digital object repository creation. */
 	private static final URI PERMANENT_URI_PATH = URI.create("/ait/data/migrate");
 	
-	private static final String INITIAL_REF_EVENT_TYPE = "JCRupdate";
+	private static final String INITIAL_REF_EVENT_TYPE = "planets://events/jcr-update";
 	private static final String MIGRATE_EVENT = "planets://repository/event/migrate";
 
 	/**
@@ -191,6 +191,7 @@ public class MigrateJcrTemplate extends
 		    if (digitalObject.getEvents() != null)
 		    {
 				List<Event> eventList = digitalObject.getEvents();
+				eventList.clear();
 				eventList.add(newEvent);
 		    	b.events((Event[]) eventList.toArray(new Event[0]));
 		    }
