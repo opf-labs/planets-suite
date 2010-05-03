@@ -111,15 +111,8 @@ public class StorageBackingBean {
 						}
 					}
 					public enum LinkingObjectIdentifier{
-						SIGNIFICANT_PROPERTY; 
-						public enum SignificantProperty {
-							TYPE, 
-							VALUE, 
-							EXTENSION, 
-							EXTENSION1, 
-							EXTENSION2, 
-							EXTENSION3; 
-						}
+						TYPE, 
+						VALUE
 					}
 				}
 			}
@@ -943,35 +936,16 @@ public class StorageBackingBean {
                 	int index = 0;
                 	while(iter.hasNext())
         			{
-                    	TreeNode propertyNode = addNodeExt(propertiesNode, 
-                    			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.SIGNIFICANT_PROPERTY.name(),
-                    			index);
         				Property propertyObj = iter.next();
         				try
         				{                        	
                         	if (propertyObj.getType() != null) {
-                        		addNode(propertyNode, 
-                        			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.SignificantProperty.TYPE.name(), propertyObj.getType());
+                        		addNode(propertiesNode, 
+                        			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.TYPE.name(), "URI");
                         	}
                         	if (propertyObj.getValue() != null) {
-                        		addNode(propertyNode, 
-                        			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.SignificantProperty.VALUE.name(), propertyObj.getValue());
-                        	}
-                        	if (propertyObj.getUri() != null) {
-                        		addNode(propertyNode, 
-                        			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.SignificantProperty.EXTENSION.name(), propertyObj.getUri().toString());
-                        	}
-                        	if (propertyObj.getName() != null) {
-                        		addNode(propertyNode, 
-                        			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.SignificantProperty.EXTENSION1.name(), propertyObj.getName());
-                        	}
-                        	if (propertyObj.getDescription() != null) {
-                        		addNode(propertyNode, 
-                        			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.SignificantProperty.EXTENSION2.name(), propertyObj.getDescription());
-                        	}
-                        	if (propertyObj.getUnit() != null) {
-                        		addNode(propertyNode, 
-                        			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.SignificantProperty.EXTENSION3.name(), propertyObj.getUnit());
+                        		addNode(propertiesNode, 
+                        			ModelConfiguration.PremisModel.LinkingEventIdentifier.EventIdentifier.LinkingObjectIdentifier.VALUE.name(), propertyObj.getValue());
                         	}
         				} catch (Exception e)
         				{
