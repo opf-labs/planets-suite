@@ -37,7 +37,7 @@ public class MigrateJcrTemplate extends
 	/** URI to use for digital object repository creation. */
 	private static final URI PERMANENT_URI_PATH = URI.create("/ait/data/migrate");
 	
-	private static final String FORMAT_EVENT_TYPE = "JCRupdate";
+	private static final String INITIAL_REF_EVENT_TYPE = "JCRupdate";
 	private static final String MIGRATE_EVENT = "planets://repository/event/migrate";
 
 	/**
@@ -103,8 +103,9 @@ public class MigrateJcrTemplate extends
 					wfResultItem.addLogInfo("base URI " + baseUri);
 			
 					dgoB = dataRegistry.getDigitalObjectManager(baseUri).retrieve(dgoBRef);	
-					if (dgoB != null && dgoB.getPermanentUri() != null) {
-		    			Event eMigration = buildEvent(dgoB.getPermanentUri());
+					wfResultItem.addLogInfo("dgoB: " + dgoB.toString());
+					if (dgoB != null && dgoA.getPermanentUri() != null) {
+		    			Event eMigration = buildEvent(dgoA.getPermanentUri());
 						dgoB = addEvent(dgoB, eMigration);
 		         	}
 
@@ -140,14 +141,14 @@ public class MigrateJcrTemplate extends
 	
 	
 	/**
-	 * Create an identification event.
+	 * Create an event.
 	 * @return The created event
 	 */
-	public Event buildEvent(URI format){
+	public Event buildEvent(URI ref){
 		List<Property> pList = new ArrayList<Property>();
-		Property pIdentificationContent = new Property.Builder(URI.create(FORMAT_EVENT_TYPE))
-        	.name("content by reference")
-        	.value(format.toString())
+		Property pIdentificationContent = new Property.Builder(URI.create(INITIAL_REF_EVENT_TYPE))
+        	.name("Reference to the initial document")
+        	.value(ref.toString())
         	.description("This is a link to original document")
         	.unit("URI")
         	.type("digital object migration")
