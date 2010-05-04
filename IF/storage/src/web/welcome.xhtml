@@ -49,7 +49,7 @@
                                         
                                                 
     				<a4j:region id="settings">
-    				<h:panelGrid columns="2">
+    				<h:panelGrid columns="3">
     				    <h:outputText value="Select data registry: "/>
     				    
     				    <rich:comboBox id="combo" 
@@ -60,6 +60,8 @@
 					        <f:selectItems value="#{StorageBackingBean.dataRegistryOptions}"/>
 					        <a4j:support event="onselect" reRender="propertytree"/>
 					    </rich:comboBox>
+					    <a4j:commandButton id="clearJcrRepository" value="clearJcr" 
+    				        action="#{StorageBackingBean.clearJcr}" reRender="propertytree" eventsQueue="foo"/>
                     </h:panelGrid> 
 						
 			

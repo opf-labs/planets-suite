@@ -36,6 +36,7 @@ import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.Property;
 
+import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
 
 
 /**
@@ -311,6 +312,24 @@ public class StorageBackingBean {
 		loadDoTree();
 		return doRootNode;
 	}
+
+	
+	/**
+	 * removes all JCR registry entries
+	 */
+	public void clearJcr() {
+		log.info("StorageBackingBean clearJcr()");
+		try {
+	        JcrDigitalObjectManagerImpl dodm = 
+	       	 	(JcrDigitalObjectManagerImpl) JcrDigitalObjectManagerImpl.getInstance();
+			log.info("StorageBackingBean clearJcr() remove all.");
+	 	    dodm.removeAll();
+			this.loadTree();
+		} catch (Exception e) {
+			log.info("StorageBackingBean clearJcr() error: " + e.getMessage());			
+		}
+	}
+
 
 	/**
 	 * This method fills registry tree with data.
