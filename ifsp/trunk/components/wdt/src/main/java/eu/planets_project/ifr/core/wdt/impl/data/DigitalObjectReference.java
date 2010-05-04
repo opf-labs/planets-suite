@@ -172,7 +172,7 @@ public class DigitalObjectReference {
 											.createDataRegistryIdFromName(DOJCRConstants.REGISTRY_NAME))
 							.retrieve(puri);
 
-					if (obj.getTitle() != null) {
+					if (obj != null && obj.getTitle() != null) {
 						String title = obj.getTitle();
 						path = path.concat("_" + title);
 					}
