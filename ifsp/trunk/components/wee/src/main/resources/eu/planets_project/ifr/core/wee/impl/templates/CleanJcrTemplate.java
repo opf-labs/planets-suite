@@ -1,5 +1,6 @@
 package eu.planets_project.ifr.core.wee.impl.templates;
 
+import eu.planets_project.ifr.core.storage.impl.data.StorageDigitalObjectReference;
 import eu.planets_project.ifr.core.storage.impl.jcr.JcrDigitalObjectManagerImpl;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
@@ -37,6 +38,11 @@ public class CleanJcrTemplate extends
 		return "This template cleans JCR repository.";
 	}
 
+	public WorkflowResult initializeExecution() {
+		this.getWFResult().setStartTime(System.currentTimeMillis());
+		return this.getWFResult();
+	}
+		
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -59,8 +65,6 @@ public class CleanJcrTemplate extends
 		this.processingDigo = dgoA;
 
 		try {
-            wfResultItem.addLogInfo("Completed clean up.");
-
 			// Clean up JCR repository
             wfResultItem.addLogInfo("Clean up JCR repository. initial digital object: " + dgoA.toString());
       	    // Manage the Digital Object Data Registry:
@@ -68,6 +72,7 @@ public class CleanJcrTemplate extends
             JcrDigitalObjectManagerImpl dodm = 
             	 (JcrDigitalObjectManagerImpl) JcrDigitalObjectManagerImpl.getInstance();
       	    dodm.removeAll();
+	        
          	wfResultItem.addLogInfo("Completed clean up of JCR repository.");
             wfResultItem.setEndTime(System.currentTimeMillis());
 
@@ -86,6 +91,7 @@ public class CleanJcrTemplate extends
 	}
 	
 	
+
 	/** {@inheritDoc} */
 	public WorkflowResult finalizeExecution() {
 		this.getWFResult().setEndTime(System.currentTimeMillis());
