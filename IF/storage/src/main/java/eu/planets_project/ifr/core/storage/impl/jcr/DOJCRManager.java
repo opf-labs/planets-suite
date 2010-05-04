@@ -1413,6 +1413,7 @@ public class DOJCRManager {
     	try {    			    		
     		openSession();
     		session.getRootNode().getNode(PLANETS_NAMESPACE_PREFIX).remove();
+    		session.save();
     	} catch (Exception e) {
     		_log.log(Level.INFO, "removeAll() error: " + e.getMessage(), e); 
     		res = DOJCRConstants.RESULT_ERROR;
