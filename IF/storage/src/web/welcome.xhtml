@@ -152,7 +152,7 @@
 	            
             	<!-- digital object info panel -->
 	            <rich:simpleTogglePanel id="doInfoPanel" switchType="client" label="digital object information panel" style="margin:2px;">
-	            	<rich:tree style="width:300px" nodeSelectListener="#{StorageBackingBean.processSelection}" 
+	            	<rich:tree style="width:300px"  
 		                reRender="" ajaxSubmitSelection="false" ignoreDupResponses="false" eventsQueue="foo"
 		                switchType="client" id="dopropertytree" value="#{StorageBackingBean.doTreeNode}" var="item" 
 		                dragIndicator="indicator2"  adviseNodeOpened="#{StorageBackingBean.adviseNodeOpened}"
