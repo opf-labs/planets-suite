@@ -68,7 +68,9 @@ public class DoTemplate extends WorkflowTemplateHelper implements WorkflowTempla
                 + "modify interface";
     }
 
-	@Override
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#initializeExecution()
+     */
 	public WorkflowResult initializeExecution() {
 		this.getWFResult().setStartTime(System.currentTimeMillis());
 		return this.getWFResult();

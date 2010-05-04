@@ -70,7 +70,9 @@ public class TestbedShowcaseOnImageComparisonTemplate_v1_05022010 extends
 				"For post-migration-analysis this workflow calls a comparison service to check on similarity of A and C (e.g. in terms of PSNR) and documents that information. ";
 	}
 
-	@Override
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#initializeExecution()
+     */
 	public WorkflowResult initializeExecution() {
 		this.getWFResult().setStartTime(System.currentTimeMillis());
 		return this.getWFResult();

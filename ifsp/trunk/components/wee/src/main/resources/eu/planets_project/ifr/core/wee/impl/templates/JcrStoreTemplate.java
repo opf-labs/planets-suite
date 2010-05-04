@@ -39,7 +39,9 @@ public class JcrStoreTemplate extends WorkflowTemplateHelper implements Workflow
                 + "storing of the digital object in JCR repository.";
     }
 
-	@Override
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#initializeExecution()
+     */
 	public WorkflowResult initializeExecution() {
 		this.getWFResult().setStartTime(System.currentTimeMillis());
 		return this.getWFResult();

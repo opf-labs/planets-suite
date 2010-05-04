@@ -36,7 +36,9 @@ public class TestbedMigrationExperimentTemplate_v1_22122009 extends
 		return "This template performs the migration step of the Testbed's 'Migration' experiment type";
 	}
 
-	@Override
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#initializeExecution()
+     */
 	public WorkflowResult initializeExecution() {
 		this.getWFResult().setStartTime(System.currentTimeMillis());
 		return this.getWFResult();
