@@ -140,7 +140,7 @@ public class ExperimentUtils {
                         for( MeasurementImpl m : me.getMeasurements() ) {
                             sa[0] = exp.getExperimentSetup().getBasicProperties().getExperimentName();
                             sa[1] = "" + doi;
-                            sa[2] = exr.getDigitalObjectSource();
+                            sa[2] = exr.getDigitalObjectReferenceCopy();
                             sa[3] = me.getAgent().getType().toString();
                             sa[4] = me.getAgent().getName();
                             sa[5] = me.getAgent().getUserEnvironmentDescription();
