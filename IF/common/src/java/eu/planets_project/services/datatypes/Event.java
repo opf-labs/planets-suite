@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,7 +46,7 @@ import java.util.List;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
-public final class Event {
+public final class Event implements Serializable {
 
     /**
      * A human-readable description of the event.

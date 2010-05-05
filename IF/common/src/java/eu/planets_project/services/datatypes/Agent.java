@@ -13,6 +13,8 @@
  */
 package eu.planets_project.services.datatypes;
 
+import java.io.Serializable;
+
 import eu.planets_project.services.PlanetsServices;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -26,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
-public final class Agent {
+public final class Agent implements Serializable {
 
     @XmlAttribute
     private String id;
