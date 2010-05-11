@@ -44,5 +44,5 @@ public class PathwayBean {
     public FormatBean getOutputFormat() {
         return outputFormat;
     }
-   
+    
 }

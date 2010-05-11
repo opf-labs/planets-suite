@@ -581,6 +581,10 @@ public class ServiceRecordBean {
             if( this.isFormatBean() ) return "formatField";
             return "pathwayField";
         }
+        public String getPathwayString() {
+            if( ! this.isPathway() ) return null;
+            return "From '"+this.pathway.getInputFormat().getSummary()+"' to '"+this.pathway.getOutputFormat().getSummary()+"'";
+        }
     }
 
     /**
