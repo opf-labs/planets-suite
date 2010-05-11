@@ -242,6 +242,7 @@ public class ExecutionRecordImpl implements Serializable {
      * @return the date
      */
     public Calendar getStartDate() {
+        if( this.startDate == null ) return null;
         Calendar c = (Calendar) startDate.clone();
         if( this.startMillis != null )
             c.add(Calendar.MILLISECOND, this.startMillis.intValue());
@@ -261,6 +262,7 @@ public class ExecutionRecordImpl implements Serializable {
      * @return the date
      */
     public Calendar getEndDate() {
+        if( this.endDate == null ) return null;
         Calendar c = (Calendar) endDate.clone();
         if( this.endMillis != null )
             c.add(Calendar.MILLISECOND, this.endMillis.intValue());
