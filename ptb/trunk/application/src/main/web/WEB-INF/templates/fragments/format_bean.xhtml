@@ -13,7 +13,8 @@
  <ui:composition rendered="#{f != null}">
 
   <a4j:commandLink>
-    <h:outputText value="#{f.summary}" />
+    <h:outputText value="#{f.briefName}" rendered="#{BriefName}"/>
+    <h:outputText value="#{f.summary}" rendered="#{!BriefName}"/>
     <rich:toolTip>
       <h:outputText value="#{f.summary}" />
       <h:panelGroup rendered="#{f.format.extensions != null}">
@@ -34,7 +35,7 @@
     </rich:toolTip>
   </a4j:commandLink>
 
-    <h:panelGroup rendered="#{f.format.registryUrl != null}">
+    <h:panelGroup rendered="#{f.format.registryUrl != null and !BriefName}">
       <h:outputText value=" "/>
       <h:outputLink value="#{f.format.registryUrl}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
     </h:panelGroup>

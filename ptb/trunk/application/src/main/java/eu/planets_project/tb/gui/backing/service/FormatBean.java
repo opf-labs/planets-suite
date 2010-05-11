@@ -72,6 +72,24 @@ public class FormatBean implements Comparable<FormatBean> {
         }
 	return "";
     }
+    
+    /**
+     * @return
+     */
+    public String getBriefName() {
+        if( format != null ) {
+            String briefname = format.getSummary();
+            if( format.getExtensions() != null &&
+                    format.getExtensions().size() > 0 ) {
+                briefname = format.getExtensions().iterator().next().toUpperCase();
+            }
+            if( format.getVersion() != null ) {
+                briefname += " " + format.getVersion();
+            }
+            return briefname;
+        }
+        return "";
+    }
 
     /**
      * @return

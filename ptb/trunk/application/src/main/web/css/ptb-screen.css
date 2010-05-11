@@ -1027,7 +1027,6 @@ width:100%;
   display: block;
 }
 .serviceInspectorPanel dt {
-  font-weight: bold;
   text-decoration: underline;
 }
 .serviceInspectorPanel dd {
@@ -1040,7 +1039,6 @@ pre.rawServiceDescription {
   margin: 0;
   padding: 2px 4px;
   background-color: #f8f8f8;
-  width: 400px;
 }
 
 #digitalObjectRegistryBrowser .rich-toolbar a {
@@ -1124,3 +1122,18 @@ pre.rawServiceDescription {
 .equiv-MISSING { color: #aa0000; }
 .equiv-INCOMPARABLE { color: #008800; }
 .equiv-NOT_APPLICABLE { color: #000000; }
+.migrationMatrix {
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+}
+.migrationMatrix .formatField, .migrationMatrix th {
+  background-color: #eee;
+  font-weight: bold;
+  border: 1px solid #bbb;
+}
+.migrationMatrix .pathwayField {
+  background-color: #fafafa;
+  padding: 2px;
+  border: 1px solid #bbb;
+}

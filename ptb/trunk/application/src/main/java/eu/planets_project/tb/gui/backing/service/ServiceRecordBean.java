@@ -3,17 +3,31 @@
  */
 package eu.planets_project.tb.gui.backing.service;
 
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Tool;
+import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 
 /**
@@ -25,6 +39,8 @@ import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
  *
  */
 public class ServiceRecordBean {
+    /** */
+    private static final Log log = LogFactory.getLog(ServiceRecordBean.class);
 
     /** Any active service has a description. */
     private ServiceDescription sd = null;
@@ -44,12 +60,72 @@ public class ServiceRecordBean {
     /** Experiments that used this service: */
     private List<Experiment> experiments = new ArrayList<Experiment>();;
 
+    int invocations = 0;
+    int no_result = 0;
+    int result = 0;
+    double average_call_time_s = 0.0;
+    double min_call_time_s = Double.MAX_VALUE;
+    double max_call_time_s = Double.MIN_VALUE;
+    double throughput_bytes_per_s = 0.0;
+    DecimalFormat df = new DecimalFormat("#.#####");
+    
     /**
      * @param sr
      */
     public ServiceRecordBean(ServiceRecordImpl sr) {
         this.setServiceRecord(sr);
         this.experiments = sr.getExperiments();
+        // Look for data:
+        double size_total = 0.0;
+        double thru_time_total = 0.0;
+        for( Experiment exp : experiments ) {
+            if( exp.getExperimentExecutable().getBatchExecutionRecords().size() > 0 ) {
+                BatchExecutionRecordImpl ber = exp.getExperimentExecutable().getBatchExecutionRecords().iterator().next();
+                if( ber.isBatchRunSucceeded() ) {
+                    for( ExecutionRecordImpl run : ber.getRuns() ) {
+                        Double time_s = null;
+                        if( run.getStartDate() != null && run.getEndDate() !=null ) {
+                            time_s = ( run.getEndDate().getTimeInMillis() - run.getStartDate().getTimeInMillis() ) / 1000.0;
+                        }
+                        // Look for digital object:
+                        long size = -1;
+                        try {
+                            DataHandler dh = DataHandlerImpl.findDataHandler();
+                            DigitalObjectRefBean digitalObjectRefBean = dh.get( run.getDigitalObjectReferenceCopy() );
+                            size = digitalObjectRefBean.getSize();
+                        } catch ( Exception e) {
+                            log.error("Failed to look up object "+run.getDigitalObjectReferenceCopy()+" "+e);
+                        }
+                        // Look for matching records:
+                        boolean matches = false;
+                        for(  ExecutionStageRecordImpl stage: run.getStages() ) {
+                            if( this.getServiceHash() != null && stage.getServiceRecord() != null &&
+                                    this.getServiceHash().equals( stage.getServiceRecord().getServiceHash() ) ) {
+                                matches = true;
+                                break;
+                            }
+                        }
+                        if( time_s != null && matches ) {
+                            if( run.getResult() == null ) {
+                                no_result += 1;
+                            } else {
+                                result += 1;
+                            }
+                            invocations += 1;
+                            average_call_time_s += time_s;
+                            if( time_s > this.max_call_time_s ) this.max_call_time_s = time_s;
+                            if( time_s < this.min_call_time_s ) this.min_call_time_s = time_s;
+                            if( size != -1 ) {
+                                size_total += size;
+                                thru_time_total += time_s;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if( invocations != 0 ) average_call_time_s /= invocations;
+        if( thru_time_total != 0.0 ) this.throughput_bytes_per_s = size_total/thru_time_total;
     }
 
     /**
@@ -60,7 +136,6 @@ public class ServiceRecordBean {
     }
 
     /**
-     * 
      * @return
      */
     public String getName() {
@@ -78,7 +153,6 @@ public class ServiceRecordBean {
      * @return
      */
     public String getType(){
-        // FIXME Map these to pretty strings.
         if( sd != null ) {
             return mapTypeName( sd.getType() );
         }
@@ -154,7 +228,46 @@ public class ServiceRecordBean {
     public long getNumberOfExperiments() {
         return experiments.size();
     }
+    
+    /**
+     * @return
+     */
+    public String getResultRate() {
+        if( invocations == 0 ) return "No data";
+        return ""+result+"/"+invocations;
+    }
 
+    /**
+     * @return
+     */
+    public String getAverageCallTime() {
+        if( invocations == 0 ) return "No data";
+        return df.format(average_call_time_s);
+    }
+    
+    /**
+     * @return
+     */
+    public String getMinCallTime() {
+        if( invocations == 0 ) return "No data";
+        return df.format(min_call_time_s);
+    }
+
+    /**
+     * @return
+     */
+    public String getMaxCallTime() {
+        if( invocations == 0 ) return "No data";
+        return df.format(max_call_time_s);
+    }
+    
+    /**
+     * @return as KB/s
+     */
+    public String getThroughput() {
+        if( throughput_bytes_per_s == 0.0 ) return "No data";
+        return df.format( throughput_bytes_per_s / 1024.0);
+    }
     /**
      * @return the sd
      */
@@ -185,6 +298,14 @@ public class ServiceRecordBean {
      */
     public ServiceRecordImpl getServiceRecord() {
         return sr;
+    }
+    
+    /**
+     * @return
+     */
+    public boolean isMigrationService() {
+        if( "Migrate".equals(this.getType()) ) return true;
+        return false;
     }
 
     /**
@@ -274,7 +395,7 @@ public class ServiceRecordBean {
      * @return
      */
     public String getInputsSummary() {
-        return formatList(this.getInputs());
+        return formatList(this.getInputs(true));
     }
 
     /**
@@ -287,27 +408,27 @@ public class ServiceRecordBean {
     /**
      * @return
      */
-    public List<Format> getOutputFormats() {
+    public List<FormatBean> getOutputFormats() {
        return this.urisToFormats( this.getOutputs() );
     }
     
     /**
      * @return
      */
-    public List<Format> getInputFormats() {
-       return this.urisToFormats( this.getInputs() );
+    public List<FormatBean> getInputFormats() {
+       return this.urisToFormats( this.getInputs( true ) );
     }
     
     /**
      * @param uris
      * @return
      */
-    private List<Format> urisToFormats( List<URI> uris ) {
+    private List<FormatBean> urisToFormats( List<URI> uris ) {
         if( uris == null ) return null;
-        List<Format> fmts = new ArrayList<Format>();
+        List<FormatBean> fmts = new ArrayList<FormatBean>();
         for( URI fmturi: uris ) {
             Format fmt = ServiceBrowser.fr.getFormatForUri( fmturi );
-            fmts.add(fmt);
+            fmts.add(new FormatBean(fmt) );
         }
         return fmts;
     }
@@ -326,19 +447,156 @@ public class ServiceRecordBean {
         if( uris.size() == 0 ) return null;
         return uris;
     }
+    
+    /**
+     * @return
+     */
+    public List<PathwayBean> getPathways() {
+        ServiceDescription sd = this.getServiceDescription();
+        List<PathwayBean> paths = new ArrayList<PathwayBean>();
+        if( sd != null ) {
+            for( MigrationPath mp : sd.getPaths() ) {
+                paths.add(new PathwayBean(this, 
+                        new FormatBean( ServiceBrowser.fr.getFormatForUri(mp.getInputFormat())), 
+                        new FormatBean( ServiceBrowser.fr.getFormatForUri(mp.getOutputFormat())) ) );
+            }
+        }
+        return paths;
+    }
+    
+    public PathwayMatrixEntry[][] getPathwayMatrix() {
+        Set<URI> uriset = new HashSet<URI>();
+        if( sd != null ) {
+            for( MigrationPath mp : sd.getPaths() ) {
+                uriset.add(mp.getInputFormat());
+                uriset.add(mp.getOutputFormat());
+            }
+        }
+        List<URI> uris = new ArrayList<URI>(uriset);
+        // Build:
+        PathwayMatrixEntry[][] matrix = new PathwayMatrixEntry[uris.size()+1][uris.size()+1];
+        matrix[0][0] = new PathwayMatrixEntry( null );
+        for( int i = 0; i < uris.size(); i++ ) {
+            URI outUri = uris.get(i);
+            PathwayMatrixEntry iFormatEntry = new PathwayMatrixEntry(
+                    new FormatBean( ServiceBrowser.fr.getFormatForUri(outUri))
+                    );
+            matrix[i+1][0] = iFormatEntry;
+            for( int j = 0; j < uris.size(); j++ ) {
+                URI inUri = uris.get(j);
+                if( i == 0 ) {
+                    PathwayMatrixEntry jFormatEntry = new PathwayMatrixEntry(
+                            new FormatBean( ServiceBrowser.fr.getFormatForUri(inUri))
+                    );
+                    matrix[0][j+1] = jFormatEntry;
+                }
+                // Pathway:
+                PathwayMatrixEntry entry = new PathwayMatrixEntry();
+                matrix[i+1][j+1] = entry;
+                for( MigrationPath mp : sd.getPaths() ) {
+                    if( inUri.equals(mp.getInputFormat()) && outUri.equals(mp.getOutputFormat())) {
+                        PathwayBean pathway = new PathwayBean(this,
+                                new FormatBean( ServiceBrowser.fr.getFormatForUri(inUri)),
+                                new FormatBean( ServiceBrowser.fr.getFormatForUri(outUri))
+                                );
+                        entry.setPathway(pathway);
+                    }
+                }
+            }
+        }
+        // Map to Lists:
+        return matrix;
+    }
+    /*
+        List<PathwayMatrixColumns> mat = new ArrayList<PathwayMatrixColumns>(uris.size());
+        List<PathwayMatrixEntry> formatRow = new ArrayList<PathwayMatrixEntry>(uris.size());
+        mat.add(0, new PathwayMatrixColumns(formatRow));
+        for( int i = 0; i < uris.size(); i++ ) {
+            URI inUri = uris.get(i);
+            List<PathwayMatrixEntry> rows = new ArrayList<PathwayMatrixEntry>(uris.size());
+            PathwayMatrixEntry formatEntry = new PathwayMatrixEntry();
+            rows.add(0, formatEntry);
+            for( int j = 0; j < uris.size(); j++ ) {
+                URI outUri = uris.get(j);
+                PathwayMatrixEntry entry = new PathwayMatrixEntry();
+                rows.add(j+1, entry);
+                for( MigrationPath mp : sd.getPaths() ) {
+                    if( inUri.equals(mp.getInputFormat()) && outUri.equals(mp.getOutputFormat())) {
+                        PathwayBean pathway = new PathwayBean(this,
+                                new FormatBean( ServiceBrowser.fr.getFormatForUri(inUri)),
+                                new FormatBean( ServiceBrowser.fr.getFormatForUri(outUri))
+                                );
+                        entry.setPathway(pathway);
+                    }
+                }
+            }
+            mat.add(i+1, new PathwayMatrixColumns(rows));
+        }
+        // Map to Lists:
+        return mat;
+     * 
+     */
+    
+    
+    public class PathwayMatrixColumns {
+        List<PathwayMatrixEntry> rows;
+        public PathwayMatrixColumns(List<PathwayMatrixEntry> rows) {
+            this.rows = rows;
+        }
+        public List<PathwayMatrixEntry> getRows() {
+            return rows;
+        }
+    }
+    
+    public class PathwayMatrixEntry {
+        private PathwayBean pathway;
+        private FormatBean format;
+        private boolean isFormatEntry = false;
+        
+        public PathwayMatrixEntry() {
+        }
+        public PathwayMatrixEntry(FormatBean format) {
+            this.format = format;
+            this.isFormatEntry = true;
+        }
+        public FormatBean getFormat() {
+            return this.format;
+        }
+        public void setPathway( PathwayBean pathway ) {
+            this.pathway = pathway;
+        }
+        public PathwayBean getPathway() {
+            return this.pathway;
+        }
+        public boolean isPathway() {
+            if( this.isFormatBean() ) return false;
+            if( this.pathway == null ) return false;
+            return true;
+        }
+        public boolean isFormatBean() {
+            if( this.isFormatEntry ) return true;
+            return false;
+        }
+        public String getStyleClass() {
+            if( this.isFormatBean() ) return "formatField";
+            return "pathwayField";
+        }
+    }
 
     /**
      * @return
      */
-    public List<URI> getInputs() {
+    public List<URI> getInputs( boolean includeMigrations ) {
         ServiceDescription sd = this.getServiceDescription();
         List<URI> uris = new ArrayList<URI>();
         if( sd != null ) {
             for( URI fmturi : sd.getInputFormats() ) {
                 if( ! uris.contains( fmturi ) ) uris.add(fmturi);
             }
-            for( MigrationPath mp : sd.getPaths() ) {
-                if( ! uris.contains( mp.getInputFormat() ) ) uris.add(mp.getInputFormat());
+            if( includeMigrations ) {
+                for( MigrationPath mp : sd.getPaths() ) {
+                    if( ! uris.contains( mp.getInputFormat() ) ) uris.add(mp.getInputFormat());
+                }
             }
         }
         if( uris.size() == 0 ) return null;

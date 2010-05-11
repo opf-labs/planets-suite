@@ -5,6 +5,7 @@ package eu.planets_project.tb.gui.backing.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -164,15 +165,17 @@ public class ServiceInspector {
             }
         }
         // Lists:
-        int n = 0;
+        HashSet<Long> uniques = new HashSet<Long>();
         if( this.srbs != null ) {
             for( ServiceRecordBean srb : srbs ) {
                 if( srb.getServiceRecord() != null ) {
-                    n += srb.getServiceRecord().getExperimentIds().size();
+                    for( Long id : srb.getServiceRecord().getExperimentIds() ) {
+                        uniques.add(id);
+                    }
                 }
             }
         }
-        return n;
+        return uniques.size();
     }
 
     /**

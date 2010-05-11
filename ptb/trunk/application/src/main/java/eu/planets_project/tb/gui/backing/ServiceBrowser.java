@@ -727,8 +727,8 @@ public class ServiceBrowser {
         // Aggregate those into a list of new service-by-name:
         for( ServiceRecordBean srb : records ) {
           if( this.getSelectedServiceTypes().contains( srb.getType() ) ) {
-            if( srb.getInputs() != null ) {
-                for( URI fmt : srb.getInputs() ) {
+            if( srb.getInputs(true) != null ) {
+                for( URI fmt : srb.getInputs(true) ) {
                     if( sbn.get(fmt) == null ) {
                         sbn.put(fmt, new ServiceRecordsByFormatBean( fr.getFormatForUri(fmt) ) );
                     }

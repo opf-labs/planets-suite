@@ -32,10 +32,162 @@
 
     <h:panelGroup rendered="#{ServiceInspector.service != null}">
     
-<h:panelGrid columns="2" columnClasses="serviceInspectorCol">
+
+<rich:panel>
+<f:facet name="header">Service Description</f:facet>
+
+     <h:panelGroup id="serviceInspector" styleClass="serviceInspectorPanel" style="width:100%">
+     
+      <h:panelGroup rendered="#{ServiceInspector.service.logo != null}">
+        <img src="#{ServiceInspector.service.logo}" style="float: right;" title="#{ServiceInspector.service.name}" alt="#{ServiceInspector.service.name}"/>
+      </h:panelGroup>
+     
+     <h:panelGrid columns="2" columnClasses="serviceInspectorCol">
+     <h:panelGroup>
+     
+      <h2>#{ServiceInspector.service.name}</h2>
+      
+      <dl>
+       <dt>Description</dt>
+       <dd><h:outputText escaped="false" value="#{ServiceInspector.service.description}"/></dd>
+      
+       <h:panelGroup rendered="#{ServiceInspector.service.furtherInfo != null}">
+        <dt>Further Information</dt>
+        <dd>For further information about this service, you can <h:outputLink target="_blank" value="#{ServiceInspector.service.furtherInfo}"> follow this link</h:outputLink>.</dd>
+       </h:panelGroup>
+      
+       <dt>Type</dt>
+       <dd>#{ServiceInspector.service.type}</dd>
+       
+    <h:panelGroup rendered="#{UserBean.reader == true}">
+       <dt>Endpoint</dt>
+       <dd><h:outputLink target="_blank" value="#{ServiceInspector.service.endpoint}"  rendered="#{UserBean.reader}"> @#{ServiceInspector.service.endpoint.host}</h:outputLink></dd>
+    </h:panelGroup>
+       
+       <dt>Active</dt>
+       <dd>#{ServiceInspector.service.active}</dd>
+       
+       <dt>Used</dt>
+       <dd>#{ServiceInspector.service.used}</dd>
+       
+       <dt>Author</dt>
+       <dd>#{ServiceInspector.service.serviceDescription.author}</dd>
+       
+       <dt>Class name</dt>
+       <dd>#{ServiceInspector.service.serviceDescription.classname}</dd>
+       
+       <dt>Instructions</dt>
+       <dd>#{ServiceInspector.service.serviceDescription.instructions}</dd>
+       
+       <dt>Service Provider</dt>
+       <dd>#{ServiceInspector.service.serviceDescription.serviceProvider}</dd>
+
+       <dt>Version</dt>
+       <dd>#{ServiceInspector.service.serviceDescription.version}</dd>
+       
+       <dt>Identifier</dt>
+       <dd>#{ServiceInspector.service.serviceDescription.identifier}</dd>
+
+       <dt>Testbed Service Instance Identifier</dt>
+       <dd>Hashcode of service description: #{ServiceInspector.service.serviceHash}</dd>
+      
+     </dl>
+     
+     </h:panelGroup>
+     <h:panelGroup>
+     <dl>
+       <dt>Tool</dt>
+       <dd><ul>
+              <li>Identifier: #{ServiceInspector.service.serviceDescription.tool.identifier}</li>
+              <li>Name: #{ServiceInspector.service.serviceDescription.tool.name}</li>
+              <li>Version: #{ServiceInspector.service.serviceDescription.tool.version}</li>
+              <li>Description: #{ServiceInspector.service.serviceDescription.tool.description}</li>
+              <li>Homepage: #{ServiceInspector.service.serviceDescription.tool.homepage}</li>
+           </ul>
+       </dd>
+       
+       <dt>Parameters</dt>
+       <dd>
+        <rich:dataList var="p" value="#{ServiceInspector.service.serviceDescription.parameters}" rows="0">
+            <h:outputText value="#{p.name}"/>
+        </rich:dataList>
+       </dd>
+
+     </dl>
+     
+     <h:panelGrid columns="2" columnClasses="serviceInspectorCol" style="width:100%">
+     <h:panelGroup>
+     <dl>
+       <dt>Input Formats</dt>
+       <dd>
+        <rich:dataList var="fmt" value="#{ServiceInspector.service.inputFormats}" rows="0">
+           <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
+              <ui:param name="f" value="#{fmt}"/>
+           </ui:include>
+        </rich:dataList>
+       </dd>
+     </dl>
+     </h:panelGroup>
+     <h:panelGroup>
+     <dl> 
+       <dt>Output Formats</dt>
+       <dd>
+        <rich:dataList var="fmt" value="#{ServiceInspector.service.outputFormats}" rows="0">
+           <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{m.formatProperty}">
+              <ui:param name="f" value="#{fmt}"/>
+           </ui:include>
+        </rich:dataList>
+       </dd>
+      </dl>
+     </h:panelGroup>
+     </h:panelGrid>
+     
+
+    </h:panelGroup>
+    
+    </h:panelGrid>
+
+   <rich:simpleTogglePanel switchType="client" label="Migration Matrix" opened="true" rendered="#{ServiceInspector.service.migrationService}">
+
+       <table class="migrationMatrix">
+       <tr>
+           <th></th>
+           <a4j:repeat var="col" value="#{ServiceInspector.service.pathwayMatrix}">       
+                <th>From</th>
+           </a4j:repeat>
+       </tr>
+        <a4j:repeat var="col" value="#{ServiceInspector.service.pathwayMatrix}">
+          <tr>
+          <th>To</th>
+          <a4j:repeat var="p" value="#{col}">
+            <td class="#{p.styleClass}">
+           <ui:include src="/WEB-INF/templates/fragments/format_bean.xhtml" rendered="#{p.formatBean}">
+              <ui:param name="f" value="#{p.format}"/>
+              <ui:param name="BriefName" value="true"/>
+           </ui:include>            
+            <h:outputText value="true" rendered="#{p.pathway}"/>
+            <h:outputText value="-" rendered="#{!p.pathway and !p.formatBean}"/>
+            </td>
+          </a4j:repeat>
+          </tr>
+        </a4j:repeat>
+       </table>
+       
+    </rich:simpleTogglePanel>        
+    
+      <rich:simpleTogglePanel id="rawServiceDescriptionPanel" switchType="client" label="Raw Service Description" opened="false" rendered="#{UserBean.reader}">
+        <pre class="rawServiceDescription">
+<h:outputText value="#{ServiceInspector.service.serviceDescriptionAsXml}"/>
+        </pre>
+      </rich:simpleTogglePanel>
+    
+     </h:panelGroup>
+</rich:panel>
+
+
 <rich:panel>
 <f:facet name="header">In The Testbed</f:facet>
-    <c:if test="${UserBean.reader == true}">
+    <h:panelGroup rendered="#{UserBean.reader == true}">
       <h3>Experiments</h3>
         
       <p>
@@ -48,7 +200,10 @@
          <f:facet name="header">
           <h:outputText value="Name"/>
          </f:facet>
-        <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}"/>
+         <h:outputLink value="#{facesContext.externalContext.requestContextPath}/reader/view_exp.faces">
+            <f:param name="eid" value="#{exp.entityID}"/>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}"/>
+         </h:outputLink>
        </rich:column>
         
        <rich:column sortBy="#{exp.experimentSetup.experimentTypeName}">
@@ -80,7 +235,7 @@
        </rich:column>
 
       </rich:dataTable>
-     </c:if>
+     </h:panelGroup>
       <h3>Versions</h3>
 
         <rich:dataTable value="#{ServiceInspector.serviceVersions}" var="sd"
@@ -97,12 +252,12 @@
                 </h:outputLink>
             </rich:column>
             
-            <rich:column sortBy="#{sd.endpoint.host}"> 
+            <rich:column sortBy="#{sd.endpoint}"> 
                 <f:facet name="header">
-                    <h:outputText value="Host"/>
+                    <h:outputText value="Endpoint"/>
                 </f:facet>
                 <h:outputLink value="#{sd.endpoint}">
-                    <h:outputText value="#{sd.endpoint.host}"/>
+                    <h:outputText value="@#{sd.endpoint.host}"/>
                 </h:outputLink>
             </rich:column>
 
@@ -127,94 +282,44 @@
                 <h:outputText value="#{sd.used}"/>
             </rich:column>
             
+            <rich:column sortBy="#{sd.resultRate}"> 
+                <f:facet name="header">
+                    <h:outputText value="Result Rate"/>
+                </f:facet>
+                <h:outputText value="#{sd.resultRate}"/>
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.averageCallTime}"> 
+                <f:facet name="header">
+                    <h:outputText value="Average Time [s]"/>
+                </f:facet>
+                <h:outputText value="#{sd.averageCallTime}"/>
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.minCallTime}"> 
+                <f:facet name="header">
+                    <h:outputText value="Min Time [s]"/>
+                </f:facet>
+                <h:outputText value="#{sd.minCallTime}"/>
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.maxCallTime}"> 
+                <f:facet name="header">
+                    <h:outputText value="Max Time [s]"/>
+                </f:facet>
+                <h:outputText value="#{sd.maxCallTime}"/>
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.throughput}"> 
+                <f:facet name="header">
+                    <h:outputText value="Throughput [KB/s]"/>
+                </f:facet>
+                <h:outputText value="#{sd.throughput}"/>
+            </rich:column>
+            
         </rich:dataTable>
         
 </rich:panel>
-<rich:panel>
-<f:facet name="header">Service Description</f:facet>
-
-     <h:panelGroup id="serviceInspector" styleClass="serviceInspectorPanel">    
-      <h:panelGroup rendered="#{ServiceInspector.service.logo != null}">
-        <img src="#{ServiceInspector.service.logo}" style="float: right;" title="#{ServiceInspector.service.name}" alt="#{ServiceInspector.service.name}"/>
-      </h:panelGroup>
-      <h2>#{ServiceInspector.service.name}</h2>
-      
-      <dl>
-       <dt>Description</dt>
-       <dd><h:outputText escaped="false" value="#{ServiceInspector.service.description}"/></dd>
-      
-       <h:panelGroup rendered="#{ServiceInspector.service.furtherInfo != null}">
-        <dt>Further Information</dt>
-        <dd>For further information about this service, you can <h:outputLink target="_blank" value="#{ServiceInspector.service.furtherInfo}"> follow this link</h:outputLink>.</dd>
-       </h:panelGroup>
-      
-       <dt>Type</dt>
-       <dd>#{ServiceInspector.service.type}</dd>
-       
-       <c:if test="${UserBean.reader == true}">
-       <dt>Endpoint</dt>
-       <dd><h:outputLink target="_blank" value="#{ServiceInspector.service.endpoint}"  rendered="#{UserBean.reader}"> @#{ServiceInspector.service.endpoint.host}</h:outputLink></dd>
-       </c:if>
-       
-       <dt>Active</dt>
-       <dd>#{ServiceInspector.service.active}</dd>
-       
-       <dt>Used</dt>
-       <dd>#{ServiceInspector.service.used}</dd>
-       
-       <dt>Author</dt>
-       <dd>#{ServiceInspector.service.serviceDescription.author}</dd>
-       
-       <dt>Class name</dt>
-       <dd>#{ServiceInspector.service.serviceDescription.classname}</dd>
-       
-       <dt>Instructions</dt>
-       <dd>#{ServiceInspector.service.serviceDescription.instructions}</dd>
-       
-       <dt>Service Provider</dt>
-       <dd>#{ServiceInspector.service.serviceDescription.serviceProvider}</dd>
-       
-       <dt>Tool</dt>
-       <dd><ul>
-              <li>Identifier: #{ServiceInspector.service.serviceDescription.tool.identifier}</li>
-              <li>Name: #{ServiceInspector.service.serviceDescription.tool.name}</li>
-              <li>Version: #{ServiceInspector.service.serviceDescription.tool.version}</li>
-              <li>Description: #{ServiceInspector.service.serviceDescription.tool.description}</li>
-              <li>Homepage: #{ServiceInspector.service.serviceDescription.tool.homepage}</li>
-           </ul>
-       </dd>
-       
-       <dt>Version</dt>
-       <dd>#{ServiceInspector.service.serviceDescription.version}</dd>
-       
-       <dt>Identifier</dt>
-       <dd>#{ServiceInspector.service.serviceDescription.identifier}</dd>
-
-       <dt>Input Formats</dt>
-       <dd>
-        <rich:dataList var="formatUri" value="#{ServiceInspector.service.serviceDescription.inputFormats}" rows="0">
-         <h:outputText value="#{formatUri}"/>
-        </rich:dataList>
-       </dd>
-      
-       <dt>Paths, Parameters &amp; Properties...</dt>
-       <dd>To Be Added...</dd>
-
-       <dt>Testbed Service Instance Identifier</dt>
-       <dd>Hashcode of service description: #{ServiceInspector.service.serviceHash}</dd>
-      
-      </dl>
-
-       <c:if test="${UserBean.reader == true}">
-      <rich:simpleTogglePanel id="rawServiceDescriptionPanel" switchType="client" label="Raw Service Description" opened="false" rendered="#{UserBean.reader}">
-        <pre class="rawServiceDescription">
-<h:outputText value="#{ServiceInspector.service.serviceDescriptionAsXml}"/>
-        </pre>
-      </rich:simpleTogglePanel>
-      </c:if>
-     </h:panelGroup>
-</rich:panel>
-</h:panelGrid>
 
     </h:panelGroup>
     
