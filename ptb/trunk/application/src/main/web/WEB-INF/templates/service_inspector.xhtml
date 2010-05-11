@@ -109,7 +109,10 @@
        <dt>Parameters</dt>
        <dd>
         <rich:dataList var="p" value="#{ServiceInspector.service.serviceDescription.parameters}" rows="0">
-            <h:outputText value="#{p.name}"/>
+         <p>
+            <i><h:outputText value="#{p.name}: "/></i>
+            <h:outputText value="#{p.description}"/>
+         </p>
         </rich:dataList>
        </dd>
 
