@@ -166,7 +166,7 @@
               <ui:param name="BriefName" value="true"/>
            </ui:include>            
             <h:graphicImage value="/graphics/ose-tick.png" title="#{p.pathwayString}" rendered="#{p.pathway}"/>
-            <h:graphicImage value="/graphics/ose-error-passive.png" title="No Pathway: #{p.pathwayString}" rendered="#{!p.pathway and !p.formatBean}"/>
+            <h:graphicImage value="/graphics/ose-error-passive.png" title="No Pathway" rendered="#{!p.pathway and !p.formatBean}"/>
             </td>
           </a4j:repeat>
           </tr>
