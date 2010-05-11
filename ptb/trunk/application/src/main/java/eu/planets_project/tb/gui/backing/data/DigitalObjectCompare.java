@@ -559,6 +559,12 @@ public class DigitalObjectCompare {
     }
 
     /**
+     */
+    public void updateManualMeasurementEnvironment() {
+        ExperimentInspector.persistExperiment();
+    }
+    
+    /**
      * A single-property measurement:
      * @param p
      * @param dobUri
