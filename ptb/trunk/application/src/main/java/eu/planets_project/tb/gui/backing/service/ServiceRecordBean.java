@@ -448,6 +448,16 @@ public class ServiceRecordBean {
         return uris;
     }
     
+    public boolean getHasParameters() {
+        if( this.getServiceDescription() != null ) {
+            if( this.getServiceDescription().getParameters() != null &&
+            this.getServiceDescription().getParameters().size() > 0 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * @return
      */

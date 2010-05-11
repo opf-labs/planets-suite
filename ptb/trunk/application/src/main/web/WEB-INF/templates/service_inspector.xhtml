@@ -38,10 +38,6 @@
 
      <h:panelGroup id="serviceInspector" styleClass="serviceInspectorPanel" style="width:100%">
      
-      <h:panelGroup rendered="#{ServiceInspector.service.logo != null}">
-        <img src="#{ServiceInspector.service.logo}" style="float: right;" title="#{ServiceInspector.service.name}" alt="#{ServiceInspector.service.name}"/>
-      </h:panelGroup>
-     
      <h:panelGrid columns="2" columnClasses="serviceInspectorCol">
      <h:panelGroup>
      
@@ -95,9 +91,14 @@
      
      </h:panelGroup>
      <h:panelGroup>
+     
+      <h:panelGroup rendered="#{ServiceInspector.service.logo != null}">
+        <img src="#{ServiceInspector.service.logo}" style="float: right;" title="#{ServiceInspector.service.name}" alt="#{ServiceInspector.service.name}"/>
+      </h:panelGroup>
+     
      <dl>
        <dt>Tool</dt>
-       <dd><ul>
+       <dd><ul style="clear:both;">
               <li>Identifier: #{ServiceInspector.service.serviceDescription.tool.identifier}</li>
               <li>Name: #{ServiceInspector.service.serviceDescription.tool.name}</li>
               <li>Version: #{ServiceInspector.service.serviceDescription.tool.version}</li>
@@ -106,15 +107,19 @@
            </ul>
        </dd>
        
+       <h:panelGroup rendered="#{ServiceInspector.service.hasParameters}">
        <dt>Parameters</dt>
        <dd>
+        <div style="overflow:auto; max-height: 100px; width: 95%">
         <rich:dataList var="p" value="#{ServiceInspector.service.serviceDescription.parameters}" rows="0">
          <p>
             <i><h:outputText value="#{p.name}: "/></i>
             <h:outputText value="#{p.description}"/>
          </p>
         </rich:dataList>
+        </div>
        </dd>
+       </h:panelGroup>
 
      </dl>
      
