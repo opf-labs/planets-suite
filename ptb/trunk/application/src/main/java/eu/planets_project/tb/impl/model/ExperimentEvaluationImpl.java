@@ -803,6 +803,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 
 	/** {@inheritDoc} */
 	public ArrayList<String> getExternalEvaluationDocuments() {
+        if( this.lExternalEvalDocumentents == null ) this.lExternalEvalDocumentents = new ArrayList<String>();
 		return this.lExternalEvalDocumentents;
 	}
 
