@@ -195,14 +195,15 @@
 
 <rich:panel>
 <f:facet name="header">In The Testbed</f:facet>
-    <h:panelGroup rendered="#{UserBean.reader == true}">
+    <h:panelGroup>
       <h3>Experiments</h3>
         
       <p>
-       <h:outputText value="#{ServiceInspector.service.name} has been used in #{ServiceInspector.numberOfExperiments} experiments."/>
+       <h:outputText value="#{ServiceInspector.service.name} has been used in #{ServiceInspector.numberOfExperiments} experiment(s)."/>
       </p>
 
-      <rich:dataTable var="exp" value="#{ServiceInspector.experiments}" styleClass="tbTable" width="100%" sortMode="single">
+      <rich:dataTable var="exp" value="#{ServiceInspector.experiments}" styleClass="tbTable" 
+            width="100%" sortMode="single" rendered="#{UserBean.reader == true}">
 
        <rich:column sortBy="#{exp.experimentSetup.basicProperties.experimentName}" sortOrder="ASCENDING">
          <f:facet name="header">
