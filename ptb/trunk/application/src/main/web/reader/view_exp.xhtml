@@ -81,11 +81,13 @@
  </h:panelGroup>
                          
  <!-- user-rating-experiments -->
- <h:panelGrid id="ratingresults" rendered="#{NewExp_Controller.experimentAtHand.numberOfUserExperimentRatings>0}"> 
+ <a4j:outputPanel id="ratingresults">
+ <h:panelGroup rendered="#{NewExp_Controller.experimentAtHand.numberOfUserExperimentRatings>0}"> 
  	<h3 class="leftcol">Experiment Rating</h3>
   	<div class="innertube">
  	<p style="text-align: center;">
  	The experiment's rating in respect to how useful other Testbed users consider the current experiment to be:
+    </p>
      	<h:panelGrid columns="2">  
          	<h:outputText value="average user rating: "/> 
             <t:graphicImage value="/graphics/rating/#{NewExp_Controller.experimentAtHand.averageUserExperimentRatings}-star.png" rendered="#{NewExp_Controller.experimentAtHand.averageUserExperimentRatings gt 0}" title="Average Experiment Rating #{NewExp_Controller.experimentAtHand.averageUserExperimentRatings}/5" 
@@ -97,9 +99,9 @@
  			<h:outputText value="#{NewExp_Controller.experimentAtHand.numberOfUserExperimentRatings}"/>
      	</h:panelGrid>                      
 
- 	</p>
  	</div> 
- 	</h:panelGrid>
+ 	</h:panelGroup>
+ </a4j:outputPanel>
   <!-- end-user-rating-experiments -->
  
  </h:form>
