@@ -138,6 +138,9 @@ public class MeasurementImpl implements Serializable {
         this(null, m.property, m.target );
         this.equivalence = m.equivalence;
     }
+    
+    /** Fix the max length of properties */
+    private int MAX_PROPERTY_LENGTH = 10000;
 
     /**
      * @param me
@@ -145,7 +148,11 @@ public class MeasurementImpl implements Serializable {
      */
     public MeasurementImpl(MeasurementEventImpl event, Property p) {
 //        this.event = event;
-        this.property = new Property.Builder(p).build();
+        Property.Builder pb = new Property.Builder(p);
+        // FIXME ugly HACK to avoid storing massive properties, esp. XCL NormData:
+        if( p.getValue() != null && p.getValue().length() > MAX_PROPERTY_LENGTH ) 
+            pb.value( p.getValue().substring(0, MAX_PROPERTY_LENGTH)+" [WARNING! Truncated due to excessive size!]" );
+        this.property = pb.build();
         this.target = null;
     }
 
