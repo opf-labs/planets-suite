@@ -508,14 +508,6 @@
   </navigation-case>
  </navigation-rule>
  
- <navigation-rule>
-  <from-view-id>/reader/view_exp.xhtml</from-view-id>
-  <navigation-case>
-   <from-outcome>goToBrowseExperiments</from-outcome>
-   <to-view-id>/reader/browse_exp.xhtml</to-view-id>
-  </navigation-case>
- </navigation-rule>
-
 	<!--
 		page: experimenter settings for auto-evaluation service settings
 	-->

@@ -16,14 +16,14 @@
     <div class="innertube">
     
 		<h:form>
-		<c:if test="${UserBean.admin == true}">
+		<h:panelGroup rendered="#{UserBean.admin == true}">
 		      <p style="leftcol_r"><h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}"><h:outputText value="#{res['exp_scheduler.pageTitle']}"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" alt="#{res['exp_scheduler.pageTitle']}" title="#{res['exp_scheduler.pageTitle']}" /></h:commandLink></p>
-		</c:if>
-		<c:if test="${UserBean.experimenter == true}">
+		</h:panelGroup>
+		<h:panelGroup rendered="#{UserBean.experimenter == true}">
 		      <p style="leftcol_r"><h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}"><h:outputText value="#{res['new_exp.pageTitle']}"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" alt="#{res['new_exp.pageTitle']}" title="#{res['new_exp.pageTitle']}" /></h:commandLink></p>
 			<p style="leftcol_r"><h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
 					<h:outputText value="#{res['my_exp.pageTitle']}"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" alt="#{res['my_exp.pageTitle']}" title="#{res['my_exp.pageTitle']}" /></h:commandLink></p>
-		</c:if>
+		</h:panelGroup>
       <p style="leftcol_r"><h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
 						 #{res['browse_exp.pageTitle']} <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_experiment.gif" alt="#{res['browse_exp.pageTitle']}" title="#{res['browse_exp.pageTitle']}" />
 					</h:commandLink></p>

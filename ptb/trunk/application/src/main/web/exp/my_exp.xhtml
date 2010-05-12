@@ -48,7 +48,8 @@
                   cellspacing="0"
                   border="1"
                   binding="#{ListExp_Backing.myExp_data}"
-                  rowIndexVar="row">
+                  rowIndexVar="row"
+                  rendered="#{UserBean.experimenter}">
         <t:column>
             <f:facet name="header">
 	         <t:commandSortHeader id="sortName" columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
@@ -56,8 +57,10 @@
     	      </t:commandSortHeader>
     	    </f:facet>
           
+                <a4j:outputPanel layout="block">
                 <h:commandLink action="#{ListExp_Backing.editMyExperimentAction}" id="editExpActionLink" styleClass="editExpAction">
 	              <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}"/>
+                </h:commandLink>
 	            <rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="ajax">
 	               	<rich:menuItem id="contextOpenExp" action="#{ListExp_Backing.editMyExperimentAction}">
                         <f:facet name="icon"><t:graphicImage value="/graphics/accessories-text-editor.png"/></f:facet>
@@ -80,7 +83,7 @@
 						<b>export</b> experiment
 					</rich:menuItem>
 	          	</rich:contextMenu>
-                </h:commandLink>
+                </a4j:outputPanel>
             
         </t:column>
         <t:column>

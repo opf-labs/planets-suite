@@ -90,10 +90,10 @@
                 action="#{NewExp_Controller.saveEvaluation}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" rendered="#{!ReadOnly}"/>
        
        <h:commandButton value="#{res['reader_exp.buttonStage6']}"
-       action="browse_experiments" rendered="#{ExperimentBean.currentStage gt 6 and ! UserBean.experimenter}"/>
+       action="browse_experiments" rendered="#{ExperimentBean.currentStage gt 6 and ! ExperimentBean.currentUserAnExperimenter}"/>
        
        <h:commandButton value="#{res['reader_exp.buttonStage6']}"
-       action="my_experiments" rendered="#{ExperimentBean.currentStage gt 6 and UserBean.experimenter}"/>
+       action="my_experiments" rendered="#{ExperimentBean.currentStage gt 6 and ExperimentBean.currentUserAnExperimenter}"/>
 
       </c:if>
       

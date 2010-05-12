@@ -41,7 +41,7 @@
 
     <ui:include src="/WEB-INF/templates/exp/exp_designer.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-       <ui:param name="ReadOnly" value="#{ExperimentBean.approved}" />
+       <ui:param name="ReadOnly" value="#{ExperimentBean.stage2ReadOnly}" />
     </ui:include>
 
 

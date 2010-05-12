@@ -55,10 +55,12 @@
                     #{res['expList.colHeader.expName']}
                 </t:commandSortHeader>
             </f:facet>
-                <h:outputLink value="view_exp.faces" id="editExpActionLink" styleClass="editExpAction">
+                <a4j:outputPanel layout="block">
+                  <h:outputLink value="view_exp.faces" id="editExpActionLink" styleClass="editExpAction">
                     <f:param name="eid" value="#{exp.entityID}"/>
                     <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-                	<rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="ajax">
+                  </h:outputLink>
+                  <rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="ajax">
 	               		<rich:menuItem id="contextViewExp" action="#{ListExp_Backing.readerExperimentAction}">
                             <f:facet name="icon"><t:graphicImage value="/graphics/iconLeaf.gif"/></f:facet>
 							<b>view</b> experiment
@@ -75,8 +77,8 @@
                             <f:facet name="icon"><t:graphicImage value="/graphics/go-down.png"/></f:facet>
 							<b>export</b> experiment
 						</rich:menuItem>
-	          		</rich:contextMenu>
-                </h:outputLink>
+	              </rich:contextMenu>
+                </a4j:outputPanel>
                 <!-- Use menu instead...
                 <h:commandLink action="# {ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
                     <t:graphicImage value="/graphics/accessories-text-editor.png" alt="edit"/>

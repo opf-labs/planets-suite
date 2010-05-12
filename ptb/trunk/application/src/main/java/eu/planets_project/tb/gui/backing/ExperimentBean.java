@@ -2527,4 +2527,58 @@ public class ExperimentBean {
    	}
 		return lTempFileDownloadLinkForWEEWFResults;
    }
+   
+   /**
+    * @return
+    */
+   public boolean isCurrentUserAnExperimenter() {
+       UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+       if( user == null || user.getUserid() == null ) return false;
+       // Admins can always edit:
+       if( user.isAdmin() ) return true;
+       // Check if this user is authorised:
+       if( this.getExperiment() == null ) return false;
+       log.info("Exp not null");
+       if( this.getExperiment().getExperimentSetup() == null ) return false;
+       log.info("Setup not null");
+       if( this.getExperiment().getExperimentSetup().getBasicProperties() == null ) return false;
+       log.info("BasicProp not null");
+       if( this.getExperiment().getExperimentSetup().getBasicProperties().getInvolvedUserIds() == null ) return false;
+       log.info("InvolvedUsers not null");
+       for( String authUser : this.getExperiment().getExperimentSetup().getBasicProperties().getInvolvedUserIds()) {
+           if( user.getUserid().equals(authUser)) return true;
+       }
+       return false;
+   }
+   
+   /**
+    * @return
+    */
+   public boolean isStage1ReadOnly() {
+       if( ! this.isCurrentUserAnExperimenter() ) return true;
+       if( this.getApproved() == true ) return true;
+       return false;
+   }
+   public boolean isStage2ReadOnly() {
+       // As stage 1
+       return this.isStage1ReadOnly();
+   }
+   public boolean isStage3ReadOnly() {
+       if( ! this.isCurrentUserAnExperimenter() ) return true;
+       return false;
+   }
+   public boolean isStage4ReadOnly() {
+       if( ! this.isCurrentUserAnExperimenter() ) return true;
+       if( this.isFinished() ) return true;
+       return false;
+   }
+   public boolean isStage5ReadOnly() {
+       // As stage 4
+       return this.isStage4ReadOnly();
+   }
+   public boolean isStage6ReadOnly() {
+       // As stage 4
+       return this.isStage4ReadOnly();
+   }
+
 }

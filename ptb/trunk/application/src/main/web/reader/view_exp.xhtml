@@ -21,10 +21,12 @@
 	</ui:define>
 
 	<ui:define name="content">
-	 <h:form id="formbody">
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
+     <h:form id="formbody">
+    <!-- Persist the experiment ID through POST, if any. -->    
+    <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}"/>
 		
 		Please rate this experiment to provide meaningful results for other users. 
  		How useful do you consider the current experiment to be:
@@ -38,7 +40,8 @@
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
        <ui:param name="eid" value="#{ExperimentInspector.experimentId}" />
     </ui:include>
-
+    
+    </h:form>
 		</div>
 		</div>
 		</div>
@@ -55,7 +58,7 @@
         </p>
         </div>
         
- <!-- h:form-->
+ <h:form>
     <!-- Persist the experiment ID through POST, if any. -->    
     <input type="hidden" name="eid" value="#{ExperimentInspector.experimentId}"/>
 
@@ -63,7 +66,7 @@
   <div class="innertube">
  <p style="text-align: center;">
   <h:commandButton value="#{res['reader_exp.buttonStage6']}"
-   action="goToBrowseExperiments" />
+   action="browse_experiments" />
  </p>
  </div>
  
@@ -76,9 +79,7 @@
  </p>
  </div>
  </h:panelGroup>
-                        
- <!--/h:form-->
- 
+                         
  <!-- user-rating-experiments -->
  <h:panelGrid id="ratingresults" rendered="#{NewExp_Controller.experimentAtHand.numberOfUserExperimentRatings>0}"> 
  	<h3 class="leftcol">Experiment Rating</h3>
@@ -101,8 +102,9 @@
  	</h:panelGrid>
   <!-- end-user-rating-experiments -->
  
+ </h:form>
+ 
 	</div>
- </h:form> 
 	</ui:define>
 
  
