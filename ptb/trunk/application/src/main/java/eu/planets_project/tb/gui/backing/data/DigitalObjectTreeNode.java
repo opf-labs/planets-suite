@@ -242,7 +242,8 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
             String duri = dh.get(this.getUri().toString()).getThumbnailUri().toASCIIString();
             log.debug("Returning thumbnail location: "+duri);
             return duri;
-        } catch (FileNotFoundException e) {
+        } catch ( Exception e) {
+            log.error("Exception while generating thumbnail URI: "+e);
             e.printStackTrace();
             return null;
         }
