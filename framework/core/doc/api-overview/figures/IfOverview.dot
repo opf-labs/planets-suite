@@ -1,0 +1,7 @@
+digraph if {
+    
+    node[shape=record]
+    subgraph cluster_0 {style=dotted label = "Level" layer[label="{User Interface|Web Service API|Native API}" style=filled fillcolor=gray95]}
+    subgraph cluster_1 {style=dotted label = "Components" content[label="{{Admin|Services|Workflows}|{Services|Registries}|{Services|Registries|Utils}}"]}
+    subgraph cluster_2 {style=dotted label = "Technology" tech[label="{HTML|WSDL|Java}" style=filled fillcolor=gray95]}
+}
