@@ -103,16 +103,16 @@ public class ZipUtilsTest {
 	@Test
 	public void testRemoveFile() throws IOException {
 		FileUtils.cleanDirectory(outputFolder);
-		int inputFileCount = ZipUtils.listAllFilesAndFolders(TEST_FILE_FOLDER, new ArrayList<File>()).size();
+		ZipUtils.listAllFilesAndFolders(TEST_FILE_FOLDER, new ArrayList<File>()).size();
 		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, outputFolder, "zipUtilsTestRemove.zip", true);
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
 		String folderName = zip.getName().substring(0, zip.getName().lastIndexOf("."));
 		File extract = new File(outputFolder, folderName);
 		FileUtils.forceMkdir(extract);
-		List<File> extracted = ZipUtils.unzipTo(zip, extract);
+		ZipUtils.unzipTo(zip, extract);
 		File deleteSingleFile = new File("IF/common/src/test/resources/test_zip/images/test_jp2/canon-ixus.jpg.jp2");
-		File modifiedZip = ZipUtils.removeFileFrom(zip, "images\\test_jp2\\canon-ixus.jpg.jp2");
-		modifiedZip = ZipUtils.removeFileFrom(zip, "images\\test_gif");
+		ZipUtils.removeFileFrom(zip, "images\\test_jp2\\canon-ixus.jpg.jp2");
+		ZipUtils.removeFileFrom(zip, "images\\test_gif");
 		System.out.println("Zip modified. Please find it here: " + zip.getAbsolutePath());
 	}
 

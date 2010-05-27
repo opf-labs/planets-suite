@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.zip.ZipException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import ch.enterag.utils.zip.EntryInputStream;
@@ -77,7 +76,7 @@ public class ZipUtils {
 				FileEntry entry = new FileEntry(currentZipEntryPath);
 				File currentFile = new File(listOfFiles.get(i));
 				
-				FileEntry currentEntry = writeEntry(zipFile, entry, currentFile, compress);
+				writeEntry(zipFile, entry, currentFile, compress);
 			}
 			log.info("[createZip] All Files written to zip file: " + zipFile.getDiskFile().getFileName());
 			zipFile.close();
@@ -177,7 +176,7 @@ public class ZipUtils {
 	private static void readFolderEntry(Zip64File zip64File, FileEntry folderEntry, File dest) {
 		log.info("[readFolderEntry] The target you have specified is a folder: " + folderEntry.getName());
 		File currentFolder = new File(dest, folderEntry.getName());
-		boolean dirsCreated = currentFolder.mkdirs();
+		currentFolder.mkdirs();
 		List<String> containedFiles = getFileEntryChildren(zip64File, folderEntry);
 		
 		if(containedFiles.size()>0) {
@@ -188,7 +187,7 @@ public class ZipUtils {
 					readFileEntry(zip64File, currentEntry, dest);
 				}
 				else {
-					dirsCreated = destination.mkdirs();
+					destination.mkdirs();
 					log.info("[readFolderEntry] Created folder in file system: " + destination.getAbsolutePath());
 //					readFolderEntry(zip64File, currentEntry, destination);
 				}
@@ -305,22 +304,22 @@ public class ZipUtils {
 	}
 	
 	
-	private static List<String> checkFilesForDeletion(Zip64File zip64File, FileEntry parentFolderEntry, File folderToInsert) {
-		List<String> entryChildren = getFileEntryChildren(zip64File, parentFolderEntry);
-		List<String> filesToAdd = normalizePaths(folderToInsert);
-		
-		List<String> filesToDelete = new ArrayList<String>();
-		
-		for (String currentChild : entryChildren) {
-			for (String currentToAdd : filesToAdd) {
-				if(currentChild.endsWith(currentToAdd)) {
-					filesToDelete.add(currentChild);
-				}
-			}
-		}
-		
-		return filesToDelete;
-	}
+//	private static List<String> checkFilesForDeletion(Zip64File zip64File, FileEntry parentFolderEntry, File folderToInsert) {
+//		List<String> entryChildren = getFileEntryChildren(zip64File, parentFolderEntry);
+//		List<String> filesToAdd = normalizePaths(folderToInsert);
+//		
+//		List<String> filesToDelete = new ArrayList<String>();
+//		
+//		for (String currentChild : entryChildren) {
+//			for (String currentToAdd : filesToAdd) {
+//				if(currentChild.endsWith(currentToAdd)) {
+//					filesToDelete.add(currentChild);
+//				}
+//			}
+//		}
+//		
+//		return filesToDelete;
+//	}
 	
 	
 	/**
@@ -669,7 +668,6 @@ public class ZipUtils {
 	
 
 	private static File readEntry(Zip64File zip64File, FileEntry toRead, File destFolder) {
-		InputStream in = null;
 		File target = new File(destFolder, toRead.getName());
 		if(!toRead.isDirectory()) {
 			readFileEntry(zip64File, toRead, destFolder);
@@ -740,21 +738,21 @@ public class ZipUtils {
 	}
 	
 	
-	private static boolean containsEntry(Zip64File zip64File, String targetPath) {
-		FileEntry result = testFileEntry(zip64File, targetPath);
-		if(result!=null) {
-			return true; 
-		}
-		else {
-			result = testFolderEntry(zip64File, targetPath);
-			if(result!=null) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-	}
+//	private static boolean containsEntry(Zip64File zip64File, String targetPath) {
+//		FileEntry result = testFileEntry(zip64File, targetPath);
+//		if(result!=null) {
+//			return true; 
+//		}
+//		else {
+//			result = testFolderEntry(zip64File, targetPath);
+//			if(result!=null) {
+//				return true;
+//			}
+//			else {
+//				return false;
+//			}
+//		}
+//	}
 
 
 	/**
@@ -863,17 +861,17 @@ public class ZipUtils {
 	 * @param entry the FileEntry to get the file name for.
 	 * @return the file name as String
 	 */
-	private static String getEntryFileName(FileEntry entry) {
-		String entryPath = entry.getName();
-		String name = null;
-		if(entryPath.contains(File.separator)) {
-			name = entryPath.substring(entryPath.lastIndexOf(File.separator)+1);
-			return name;
-		}
-		else {
-			return entryPath;
-		}
-	}
+//	private static String getEntryFileName(FileEntry entry) {
+//		String entryPath = entry.getName();
+//		String name = null;
+//		if(entryPath.contains(File.separator)) {
+//			name = entryPath.substring(entryPath.lastIndexOf(File.separator)+1);
+//			return name;
+//		}
+//		else {
+//			return entryPath;
+//		}
+//	}
 
 	
 	/**

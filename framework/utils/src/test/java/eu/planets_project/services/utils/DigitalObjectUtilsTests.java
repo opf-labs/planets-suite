@@ -13,6 +13,7 @@
  */
 package eu.planets_project.services.utils;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -124,6 +125,19 @@ public class DigitalObjectUtilsTests {
 		printDigOb(removeResult);
 	}
 	
+    /**
+     * As a helper method for counting the size of the bytestream content has been added, this should be tested.
+     * <p/>
+     * TODO: Should go into a DigitalObjectUtilsTests class
+     */
+    @Test
+    public void contentSizeCalculation() {
+        int size = 23823;
+        DigitalObject bytes1 = new DigitalObject.Builder(Content.byValue(new byte[size])).build();
+        long bytes = DigitalObjectUtils.getContentSize(bytes1);
+        assertEquals("Counted, shallow byte[] size is not correct.", size, bytes);
+    }
+
 	
 	private void printTestTitle(String title) {
 		for(int i=0;i<title.length()+4;i++) {
@@ -156,7 +170,6 @@ public class DigitalObjectUtilsTests {
 	}
 	
 	private void printDigOb(DigitalObject digOb) {
-		List<DigitalObject> contained = null;
 		System.out.println("--------------------------------------");
 		System.out.println("Summary DigitalObject: " + digOb.getTitle());
 		System.out.println("--------------------------------------");
