@@ -22,12 +22,14 @@
 
     <taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
       <classpath id="schemagen_classpath">
+        <fileset dir="${psuite.root.dir}/lib" includes="*.jar" />
+        <fileset dir="${psuite.root.dir}/lib/temp" includes="*.jar" />
         <fileset dir="${psuite.root.dir}/lib/jaxws-ri-2.1.4/lib" includes="*.jar" />
       </classpath>
     </taskdef>
     
     <target name="gen:SDschema">
-        <schemagen srcdir="${src.dir}/eu/planets_project/services/datatypes" destdir="${appDir}/src/resources">
+        <schemagen srcdir="${src.dir}/eu/planets_project/services/datatypes" destdir="${src.resources}">
                 
                 <classpath refid="schemagen_classpath"/>
 

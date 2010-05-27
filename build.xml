@@ -50,7 +50,6 @@
 
   <target name="compile:common" depends="props:set">
     <ant dir="framework/core" inheritAll="false" target="compile:common"/>
-  	<ant dir="framework/techreg" inheritAll="false" />
   	<ant dir="framework/utils" inheritAll="false" />
   </target>
 

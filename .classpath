@@ -12,9 +12,9 @@
 	<classpathentry kind="lib" path="framework/utils/lib/Zip64File.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/jaxws-rt.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
-	<classpathentry kind="lib" path="framework/techreg/lib/jboss-annotations-ejb3.jar"/>
-	<classpathentry kind="lib" path="framework/techreg/lib/jboss-ejb3x.jar"/>
-	<classpathentry kind="lib" path="framework/techreg/lib/droid.jar"/>
-	<classpathentry kind="lib" path="framework/techreg/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="lib" path="framework/utils/lib/jboss-annotations-ejb3.jar"/>
+	<classpathentry kind="lib" path="framework/utils/lib/jboss-ejb3x.jar"/>
+	<classpathentry kind="lib" path="framework/utils/lib/droid.jar"/>
+	<classpathentry kind="lib" path="framework/utils/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
