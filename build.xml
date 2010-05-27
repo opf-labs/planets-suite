@@ -2,7 +2,7 @@
 <!-- ======================================================================= -->
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
-<project name="Planets Service Deployer" default="deploy:pure-java" basedir=".">
+<project name="Planet-Suite Deployer" default="deploy:pure-java" basedir=".">
 
   <!-- =================================================================== -->
                                                        
@@ -21,17 +21,17 @@
 	<echo level="warn" message="For full deployment on the IF, please set up your build.properties file.  Read the README.txt for more information. "/>
     <echo message="No build.properties found."/>
   </target>
-  <target name="profile:set" unless="pserv.deploy.profile">
-    <echo level="warn" message="For profile-based deployment, you must set pserv.deploy.profile. See build.properties.template."/>
-    <fail message="No pserv.deploy.profile found."/>
+  <target name="profile:set" unless="psuite.deploy.profile">
+    <echo level="warn" message="For profile-based deployment, you must set psuite.deploy.profile. See build.properties.template."/>
+    <fail message="No psuite.deploy.profile found."/>
   </target>
-  <target name="test:profile:set" unless="pserv.test.profile">
-    <echo level="warn" message="For profile-based testing, you can set pserv.test.profile. Defaulting to pserv.deploy.profile. See build.properties.template."/>
-    <property name="pserv.test.profile" value="${pserv.deploy.profile}" />
-    <property name="pserv.test.profile.pure-java" value="${pserv.deploy.profile.pure-java}" />
+  <target name="test:profile:set" unless="psuite.test.profile">
+    <echo level="warn" message="For profile-based testing, you can set psuite.test.profile. Defaulting to psuite.deploy.profile. See build.properties.template."/>
+    <property name="psuite.test.profile" value="${psuite.deploy.profile}" />
+    <property name="psuite.test.profile.pure-java" value="${psuite.deploy.profile.pure-java}" />
   </target>
 	
-  <!-- These are the shared PServ classes. -->
+  <!-- These are the shared Planets-Suite classes. -->
   <target name="deploy:common" depends="props:set">
     <if>
       <isset property="if_server.dir"/>
@@ -42,13 +42,16 @@
         <echo message="if_server.dir is NOT set - will not deploy, only build."/>
       </else>
     </if>
-    <ant dir="IF/common" inheritAll="false"/>
-  	<ant dir="IF/techreg" inheritAll="false" />
+    <ant dir="framework/core" inheritAll="false"/>
+  	<ant dir="framework/techreg" inheritAll="false" />
+  	<ant dir="framework/utils" inheritAll="false" />
     <ant target="deploy:api"/>
   </target>
+
   <target name="compile:common" depends="props:set">
-    <ant dir="IF/common" inheritAll="false" target="compile:common"/>
-    <ant dir="IF/techreg" inheritAll="false" />
+    <ant dir="framework/core" inheritAll="false" target="compile:common"/>
+  	<ant dir="framework/techreg" inheritAll="false" />
+  	<ant dir="framework/utils" inheritAll="false" />
   </target>
 
     <target name="compile:generic" depends="compile:common">
@@ -93,14 +96,14 @@
   
   <target name="deploy:profile" depends="profile:set,props:set,deploy:common">
     <if>
-      <equals arg1="${pserv.deploy.profile.pure-java}" arg2="true" />
+      <equals arg1="${psuite.deploy.profile.pure-java}" arg2="true" />
       <then>
-        <echo message="pserv.deploy.profile.pure-java is set - will deploy pure-java services"/>
+        <echo message="psuite.deploy.profile.pure-java is set - will deploy pure-java services"/>
         <ant target="deploy:pure-java"/>
       </then>
     </if>
     <!-- Now deploy the profile -->
-    <foreach target="deploy:profile:sub" param="sub.build" inheritall="false" list="${pserv.deploy.profile}" delimiter=", "/>
+    <foreach target="deploy:profile:sub" param="sub.build" inheritall="false" list="${psuite.deploy.profile}" delimiter=", "/>
   </target>
   <target name="deploy:profile:sub">
     <ant antfile="${basedir}/${sub.build}/build.xml" inheritAll="false" dir="${basedir}/${sub.build}">
@@ -156,14 +159,14 @@
   
   <target name="test:profile" depends="profile:set,test:profile:set,props:set,deploy:common,test:reports:clean">
     <if>
-      <equals arg1="${pserv.test.profile.pure-java}" arg2="true" />
+      <equals arg1="${psuite.test.profile.pure-java}" arg2="true" />
       <then>
-        <echo message="pserv.test.profile.pure-java is set - will test pure-java services"/>
+        <echo message="psuite.test.profile.pure-java is set - will test pure-java services"/>
         <ant target="test:pure-java"/>
       </then>
     </if>
     <!-- Now test the profile -->
-    <foreach target="test:profile:sub" param="sub.build" inheritall="false" list="${pserv.test.profile}" delimiter=", "/>
+    <foreach target="test:profile:sub" param="sub.build" inheritall="false" list="${psuite.test.profile}" delimiter=", "/>
   </target>
   <target name="test:profile:sub">
     <echo message="In ${sub.build}"/>
