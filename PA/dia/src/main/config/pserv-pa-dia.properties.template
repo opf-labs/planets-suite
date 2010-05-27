@@ -1,4 +1,0 @@
-serviceprovider = <name of the organisation providing this wrapped tool service>
-shellcommand = <location of the shell command, e.g. /bin/sh>
-shellcommandoption = <the option/switch that should be given to the shell command in order to make it execute a command string. On unix/linux systems this is most likely "-c" and "/c" on Windows systems.>
-diacommand = <location of the dia application, e.g. /usr/bin/dia>
