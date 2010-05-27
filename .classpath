@@ -11,7 +11,7 @@
 	<classpathentry kind="lib" path="framework/core/lib/streambuffer.jar"/>
 	<classpathentry kind="lib" path="framework/utils/lib/Zip64File.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/jaxws-rt.jar"/>
-	<classpathentry kind="lib" path="framework/test/lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Workspaces/Planets/planets-suite/lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/droid.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="lib" path="framework/techreg/lib/jboss-annotations-ejb3.jar"/>
