@@ -32,8 +32,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.planets_project.services.utils.DigitalObjectUtils;
-
 /**
  * Tests for digital objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
@@ -190,19 +188,6 @@ public final class DigitalObjectTests {
         DigitalObject roundtrip = roundtrip(digitalObject1);
         System.out.println("Unmarshalled: " + digitalObject1);
         compare(digitalObject1, roundtrip);
-    }
-
-    /**
-     * As a helper method for counting the size of the bytestream content has been added, this should be tested.
-     * <p/>
-     * TODO: Should go into a DigitalObjectUtilsTests class
-     */
-    @Test
-    public void contentSizeCalculation() {
-        int size = 23823;
-        DigitalObject bytes1 = new DigitalObject.Builder(Content.byValue(new byte[size])).build();
-        long bytes = DigitalObjectUtils.getContentSize(bytes1);
-        assertEquals("Counted, shallow byte[] size is not correct.", size, bytes);
     }
 
     /**

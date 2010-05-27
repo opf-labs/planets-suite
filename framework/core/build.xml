@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Suite core deployer build file                                    -->
+<!-- ======================================================================= -->
+<project name="framework-core" default="compile:common" basedir=".">
+    <property name="appName" value="${ant.project.name}"/>
+    <property name="appDir" location="."/>
+    <property name="src.dir" location="${appDir}/src/main/java"/>
+    <property name="lib.dir" location="${appDir}/lib"/>
+    <property name="src.resources" location="${appDir}/src/main/resources"/>
+    <property name="src.web" location="${appDir}/src/webapp"/>
+	<property name="src.config" location="${appDir}/src/main/config" />
+    <property name="test.src.dir" location="${appDir}/src/test/java"/>
+	<property name="test.resources" location="${appDir}/src/test/resources" />
+	<property name="test.config" location="${appDir}/src/test/config" />
+	<property name="psuite.app.deploy.mode" value="pure-java" />
+	<property name="psuite.app.build.type" value="jar" />
+    <property name="psuite.root.dir" location="../.." />
+	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
+    <import file="${psuite.root.dir}/build.common.xml"/>
+
+    <taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
+      <classpath id="schemagen_classpath">
+        <fileset dir="${psuite.root.dir}/lib/jaxws-ri-2.1.4/lib" includes="*.jar" />
+      </classpath>
+    </taskdef>
+    
+    <target name="gen:SDschema">
+        <schemagen srcdir="${src.dir}/eu/planets_project/services/datatypes" destdir="${appDir}/src/resources">
+                
+                <classpath refid="schemagen_classpath"/>
+
+                <exclude name="ImmutableDigitalObject.java"/>
+                <exclude name="DigitalObject.java"/>
+                <exclude name="Agent.java"/>  
+                <exclude name="Checksum.java"/>  
+                <exclude name="Content.java"/>
+                <exclude name="Event.java"/>
+                <exclude name="Metadata.java"/>
+                <exclude name="Properties.java"/>
+
+
+                <schema namespace="http://www.planets-project.eu/services" file="service_description.xsd"/>
+		<schema namespace="http://purl.org/dc/terms/" file="dcterms.xsd"/>
+		<schema namespace="" file="nonamespace.xsd"/>
+	</schemagen>
+    </target>
+	
+    <!-- Unit testing definitions -->
+    <property name="test.src.dir" location="${appDir}/src/test/java" />
+	<property name="test.local" value="" />
+	<property name="test.standalone" value="" />
+    <property name="test.server" value="" />
+
+</project>

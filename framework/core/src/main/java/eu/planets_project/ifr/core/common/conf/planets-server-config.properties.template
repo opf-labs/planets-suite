@@ -1,0 +1,3 @@
+planets.server.hostname=@framework.host@
+planets.server.port=@framework.port@
+planets.server.ssl.port=@framework.ssl.port@
