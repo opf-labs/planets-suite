@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file                                    -->
+<!-- ======================================================================= -->
+
+<project name="pa-ps2pdf" default="deploy" basedir=".">
+
+    <!-- Specify configuration for this project -->
+    <property name="appName" value="${ant.project.name}" />
+    <property name="appDir" location="." />
+
+    <!-- Specify the build type: ejb, war or ear. -->
+    <property name="pserv.app.build.type" value="war" />
+
+    <!-- Specify if this application requires further software to be installed -->
+    <property name="pserv.app.deploy.mode" value="full" />
+
+    <property name="src.dir" location="${appDir}/src/java" />
+    <property name="lib.dir" location="${appDir}/lib" />
+    <property name="src.resources" location="${appDir}/src/resources" />
+    <property name="src.config" location="${appDir}/src/config" />
+	<property name="src.web" value="${appDir}/src/web"/>
+
+    <property name="test.src.dir" location="${appDir}/test/java" />
+    <property name="test.resources" location="${appDir}/test/resources" />
+    <property name="test.config" location="${appDir}/test/config" />
+    <property name="test.local" value="" />
+    <property name="test.standalone" value="" />
+    <property name="test.server" value="" />
+
+    <!-- Include the build targets etc -->
+    <property name="pserv.root.dir" location="../.." />
+    <property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
+    <import file="${pserv.root.dir}/build.common.xml" />
+
+    <!-- First copy the test config file(s) from test config area to pserv/test/config -->
+    <echo message="COPYING ${test.config}/* TO ${pserv.test.config}">
+    </echo>
+    <copy todir="${pserv.test.config}" overwrite="yes">
+        <fileset dir="${test.config}" />
+    </copy>
+
+    <!-- We need to get the directory path of the configuration directory of
+     the planets server from the build properties file. -->
+    <property file="${pserv.root.dir}/build.properties" />
+	
+    <!-- Copy the configuration template from src/main/config area to user config dir to indicate that it must be adapted to the systetm running the server -->
+    <echo message="COPYING ${src.config}/* TO ${if_server.conf}">
+    </echo>
+    <copy todir="${if_server.conf}" overwrite="yes">
+        <fileset dir="${src.config}" />
+    </copy>
+	
+</project>
