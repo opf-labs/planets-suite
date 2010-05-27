@@ -49,6 +49,11 @@ import java.util.List;
 public final class Event implements Serializable {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6090795056584183891L;
+
+	/**
      * A human-readable description of the event.
      */
     @XmlAttribute

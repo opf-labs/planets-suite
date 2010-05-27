@@ -12,7 +12,6 @@ package eu.planets_project.services.datatypes;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

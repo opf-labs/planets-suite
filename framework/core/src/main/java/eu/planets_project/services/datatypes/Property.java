@@ -46,7 +46,11 @@ import java.net.URI;
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class Property implements Serializable {
 
-    @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4733604396082932170L;
+	@XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     private URI uri = null;
     @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     private String name = "";

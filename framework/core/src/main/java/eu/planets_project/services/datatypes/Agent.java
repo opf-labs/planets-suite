@@ -30,7 +30,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
 public final class Agent implements Serializable {
 
-    @XmlAttribute
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 422563428560475224L;
+	@XmlAttribute
     private String id;
     @XmlAttribute
     private String name;
