@@ -4,19 +4,19 @@
 <!-- deployer build                                                          -->
 <!-- ======================================================================= -->
 
-<project name="Planets Service Build Commons" default="deploy:ear" basedir=".">
+<project name="Planets-Suite Build Commons" default="deploy:ear" basedir=".">
 	
   <!-- =================================================================== -->
 
   <taskdef resource="net/sf/antcontrib/antcontrib.properties">
     <classpath>
-      <pathelement location="${pserv.root.dir}/lib/ant-contrib-1.0b3.jar"/>
+      <pathelement location="${psuite.root.dir}/lib/ant-contrib-1.0b3.jar"/>
     </classpath>
   </taskdef>
 
   <!-- =================================================================== --> 
 
-  <property file="${pserv.root.dir}/build.properties"/>
+  <property file="${psuite.root.dir}/build.properties"/>
   
   <!-- Set the target JVM version -->
   <property name="target.jvm" value="1.5" />
@@ -24,24 +24,24 @@
   
   <property environment="env"/>
 
-  <property name="build.dir" location="${appDir}/build"/>
+  <property name="build.dir" location="${appDir}/target"/>
   <property name="build.classes.dir" location="${build.dir}/classes"/>
   <property name="build.test.classes.dir" location="${build.dir}/test"/>
-  <property name="build.test.conf" location="${pserv.root.dir}/test/config"/>
+  <property name="build.test.conf" location="${psuite.root.dir}/test/config"/>
   <property name="build.api.classes.dir" location="${build.dir}/api"/>
-  <property name="war.build.dir" location="${appDir}/build/war"/>
-  <property name="ear.build.dir" location="${appDir}/build/ear"/>
+  <property name="war.build.dir" location="${appDir}/target/war"/>
+  <property name="ear.build.dir" location="${appDir}/target/ear"/>
 
-  <property name="war.base.name" value="pserv-${appName}.war"/>
-  <property name="ear.base.name" value="pserv-${appName}.ear"/>
-  <property name="jar.base.name" value="pserv-${appName}.jar"/>
-  <property name="api.base.name" value="pserv-${appName}-api.jar"/>
+  <property name="war.base.name" value="psuite-${appName}.war"/>
+  <property name="ear.base.name" value="psuite-${appName}.ear"/>
+  <property name="jar.base.name" value="psuite-${appName}.jar"/>
+  <property name="api.base.name" value="psuite-${appName}-api.jar"/>
 
   <property name="test.dir" location="${appDir}/../test/java"/>
   <property name="client.config" location="${appDir}/../test/client-config"/>
     
-  <property name="reports.dir" location="${pserv.root.dir}/tests/reports"/>
-  <property name="summary.dir" location="${pserv.root.dir}/tests/summary"/>
+  <property name="reports.dir" location="${psuite.root.dir}/tests/reports"/>
+  <property name="summary.dir" location="${psuite.root.dir}/tests/summary"/>
 
   <if>
     <isset property="if_server.dir"/>
@@ -94,19 +94,19 @@
     <else>
       <!-- This is a portable server_classpath that suffices for compilation and testing of Planets web services. -->
       <path id="server_classpath">
-        <fileset dir="${pserv.root.dir}/lib">
+        <fileset dir="${psuite.root.dir}/lib">
           <include name="standalone/*.jar" />
           <include name="jaxws-ri-2.1.4/lib/*.jar"/>
           <include name="jackrabbit/*.jar"/>
         </fileset>
-        <path refid="pserv_common_classpath"/>
+        <path refid="psuite_common_classpath"/>
       </path>
     </else>
   </if>
 
   <!-- The classpath corresponding to the shared artefacts. -->
-  <path id="pserv_common_classpath">
-    <fileset dir="${pserv.root.dir}/build/">
+  <path id="psuite_common_classpath">
+    <fileset dir="${psuite.root.dir}/target/">
       <include name="*.jar" />
     </fileset>
   </path>    
@@ -120,10 +120,6 @@
       <exclude name="lib-jee/*.jar"/>
     </fileset>
     
-    <!--include JUNIT 4.0 lib-->
-    <!--fileset dir="${junit.lib}">
-            <include name="*.jar"/>
-        </fileset-->
     <!--include our external resources as *.xml and *.props-->
     <pathelement location="${src.resources}"/>
     <pathelement location="${build.classes.dir}"/>
@@ -142,9 +138,9 @@
     <path refid="server_classpath"/>
     <path refid="component_classpath"/>
     <pathelement location="${build.classes.dir}"/>
-    <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
-    <path refid="pserv_common_classpath"/>
-    <fileset dir="${pserv.root.dir}/lib">
+    <!-- Also include the standard (common) classes .: Not sensible to use this target on common -->
+    <path refid="psuite_common_classpath"/>
+    <fileset dir="${psuite.root.dir}/lib">
       <include name="junit-4.*.jar" />
     </fileset>
   </path>
@@ -156,7 +152,7 @@
 
   <!-- The standalone (JAX-WS,) test execution classpaths -->
   <path id="standalone_classpath">
-    <fileset dir="${pserv.root.dir}/lib">
+    <fileset dir="${psuite.root.dir}/lib">
       <include name="jaxws-ri-2.*/lib/*.jar"/>
       <include name="jackrabbit/*.jar"/>
       <include name="standalone/*.jar" />
@@ -164,11 +160,11 @@
     </fileset>
     <path refid="component_classpath"/>
     <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
-    <path refid="pserv_common_classpath"/>
+    <path refid="psuite_common_classpath"/>
   </path>
   
   <path id="standalone_test_classpath">
-    <fileset dir="${pserv.root.dir}/lib">
+    <fileset dir="${psuite.root.dir}/lib">
       <include name="jaxws-ri-2.*/lib/*.jar"/>
       <include name="jackrabbit/*.jar"/>
       <include name="junit-4.*.jar" />
@@ -188,19 +184,19 @@
   
   <!-- To deploy the common classes. -->
   <target name="deploy:common" unless="have.deployed.common">
-    <ant dir="${pserv.root.dir}/IF/common" inheritAll="false" target="compile:common"/>
-    <ant dir="${pserv.root.dir}" inheritAll="false" target="deploy:api"/>
+    <ant dir="${psuite.root.dir}/framework/core" inheritAll="false" target="compile:common"/>
+    <ant dir="${psuite.root.dir}" inheritAll="false" target="deploy:api"/>
 
     <!-- Update component properties files, destined for jars -->
-    <copy file="${pserv.root.dir}/IF/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties.template" tofile="${pserv.root.dir}/IF/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties" />
-    <replace file="${pserv.root.dir}/IF/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties">
+    <copy file="${psuite.root.dir}/framework/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties.template" tofile="${psuite.root.dir}/framework/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties" />
+    <replace file="${psuite.root.dir}/framework/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties">
       <replacefilter token="@planets.server.hostname@" value="${if_server.host}" />
       <replacefilter token="@planets.server.port@" value="${if_server.port}" />
     </replace>
 
   	<!-- Ensure any new jars are added to the classpath? -->
-    <path id="pserv_common_classpath">
-      <fileset dir="${pserv.root.dir}/build/">
+    <path id="psuite_common_classpath">
+      <fileset dir="${psuite.root.dir}/target/">
         <include name="*.jar" />
       </fileset>
     </path>
@@ -241,7 +237,7 @@
     </jar>
     
     <!-- And deploy the common jars into the right places -->
-    <copy file="${build.dir}/${jar.base.name}" todir="${pserv.root.dir}/build"/>
+    <copy file="${build.dir}/${jar.base.name}" todir="${psuite.root.dir}/target"/>
     <if>
       <isset property="server.deploy.lib.dir"/>
       <then>
@@ -257,7 +253,7 @@
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
   <target name="prepare">
-    <mkdir dir="${pserv.root.dir}/build"/>
+    <mkdir dir="${psuite.root.dir}/target"/>
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${war.build.dir}"/>
     <mkdir dir="${ear.build.dir}"/>
@@ -285,7 +281,7 @@
     <jar jarfile="${build.dir}/${api.base.name}">
       <fileset dir="${build.api.classes.dir}"/>
     </jar>
-    <copy file="${build.dir}/${api.base.name}" todir="${pserv.root.dir}/build"/>    
+    <copy file="${build.dir}/${api.base.name}" todir="${psuite.root.dir}/target"/>    
     <if>
       <isset property="server.deploy.lib.dir"/>
       <then>
@@ -309,18 +305,6 @@
            excludes="${src.api.includes}">
       <classpath refid="classpath"/>
     </javac>
-    
-    <!-- tempory not compiling test cases - include after restructuring build.xml-->
-    <!--compile the test-classes, session beans, etc.-->
-    <!--javac source="1.5" target="${target.jvm}"
-            srcdir="${test.dir}"
-           destdir="${build.classes.dir}"
-           debug="on"
-           deprecation="on"
-           optimize="off"
-           includes="**">
-            <classpath refid="classpath"/>
-    </javac-->
     
     <!-- Also copy the libs into the right place -->
     <copy toDir="${build.classes.dir}" flatten="true" failonerror="false">
@@ -490,7 +474,7 @@
   <target name="test:local" description="executes the included JUnit tests w/o a server" depends="test:src-defined,compile:tests" if="test.local">
     <echo message="TEST:LOCAL: Testing the service code without a server."/>
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
+    <junit fork="yes" haltonfailure="no" dir="${psuite.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
       <sysproperty key="eu.planets-project.config.dir" value="${build.test.conf}"/>
@@ -498,10 +482,10 @@
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
       <!-- Test config -->
-      <sysproperty key="pserv.test.context" value="local"/>
-      <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
+      <sysproperty key="psuite.test.context" value="local"/>
+      <sysproperty key="psuite.root.dir" value="${psuite.root.dir}"/>
       <!-- Set this property so that the PlanetsLogger can start up okay. -->
-      <sysproperty key="jboss.server.log.dir" value="${pserv.root.dir}"/>
+      <sysproperty key="jboss.server.log.dir" value="${psuite.root.dir}"/>
       
       <batchtest fork="yes" todir="${reports.dir}">
         <formatter type="xml" extension="-local.xml"/>
@@ -518,7 +502,7 @@
     <echo message="TEST:STANDALONE: Testing the service code using a standalone server."/>
   	<!-- Set the test config directory if the property is not set -->
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
+    <junit fork="yes" haltonfailure="no" dir="${psuite.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
         <sysproperty key="eu.planets-project.config.dir" value="${build.test.conf}"/>
@@ -526,10 +510,10 @@
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
       <!-- Test config -->
-      <sysproperty key="pserv.test.context" value="standalone"/>
-      <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
+      <sysproperty key="psuite.test.context" value="standalone"/>
+      <sysproperty key="psuite.root.dir" value="${psuite.root.dir}"/>
       <!-- Set this property so that the PlanetsLogger can start up okay. -->
-      <sysproperty key="jboss.server.log.dir" value="${pserv.root.dir}"/>
+      <sysproperty key="jboss.server.log.dir" value="${psuite.root.dir}"/>
       
       <batchtest fork="yes" todir="${reports.dir}">
         <formatter type="xml" extension="-standalone.xml"/>
@@ -560,7 +544,7 @@
     <property name="echoclasspath" refid="run_test_classpath"/>
     <!-- echo message="Classpath = ${echoclasspath}"/ -->
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
+    <junit fork="yes" haltonfailure="no" dir="${psuite.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
@@ -572,12 +556,12 @@
       <sysproperty key="line.separator" value="\n"/>
       -->
       <!-- Test config -->
-      <sysproperty key="pserv.test.context" value="server"/>
-      <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
-      <sysproperty key="pserv.test.host" value="${if_server.host}"/>
-      <sysproperty key="pserv.test.port" value="${if_server.port}"/>
+      <sysproperty key="psuite.test.context" value="server"/>
+      <sysproperty key="psuite.root.dir" value="${psuite.root.dir}"/>
+      <sysproperty key="psuite.test.host" value="${if_server.host}"/>
+      <sysproperty key="psuite.test.port" value="${if_server.port}"/>
       <!-- Set this property so that the PlanetsLogger can start up okay. -->
-      <sysproperty key="jboss.server.log.dir" value="${pserv.root.dir}"/>
+      <sysproperty key="jboss.server.log.dir" value="${psuite.root.dir}"/>
       
       <batchtest fork="yes" todir="${reports.dir}">
         <formatter type="xml" extension="-server.xml"/>
@@ -614,8 +598,8 @@
     <delete dir="${build.dir}"/>
   </target>
   
-  <target name="clean:build" description="cleans the top-level PServ build" depends="clean">
-    <delete dir="${pserv.root.dir}/build"/>
+  <target name="clean:build" description="cleans the top-level psuite build" depends="clean">
+    <delete dir="${psuite.root.dir}/target"/>
   </target>
 
   <target name="undeploy" description="undeploy the testbed application from the JBoss application server">
@@ -760,14 +744,14 @@
   <!-- =================================================================== -->
   
   <target name="share:jar" depends="undeploy,compile, compile:jar">
-    <copy file="${build.dir}/${jar.base.name}" todir="${pserv.root.dir}/build"/>
+    <copy file="${build.dir}/${jar.base.name}" todir="${psuite.root.dir}/target"/>
   </target>
 
   <!-- =================================================================== -->
   
   <target name="deploy:pure-java">
     <if>
-      <equals arg1="${pserv.app.deploy.mode}" arg2="pure-java"/>
+      <equals arg1="${psuite.app.deploy.mode}" arg2="pure-java"/>
       <then>
         <ant target="deploy"/>
       </then>
@@ -778,7 +762,7 @@
 
   <target name="test:pure-java">
     <if>
-      <equals arg1="${pserv.app.deploy.mode}" arg2="pure-java" />
+      <equals arg1="${psuite.app.deploy.mode}" arg2="pure-java" />
         <then>
           <ant target="test-if-testable" />
         </then>
@@ -789,35 +773,35 @@
 
   <target name="deploy" depends="check-build-type-set">
     <if>
-      <equals arg1="${pserv.app.deploy.mode}" arg2="none"/>
+      <equals arg1="${psuite.app.deploy.mode}" arg2="none"/>
       <then>
         <echo message="This component is not set to be deployed by default, and must be deployed manually, e.g. deploy:war."/>
       </then>
       <else>
     <!-- Then choose the deploy type -->
     <if>
-      <equals arg1="${pserv.app.build.type}" arg2="ejb"/>
+      <equals arg1="${psuite.app.build.type}" arg2="ejb"/>
       <then>
         <echo message="Deploying as an EJB."/>
         <ant target="deploy:ejb"/>
       </then>
     </if>
     <if>
-      <equals arg1="${pserv.app.build.type}" arg2="war"/>
+      <equals arg1="${psuite.app.build.type}" arg2="war"/>
       <then>
         <echo message="Deploying as a WAR."/>
         <ant target="deploy:war"/>
       </then>
     </if>
     <if>
-      <equals arg1="${pserv.app.build.type}" arg2="ear"/>
+      <equals arg1="${psuite.app.build.type}" arg2="ear"/>
       <then>
         <echo message="Deploying as an EAR."/>
         <ant target="deploy:ear"/>
       </then>
     </if>
     <if>
-      <equals arg1="${pserv.app.build.type}" arg2="jar"/>
+      <equals arg1="${psuite.app.build.type}" arg2="jar"/>
       <then>
         <echo message="Deploying as a JAR."/>
         <ant target="deploy:jar"/>
@@ -828,8 +812,8 @@
     </if>
   </target>
 
-  <target name="check-build-type-set" unless="pserv.app.build.type">
-    <fail message="You must define the component build type 'pserv.app.build.type' in order compile it (ejb, war, ear)."/>
+  <target name="check-build-type-set" unless="psuite.app.build.type">
+    <fail message="You must define the component build type 'psuite.app.build.type' in order compile it (ejb, war, ear)."/>
   </target>
   
   <!-- =================================================================== -->
@@ -896,22 +880,22 @@
     
     <property name="proj.sub.path" value="${proj.sub}/${proj.sub.sub}"/>
     
-    <property name="property.list.file" value="${pserv.root.dir}/property-types.txt"/>
+    <property name="property.list.file" value="${psuite.root.dir}/property-types.txt"/>
     
     <if>
       <not>
-        <isset property="pserv.app.deploy.mode"/>
+        <isset property="psuite.app.deploy.mode"/>
       </not>
       <then>
-        <property name="pserv.app.deploy.mode" value="????????"/>
+        <property name="psuite.app.deploy.mode" value="????????"/>
       </then>
     </if>
     <if>
       <not>
-        <isset property="pserv.app.build.type"/>
+        <isset property="psuite.app.build.type"/>
       </not>
       <then>
-        <property name="pserv.app.build.type" value="????????"/>
+        <property name="psuite.app.build.type" value="????????"/>
       </then>
     </if>
     
@@ -943,7 +927,7 @@
       </else>
     </if>
     
-    <echo file="${property.list.file}" message="${proj.sub.path} | ${pserv.app.deploy.mode} | ${pserv.app.build.type} | ${test.l} | ${test.a} | ${test.s} ${line.separator}" append="true"/>
+    <echo file="${property.list.file}" message="${proj.sub.path} | ${psuite.app.deploy.mode} | ${psuite.app.build.type} | ${test.l} | ${test.a} | ${test.s} ${line.separator}" append="true"/>
   </target>
   
 </project>
