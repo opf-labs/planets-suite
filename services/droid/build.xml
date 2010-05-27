@@ -40,7 +40,7 @@
 
 	<!-- We want the build properties file to get the config directory value -->
 	<property file="${pserv.root.dir}/build.properties"/>
-
+	
 	<!-- Check that ${if_server.conf} is set -->
 	<if>
 		<isset property="if_server.conf" />

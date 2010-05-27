@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file                                    -->
+<!-- ======================================================================= -->
+
+<project name="pa-java-se" default="deploy" basedir=".">
+ 
+  <!-- Define the project name and directory, based on the project name specified above. -->
+  <property name="appName" value="${ant.project.name}"/>
+  <property name="appDir" value="."/>
+  
+  <!-- Specify the build type: ejb, war or ear. -->
+  <property name="pserv.app.build.type" value="war"/>
+      
+  <!-- Specify if this application requires further software to be installed -->
+  <property name="pserv.app.deploy.mode" value="pure-java" />
+
+  <!-- Specify the source directories for this component -->
+  <property name="src.dir" value="${appDir}/src/java"/>
+  <property name="lib.dir" value="${appDir}/lib"/>
+  <property name="src.resources" value="${appDir}/src/resources"/>
+  <property name="src.web" value="${appDir}/src/web"/>
+
+  <!-- Unit testing definitions -->
+  <property name="test.src.dir" value="${appDir}/test/java" />
+  <property name="test.local" value="" />
+  <property name="test.standalone" value="" />
+  <property name="test.server" value="" />
+
+  <!-- Reference to the main build file -->
+  <property name="pserv.root.dir" value="../.." />
+  <import file="${pserv.root.dir}/build.common.xml"/>
+
+</project>

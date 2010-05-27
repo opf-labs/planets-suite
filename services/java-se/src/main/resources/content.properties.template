@@ -1,0 +1,11 @@
+#############
+#Configuration file for WebContentHelper class
+#Provides DigitalObject Content files via a public_html directory 
+#Start JBoss with option -b 0.0.0.0  
+#This file overwrites the default values for the Planets application server
+####
+
+#web_access_path=C:/DATA/projects/planets/ifr_server_metro/server/default/deploy/jboss-web.deployer/ROOT.war
+#host=ubuntu-planets.ait.ac.at
+#port=8080
+#content_lifetime_in_seconds=3600

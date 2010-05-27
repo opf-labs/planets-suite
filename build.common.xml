@@ -5,7 +5,7 @@
 <!-- ======================================================================= -->
 
 <project name="Planets Service Build Commons" default="deploy:ear" basedir=".">
-
+	
   <!-- =================================================================== -->
 
   <taskdef resource="net/sf/antcontrib/antcontrib.properties">
@@ -42,7 +42,6 @@
     
   <property name="reports.dir" location="${pserv.root.dir}/tests/reports"/>
   <property name="summary.dir" location="${pserv.root.dir}/tests/summary"/>
-
 
   <if>
     <isset property="if_server.dir"/>
