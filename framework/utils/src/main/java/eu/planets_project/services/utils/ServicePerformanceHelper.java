@@ -107,11 +107,15 @@ public class ServicePerformanceHelper {
     private MemoryUsage peakHeapUsage;
     private MemoryUsage peakNonHeapUsage;
     
-    private MemoryUsage startHeapUsage;
-    private MemoryUsage startNonHeapUsage;
+    @SuppressWarnings("unused")
+	private MemoryUsage startHeapUsage;
+    @SuppressWarnings("unused")
+	private MemoryUsage startNonHeapUsage;
     
-    private MemoryUsage stopHeapUsage;
-    private MemoryUsage stopNonHeapUsage;
+    @SuppressWarnings("unused")
+	private MemoryUsage stopHeapUsage;
+    @SuppressWarnings("unused")
+	private MemoryUsage stopNonHeapUsage;
 
     public ServicePerformanceHelper() {
         // Look for thread management bean:

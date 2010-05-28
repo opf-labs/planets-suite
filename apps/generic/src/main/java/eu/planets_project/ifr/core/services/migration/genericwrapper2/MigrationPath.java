@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
 import eu.planets_project.services.datatypes.Parameter;
 
 /**

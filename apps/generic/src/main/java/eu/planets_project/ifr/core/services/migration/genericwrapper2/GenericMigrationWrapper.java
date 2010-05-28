@@ -39,7 +39,6 @@ import eu.planets_project.services.utils.ServicePerformanceHelper;
  * 
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-@SuppressWarnings("deprecation")
 public class GenericMigrationWrapper {
 
     private Logger log = Logger.getLogger(GenericMigrationWrapper.class

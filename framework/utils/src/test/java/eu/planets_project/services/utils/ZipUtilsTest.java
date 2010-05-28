@@ -110,7 +110,8 @@ public class ZipUtilsTest {
 		File extract = new File(outputFolder, folderName);
 		FileUtils.forceMkdir(extract);
 		ZipUtils.unzipTo(zip, extract);
-		File deleteSingleFile = new File("IF/common/src/test/resources/test_zip/images/test_jp2/canon-ixus.jpg.jp2");
+		new File("framework/utils/src/test/resources/test_zip/images/test_jp2/canon-ixus.jpg.jp2");
+//		File deleteSingleFile = new File("IF/common/src/test/resources/test_zip/images/test_jp2/canon-ixus.jpg.jp2");
 		ZipUtils.removeFileFrom(zip, "images\\test_jp2\\canon-ixus.jpg.jp2");
 		ZipUtils.removeFileFrom(zip, "images\\test_gif");
 		System.out.println("Zip modified. Please find it here: " + zip.getAbsolutePath());
@@ -126,7 +127,8 @@ public class ZipUtilsTest {
 		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, outputFolder, "zipUtilsTestInsert.zip", true);
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
 		File toInsert = new File("IF/common/src/test/resources/test_zip/images/Kopie von test_gif");
-		File modifiedZip = ZipUtils.insertFileInto(zip, toInsert, "images\\test_gif");
+		ZipUtils.insertFileInto(zip, toInsert, "images\\test_gif");
+//		File modifiedZip = ZipUtils.insertFileInto(zip, toInsert, "images\\test_gif");
 //		File insertMore = new File("tests/test-files/documents/test_pdf/");
 //		modifiedZip = ZipUtils.insertFileInto(zip, insertMore, "documents\\test_pdf");
 		System.out.println("Zip modified. Please find it here: " + zip.getAbsolutePath());

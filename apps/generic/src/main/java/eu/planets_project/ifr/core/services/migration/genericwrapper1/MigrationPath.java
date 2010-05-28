@@ -232,7 +232,7 @@ public class MigrationPath implements Cloneable {
      * @return a <code>Set</code> containing the names of all the parameters
      *         from <code>parameters</code> that have a value.
      */
-    private Set<String> getValidParameterNames(@SuppressWarnings("hiding") Collection<Parameter> parameters) {
+    private Set<String> getValidParameterNames(Collection<Parameter> parameters) {
         Set<String> validParameters = new HashSet<String>();
         for (Parameter parameter : parameters) {
             final String parameterName = parameter.getName();

@@ -71,7 +71,8 @@ public class PlanetsJCRAccessManager implements AccessManager {
     /**
      * {@inheritDoc}
      */
-    public void init(AMContext context)
+    @SuppressWarnings("unchecked")
+	public void init(AMContext context)
             throws AccessDeniedException, Exception {
         if (initialized) {
             throw new IllegalStateException("already initialized");

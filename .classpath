@@ -5,6 +5,12 @@
 	<classpathentry kind="src" path="framework/utils/src/main/java"/>
 	<classpathentry kind="src" path="framework/utils/src/test/java"/>
 	<classpathentry kind="src" path="services/javadigest/src/main/java"/>
+	<classpathentry kind="src" path="apps/techreg/src/main/java"/>
+	<classpathentry kind="src" path="apps/techreg/src/test/java"/>
+	<classpathentry kind="src" path="apps/generic/src/main/java"/>
+	<classpathentry kind="src" path="apps/servreg/src/main/java"/>
+	<classpathentry kind="src" path="apps/storage/src/main/java"/>
+	<classpathentry kind="src" path="apps/storage/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="framework/utils/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/streambuffer.jar"/>
@@ -15,5 +21,17 @@
 	<classpathentry kind="lib" path="framework/utils/lib/droid.jar"/>
 	<classpathentry kind="lib" path="framework/utils/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/oai4j-0.6b1.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="apps/servreg/lib/jsf-api.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/commons-httpclient.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/jcr-1.0.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/soap.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/jaxen-1.1.1.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/richfaces-impl-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/jackrabbit-core-1.4.5.jar"/>
+	<classpathentry kind="lib" path="apps/storage/lib/jackrabbit-api-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

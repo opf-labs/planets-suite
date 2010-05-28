@@ -37,7 +37,6 @@ import eu.planets_project.services.utils.ServiceUtils;
 /**
  * Generic Migration.
  */
-@SuppressWarnings("deprecation")
 @Stateless
 @Remote(Migrate.class)
 @WebService(name = GenericMigration.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")

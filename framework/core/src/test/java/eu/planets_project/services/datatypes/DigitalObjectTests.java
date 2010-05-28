@@ -95,14 +95,14 @@ public final class DigitalObjectTests {
     }
 
     private static final String SOME_URL_1 = "http://url1";
-    private static final String SOME_URL_2 = "http://url2";
+    //private static final String SOME_URL_2 = "http://url2";
     private static final Checksum CHECKSUM = new Checksum("algo", "checksum");
     private static final Event EVENT = new Event(null, null, 0d, null, null);
     private static final String FRAGMENT = "ID";
     private static final Metadata META = new Metadata(URI.create(SOME_URL_1), "meta");
     private static final String TITLE = "title";
     private DigitalObject digitalObject1;
-    private DigitalObject digitalObject2;
+    //private DigitalObject digitalObject2;
 
     /**
      * The ensure consistent state during creation and support named optional constructor parameters, digital objects
@@ -115,8 +115,8 @@ public final class DigitalObjectTests {
             URI manifestationOf = URI.create(SOME_URL_1);
             URI planetsFormatUri = URI.create(SOME_URL_1);
             /* Creation with only required arguments: */
-            digitalObject2 = new DigitalObject.Builder(Content.byReference(new URL(SOME_URL_2))).permanentUri(
-                    URI.create(SOME_URL_2)).build();
+            //digitalObject2 = new DigitalObject.Builder(Content.byReference(new URL(SOME_URL_2))).permanentUri(
+            //       URI.create(SOME_URL_2)).build();
             /* Creation with all optional arguments: */
             DigitalObjectContent content = Content.byReference(permanentUrl.toURL()).withChecksum(CHECKSUM);
             digitalObject1 = new DigitalObject.Builder(content).permanentUri(permanentUrl).events(EVENT).fragments(

@@ -175,7 +175,7 @@ class MigrationPaths {
      *            <code>List</code> of <code>MigrationPath</code> instances to
      *            add to this container.
      */
-    void addAll(@SuppressWarnings("hiding") List<MigrationPath> migrationPaths) {
+    void addAll(List<MigrationPath> migrationPaths) {
 	for (MigrationPath path : migrationPaths) {
 	    addMigrationPath(path);
 	}
