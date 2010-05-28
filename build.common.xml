@@ -121,6 +121,10 @@
       <include name="**/*.jar"/>
       <exclude name="lib-jee/*.jar"/>
     </fileset>
+  	
+    <fileset dir="${psuite.root.dir}/lib">
+      <include name="**/*.jar"/>
+    </fileset>
     
     <!--include our external resources as *.xml and *.props-->
     <pathelement location="${src.resources}"/>
