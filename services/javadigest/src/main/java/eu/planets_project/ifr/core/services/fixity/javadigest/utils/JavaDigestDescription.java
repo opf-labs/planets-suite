@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.jboss.util.platform.Java;
-
 import eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Parameter;
@@ -66,7 +64,7 @@ public final class JavaDigestDescription {
 		// Add the tool details
 		sd.tool(Tool.create(null,
 				MessageDigest.class.getName(),
-				String.valueOf(Java.getVersion()),
+				String.valueOf(System.getProperty("java.version")),
 				JavaDigestDescription.TOOL_DESC,
 				JavaDigestDescription.SUPPORT_DOCUMENT_LOC.toString()));
 		
