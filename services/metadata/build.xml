@@ -16,10 +16,10 @@
   <!-- Specify if this application requires further software to be installed -->
   <property name="psuite.app.deploy.mode" value="pure-java" />
   
-  <property name="src.dir" value="${appDir}/src/java"/>
+  <property name="src.dir" value="${appDir}/src/main/java"/>
   <property name="lib.dir" value="${appDir}/lib"/>
-  <property name="src.resources" value="${appDir}/src/resources"/>
-  <property name="src.web" value="${appDir}/src/web" />
+  <property name="src.resources" value="${appDir}/src/main/resources"/>
+  <property name="src.web" value="${appDir}/src/main/web" />
 	
   <!-- Include the build targets etc -->
   <property name="psuite.root.dir" value="../.." />
