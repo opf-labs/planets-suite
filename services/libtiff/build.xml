@@ -13,12 +13,12 @@
   <property name="psuite.app.build.type" value="war"/>
   <property name="psuite.app.deploy.mode" value="requires-config" />
       
-  <property name="src.dir" value="${appDir}/src/java"/>
+  <property name="src.dir" value="${appDir}/src/main/java"/>
   <property name="lib.dir" value="${appDir}/lib"/>
-  <property name="src.resources" value="${appDir}/src/resources"/>
-  <property name="src.web" value="${appDir}/src/web" />
+  <property name="src.resources" value="${appDir}/src/main/resources"/>
+  <property name="src.web" value="${appDir}/src/main/web" />
 
-  <property name="test.src.dir" value="${appDir}/test/java" />
+  <property name="test.src.dir" value="${appDir}/src/test/java" />
   <property name="test.local" value="" />
   <property name="test.standalone" value="" />
   
