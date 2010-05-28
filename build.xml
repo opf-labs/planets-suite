@@ -77,9 +77,16 @@
   </path>
   
 	  <!-- This target installs all services. -->
+	  <path id="service.sub.projects">
+	    <fileset dir="${basedir}">
+	      <include name="services/*/build.xml"/>
+	    </fileset>
+	  </path>
+
+	<!-- This target installs all services. -->
 	  <path id="framework.sub.projects">
 	    <fileset dir="${basedir}">
-	      <include name="framwork/*/build.xml"/>
+	      <include name="framework/*/build.xml"/>
 	    </fileset>
 	  </path>
 

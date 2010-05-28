@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Storage Services deployer build file                                    -->
+<!-- ======================================================================= -->
+
+<project name="if-storage" default="deploy" basedir=".">
+
+	<!-- Define the project name and directory, based on the project name specified above. -->
+	<property name="appName" value="${ant.project.name}" />
+	<property name="appDir" value="." />
+
+	<!-- Specify the build type: ejb, war or ear. -->
+    <property name="pserv.app.build.type" value="ear"/>
+
+	<!-- Specify how this application should be deployed -->
+	<property name="pserv.app.deploy.mode" value="pure-java" />
+
+	<!-- Specify the source directories for this component -->
+	<property name="src.dir" value="${appDir}/src/main/java" />
+	<property name="lib.dir" value="${appDir}/lib" />
+	<property name="src.resources" value="${appDir}/src/main/resources" />
+	<property name="src.web" value="${appDir}/src/web" />
+
+	<!-- Specify the config directory and file for this component -->
+	<property name="src.config" location="${appDir}/src/main/config" />
+	<property name="src.config.properties" value="DataRegistry.properties" />
+
+	<!-- Define the API part-->
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/storage/api/** eu/planets_project/ifr/core/storage/impl/blnewspaper/** eu/planets_project/ifr/core/storage/impl/file/** eu/planets_project/ifr/core/storage/impl/jcr/** eu/planets_project/ifr/core/storage/impl/oai/** eu/planets_project/ifr/core/storage/impl/util/** eu/planets_project/ifr/core/storage/impl/web/** eu/planets_project/ifr/core/storage/utils/** eu/planets_project/ifr/core/storage/impl/**" />
+
+	<!-- Unit testing definitions -->
+	<property name="test.src.root" value="${appDir}/src/test" />
+	<property name="test.src.dir" value="${test.src.root}/java" />
+	<property name="test.local" value="" />
+	<property name="test.standalone" value="" />
+	<property name="test.server" value="" />
+
+	<!-- Specify the test config directory and file for this component -->
+	<property name="test.config" location="${test.src.root}/config" />
+	<property name="test.config.properties" value="DataRegistry.properties" />
+
+	<!-- Reference to the main build file -->
+	<property name="pserv.root.dir" value="../.." />
+	<import file="${pserv.root.dir}/build.common.xml" />
+
+	<!-- Location of the test config directory -->
+	<property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
+
+	<!-- First copy the test config file to pserv/test/config -->
+	<copy file="${test.config}/${test.config.properties}" tofile="${pserv.test.config}/${test.config.properties}" overwrite="true" />
+
+	<!-- We want the build properties file to get the config directory value -->
+	<property file="${pserv.root.dir}/build.properties"/>
+
+	<!-- Check that ${if_server.conf} is set -->
+	<if>
+		<isset property="if_server.conf" />
+		<then>
+			<!-- Copy the config template to the config dir -->
+			<copy file="${src.config}/${src.config.properties}.template" tofile="${if_server.conf}/${src.config.properties}" overwrite="true"/>
+			<!-- Substitute the conf directory value from the build properties -->
+		    <replace file="${if_server.conf}/${src.config.properties}">
+		    	<replacefilter token="@planets.server.conf@" value="${if_server.dir}" />
+		    </replace>
+		</then>
+	</if>
+
+
+</project>
