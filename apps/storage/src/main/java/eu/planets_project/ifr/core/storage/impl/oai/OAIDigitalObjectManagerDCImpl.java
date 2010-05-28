@@ -308,7 +308,8 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
      * @author GrafR
      *
      */
-    private class ManagerControl extends Thread {
+    @SuppressWarnings("unused")
+	private class ManagerControl extends Thread {
         
         /**
          * Repository implementation

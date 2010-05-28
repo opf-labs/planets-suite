@@ -13,13 +13,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.conf.Configuration;
-import eu.planets_project.ifr.core.storage.AllStorageSuite;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
@@ -37,20 +34,11 @@ import eu.planets_project.services.utils.test.TestFile;
  */
 public class DataRegistryTests {
 
-	// This is where to put a test dom config property file, put the name in the array below
-	private static final String TEST_CONFIG_DEFAULT_DIR =
-		AllStorageSuite.RESOURCE_BASE + "DataRegistry/addconfig";
-
-	private static final String[] TEST_CONFIG_NAMES = 
-				new String[]{"inmemory"};
-
 	private static TestFile[] testFiles = 
 		new TestFile[]{TestFile.HTML, TestFile.RTF, TestFile.TXT, TestFile.XML};
 	
 	// The DataRegistry to test
 	private static DataRegistry dataReg = null;
-	
-	private static HashMap<URI, Configuration> testDoms = new HashMap<URI, Configuration>();
 
 	/**
 	 * @throws java.lang.Exception

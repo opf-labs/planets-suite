@@ -103,7 +103,8 @@ public class JCRManager {
      * 
      * TODO This should be part of some run once set up code, currently check and run if not already run
      */
-    private void initialiseRepository() {
+    @SuppressWarnings("unused")
+	private void initialiseRepository() {
     	try {
     		this.getSession();
     		boolean _initialiseRepository = true;

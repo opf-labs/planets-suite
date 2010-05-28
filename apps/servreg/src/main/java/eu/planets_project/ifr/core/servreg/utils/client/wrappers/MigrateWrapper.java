@@ -6,19 +6,14 @@ package eu.planets_project.ifr.core.servreg.utils.client.wrappers;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
-import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
-import javax.xml.ws.soap.MTOMFeature;
-import javax.xml.ws.soap.SOAPBinding;
 
 import com.sun.xml.ws.developer.JAXWSProperties;
-import com.sun.xml.ws.developer.StreamingAttachmentFeature;
-
-import java.util.logging.Logger;
 
 import eu.planets_project.ifr.core.servreg.utils.PlanetsServiceExplorer;
 import eu.planets_project.services.datatypes.DigitalObject;
