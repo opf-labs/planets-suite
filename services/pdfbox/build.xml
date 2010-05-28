@@ -10,13 +10,13 @@
     <property name="appDir" value="."/>
 	
 	<!-- Specify if this application requires further software to be installed -->
-	<property name="pserv.app.deploy.mode" value="pure-java" />
+	<property name="psuite.app.deploy.mode" value="pure-java" />
 
     <!-- Specify the build type: ejb, war or ear. -->
-    <property name="pserv.app.build.type" value="war"/>
+    <property name="psuite.app.build.type" value="war"/>
 
     <!-- Specify how this application should be deployed -->
-    <!--<property name="pserv.app.deploy.mode" value="ejb" />-->
+    <!--<property name="psuite.app.deploy.mode" value="ejb" />-->
 
     <!-- Specify the source directories for this component -->
     <property name="src.dir" value="${appDir}/src/java"/>
@@ -31,7 +31,7 @@
     <property name="test.server" value="" />
 
     <!-- Reference to the main build file -->
-    <property name="pserv.root.dir" value="../.." />
-    <import file="${pserv.root.dir}/build.common.xml"/>
+    <property name="psuite.root.dir" value="../.." />
+    <import file="${psuite.root.dir}/build.common.xml"/>
 
 </project>

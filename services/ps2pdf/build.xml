@@ -11,10 +11,10 @@
     <property name="appDir" location="." />
 
     <!-- Specify the build type: ejb, war or ear. -->
-    <property name="pserv.app.build.type" value="war" />
+    <property name="psuite.app.build.type" value="war" />
 
     <!-- Specify if this application requires further software to be installed -->
-    <property name="pserv.app.deploy.mode" value="full" />
+    <property name="psuite.app.deploy.mode" value="full" />
 
     <property name="src.dir" location="${appDir}/src/java" />
     <property name="lib.dir" location="${appDir}/lib" />
@@ -30,20 +30,20 @@
     <property name="test.server" value="" />
 
     <!-- Include the build targets etc -->
-    <property name="pserv.root.dir" location="../.." />
-    <property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
-    <import file="${pserv.root.dir}/build.common.xml" />
+    <property name="psuite.root.dir" location="../.." />
+    <property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
+    <import file="${psuite.root.dir}/build.common.xml" />
 
-    <!-- First copy the test config file(s) from test config area to pserv/test/config -->
-    <echo message="COPYING ${test.config}/* TO ${pserv.test.config}">
+    <!-- First copy the test config file(s) from test config area to psuite/test/config -->
+    <echo message="COPYING ${test.config}/* TO ${psuite.test.config}">
     </echo>
-    <copy todir="${pserv.test.config}" overwrite="yes">
+    <copy todir="${psuite.test.config}" overwrite="yes">
         <fileset dir="${test.config}" />
     </copy>
 
     <!-- We need to get the directory path of the configuration directory of
      the planets server from the build properties file. -->
-    <property file="${pserv.root.dir}/build.properties" />
+    <property file="${psuite.root.dir}/build.properties" />
 	
     <!-- Copy the configuration template from src/main/config area to user config dir to indicate that it must be adapted to the systetm running the server -->
     <echo message="COPYING ${src.config}/* TO ${if_server.conf}">

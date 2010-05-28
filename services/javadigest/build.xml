@@ -13,7 +13,7 @@
     <property name="psuite.app.build.type" value="war"/>
 
     <!-- Specify if this application requires further software to be installed -->
-    <property name="pserv.app.deploy.mode" value="pure-java" />
+    <property name="psuite.app.deploy.mode" value="pure-java" />
 
 	<property name="src.dir" location="${appDir}/src/main/java" />
 	<property name="lib.dir" location="${appDir}/lib" />

@@ -10,10 +10,10 @@
 	<property name="appName" value="${ant.project.name}" />
 	<property name="appDir" location="." />
     <!-- Specify the build type: ejb, war or ear. -->
-    <property name="pserv.app.build.type" value="ejb"/>
+    <property name="psuite.app.build.type" value="ejb"/>
 
     <!-- Specify if this application requires further software to be installed -->
-    <property name="pserv.app.deploy.mode" value="pure-java" />
+    <property name="psuite.app.deploy.mode" value="pure-java" />
 
 	<property name="src.dir" location="${appDir}/src/main/java" />
 	<property name="lib.dir" location="${appDir}/lib" />
@@ -30,16 +30,16 @@
 	<property name="test.server" value="" />
 
 	<!-- Include the build targets etc -->
-	<property name="pserv.root.dir" location="../.." />
-	<property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
-	<import file="${pserv.root.dir}/build.common.xml" />
+	<property name="psuite.root.dir" location="../.." />
+	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
+	<import file="${psuite.root.dir}/build.common.xml" />
 
 	<!-- OK, this is the DROID config stuff, this may be fun -->
-	<!-- First copy the test config file from test config area to pserv/test/config -->
-	<copy file="${test.config}/${test.config.properties}" tofile="${pserv.test.config}/${test.config.properties}" overwrite="true" />
+	<!-- First copy the test config file from test config area to psuite/test/config -->
+	<copy file="${test.config}/${test.config.properties}" tofile="${psuite.test.config}/${test.config.properties}" overwrite="true" />
 
 	<!-- We want the build properties file to get the config directory value -->
-	<property file="${pserv.root.dir}/build.properties"/>
+	<property file="${psuite.root.dir}/build.properties"/>
 	
 	<!-- Check that ${if_server.conf} is set -->
 	<if>
