@@ -8,6 +8,8 @@
 	
   <!-- =================================================================== -->
 
+	  <property name="psuite.root.dir" location="." />
+	  <echo message="root-common = ${psuite.root.dir}"></echo>
   <taskdef resource="net/sf/antcontrib/antcontrib.properties">
     <classpath>
       <pathelement location="${psuite.root.dir}/lib/ant-contrib-1.0b3.jar"/>
