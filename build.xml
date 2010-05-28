@@ -76,7 +76,14 @@
     </fileset>
   </path>
   
-  <target name="deploy:all" depends="props:set,deploy:common">
+	  <!-- This target installs all services. -->
+	  <path id="framework.sub.projects">
+	    <fileset dir="${basedir}">
+	      <include name="framwork/*/build.xml"/>
+	    </fileset>
+	  </path>
+
+	<target name="deploy:all" depends="props:set,deploy:common">
     <foreach target="deploy:sub" param="sub.build" inheritall="false">
       <path refid="all.sub.projects"/>
     </foreach>
@@ -128,7 +135,7 @@
 
   <target name="deploy:api">
     <foreach target="deploy:sub:api" param="sub.build" inheritall="false">
-      <path refid="all.sub.projects"/>
+      <path refid="framework.sub.projects"/>
     </foreach>
   </target>
   <target name="deploy:sub:api">

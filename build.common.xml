@@ -189,12 +189,12 @@
     <ant dir="${psuite.root.dir}/framework/core" inheritAll="false" target="compile:common"/>
     <ant dir="${psuite.root.dir}" inheritAll="false" target="deploy:api"/>
 
-    <!-- Update component properties files, destined for jars -->
+    <!-- Update component properties files, destined for jars >
     <copy file="${psuite.root.dir}/framework/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties.template" tofile="${psuite.root.dir}/framework/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties" />
     <replace file="${psuite.root.dir}/framework/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties">
       <replacefilter token="@planets.server.hostname@" value="${if_server.host}" />
       <replacefilter token="@planets.server.port@" value="${if_server.port}" />
-    </replace>
+    </replace-->
 
   	<!-- Ensure any new jars are added to the classpath? -->
     <path id="psuite_common_classpath">
