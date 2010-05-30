@@ -4,23 +4,23 @@
 <!-- Planets Storage Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="if-storage" default="deploy" basedir=".">
+<project name="storage" default="deploy" basedir=".">
 
 	<!-- Define the project name and directory, based on the project name specified above. -->
 	<property name="appName" value="${ant.project.name}" />
 	<property name="appDir" value="." />
 
 	<!-- Specify the build type: ejb, war or ear. -->
-    <property name="pserv.app.build.type" value="ear"/>
+    <property name="psuite.app.build.type" value="ear"/>
 
 	<!-- Specify how this application should be deployed -->
-	<property name="pserv.app.deploy.mode" value="pure-java" />
+	<property name="psuite.app.deploy.mode" value="pure-java" />
 
 	<!-- Specify the source directories for this component -->
 	<property name="src.dir" value="${appDir}/src/main/java" />
 	<property name="lib.dir" value="${appDir}/lib" />
 	<property name="src.resources" value="${appDir}/src/main/resources" />
-	<property name="src.web" value="${appDir}/src/web" />
+	<property name="src.web" value="${appDir}/src/webapp" />
 
 	<!-- Specify the config directory and file for this component -->
 	<property name="src.config" location="${appDir}/src/main/config" />
@@ -41,17 +41,17 @@
 	<property name="test.config.properties" value="DataRegistry.properties" />
 
 	<!-- Reference to the main build file -->
-	<property name="pserv.root.dir" value="../.." />
-	<import file="${pserv.root.dir}/build.common.xml" />
+	<property name="psuite.root.dir" value="../.." />
+	<import file="${psuite.root.dir}/build.common.xml" />
 
 	<!-- Location of the test config directory -->
-	<property name="pserv.test.config" location="${pserv.root.dir}/test/config" />
+	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
 
 	<!-- First copy the test config file to pserv/test/config -->
-	<copy file="${test.config}/${test.config.properties}" tofile="${pserv.test.config}/${test.config.properties}" overwrite="true" />
+	<copy file="${test.config}/${test.config.properties}" tofile="${psuite.test.config}/${test.config.properties}" overwrite="true" />
 
 	<!-- We want the build properties file to get the config directory value -->
-	<property file="${pserv.root.dir}/build.properties"/>
+	<property file="${psuite.root.dir}/build.properties"/>
 
 	<!-- Check that ${if_server.conf} is set -->
 	<if>
