@@ -7,9 +7,8 @@
 <project name="Planets-Suite Build Commons" default="deploy:ear" basedir=".">
 	
   <!-- =================================================================== -->
-
-	  <property name="psuite.root.dir" location="." />
-	  <echo message="root-common = ${psuite.root.dir}"></echo>
+  <property name="psuite.root.dir" location="." />
+  <echo message="root-common = ${psuite.root.dir}"></echo>
   <taskdef resource="net/sf/antcontrib/antcontrib.properties">
     <classpath>
       <pathelement location="${psuite.root.dir}/lib/ant-contrib-1.0b3.jar"/>
@@ -191,6 +190,7 @@
   <!-- To deploy the common classes. -->
   <target name="deploy:common" unless="have.deployed.common">
     <ant dir="${psuite.root.dir}/framework/core" inheritAll="false" target="compile:common"/>
+    <ant dir="${psuite.root.dir}/framework/utils" inheritAll="false" />
     <ant dir="${psuite.root.dir}" inheritAll="false" target="deploy:api"/>
 
     <!-- Update component properties files, destined for jars >
