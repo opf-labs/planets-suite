@@ -4,7 +4,7 @@
 <!-- Planets Storage Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="storage" default="deploy" basedir=".">
+<project name="apps-storage" default="deploy" basedir=".">
 
 	<!-- Define the project name and directory, based on the project name specified above. -->
 	<property name="appName" value="${ant.project.name}" />

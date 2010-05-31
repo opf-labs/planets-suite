@@ -15,13 +15,11 @@ package eu.planets_project.ifr.core.techreg.formats;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.net.URISyntaxException;
-import java.util.Set;
+import java.net.URL;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
-
-import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;

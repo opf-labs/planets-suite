@@ -50,5 +50,9 @@
 	<classpathentry kind="lib" path="lib/velocity-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
 	<classpathentry kind="lib" path="lib/jbossweb.jar"/>
+	<classpathentry kind="lib" path="framework/utils/lib/acegi-security-1.0.4.jar"/>
+	<classpathentry kind="lib" path="framework/utils/lib/josso-1.7.jar"/>
+	<classpathentry kind="lib" path="framework/utils/lib/log4j.jar"/>
+	<classpathentry kind="lib" path="framework/utils/lib/struts.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

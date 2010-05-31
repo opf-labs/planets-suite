@@ -13,7 +13,6 @@ package eu.planets_project.ifr.core.techreg.properties;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
@@ -22,12 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
 import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * @author AnJackson

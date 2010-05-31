@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="if-admin" default="deploy" basedir=".">
+<project name="web-admin" default="deploy" basedir=".">
 
 	<property name="appName" value="${ant.project.name}" />
 	<property name="appDir" value="." />
@@ -17,7 +17,7 @@
 	<property name="src.dir" value="${appDir}/src/main/java" />
 	<property name="lib.dir" value="${appDir}/lib" />
 	<property name="src.resources" value="${appDir}/src/main/resources" />
-	<property name="src.web" value="${appDir}/src/webapp" />
+	<property name="src.web" value="${appDir}/src/main/webapp" />
 
 
 	<property name="psuite.root.dir" value="../.." />
