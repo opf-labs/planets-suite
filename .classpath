@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="framework/core/src/test/java"/>
 	<classpathentry kind="src" path="framework/utils/src/main/java"/>
 	<classpathentry kind="src" path="framework/utils/src/test/java"/>
+	<classpathentry kind="src" path="framework/security/src/main/java"/>
 	<classpathentry kind="src" path="services/javadigest/src/main/java"/>
 	<classpathentry kind="src" path="apps/techreg/src/main/java"/>
 	<classpathentry kind="src" path="apps/techreg/src/test/java"/>
@@ -12,7 +13,6 @@
 	<classpathentry kind="src" path="apps/storage/src/main/java"/>
 	<classpathentry kind="src" path="apps/storage/src/test/java"/>
 	<classpathentry kind="src" path="apps/servreg/src/test/java"/>
-	<classpathentry kind="src" path="apps/users/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="framework/utils/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/streambuffer.jar"/>
