@@ -11,7 +11,7 @@
 	<property name="appDir" value="." />
 
 	<!-- Specify the build type: ejb, war or ear. -->
-    <property name="psuite.app.build.type" value="jar"/>
+    <property name="psuite.app.build.type" value="ear"/>
 
 	<!-- Specify how this application should be deployed -->
 	<property name="psuite.app.deploy.mode" value="pure-java" />

@@ -3,14 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/application_1_4.xsd"
     version="1.4">
-    <display-name>Users EAR</display-name>
     <module>
-        <web>
-            <web-uri>pserv-if-users.war</web-uri>
-            <context-root>users</context-root>
-        </web>
-    </module>
-    <module>
-        <java>pserv-if-users.jar</java>
+        <java>psuite-apps-users.jar</java>
     </module>
 </application>

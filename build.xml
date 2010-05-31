@@ -99,16 +99,28 @@
   <!-- This path defines all webapps sub projects. -->
   <path id="webapps.sub.projects">
     <fileset dir="${basedir}">
-      <include name="apps/*/build.xml"/>
+      <include name="webapps/*/build.xml"/>
     </fileset>
   </path>
 
-  <target name="deploy:all" depends="props:set,deploy:common">
-    <foreach target="deploy:sub" param="sub.build" inheritall="false">
-      <path refid="all.sub.projects"/>
-    </foreach>
-  </target>
-  
+	  <target name="deploy:webapps" depends="props:set,deploy:common">
+	    <foreach target="deploy:sub" param="sub.build" inheritall="false">
+	      <path refid="webapps.sub.projects"/>
+	    </foreach>
+	  </target>
+	  
+	  <target name="deploy:apps" depends="props:set,deploy:common">
+	    <foreach target="deploy:sub" param="sub.build" inheritall="false">
+	      <path refid="apps.sub.projects"/>
+	    </foreach>
+	  </target>
+	  
+	  <target name="deploy:all" depends="props:set,deploy:common">
+	    <foreach target="deploy:sub" param="sub.build" inheritall="false">
+	      <path refid="all.sub.projects"/>
+	    </foreach>
+	  </target>
+	  
   <target name="deploy:sub">
     <echo message="In ${sub.build}"/>
     <dirname property="sub.build.dir" file="${sub.build}"/>
