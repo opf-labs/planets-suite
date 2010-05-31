@@ -49,5 +49,6 @@
 	<classpathentry kind="lib" path="lib/jbossall-client.jar"/>
 	<classpathentry kind="lib" path="lib/velocity-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry kind="lib" path="lib/jbossweb.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
