@@ -192,7 +192,8 @@ public final class XcdlCompare implements Compare {
             e.printStackTrace();
         }
         if (!xcdl.toLowerCase().contains("<xcdl")) {
-            throw new IllegalArgumentException("Digital object given is not XCDL: " + xcdl.substring(0,100));
+          throw new IllegalArgumentException("Digital object given is not XCDL: "
+              + xcdl.substring(0, Math.min(100, xcdl.length())));
         }
         return stream == null ? null : xcdl;
     }
