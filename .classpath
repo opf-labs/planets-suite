@@ -34,5 +34,12 @@
 	<classpathentry kind="lib" path="apps/storage/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/jackrabbit-core-1.4.5.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/jackrabbit-api-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/activation.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr173_api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/stax-ex.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr181-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
