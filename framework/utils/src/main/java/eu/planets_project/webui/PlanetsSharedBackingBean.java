@@ -37,7 +37,7 @@ public class PlanetsSharedBackingBean {
         File homedir = new File(System.getProperty("jboss.server.home.dir"));
         File shareddir = new File( homedir, "deploy/jboss-web.deployer/ROOT.war");
         try {
-            return shareddir.toURL().toString();
+            return shareddir.toURI().toURL().toString();
         } catch (MalformedURLException e) {
             return "";
         }
