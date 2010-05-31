@@ -10,7 +10,7 @@
 	<property name="appDir" value="." />
 
 	<!-- Specify the build type: ejb, war or ear. -->
-	<property name="psuite.app.build.type" value="ear" />
+	<property name="psuite.app.build.type" value="jar" />
 
 	<!-- Specify if this application requires further software to be installed -->
 	<property name="psuite.app.deploy.mode" value="pure-java" />
@@ -18,7 +18,7 @@
 	<property name="src.dir" value="${appDir}/src/main/java" />
 	<property name="lib.dir" value="${appDir}/lib" />
 	<property name="src.resources" value="${appDir}/src/main/resources" />
-	<property name="src.web" value="${appDir}/src/webapp" />
+	<property name="src.web" value="${appDir}/src/main/webapp" />
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test/java" />
