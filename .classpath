@@ -9,10 +9,8 @@
 	<classpathentry kind="src" path="framework/security/src/main/java"/>
 	<classpathentry kind="src" path="services/javadigest/src/main/java"/>
 	<classpathentry kind="src" path="apps/generic/src/main/java"/>
-	<classpathentry kind="src" path="apps/servreg/src/main/java"/>
 	<classpathentry kind="src" path="apps/storage/src/main/java"/>
 	<classpathentry kind="src" path="apps/storage/src/test/java"/>
-	<classpathentry kind="src" path="apps/servreg/src/test/java"/>
 	<classpathentry kind="src" path="webapps/admin/src/main/java"/>
 	<classpathentry kind="src" path="webapps/admin/src/test/java"/>
 	<classpathentry kind="src" path="webapps/storage/src/main/java"/>
@@ -29,7 +27,6 @@
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/oai4j-0.6b1.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="apps/servreg/lib/jsf-api.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/commons-httpclient.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/jcr-1.0.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/soap.jar"/>
@@ -64,5 +61,6 @@
 	<classpathentry kind="lib" path="lib/richfaces-ui-3.2.1.GA.jar"/>
 	<classpathentry kind="lib" path="framework/techreg/lib/droid.jar"/>
 	<classpathentry kind="lib" path="framework/techreg/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/jsf-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
