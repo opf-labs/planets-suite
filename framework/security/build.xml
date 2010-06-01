@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="apps-users" default="deploy" basedir=".">
+<project name="framework-security" default="deploy" basedir=".">
 
 	<property name="appName" value="${ant.project.name}"/>
 	<property name="appDir" value="."/>
@@ -19,6 +19,8 @@
 	<property name="src.resources" value="${appDir}/src/main/resources"/>
 	<property name="src.web" value="${appDir}/src/main/webapp"/>
 
+	<!-- Define the API part-->
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/security/api/model/** eu/planets_project/ifr/core/security/api/services/**" />
 
 	<property name="psuite.root.dir" value="../.." />
 	<import file="${psuite.root.dir}/build.common.xml"/>

@@ -43,6 +43,7 @@
       </else>
     </if>
     <ant dir="framework/core" inheritAll="false"/>
+  	<ant dir="framework/security" inheritAll="false" />
   	<ant dir="framework/utils" inheritAll="false" />
     <ant target="deploy:api"/>
   </target>
