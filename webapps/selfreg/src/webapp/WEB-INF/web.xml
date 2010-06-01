@@ -113,15 +113,6 @@
         </web-resource-collection>
     </security-constraint>
 
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <realm-name>PlanetsRealm</realm-name>
-        <form-login-config>
-            <form-login-page>/login-redirect.jsp</form-login-page>
-            <form-error-page>/login-redirect.jsp</form-error-page>
-        </form-login-config>
-    </login-config>
-
 </web-app>
 
 
