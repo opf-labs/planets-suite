@@ -1,0 +1,2 @@
+droid.sigfile.location=@planets.server.conf@
+droid.sigfile.name=DROID_SignatureFile_Planets.xml
