@@ -50,7 +50,6 @@
 	<classpathentry kind="lib" path="apps/storage/lib/soap.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/jaxen-1.1.1.jar"/>
-	<classpathentry kind="lib" path="apps/storage/lib/richfaces-impl-3.2.1.GA.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/jackrabbit-core-1.4.5.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/jackrabbit-api-1.4.jar"/>
@@ -75,8 +74,6 @@
 	<classpathentry kind="lib" path="framework/utils/lib/struts.jar"/>
 	<classpathentry kind="lib" path="lib/jsf-facelets.jar"/>
 	<classpathentry kind="lib" path="lib/tomahawk-1.1.6.jar"/>
-	<classpathentry kind="lib" path="lib/richfaces-api-3.2.1.GA.jar"/>
-	<classpathentry kind="lib" path="lib/richfaces-ui-3.2.1.GA.jar"/>
 	<classpathentry kind="lib" path="framework/techreg/lib/droid.jar"/>
 	<classpathentry kind="lib" path="framework/techreg/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/jsf-api.jar"/>
@@ -84,5 +81,8 @@
 	<classpathentry kind="lib" path="services/libtiff/lib/jna.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.4.jar"/>
 	<classpathentry kind="lib" path="services/jtidy/lib/Tidy.jar"/>
+	<classpathentry kind="lib" path="lib/richfaces-api-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="lib/richfaces-ui-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="lib/richfaces-impl-3.3.2.SR1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
