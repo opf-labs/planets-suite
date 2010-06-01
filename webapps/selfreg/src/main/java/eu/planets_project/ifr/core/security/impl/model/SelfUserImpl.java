@@ -57,7 +57,7 @@ public class SelfUserImpl implements User, Serializable {
 	@SuppressWarnings("unused")
     private static Logger log = Logger.getLogger(SelfUserImpl.class.getName());
 
-    private Long id;
+    private Long id = null;
     private String username; // required
     private String password; // required
     private String confirmPassword;

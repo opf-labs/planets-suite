@@ -110,11 +110,6 @@ public class SelfRegistrationManagerImpl implements SelfRegistrationManager {
 	}
 
 	public void addUser(User user) throws UserNotValidException {
-		log.info("SelfUserManagerImpl.addUser()");
-		log.info("User name = " + user.getUsername());
-		if (null != user.getId()) {
-			log.info("User ID = " + user.getId().toString());
-		}
 		log.info("SelfRegistrationManagerImpl.addUser checking useravailibility");
 		if( ! isUsernameAvailable(user.getUsername())) {
 			log.info("SelfRegistrationManagerImpl.addUser User NOT available");
@@ -122,8 +117,13 @@ public class SelfRegistrationManagerImpl implements SelfRegistrationManager {
 		}
 		// Should be okay to store:
 		log.info("SelfRegistrationManagerImpl.addUser persisting the user");
+		log.info("User name = " + user.getUsername());
+		if (null != user.getId()) {
+			log.info("User ID = " + user.getId().toString());
+		}
 		manager.getTransaction().begin();
 		manager.persist(user);
 		manager.getTransaction().commit();
+		manager.flush();
 	}
 }
