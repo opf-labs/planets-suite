@@ -44,13 +44,16 @@
     </if>
     <ant dir="framework/core" inheritAll="false"/>
   	<ant dir="framework/security" inheritAll="false" />
+  	<ant dir="framework/techreg" inheritAll="false" />
   	<ant dir="framework/utils" inheritAll="false" />
     <ant target="deploy:api"/>
   </target>
 
   <target name="compile:common" depends="props:set">
     <ant dir="framework/core" inheritAll="false" target="compile:common"/>
-  	<ant dir="framework/utils" inheritAll="false" target="compile:common"/>
+    <ant dir="framework/security" inheritAll="false" />
+    <ant dir="framework/techreg" inheritAll="false" />
+  	<ant dir="framework/utils" inheritAll="false" />
   </target>
 
     <target name="compile:generic" depends="compile:common">
@@ -169,7 +172,6 @@
   <!-- ================= -->
 
   <target name="deploy:api">
-    <echo message="In deploy:api ${sub.build}"/>
     <foreach target="deploy:sub:api" param="sub.build" inheritall="false">
       <path refid="framework.sub.projects"/>
     </foreach>

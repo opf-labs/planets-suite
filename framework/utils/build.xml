@@ -15,7 +15,7 @@
 	<property name="test.resources" location="${appDir}/src/test/resources" />
 	<property name="test.config" location="${appDir}/src/test/config" />
 	<property name="psuite.app.deploy.mode" value="pure-java" />
-	<property name="psuite.app.build.type" value="ear" />
+	<property name="psuite.app.build.type" value="jar" />
     <property name="psuite.root.dir" location="../.." />
 	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
 	<property name="test.config.properties" value="Common.properties.test" />

@@ -10,4 +10,7 @@
     <module>
         <java>psuite-web-techreg.jar</java> 
     </module>
+    <module>
+        <java>psuite-framework-techreg.jar</java> 
+    </module>
 </application>
