@@ -20,9 +20,6 @@
 	<property name="src.resources" value="${appDir}/src/main/resources" />
 	<property name="src.web" value="${appDir}/src/main/webapp" />
 
-	<!-- Define the API part-->
-	<property name="src.api.includes" value="eu/planets_project/ifr/core/techreg/formats/** eu/planets_project/ifr/core/storage/impl/blnewspaper/** eu/planets_project/ifr/core/storage/impl/file/** eu/planets_project/ifr/core/storage/impl/jcr/** eu/planets_project/ifr/core/storage/impl/oai/** eu/planets_project/ifr/core/storage/impl/util/** eu/planets_project/ifr/core/storage/impl/web/** eu/planets_project/ifr/core/storage/utils/** eu/planets_project/ifr/core/techreg/properties/**" />
-
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test/java" />
 	<property name="test.local" value="" />
