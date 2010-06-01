@@ -1,5 +1,0 @@
-- The registry component is deployed using Ant
-- Service descriptions in src/main/resources/service-description-registry
-  are deployed with the registry
-- The service description registry implementation relies only on Java 6 
-  (or Java 5 plus JAXB)
