@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="framework/core/src/main/java"/>
+	<classpathentry kind="src" path="services/floppyImageHelper/src/main/java"/>
+	<classpathentry kind="src" path="framework/security/src/test/java"/>
+	<classpathentry kind="src" path="webapps/techreg/src/main/java"/>
+	<classpathentry kind="src" path="webapps/techreg/src/test/java"/>
+	<classpathentry kind="src" path="services/libtiff/src/main/java"/>
+	<classpathentry kind="src" path="services/droid/src/main/java"/>
+	<classpathentry kind="src" path="services/javadigest/src/test/java"/>
+	<classpathentry kind="src" path="services/jtidy/src/test/java"/>
+	<classpathentry kind="src" path="webapps/servreg/src/main/java"/>
+	<classpathentry kind="src" path="webapps/selfreg/src/test/java"/>
+	<classpathentry kind="src" path="apps/generic/src/test/java"/>
+	<classpathentry kind="src" path="services/java-se/src/test/java"/>
+	<classpathentry kind="src" path="services/floppyImageHelper/src/test/java"/>
+	<classpathentry kind="src" path="services/libtiff/src/test/java"/>
+	<classpathentry kind="src" path="services/java-se/src/main/java"/>
+	<classpathentry kind="src" path="services/jtidy/src/main/java"/>
+	<classpathentry kind="src" path="services/droid/src/test/java"/>
+	<classpathentry kind="src" path="webapps/selfreg/src/main/java"/>
 	<classpathentry kind="src" path="framework/techreg/src/main/java"/>
 	<classpathentry kind="src" path="framework/techreg/src/test/java"/>
 	<classpathentry kind="src" path="framework/core/src/test/java"/>
@@ -62,5 +80,9 @@
 	<classpathentry kind="lib" path="framework/techreg/lib/droid.jar"/>
 	<classpathentry kind="lib" path="framework/techreg/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/jsf-api.jar"/>
+	<classpathentry kind="lib" path="lib/el-api.jar"/>
+	<classpathentry kind="lib" path="services/libtiff/lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.4.jar"/>
+	<classpathentry kind="lib" path="services/jtidy/lib/Tidy.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
