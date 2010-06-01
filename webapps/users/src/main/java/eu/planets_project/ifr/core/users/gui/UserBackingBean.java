@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -16,21 +16,17 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 
-import eu.planets_project.ifr.core.security.api.services.RoleManager;
-import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.model.Role;
+import eu.planets_project.ifr.core.security.api.model.User;
+import eu.planets_project.ifr.core.security.api.services.RoleManager;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.ifr.core.security.api.services.RoleManager.RoleNotFoundException;
 import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotFoundException;
 import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotValidException;
 import eu.planets_project.ifr.core.security.impl.model.AddressImpl;
 import eu.planets_project.ifr.core.security.impl.model.UserImpl;
-import eu.planets_project.ifr.core.security.impl.services.RoleManagerImpl;
-import eu.planets_project.ifr.core.security.impl.services.UserManagerImpl;
 
 /**
  * This is the controller class for the rewritten User Administration JSF web application.
