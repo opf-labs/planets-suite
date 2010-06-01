@@ -60,5 +60,7 @@
 	<classpathentry kind="lib" path="lib/tomahawk-1.1.6.jar"/>
 	<classpathentry kind="lib" path="lib/richfaces-api-3.2.1.GA.jar"/>
 	<classpathentry kind="lib" path="lib/richfaces-ui-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="framework/techreg/lib/droid.jar"/>
+	<classpathentry kind="lib" path="framework/techreg/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
