@@ -6,11 +6,11 @@
     <display-name>Registry EAR</display-name>
     <module>
         <web>
-            <web-uri>pserv-if-servreg.war</web-uri>
+            <web-uri>psuite-web-servreg.war</web-uri>
             <context-root>/registry</context-root>
         </web>
     </module>
     <module>
-        <java>pserv-if-servreg.jar</java>
+        <java>psuite-web-servreg.jar</java>
     </module>
 </application>
