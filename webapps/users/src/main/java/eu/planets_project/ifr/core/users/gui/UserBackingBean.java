@@ -16,6 +16,9 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 
 import eu.planets_project.ifr.core.security.api.services.RoleManager;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -54,9 +57,11 @@ public class UserBackingBean {
 	
 	private List<SelectItem> availableRoles = new ArrayList<SelectItem>();
 	private String[] userRoles = null;
-	
-	private RoleManager roleManager = RoleManagerImpl.getPlanetsRoleManager();
-	private UserManager userManager = UserManagerImpl.getPlanetsUserManager();
+
+	@PersistenceContext(unitName="planetsAdmin")
+	private RoleManager roleManager;
+	@PersistenceContext(unitName="planetsAdmin")
+	private UserManager userManager;
 
 	/**
 	 * Constructor for the UseBackingBean, this populates the user manager and user members
