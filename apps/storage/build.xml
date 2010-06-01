@@ -61,7 +61,7 @@
 			<copy file="${src.config}/${src.config.properties}.template" tofile="${if_server.conf}/${src.config.properties}" overwrite="true"/>
 			<!-- Substitute the conf directory value from the build properties -->
 		    <replace file="${if_server.conf}/${src.config.properties}">
-		    	<replacefilter token="@planets.server.conf@" value="${if_server.dir}" />
+		    	<replacefilter token="@planets.server.conf@" value="${if_server.conf}" />
 		    </replace>
 		</then>
 	</if>
