@@ -16,7 +16,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.persistence.PersistenceContext;
 
 import eu.planets_project.ifr.core.security.api.model.Role;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -27,6 +26,8 @@ import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotFoun
 import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotValidException;
 import eu.planets_project.ifr.core.security.impl.model.AddressImpl;
 import eu.planets_project.ifr.core.security.impl.model.UserImpl;
+import eu.planets_project.ifr.core.security.impl.services.RoleManagerImpl;
+import eu.planets_project.ifr.core.security.impl.services.UserManagerImpl;
 
 /**
  * This is the controller class for the rewritten User Administration JSF web application.
@@ -54,10 +55,8 @@ public class UserBackingBean {
 	private List<SelectItem> availableRoles = new ArrayList<SelectItem>();
 	private String[] userRoles = null;
 
-	@PersistenceContext(unitName="planetsAdmin")
-	private RoleManager roleManager;
-	@PersistenceContext(unitName="planetsAdmin")
-	private UserManager userManager;
+	private RoleManager roleManager = RoleManagerImpl.getPlanetsRoleManager();
+	private UserManager userManager = UserManagerImpl.getPlanetsUserManager();;
 
 	/**
 	 * Constructor for the UseBackingBean, this populates the user manager and user members
