@@ -20,10 +20,10 @@
 	<property name="src.dir" value="${appDir}/src/main/java" />
 	<property name="lib.dir" value="${appDir}/lib" />
 	<property name="src.resources" value="${appDir}/src/main/resources" />
-	<property name="src.web" value="${appDir}/src/web" />
+	<property name="src.web" value="${appDir}/src/main/webapp" />
 
 	<!-- Define the API part-->
-  <property name="src.api.includes" value="eu/planets_project/ifr/core/servreg/api/** eu/planets_project/ifr/core/servreg/utils/**" />
+    <property name="src.api.includes" value="eu/planets_project/ifr/core/servreg/api/** eu/planets_project/ifr/core/servreg/utils/**" />
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test/java" />
@@ -32,8 +32,8 @@
 	<property name="test.server" value="" />
 
 	<!-- Reference to the main build file -->
-	<property name="pserv.root.dir" value="../.." />
-	<import file="${pserv.root.dir}/build.common.xml" />
+	<property name="psuite.root.dir" value="../.." />
+	<import file="${psuite.root.dir}/build.common.xml" />
 
 	<!-- Copy the registered services into the server config directory -->
 	<copy todir="${if_server.dir}/server/default/data/service-description-registry/" overwrite="true">

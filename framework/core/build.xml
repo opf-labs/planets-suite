@@ -18,7 +18,11 @@
 	<property name="psuite.app.build.type" value="jar" />
     <property name="psuite.root.dir" location="../.." />
 	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
-    <import file="${psuite.root.dir}/build.common.xml"/>
+
+	<!-- Define the API part-->
+    <property name="src.api.includes" value="eu/planets_project/services/**" />
+
+	<import file="${psuite.root.dir}/build.common.xml"/>
 
     <taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
       <classpath id="schemagen_classpath">
