@@ -13,6 +13,9 @@
 	<classpathentry kind="src" path="apps/storage/src/main/java"/>
 	<classpathentry kind="src" path="apps/storage/src/test/java"/>
 	<classpathentry kind="src" path="apps/servreg/src/test/java"/>
+	<classpathentry kind="src" path="webapps/admin/src/main/java"/>
+	<classpathentry kind="src" path="webapps/admin/src/test/java"/>
+	<classpathentry kind="src" path="webapps/storage/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="framework/utils/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/streambuffer.jar"/>
@@ -55,5 +58,8 @@
 	<classpathentry kind="lib" path="framework/utils/lib/log4j.jar"/>
 	<classpathentry kind="lib" path="framework/utils/lib/struts.jar"/>
 	<classpathentry kind="lib" path="lib/jsf-facelets.jar"/>
+	<classpathentry kind="lib" path="lib/tomahawk-1.1.6.jar"/>
+	<classpathentry kind="lib" path="lib/richfaces-api-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/richfaces-ui-3.2.1.GA.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
