@@ -3,11 +3,11 @@
     <display-name>techreg EAR</display-name> 
     <module>
         <web>
-            <web-uri>pserv-if-techreg.war</web-uri> 
+            <web-uri>psuite-web-techreg.war</web-uri> 
             <context-root>/techreg</context-root> 
         </web>
     </module>
     <module>
-        <java>pserv-if-techreg.jar</java> 
+        <java>psuite-web-techreg.jar</java> 
     </module>
 </application>
