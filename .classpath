@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="framework/core/src/main/java"/>
+	<classpathentry kind="src" path="framework/techreg/src/main/java"/>
+	<classpathentry kind="src" path="framework/techreg/src/test/java"/>
 	<classpathentry kind="src" path="framework/core/src/test/java"/>
 	<classpathentry kind="src" path="framework/utils/src/main/java"/>
 	<classpathentry kind="src" path="framework/utils/src/test/java"/>
 	<classpathentry kind="src" path="framework/security/src/main/java"/>
 	<classpathentry kind="src" path="services/javadigest/src/main/java"/>
-	<classpathentry kind="src" path="apps/techreg/src/main/java"/>
-	<classpathentry kind="src" path="apps/techreg/src/test/java"/>
 	<classpathentry kind="src" path="apps/generic/src/main/java"/>
 	<classpathentry kind="src" path="apps/servreg/src/main/java"/>
 	<classpathentry kind="src" path="apps/storage/src/main/java"/>
@@ -24,8 +24,6 @@
 	<classpathentry kind="lib" path="framework/core/lib/jaxws-rt.jar"/>
 	<classpathentry kind="lib" path="framework/utils/lib/jboss-annotations-ejb3.jar"/>
 	<classpathentry kind="lib" path="framework/utils/lib/jboss-ejb3x.jar"/>
-	<classpathentry kind="lib" path="framework/utils/lib/droid.jar"/>
-	<classpathentry kind="lib" path="framework/utils/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/oai4j-0.6b1.jar"/>
 	<classpathentry kind="lib" path="apps/storage/lib/dom4j-1.6.1.jar"/>
