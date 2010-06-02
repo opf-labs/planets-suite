@@ -35,6 +35,8 @@
 	<classpathentry kind="src" path="webapps/users/src/main/java"/>
 	<classpathentry kind="src" path="framework/servreg/src/main/java"/>
 	<classpathentry kind="src" path="framework/servreg/src/test/java"/>
+	<classpathentry kind="src" path="ptb/trunk/application/src/main/java"/>
+	<classpathentry kind="src" path="ptb/trunk/application/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="framework/utils/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/streambuffer.jar"/>
@@ -84,5 +86,7 @@
 	<classpathentry kind="lib" path="lib/richfaces-api-3.3.2.SR1.jar"/>
 	<classpathentry kind="lib" path="lib/richfaces-ui-3.3.2.SR1.jar"/>
 	<classpathentry kind="lib" path="lib/richfaces-impl-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/castor-xml.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
