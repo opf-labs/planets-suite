@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.security.impl.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -51,7 +52,8 @@ public class SelfRoleImpl implements Role,  Serializable {
      * @see eu.planets_project.ifr.core.security.api.model.Role#getId()
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     public Long getId() {
         return id;
     }
