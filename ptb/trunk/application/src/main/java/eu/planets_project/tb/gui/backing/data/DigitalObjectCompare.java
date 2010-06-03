@@ -21,24 +21,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.el.ELContext;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import bsh.This;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.Compare;
-import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.compare.PropertyComparison.Equivalence;
@@ -53,14 +47,11 @@ import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 import eu.planets_project.tb.gui.backing.exp.MeasuredComparisonEventBean;
-import eu.planets_project.tb.gui.backing.exp.MeasurementBean;
-import eu.planets_project.tb.gui.backing.exp.MeasurementEventBean;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.backing.exp.utils.ManualMeasurementBackingBean;
 import eu.planets_project.tb.gui.backing.exp.view.MeasuredComparisonBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.eval.PropertyEvaluation;
-import eu.planets_project.tb.impl.model.eval.PropertyEvaluation.EquivalenceStatement;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementAgent;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
@@ -69,10 +60,8 @@ import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
 import eu.planets_project.tb.impl.model.measure.MeasurementAgent.AgentType;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 import eu.planets_project.tb.impl.properties.ManuallyMeasuredPropertyHandlerImpl;
-import eu.planets_project.tb.impl.properties.ManuallyMeasuredPropertyImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
-import eu.planets_project.tb.impl.services.wrappers.ComparePropertiesWrapper;
 import eu.planets_project.tb.impl.services.wrappers.CompareWrapper;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 

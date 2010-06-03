@@ -92,5 +92,20 @@
 	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/castor-xml.jar"/>
 	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/opencsv-1.8.jar"/>
 	<classpathentry kind="lib" path="framework/wee/lib/tools.jar"/>
+	<classpathentry kind="lib" path="lib/jbossws-spi.jar"/>
+	<classpathentry kind="lib" path="lib/jbossws-metro-server.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/jaxm-api.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/protege-owl.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/protege.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/protege-pellet.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/icu4j_3_4.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-xjc.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/jcommon-1.0.15.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/batik-dom.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/batik-svggen.jar"/>
+	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/batik-awt-util.jar"/>
+	<classpathentry kind="lib" path="lib/bsh.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -7,7 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import edu.stanford.smi.protegex.owl.ProtegeOWL;
-import edu.stanford.smi.protegex.owl.inference.pellet.ProtegePelletJenaReasoner;
 import edu.stanford.smi.protegex.owl.inference.protegeowl.ReasonerManager;
 import edu.stanford.smi.protegex.owl.inference.reasoner.ProtegeReasoner;
 import edu.stanford.smi.protegex.owl.inference.reasoner.exception.ProtegeReasonerException;
