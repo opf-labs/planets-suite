@@ -39,6 +39,8 @@
 	<classpathentry kind="src" path="framework/wee/src/test/java"/>
 	<classpathentry kind="src" path="framework/wdt/src/main/java"/>
 	<classpathentry kind="src" path="framework/wdt/src/test/java"/>
+	<classpathentry kind="src" path="webapps/testbed/src/main/java"/>
+	<classpathentry kind="src" path="webapps/testbed/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="framework/utils/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/streambuffer.jar"/>
@@ -95,5 +97,17 @@
 	<classpathentry kind="lib" path="lib/jaxb-xjc.jar"/>
 	<classpathentry kind="lib" path="lib/bsh.jar"/>
 	<classpathentry kind="lib" path="framework/wdt/lib/jets3t-0.7.0.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/jcommon-1.0.15.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/castor-xml.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/icu4j_3_4.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/protege-owl.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/protege.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/jaxm-api.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/batik-svggen.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/batik-awt-util.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/batik-dom.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/opencsv-1.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
