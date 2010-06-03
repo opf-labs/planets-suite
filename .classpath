@@ -39,6 +39,8 @@
 	<classpathentry kind="src" path="ptb/trunk/application/src/test/java"/>
 	<classpathentry kind="src" path="framework/wee/src/main/java"/>
 	<classpathentry kind="src" path="framework/wee/src/test/java"/>
+	<classpathentry kind="src" path="framework/wdt/src/main/java"/>
+	<classpathentry kind="src" path="framework/wdt/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="framework/utils/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="framework/core/lib/streambuffer.jar"/>
@@ -107,5 +109,6 @@
 	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/batik-svggen.jar"/>
 	<classpathentry kind="lib" path="ptb/trunk/application/src/main/web/WEB-INF/lib/batik-awt-util.jar"/>
 	<classpathentry kind="lib" path="lib/bsh.jar"/>
+	<classpathentry kind="lib" path="framework/wdt/lib/jets3t-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
