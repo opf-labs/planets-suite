@@ -25,7 +25,8 @@ public class CommentPersistencyImpl implements CommentPersistencyRemote {
     private EntityManager manager;
 
     // A Log for this:
-    private Log log = LogFactory.getLog(CommentPersistencyImpl.class);   
+    @SuppressWarnings("unused")
+	private Log log = LogFactory.getLog(CommentPersistencyImpl.class);   
     
     /**
      * A Factory method to build a reference to this interface.

@@ -9,19 +9,13 @@ import java.util.Calendar;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
-import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
-import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementAgent;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * Adds some extra features to the MeasurmentImpl, of use when rendering.

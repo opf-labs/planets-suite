@@ -5,16 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
-
+import junit.framework.TestCase;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
-import eu.planets_project.tb.api.model.finals.TestbedRoles;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.ExperimentNotFoundException;
@@ -22,9 +18,6 @@ import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
-import eu.planets_project.tb.test.model.SetupBasicPropertiesRemote;
-
-import junit.framework.TestCase;
 
 /**
  * @author alindley
@@ -35,8 +28,6 @@ import junit.framework.TestCase;
  *
  */
 public class BasicPropertiesTest extends TestCase{
-	
-	private long propID1, propID2;
 	
 	protected void setUp(){
 

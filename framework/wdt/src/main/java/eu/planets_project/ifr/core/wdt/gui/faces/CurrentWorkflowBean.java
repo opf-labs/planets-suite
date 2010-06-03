@@ -14,6 +14,7 @@ import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
  	*/
 public class CurrentWorkflowBean implements WorkflowBean {
 	
+	@SuppressWarnings("unused")
 	private Logger logger = Logger.getLogger(this.getClass().getName());	
 
 	public CurrentWorkflowBean() {

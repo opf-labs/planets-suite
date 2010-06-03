@@ -6,18 +6,13 @@ package eu.planets_project.tb.impl.properties;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -26,16 +21,11 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.properties.ManuallyMeasuredProperty;
-import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
-import eu.planets_project.tb.impl.system.BackendProperties;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
-import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.tb.api.properties.ManuallyMeasuredProperty;
 
 /**
  * This class is responsible mainly for two items:
@@ -288,7 +278,7 @@ public class ManuallyMeasuredPropertyHandlerImpl {
         	if(name.lastIndexOf("/")!=-1){
         		name = name.substring(name.lastIndexOf("/")+1);
         	}
-        	ManuallyMeasuredProperty p = this.createUserProperty(userName, name, null);
+        	ManuallyMeasuredProperty p = ManuallyMeasuredPropertyHandlerImpl.createUserProperty(userName, name, null);
         	this.removeManualUserProperty(userName, p);
         }
 	}
@@ -381,7 +371,7 @@ public class ManuallyMeasuredPropertyHandlerImpl {
 		//build a digital object
 		DigitalObject digoManualProps = new DigitalObject.Builder(Content.byValue(temp)).title("userproperties").build();
 		//call update on the digital object manager
-		URI uriStored = dataRegistry.getDigitalObjectManager(drManagerID).updateExisting(storageURI, digoManualProps);
+		dataRegistry.getDigitalObjectManager(drManagerID).updateExisting(storageURI, digoManualProps);
 		temp.delete();
 		log.info("updated storage space for user defined manual properties");
 	}

@@ -4,12 +4,9 @@
 package eu.planets_project.tb.gui.backing.data;
 
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.List;
 
-
-import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.logging.Log;

@@ -3,7 +3,6 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,11 +17,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
@@ -31,12 +31,7 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.ExperimentNotFoundException;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
-import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -48,6 +43,11 @@ import org.apache.commons.logging.LogFactory;
 public class BasicPropertiesImpl 
 implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8313539395617311694L;
+	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue
     @XmlTransient

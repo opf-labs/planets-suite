@@ -13,8 +13,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.commons.logging.Log;
-
 /**
  * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
  * @since 14.04.2009

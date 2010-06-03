@@ -3,7 +3,6 @@ package eu.planets_project.tb.api;
 import java.util.List;
 
 import eu.planets_project.tb.api.model.Comment;
-import javax.ejb.Local;
 
 public interface CommentManager {
 	

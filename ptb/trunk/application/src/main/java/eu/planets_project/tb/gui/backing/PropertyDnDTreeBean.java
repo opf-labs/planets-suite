@@ -17,9 +17,8 @@ import org.ajax4jsf.component.UIRepeat;
 import org.ajax4jsf.component.html.HtmlAjaxCommandButton;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.checkbox.HtmlCheckbox;
-import org.richfaces.component.UITreeNode;
 import org.richfaces.component.UITree;
+import org.richfaces.component.UITreeNode;
 import org.richfaces.component.html.HtmlDataTable;
 import org.richfaces.component.html.HtmlInplaceSelect;
 import org.richfaces.component.html.HtmlTree;
@@ -33,9 +32,6 @@ import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
 import edu.stanford.smi.protegex.owl.model.RDFIndividual;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
-import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLNamedClass;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyPropertyImpl;
@@ -62,7 +58,7 @@ public class PropertyDnDTreeBean{
 	private ArrayList<SelectItem> viewsSelectItems = new ArrayList<SelectItem>();
 	private String selectedview = null;
 	private String selectedviewOld = "";
-	private TreeNode rootNode = null;
+	private TreeNode<OntologyProperty> rootNode = null;
 	private String rootNodeName = "";
     private TreeNode selNode;
     //structure: Map<ID,TreeNode>
@@ -91,7 +87,7 @@ public class PropertyDnDTreeBean{
     
     private void loadTree(boolean applyFilter){
     	
-    	this.filterTreeStringOld = this.getFilterTreeString();
+    	PropertyDnDTreeBean.filterTreeStringOld = this.getFilterTreeString();
     	this.selectedviewOld = this.getSelectedViewItem();
     	
     	rootNode = new TreeNodeImpl();
@@ -251,7 +247,7 @@ public class PropertyDnDTreeBean{
      */
     private boolean filterStringChanged(){
     	String filter = this.getFilterTreeString();
-    	if(filter==null||filter.equalsIgnoreCase(this.filterTreeStringOld)){
+    	if(filter==null||filter.equalsIgnoreCase(PropertyDnDTreeBean.filterTreeStringOld)){
     		return false;
     	}
     	return true;
@@ -566,9 +562,12 @@ public class PropertyDnDTreeBean{
      */
     public static class DummyOntologyProperty extends OntologyPropertyImpl implements OntologyProperty{
 
-    	protected DummyOntologyProperty(String name){
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8501600439812475584L;
+		protected DummyOntologyProperty(String name){
     		this.name = name;
-    		this.uri = uri;
     	}
     	
     	String name;

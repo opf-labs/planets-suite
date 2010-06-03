@@ -26,7 +26,6 @@ import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.api.services.mockups.workflow.Workflow;
 import eu.planets_project.tb.impl.model.eval.EvaluationExecutableImpl;
@@ -123,6 +122,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 		String[] sPronomIDs2 = runDroid(f2);
 		
 	  //if-else logic - linking pronom results as input for xcdl extraction	
+		@SuppressWarnings("unused")
 		supportedTypes typeF1,typeF2;
 		typeF1 = getType(sPronomIDs1);
 		typeF2 = getType(sPronomIDs2);

@@ -3,11 +3,9 @@ package eu.planets_project.tb.impl.model.exec;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,8 +14,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.commons.logging.Log;
 
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
@@ -38,12 +34,14 @@ public class BatchWorkflowResultLogImpl implements Serializable {
 	/** */
     private static final long serialVersionUID = -6364553755666036646L;
 
-    @Id
+    @SuppressWarnings("unused")
+	@Id
     @GeneratedValue
     @XmlTransient
     private long id;
 
-    @Transient
+    @SuppressWarnings("unused")
+	@Transient
 	@XmlTransient
 	private static Log log = LogFactory.getLog(BatchWorkflowResultLogImpl.class);
 	

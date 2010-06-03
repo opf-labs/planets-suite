@@ -1,9 +1,5 @@
 package eu.planets_project.tb.api.model.benchmark;
 
-import java.util.Map;
-
-import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
-import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 
 /**

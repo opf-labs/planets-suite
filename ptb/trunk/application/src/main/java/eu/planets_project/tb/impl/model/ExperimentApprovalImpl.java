@@ -3,26 +3,20 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.model.ExperimentApproval;
 import eu.planets_project.tb.api.model.ExperimentSetup;
-import eu.planets_project.tb.gui.backing.ExperimentBean;
-import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 
@@ -35,6 +29,10 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 public class ExperimentApprovalImpl extends ExperimentPhaseImpl
 implements ExperimentApproval, java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8830653439069202361L;
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
     @Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
@@ -49,6 +47,7 @@ implements ExperimentApproval, java.io.Serializable {
     @XmlTransient
     private long lExperimentIDRef;
 
+	@SuppressWarnings("unused")
 	@Transient
     @XmlTransient
 	//This annotation specifies that the property or field is not persistent.

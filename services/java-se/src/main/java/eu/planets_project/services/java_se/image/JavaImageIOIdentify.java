@@ -23,14 +23,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;

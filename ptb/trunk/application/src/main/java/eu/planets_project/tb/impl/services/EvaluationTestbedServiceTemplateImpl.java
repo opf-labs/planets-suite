@@ -24,7 +24,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;

@@ -17,7 +17,6 @@ import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,11 +30,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import eu.planets_project.services.datatypes.DigitalObjectContent;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
@@ -43,22 +41,14 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.mockups.workflow.Workflow;
-import eu.planets_project.tb.api.services.util.ServiceRequestBuilder;
-import eu.planets_project.tb.api.services.util.ServiceRespondsExtractor;
 import eu.planets_project.tb.api.system.ServiceExecutionHandler;
 import eu.planets_project.tb.api.system.batch.BatchProcessor;
-import eu.planets_project.tb.impl.system.batch.TestbedBatchProcessorManager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
-import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
-import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.exceptions.ServiceInvocationException;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
-import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowDroidXCDLExtractorComparator;
-import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
-import org.w3c.dom.Document;
+import eu.planets_project.tb.impl.system.batch.TestbedBatchProcessorManager;
 
 /**
  * @author Andrew Lindley, ARC
@@ -258,7 +248,6 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 				} catch (IOException e) {
 					//2)no valid output FILE for this input file - no problem
 					//in this case, test if it's an URI and if this is downloadable
-					FileOutputStream fos = null;
 					try{
 						String suriRef = migrationResults.get(key);
 						URI uriRef = new URI(suriRef);
@@ -273,10 +262,6 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 						//no problem - we're not able to handle this output
 						//not output for this input element
 						log.debug(e2.toString());
-					}
-					finally{
-						fos.flush();
-						fos.close();
 					}
 				}
 			}

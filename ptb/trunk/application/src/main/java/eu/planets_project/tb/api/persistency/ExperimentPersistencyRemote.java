@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import org.jboss.annotation.ejb.RemoteBinding;
-
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;

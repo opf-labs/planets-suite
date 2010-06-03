@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.wdt.impl.system;
 
-import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;

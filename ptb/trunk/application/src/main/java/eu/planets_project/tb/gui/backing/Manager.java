@@ -6,7 +6,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
-import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.backing.exp.AutoBMGoalEvalUserConfigBean;
 import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 

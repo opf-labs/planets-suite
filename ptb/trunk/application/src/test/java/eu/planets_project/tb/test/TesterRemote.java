@@ -1,9 +1,7 @@
 package eu.planets_project.tb.test;
 
-import javax.ejb.Local;
 import javax.ejb.Remote;
 
-import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.impl.TestBean;
 
 @Remote

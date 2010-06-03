@@ -23,7 +23,6 @@ import eu.planets_project.services.utils.ZipUtils;
 public class Fat_Imgen {
 	
 	private static File TOOL_DIR = null;
-	private static String FAT_IMGEN_NAME = "fat_imgen";
 	private static String FLOPPY_IMAGE_TOOLS_HOME_PATH = System.getenv("FLOPPY_IMAGE_TOOLS_HOME");
 	
 	public static final File SYSTEM_TEMP_FOLDER = new File(System.getProperty("java.io.tmpdir"));
@@ -222,18 +221,6 @@ public class Fat_Imgen {
 	}
 	
 	
-	private List<String> createImageAndInjectFile (File newFloppyImage, File fileToInject) {
-		List<String> cmd = new ArrayList<String>();
-		cmd.add(TOOL_DIR.getAbsolutePath() + File.separator + "fat_imgen");
-		cmd.add("-c");
-		cmd.add("-f");
-		cmd.add(newFloppyImage.getAbsolutePath());
-		cmd.add("-i");
-		cmd.add(fileToInject.getAbsolutePath());
-		cmd.add("-F");
-		return cmd;
-	}
-	
 	private List<String> createEmptyImage (File newFloppyImage) {
 		List<String> cmd = new ArrayList<String>();
 		cmd.add(TOOL_DIR.getAbsolutePath() + File.separator + "fat_imgen");
@@ -316,7 +303,7 @@ public class Fat_Imgen {
 
 
 	private void appendErr (String err) {
-		if(err!=null || !err.equalsIgnoreCase("")) {
+		if(err!=null && !err.equalsIgnoreCase("")) {
 			process_error.append(err);
 			process_error.append(System.getProperty("line.separator"));
 		}
@@ -324,7 +311,7 @@ public class Fat_Imgen {
 
 
 	private void appendOut(String out) {
-		if(out!=null || !out.equalsIgnoreCase("")) {
+		if(out!=null && !out.equalsIgnoreCase("")) {
 			process_output.append(out);
 			process_output.append(System.getProperty("line.separator"));
 		}

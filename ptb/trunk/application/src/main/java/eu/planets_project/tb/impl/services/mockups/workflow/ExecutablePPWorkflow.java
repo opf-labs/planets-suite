@@ -9,7 +9,6 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
-import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /*
@@ -18,7 +17,8 @@ import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
  */
 @Deprecated
 public class ExecutablePPWorkflow implements ExperimentWorkflow {
-    private static Log log = LogFactory.getLog(ExecutablePPWorkflow.class);
+    @SuppressWarnings("unused")
+	private static Log log = LogFactory.getLog(ExecutablePPWorkflow.class);
     
     /** Internal keys for easy referral to the service+stage combinations. */
     public static final String STAGE_PRE_WF_EXECUTION = "Before Workflow Execution";

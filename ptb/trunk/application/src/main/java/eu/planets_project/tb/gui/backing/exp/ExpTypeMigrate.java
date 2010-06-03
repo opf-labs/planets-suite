@@ -4,14 +4,8 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.io.ByteArrayOutputStream;
-
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.net.URI;
@@ -32,7 +26,6 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.ParameterBuilder;
 import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
@@ -54,14 +47,11 @@ import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
 import eu.planets_project.tb.gui.backing.data.DigitalObjectTreeNode;
-import eu.planets_project.tb.gui.backing.exp.ExpTypeExecutablePP.ServiceBean;
-import eu.planets_project.tb.gui.backing.exp.ExpTypeExecutablePP.ServiceParameter;
 import eu.planets_project.tb.gui.backing.exp.utils.ExpTypeWeeBean;
 import eu.planets_project.tb.gui.backing.exp.utils.ExpTypeWeeUtils;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
-import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;

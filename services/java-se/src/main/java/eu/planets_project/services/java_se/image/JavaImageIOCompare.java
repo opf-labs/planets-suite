@@ -11,7 +11,6 @@
 package eu.planets_project.services.java_se.image;
 
 import java.awt.Color;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URI;
@@ -21,13 +20,11 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-import eu.planets_project.ifr.core.techreg.properties.ServiceProperties;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;

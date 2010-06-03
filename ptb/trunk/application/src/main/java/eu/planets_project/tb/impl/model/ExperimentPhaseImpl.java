@@ -3,26 +3,16 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.logging.Log;
-
-import org.apache.commons.logging.Log;
-import eu.planets_project.tb.api.data.mockups.DataRegistryBinding;
-import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 
 /**

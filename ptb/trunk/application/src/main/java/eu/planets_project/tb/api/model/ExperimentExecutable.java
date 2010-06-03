@@ -13,8 +13,6 @@ import java.util.Map.Entry;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
-import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 
 /**

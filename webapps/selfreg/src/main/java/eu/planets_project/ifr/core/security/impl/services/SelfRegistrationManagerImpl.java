@@ -1,42 +1,15 @@
 package eu.planets_project.ifr.core.security.impl.services;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.annotation.Resource;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RunAs;
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
-import javax.rmi.PortableRemoteObject;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
-
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
-import org.jboss.security.SimplePrincipal;
-import org.jboss.security.Util;
-import org.jboss.security.auth.callback.SecurityAssociationHandler;
 
 import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.SelfRegistrationManager;
-import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotFoundException;
 import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotValidException;
 

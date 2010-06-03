@@ -6,9 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlDataTable;
-//import org.richfaces.component.html.HtmlDataTable;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,6 +35,7 @@ public class EditWorkflowParameterSessionBean {
 	private Log log = LogFactory.getLog(EditWorkflowParameterSessionBean.class);
 	private EditWorkflowParameterInspector reqParamInspector;
 	//for experimentID
+	@SuppressWarnings("unused")
 	private String sExpID = null;
 	private String forServiceURL = null;
 	private String forServiceID = null;

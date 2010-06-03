@@ -21,7 +21,6 @@ import javax.rmi.PortableRemoteObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.tb.api.persistency.CommentPersistencyRemote;
 import eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.tags.ServiceTag;

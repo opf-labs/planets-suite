@@ -3,7 +3,6 @@
  */
 package eu.planets_project.tb.impl.system;
 
-import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;

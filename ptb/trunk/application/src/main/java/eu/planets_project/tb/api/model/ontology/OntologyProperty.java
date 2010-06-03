@@ -2,8 +2,6 @@ package eu.planets_project.tb.api.model.ontology;
 
 import java.util.List;
 
-import edu.stanford.smi.protegex.owl.model.OWLIndividual;
-import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
 import edu.stanford.smi.protegex.owl.model.RDFIndividual;
 /**
  * This is the Testbed's interface of an ontology property.

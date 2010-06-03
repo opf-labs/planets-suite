@@ -60,7 +60,6 @@ import eu.planets_project.tb.gui.backing.exp.utils.ExpTypeWeeBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
-import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
@@ -74,6 +73,10 @@ import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
  */
 public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializable,ExpTypeWeeBean{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3669443792175630629L;
 	private Log log = LogFactory.getLog(ExpTypeExecutablePP.class);
 	private HashMap<String, String> serviceTypes;
 	private ArrayList<ServiceBean> serviceBeans;
@@ -432,7 +435,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
     public WorkflowConf buildWorkflowConfFromCurrentConfiguration(){
     	String wfConfigXML = this.buildXMLConfigFromCurrentConfiguration();
     	try {
-			return wfConfigUtil.unmarshalWorkflowConfig(wfConfigXML);
+			return WorkflowConfigUtil.unmarshalWorkflowConfig(wfConfigXML);
 		} catch (JAXBException e) {
 			log.debug("Unable to retrieve the WorkflowConfiguration",e);
 			return null;
@@ -765,6 +768,10 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
 	 */
 	public class ServiceBean implements Cloneable,Serializable{
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 5558546200237525470L;
 		private String serviceId;
 		private String serviceType;
 		private String serviceName;
@@ -961,6 +968,10 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
 	}
 
 	public class ServiceParameter implements Cloneable,Serializable{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -2362976530899676720L;
 		private String name;
 		private String value;
 
@@ -1005,6 +1016,11 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
      */
     public class ExecutablePPResultsForDO  extends ResultsForDigitalObjectBean implements Serializable{
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8115319442858925163L;
+
 		public ExecutablePPResultsForDO(String input) {
 			super(input);
 		}
@@ -1022,8 +1038,13 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
     
     public class ExecutablePPResultBean implements Serializable{
 
-        private int batchId;
-        private ExecutionRecordImpl exerec;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -9171518810708157936L;
+		private int batchId;
+        @SuppressWarnings("unused")
+		private ExecutionRecordImpl exerec;
         private Properties props;
 
         /**
@@ -1075,7 +1096,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
          */
         public List<String> getResultProperties() {
 			List<String> ret = new ArrayList<String>();
-			Enumeration enumeration = props.keys();
+			Enumeration<?> enumeration = props.keys();
 			while(enumeration.hasMoreElements()){
 				String key = (String)enumeration.nextElement();
 				String value = props.getProperty(key);
@@ -1095,10 +1116,10 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean implements Serializa
         public List<ResultsForDigitalObjectBean> getInterimResults() {
         	//List<String> ret = new ArrayList<String>();
         	List<ResultsForDigitalObjectBean> ret = new ArrayList<ResultsForDigitalObjectBean>();
-			Enumeration enumeration = props.keys();
+			Enumeration<?> enumeration = props.keys();
 			while(enumeration.hasMoreElements()){
 				String key = (String)enumeration.nextElement();
-				String value = props.getProperty(key);
+				props.getProperty(key);
 				//keys start with the 
 				if(key.startsWith(ExecutionRecordImpl.RESULT_PROPERTY_INTERIM_RESULT_URI)){
 					ResultsForDigitalObjectBean r = new ResultsForDigitalObjectBean(props.getProperty(key));

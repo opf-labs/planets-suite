@@ -1,21 +1,12 @@
 package eu.planets_project.ifr.core.wdt.gui.faces;
 				
-import java.util.List;
-
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import javax.xml.namespace.QName;
-import javax.xml.ws.WebServiceRef;
-
-import javax.faces.component.*;
-import javax.faces.context.FacesContext;
-//import javax.faces.context.ExternalContext;
+import javax.faces.component.UICommand;
 import javax.faces.event.ActionEvent;
 
-import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
 import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
 	
@@ -46,8 +37,8 @@ public class TemplateContainer
 		return templates;
 	}
 	
-	public void setTemplates(List templateList) {
-		this.templates = templates;
+	public void setTemplates(List<WFTemplate> templateList) {
+		this.templates = templateList;
 	}
 	
 	/**

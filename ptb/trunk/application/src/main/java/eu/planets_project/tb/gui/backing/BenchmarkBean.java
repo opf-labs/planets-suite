@@ -13,7 +13,8 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 public class BenchmarkBean extends TreeNodeBase implements Serializable {
 
     static final long serialVersionUID = 2343216343436521112l;  
-    static private Log log = LogFactory.getLog(FileTreeNode.class);
+    @SuppressWarnings("unused")
+	static private Log log = LogFactory.getLog(FileTreeNode.class);
   	    
     //bm contains all data for populating the bmbean
     BenchmarkGoal bm;

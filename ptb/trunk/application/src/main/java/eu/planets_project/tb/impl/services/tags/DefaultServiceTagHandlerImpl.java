@@ -3,11 +3,8 @@
  */
 package eu.planets_project.tb.impl.services.tags;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -15,17 +12,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Element;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import org.apache.commons.logging.Log;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.tags.DefaultServiceTagHandler;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
-import eu.planets_project.tb.impl.CommentManagerImpl;
 
 /**
  * @author Andrew Lindley, ARC

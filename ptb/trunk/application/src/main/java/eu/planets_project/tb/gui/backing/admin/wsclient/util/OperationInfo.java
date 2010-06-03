@@ -1,8 +1,5 @@
 package eu.planets_project.tb.gui.backing.admin.wsclient.util;
 
-import java.util.Map;
-import java.util.Iterator;
-import java.util.Hashtable;
 
 
 /**
@@ -13,9 +10,6 @@ import java.util.Hashtable;
 
 public class OperationInfo
 {
-   /** The SOAP operation type */
-   private String operationType = "";
-
    /** The SOAP encoding style to use. */
    private String encodingStyle = "";
 

@@ -1,10 +1,7 @@
 package eu.planets_project.tb.api;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-
-import eu.planets_project.tb.api.model.Experiment;
 
 public interface AdminManager {
     

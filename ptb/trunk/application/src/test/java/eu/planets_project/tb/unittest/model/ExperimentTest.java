@@ -1,7 +1,6 @@
 package eu.planets_project.tb.unittest.model;
 
-import java.io.File;
-
+import junit.framework.TestCase;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
@@ -9,11 +8,7 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
-import eu.planets_project.tb.impl.model.ExperimentImpl;
-import eu.planets_project.tb.impl.model.ExperimentPhaseImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
-import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
-import junit.framework.TestCase;
 
 public class ExperimentTest extends TestCase{
 	

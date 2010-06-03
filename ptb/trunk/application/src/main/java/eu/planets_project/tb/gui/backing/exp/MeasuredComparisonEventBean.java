@@ -10,25 +10,13 @@
  */
 package eu.planets_project.tb.gui.backing.exp;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.view.MeasuredComparisonBean;
-import eu.planets_project.tb.gui.backing.service.FormatBean;
-import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 
 /**
  * @author anj

@@ -5,22 +5,17 @@ package eu.planets_project.tb.impl.model;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.model.Comment;
-import eu.planets_project.tb.impl.model.CommentImpl;
 import eu.planets_project.tb.impl.CommentManagerImpl;
-import eu.planets_project.tb.impl.TestbedManagerImpl;
 
 /**
  * @author alindley

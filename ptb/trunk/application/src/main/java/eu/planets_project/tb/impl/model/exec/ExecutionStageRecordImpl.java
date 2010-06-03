@@ -107,12 +107,14 @@ public class ExecutionStageRecordImpl implements Serializable {
     private Set<InvocationParameterImpl> parameters = new HashSet<InvocationParameterImpl>();
     
     /** The input digital object(s), as Data Registry URIs stored as Strings */
-    @Lob
+    @SuppressWarnings("unused")
+	@Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> inputs = new Vector<String>();
     
     /** Did the service complete successfully. i.e. produced an {Action}Result and ServiceReport. */
-    private boolean invocationSucceeded;
+    @SuppressWarnings("unused")
+	private boolean invocationSucceeded;
     
     /** What was the service exit status - did it return a result or fail. Not necessarily
      * the same as eu.planets_project.services.datatypes.ServiceReport.Status as the service may return a malformed result. */
@@ -128,7 +130,8 @@ public class ExecutionStageRecordImpl implements Serializable {
         /** Executed, but result was malformed or inconsistent. */
         MALFORMED_RESULT
     }
-    private ExitState serviceStatus;
+    @SuppressWarnings("unused")
+	private ExitState serviceStatus;
     
     /** A simple log of the output from the service. Build from the info/warn/error strings in the ServiceReport.
      * Should follow a standard format:
@@ -136,14 +139,16 @@ public class ExecutionStageRecordImpl implements Serializable {
      *   WARN: Warning.
      *   ERROR: Reason.
       */
-    @Lob
+    @SuppressWarnings("unused")
+	@Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> serviceLog = new Vector<String>();
     
     /* FIXME Add other output types? Like the WorkflowResult? Prob not necessary at per-invocation level right now. */
     
     /** The output digital object(s), as DR URIs, stored as strings: */
-    //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @SuppressWarnings("unused")
+	//@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
     private Vector<String> outputs = new Vector<String>();

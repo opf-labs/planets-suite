@@ -122,7 +122,7 @@ public class BatchExperimentListenerImpl {
         	
         	//status is: still no completed - sleep and repoll
             try {
-            	thread.sleep(sleep);
+            	Thread.sleep(sleep);
     		} catch (InterruptedException e) {
     			log.debug("Error while waiting for ticket: "+ticket, e);
     			TestbedBatchJob job = bp.getJob(ticket);

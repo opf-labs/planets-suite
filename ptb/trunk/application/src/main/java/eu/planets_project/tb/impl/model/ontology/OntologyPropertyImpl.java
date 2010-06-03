@@ -1,16 +1,10 @@
 package eu.planets_project.tb.impl.model.ontology;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,15 +17,12 @@ import edu.stanford.smi.protegex.owl.inference.protegeowl.ReasonerManager;
 import edu.stanford.smi.protegex.owl.inference.reasoner.ProtegeReasoner;
 import edu.stanford.smi.protegex.owl.inference.reasoner.exception.ProtegeReasonerException;
 import edu.stanford.smi.protegex.owl.model.OWLIndividual;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
 import edu.stanford.smi.protegex.owl.model.OWLObjectProperty;
 import edu.stanford.smi.protegex.owl.model.RDFIndividual;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLNamedClass;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
-import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
@@ -323,7 +314,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
 	 */
 	public String getType() {
 		//FIXME currently all properties reflect digital object specific behavior -> TB ontology extension
-		return this.TYPE_DIGITAL_OBJECT;
+		return OntologyPropertyImpl.TYPE_DIGITAL_OBJECT;
 	}
 	
 	/**

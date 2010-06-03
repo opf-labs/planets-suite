@@ -2,11 +2,8 @@ package eu.planets_project.tb.impl.model.measure;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Vector;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Lob;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,7 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.planets_project.services.datatypes.Agent;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.gui.UserBean;
-import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * 

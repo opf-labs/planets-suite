@@ -11,37 +11,24 @@
 package eu.planets_project.tb.gui.backing.exp.view;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Vector;
-
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.compare.PropertyComparison.Equivalence;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 import eu.planets_project.tb.gui.backing.exp.MeasurementBean;
-import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.impl.model.eval.PropertyEvaluation;
 import eu.planets_project.tb.impl.model.eval.PropertyEvaluation.EquivalenceStatement;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 
 /**

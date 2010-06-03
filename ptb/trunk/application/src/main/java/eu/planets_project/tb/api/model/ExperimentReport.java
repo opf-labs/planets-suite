@@ -1,6 +1,5 @@
 package eu.planets_project.tb.api.model;
 
-import java.util.List;
 
 public interface ExperimentReport {
 	

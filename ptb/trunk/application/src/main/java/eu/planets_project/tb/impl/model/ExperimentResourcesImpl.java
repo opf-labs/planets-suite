@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -21,6 +20,10 @@ public class ExperimentResourcesImpl implements
 		eu.planets_project.tb.api.model.ExperimentResources,
 		java.io.Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7590148290731269041L;
 	@Id
 	@GeneratedValue
 	@XmlTransient

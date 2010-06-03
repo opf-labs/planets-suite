@@ -8,12 +8,10 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 

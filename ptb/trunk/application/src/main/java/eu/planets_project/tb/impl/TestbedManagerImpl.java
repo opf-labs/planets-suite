@@ -13,9 +13,16 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.tb.api.AdminManager;
+import eu.planets_project.tb.api.CommentManager;
+import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
+import eu.planets_project.tb.api.system.ServiceExecutionHandler;
 import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
@@ -27,15 +34,6 @@ import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
 import eu.planets_project.tb.impl.system.ServiceExecutionHandlerImpl;
 import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
-import eu.planets_project.tb.api.AdminManager;
-import eu.planets_project.tb.api.CommentManager;
-import eu.planets_project.tb.api.TestbedManager;
-import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.model.ExperimentPhase;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
-import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
-import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
-import eu.planets_project.tb.api.system.ServiceExecutionHandler;
 
 /**
  * 
@@ -56,6 +54,7 @@ import eu.planets_project.tb.api.system.ServiceExecutionHandler;
  * @author alindley, Andrew.Jackson@bl.uk
  * 
  */
+@SuppressWarnings("deprecation")
 public class TestbedManagerImpl 
 	implements eu.planets_project.tb.api.TestbedManager, java.io.Serializable{
 

@@ -1,11 +1,9 @@
 package eu.planets_project.ifr.core.wee.api.workflow.jobwrappers;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
@@ -15,7 +13,6 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowContext;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
-import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Event;
 import eu.planets_project.services.datatypes.Metadata;
@@ -83,7 +80,7 @@ public class MigrationWFWrapper {
 		this.endOfRoundtripp = endOfRoundtripp;
 		this.dataRepositoryID = dataRepositoryID;
 		this.dataRegistry = DataRegistryFactory.getDataRegistry();
-		this.fr = FormatRegistryFactory.getFormatRegistry();
+		MigrationWFWrapper.fr = FormatRegistryFactory.getFormatRegistry();
 	}
 	
 	/**

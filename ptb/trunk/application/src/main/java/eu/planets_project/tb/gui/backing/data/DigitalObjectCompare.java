@@ -449,7 +449,6 @@ public class DigitalObjectCompare {
         }
         // Otherwise, pull from DB:
         log.info("Pulling getExperimentMeasurements from the DB.");
-        int i = 0;
         Set<MeasurementEventImpl> measurementEvents = res.getExecutionRecord().getMeasurementEvents();
         ms.addAll(measurementEvents);
         return ms;

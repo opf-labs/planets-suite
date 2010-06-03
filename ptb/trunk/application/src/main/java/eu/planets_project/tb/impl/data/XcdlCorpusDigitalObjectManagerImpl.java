@@ -120,7 +120,7 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
         ArrayList<URI> retVal = new ArrayList<URI>();
         File binDir = new File( searchRoot, BIN_DIRNAME );
         for ( File item : binDir.listFiles() ) {
-            retVal.add( this.createNewPathUri(pdURI, pdURI.getPath() + item.getName() ));
+            retVal.add( FilesystemDigitalObjectManagerImpl.createNewPathUri(pdURI, pdURI.getPath() + item.getName() ));
         }
         
         

@@ -1,19 +1,17 @@
 package eu.planets_project.tb.gui;
 
-import java.util.logging.Level;
-
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 import javax.servlet.http.HttpServletRequest;
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
-import eu.planets_project.ifr.core.security.api.services.UserManager.*;
+import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotFoundException;
 
 /**
  * UserBean.java serves as the POJO for storing information about a Testbed User.

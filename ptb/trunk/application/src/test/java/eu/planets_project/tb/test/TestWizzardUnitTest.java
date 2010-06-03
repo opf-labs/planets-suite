@@ -1,14 +1,11 @@
 package eu.planets_project.tb.test;
 
-import javax.ejb.EJB;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import eu.planets_project.tb.impl.TestBean;
-
-//import JUnit
 import junit.framework.TestCase;
+import eu.planets_project.tb.impl.TestBean;
 
 public class TestWizzardUnitTest extends TestCase{
 	
@@ -68,7 +65,7 @@ public class TestWizzardUnitTest extends TestCase{
 	}
 	
 	public void testEntitiesUpdated(){
-		//NOTE: update ist noch nicht ganz schlüssig.!!!
+		//NOTE: update ist noch nicht ganz schlï¿½ssig.!!!
 		//how to update a managed object???
 		
 		//TestBean test_find1 = dao_r.findTestEntry(1);

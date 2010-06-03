@@ -1,33 +1,15 @@
 package eu.planets_project.ifr.core.wdt.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.Service;
-
-import eu.planets_project.services.utils.test.ServiceCreator;
-import eu.planets_project.ifr.core.wdt.impl.MonitorImpl;
-import eu.planets_project.ifr.core.wdt.api.BeanObject;
 
 import junit.framework.TestCase;
-import org.junit.BeforeClass;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-//import eu.planets_project.ifr.core.techreg.api.formats.Format;
-//import eu.planets_project.services.datatypes.Content;
-//import eu.planets_project.services.datatypes.DigitalObject;
-//import eu.planets_project.services.datatypes.ServiceDescription;
-//import eu.planets_project.services.datatypes.ServiceReport;
-//import eu.planets_project.services.migrate.Migrate;
-//import eu.planets_project.services.migrate.MigrateResult;
-//import eu.planets_project.services.sanselan.SanselanMigrate;
-import eu.planets_project.ifr.core.wdt.api.Monitor;
 import eu.planets_project.ifr.core.wdt.api.BeanObject;
+import eu.planets_project.ifr.core.wdt.api.Monitor;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * Local and client tests of the digital object migration functionality.

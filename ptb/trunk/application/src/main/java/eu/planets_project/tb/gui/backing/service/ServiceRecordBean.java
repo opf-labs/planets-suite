@@ -3,12 +3,10 @@
  */
 package eu.planets_project.tb.gui.backing.service;
 
-import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

@@ -82,7 +82,7 @@ public class WorkflowResult implements Serializable {
 	 * @param logger
 	 */
 	public void setReportingLog(ReportingLog logger){
-		this.logger = logger;
+		WorkflowResult.logger = logger;
 	}
 
     /**

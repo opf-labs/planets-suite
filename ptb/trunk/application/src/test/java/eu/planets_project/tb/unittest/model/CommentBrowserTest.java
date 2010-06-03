@@ -9,12 +9,11 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
+import junit.framework.TestCase;
 import eu.planets_project.tb.api.model.Comment;
 import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.CommentImpl;
-import eu.planets_project.tb.test.model.CommentBrowser;
 import eu.planets_project.tb.test.model.CommentBrowserRemote;
-import junit.framework.TestCase;
 
 /**
  * @author alindley

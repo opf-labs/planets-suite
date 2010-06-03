@@ -10,9 +10,8 @@ package eu.planets_project.tb.impl.model.finals;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Vector;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * @author alindley

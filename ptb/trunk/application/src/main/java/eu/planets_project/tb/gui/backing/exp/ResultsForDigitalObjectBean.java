@@ -3,7 +3,6 @@
  */
 package eu.planets_project.tb.gui.backing.exp;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,18 +11,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import java.util.Vector;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.tb.api.data.util.DataHandler;
-import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;

@@ -3,7 +3,6 @@
  */
 package eu.planets_project.tb.gui.backing.exp;
 
-import java.util.List;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

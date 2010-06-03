@@ -4,14 +4,10 @@
 package eu.planets_project.tb.gui.backing;
 
 
-import java.util.ArrayList;
-
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-
 
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;

@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -85,7 +84,6 @@ import eu.planets_project.tb.impl.model.PropertyRunEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
@@ -232,7 +230,8 @@ public class ExperimentBean {
         }
     }
     
-    public void fill(Experiment exp) {
+    @SuppressWarnings("deprecation")
+	public void fill(Experiment exp) {
         log.info("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName() + " ID:"+exp.getEntityID());
         log.debug("Experiment Phase Name = " + exp.getPhaseName());
         log.debug("Experiment Current Phase " + exp.getCurrentPhase());
@@ -2027,11 +2026,10 @@ public class ExperimentBean {
     private List<MeasurementPropertyResultsBean> getAllManualExecutionRecordsHelper(String inputDigoRef, String stageName, boolean manualProps){
     	List<MeasurementPropertyResultsBean> ret = new ArrayList<MeasurementPropertyResultsBean>();
     	String etype = this.getEtype();
-		ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
+		ExpTypeBackingBean.getExpTypeBean(etype);
 		
 		//1. get all measurement property IDs
 		Vector<String> propertyIDs = null;
-		MeasurementImpl measurementInfo = null;
 		if(manualProps){
 			//fetch the manual properties
 			propertyIDs = this.getExperiment().getExperimentExecutable().getManualProperties(stageName);
@@ -2168,13 +2166,13 @@ public class ExperimentBean {
      * @param
      * @return
      */
-    private List<EvaluationPropertyResultsBean> getEvaluationPropertyResultsBeansHelper(String inputDigoRef, String[] comparedStageNames, boolean manualProps){
+    @SuppressWarnings("unchecked")
+	private List<EvaluationPropertyResultsBean> getEvaluationPropertyResultsBeansHelper(String inputDigoRef, String[] comparedStageNames, boolean manualProps){
     	
     	List<EvaluationPropertyResultsBean> ret = new ArrayList<EvaluationPropertyResultsBean>();
     	
 		//1. get all measurement property IDs
 		Vector<String>[] lpropertyIDs = new Vector[comparedStageNames.length];
-		MeasurementImpl measurementInfo = null;
 		if(manualProps){
 			//fetch the manual properties
 			int count = 0;

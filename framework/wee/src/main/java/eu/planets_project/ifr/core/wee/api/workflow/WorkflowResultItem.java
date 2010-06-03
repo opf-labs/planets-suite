@@ -140,7 +140,7 @@ public class WorkflowResultItem implements Serializable{
     public WorkflowResultItem(URI aboutDigoRef,String serviceActionIdentifier, long startTime, long endTime,ReportingLog logger){
 		this();
 		if(logger!=null){
-			this.logger = logger;
+			WorkflowResultItem.logger = logger;
 		}
 		else{
 	    	logger = new ReportingLog(Logger.getLogger(WorkflowResultItem.class));
@@ -162,7 +162,7 @@ public class WorkflowResultItem implements Serializable{
 	 * @param logger
 	 */
 	public void setReportingLog(ReportingLog logger){
-		this.logger = logger;
+		WorkflowResultItem.logger = logger;
 	}
 	
 	@Deprecated

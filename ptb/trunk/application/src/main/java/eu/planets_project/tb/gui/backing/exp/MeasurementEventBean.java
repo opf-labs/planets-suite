@@ -10,24 +10,20 @@
  */
 package eu.planets_project.tb.gui.backing.exp;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 
 /**
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class MeasurementEventBean implements Comparable {
+public class MeasurementEventBean implements Comparable<Object> {
     /** */
-    private static final Log log = LogFactory.getLog(MeasurementEventBean.class);
+    @SuppressWarnings("unused")
+	private static final Log log = LogFactory.getLog(MeasurementEventBean.class);
 
     /** */
     protected boolean selected = true;

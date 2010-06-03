@@ -2,21 +2,15 @@ package eu.planets_project.tb.gui.backing.wf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlDataTable;
-//import org.richfaces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.richfaces.component.html.HtmlInputText;
-import org.richfaces.component.html.HtmlSuggestionBox;
 
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.tb.gui.backing.ExperimentBean;

@@ -25,19 +25,20 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
-import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * @author alindley
  *
  */
+@SuppressWarnings("deprecation")
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentEvaluationImpl extends ExperimentPhaseImpl 
@@ -57,6 +58,7 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentReportImpl report;
 	
+	@SuppressWarnings("unused")
 	private boolean bExpSetupImputValuesSet;
 	
 	private Integer experimentRating;
@@ -657,10 +659,10 @@ public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 	@Deprecated
 	public List<String> getAllAcceptedEvaluationValues() {
 		Vector<String> vRet = new Vector<String>();
-		vRet.add(0,this.EVALUATION_VALUE_VERY_GOOD);
-		vRet.add(1,this.EVALUATION_VALUE_GOOD);
-		vRet.add(2,this.EVALUATION_VALUE_BAD);
-		vRet.add(3,this.EVALUATION_VALUE_VERY_BAD);
+		vRet.add(0,ExperimentEvaluation.EVALUATION_VALUE_VERY_GOOD);
+		vRet.add(1,ExperimentEvaluation.EVALUATION_VALUE_GOOD);
+		vRet.add(2,ExperimentEvaluation.EVALUATION_VALUE_BAD);
+		vRet.add(3,ExperimentEvaluation.EVALUATION_VALUE_VERY_BAD);
 		
 		return vRet;
 		

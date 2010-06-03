@@ -1,17 +1,16 @@
 package eu.planets_project.tb.unittest.model.benchmark;
 
-import java.util.Iterator;
 import java.util.List;
 
+import junit.framework.TestCase;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
-import junit.framework.TestCase;
 
+@SuppressWarnings("deprecation")
 public class BenchmarkGoalTest extends TestCase{
 	
 	//sample goal that is contained in the XML document

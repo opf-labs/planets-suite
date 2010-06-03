@@ -286,7 +286,7 @@ public class StorageBackingBean {
 	 */
 	public void setCurrentConfiguration(
 			DataModelConfiguration currentConfiguration) {
-		this.currentConfiguration = currentConfiguration;
+		StorageBackingBean.currentConfiguration = currentConfiguration;
 	}
 
 	/**
@@ -504,7 +504,7 @@ public class StorageBackingBean {
 	}
 
 	public void setSelectedRegistry(String selectedRegistry) {
-		this.selectedRegistry = selectedRegistry;
+		StorageBackingBean.selectedRegistry = selectedRegistry;
 	}
 
     /**

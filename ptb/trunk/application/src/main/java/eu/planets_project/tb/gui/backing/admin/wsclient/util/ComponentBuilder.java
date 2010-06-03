@@ -253,10 +253,10 @@ public class ComponentBuilder
 			Binding binding = port.getBinding();
 
 			// Now we will create operations from the Binding information
-			List operations = buildOperations(binding);
+			List<?> operations = buildOperations(binding);
 
 			// Process objects built from the binding information
-			Iterator operIter = operations.iterator();
+			Iterator<?> operIter = operations.iterator();
 
 			while(operIter.hasNext())
 			{
@@ -290,13 +290,13 @@ public class ComponentBuilder
 	 *
 	 * @return A List of built and populated OperationInfos is returned for each Binding Operation
 	 */
-	private List buildOperations(Binding binding)
+	private List<OperationInfo> buildOperations(Binding binding)
 	{
 		// Create the array of info objects to be returned
-		List operationInfos = new ArrayList();
+		List<OperationInfo> operationInfos = new ArrayList<OperationInfo>();
 
 		// Get the list of Binding Operations from the passed binding
-		List operations = binding.getBindingOperations();
+		List<?> operations = binding.getBindingOperations();
 
 		if(operations != null && !operations.isEmpty())
 		{
@@ -311,8 +311,7 @@ public class ComponentBuilder
 			}
 
 			// For each binding operation, create a new OperationInfo
-			Iterator opIter = operations.iterator();
-			int i = 0;
+			Iterator<?> opIter = operations.iterator();
 
 			while(opIter.hasNext())
 			{
@@ -368,7 +367,7 @@ public class ComponentBuilder
 		BindingInput bindingInput = bindingOper.getBindingInput();
 
 		// Get the Binding Output
-		BindingOutput bindingOutput = bindingOper.getBindingOutput();
+		bindingOper.getBindingOutput();
 
 		// Get the SOAP Body
 		ExtensibilityElement bodyElem = findExtensibilityElement(bindingInput.getExtensibilityElements(), "body");
@@ -378,7 +377,7 @@ public class ComponentBuilder
 			SOAPBody soapBody = (SOAPBody)bodyElem;
 
 			// The SOAP Body contains the encoding styles
-			List styles = soapBody.getEncodingStyles();
+			List<?> styles = soapBody.getEncodingStyles();
 			String encodingStyle = null;
 
 			if(styles != null)
@@ -466,10 +465,10 @@ public class ComponentBuilder
 			new Element(operationInfo.getTargetMethodName());
 
 		// Get the message parts
-		List msgParts = msg.getOrderedParts(null);
+		List<?> msgParts = msg.getOrderedParts(null);
 
 		// Process each part
-		Iterator iter = msgParts.iterator();
+		Iterator<?> iter = msgParts.iterator();
 
 		while(iter.hasNext())
 		{
@@ -529,7 +528,7 @@ public class ComponentBuilder
 	protected void buildComplexPart(ComplexType complexType, Element partElem)
 	{
 		// Find the group
-		Enumeration particleEnum = complexType.enumerate();
+		Enumeration<?> particleEnum = complexType.enumerate();
 		Group group = null;
 
 		while(particleEnum.hasMoreElements())
@@ -545,7 +544,7 @@ public class ComponentBuilder
 
 		if (group != null)
 		{
-			Enumeration groupEnum = group.enumerate();
+			Enumeration<?> groupEnum = group.enumerate();
 
 			while (groupEnum.hasMoreElements())
 			{

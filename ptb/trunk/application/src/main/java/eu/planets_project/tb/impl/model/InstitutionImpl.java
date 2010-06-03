@@ -3,10 +3,6 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.finals.PlanetsInstitutionsImpl;
 
 /**

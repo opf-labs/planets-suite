@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
-import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.CommentImpl;
 
 /**

@@ -3,33 +3,24 @@
  */
 package eu.planets_project.tb.gui.backing.data;
 
-import eu.planets_project.ifr.core.storage.api.DataRegistry;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.services.characterise.Characterise;
-import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.tb.api.data.util.DataHandler;
-import eu.planets_project.tb.gui.backing.ServiceBrowser;
-import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.XcdlCorpusDigitalObjectManagerImpl;
-import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
-import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
-
 import java.io.FileNotFoundException;
 import java.net.URI;
-import java.net.URL;
 import java.util.List;
 
-
 import javax.activation.MimetypesFileTypeMap;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
+
+import eu.planets_project.ifr.core.storage.api.DataRegistry;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.data.XcdlCorpusDigitalObjectManagerImpl;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 /**
  * 
@@ -48,9 +39,6 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     private DigitalObject dob_cache = null;
     private URI uri;
     private String leafname;
-    private String owner;
-    private String dateAdded;
-    private String dateModified;
     private boolean selectable;
     private boolean expanded = false;
     

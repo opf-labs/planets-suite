@@ -18,7 +18,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.system.batch.BatchProcessor;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
-import eu.planets_project.tb.impl.system.batch.TestbedBatchProcessorManager;
 
 /**
  * This bean is managed by JSF and is given application scope.
@@ -111,7 +110,7 @@ public class TestbedBatchProcessor implements BatchProcessor{
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#getBatchProcessorSystemIdentifier()
 	 */
 	public String getBatchProcessorSystemIdentifier() {
-		return this.BATCH_IDENTIFIER_TESTBED_LOCAL;
+		return BatchProcessor.BATCH_IDENTIFIER_TESTBED_LOCAL;
 	}
 
 

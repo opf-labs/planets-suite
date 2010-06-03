@@ -32,6 +32,7 @@ import eu.planets_project.tb.impl.system.BackendProperties;
 			@ActivationConfigProperty(propertyName="maxSession", propertyValue="2")
 		})
 public class BatchExperimentListenerLongTimeout implements MessageListener{
+	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(BatchExperimentListenerShortTimeout.class);
     @Resource
     public MessageDrivenContext mdc;

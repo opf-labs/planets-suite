@@ -8,12 +8,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
-
 
 import org.ajax4jsf.component.html.HtmlActionParameter;
 import org.apache.commons.logging.Log;
@@ -22,7 +19,6 @@ import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
 
 import eu.planets_project.tb.api.data.util.DataHandler;
-import eu.planets_project.tb.gui.backing.wf.EditWorkflowParameterInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 

@@ -4,9 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 

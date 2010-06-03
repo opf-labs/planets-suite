@@ -1,7 +1,6 @@
 package eu.planets_project.tb.impl.system.batch.backends.ifwee;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -21,39 +20,29 @@ import javax.jms.QueueSession;
 import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
-import javax.xml.bind.JAXBException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.xml.sax.SAXException;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus;
 import eu.planets_project.ifr.core.wee.api.utils.WFResultUtil;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
-import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
-import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.system.batch.BatchProcessor;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
-import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
 import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
-import eu.planets_project.tb.impl.system.batch.TestbedBatchProcessorManager;
-import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
-import eu.planets_project.tb.impl.system.batch.listener.BatchExperimentListenerShortTimeout;
-import eu.planets_project.tb.impl.AdminManagerImpl;
-import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 
 /**
  * The WEE implementation of a Testbed BatchProcessor. Provides checking procedures for events used
@@ -94,7 +83,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#getBatchProcessorSystemIdentifier()
 	 */
 	public String getBatchProcessorSystemIdentifier() {
-		return this.BATCH_QUEUE_TESTBED_WEE_LOCAL;
+		return BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL;
 	}
 
 	/* (non-Javadoc)
@@ -217,11 +206,11 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
         //2. decide how long we want to poll for an object before from the engine before we throw a time-out
         //2a. automatically approved experiments - use shortTimeout (5 Minutes)
         if(exp.getExperimentApproval().getApprovalUsersIDs().contains(AdminManagerImpl.APPROVAL_AUTOMATIC_USER)){
-        	submitTicketForPollingToQueue(ticket,this.QueueName_shortTimeout,this.getBatchProcessorSystemIdentifier());
+        	submitTicketForPollingToQueue(ticket,TestbedWEEBatchProcessor.QueueName_shortTimeout,this.getBatchProcessorSystemIdentifier());
         }
         //2b manually approved experiments - use longTimeout (3 Days)
         if(!exp.getExperimentApproval().getApprovalUsersIDs().contains(AdminManagerImpl.APPROVAL_AUTOMATIC_USER)){
-        	submitTicketForPollingToQueue(ticket,this.QueueName_longTimeout,this.getBatchProcessorSystemIdentifier());
+        	submitTicketForPollingToQueue(ticket,TestbedWEEBatchProcessor.QueueName_longTimeout,this.getBatchProcessorSystemIdentifier());
         }
 	}
 	
@@ -246,7 +235,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 		    
 		    //create the message to send to the MDB e.g. a TextMessage
 		    TextMessage message = sess.createTextMessage(ticket);
-		    message.setStringProperty(this.QUEUE_PROPERTY_NAME_FOR_SENDING, batchProcessorSystemID);
+		    message.setStringProperty(BatchProcessor.QUEUE_PROPERTY_NAME_FOR_SENDING, batchProcessorSystemID);
 
 	        //and finally send the message to the queue.
 	        sender = sess.createSender(queue);

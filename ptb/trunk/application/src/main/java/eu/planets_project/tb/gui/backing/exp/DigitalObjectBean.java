@@ -1,8 +1,5 @@
 package eu.planets_project.tb.gui.backing.exp;
 
-import java.io.FileNotFoundException;
-
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

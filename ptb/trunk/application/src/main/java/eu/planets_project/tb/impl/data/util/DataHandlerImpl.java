@@ -110,7 +110,7 @@ public class DataHandlerImpl implements DataHandler {
 	private void readProperties(){
 	    // Set the file store directories relative to the TB data file directory:
         BackendProperties bp = new BackendProperties();
-		localFileDirBase = bp.getTBFileDir();
+		localFileDirBase = BackendProperties.getTBFileDir();
         FileInDir = localFileDirBase + IN_DIR_PATH;
         FileOutDir = localFileDirBase + OUT_DIR_PATH;
         FileStoreDir = localFileDirBase + FILE_DIR_PATH;

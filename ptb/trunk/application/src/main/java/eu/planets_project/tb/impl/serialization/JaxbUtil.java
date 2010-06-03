@@ -11,9 +11,6 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
-import eu.planets_project.tb.impl.services.util.DiscoveryUtils;
-
 /**
  * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
  * @since 31.10.2009

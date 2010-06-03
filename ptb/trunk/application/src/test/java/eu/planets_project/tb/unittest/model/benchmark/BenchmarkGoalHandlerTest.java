@@ -1,7 +1,6 @@
 package eu.planets_project.tb.unittest.model.benchmark;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import junit.framework.TestCase;
@@ -9,8 +8,8 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 
+@SuppressWarnings("deprecation")
 public class BenchmarkGoalHandlerTest extends TestCase{
 	
 	//to be configured manually as within XML file

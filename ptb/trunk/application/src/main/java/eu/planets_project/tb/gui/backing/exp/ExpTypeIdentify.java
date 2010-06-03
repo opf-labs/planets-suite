@@ -4,7 +4,6 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.net.URI;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,6 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 

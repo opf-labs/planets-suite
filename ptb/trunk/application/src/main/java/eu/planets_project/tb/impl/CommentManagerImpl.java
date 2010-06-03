@@ -8,12 +8,11 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.tb.api.model.Comment;
 import eu.planets_project.tb.api.CommentManager;
+import eu.planets_project.tb.api.model.Comment;
 import eu.planets_project.tb.api.persistency.CommentPersistencyRemote;
-import eu.planets_project.tb.impl.persistency.CommentPersistencyImpl;
-import eu.planets_project.tb.gui.backing.CommentBacking;
 import eu.planets_project.tb.impl.model.CommentImpl;
+import eu.planets_project.tb.impl.persistency.CommentPersistencyImpl;
 
 /**
  * TODO Determine what the role of this class should be as it merely wraps the CommentPersistencyImpl at present.
@@ -25,7 +24,8 @@ import eu.planets_project.tb.impl.model.CommentImpl;
 public class CommentManagerImpl implements CommentManager {
     
     // A Log for this:
-    private Log log = LogFactory.getLog(CommentManagerImpl.class);
+    @SuppressWarnings("unused")
+	private Log log = LogFactory.getLog(CommentManagerImpl.class);
 
 	private static CommentManagerImpl instance;
 	private CommentPersistencyRemote cmp;

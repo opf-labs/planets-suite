@@ -6,35 +6,22 @@ package eu.planets_project.tb.impl.model.measure;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 
-import javax.faces.model.SelectItem;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.compare.PropertyComparison.Equivalence;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**

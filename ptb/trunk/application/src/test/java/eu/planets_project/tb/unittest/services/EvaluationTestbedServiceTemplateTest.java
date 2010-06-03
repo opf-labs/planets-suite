@@ -1,34 +1,23 @@
 package eu.planets_project.tb.unittest.services;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
+
+import junit.framework.TestCase;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-import eu.planets_project.tb.impl.AdminManagerImpl;
-import eu.planets_project.tb.impl.model.CommentImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
-import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
-import junit.framework.TestCase;
 
 public class EvaluationTestbedServiceTemplateTest extends TestCase{
 

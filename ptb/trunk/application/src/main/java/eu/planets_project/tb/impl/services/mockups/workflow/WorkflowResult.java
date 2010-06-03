@@ -4,10 +4,8 @@
 package eu.planets_project.tb.impl.services.mockups.workflow;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -27,8 +25,6 @@ import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

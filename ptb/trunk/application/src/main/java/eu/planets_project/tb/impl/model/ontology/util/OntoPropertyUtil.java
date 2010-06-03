@@ -10,7 +10,6 @@ import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 
 /**
  * Helper for converting data from the ontology into TB objects

@@ -5,28 +5,24 @@ package eu.planets_project.ifr.core.wee.impl.registry;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.soap.SOAPException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
-import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.ifr.core.wee.impl.mockup.DataRegistryMockup;
 import eu.planets_project.ifr.core.wee.impl.utils.RegistryUtils;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.PlanetsServices;
 
 
 /**

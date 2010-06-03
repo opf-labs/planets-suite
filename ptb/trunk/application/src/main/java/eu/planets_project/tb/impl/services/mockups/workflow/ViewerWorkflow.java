@@ -24,7 +24,6 @@ import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 
 /**
  * This is the class that carries the code specific to invoking an Identify experiment.

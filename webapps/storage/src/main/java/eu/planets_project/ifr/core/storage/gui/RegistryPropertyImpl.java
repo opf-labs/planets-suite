@@ -189,7 +189,7 @@ public class RegistryPropertyImpl implements RegistryProperty, Cloneable, Serial
     }
 
 	public String getType() {
-		return this.TYPE_DIGITAL_OBJECT;
+		return RegistryPropertyImpl.TYPE_DIGITAL_OBJECT;
 	}
 	
 }

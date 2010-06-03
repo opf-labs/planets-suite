@@ -18,7 +18,8 @@ import org.apache.commons.logging.LogFactory;
  */
 public class DigitalObjectReference {
     // A Log for this:
-    private static Log log = LogFactory.getLog(DigitalObjectReference.class);
+    @SuppressWarnings("unused")
+	private static Log log = LogFactory.getLog(DigitalObjectReference.class);
     
     // The Planets URI to which this description refers.
     private URI puri = null;

@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.faces.model.DataModel;
 
-import eu.planets_project.tb.api.model.Experiment;
-
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
@@ -18,9 +16,9 @@ public class PagedListDataModel extends DataModel {
     private int rowIndex = -1;  
     private int totalNumRows;  
     private int pageSize;  
-    private List list;  
+    private List<?> list;  
     
-    public PagedListDataModel(List list, int totalNumRows, int pageSize)
+    public PagedListDataModel(List<?> list, int totalNumRows, int pageSize)
       {
         setWrappedData(list);
         this.totalNumRows = totalNumRows;

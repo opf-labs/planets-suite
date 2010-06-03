@@ -6,7 +6,6 @@ package eu.planets_project.tb.impl.model;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.Map.Entry;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.TestbedManager;

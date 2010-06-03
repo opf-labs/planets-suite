@@ -4,11 +4,9 @@
 package eu.planets_project.tb.gui.backing.exp.view;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.faces.context.FacesContext;
 import javax.xml.ws.Service;
@@ -16,7 +14,6 @@ import javax.xml.ws.Service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.compare.PropertyComparison.Equivalence;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.view.CreateView;
 import eu.planets_project.services.view.ViewStatus;
@@ -24,21 +21,15 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.properties.ManuallyMeasuredProperty;
 import eu.planets_project.tb.gui.UserBean;
-import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.data.DigitalObjectCompare;
-import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
 import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
-import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.backing.exp.utils.ManualMeasurementBackingBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementAgent;
 import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
 import eu.planets_project.tb.impl.model.measure.MeasurementAgent.AgentType;
-import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.properties.ManuallyMeasuredPropertyHandlerImpl;
 

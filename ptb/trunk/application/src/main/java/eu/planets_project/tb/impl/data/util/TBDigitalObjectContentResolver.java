@@ -2,10 +2,7 @@ package eu.planets_project.tb.impl.data.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 
-import javax.jcr.RepositoryException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 import eu.planets_project.services.datatypes.DigitalObject;

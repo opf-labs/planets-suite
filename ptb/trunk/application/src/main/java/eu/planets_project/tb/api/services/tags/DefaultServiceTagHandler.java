@@ -1,7 +1,6 @@
 package eu.planets_project.tb.api.services.tags;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 

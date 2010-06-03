@@ -1,20 +1,22 @@
 package eu.planets_project.tb.gui.tags;
 
-import com.sun.facelets.tag.*;
-import javax.servlet.http.*;
-import com.sun.facelets.FaceletContext;
-import javax.faces.component.UIComponent;
-import javax.faces.FacesException;
-import eu.planets_project.tb.gui.UserBean;
-import eu.planets_project.tb.gui.util.JSFUtil;
+import java.io.IOException;
 
-import org.apache.commons.logging.Log;
+import javax.el.ELException;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.IOException;
-import javax.el.ELException;
-import javax.faces.context.FacesContext;
+import com.sun.facelets.FaceletContext;
+import com.sun.facelets.tag.TagConfig;
+import com.sun.facelets.tag.TagHandler;
+
+import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
 
 public final class GetUser extends TagHandler {
 

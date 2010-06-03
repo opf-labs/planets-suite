@@ -1,18 +1,14 @@
 package eu.planets_project.tb.impl.model.benchmark;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import java.util.List;
-
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
-import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
-import eu.planets_project.tb.impl.model.eval.AutoEvaluationSettingsImpl;
-import eu.planets_project.tb.impl.model.eval.EvaluationExecutableImpl;
 
 
 /**
@@ -31,6 +27,10 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	//@GeneratedValue
 	//private long lEntityID;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -136237468438053300L;
 	private String sName, sType, sScale, sDefinition, sDescription, sVersion;
 	//Note: SourceValue for the input file information, TargetValue for the output file information
 	private String sSourceValue, sTargetValue;
@@ -293,7 +293,7 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setWeight(int)
 	 */
 	public void setWeight(int weight) throws InvalidInputException{
-		if(this.WEIGHT_MINIMUM<=weight&&weight<=this.WEIGHT_MAXIMUM){
+		if(BenchmarkGoal.WEIGHT_MINIMUM<=weight&&weight<=BenchmarkGoal.WEIGHT_MAXIMUM){
 			this.iWeight = weight;
 		}
 		else{

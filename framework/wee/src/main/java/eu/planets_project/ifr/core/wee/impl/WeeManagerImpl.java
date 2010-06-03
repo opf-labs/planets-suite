@@ -36,8 +36,6 @@ import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Event;
-import eu.planets_project.services.datatypes.Metadata;
 
 /**
  * 

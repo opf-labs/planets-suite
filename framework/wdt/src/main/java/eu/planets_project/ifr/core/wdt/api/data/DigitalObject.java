@@ -15,16 +15,14 @@ import java.util.logging.Logger;
  */
 public class DigitalObject {
     // A logger for this:
-    private static Logger log = Logger.getLogger(DigitalObject.class.getName());
+    @SuppressWarnings("unused")
+	private static Logger log = Logger.getLogger(DigitalObject.class.getName());
     
     // The Planets URI to which this description refers.
     private URI puri = null;
     
     // The nature of this item, directory or file:
     private boolean directory = false;
-    
-    // One or more binary blobs that hold the file information instead of referencing PURLs:
-    private byte[][] binary = null;
     
     // Constructor from URI:
     public DigitalObject( URI puri ) {

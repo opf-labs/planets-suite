@@ -1,11 +1,6 @@
 package eu.planets_project.tb.gui.backing.exp.utils;
 
-import java.util.List;
-
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
-import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services;
-import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Template;
-import eu.planets_project.tb.gui.backing.exp.ExpTypeExecutablePP.ServiceBean;
 
 public interface ExpTypeWeeBean {
     

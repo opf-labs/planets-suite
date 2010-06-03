@@ -8,36 +8,21 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.NoSuchAlgorithmException;
-import java.util.Properties;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.logging.Logger;
 
-import javax.annotation.Resource;
-import javax.annotation.security.RunAs;
-import javax.ejb.EJBContext;
-import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.rmi.PortableRemoteObject;
 import javax.servlet.http.HttpServletRequest;
-
-import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
 import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.SelfRegistrationManager;
 import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotFoundException;
-import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotValidException;
 import eu.planets_project.ifr.core.security.impl.model.SelfAddressImpl;
 import eu.planets_project.ifr.core.security.impl.model.SelfUserImpl;
 import eu.planets_project.ifr.core.security.impl.services.SelfRegistrationManagerImpl;

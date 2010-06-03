@@ -29,7 +29,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;

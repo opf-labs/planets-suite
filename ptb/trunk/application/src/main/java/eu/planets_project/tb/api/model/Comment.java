@@ -1,7 +1,6 @@
 package eu.planets_project.tb.api.model;
 
 import java.util.Calendar;
-import java.util.List;
 
 
 public interface Comment {

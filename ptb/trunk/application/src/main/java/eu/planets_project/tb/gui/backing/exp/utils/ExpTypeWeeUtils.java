@@ -4,17 +4,14 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -25,7 +22,6 @@ import org.apache.commons.logging.LogFactory;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
-import org.xml.sax.SAXException;
 
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
@@ -122,7 +118,7 @@ public class ExpTypeWeeUtils{
     	}
     	
     	String sWFConfig = this.buildXMLConfig(serTempl, services);
-    	return wfConfigUtil.unmarshalWorkflowConfig(sWFConfig);
+    	return WorkflowConfigUtil.unmarshalWorkflowConfig(sWFConfig);
     	
     }
     
@@ -135,7 +131,7 @@ public class ExpTypeWeeUtils{
      */
     public WorkflowConf buildWorkflowConf(Template serTempl, Services services) throws Exception{
     	String sWFConfig = this.buildXMLConfig(serTempl, services);
-    	return wfConfigUtil.unmarshalWorkflowConfig(sWFConfig);
+    	return WorkflowConfigUtil.unmarshalWorkflowConfig(sWFConfig);
     }
     
     /**

@@ -6,9 +6,7 @@ package eu.planets_project.tb.impl.serialization;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;

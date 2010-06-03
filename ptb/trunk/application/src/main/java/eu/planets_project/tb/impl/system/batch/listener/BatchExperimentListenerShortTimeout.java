@@ -1,16 +1,11 @@
 package eu.planets_project.tb.impl.system.batch.listener;
 
-import java.util.UUID;
-
 import javax.annotation.Resource;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.ejb.MessageDrivenContext;
-import javax.ejb.ActivationConfigProperty;
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.TextMessage;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,6 +32,7 @@ import eu.planets_project.tb.impl.system.BackendProperties;
 			@ActivationConfigProperty(propertyName="maxSession", propertyValue="5")
 		})
 public class BatchExperimentListenerShortTimeout implements MessageListener{
+	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(BatchExperimentListenerShortTimeout.class);
     @Resource
     public MessageDrivenContext mdc;
@@ -50,7 +46,7 @@ public class BatchExperimentListenerShortTimeout implements MessageListener{
     	
     	//specify the timeout for this listener
     	BackendProperties bp = new BackendProperties();
-    	long timeout = Long.parseLong(bp.getProperty(bp.TIMEOUT_AUTO_APPROVED_EXPERIMENTS));
+    	long timeout = Long.parseLong(bp.getProperty(BackendProperties.TIMEOUT_AUTO_APPROVED_EXPERIMENTS));
     	timeOutMillis = timeout * 1000;
     	
     }

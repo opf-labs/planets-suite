@@ -1,23 +1,24 @@
 package eu.planets_project.services.java_se.image;
 
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import eu.planets_project.ifr.core.techreg.properties.ServiceProperties;
+import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.compare.Compare;
-import eu.planets_project.services.compare.CompareResult;
-import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.utils.test.ServiceCreator;
-import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

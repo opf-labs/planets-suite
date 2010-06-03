@@ -97,7 +97,8 @@ public class ExecutionRecordImpl implements Serializable {
     private long id;
     
     /** The experiment this belongs to */
-    @ManyToOne
+    @SuppressWarnings("unused")
+	@ManyToOne
     @XmlTransient
     private BatchExecutionRecordImpl batch;
     

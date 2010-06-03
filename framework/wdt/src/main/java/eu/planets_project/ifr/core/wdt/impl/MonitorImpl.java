@@ -3,25 +3,12 @@
  */
 package eu.planets_project.ifr.core.wdt.impl;
 
-import eu.planets_project.ifr.core.wdt.api.Monitor;
-import eu.planets_project.ifr.core.wdt.api.BeanObject;
-
-import javax.ejb.Remote;
 import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.namespace.QName;
-import javax.xml.ws.BindingType;
-
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-
-import eu.planets_project.services.PlanetsException;
+import eu.planets_project.ifr.core.wdt.api.BeanObject;
+import eu.planets_project.ifr.core.wdt.api.Monitor;
 import eu.planets_project.services.PlanetsServices;
 
 /**

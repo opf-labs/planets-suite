@@ -1,18 +1,9 @@
 package eu.planets_project.tb.impl.system.batch;
 
-import java.util.Collection;
-import java.util.List;
-
-import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.tb.api.TestbedManager;
-import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.system.batch.BatchProcessor;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.system.batch.backends.ifwee.TestbedWEEBatchProcessor;
 import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
-import eu.planets_project.tb.impl.TestbedManagerImpl;
 
 /**
  * A joint manager for obtaining instances to the two batch execution engines 
@@ -45,10 +36,10 @@ public class TestbedBatchProcessorManager{
 	 */
 	public BatchProcessor getBatchProcessor(String batchSystemIdentifier) {
 		if(BatchProcessor.BATCH_IDENTIFIER_TESTBED_LOCAL.equals(batchSystemIdentifier)){
-			return this.tbOldBatchProcessor;
+			return TestbedBatchProcessorManager.tbOldBatchProcessor;
 		}
 		if(BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL.equals(batchSystemIdentifier)){
-			return this.tbWeeBatchProcessor;
+			return TestbedBatchProcessorManager.tbWeeBatchProcessor;
 		}
 		return null;
 	}

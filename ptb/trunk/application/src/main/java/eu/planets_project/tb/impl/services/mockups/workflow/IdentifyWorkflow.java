@@ -5,7 +5,6 @@ package eu.planets_project.tb.impl.services.mockups.workflow;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -14,23 +13,18 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
-import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
-import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
 import eu.planets_project.tb.impl.model.measure.MeasurementTarget;
-import eu.planets_project.tb.impl.model.measure.MeasurementTarget.TargetType;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
 /**

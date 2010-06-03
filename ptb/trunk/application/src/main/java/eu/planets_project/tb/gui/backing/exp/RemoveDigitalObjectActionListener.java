@@ -60,7 +60,7 @@ public class RemoveDigitalObjectActionListener implements ActionListener {
 	          expBean.removeExperimentInputData(targetBean.get("inputID"));
 	          log.info("Removed: "+targetBean.get("inputID")+"in design experiment stage");
           }
-          if((sInExperimentStage!=null)||(sInExperimentStage.equals("evaluate experiment"))){
+          if((sInExperimentStage!=null)&&(sInExperimentStage.equals("evaluate experiment"))){
         	  expBean.removeEvaluationExternalDigoRef(targetBean.get("inputID"));
         	  log.info("Removed: "+targetBean.get("inputID")+"in evaluate experiment stage");
           }

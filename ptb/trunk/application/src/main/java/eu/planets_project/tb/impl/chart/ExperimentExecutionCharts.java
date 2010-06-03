@@ -33,7 +33,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
-import eu.planets_project.tb.impl.chart.ExperimentChartServlet.CustomRenderer;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;

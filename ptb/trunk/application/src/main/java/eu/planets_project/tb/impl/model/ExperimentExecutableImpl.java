@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +29,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.commons.logging.Log;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
@@ -43,12 +41,9 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
-import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
-import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
 
 /**
  * @author alindley

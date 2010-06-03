@@ -22,7 +22,6 @@ import eu.planets_project.tb.api.properties.ManuallyMeasuredProperty;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.exp.ExperimentInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.model.measure.MeasurementEventImpl;
 import eu.planets_project.tb.impl.properties.ManuallyMeasuredPropertyHandlerImpl;
 
 /**

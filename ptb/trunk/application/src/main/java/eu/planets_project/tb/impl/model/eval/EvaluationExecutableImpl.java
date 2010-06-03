@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.commons.logging.Log;
 import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.model.ExecutableImpl;
@@ -41,7 +40,8 @@ public class EvaluationExecutableImpl extends ExecutableImpl implements Evaluati
 	private String sXCDLSource, sXCDLTarget, sXCDLComparison;
 	
 	//A Log for this - transient: it's not persisted with this entity
-    @Transient
+    @SuppressWarnings("unused")
+	@Transient
     @XmlTransient
 	private static Log log;
     
