@@ -9,6 +9,11 @@ package eu.planets_project.tb.impl.exceptions;
  */
 public class ExperimentNotFoundException extends Exception{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1425887614667024503L;
+
 	public ExperimentNotFoundException(){
 		
 	}

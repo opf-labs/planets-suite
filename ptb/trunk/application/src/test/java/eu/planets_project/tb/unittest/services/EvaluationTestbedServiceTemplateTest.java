@@ -60,7 +60,7 @@ public class EvaluationTestbedServiceTemplateTest extends TestCase{
 	public void testXPathToRootNodesWrongXPath(){
 		try {
 			evalSer.setXPathForBMGoalRootNodes("/*//xyz");
-			NodeList nodes = evalSer.getAllEvalResultsRootNodes(document);
+			evalSer.getAllEvalResultsRootNodes(document);
 		} catch (XPathExpressionException e) {
 			assertFalse(false);
 		}
@@ -137,8 +137,6 @@ public class EvaluationTestbedServiceTemplateTest extends TestCase{
 	public void testXPathToMetricNameAndValue(){
 		try {
 			NodeList nodes = evalSer.getAllEvalResultsRootNodes(document);
-			List<String> names = new ArrayList<String>();
-			List<String> names2 = new ArrayList<String>();
 			
 			boolean bFound = false;
 			

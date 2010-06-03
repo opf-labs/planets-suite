@@ -58,7 +58,8 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	private Vector<ServiceOperationImpl> lAllRegisteredServiceOperations;
 	//all Operation Names within the WSDL not only the registered ones that can be executed via the TB
 	//Note: to persist this object it's impl and not its interface is required here
-    @Lob
+    @SuppressWarnings("unused")
+	@Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
 	private Vector<String> lAllOperationNamesFromWSDL;
     //all tag names and values that have been registered for this service

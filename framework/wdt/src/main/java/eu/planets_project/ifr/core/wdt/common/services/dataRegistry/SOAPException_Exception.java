@@ -22,6 +22,10 @@ public class SOAPException_Exception
 {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 499222443782733915L;
+	/**
      * Java type that goes as soapenv:Fault detail element.
      * 
      */

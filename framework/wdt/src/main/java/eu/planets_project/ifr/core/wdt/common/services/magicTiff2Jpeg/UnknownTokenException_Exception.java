@@ -22,6 +22,10 @@ public class UnknownTokenException_Exception
 {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1505385595262545812L;
+	/**
      * Java type that goes as soapenv:Fault detail element.
      * 
      */

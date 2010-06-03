@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class PropertyRunEvaluationRecordImpl implements java.io.Serializable {
 	
+	@SuppressWarnings("unused")
 	@Transient @XmlTransient
 	private static Log log = LogFactory.getLog(PropertyRunEvaluationRecordImpl.class);
 	private static final long serialVersionUID = -6334296433243258565L;

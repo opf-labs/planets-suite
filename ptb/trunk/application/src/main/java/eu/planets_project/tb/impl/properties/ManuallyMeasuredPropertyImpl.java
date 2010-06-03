@@ -8,6 +8,10 @@ import eu.planets_project.tb.api.properties.ManuallyMeasuredProperty;
 
 public class ManuallyMeasuredPropertyImpl implements ManuallyMeasuredProperty, Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2532060178580163007L;
 	private String name, description;
 	private String pURI;
 	private boolean bUserCreated = false;

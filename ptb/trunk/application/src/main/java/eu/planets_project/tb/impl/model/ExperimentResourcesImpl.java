@@ -41,6 +41,7 @@ public class ExperimentResourcesImpl implements
 		return this.lExpRessourceID;
 	}
 	
+	@SuppressWarnings("unused")
 	private void setExperimentResourcesID(long lID){
 		this.lExpRessourceID = lID;
 	}

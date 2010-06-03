@@ -156,7 +156,11 @@ public class ExperimentExecutionCharts {
      */
     static class CustomRenderer extends BarRenderer {
 
-        /** The colors. */
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 2695951723656220566L;
+		/** The colors. */
         private Paint[] colors;
 
         /**

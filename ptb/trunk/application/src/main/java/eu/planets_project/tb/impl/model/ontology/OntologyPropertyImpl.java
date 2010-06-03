@@ -41,14 +41,14 @@ import eu.planets_project.tb.impl.system.BackendProperties;
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serializable {
 
-    @XmlTransient
+    @SuppressWarnings("unused")
+	@XmlTransient
     private long id;
     private Log log = LogFactory.getLog(OntologyPropertyImpl.class);
     //the owl model element containing the nodes property links
     private RDFIndividual individual;
     //FIXME This information is currently hardcoded and must come from the Testbed ontology extension
     private static final String TYPE_DIGITAL_OBJECT = "Digital Object";
-    private static final String TYPE_SERVICE = "Service";
     //the ProtegeReasoner that's connected to the given owl model
     private ProtegeReasoner reasoner = null;
     private String xclOntologyLocation = "";

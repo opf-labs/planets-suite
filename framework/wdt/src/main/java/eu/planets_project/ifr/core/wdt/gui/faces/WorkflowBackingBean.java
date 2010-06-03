@@ -132,7 +132,6 @@ public class WorkflowBackingBean {
 	private ServiceBean sbiq;
 	private HtmlDataTable parameterTable;
 	private String newValue = "";
-	private int wfCount = -1;
 
 	private WftRegistryService wftRegImp;
 	private WeeService weeService;
@@ -341,7 +340,6 @@ public class WorkflowBackingBean {
 					swb.setReportExists(true);
 					workflowUUID = null;
 					workflowStarted = false;
-					wfCount = -1;
 				}
 			} catch (Exception e) {
 				System.out.println("Unidentified UUID: " + workflowUUID);

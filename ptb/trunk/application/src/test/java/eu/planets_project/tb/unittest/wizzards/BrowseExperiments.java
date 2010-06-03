@@ -1,14 +1,12 @@
 package eu.planets_project.tb.unittest.wizzards;
 
-import java.util.Set;
-
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
+import junit.framework.TestCase;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
-import junit.framework.TestCase;
 
 public class BrowseExperiments extends TestCase{
 	
@@ -30,13 +28,9 @@ public class BrowseExperiments extends TestCase{
 		}
 	}
 	
-	private void createExperiment(){
-		
-	}
-	
 	public void getAllExperiments(){
 		manager = TestbedManagerImpl.getInstance();
-		Set<Long> expIDs = manager.getAllExperimentIDs();
+		manager.getAllExperimentIDs();
 		
 		//Get 
 	}

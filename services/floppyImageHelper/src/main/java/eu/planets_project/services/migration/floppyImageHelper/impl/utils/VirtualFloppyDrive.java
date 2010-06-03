@@ -360,6 +360,7 @@ public class VirtualFloppyDrive {
 		return commands;
 	}
 
+	@SuppressWarnings("unused")
 	private ArrayList<String> stopVfdDriver() {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
@@ -368,6 +369,7 @@ public class VirtualFloppyDrive {
 		return commands;
 	}
 
+	@SuppressWarnings("unused")
 	private ArrayList<String> installVfdDriver() {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
@@ -376,6 +378,7 @@ public class VirtualFloppyDrive {
 		return commands;
 	}
 
+	@SuppressWarnings("unused")
 	private ArrayList<String> removeVfdDriver() {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
@@ -446,6 +449,7 @@ public class VirtualFloppyDrive {
 			return commands;
 		}
 
+	@SuppressWarnings("unused")
 	private ArrayList<String> status() {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);

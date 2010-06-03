@@ -161,7 +161,6 @@ public class PropertyEvaluation implements Serializable {
             // Look up
             String label = state.toString();
             String key = "exp_stage5.evaluation."+label;
-            String lookup = "res['"+key+"']";
             String name = (String) map.get(key);
             if( bundle != null ) label = bundle.getString(key);
             //log.info("For "+state+" got "+label+" and "+name);

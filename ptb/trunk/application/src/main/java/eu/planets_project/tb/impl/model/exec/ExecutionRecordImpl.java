@@ -409,7 +409,8 @@ public class ExecutionRecordImpl implements Serializable {
     /**
      * @return the measurements
      */
-    private Set<MeasurementImpl> getMeasurements() {
+    @SuppressWarnings("unused")
+	private Set<MeasurementImpl> getMeasurements() {
         /*
             log.info("me: " + me.getAgentType()+ " " + me.getMeasurements().size() );
             for(MeasurementImpl m : me.getMeasurements() ) {

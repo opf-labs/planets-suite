@@ -4,7 +4,6 @@
 package eu.planets_project.ifr.core.wee.gui;
 
 import javax.servlet.http.HttpServlet;
-import javax.xml.ws.Endpoint;
 
 /**
  * 
@@ -16,7 +15,6 @@ import javax.xml.ws.Endpoint;
 public class WeeManagerServlet extends HttpServlet {
     private static final long serialVersionUID = 8584229539252629375L;
     
-    private Endpoint endpoint;
     /*
     @Override
     public void init(ServletConfig config) throws ServletException

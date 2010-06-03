@@ -18,6 +18,7 @@ import eu.planets_project.tb.impl.model.measure.MeasurementImpl;
  */
 public class MeasurementPropertyResultsBean {
 	
+	@SuppressWarnings("unused")
 	private static Log log = LogFactory.getLog(MeasurementPropertyResultsBean.class);
 	
 	public MeasurementPropertyResultsBean(String inputDigoRef, String mpropertyID,List<Calendar> allRunDates){

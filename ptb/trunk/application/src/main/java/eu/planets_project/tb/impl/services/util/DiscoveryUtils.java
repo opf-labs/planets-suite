@@ -62,7 +62,6 @@ public class DiscoveryUtils {
      * @param wsdlLocation The location of the WSDL.
      * @return A new instance of the the given class, wrapping the referenced service.
      */
-    @SuppressWarnings("unchecked")
     public static <T> T createServiceObject( Class<T> serviceClass, URL wsdlLocation ) {
         PlanetsServiceExplorer se = new PlanetsServiceExplorer(wsdlLocation);
         Service service;

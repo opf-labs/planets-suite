@@ -21,7 +21,7 @@ public class LogReferenceCreatorWrapper {
 	
 		ReportingLog repLog = processingTemplate.getWorkflowReportingLogger();
 	    /* Now write the stuff to disk: */
-		File reportFile = repLog.reportAsFile();
+		repLog.reportAsFile();
 	    File logFile = repLog.logAsFile();
 	    System.out.println("Wrote logFile to: " + logFile.getAbsolutePath());
 	    /* And return a result object: */

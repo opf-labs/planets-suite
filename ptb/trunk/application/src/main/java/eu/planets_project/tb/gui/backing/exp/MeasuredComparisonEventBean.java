@@ -39,7 +39,8 @@ public class MeasuredComparisonEventBean extends MeasurementEventBean {
     }
 
     /** */
-    private static final Log log = LogFactory.getLog(MeasuredComparisonEventBean.class);
+    @SuppressWarnings("unused")
+	private static final Log log = LogFactory.getLog(MeasuredComparisonEventBean.class);
 
 
     /**

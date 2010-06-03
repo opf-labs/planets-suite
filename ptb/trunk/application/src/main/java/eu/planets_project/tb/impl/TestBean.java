@@ -14,7 +14,6 @@ public class TestBean implements java.io.Serializable{
 	
 	private int id;
 	private String name;
-	private String description;
 	
     @Lob
     @Column(columnDefinition=ExperimentPersistencyImpl.BLOB_TYPE)
@@ -45,10 +44,12 @@ public class TestBean implements java.io.Serializable{
 		this.name = name;
 	}
 	
+	@SuppressWarnings("unused")
 	private void setHashtable(Hashtable<Integer,String> htable){
 		this.htable = htable;
 	}
 	
+	@SuppressWarnings("unused")
 	private Hashtable<Integer,String> getHashtable(){
 		return this.htable;
 	}

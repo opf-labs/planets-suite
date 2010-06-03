@@ -67,7 +67,6 @@ public class MeasurementImpl implements Serializable {
     /* ---- Constructors ---- */
     
     /** For JAXB */
-    @SuppressWarnings("unused")
     public MeasurementImpl() { }
 
     /**

@@ -35,8 +35,8 @@ public final class DummyTest extends TestCase {
     @Test
     public void testMonitor() throws Exception {
         try {
-        	BeanObject out = monitor.monitor(new BeanObject());
-					System.out.println("testing...");
+        	monitor.monitor(new BeanObject());
+			System.out.println("testing...");
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,6 +18,7 @@ import eu.planets_project.tb.api.services.tags.ServiceTag;
 @Entity
 public class ServiceTagImpl implements ServiceTag, java.io.Serializable{
 		
+	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue
 	private long id;

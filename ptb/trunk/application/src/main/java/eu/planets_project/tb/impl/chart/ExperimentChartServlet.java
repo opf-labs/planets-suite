@@ -511,7 +511,11 @@ public class ExperimentChartServlet extends HttpServlet {
      */
     static class CustomRenderer extends BarRenderer {
 
-        /** The colors. */
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1404034457254212917L;
+		/** The colors. */
         private Paint[] colors;
 
         /**

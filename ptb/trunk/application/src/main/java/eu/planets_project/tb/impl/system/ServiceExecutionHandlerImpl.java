@@ -7,11 +7,8 @@ package eu.planets_project.tb.impl.system;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
@@ -24,15 +21,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
@@ -111,7 +101,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 				bp = tbBatchManager.getBatchProcessor(BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
 				log.info("Submitting workflow to batch processor: "+BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
 				log.info("Got inputs #"+executable.getInputData().size());
-				DataHandler dh = new DataHandlerImpl();
+				//DataHandler dh = new DataHandlerImpl();
 			  //NOTE: previously submitting digital objects...
 				//List<DigitalObject> digos = dh.convertFileRefsToURLAccessibleDigos(executable.getInputData());
 				//submit the batch process to the WEE
@@ -153,6 +143,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	 * Map<String position+"", String localInputFileRef>
 	 * @param inputData
 	 */
+	@SuppressWarnings("unused")
 	private void createInputDataMap(Collection<String> inputData) {
 		if(inputData!=null){
 			Iterator<String> fileRefs = inputData.iterator();
@@ -170,6 +161,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	 * the web service client.
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private WSClientBean createWSClient(TestbedServiceTemplate serviceTemplate, ServiceOperation selOperation) throws ServiceInvocationException{
 		WSClientBean wsclient = initWSClient();
 		wsclient.setWsdlURI(serviceTemplate.getEndpoint());
@@ -223,6 +215,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	 *  This methods also calls renameOutput which produces an outpuf file with the same name as it's input file.
 	 * @return updated migrationResult with file refs to the Testbed's output dir.
 	 */
+	@SuppressWarnings("unused")
 	private Map<String,String> copyFileOutputToOutputDir(Map<String,String> migrationResults) throws IOException{
 		Map<String,String> ret = new HashMap<String,String>();
 		if(migrationResults!=null){
@@ -274,6 +267,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	 * Specifies the directory where to copy the migration output files
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unused")
 	private void setDir() throws IOException{
 		Properties properties = new Properties();
 	    try {
@@ -316,6 +310,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unused")
 	private byte[] downloadBinaryFromURI(URI uri)throws FileNotFoundException, IOException{
 		
 		InputStream in = null;
@@ -348,6 +343,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	 * An output file type (e.g. doc) can be specified, which will be used as the result's file type
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private Map<String,String> createFilesFromBase64Result(Map<String,String> migrationResults, String outputFileType){
 		Map<String,String> ret = new HashMap<String,String>();
 		if((migrationResults==null)||(migrationResults.size()<=0))
@@ -511,20 +507,6 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 
 		
 	
-	private Document buildDOM(String input) throws ParserConfigurationException, SAXException, IOException{
-		DocumentBuilderFactory factory =   DocumentBuilderFactory.newInstance();  
-		factory.setNamespaceAware(false);
-		DocumentBuilder builder;
-
-		builder = factory.newDocumentBuilder();
-		Reader reader = new StringReader(input);
-		InputSource inputSource = new InputSource(reader);
-		Document document = builder.parse(inputSource);
-		return document;
-
-	}
-	
-
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.ServiceExecutionHandler#executeExperimentAndAutoEvalServices(eu.planets_project.tb.api.model.Experiment)
 	 */

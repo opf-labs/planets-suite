@@ -22,6 +22,10 @@ public class PlanetsServiceException_Exception
 {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 546775730940639194L;
+	/**
      * Java type that goes as soapenv:Fault detail element.
      * 
      */

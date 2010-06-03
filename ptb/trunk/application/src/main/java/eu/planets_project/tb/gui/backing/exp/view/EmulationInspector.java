@@ -274,7 +274,7 @@ public class EmulationInspector {
             res.getMeasurementEvents().add(me);
             UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
             me.setAgent( new MeasurementAgent( user ));
-            ExperimentPersistencyRemote edao = ExperimentPersistencyImpl.getInstance();
+            ExperimentPersistencyImpl.getInstance();
             ExperimentInspector.persistExperiment();
         }
         me.getMeasurements();

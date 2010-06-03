@@ -16,6 +16,11 @@ import java.util.Map;
  */
 public class WorkflowContext implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7345432350628218430L;
+
 	//a list of known property elements that are used through the WorkflowContext
 	public static final String Property_ServiceEndpoint = "Service Endpoint";
 	

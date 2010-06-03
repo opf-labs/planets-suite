@@ -157,7 +157,6 @@ public abstract class MonitoringContextServlet extends HttpServlet
 
    private void setupHTMLResponseHeader(PrintWriter writer, HttpServletRequest req)
    {
-      Package wsPackage = Package.getPackage("org.jboss.ws");
       writer.println("<head>");
       writer.println("<meta http-equiv='Content-Type content='text/html; charset=iso-8859-1'>");
       writer.println("<title>PLANETS Workflows</title>");

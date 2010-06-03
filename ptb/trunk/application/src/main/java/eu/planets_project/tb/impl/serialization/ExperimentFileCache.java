@@ -67,8 +67,7 @@ public class ExperimentFileCache {
         }
     }
     
-    @SuppressWarnings("unchecked")
-	public String createExperimentsExport( Collection<Experiment> allExps ) {
+    public String createExperimentsExport( Collection<Experiment> allExps ) {
         try {
             File tmp = createTempFile();
             ExperimentRecords.writeExperimentsToOutputStream(new FileOutputStream( tmp ), allExps );

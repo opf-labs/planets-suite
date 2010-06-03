@@ -14,14 +14,11 @@ import org.apache.myfaces.custom.tree2.TreeNodeBase;
 public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     static final long serialVersionUID = 82362318283823295l;
     
-    static private Logger log = Logger.getLogger(FileTreeNode.class.getName());
+    @SuppressWarnings("unused")
+	static private Logger log = Logger.getLogger(FileTreeNode.class.getName());
     
     private DigitalObjectReference dob;
     private String displayName;
-    private String owner;
-    private String size;
-    private String dateAdded;
-    private String dateModified;
     private boolean selected;
     private boolean selectable;
     private boolean expanded = false;

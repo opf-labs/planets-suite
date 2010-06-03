@@ -31,8 +31,6 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.DataRegistry.DigitalObjectManagerNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.services.datatypes.Content;
@@ -194,14 +192,6 @@ public class DataHandlerImpl implements DataHandler {
      * @see eu.planets_project.tb.api.data.util.DataHandler#storeDigitalObject(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.tb.api.model.Experiment)
      */
     public URI storeDigitalObject(DigitalObject dob, Experiment exp) {
-    	DigitalObjectManager defstore = null;
-    	try {
-			defstore = this.dataReg.getDefaultDigitalObjectManager();
-		} catch (DigitalObjectManagerNotFoundException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-			return null;
-		}
         URI defaultDomUri = this.dataReg.getDefaultDigitalObjectManagerId();
         this.log.info("Attempting to store in data registry: " + defaultDomUri);
         UserBean currentUser = (UserBean) JSFUtil.getManagedObject("UserBean");

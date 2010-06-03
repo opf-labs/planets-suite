@@ -9,9 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
@@ -23,12 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
 import eu.planets_project.ifr.core.security.api.model.User;
-import eu.planets_project.ifr.core.security.api.services.RoleManager;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.ifr.core.security.api.services.UserManager.UserNotFoundException;
 import eu.planets_project.ifr.core.security.impl.model.AddressImpl;
 import eu.planets_project.ifr.core.security.impl.model.UserImpl;
-import eu.planets_project.ifr.core.security.impl.services.RoleManagerImpl;
 import eu.planets_project.ifr.core.security.impl.services.UserManagerImpl;
 /**
  * Simple bean backing self sign-up pages
@@ -38,7 +36,6 @@ import eu.planets_project.ifr.core.security.impl.services.UserManagerImpl;
 public class UserSignupBean 
 {
 	private static Logger log = Logger.getLogger(UserSignupBean.class.getName());
-	private static RoleManager roleManager = RoleManagerImpl.getPlanetsRoleManager();
 	private static UserManager userManager = UserManagerImpl.getPlanetsUserManager();
 	
 	private static File cachedir = new File(System.getProperty("java.io.tmpdir"), 

@@ -121,7 +121,7 @@ public class CommentBrowserTest extends TestCase{
 		System.out.println("Comment Partent ID: "+test_find1.getCommentID());
 		CommentImpl com_child = new CommentImpl(test_find1.getCommentID());
 		com_child.setComment("Andrew", "TestChild", "Comment Text");
-		Long lChildID = dao_r.persistComment(com_child);
+		dao_r.persistComment(com_child);
 
 		test_find1 =  dao_r.findComment(commentID1);
 		System.out.println("Comment Partent ID: "+test_find1.getCommentID());

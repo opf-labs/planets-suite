@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.wsdl.Binding;
 import javax.wsdl.BindingInput;
 import javax.wsdl.BindingOperation;
-import javax.wsdl.BindingOutput;
 import javax.wsdl.Definition;
 import javax.wsdl.Input;
 import javax.wsdl.Message;

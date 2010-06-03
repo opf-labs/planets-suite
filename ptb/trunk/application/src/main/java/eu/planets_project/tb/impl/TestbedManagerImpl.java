@@ -58,9 +58,13 @@ import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProces
 public class TestbedManagerImpl 
 	implements eu.planets_project.tb.api.TestbedManager, java.io.Serializable{
 
-    private static Log log = LogFactory.getLog(TestbedManagerImpl.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8597429695612799998L;
+
+	private static Log log = LogFactory.getLog(TestbedManagerImpl.class);
 	
-	private long lTestbedManagerID;
 	private static TestbedManagerImpl instance;
 	//e.g. used within the serviceTemplate importer and exporter
 	

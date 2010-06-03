@@ -61,7 +61,6 @@ public class TiffValidation implements Validate, Serializable
 	
 	private static final Logger log = Logger.getLogger(TiffValidation.class.getName());
 
-	private byte[] bytes;
 
 	/**
 	 * PRONOM UIDs 

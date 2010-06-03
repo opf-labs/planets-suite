@@ -1153,7 +1153,7 @@ public class StorageBackingBean {
 	                				o.getFormat().toString());
 	                	}
                     	TreeNode relationshipNode = addNode(childNode, ModelConfiguration.PremisModel.RELATIONSHIP.name());
-                    	TreeNode relObjIdNode = addNode(relationshipNode, 
+                    	addNode(relationshipNode, 
                     			ModelConfiguration.PremisModel.Relationship.RELATED_OBJECT_IDENTIFIER.name());
 	                	if (o.getManifestationOf() != null) {
 	                		addNode(idNode, 
@@ -1178,9 +1178,12 @@ public class StorageBackingBean {
      */
     public static class DummyRegistryProperty extends RegistryPropertyImpl implements RegistryProperty{
 
-    	protected DummyRegistryProperty(String name){
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = -847500726008484986L;
+		protected DummyRegistryProperty(String name){
     		this.name = name;
-    		this.uri = uri;
     	}
     	
     	String name;

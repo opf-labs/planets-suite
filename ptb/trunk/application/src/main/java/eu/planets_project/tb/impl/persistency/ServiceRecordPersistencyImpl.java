@@ -61,22 +61,6 @@ public class ServiceRecordPersistencyImpl implements ServiceRecordPersistencyRem
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.persistency.ServiceRecordPersistencyRemote#deleteServiceRecord(long)
-     */
-    private void deleteServiceRecord(long id) {
-        ServiceRecordImpl t_helper = manager.find(ServiceRecordImpl.class, id);
-        manager.remove(t_helper);
-    }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.persistency.ServiceRecordPersistencyRemote#deleteServiceRecord(eu.planets_project.tb.impl.model.exec.ServiceRecordImpl)
-     */
-    private void deleteServiceRecord(ServiceRecordImpl serviceRecord) {
-        ServiceRecordImpl t_helper = manager.find(ServiceRecordImpl.class, serviceRecord.getId() );
-        manager.remove(t_helper);
-    }
-
-    /* (non-Javadoc)
      * @see eu.planets_project.tb.api.persistency.ServiceRecordPersistencyRemote#findServiceRecord(long)
      */
     public ServiceRecordImpl findServiceRecord(long id) {

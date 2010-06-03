@@ -16,10 +16,12 @@ import eu.planets_project.tb.api.model.ExperimentReport;
  * @author alindley
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentReportImpl implements ExperimentReport, java.io.Serializable {
 
+	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue
     @XmlTransient

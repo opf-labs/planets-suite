@@ -2319,7 +2319,6 @@ public class NewExpWizardController{
         }
     	
     	//get the information from the ontology tree bean
-    	FacesContext ctx = FacesContext.getCurrentInstance();
 		PropertyDnDTreeBean treeBean = expBean.getOntologyDnDBean();
 		if(treeBean==null){
 			// ontology tree bean has not been set
@@ -2429,7 +2428,6 @@ public class NewExpWizardController{
 			
 			//store the updated experiment
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-	        Experiment exp = expBean.getExperiment();
 	    	testbedMan.updateExperiment(expBean.getExperiment());
 			
 		}else{
@@ -2541,7 +2539,6 @@ public class NewExpWizardController{
 			
 			//store the updated experiment
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-	        Experiment exp = expBean.getExperiment();
 	    	testbedMan.updateExperiment(expBean.getExperiment());
 		
 		}else{
@@ -2584,18 +2581,6 @@ public class NewExpWizardController{
         }
     	
     	//TODO AL: not updating the evaluation records for every run - TBC
-    }
-    
-    /**
-     * updates an evaluation record for a given property and input digitalObjectRef per run
-     * @param propertyID
-     * @param digObjectRefCopy
-     * @param stageNames stages to retrieve the property from for comparisson (e.g. pre-characterisae and post-characterise)
-     * @param runEndDate
-     * @param evalValue
-     */
-    private void updatePropertyEvaluationRunRecord(String propertyID, String digObjectRefCopy, String[] stageNames, Calendar runEndDate, String evalValue){
-    	
     }
     
     public String finalizeExperiment(){

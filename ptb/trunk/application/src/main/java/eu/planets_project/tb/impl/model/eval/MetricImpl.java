@@ -11,6 +11,10 @@ import eu.planets_project.tb.api.model.eval.Metric;
 
 public class MetricImpl implements Metric,Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8195188725783701476L;
 	private String sName = "";
 	private String sType ="";
 	private String sDescription ="";

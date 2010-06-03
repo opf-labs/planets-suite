@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.net.URI;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 
 import org.ajax4jsf.component.html.HtmlActionParameter;
 import org.apache.commons.logging.Log;
@@ -78,7 +77,6 @@ public class RichFileUploadBean {
     }
     
     private void addDataToAppropriateExperimentStage(UploadEvent evt, URI furi){
-    	FacesContext context = FacesContext.getCurrentInstance();
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		String forStage = null;
 	

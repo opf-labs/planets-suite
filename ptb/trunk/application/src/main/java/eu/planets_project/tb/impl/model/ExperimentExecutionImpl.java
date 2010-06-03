@@ -30,6 +30,7 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
  * @author alindley
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentExecutionImpl extends ExperimentPhaseImpl
@@ -40,7 +41,9 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
     @XmlTransient
     private long lExperimentIDRef;
     // These don't seem to be used anywhere, but removing them will break the Hibernate mapping.
+	@SuppressWarnings("unused")
 	private boolean bExecutionInProgress;
+	@SuppressWarnings("unused")
 	private boolean bExecuted;
 	
 	public ExperimentExecutionImpl(){

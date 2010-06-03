@@ -25,6 +25,10 @@ import eu.planets_project.tb.impl.persistency.TestbedServiceTemplatePersistencyI
  */
 public class ServiceTemplateRegistryImpl implements ServiceTemplateRegistry, java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1214395258067642099L;
 	//Map<ServiceUUID, Service>
 	private Map<String,TestbedServiceTemplate> hm_AllServices;
 	//Map<ServiceUUID, List<ServiceTag>

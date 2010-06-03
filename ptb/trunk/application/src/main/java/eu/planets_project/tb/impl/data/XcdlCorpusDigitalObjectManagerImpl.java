@@ -226,7 +226,8 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
         if( dob.getMetadata() != null ) {
             for( Metadata md : dob.getMetadata() ) {
                 if( XCDL_MD_URI.equals( md.getType() ) ) {
-                    String xcdls = md.getContent();
+                	md.getContent();
+                    //String xcdls = md.getContent();
                     // Read properties from the XCDL:
                     try {
                         // TODO Make this work again!

@@ -56,6 +56,7 @@ public class WizzardFirstStage extends TestCase{
 	 * Uses TestbedManager.registerNewUser()
 	 * @return the experiment's entity Id.
 	 */
+	@SuppressWarnings("unused")
 	private long createExperiment1(){
 		
 		ExperimentSetupImpl expSetup = (ExperimentSetupImpl) createExperimentSetup();

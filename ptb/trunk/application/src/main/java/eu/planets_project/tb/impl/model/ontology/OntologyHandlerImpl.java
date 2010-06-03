@@ -69,6 +69,7 @@ public class OntologyHandlerImpl {
     private ProtegeReasoner createPelletJenaReasoner(OWLModel owlModel) {
 
 		// Get the reasoner manager and obtain a reasoner for the OWL model. 
+		@SuppressWarnings("unused")
 		ReasonerManager reasonerManager = ReasonerManager.getInstance();
 
 		//Get an instance of the Protege Pellet reasoner

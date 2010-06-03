@@ -162,7 +162,6 @@ public class AutoBMGoalEvalUserConfigBean{
     		   	
     	//saves the dropped and afterwards configured metricBean for the proper TB evaluation
     	//the table name the metric belongs to is provided as parameter
-    	boolean bFound = false;
 		String sPConfigPanel = null;
     	for(UIComponent comp:((List<UIComponent>)e.getComponent().getChildren())){
     		try{

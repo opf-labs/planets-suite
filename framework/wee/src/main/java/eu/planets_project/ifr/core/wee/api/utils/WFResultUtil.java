@@ -1,9 +1,7 @@
 package eu.planets_project.ifr.core.wee.api.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
@@ -22,6 +20,10 @@ import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 
 public class WFResultUtil implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1639817861854114709L;
 	private static Log log = LogFactory.getLog(WFResultUtil.class);
 	
 	/**
@@ -81,16 +83,4 @@ public class WFResultUtil implements Serializable{
 		}
 	}
 	
-	private static String readXMLConfigFileToString(File file) throws IOException{
-		BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        StringBuilder stringBuilder = new StringBuilder();
-        String line = null;
-
-        while ((line = bufferedReader.readLine()) != null) {
-        stringBuilder.append(line + "\n");
-        }
-        bufferedReader.close();
-        return stringBuilder.toString();
-	}
-
 }

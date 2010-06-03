@@ -215,6 +215,10 @@ public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serial
 	 */
 	public class ConfigImpl implements Config, Serializable{
 	
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -402528311482817500L;
 		private Metric metric;
 		private String sMathExpr ="";
 		private String sEvalBoundary ="";

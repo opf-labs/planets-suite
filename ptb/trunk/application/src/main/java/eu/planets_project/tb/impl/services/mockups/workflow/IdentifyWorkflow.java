@@ -34,7 +34,8 @@ import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
  *
  */
 public class IdentifyWorkflow implements ExperimentWorkflow {
-    private static Log log = LogFactory.getLog(IdentifyWorkflow.class);
+    @SuppressWarnings("unused")
+	private static Log log = LogFactory.getLog(IdentifyWorkflow.class);
 
     /** External property keys */
     public static final String PARAM_SERVICE = "identify.service";
@@ -42,11 +43,6 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     /** Internal keys for easy referral to the service+stage combinations. */
     public static final String STAGE_IDENTIFY = "Identify";
     
-    private static final String IDENTIFY_SUCCESS = STAGE_IDENTIFY+".service.success";
-    private static final String IDENTIFY_SERVICE_TIME = STAGE_IDENTIFY+".service.time";
-    private static final String IDENTIFY_METHOD = STAGE_IDENTIFY+".method";
-    private static final String IDENTIFY_FORMAT = STAGE_IDENTIFY+".do.format";
-    private static final String IDENTIFY_DO_SIZE = STAGE_IDENTIFY+".do.size";
 
     /** Observable properties for this service type */
     public static MeasurementImpl MEASURE_IDENTIFY_FORMAT;

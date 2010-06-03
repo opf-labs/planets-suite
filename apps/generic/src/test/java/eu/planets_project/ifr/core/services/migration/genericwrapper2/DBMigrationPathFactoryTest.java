@@ -293,7 +293,7 @@ public class DBMigrationPathFactoryTest {
      */
     private void commandLineTest(MigrationPath migrationPath,
 	    Collection<Parameter> toolParameters,
-	    @SuppressWarnings("hiding") Collection<Parameter> environmentParameters,
+	    Collection<Parameter> environmentParameters,
 	    Map<String, File> tempFileDeclarations,
 	    List<String> expectedCommandLine) throws Exception {
 

@@ -43,7 +43,8 @@ public abstract class ExpTypeBackingBean {
 
     /** Allow the workflow to be cached during editing. */
     private ExperimentWorkflow ewfCache = null;
-    private HashMap<String, String> ewfCacheParameters = null;
+    @SuppressWarnings("unused")
+	private HashMap<String, String> ewfCacheParameters = null;
 
     /** A Service Registry instance for look-ups. */
     protected ServiceRegistry registry = ServiceRegistryFactory.getServiceRegistry();

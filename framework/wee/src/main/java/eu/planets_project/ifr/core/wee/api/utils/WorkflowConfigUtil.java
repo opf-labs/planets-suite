@@ -32,6 +32,10 @@ import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 
 public class WorkflowConfigUtil implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1427261014786526266L;
 	private static Log log = LogFactory.getLog(WorkflowConfigUtil.class);
 	
 	/**

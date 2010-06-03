@@ -26,8 +26,10 @@ public class ExperimentResourcesImpl extends TestCase{
 	
 	public void testExperimentResources(){
 		//TODO extend
+		@SuppressWarnings("unused")
 		Experiment exp_find1 = (ExperimentImpl)manager.getExperiment(expID1);
 		//use the private helper method to setup the ExperimentSetup
+		@SuppressWarnings("unused")
 		ExperimentSetupImpl expResources = createEnvironmentExperimentResources();
 		
 	}

@@ -364,7 +364,8 @@ public class WeeManagerImpl implements WeeManager, Serializable {
      * Hook up to a new instance of the stateless Planets WEE Service EJB. 
      * @return A WeeServiceStub, lookup via JNDI.
      */
-    private WeeService getRemoteWeeServiceByJNDI() {
+    @SuppressWarnings("unused")
+	private WeeService getRemoteWeeServiceByJNDI() {
         try{
             Context jndiContext = new javax.naming.InitialContext();
             WeeService wee = (WeeService) PortableRemoteObject.narrow(

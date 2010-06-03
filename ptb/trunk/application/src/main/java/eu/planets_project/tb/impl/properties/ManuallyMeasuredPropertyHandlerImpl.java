@@ -315,7 +315,7 @@ public class ManuallyMeasuredPropertyHandlerImpl {
 			URI drManagerID = DataRegistryFactory.createDataRegistryIdFromName("/experiment-files/testbed/users/"+userName).normalize();
 			URI storageURI =new URI(drManagerID.getScheme(),drManagerID.getAuthority(),drManagerID.getPath()+"/config/userproperties.xml",null,null).normalize();
 			//retrieve the user specific properties xml file from his storage space
-			DigitalObject digoUserProps = dataRegistry.getDigitalObjectManager(drManagerID).retrieve(storageURI);
+			dataRegistry.getDigitalObjectManager(drManagerID).retrieve(storageURI);
 			return true;
 		}catch(Exception e){
 			//we need to create the user's digital object containing his manual properties
