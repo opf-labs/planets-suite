@@ -14,5 +14,9 @@
 	<classpathentry kind="lib" path="core/utils/lib/Zip64File.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib/jbossweb.jar"/>
+	<classpathentry kind="lib" path="lib/jsf-facelets.jar"/>
+	<classpathentry kind="lib" path="lib/jsf-api.jar"/>
+	<classpathentry kind="lib" path="lib/velocity-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
