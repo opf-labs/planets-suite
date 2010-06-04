@@ -3,25 +3,26 @@
 <!-- ======================================================================= -->
 <!-- Planets Suite core deployer build file                                    -->
 <!-- ======================================================================= -->
-<project name="framework-core" default="compile:common" basedir=".">
-    <property name="appName" value="${ant.project.name}"/>
-    <property name="appDir" location="."/>
-    <property name="src.dir" location="${appDir}/src/main/java"/>
-    <property name="lib.dir" location="${appDir}/lib"/>
-    <property name="src.resources" location="${appDir}/src/main/resources"/>
-    <property name="src.web" location="${appDir}/src/webapp"/>
-	<property name="src.config" location="${appDir}/src/main/config" />
-    <property name="test.src.dir" location="${appDir}/src/test/java"/>
-	<property name="test.resources" location="${appDir}/src/test/resources" />
-	<property name="test.config" location="${appDir}/src/test/config" />
-	<property name="psuite.app.deploy.mode" value="pure-java" />
-	<property name="psuite.app.build.type" value="jar" />
+<project name="core-services" default="compile:core" basedir=".">
+
+	<!-- Set up the application name and prefix -->
+    <property name="app.name" value="${ant.project.name}"/>
+    <property name="app.prefix" value="${ant.project.name}"/>
+
+	<!-- Now some directory name properties for building -->
+	<property name="app.dir" location="."/>
+    <property name="src.dir" location="${app.dir}/src/main/java"/>
+    <property name="src.resources" location="${app.dir}/src/main/resources"/>
+	<property name="src.config" location="${app.dir}/src/main/config" />
+    <property name="lib.dir" location="${app.dir}/lib"/>
     <property name="psuite.root.dir" location="../.." />
 	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
 
-	<!-- Define the API part-->
-    <property name="src.api.includes" value="eu/planets_project/services/**" />
+	<!-- Finally the build mode stuff -->
+	<property name="psuite.app.deploy.mode" value="pure-java" />
+	<property name="psuite.app.build.type" value="jar" />
 
+	<!-- import the common build file -->
 	<import file="${psuite.root.dir}/build.common.xml"/>
 
     <taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
@@ -31,6 +32,7 @@
       </classpath>
     </taskdef>
     
+	<!-- Target to generate schema for serializable data type classes -->
     <target name="gen:SDschema">
         <schemagen srcdir="${src.dir}/eu/planets_project/services/datatypes" destdir="${src.resources}">
                 
@@ -53,7 +55,9 @@
     </target>
 	
     <!-- Unit testing definitions -->
-    <property name="test.src.dir" location="${appDir}/src/test/java" />
+    <property name="test.src.dir" location="${app.dir}/src/test/java"/>
+	<property name="test.resources" location="${app.dir}/src/test/resources" />
+	<property name="test.config" location="${app.dir}/src/test/config" />
 	<property name="test.local" value="" />
 	<property name="test.standalone" value="" />
     <property name="test.server" value="" />

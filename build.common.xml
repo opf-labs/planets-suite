@@ -105,7 +105,7 @@
     </else>
   </if>
 
-  <!-- The classpath corresponding to the shared artefacts. -->
+  <!-- The classpath corresponding to the shared jar artefacts. -->
   <path id="psuite_common_classpath">
     <fileset dir="${psuite.root.dir}/target/">
       <include name="*.jar" />
@@ -188,17 +188,15 @@
   <!-- =================================================================== -->
   
   <!-- To deploy the common classes. -->
-  <target name="deploy:common" unless="have.deployed.common">
-    <ant dir="${psuite.root.dir}/framework/core" inheritAll="false" target="compile:common"/>
-    <ant dir="${psuite.root.dir}/framework/utils" inheritAll="false" />
-    <ant dir="${psuite.root.dir}" inheritAll="false" target="deploy:api"/>
+  <target name="deploy:core" >
+    <ant dir="${psuite.root.dir}/core/services" inheritAll="false" target="compile:core"/>
 
-    <!-- Update component properties files, destined for jars -->
+  	<!-- Update component properties files, destined for jars >
     <copy file="${psuite.root.dir}/apps/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties.template" tofile="${psuite.root.dir}/apps/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties" />
     <replace file="${psuite.root.dir}/apps/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties">
       <replacefilter token="@planets.server.hostname@" value="${if_server.host}" />
       <replacefilter token="@planets.server.port@" value="${if_server.port}" />
-    </replace>
+    </replace -->
 
   	<!-- Ensure any new jars are added to the classpath? -->
     <path id="psuite_common_classpath">
@@ -210,7 +208,7 @@
   </target>
   
   <!-- To compile the common classes and put them in the right places. -->
-  <target name="compile:common" depends="prepare">
+  <target name="compile:core" depends="prepare">
     
     <!--compile the model-->
     <javac source="1.5" target="${target.jvm}" 
@@ -296,7 +294,7 @@
     </if>
   </target>
   
-  <target name="compile" depends="prepare, build:api, deploy:common">
+  <target name="compile" depends="prepare, build:api, deploy:core">
     <echo message="ant.java.version: ${ant.java.version}" />
     <echo message="target.java.version: ${target.jvm}" />
     
