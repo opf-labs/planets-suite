@@ -25,18 +25,18 @@
   
   <property environment="env"/>
 
-  <property name="build.dir" location="${appDir}/target"/>
+  <property name="build.dir" location="${app.dir}/target"/>
   <property name="build.classes.dir" location="${build.dir}/classes"/>
   <property name="build.test.classes.dir" location="${build.dir}/test"/>
   <property name="build.test.conf" location="${psuite.root.dir}/test/config"/>
   <property name="build.api.classes.dir" location="${build.dir}/api"/>
-  <property name="war.build.dir" location="${appDir}/target/war"/>
-  <property name="ear.build.dir" location="${appDir}/target/ear"/>
+  <property name="war.build.dir" location="${app.dir}/target/war"/>
+  <property name="ear.build.dir" location="${app.dir}/target/ear"/>
 
-  <property name="war.base.name" value="psuite-${appName}.war"/>
-  <property name="ear.base.name" value="psuite-${appName}.ear"/>
-  <property name="jar.base.name" value="psuite-${appName}.jar"/>
-  <property name="api.base.name" value="psuite-${appName}-api.jar"/>
+  <property name="war.base.name" value="psuite-${app.name}.war"/>
+  <property name="ear.base.name" value="psuite-${app.name}.ear"/>
+  <property name="jar.base.name" value="psuite-${app.name}.jar"/>
+  <property name="api.base.name" value="psuite-${app.name}-api.jar"/>
 
   <property name="test.dir" location="${appDir}/../test/java"/>
   <property name="client.config" location="${appDir}/../test/client-config"/>
@@ -187,7 +187,7 @@
   <!-- Prepares the common code                                            -->
   <!-- =================================================================== -->
   
-  <!-- To deploy the common classes. -->
+  <!-- To deploy the core classes. -->
   <target name="deploy:core" >
     <ant dir="${psuite.root.dir}/core/services" inheritAll="false" target="compile:core"/>
 
@@ -630,18 +630,18 @@
   <!-- =================================================================== -->
 
   <target name="dist:war">
-    <mkdir dir="${war.build.dir}/${appName}" />
-    <mkdir dir="${war.build.dir}/${appName}/WEB-INF/lib" />
-    <mkdir dir="${war.build.dir}/${appName}/WEB-INF/classes" />
+    <mkdir dir="${war.build.dir}/${app.name}" />
+    <mkdir dir="${war.build.dir}/${app.name}/WEB-INF/lib" />
+    <mkdir dir="${war.build.dir}/${app.name}/WEB-INF/classes" />
     
-    <javac source="1.5" target="${target.jvm}" debug="true" srcdir="${src.dir}" destdir="${war.build.dir}/${appName}/WEB-INF/classes">
+    <javac source="1.5" target="${target.jvm}" debug="true" srcdir="${src.dir}" destdir="${war.build.dir}/${app.name}/WEB-INF/classes">
       <classpath refid="classpath"/>
     </javac>
     
     <if>
       <isset property="src.web"/>
       <then>
-        <copy todir="${war.build.dir}/${appName}">
+        <copy todir="${war.build.dir}/${app.name}">
          <fileset dir="${src.web}" casesensitive="yes">
           <include name="**/*.*" />
          </fileset>
@@ -649,7 +649,7 @@
       </then>
     </if>
 
-    <copy todir="${war.build.dir}/${appName}/WEB-INF/classes">
+    <copy todir="${war.build.dir}/${app.name}/WEB-INF/classes">
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
@@ -661,29 +661,29 @@
     </copy>
     
     <!--
-    <copy file="${build.dir}/${jar.base.name}" todir="${war.build.dir}/${appName}/WEB-INF/lib"/>
+    <copy file="${build.dir}/${jar.base.name}" todir="${war.build.dir}/${app.name}/WEB-INF/lib"/>
     -->
-    <copy todir="${war.build.dir}/${appName}/WEB-INF/lib">
+    <copy todir="${war.build.dir}/${app.name}/WEB-INF/lib">
       <fileset dir="${lib.dir}">
         <include name="**/*.jar" />
       </fileset>
     </copy>
     
     <jar jarfile="${build.dir}/${war.base.name}" 
-     basedir="${war.build.dir}/${appName}"/>
+     basedir="${war.build.dir}/${app.name}"/>
   </target>
 
   <!-- =================================================================== -->
 
   <target name="dist:ear">
-    <mkdir dir="${ear.build.dir}/${appName}" />
-    <mkdir dir="${ear.build.dir}/${appName}/WEB-INF/lib" />
-    <mkdir dir="${ear.build.dir}/${appName}/WEB-INF/classes" />
+    <mkdir dir="${ear.build.dir}/${app.name}" />
+    <mkdir dir="${ear.build.dir}/${app.name}/WEB-INF/lib" />
+    <mkdir dir="${ear.build.dir}/${app.name}/WEB-INF/classes" />
 
     <if>
       <isset property="src.web"/>
       <then>
-    <copy todir="${ear.build.dir}/${appName}">
+    <copy todir="${ear.build.dir}/${app.name}">
         <fileset dir="${src.web}" casesensitive="yes">
         <include name="**/*.*" />
       </fileset>
@@ -691,7 +691,7 @@
       </then>
     </if>
 
-    <copy todir="${ear.build.dir}/${appName}/WEB-INF/classes">
+    <copy todir="${ear.build.dir}/${app.name}/WEB-INF/classes">
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
@@ -704,7 +704,7 @@
     <copy file="${build.dir}/${jar.base.name}" todir="${ear.build.dir}" />
     
     <jar jarfile="${ear.build.dir}/${war.base.name}" 
-     basedir="${ear.build.dir}/${appName}"/>
+     basedir="${ear.build.dir}/${app.name}"/>
 
       <!-- Also copy the libs into the right place -->
     <if>
