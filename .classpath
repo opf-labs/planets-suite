@@ -4,8 +4,8 @@
 	<classpathentry kind="src" path="core/services/src/test/java"/>
 	<classpathentry kind="src" path="core/utils/src/main/java"/>
 	<classpathentry kind="src" path="core/utils/src/test/java"/>
-	<classpathentry excluding="main/java/|main/java/" kind="src" path="core/techreg/src"/>
 	<classpathentry kind="src" path="core/techreg/src/main/java"/>
+	<classpathentry kind="src" path="core/techreg/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="core/services/lib/jaxws-rt.jar"/>
