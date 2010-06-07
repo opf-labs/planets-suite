@@ -18,5 +18,9 @@
 	<classpathentry kind="lib" path="lib/jsf-api.jar"/>
 	<classpathentry kind="lib" path="lib/velocity-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-annotations-ejb3.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-ejb3x.jar"/>
+	<classpathentry kind="lib" path="core/techreg/lib/droid.jar"/>
+	<classpathentry kind="lib" path="core/techreg/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
