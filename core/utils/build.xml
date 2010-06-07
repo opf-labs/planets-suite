@@ -3,24 +3,32 @@
 <!-- ======================================================================= -->
 <!-- Planets Suite utile deployer build file                                    -->
 <!-- ======================================================================= -->
-<project name="framework-utils" default="compile:common" basedir=".">
-    <property name="appName" value="${ant.project.name}"/>
-    <property name="appDir" location="."/>
-    <property name="src.dir" location="${appDir}/src/main/java"/>
-    <property name="lib.dir" location="${appDir}/lib"/>
-    <property name="src.resources" location="${appDir}/src/main/resources"/>
-    <property name="src.web" location="${appDir}/src/webapp"/>
-	<property name="src.config" location="${appDir}/src/main/config" />
-    <property name="test.src.dir" location="${appDir}/src/test/java"/>
-	<property name="test.resources" location="${appDir}/src/test/resources" />
-	<property name="test.config" location="${appDir}/src/test/config" />
+<project name="core-utils" default="compile:core" basedir=".">
+
+	<!-- Set up the application name and prefix -->
+    <property name="app.name" value="${ant.project.name}"/>
+    <property name="app.prefix" value="${ant.project.name}"/>
+
+	<!-- Now some directory name properties for building -->
+	<property name="app.dir" location="."/>
+    <property name="src.dir" location="${app.dir}/src/main/java"/>
+    <property name="src.resources" location="${app.dir}/src/main/resources"/>
+	<property name="src.config" location="${app.dir}/src/main/config" />
+    <property name="lib.dir" location="${app.dir}/lib"/>
+    <property name="psuite.root.dir" location="../.." />
+	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
+    <property name="test.src.dir" location="${app.dir}/src/test/java"/>
+	<property name="test.resources" location="${app.dir}/src/test/resources" />
+	<property name="test.config" location="${app.dir}/src/test/config" />
+
 	<property name="psuite.app.deploy.mode" value="pure-java" />
 	<property name="psuite.app.build.type" value="jar" />
     <property name="psuite.root.dir" location="../.." />
-	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
+
 	<property name="test.config.properties" value="Common.properties.test" />
 	<property name="src.config.properties" value="Common.properties" />
-    <import file="${psuite.root.dir}/build.common.xml"/>
+
+	<import file="${psuite.root.dir}/build.common.xml"/>
 
     <!-- update the server configuration -->
     <property file="${psuite.root.dir}/build.properties"/>

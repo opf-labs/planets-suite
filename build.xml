@@ -46,6 +46,8 @@
 	      </else>
 	    </if>
 	    <ant dir="core/services" inheritAll="false"/>
+	    <ant dir="core/techreg" inheritAll="false"/>
+		<ant dir="core/utils" inheritAll="false"/>
 	  </target>
 
 	  <target name="compile:core" depends="props:set">
