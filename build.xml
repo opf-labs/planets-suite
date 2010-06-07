@@ -34,28 +34,27 @@
     <property name="psuite.test.profile.pure-java" value="${psuite.deploy.profile.pure-java}" />
   </target>
 	
-	  <!-- These are the shared Planets-Suite classes. -->
-	  <target name="deploy:core" depends="props:set">
-	    <if>
-	      <isset property="if_server.dir"/>
-	      <then>
-	        <echo message="if_server.dir is set - will deploy to ${if_server.dir}"/>
-	      </then>
-	      <else>
-	        <echo message="if_server.dir is NOT set - will not deploy, only build."/>
-	      </else>
-	    </if>
-	    <ant dir="core/services" inheritAll="false"/>
-	    <ant dir="core/techreg" inheritAll="false"/>
-		<ant dir="core/utils" inheritAll="false"/>
-	  </target>
+  <!-- These are the shared Planets-Suite classes. -->
+  <target name="deploy:core" depends="props:set">
+    <if>
+      <isset property="if_server.dir"/>
+      <then>
+        <echo message="if_server.dir is set - will deploy to ${if_server.dir}"/>
+      </then>
+      <else>
+        <echo message="if_server.dir is NOT set - will not deploy, only build."/>
+      </else>
+    </if>
+    <ant dir="core/services" inheritAll="false"/>
+    <ant dir="core/techreg" inheritAll="false"/>
+	<ant dir="core/utils" inheritAll="false"/>
+  </target>
 
-	  <target name="compile:core" depends="props:set">
-	    <ant dir="framework/core" inheritAll="false" target="compile:common"/>
-	    <ant dir="framework/security" inheritAll="false" />
-	    <ant dir="framework/techreg" inheritAll="false" />
-	  	<ant dir="framework/utils" inheritAll="false" />
-	  </target>
+  <target name="compile:core" depends="props:set">
+    <ant dir="core/services" inheritAll="false"/>
+    <ant dir="core/techreg" inheritAll="false"/>
+	<ant dir="core/utils" inheritAll="false"/>
+  </target>
 
   <!-- =================================================================== -->
     
@@ -95,7 +94,13 @@
     </fileset>
   </path>
 
-	  <target name="deploy:webapps" depends="props:set,deploy:core">
+	  <target name="deploy:framework" depends="props:set,deploy:core">
+	    <foreach target="deploy:sub" param="sub.build" inheritall="false">
+	      <path refid="framework.sub.projects"/>
+	    </foreach>
+	  </target>
+
+	<target name="deploy:webapps" depends="props:set, deploy:framework">
 	    <foreach target="deploy:sub" param="sub.build" inheritall="false">
 	      <path refid="webapps.sub.projects"/>
 	    </foreach>
