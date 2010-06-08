@@ -6,8 +6,8 @@
 
 <project name="web-techreg" default="deploy" basedir=".">
 
-	<property name="appName" value="${ant.project.name}" />
-	<property name="appDir" value="." />
+	<property name="app.name" value="${ant.project.name}" />
+	<property name="app.dir" value="." />
 	<!-- Specify the build type: ejb, war or ear. -->
 	<property name="psuite.app.build.type" value="ear" />
 
