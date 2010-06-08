@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="core/services/src/main/java"/>
+	<classpathentry kind="src" path="framework/wdt/src/test/java"/>
+	<classpathentry kind="src" path="framework/wee/src/main/java"/>
+	<classpathentry kind="src" path="framework/wee/src/test/java"/>
+	<classpathentry kind="src" path="framework/wdt/src/main/java"/>
 	<classpathentry kind="src" path="webapps/techreg/src/main/java"/>
 	<classpathentry kind="src" path="webapps/techreg/src/test/java"/>
 	<classpathentry kind="src" path="webapps/users/src/main/java"/>
