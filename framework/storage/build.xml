@@ -27,6 +27,9 @@
 	<!-- Specify how this application should be deployed -->
 	<property name="psuite.app.deploy.mode" value="pure-java" />
 
+	<!-- Define the API part-->
+  	<property name="src.api.includes" value="eu/planets_project/ifr/core/storage/api/* eu/planets_project/ifr/core/storage/impl/data/* eu/planets_project/ifr/core/storage/impl/jcr/*" />
+
 	<!-- Specify the config directory and file for this component -->
 	<property name="src.config" location="${app.dir}/src/main/config" />
 	<property name="src.config.properties" value="DataRegistry.properties" />
