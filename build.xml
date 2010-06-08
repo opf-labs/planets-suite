@@ -94,7 +94,7 @@
     </fileset>
   </path>
 
-  <target name="deploy:framework" depends="props:set,deploy:core">
+  <target name="deploy:framework" depends="props:set, deploy:core, deploy:api">
     <foreach target="deploy:sub" param="sub.build" inheritall="false">
       <path refid="framework.sub.projects"/>
     </foreach>
