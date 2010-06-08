@@ -20,6 +20,9 @@
     <property name="psuite.root.dir" location="../.." />
 	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
 
+	<!-- Define the API part-->
+  	<property name="src.api.includes" value="eu/planets_project/ifr/core/security/api/**" />
+
 	<!-- Finally the build mode stuff -->
 	<property name="psuite.app.deploy.mode" value="pure-java" />
 	<property name="psuite.app.build.type" value="ear" />

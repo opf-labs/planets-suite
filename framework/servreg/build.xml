@@ -27,6 +27,9 @@
 	<property name="psuite.root.dir" value="../.." />
 	<import file="${psuite.root.dir}/build.common.xml"/>
 
+	<!-- Define the API part-->
+  	<property name="src.api.includes" value="eu/planets_project/ifr/core/servreg/api/** eu/planets_project/ifr/core/servreg/utils/**" />
+
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${app.dir}/src/test/java" />
 	<property name="test.local" value="" />
