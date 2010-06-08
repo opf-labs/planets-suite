@@ -62,5 +62,10 @@
 	<classpathentry kind="lib" path="lib/richfaces-api-3.3.2.SR1.jar"/>
 	<classpathentry kind="lib" path="lib/richfaces-ui-3.3.2.SR1.jar"/>
 	<classpathentry kind="lib" path="lib/tomahawk-1.1.6.jar"/>
+	<classpathentry kind="lib" path="framework/wee/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/jbossws-metro-server.jar"/>
+	<classpathentry kind="lib" path="lib/jbossws-spi.jar"/>
+	<classpathentry kind="lib" path="framework/wee/lib/tools.jar"/>
+	<classpathentry kind="lib" path="framework/wdt/lib/jets3t-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
