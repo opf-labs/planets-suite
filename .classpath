@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="core/services/src/main/java"/>
+	<classpathentry kind="src" path="webapps/testbed/src/test/java"/>
+	<classpathentry kind="src" path="webapps/testbed/src/main/java"/>
 	<classpathentry kind="src" path="framework/wdt/src/test/java"/>
 	<classpathentry kind="src" path="framework/wee/src/main/java"/>
 	<classpathentry kind="src" path="framework/wee/src/test/java"/>
@@ -67,5 +69,26 @@
 	<classpathentry kind="lib" path="lib/jbossws-spi.jar"/>
 	<classpathentry kind="lib" path="framework/wee/lib/tools.jar"/>
 	<classpathentry kind="lib" path="framework/wdt/lib/jets3t-0.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr173_api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/activation.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr181-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-api.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/batik-dom.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/batik-svggen.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/jfreechart-1.0.12.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/jcommon-1.0.15.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/batik-awt-util.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.4.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/castor-xml.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/opencsv-1.8.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/icu4j_3_4.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/protege.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/protege-owl.jar"/>
+	<classpathentry kind="lib" path="lib/bsh.jar"/>
+	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/jaxm-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-xjc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
