@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="framework-techreg" default="compile:core" basedir=".">
+<project name="core-techreg" default="compile:core" basedir=".">
 
 	<!-- Set up the application name and prefix -->
     <property name="app.name" value="${ant.project.name}"/>

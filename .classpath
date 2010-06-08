@@ -8,6 +8,10 @@
 	<classpathentry kind="src" path="core/techreg/src/test/java"/>
 	<classpathentry kind="src" path="framework/security/src/main/java"/>
 	<classpathentry kind="src" path="framework/security/src/test/java"/>
+	<classpathentry kind="src" path="framework/servreg/src/main/java"/>
+	<classpathentry kind="src" path="framework/servreg/src/test/java"/>
+	<classpathentry kind="src" path="framework/storage/src/main/java"/>
+	<classpathentry kind="src" path="framework/storage/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="core/services/lib/jaxws-rt.jar"/>
@@ -28,5 +32,15 @@
 	<classpathentry kind="lib" path="framework/security/lib/log4j.jar"/>
 	<classpathentry kind="lib" path="framework/security/lib/josso-1.7.jar"/>
 	<classpathentry kind="lib" path="framework/security/lib/struts.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/commons-httpclient.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/jcr-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/jackrabbit-core-1.4.5.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/jackrabbit-api-1.4.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/jaxen-1.1.1.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/oai4j-0.6b1.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/soap.jar"/>
+	<classpathentry kind="lib" path="lib/richfaces-impl-3.3.2.SR1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
