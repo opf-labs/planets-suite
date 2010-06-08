@@ -28,7 +28,7 @@
 	<property name="psuite.app.deploy.mode" value="pure-java" />
 
 	<!-- Define the API part-->
-  	<property name="src.api.includes" value="eu/planets_project/ifr/core/storage/api/* eu/planets_project/ifr/core/storage/impl/data/* eu/planets_project/ifr/core/storage/impl/jcr/*" />
+  	<property name="src.api.includes" value="eu/planets_project/ifr/core/storage/api/* eu/planets_project/ifr/core/storage/impl/data/* eu/planets_project/ifr/core/storage/impl/jcr/* eu/planets_project/ifr/core/storage/impl/oai/*" />
 
 	<!-- Specify the config directory and file for this component -->
 	<property name="src.config" location="${app.dir}/src/main/config" />

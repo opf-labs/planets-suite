@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file                                    -->
+<!-- ======================================================================= -->
+
+<project name="framework-wee" default="deploy" basedir=".">
+
+	<!-- Set up the application name and prefix -->
+    <property name="app.name" value="${ant.project.name}"/>
+    <property name="app.prefix" value="${ant.project.name}"/>
+
+	<!-- Now some directory name properties for building -->
+	<property name="app.dir" location="."/>
+    <property name="src.dir" location="${app.dir}/src/main/java"/>
+    <property name="src.resources" location="${app.dir}/src/main/resources"/>
+	<property name="src.config" location="${app.dir}/src/main/config" />
+	<property name="src.web" value="${app.dir}/src/main/webapp"/>
+    <property name="lib.dir" location="${app.dir}/lib"/>
+    <property name="psuite.root.dir" location="../.." />
+	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
+
+  	<property name="src.api.includes" value="eu/planets_project/ifr/core/wee/api/**" />
+
+	<!-- Finally the build mode stuff -->
+	<property name="psuite.app.deploy.mode" value="pure-java" />
+	<property name="psuite.app.build.type" value="ear" />
+
+	<property name="psuite.root.dir" value="../.." />
+	<import file="${psuite.root.dir}/build.common.xml"/>
+
+	<!-- Unit testing definitions -->
+	<property name="test.src.dir" value="${app.dir}/src/test/java" />
+	<property name="test.local" value="" />
+	<property name="test.standalone" value="" />
+	<property name="test.server" value="" />
+
+	<!-- Reference to the main build file -->
+	<property name="psuite.root.dir" value="../.." />
+	<import file="${psuite.root.dir}/build.common.xml" />
+
+</project>
+
