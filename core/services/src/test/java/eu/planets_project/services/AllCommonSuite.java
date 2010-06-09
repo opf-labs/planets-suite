@@ -30,9 +30,8 @@ import eu.planets_project.services.utils.test.FileAccessTests;
  */
 
 @RunWith( Suite.class )
-@Suite.SuiteClasses( { ChecksumTests.class, DigitalObjectTests.class,
-        DigitalObjectUtilsTests.class, MetadataTests.class, ContentTests.class,
+@Suite.SuiteClasses( { ChecksumTests.class, DigitalObjectTests.class, MetadataTests.class, ContentTests.class,
         ServiceDescriptionTest.class, ServiceReportTests.class, PropertyTests.class,
-        PropertyTests.class, FileAccessTests.class,
+        PropertyTests.class,
         CharacteriseResultTests.class } )
 public class AllCommonSuite {}
