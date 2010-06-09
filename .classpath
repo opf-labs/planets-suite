@@ -21,8 +21,6 @@
 	<classpathentry kind="src" path="core/utils/src/test/java"/>
 	<classpathentry kind="src" path="core/techreg/src/main/java"/>
 	<classpathentry kind="src" path="core/techreg/src/test/java"/>
-	<classpathentry kind="src" path="framework/security/src/main/java"/>
-	<classpathentry kind="src" path="framework/security/src/test/java"/>
 	<classpathentry kind="src" path="framework/servreg/src/main/java"/>
 	<classpathentry kind="src" path="framework/servreg/src/test/java"/>
 	<classpathentry kind="src" path="framework/storage/src/main/java"/>
@@ -43,10 +41,10 @@
 	<classpathentry kind="lib" path="lib/jboss-ejb3x.jar"/>
 	<classpathentry kind="lib" path="core/techreg/lib/droid.jar"/>
 	<classpathentry kind="lib" path="core/techreg/lib/lucene-core-2.3.2.jar"/>
-	<classpathentry kind="lib" path="framework/security/lib/acegi-security-1.0.4.jar"/>
-	<classpathentry kind="lib" path="framework/security/lib/log4j.jar"/>
-	<classpathentry kind="lib" path="framework/security/lib/josso-1.7.jar"/>
-	<classpathentry kind="lib" path="framework/security/lib/struts.jar"/>
+	<classpathentry kind="lib" path="core/utils/lib/acegi-security-1.0.4.jar"/>
+	<classpathentry kind="lib" path="core/utils/lib/log4j.jar"/>
+	<classpathentry kind="lib" path="core/utils/lib/josso-1.7.jar"/>
+	<classpathentry kind="lib" path="core/utils/lib/struts.jar"/>
 	<classpathentry kind="lib" path="framework/storage/lib/commons-httpclient.jar"/>
 	<classpathentry kind="lib" path="framework/storage/lib/jcr-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jdom-1.0.jar"/>
