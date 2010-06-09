@@ -4,6 +4,6 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/application_1_4.xsd"
     version="1.4">
     <module>
-        <java>psuite-servreg-security.jar</java>
+        <java>psuite-framework-servreg.jar</java>
     </module>
 </application>

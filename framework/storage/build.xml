@@ -4,7 +4,7 @@
 <!-- Planets Storage Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="apps-storage" default="deploy" basedir=".">
+<project name="framework-storage" default="deploy" basedir=".">
 
 	<!-- Set up the application name and prefix -->
     <property name="app.name" value="${ant.project.name}"/>
