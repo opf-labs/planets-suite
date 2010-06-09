@@ -19,8 +19,6 @@
 	<property name="src.resources" value="${app.dir}/src/main/resources" />
 	<property name="src.web" value="${app.dir}/src/main/webapp" />
 
-	<property name="src.api.includes" value="eu/planets_project/ifr/core/techreg/**" />
-
 	<property name="psuite.root.dir" value="../.." />
 	<import file="${psuite.root.dir}/build.common.xml" />
 
