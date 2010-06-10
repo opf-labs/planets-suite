@@ -21,8 +21,6 @@ import eu.planets_project.services.datatypes.MetadataTests;
 import eu.planets_project.services.datatypes.PropertyTests;
 import eu.planets_project.services.datatypes.ServiceDescriptionTest;
 import eu.planets_project.services.datatypes.ServiceReportTests;
-import eu.planets_project.services.utils.DigitalObjectUtilsTests;
-import eu.planets_project.services.utils.test.FileAccessTests;
 
 /**
  * Suite to run all tests in the common component.
