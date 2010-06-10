@@ -3,6 +3,17 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/application_1_4.xsd"
     version="1.4">
+	<display-name>PLANETS Data Registry</display-name>
+
+	<description>The PLANETS Data Registry.</description>
+
+	<!--  jars defindes as java are availabel for ejb + war -->
+	<module>
+		<web>
+			<web-uri>pserv-framework-storage.war</web-uri>
+			<context-root>/storage</context-root>
+		</web>
+	</module>
     <module>
         <java>psuite-framework-storage.jar</java>
     </module>

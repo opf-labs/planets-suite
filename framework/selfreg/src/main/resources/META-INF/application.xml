@@ -3,11 +3,11 @@
     <display-name>selfreg EAR</display-name> 
     <module>
         <web>
-            <web-uri>psuite-web-selfreg.war</web-uri> 
+            <web-uri>psuite-framework-selfreg.war</web-uri> 
             <context-root>/selfreg</context-root> 
         </web>
     </module>
     <module>
-        <java>psuite-web-selfreg.jar</java> 
+        <java>psuite-framework-selfreg.jar</java> 
     </module>
 </application>

@@ -3,11 +3,11 @@
     <display-name>Users WAR</display-name> 
     <module>
         <web>
-            <web-uri>psuite-web-users.war</web-uri> 
+            <web-uri>psuite-framework-users.war</web-uri> 
             <context-root>users</context-root> 
         </web>
     </module>
     <module>
-        <java>psuite-web-users.jar</java>
+        <java>psuite-framework-users.jar</java>
     </module>
 </application>

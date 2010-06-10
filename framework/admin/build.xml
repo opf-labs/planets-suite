@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="web-admin" default="deploy" basedir=".">
+<project name="framework-admin" default="deploy" basedir=".">
 
 	<property name="app.name" value="${ant.project.name}" />
 	<property name="app.dir" value="." />

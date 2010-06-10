@@ -3,7 +3,7 @@
     <display-name>Admin WAR</display-name> 
     <module>
         <web>
-            <web-uri>psuite-web-admin.war</web-uri> 
+            <web-uri>psuite-framework-admin.war</web-uri> 
             <context-root>admin</context-root> 
         </web>
     </module>
