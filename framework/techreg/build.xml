@@ -14,6 +14,8 @@
 	<!-- Specify if this application requires further software to be installed -->
 	<property name="psuite.app.deploy.mode" value="pure-java" />
 
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/techreg/**" />
+
 	<property name="src.dir" value="${app.dir}/src/main/java" />
 	<property name="lib.dir" value="${app.dir}/lib" />
 	<property name="src.resources" value="${app.dir}/src/main/resources" />
