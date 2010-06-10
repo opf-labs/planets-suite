@@ -6,8 +6,8 @@
 
 <project name="pa-pdfbox" default="deploy" basedir=".">
     <!-- Define the project name and directory, based on the project name specified above. -->
-    <property name="appName" value="${ant.project.name}"/>
-    <property name="appDir" value="."/>
+    <property name="app.name" value="${ant.project.name}"/>
+    <property name="app.dir" value="."/>
 	
 	<!-- Specify if this application requires further software to be installed -->
 	<property name="psuite.app.deploy.mode" value="pure-java" />
@@ -19,13 +19,13 @@
     <!--<property name="psuite.app.deploy.mode" value="ejb" />-->
 
     <!-- Specify the source directories for this component -->
-    <property name="src.dir" value="${appDir}/src/main/java"/>
-    <property name="lib.dir" value="${appDir}/lib"/>
-    <property name="src.resources" value="${appDir}/src/main/resources"/>
-    <property name="src.web" value="${appDir}/src/main/web"/>
+    <property name="src.dir" value="${app.dir}/src/main/java"/>
+    <property name="lib.dir" value="${app.dir}/lib"/>
+    <property name="src.resources" value="${app.dir}/src/main/resources"/>
+    <property name="src.web" value="${app.dir}/src/main/web"/>
 
     <!-- Unit testing definitions -->
-    <property name="test.src.dir" value="${appDir}/src/test/java" />
+    <property name="test.src.dir" value="${app.dir}/src/test/java" />
     <property name="test.local" value="" />
     <property name="test.standalone" value="" />
     <property name="test.server" value="" />
