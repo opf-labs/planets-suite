@@ -10,7 +10,7 @@
 	<!--  jars defindes as java are availabel for ejb + war -->
 	<module>
 		<web>
-			<web-uri>pserv-framework-storage.war</web-uri>
+			<web-uri>psuite-framework-storage.war</web-uri>
 			<context-root>/storage</context-root>
 		</web>
 	</module>
