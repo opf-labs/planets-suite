@@ -3,6 +3,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/application_1_4.xsd"
     version="1.4">
+    <display-name>Registry EAR</display-name>
+    <module>
+        <web>
+            <web-uri>psuite-framework-servreg.war</web-uri>
+            <context-root>/registry</context-root>
+        </web>
+    </module>
     <module>
         <java>psuite-framework-servreg.jar</java>
     </module>

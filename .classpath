@@ -7,15 +7,6 @@
 	<classpathentry kind="src" path="framework/wee/src/main/java"/>
 	<classpathentry kind="src" path="framework/wee/src/test/java"/>
 	<classpathentry kind="src" path="framework/wdt/src/main/java"/>
-	<classpathentry kind="src" path="webapps/techreg/src/main/java"/>
-	<classpathentry kind="src" path="webapps/techreg/src/test/java"/>
-	<classpathentry kind="src" path="webapps/users/src/main/java"/>
-	<classpathentry kind="src" path="webapps/servreg/src/main/java"/>
-	<classpathentry kind="src" path="webapps/selfreg/src/test/java"/>
-	<classpathentry kind="src" path="webapps/admin/src/test/java"/>
-	<classpathentry kind="src" path="webapps/admin/src/main/java"/>
-	<classpathentry kind="src" path="webapps/storage/src/main/java"/>
-	<classpathentry kind="src" path="webapps/selfreg/src/main/java"/>
 	<classpathentry kind="src" path="core/services/src/test/java"/>
 	<classpathentry kind="src" path="core/utils/src/main/java"/>
 	<classpathentry kind="src" path="core/utils/src/test/java"/>
