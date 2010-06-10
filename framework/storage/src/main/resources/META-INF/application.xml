@@ -5,8 +5,6 @@
     version="1.4">
 	<display-name>PLANETS Data Registry</display-name>
 
-	<description>The PLANETS Data Registry.</description>
-
 	<!--  jars defindes as java are availabel for ejb + war -->
 	<module>
 		<web>
