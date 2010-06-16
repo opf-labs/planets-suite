@@ -90,7 +90,14 @@ public class CoreExtractor {
 
         List<String> extractor_arguments = null;
         
-        File srcFile = DigitalObjectUtils.toFile(input);
+        File srcFile = null;
+        try {
+            srcFile = File.createTempFile("extractor", "."
+                    + format.getExtensions(input.getFormat()).iterator().next());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        DigitalObjectUtils.toFile(input, srcFile);
 
         ProcessRunner shell = new ProcessRunner();
         log.info("EXTRACTOR_HOME = " + EXTRACTOR_HOME);

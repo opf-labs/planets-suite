@@ -40,13 +40,12 @@ public final class XcdlParser implements XcdlAccess {
      * @param xcdl The reader containing the XCDL to parse.
      */
     public XcdlParser(final Reader xcdl) {
-        FileReader fileReader = null;
         try {
             this.xcdl = (Xcdl) createUnmarshaller().unmarshal(xcdl);
         } catch (JAXBException e) {
             e.printStackTrace();
-            IOUtils.closeQuietly(fileReader);
-            throw new IllegalArgumentException("Could not load XCDL from " + xcdl);
+            IOUtils.closeQuietly(xcdl);
+            throw new IllegalArgumentException("Could not load XCDL from " + xcdl, e);
         }
     }
 

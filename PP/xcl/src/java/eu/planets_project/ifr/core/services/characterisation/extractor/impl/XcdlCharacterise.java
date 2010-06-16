@@ -78,7 +78,12 @@ public final class XcdlCharacterise implements Characterise, Serializable {
     public CharacteriseResult characterise(final DigitalObject digitalObject, final List<Parameter> parameters) {
         String optionalFormatXCEL = null;
         CoreExtractor coreExtractor = new CoreExtractor(XcdlCharacterise.NAME);
-        File xcelFile = DigitalObjectUtils.toFile(digitalObject);
+        File xcelFile = null;
+        try {
+            xcelFile = File.createTempFile("extractor-xcel", ".xcel");
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
         File result = null;
 
         if (parameters != null && parameters.size() != 0) {
