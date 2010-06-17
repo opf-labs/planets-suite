@@ -65,7 +65,7 @@ public final class XcdlCompare implements Compare {
         }
         String pcr = null;
         if( config != null && config.size() > 0 ) {
-        	pcr = new ComparatorConfigCreator(config).getComparatorConfigXml();
+            pcr = new ComparatorConfigCreator(config).getComparatorConfigXml();
         }
         // Set up the default config:
         /*
@@ -92,10 +92,14 @@ public final class XcdlCompare implements Compare {
         // Return either the extracted XCDL (if it exists) or assume the file is an XCDL:
         String xcdlString = null;
         try {
-        	xcdlString = xcdl != null && xcdl.exists() ? read(new DigitalObject.Builder(Content.byReference(xcdl)).build()) : read(object);
+            xcdlString = xcdl != null && xcdl.exists() ? read(new DigitalObject.Builder(Content.byReference(xcdl)).build()) : read(object);
         } catch ( IllegalArgumentException e ) {
-        	log.severe("ERROR when reading XCDL file. "+e);
-        	xcdlString = "";
+            e.printStackTrace();
+            log.severe("ERROR when reading XCDL file. "+e);
+            xcdlString = "";
+        }
+        if(xcdlString.trim().length() == 0){
+            throw new IllegalStateException("Extractor result string is empty for object: " + object);
         }
         return xcdlString;
     }
@@ -134,10 +138,10 @@ public final class XcdlCompare implements Compare {
         }
         List<List<PropertyComparison>> props = null;
         try {
-        	props = new ResultPropertiesReader(file).getProperties();
+            props = new ResultPropertiesReader(file).getProperties();
         } catch( IllegalArgumentException e ) {
-        	log.severe("Could not parse properties from string "+result+"\n "+e);
-        	props = new ArrayList<List<PropertyComparison>>();
+            log.severe("Could not parse properties from string "+result+"\n "+e);
+            props = new ArrayList<List<PropertyComparison>>();
         }
         // Also grab properties from the XCDL files and merge in with the results:
         CharacteriseResult c1 = new XcdlParser(new StringReader(xcdl1)).getCharacteriseResult();

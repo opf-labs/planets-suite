@@ -23,11 +23,11 @@ import eu.planets_project.services.utils.ProcessRunner;
  */
 public class CoreExtractor {
 
-	private static String XCLTOOLS_HOME = (System.getenv("XCLTOOLS_HOME") + File.separator);
+    private static String XCLTOOLS_HOME = (System.getenv("XCLTOOLS_HOME") + File.separator);
     private static String EXTRACTOR_HOME = (XCLTOOLS_HOME
-    										+ File.separator
-											+ "extractor"
-											+ File.separator).replace(File.separator + File.separator, File.separator);
+                                            + File.separator
+                                            + "extractor"
+                                            + File.separator).replace(File.separator + File.separator, File.separator);
     private static final String EXTRACTOR_TOOL = "extractor";
     private String thisExtractorName;
     private static Logger log = Logger.getLogger(CoreExtractor.class.getName());
@@ -91,9 +91,15 @@ public class CoreExtractor {
         List<String> extractor_arguments = null;
         
         File srcFile = null;
+        /* If no input format was passed, we try to get it from the object 
+         * (needed by extractor for extension of input temp file) */
+        if(inputFormat == null) inputFormat = input.getFormat();
+        if(inputFormat == null && !xcelPassed(parameters)) {
+            throw new IllegalArgumentException("Input format parameter must not be null");
+        }
         try {
-            srcFile = File.createTempFile("extractor", "."
-                    + format.getExtensions(input.getFormat()).iterator().next());
+            String ext = inputFormat != null ? format.getExtensions(inputFormat).iterator().next() : "bin";
+            srcFile = File.createTempFile("extractor", "." + ext);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -197,12 +203,26 @@ public class CoreExtractor {
 
         log.info("Creating File to return...");
         if(!output.exists()) {
-            log.severe("File doesn't exist: " + output.getAbsolutePath());
-        	return null;
+            throw new IllegalStateException("Extractor result file does not exist: " + output);
+        }
+        if(output.length() == 0) {
+            throw new IllegalStateException("Extractor result file is empty: " + output);
         }
         return output;
     }
     
+    private boolean xcelPassed(List<Parameter> parameters) {
+        if (parameters == null) {
+            return false;
+        }
+        for (Parameter parameter : parameters) {
+            if (parameter.getName().equalsIgnoreCase(OPTIONAL_XCEL_PARAM)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @param inputFormat The format
      * @return A service report indicating the format is not supported

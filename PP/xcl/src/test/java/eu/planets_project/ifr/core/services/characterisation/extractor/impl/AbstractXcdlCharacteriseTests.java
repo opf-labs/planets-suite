@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ public abstract class AbstractXcdlCharacteriseTests {
     }
 
     @Test
-    public void testCharacteriseNoXcdlNoParams() {
+    public void testCharacteriseNoXcelNoParams() {
         System.out.println("test1: find XCEL, no parameters:");
         System.out.println("--------------------------------");
         CharacteriseResult characteriseResult = extractor.characterise(digitalObject, null);
@@ -70,7 +69,7 @@ public abstract class AbstractXcdlCharacteriseTests {
     }
 
     @Test
-    public void testCharacteriseWithXcdlNoParams() {
+    public void testCharacteriseWithXcelNoParams() {
         System.out.println("test2: give XCEL (as parameter, no additional parameters:");
         System.out.println("--------------------------------");
         List<Parameter> parameters = createParameters(false, false, xcelString);
@@ -79,7 +78,7 @@ public abstract class AbstractXcdlCharacteriseTests {
     }
 
     @Test
-    public void testCharacteriseNoXcdlWithParams() {
+    public void testCharacteriseNoXcelWithParams() {
         System.out.println("test3: find XCEL, give parameter: -r");
         System.out.println("--------------------------------");
         List<Parameter> parameters = createParameters(false, true, null);
@@ -88,7 +87,7 @@ public abstract class AbstractXcdlCharacteriseTests {
     }
 
     @Test
-    public void testCharacteriseWithXcdlWithParams() {
+    public void testCharacteriseWithXcelWithParams() {
         /* give XCEL, give Parameters */
         System.out.println("test4: give XCEL, parameters: -n, -r");
         System.out.println("--------------------------------");

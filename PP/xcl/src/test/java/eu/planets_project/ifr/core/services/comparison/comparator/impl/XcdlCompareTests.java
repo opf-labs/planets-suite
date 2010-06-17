@@ -6,13 +6,15 @@ import java.io.File;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
@@ -23,6 +25,7 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 public final class XcdlCompareTests {
     
     private static final String WSDL = "/pserv-xcl/XcdlCompare?wsdl";
+    private static FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
 
     @Test
     public void testDescribe() {
@@ -42,17 +45,17 @@ public final class XcdlCompareTests {
     
     @Test
     public void imageComparison(){
-    	System.out.println("Testing direct image comparison.");
-    	testWith(ComparatorWrapperTests.PNG, ComparatorWrapperTests.TIFF, ComparatorWrapperTests.COCO_IMAGE);
-    	// Testing comparison of identical image files, with the comparator supplying the comparator configuration:
-    	testWith(ComparatorWrapperTests.PNG, ComparatorWrapperTests.PNG, null );
+        System.out.println("Testing direct image comparison.");
+        testWith(ComparatorWrapperTests.PNG, ComparatorWrapperTests.TIFF, ComparatorWrapperTests.COCO_IMAGE);
+        // Testing comparison of identical image files, with the comparator supplying the comparator configuration:
+        testWith(ComparatorWrapperTests.PNG, ComparatorWrapperTests.PNG, null );
     }
     
     //@Test
     public void textComparison(){
-    	System.out.println("Testing direct text/document comparison.");
-    	// This should work, but complains that Droid cannot identify the file.
-    	// Surely Droid is not relying on the file extension.
+        System.out.println("Testing direct text/document comparison.");
+        // This should work, but complains that Droid cannot identify the file.
+        // Surely Droid is not relying on the file extension.
         testWith(ComparatorWrapperTests.PDF, ComparatorWrapperTests.PDF, ComparatorWrapperTests.COCO_TEXT);
         // DOCX not yet supported
         testWith(ComparatorWrapperTests.DOCX, ComparatorWrapperTests.PDF, ComparatorWrapperTests.COCO_TEXT);
@@ -70,11 +73,15 @@ public final class XcdlCompareTests {
      */
     protected void testServices(final File file1, final File file2, final File file3) {
         Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME, XcdlCompare.class, WSDL);
-        DigitalObject first = new DigitalObject.Builder(Content.byValue(file1)).build();
-        DigitalObject second = new DigitalObject.Builder(Content.byValue(file2)).build();
+        DigitalObject first = new DigitalObject.Builder(Content.byValue(file1)).format(
+                format.createExtensionUri(FilenameUtils.getExtension(file1.getName()))).build();
+        DigitalObject second = new DigitalObject.Builder(Content.byValue(file2)).format(
+                format.createExtensionUri(FilenameUtils.getExtension(file2.getName()))).build();
         DigitalObject configFile = null;
-        if( file3 != null ) configFile = new DigitalObject.Builder(Content.byValue(file3)).build();
-        List<PropertyComparison> properties = c.compare(first, second, configFile == null ? null : c.convert(configFile)).getComparisons();
+        if (file3 != null)
+            configFile = new DigitalObject.Builder(Content.byValue(file3)).build();
+        List<PropertyComparison> properties = c.compare(first, second,
+                configFile == null ? null : c.convert(configFile)).getComparisons();
         ComparatorWrapperTests.check(properties);
     }
 }
