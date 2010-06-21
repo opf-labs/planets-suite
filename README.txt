@@ -1,13 +1,13 @@
-Planets Services Project
+Planets Suite Project
 ========================
 
-Homepage: http://gforge.planets-project.eu/gf/pserv/
+Homepage: http://sourceforge.net/projects/planets-suite/
 
 Service Development Guidelines
 ------------------------------
 Go to this URL to get full details on developing Planets Services.
 
-http://www.planets-project.eu/private/pages/wiki/index.php/Service_Developers_Guidelines
+http://www.planets-project.eu/docs/reports/Planets_IF6-D3_Service_Developers_Guidelines.pdf
 
 Prerequisites
 -------------
@@ -17,15 +17,13 @@ software, and services can be tested without an application server.
 However, an application server is required in order to deploy
 these services properly.
 
-The Planets Services project is designed to be deployed against 
-an instance of the Planets IF. To install the IF and its dependencies
+The Planets Suite project is designed to be deployed against 
+an instance of the Planets Server. To install the server
 please follow the instructions shown here:
-  - http://gforge.planets-project.eu/svn/if_sp/trunk/INSTALL_IF.txt
+  - http:/planets-server.svn.sourceforge.net/viewvc/planets-server/trunk/INSTALL_PLANETS-SERVER.txt
 
 It should be possible to deploy the Planets Services against another 
-J5EE application server, and you can try this by setting the 
-server.deploy.dir and server.deploy.lib.dir properties in 
-build.properties.  However, other application servers are not 
+J5EE application server.  However, other application servers are not 
 supported by the IF team at present, due to the complexity and
 degree of variation between platforms.
 
@@ -34,45 +32,6 @@ aware that this requires a very different deployment model to
 the one we've been using up to now.  Instead of deploying the 
 endpoints as EJBs, you would need to repackage them as a WAR 
 so that the services can be deployed as servlets. 
-
-
-Using the Planets Services project
-----------------------------------
-First, use SVN to check out the pserv project
-
-% svn co http://gforge.planets-project.eu/svn/pserv/trunk/ pserv
-
-And change into the pserv directory
-
-% cd pserv
-
-To build the pserv project, you need a tell it where Planets is installed. 
-First, copy 'build.properties.template' to 'build.properties'. 
-
-Now, edit 'build.properties' to point at your IF installation. 
-This means setting the 'if_server.dir' property so the same value as you
-used for 'framework.test.dir' in the IF framework properties file.  The
-'if_server.conf' property should be set to the same  value as the the
-'framework.config.dir' in the IF framework properties file.
-
-The 'if_server.doms.config.dir' property points to a directory used to
-place Planets Data Registry configuration files.
-
-Once this is done, you should be able to build and deploy the services using
-
-% ant deploy:all
-
-This does not mean that all services will work, as many of them require 
-individual configuration.  You can deploy only those service that do not 
-have external dependancies using
-
-% ant deploy:pure-java
-
-Therefore, each service project may have its own installation notes. 
-For example, the Xena services require OpenOffice to be installed, 
-and so this project provides some installation notes on this 
-in PA/xena/README.txt.
-
 
 ---------------------------------------------------------------
 
@@ -88,7 +47,6 @@ Conventions (e.g. appName like 'pa-xena').
 Build system.  EJB only at present.
 
 How to create a new service project.
-
 
 ----------------------------------------------------------------
 
