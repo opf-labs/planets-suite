@@ -36,9 +36,14 @@ svn checkout https://planets-suite.svn.sourceforge.net/svnroot/planets-suite/tru
         - Once JBOSS has started you should be able to see the login page at
           http://servername:port, the default is http://localhost:8080
           the default login is admin / admin, or user / user
+          
+(5) run "ant deploy:testbed" from %checkout_dir%
+	This will install the Planets testbed application
 
-(5) run "ant deploy:services" from %checkout_dir% to build and deploy the core
+(6) run "ant deploy:services" from %checkout_dir% to build and deploy the core
     digital preservation services that are part of Planets-Suite 
+
+N.B.  running "ant deploy:all" to effectively run stages 4-6
 
 Planets-Contrib
 ---------------

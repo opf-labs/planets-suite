@@ -17,13 +17,12 @@
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   <property name="test.dir" value="${basedir}/../test/java"/>
   <property name="client.config" value="${basedir}/../test/client-config"/>
+  <property name="psuite.root" value="${basedir}/../../../.." />
 
   <!--To configure within the config.properties file-->
-  <property file="config.properties"/>
+  <property file="${psuite.root}/build.properties"/>
   <property name="jboss.home" value="${if_server.dir}"/>
-  <property name="junit.lib" value="${junitlib.dir}"/>
-  
-  <!-- The location of the DR config directory (can be overridden in config.properties) -->
+  <property name="junit.lib" value="${psuite.root}/lib"/>
   <property name="doms.config.dir" value="${jboss.home}/server/default/data/planets/dom-config"/>
 
   <!-- Build classpath -->

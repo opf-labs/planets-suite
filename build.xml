@@ -66,7 +66,7 @@
     </fileset>
   </path>
   
-  <!-- This path defines all framwork sub projects. -->
+  <!-- This path defines all framework sub projects. -->
   <path id="framework.sub.projects">
     <fileset dir="${basedir}">
       <include name="framework/*/build.xml"/>
@@ -100,22 +100,17 @@
     </foreach>
   </target>
 
-  <target name="deploy:webapps" depends="props:set, deploy:framework">
-    <foreach target="deploy:sub" param="sub.build" inheritall="false">
-      <path refid="webapps.sub.projects"/>
-    </foreach>
+  <target name="deploy:testbed" depends="props:set, deploy:framework">
+    <ant dir="webapps/testbed/src/main" target="deploy:ear" inheritAll="false"/>
   </target>
-  
-  <target name="deploy:apps" depends="props:set,deploy:core">
-    <foreach target="deploy:sub" param="sub.build" inheritall="false">
-      <path refid="apps.sub.projects"/>
-    </foreach>
+
+  <target name="deploy:services" depends="props:set, deploy:core, deploy:api">
+  	<foreach target="deploy:sub" param="sub.build" inheritAll="false">
+  		<path refid="service.sub.projects"/>
+  	</foreach>
   </target>
-  
-  <target name="deploy:all" depends="props:set,deploy:core">
-    <foreach target="deploy:sub" param="sub.build" inheritall="false">
-      <path refid="all.sub.projects"/>
-    </foreach>
+	
+  <target name="deploy:all" depends="props:set, deploy:testbed, deploy:services">
   </target>
   
   <target name="deploy:sub">
