@@ -41,8 +41,8 @@
   <property name="test.dir" location="${appDir}/../test/java"/>
   <property name="client.config" location="${appDir}/../test/client-config"/>
     
-  <property name="reports.dir" location="${psuite.root.dir}/tests/reports"/>
-  <property name="summary.dir" location="${psuite.root.dir}/tests/summary"/>
+  <property name="reports.dir" location="${psuite.root.dir}/test/reports"/>
+  <property name="summary.dir" location="${psuite.root.dir}/test/summary"/>
 
   <if>
     <isset property="if_server.dir"/>
