@@ -16,6 +16,7 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.java_se.test.AllJavaSEServiceTestsuite;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
@@ -89,7 +90,7 @@ public final class JavaImageIOMigrateTest extends TestCase {
         DigitalObject input = new DigitalObject.Builder(
                 Content
                 .byReference(new File(
-                        "PA/java-se/test/resources/PlanetsLogo.png")
+                        AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png")
                 .toURI().toURL())).build();
         System.out.println("Input: " + input);
 
@@ -107,7 +108,7 @@ public final class JavaImageIOMigrateTest extends TestCase {
         System.out.println("Output: " + doOut);
         System.out.println("Output.content: " + doOut.getContent());
 
-        File out = new File("PA/java-se/test/results/test."+newExt);
+        File out = new File("services/java-se/test/results/test."+newExt);
 
         FileOutputStream fo = new FileOutputStream(out);
         IOUtils.copyLarge( doOut.getContent().getInputStream(), fo);

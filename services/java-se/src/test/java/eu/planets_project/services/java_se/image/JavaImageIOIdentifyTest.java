@@ -8,6 +8,7 @@ import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.java_se.test.AllJavaSEServiceTestsuite;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -61,10 +62,10 @@ public class JavaImageIOIdentifyTest {
 	@Test
     public void testIdentify() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
-        testIdentifyThis(new File("PA/java-se/test/resources/PlanetsLogo-lowq-jpg.test").toURI(), new URI("planets:fmt/ext/jpeg"));
-        testIdentifyThis(new File("PA/java-se/test/resources/PlanetsLogo-lowq-png.test").toURI(), new URI("planets:fmt/ext/png"));
+        testIdentifyThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-jpg.test").toURI(), new URI("planets:fmt/ext/jpeg"));
+        testIdentifyThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-png.test").toURI(), new URI("planets:fmt/ext/png"));
         /* These don't seem to work in server mode, as if the JAR is not being picked up.
-        testIdentifyThis(new File("PA/java-se/test/resources/PlanetsLogo.jp2").toURI(), new URI("planets:fmt/ext/jp2"));
+        testIdentifyThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.jp2").toURI(), new URI("planets:fmt/ext/jp2"));
         */
     }
     

@@ -13,11 +13,13 @@ import org.junit.Test;
 import eu.planets_project.ifr.core.techreg.properties.ServiceProperties;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
+import eu.planets_project.services.compare.PropertyComparison;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.java_se.test.AllJavaSEServiceTestsuite;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -64,49 +66,49 @@ public class JavaImageIOCompareTest {
 	@Test
     public void testCompare() throws MalformedURLException, URISyntaxException {
         // Same:
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-lowq-jpg.test"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-lowq-jpg.test"), true );
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-lowq-png.test"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-lowq-png.test"), true);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-lowq-png.test"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-lowq-jpg.test"), true);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo.png"), true);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-jpg.test"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-jpg.test"), true );
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-png.test"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-png.test"), true);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-png.test"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-jpg.test"), true);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), true);
         /* These don't seem to work in server mode, as if the JAR is not being picked up.
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo.tif"), true);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo.jp2"), true);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.tif"), true);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.jp2"), true);
                 */
         // Different, and indeed no alpha channel:
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-lowq-png.test"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-1.jpg"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-2.jpg"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-png.test"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-1.jpg"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2.jpg"), false);
         // Different, but same number of colour components (i.e. Alpha channel in both):
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo.gif"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-resamp-nn.png"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-resamp-bc.png"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-noalpha.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-2.jpg"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-noalpha.png"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-noalpha-dotted.png"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.gif"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-resamp-nn.png"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-resamp-bc.png"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-noalpha.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2.jpg"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-noalpha.png"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-noalpha-dotted.png"), false);
         // Comparing a high-quality JPEG with poorer ones:
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-2.jpg"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-lowq-jpg.test"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-2.jpg"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-2-q70.jpg"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-2.jpg"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-2-q80.jpg"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-2.jpg"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-2-q90.jpg"), false);
-        testCompareThis(new File("PA/java-se/test/resources/PlanetsLogo-2.jpg"), 
-                new File("PA/java-se/test/resources/PlanetsLogo-2-q95.jpg"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2.jpg"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-lowq-jpg.test"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2.jpg"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2-q70.jpg"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2.jpg"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2-q80.jpg"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2.jpg"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2-q90.jpg"), false);
+        testCompareThis(new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2.jpg"), 
+                new File(AllJavaSEServiceTestsuite.TEST_FILE_LOCATION+"PlanetsLogo-2-q95.jpg"), false);
     }
     
     /**
@@ -129,9 +131,10 @@ public class JavaImageIOCompareTest {
         
         /* Check the result */
         Boolean foundIdentical = null;
-        for( Property p : ir.getProperties() ) {
+        for( PropertyComparison pc : ir.getComparisons() ) {
+            Property p = pc.getComparison();
 //            System.out.println("Recieved property: " + p );
-            if( JavaImageIOCompare.PSNR_URI.equals(p.getUri())) {
+            if( p != null && JavaImageIOCompare.PSNR_URI.equals(p.getUri())) {
                 System.out.println(p.getName()+" = "+p.getValue()+" ["+p.getUnit()+"]");
                 double psnr = Double.parseDouble(p.getValue());
                 if( Double.isInfinite(psnr) ) {
