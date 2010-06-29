@@ -8,8 +8,8 @@
 
   <property environment="env"/>
   
-  <property name="appName" value="testbed"/>
-  <property name="war.base.name" value="${appName}.war"/>
+  <property name="app.name" value="testbed"/>
+  <property name="war.base.name" value="${app.name}.war"/>
   <property name="src.dir" value="${basedir}/java"/>
   <property name="src.resources" value="${basedir}/resources"/>
   <!--property name="jboss.home" value="${env.JBOSS_HOME}"/-->
@@ -174,11 +174,11 @@
   </target>
 
   <target name="undeploy" description="undeploy the testbed application from the JBoss application server">
-      <delete file="${jboss.home}/server/default/deploy/${appName}.ear"/>
+      <delete file="${jboss.home}/server/default/deploy/${app.name}.ear"/>
   </target>
   
   <target name="undeploy:ds" description="Undeploy the TB data source.">
-    <delete file="${jboss.home}/server/default/deploy/${appName}-ds.xml"/>
+    <delete file="${jboss.home}/server/default/deploy/${app.name}-ds.xml"/>
   </target>
 
   <!-- =================================================================== -->
@@ -194,13 +194,13 @@
 
   <target name="makeDirectories">
     <mkdir dir="${build.dir}" />
-    <mkdir dir="${build.dir}/${appName}" />
-    <mkdir dir="${build.dir}/${appName}/WEB-INF/lib" />
-    <mkdir dir="${build.dir}/${appName}/WEB-INF/classes" />
+    <mkdir dir="${build.dir}/${app.name}" />
+    <mkdir dir="${build.dir}/${app.name}/WEB-INF/lib" />
+    <mkdir dir="${build.dir}/${app.name}/WEB-INF/classes" />
   </target>
 
   <target name="populateDirectories" depends="makeDirectories">
-    <!--<copy todir="${build.dir}/${appName}/WEB-INF/lib">
+    <!--<copy todir="${build.dir}/${app.name}/WEB-INF/lib">
         <fileset dir="lib">
             <include name="*.jar"/>
         </fileset>      
@@ -209,13 +209,13 @@
 
   <target name="dist" depends="deploy:ds, deploy:doms, populateDirectories">
 
-    <copy todir="${build.dir}/${appName}">
+    <copy todir="${build.dir}/${app.name}">
       <fileset dir="web" casesensitive="yes">
         <include name="**/*.*" />
       </fileset>   
     </copy>
 
-    <copy todir="${build.dir}/${appName}/WEB-INF/classes">
+    <copy todir="${build.dir}/${app.name}/WEB-INF/classes">
       <fileset dir="${basedir}/web/css">
         <!-- richFaces skin files need to be located in WEB-INF/classes dir-->
         <include name="richFacesTestbed.skin.properties" />
@@ -230,7 +230,7 @@
     
     <!-- moves libs for the .ear into the lib directory as e.g. commons-io.jar-->
     <move todir="${build.dir}/lib">
-		<fileset dir="${build.dir}/${appName}/WEB-INF/lib">
+		<fileset dir="${build.dir}/${app.name}/WEB-INF/lib">
           <include name="commons-*.jar" />
           <include name="castor-xml.jar" />
           <include name="charts4j-*.jar" />
@@ -261,10 +261,10 @@
 		</fileset>
 	</move>
 
-    <jar jarfile="${build.dir}/${appName}.war" basedir="${build.dir}/${appName}">
+    <jar jarfile="${build.dir}/${app.name}.war" basedir="${build.dir}/${app.name}">
     </jar>
 
-  	<ear destfile="${build.dir}/${appName}.ear" appxml="resources/META-INF/application.xml">
+  	<ear destfile="${build.dir}/${app.name}.ear" appxml="resources/META-INF/application.xml">
 			  <fileset dir="${build.dir}" includes="*.jar,*.war"/>
 			  <manifest>
 				 <attribute name="Implementation-Title" value="Planets Testbed"/>
@@ -284,11 +284,11 @@
   </target>
 
   <target name="deploy:war" depends="undeploy, deploy:model, dist">
-    <copy file="${build.dir}/${appName}.war" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+    <copy file="${build.dir}/${app.name}.war" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
   <target name="deploy:ear" depends="undeploy, createejbjar, dist" description="DEFAULT builds and deploy the Testbed application">
-    <copy file="${build.dir}/${appName}.ear" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+    <copy file="${build.dir}/${app.name}.ear" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
   <target name="deploy:ds" description="Deploy the TB data source.">

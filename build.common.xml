@@ -38,8 +38,8 @@
   <property name="jar.base.name" value="psuite-${app.name}.jar"/>
   <property name="api.base.name" value="psuite-${app.name}-api.jar"/>
 
-  <property name="test.dir" location="${appDir}/../test/java"/>
-  <property name="client.config" location="${appDir}/../test/client-config"/>
+  <property name="test.dir" location="${app.dir}/../test/java"/>
+  <property name="client.config" location="${app.dir}/../test/client-config"/>
     
   <property name="reports.dir" location="${psuite.root.dir}/test/reports"/>
   <property name="summary.dir" location="${psuite.root.dir}/test/summary"/>
