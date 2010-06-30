@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<!--
-  A web application that installs the JBossWS servlets
+<!-- Copyright (c) 2007,2010 The Planets Project Partners.
 
-  $Id: web.xml 1777 2007-01-03 18:15:27Z thomas.diesler@jboss.com $
--->
+All rights reserved. This program and the accompanying 
+materials are made available under the terms of the 
+Apache License, Version 2.0 which accompanies 
+this distribution, and is available at 
+http://www.apache.org/licenses/LICENSE-2.0 -->
 
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
