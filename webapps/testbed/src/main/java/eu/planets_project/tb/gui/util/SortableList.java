@@ -1,5 +1,3 @@
-package eu.planets_project.tb.gui.util;
-
 /*******************************************************************************
  * Copyright (c) 2007, 2010 The Planets Project Partners.
  *
@@ -10,7 +8,7 @@ package eu.planets_project.tb.gui.util;
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  *******************************************************************************/
-
+package eu.planets_project.tb.gui.util;
 
 /**
  * Convenient base class for sortable lists.
