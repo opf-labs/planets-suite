@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2010 The Planets Project Partners.
+ *
+ * All rights reserved. This program and the accompanying 
+ * materials are made available under the terms of the 
+ * Apache License, Version 2.0 which accompanies 
+ * this distribution, and is available at 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *******************************************************************************/
 /*COMMENT IN AGAIN
 package eu.planets_project.tb.unittest;
 
@@ -250,7 +260,7 @@ public class TestbedManagerTest extends TestCase{
 		
 		//Test1:
 		assertTrue(!manager.isExperimentNameUnique("TestName1"));
-		assertTrue(manager.isExperimentNameUnique("FDSKLÖEWRJKDHSFIUWEHK"));
+		assertTrue(manager.isExperimentNameUnique("FDSKLï¿½EWRJKDHSFIUWEHK"));
 	
 		//Test2:
 		Experiment exp2 = manager.getExperiment(this.expID2);
