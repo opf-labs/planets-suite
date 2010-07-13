@@ -1,0 +1,144 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>planets-suite</groupId>
+	<artifactId>planets-suite</artifactId>
+	<version>1.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>The Planets Suite</name>
+	<url>http://planets-suite.sourceforge.net/maven2/site/</url>
+	<scm>
+		<connection>scm:svn:https://planets-suite.svn.sourceforge.net/svnroot/planets-suite/trunk</connection>
+		<developerConnection>scm:svn:https://planets-suite.svn.sourceforge.net/svnroot/planets-suite/trunk/</developerConnection>
+		<url>http://planets-suite.svn.sourceforge.net/viewvc/planets-suite/trunk</url>
+	</scm>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<build>
+		<resources>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<systemPropertyVariables>
+						<basedir>${basedir}</basedir>
+						<eu.planets-project.config.dir>${basedir}/../../test/config</eu.planets-project.config.dir>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                <execution>
+                    <phase>initialize</phase>
+                    <goals>
+                        <goal>read-project-properties</goal>
+                    </goals>
+                    <configuration>
+                        <files>
+                            <file>${basedir}/../../build.properties</file>
+                        </files>
+                    </configuration>
+                </execution>
+            </executions>
+            </plugin>
+            <!-- 
+            Note that to get jboss:hard-deploy to work, you need to combine it 
+            with a build goal so that Maven reads the property file. e.g.
+            
+                mvn install jboss:hard-deploy
+                
+            should work, but
+            
+                mvn jboss:hard-deploy
+                
+            will not unless you specify the if_server.dir manually.
+            -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jboss-maven-plugin</artifactId>
+				<version>1.4.1</version>
+				<configuration>
+					<jbossHome>${if_server.dir}</jbossHome>
+					<serverName>default</serverName>
+					<fileName>${project.build.directory}/${project.build.finalName}.war</fileName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<modules>
+		<module>core</module>
+		<module>services</module>
+	</modules>
+	<repositories>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+	
+	<!--
+		NOTE that for uploading to work, you need something like this in your
+		.m2/settings.xml <servers> <server>
+		<id>planets-suite.sourceforge.net</id>
+		<username>andy_j,planets-suite</username>
+		<password>????????</password> </server> </servers>
+	-->
+	<distributionManagement>
+		<site>
+			<id>planets-suite.sourceforge.net</id>
+			<url>sftp://web.sourceforge.net/home/groups/p/pl/planets-suite/htdocs/maven2/site</url>
+		</site>
+		<repository>
+			<id>planets-suite.sourceforge.net</id>
+			<name>planets-suite maven 2 repository at sourceforge</name>
+			<url>sftp://web.sourceforge.net/home/groups/p/pl/planets-suite/htdocs/maven2/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>planets-suite.sourceforge.net</id>
+			<name>planets-suite maven 2 repository at sourceforge</name>
+			<url>sftp://web.sourceforge.net/home/groups/p/pl/planets-suite/htdocs/maven2/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<show>public</show>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
