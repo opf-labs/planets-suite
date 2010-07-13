@@ -5,7 +5,7 @@
 	<artifactId>planets-suite</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>The Planets Suite</name>
+	<name>Planets Suite</name>
 	<url>http://planets-suite.sourceforge.net/maven2/site/</url>
 	<scm>
 		<connection>scm:svn:https://planets-suite.svn.sourceforge.net/svnroot/planets-suite/trunk</connection>
@@ -43,42 +43,14 @@
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
-                <executions>
-                <execution>
-                    <phase>initialize</phase>
-                    <goals>
-                        <goal>read-project-properties</goal>
-                    </goals>
-                    <configuration>
-                        <files>
-                            <file>${basedir}/../../build.properties</file>
-                        </files>
-                    </configuration>
-                </execution>
-            </executions>
-            </plugin>
-            <!-- 
-            Note that to get jboss:hard-deploy to work, you need to combine it 
-            with a build goal so that Maven reads the property file. e.g.
-            
-                mvn install jboss:hard-deploy
-                
-            should work, but
-            
-                mvn jboss:hard-deploy
-                
-            will not unless you specify the if_server.dir manually.
-            -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jboss-maven-plugin</artifactId>
 				<version>1.4.1</version>
 				<configuration>
-					<jbossHome>${if_server.dir}</jbossHome>
+				    <!-- You can set this up in .m2/settings.xml, or as an environment variable:
+					<jbossHome>${env.JBOSS_HOME}</jbossHome>
+                     -->
 					<serverName>default</serverName>
 					<fileName>${project.build.directory}/${project.build.finalName}.war</fileName>
 				</configuration>

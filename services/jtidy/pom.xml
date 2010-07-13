@@ -9,7 +9,7 @@
 	<groupId>planets-suite</groupId>
 	<artifactId>planets-services-jtidy</artifactId>
 	<packaging>war</packaging>
-	<name>The JTidy Planets Preservation Service</name>
+	<name>JTidy Preservation Services</name>
 	<build>
 		<resources>
 		</resources>

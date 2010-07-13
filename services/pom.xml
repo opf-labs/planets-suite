@@ -8,7 +8,7 @@
   <groupId>planets-suite</groupId>
   <artifactId>planets-services</artifactId>
   <packaging>pom</packaging>
-  <name>The Planets Suite Preservation Services</name>
+  <name>Planets Preservation Services</name>
   <modules>
   	<module>jtidy</module>
   </modules>
