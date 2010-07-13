@@ -13,7 +13,9 @@ package eu.planets_project.ifr.core.common.conf;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.Properties;
+import org.junit.Ignore;
 
+@Ignore
 public class TestConfiguration implements Configuration {
 	private Properties props;
 	public TestConfiguration(Properties props) {

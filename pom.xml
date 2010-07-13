@@ -38,7 +38,7 @@
 				<version>2.5</version>
 				<configuration>
 					<systemPropertyVariables>
-						<basedir>${basedir}</basedir>
+						<app.dir>${basedir}</app.dir>
 						<eu.planets-project.config.dir>${basedir}/../../test/config</eu.planets-project.config.dir>
 					</systemPropertyVariables>
 				</configuration>

@@ -33,7 +33,7 @@ public class ServiceConfigTest {
 	/**
 	 * Base location for all configuration values. This is for TEST ONLY
 	 */
-	private static final String baseDir = "core/services/src/test/resources/config";
+	private static final String baseDir = System.getProperty("app.dir")+"/src/test/resources/config";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

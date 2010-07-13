@@ -731,7 +731,7 @@ public final class ServiceDescription {
 
     /***/
     private static java.io.File baseDir = new java.io.File(
-            "IF/common/src/resources");
+            System.getProperty("app.dir")+"/src/main/resources");
     /***/
     private static String schemaFileName = "service_description.xsd";
 

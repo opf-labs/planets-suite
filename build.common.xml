@@ -486,6 +486,7 @@
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
       <!-- Test config -->
+      <sysproperty key="app.dir" value="${app.dir}"/>
       <sysproperty key="psuite.test.context" value="local"/>
       <sysproperty key="psuite.root.dir" value="${psuite.root.dir}"/>
       <!-- Set this property so that the PlanetsLogger can start up okay. -->
@@ -514,6 +515,7 @@
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
       <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
       <!-- Test config -->
+      <sysproperty key="app.dir" value="${app.dir}"/>
       <sysproperty key="psuite.test.context" value="standalone"/>
       <sysproperty key="psuite.root.dir" value="${psuite.root.dir}"/>
       <!-- Set this property so that the PlanetsLogger can start up okay. -->
@@ -560,6 +562,7 @@
       <sysproperty key="line.separator" value="\n"/>
       -->
       <!-- Test config -->
+      <sysproperty key="app.dir" value="${app.dir}"/>
       <sysproperty key="psuite.test.context" value="server"/>
       <sysproperty key="psuite.root.dir" value="${psuite.root.dir}"/>
       <sysproperty key="psuite.test.host" value="${if_server.host}"/>
