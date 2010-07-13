@@ -29,8 +29,8 @@ import org.junit.Test;
  */
 public class ZipUtilsTest {
 	
-	private static final File TEST_FILE_FOLDER = new File("IF/common/src/test/resources/test_zip");
-//	private static final File TEST_FILE_FOLDER = new File("C:/Dokumente und Einstellungen/melmsp/Desktop/hartwig/test_zip");
+    private static final File PROJECT_BASE_FOLDER = new File(System.getProperty("app.dir"));
+	private static final File TEST_FILE_FOLDER = new File(PROJECT_BASE_FOLDER, "src/test/resources/test_zip");
 	
     private static File outputFolder = null;
 
@@ -110,10 +110,10 @@ public class ZipUtilsTest {
 		File extract = new File(outputFolder, folderName);
 		FileUtils.forceMkdir(extract);
 		ZipUtils.unzipTo(zip, extract);
-		new File("framework/utils/src/test/resources/test_zip/images/test_jp2/canon-ixus.jpg.jp2");
+		new File(PROJECT_BASE_FOLDER,"src/test/resources/test_zip/images/test_jp2/canon-ixus.jpg.jp2");
 //		File deleteSingleFile = new File("IF/common/src/test/resources/test_zip/images/test_jp2/canon-ixus.jpg.jp2");
-		ZipUtils.removeFileFrom(zip, "images\\test_jp2\\canon-ixus.jpg.jp2");
-		ZipUtils.removeFileFrom(zip, "images\\test_gif");
+		ZipUtils.removeFileFrom(zip, "images/test_jp2/canon-ixus.jpg.jp2");
+		ZipUtils.removeFileFrom(zip, "images/test_gif");
 		System.out.println("Zip modified. Please find it here: " + zip.getAbsolutePath());
 	}
 
@@ -126,11 +126,11 @@ public class ZipUtilsTest {
 		FileUtils.cleanDirectory(outputFolder);
 		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, outputFolder, "zipUtilsTestInsert.zip", true);
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
-		File toInsert = new File("IF/common/src/test/resources/test_zip/images/Kopie von test_gif");
-		ZipUtils.insertFileInto(zip, toInsert, "images\\test_gif");
-//		File modifiedZip = ZipUtils.insertFileInto(zip, toInsert, "images\\test_gif");
+		File toInsert = new File(PROJECT_BASE_FOLDER, "src/test/resources/test_zip/images/Kopie von test_gif");
+		ZipUtils.insertFileInto(zip, toInsert, "images/test_gif");
+//		File modifiedZip = ZipUtils.insertFileInto(zip, toInsert, "images/test_gif");
 //		File insertMore = new File("tests/test-files/documents/test_pdf/");
-//		modifiedZip = ZipUtils.insertFileInto(zip, insertMore, "documents\\test_pdf");
+//		modifiedZip = ZipUtils.insertFileInto(zip, insertMore, "documents/test_pdf");
 		System.out.println("Zip modified. Please find it here: " + zip.getAbsolutePath());
 	}
 	
@@ -145,7 +145,7 @@ public class ZipUtilsTest {
 		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, outputFolder, "zipUtilsTestGetFile.zip", true);
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
 		
-		File fromZip = ZipUtils.getFileFrom(zip, "images\\test_gif", outputFolder);
+		File fromZip = ZipUtils.getFileFrom(zip, "images/test_gif", outputFolder);
 		System.out.println("File extracted. Please find it here: " + fromZip.getAbsolutePath());
 	}
 

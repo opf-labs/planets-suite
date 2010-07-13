@@ -41,6 +41,14 @@
 						<app.dir>${basedir}</app.dir>
 						<eu.planets-project.config.dir>${basedir}/../../test/config</eu.planets-project.config.dir>
 					</systemPropertyVariables>
+					<includes>
+                        <include>**/*Testsuite.java</include>
+                        <!-- 
+                        The above duplicates the ant build behaviour, but perhaps we should use this instead:
+                        <include>**/*Tests.java</include>
+                        <include>**/*Test.java</include>
+                         -->
+                    </includes>
 				</configuration>
 			</plugin>
 			<plugin>

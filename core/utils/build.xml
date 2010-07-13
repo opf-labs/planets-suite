@@ -49,14 +49,14 @@
 
 	<!-- First copy the test config file from test config area to pserv/test/config -->
 	<echo message="COPYING ${test.config}/${test.config.properties} TO ${psuite.test.config}/${src.config.properties}"></echo>
-	<copy file="${test.config}/${test.config.properties}" tofile="${psuite.test.config}/${src.config.properties}" overwrite="true" />
+	<copy file="${test.config}/${test.config.properties}" tofile="${psuite.test.config}/${src.config.properties}" overwrite="false" />
 
 	<!-- Check that ${if_server.conf} is set -->
 	<if>
 		<isset property="if_server.conf" />
 		<then>
 			<!-- Copy the config template to the config dir -->
-			<copy file="${src.config}/${src.config.properties}.template" tofile="${if_server.conf}/${src.config.properties}" overwrite="true"/>
+			<copy file="${src.config}/${src.config.properties}.template" tofile="${if_server.conf}/${src.config.properties}" overwrite="false"/>
 			<!-- Substitute the conf directory value from the build properties -->
 		    <replace file="${if_server.conf}/${src.config.properties}">
 		    	<replacefilter token="@planets.server.conf@" value="${if_server.conf}" />

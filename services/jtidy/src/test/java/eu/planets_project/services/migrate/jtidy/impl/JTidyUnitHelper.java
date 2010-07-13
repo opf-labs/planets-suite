@@ -15,7 +15,7 @@ public final class JTidyUnitHelper {
     /** Test server address of the JBoss instance. */
     static final String PLANETARIUM = "http://planetarium.hki.uni-koeln.de:8080";
 
-    
+    static final File PROJECT_BASE = new File( System.getProperty("app.dir") );
 
     static final String JTIDY_LOCAL_TEST_OUT = "JTIDY_LOCAL_TEST_OUT";
     
@@ -23,19 +23,19 @@ public final class JTidyUnitHelper {
     
     static final String JTIDY_STANDALONE_TEST_OUT = "JTIDY_STANDALONE_TEST_OUT";
            
-    static final File HTML_OLD_FILE = new File("PA/jtidy/test/resources/sample_files/html_old.html");
+    static final File HTML_OLD_FILE = new File(PROJECT_BASE, "src/test/resources/sample_files/html_old.html");
     
-    static final File HTML20_FILE = new File("PA/jtidy/test/resources/sample_files/html20.html");
+    static final File HTML20_FILE = new File(PROJECT_BASE, "src/test/resources/sample_files/html20.html");
     
-    static final File HTML32_FILE = new File("PA/jtidy/test/resources/sample_files/html32.html");
+    static final File HTML32_FILE = new File(PROJECT_BASE, "src/test/resources/sample_files/html32.html");
     
-    static final File HTML40_FILE = new File("PA/jtidy/test/resources/sample_files/html40.html");
+    static final File HTML40_FILE = new File(PROJECT_BASE, "src/test/resources/sample_files/html40.html");
     
-    static final File HTML401_FILE = new File("PA/jtidy/test/resources/sample_files/html401.html");
+    static final File HTML401_FILE = new File(PROJECT_BASE, "src/test/resources/sample_files/html401.html");
     
-    static final File WORD_HTML_FILE = new File("PA/jtidy/test/resources/sample_files/word_html.html");
+    static final File WORD_HTML_FILE = new File(PROJECT_BASE, "src/test/resources/sample_files/word_html.html");
     
-    static final File CONFIG_FILE = new File("PA/jtidy/test/resources/sample_files/config_file.txt");
+    static final File CONFIG_FILE = new File(PROJECT_BASE, "src/test/resources/sample_files/config_file.txt");
     
     
     

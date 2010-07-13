@@ -37,9 +37,11 @@ import eu.planets_project.services.datatypes.DigitalObject;
  */
 public class DigitalObjectUtilsTests {
 	
-	static File testFolder = new File("tests/test-files/documents/test_pdf");
-	File testZip = new File("tests/test-files/archives/test_pdf.zip");
-	File removeZip = new File("tests/test-files/archives/insertFragmentTest.zip");
+    private static final File PROJECT_BASE_FOLDER = new File(System.getProperty("app.dir"));
+    
+	static File testFolder = new File(PROJECT_BASE_FOLDER, "tests/test-files/documents/test_pdf");
+	File testZip = new File(PROJECT_BASE_FOLDER, "tests/test-files/archives/test_pdf.zip");
+	File removeZip = new File(PROJECT_BASE_FOLDER, "tests/test-files/archives/insertFragmentTest.zip");
 	static File work_folder = null;
 	
 	@BeforeClass
