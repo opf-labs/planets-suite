@@ -48,7 +48,7 @@
     <property name="test.server" value="" />
 
 	<!-- First copy the test config file from test config area to pserv/test/config -->
-	<echo message="COPYING ${test.config}/${test.config.properties} TO ${psuite.test.config}/${source.config.properties}"></echo>
+	<echo message="COPYING ${test.config}/${test.config.properties} TO ${psuite.test.config}/${src.config.properties}"></echo>
 	<copy file="${test.config}/${test.config.properties}" tofile="${psuite.test.config}/${src.config.properties}" overwrite="true" />
 
 	<!-- Check that ${if_server.conf} is set -->
