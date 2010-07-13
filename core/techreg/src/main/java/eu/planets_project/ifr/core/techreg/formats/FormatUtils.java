@@ -48,7 +48,7 @@ final class FormatUtils {
         }
         FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
         Set<String> set = fr.getFormatForUri(uri).getExtensions();
-        if (set != null) {
+        if ((set != null) && (set.iterator().hasNext())) {
             return set.iterator().next();
         }
         return null;
