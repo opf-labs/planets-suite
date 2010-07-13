@@ -7,22 +7,22 @@
 <project name="framework-storage" default="deploy" basedir=".">
 
 	<!-- Set up the application name and prefix -->
-    <property name="app.name" value="${ant.project.name}"/>
-    <property name="app.prefix" value="${ant.project.name}"/>
+	<property name="app.name" value="${ant.project.name}"/>
+	<property name="app.prefix" value="${ant.project.name}"/>
 
 	<!-- Now some directory name properties for building -->
 	<property name="app.dir" location="."/>
-    <property name="src.dir" location="${app.dir}/src/main/java"/>
-    <property name="src.resources" location="${app.dir}/src/main/resources"/>
+	<property name="src.dir" location="${app.dir}/src/main/java"/>
+	<property name="src.resources" location="${app.dir}/src/main/resources"/>
 	<property name="src.config" location="${app.dir}/src/main/config" />
 	<property name="src.web" value="${app.dir}/src/main/webapp"/>
-    <property name="lib.dir" location="${app.dir}/lib"/>
-    <property name="psuite.root.dir" location="../.." />
+	<property name="lib.dir" location="${app.dir}/lib"/>
+	<property name="psuite.root.dir" location="../.." />
 	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
 
 
 	<!-- Specify the build type: ejb, war or ear. -->
-    <property name="psuite.app.build.type" value="ear"/>
+	<property name="psuite.app.build.type" value="ear"/>
 
 	<!-- Specify how this application should be deployed -->
 	<property name="psuite.app.deploy.mode" value="pure-java" />
@@ -65,11 +65,17 @@
 			<!-- Copy the config template to the config dir -->
 			<copy file="${src.config}/${src.config.properties}.template" tofile="${if_server.conf}/${src.config.properties}" overwrite="true"/>
 			<!-- Substitute the conf directory value from the build properties -->
-		    <replace file="${if_server.conf}/${src.config.properties}">
-		    	<replacefilter token="@planets.server.conf@" value="${if_server.conf}" />
-		    </replace>
+			<replace file="${if_server.conf}/${src.config.properties}">
+				<replacefilter token="@planets.server.conf@" value="${if_server.conf}" />
+			</replace>
 		</then>
 	</if>
 
-
+	<!-- Update component properties files, destined for jars>
+	<copy file="${psuite.root.dir}/apps/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties.template"
+		tofile="${psuite.root.dir}/apps/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties" />
+	<replace file="${psuite.root.dir}/apps/storage/src/main/resources/eu/planets_project/ifr/core/storage/datamanager.properties">
+		<replacefilter token="@planets.server.hostname@" value="${if_server.host}" />
+		<replacefilter token="@planets.server.port@" value="${if_server.port}" />
+	</replace -->
 </project>
