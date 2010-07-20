@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="pa-pdfbox" default="deploy" basedir=".">
+<project name="pdfbox" default="deploy" basedir=".">
     <!-- Define the project name and directory, based on the project name specified above. -->
     <property name="app.name" value="${ant.project.name}"/>
     <property name="app.dir" value="."/>

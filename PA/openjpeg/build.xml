@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="pa-openjpeg" default="deploy" basedir=".">
+<project name="openjpeg" default="deploy" basedir=".">
  
   <!-- Specify configuration for this project --> 
   <property name="app.name" value="${ant.project.name}"/>

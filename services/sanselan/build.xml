@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="pa-sanselan" default="deploy" basedir=".">
+<project name="sanselan" default="deploy" basedir=".">
  
 
   <!-- Define the project name and directory, based on the project name specified above. -->

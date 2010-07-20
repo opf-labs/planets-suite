@@ -23,10 +23,10 @@
 	<classpathentry kind="src" path="framework/wee/src/test/java"/>
 	<classpathentry kind="src" path="services/droid/src/main/java"/>
 	<classpathentry kind="src" path="services/droid/src/test/java"/>
-	<classpathentry kind="src" path="services/javadigest/src/main/java"/>
-	<classpathentry kind="src" path="services/javadigest/src/test/java"/>
 	<classpathentry kind="src" path="services/java-se/src/main/java"/>
 	<classpathentry kind="src" path="services/java-se/src/test/java"/>
+	<classpathentry kind="src" path="services/javadigest/src/main/java"/>
+	<classpathentry kind="src" path="services/javadigest/src/test/java"/>
 	<classpathentry kind="src" path="services/jhove/src/main/java"/>
 	<classpathentry kind="src" path="services/jhove/src/test/java"/>
 	<classpathentry kind="src" path="services/jtidy/src/main/java"/>
@@ -37,8 +37,6 @@
 	<classpathentry kind="src" path="services/metadata/src/test/java"/>
 	<classpathentry kind="src" path="services/odfvalidator/src/main/java"/>
 	<classpathentry kind="src" path="services/odfvalidator/src/test/java"/>
-	<classpathentry kind="src" path="services/openjpeg/src/main/java"/>
-	<classpathentry kind="src" path="services/openjpeg/src/test/java"/>
 	<classpathentry kind="src" path="services/pdfbox/src/main/java"/>
 	<classpathentry kind="src" path="services/pdfbox/src/test/java"/>
 	<classpathentry kind="src" path="services/sanselan/src/main/java"/>
