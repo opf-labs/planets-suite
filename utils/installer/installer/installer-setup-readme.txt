@@ -12,58 +12,46 @@ How to build a PLANETS Software Suite Installer
 
 (0) Install JDK 1.5 and Install Ant version 1.6.5
 
-(1) within the directory '/installer'
-create a config.properties file from the provided config.properties.template
+(1) Optional: within the checkout directory, modify the config.properties file so 
+that the SVN urls point to the correct locations. Per default, the URLs point to the
+HEAD revision of the trunk. Modification is only necessary in case you want to build
+from a different revision, tag or branch.
 
-(3) modify all required properties in the config.properties file
-Currently the IF and TB have integrated. Please note that it's in the user's responsibility to check when building 
-the installer that all specified revisions of individual code bases (e.g. IF, TB, Plato) are compliant and well functioning
+(2) Open a shell and run "ant svn:checkout" from the checkout dir. This will download
+the planets-server and planets-suite projects from the repository into a directory called
+"planets-src" (will be created automatically)
 
-(4) open a shell and run "ant" from the '/installer' dir.
-This executes the default target "checkoutSVNAndBuild:installer" which downloads the source and builds the installer
+(3) Run "ant build:installer" to create the installer.
 
-(5) When the build process has succeeded you will find the executable jar called
-PlanetsInstaller.jar within the '/dist' directory.
+(4) When the build process has succeeded you will find the executable jar called
+PlanetsInstaller.jar within the "dist" directory.
 
 Enjoy :-)
 
 How to extend the installer
 ---------------------------------
-A) Adding additional components (e.g. Plato)
-B) Extending the GUI
+The structure of the installer is mainly defined within 3 files, which are 
+located in the "/installer/resources" directory:
+ 
+1) install.xml:
+defines the structure of the Installer GUI and installation packs, etc.
 
-A1 - Adding additional components (e.g. Plato)
--) add additional properties to the config.properties.template file for specifying the project's gforge SVN location and make sure the 
-  "planets_suite" user is added to your gforge-project
--) open the 'installer/build.xml' and 
-  *) add targets for checking out from the SVN. (Don't forget to add an entry to checkoutSVN:all)
-  *) add commands to the target "build:installer" if required (e.g. for setting a properties file
+2) planets-buildfile.xml:
+the 'umbrella' build script which performs token replacement and triggers the
+execution of the server and suite build steps (defined in two separate build
+scripts - build.server.xml and build.suite.xml, respectively)
 
-continue with step B1
-
-(B1) Extending the Installer GUI
-The structure of the installer is mainly defined within 3 files: 
-1) install.xml 
-2) planets-buildfile.xml which 1),2) are both located under the 'installer/src' 
-3) userInputSpec.xml which is located in 'installer/src/extra'
-Within 1) the structure of the Installer GUI is defined, packs are created and filled, etc.
-within 2) the actual commands (e.g. the IF build.xml file)  are contained which are then executed on the client's machine
+3) userInputSpec.xml
+the actual GUI declaration file
 
 
 Technologies used:
 ---------------------------------
-
-The Planets Suite Installer is based on IzPack and SVNAnt
+The Planets Suite Installer is created using IzPack 3.11 and SVNAnt
 http://izpack.org/
 
-IzPack is one of the best available, open source, cross platform and highly customizable solution for packaging and distributing applications.
-- it allows to define deployment dependencies between different packs
-- build integration: allows to pack all source code and to run ant targets during the client's installation process
-- creates a single installer which only requires a Java virtual machine to run
- - user interface, etc. defined within one xml file
-
 For documentation please see
-http://izpack.org/documentation/3.11.0/
+http://izpack.org/documentation/
 
 SVNAnt enables SVN integration within ant projects and supports most of the major Subversion commands.
 i.e. enables to run SVN commands (e.g. checkout, update, revert, etc.) within the build.xml's targets
@@ -71,8 +59,3 @@ i.e. enables to run SVN commands (e.g. checkout, update, revert, etc.) within th
 For documentation please see
 http://subclipse.tigris.org/svnant.html
 
-Please note
----------------------------------
--) It's within the developers responsibility to ensure that the specified versions of all sub project's code which are used 
-   to build the installer are compliant. Predefined versions of the installer, including compliant SP sources will be exposed 
-   within the tags directory e.g. Planets Y2 review
