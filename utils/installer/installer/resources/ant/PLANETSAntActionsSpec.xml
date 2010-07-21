@@ -1,0 +1,32 @@
+<antactions>
+    <pack name="PLANETS Core">   
+        <antcall
+			order="afterpack"
+			verbose="no"
+			logfile="$INSTALL_PATH/ant.log"
+			quiet="yes" 
+			buildfile="$INSTALL_PATH/planets-buildfile.xml"
+			messageid="antAction_installIF_PSERV"> 
+
+			<target name="install"/>
+			<property name="installation.basedir" value="$INSTALL_PATH"/>
+			<property name="basedir" value="$INSTALL_PATH"/>
+			<property name="planets-server.root" value="$planetsServerRoot"/>     
+						
+			<!-- hand over the variables (defined within the uiserInputSpec.xml) as properties for this antacall-->
+			<!--please note the syntax on $varname to refer to the variable's in ant != the syntax for property reference ${propname}-->		
+			<property name="email.host" value="$emailhost"/>
+			<property name="email.auth.req" value="$emailauth"/>
+			<property name="email.username" value="$emailuser"/>
+			<property name="email.password" value="$emailpassword"/>
+			<property name="email.debug" value="$emaildebug"/>
+			<property name="email.from" value="$emailfrom"/>
+			<property name="email.en.tls" value="$emailtls"/>
+
+			<property name="framework.host" value="$frameworkHost"/>
+			<property name="framework.port" value="$frameworkPort"/>
+			<property name="framework.ssl.port" value="$frameworkSSLPort"/>
+        </antcall>
+    </pack>
+
+</antactions>    

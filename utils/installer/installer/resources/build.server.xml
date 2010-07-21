@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="build" basedir="planets-server">	
+	<target name="build" description="Runs the PLANETS build">
+		<echo message="Copying PLANETS server" />
+		<ant antfile="build.xml" target="deploy:planets-server" />
+		<echo message="Initializing database" />
+		<ant antfile="build.xml" target="create:dbs"/>
+	</target>
+</project>

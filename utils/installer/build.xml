@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="build:installer">
+	<property file="config.properties" />	
+	
+	<property name="planets.src.dir" value="planets-src" />
+	<property name="planets.server.src.dir" value="${planets.src.dir}/planets-server" />
+	<property name="planets.suite.src.dir" value="${planets.src.dir}/planets-suite" />
+	
+	<property name="installer.dir" value="installer" />
+	<property name="installer.res.dir" value="${installer.dir}/resources" />
+
+	<property name="dist.dir" value="dist" />
+	<property name="dist.server.dir" value="${dist.dir}/planets-server" />
+	<property name="dist.suite.dir" value="${dist.dir}/planets-suite" />
+	
+	<taskdef name="izpack" classpath="${installer.dir}/lib/standalone-compiler.jar" classname="com.izforge.izpack.ant.IzPackTask" />
+	
+	<path id="svnant.classpath">
+		<fileset dir="${installer.dir}/lib/svnant-1.1.0-RC2/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="svnant.classpath" />
+   
+	<!-- Clean -->
+   	<target name="clean" description="Cleans the planets-src folder">
+		<delete dir="${planets.src.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+   
+	<!-- Checkout from SVN -->
+	<target name="svn:checkout" description="Check out from SVN">
+		<echo message="SVN checkout of planets-server to ${planets.server.src.dir}" />
+		<!-- svn username="${svn.username}" password="${svn.password}" -->
+		<svn>
+			<checkout url="${planets.server.svn.url}" revision="${planets.server.svn.revision}" destPath="${planets.server.src.dir}" />
+		</svn>
+		
+		<echo message="SVN checkout of planets-suite to ${planets.suite.src.dir}" />
+		<svn>
+			<checkout url="${planets.suite.svn.url}" revision="${planets.suite.svn.revision}" destPath="${planets.suite.src.dir}" />
+		</svn>
+	</target>
+
+	<!-- Default target - check out from SVN and build the installer -->
+	<!-- target name="build:installer" depends="svn:checkout" description="Builds the installer" -->
+	<target name="build:installer" description="Builds the installer">
+		<echo message="Building the installer with IzPack" />
+		<mkdir dir="dist" />
+
+		<!-- Copy installer related files to /dist -->
+		<copy todir="${dist.dir}" includeemptydirs="yes">
+			<fileset dir="${installer.res.dir}" defaultexcludes="yes" />
+		</copy>
+
+		<!-- Copy Planets server files to /dist -->
+		<copy todir="${dist.server.dir}" includeemptydirs="yes">
+			<fileset dir="${planets.server.src.dir}" defaultexcludes="yes" />
+		</copy>
+
+		<copy tofile="${dist.server.dir}/planets-server.properties" file="${planets.server.src.dir}/planets-server.properties.template" />
+
+		<!-- Copy Planets suite files to /dist (excluding services!) -->
+		<copy todir="${dist.suite.dir}" includeemptydirs="yes">
+			<fileset dir="${planets.suite.src.dir}" defaultexcludes="yes" />
+		</copy>
+		
+		<copy tofile="${dist.suite.dir}/build.properties" file="${planets.suite.src.dir}/build.properties.template" />
+
+		<!--                      -->
+		<!-- Create the installer -->
+		<!--                      -->
+		<izpack input="${installer.res.dir}/install.xml" output="${dist.dir}/PlanetsInstaller.jar" installerType="standard" basedir="${dist.dir}" />
+   </target>
+
+</project>

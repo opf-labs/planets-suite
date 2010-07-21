@@ -1,0 +1,10 @@
+This software package is licensed for NON-COMMERCIAL USE ONLY BY
+MEMBERS OF THE PLANETS* CONSORTIUM.
+
+Licensor provides the Work (and each Contributor provides its
+Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ANY KIND, either expressed or implied, including, without limitation,
+any warranties or conditions for FITNESS FOR A PARTICULAR PURPOSE. 
+
+*Planets is a project of the European Commission's 6th Framework IST
+Programme: IST-2006-033789

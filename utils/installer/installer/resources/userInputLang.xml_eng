@@ -1,0 +1,21 @@
+<langpack>
+    <!-- Path and ports -->
+    <str id="title_userSettings" txt="User-Specific PLANETS Properties"/>
+    <str id="descr_installPath" txt="Please specify the absolute path where the PLANETS Application Server should be installed (please do not use any umlauts (&#246;, &#228;, &#252;) or special characters (|, @, ~, etc.) in the path)."/>
+    <str id="label_installPath" txt="Path"/>
+    <str id="descr_host_ports" txt="Please specify Hostname and HTTP/HTTPS port numbers for the PLANETS application server."/>
+    <str id="label_host" txt="Hostname"/>
+    <str id="label_HTTP_port" txt="HTTP Port"/>
+    <str id="label_HTTPS_port" txt="HTTPS Port"/>
+
+    <!-- E-Mail server -->
+    <str id="title_emailSettings" txt="E-Mail Server Settings"/>
+    <str id="descr_emailSettings" txt="Optional: Please enter PLANETS E-mail settings here."/>
+    <str id="label_emailHost" txt="Email Host"/>
+    <str id="label_authReq" txt="Authentication Required"/>   
+    <str id="label_username" txt="User Name"/>   
+    <str id="label_password" txt="Password"/>   
+    <str id="label_verboseOut" txt="Enable Verbose Output"/>  
+    <str id="label_fromAddress" txt="From Address"/> 
+    <str id="label_enableTLS" txt="Enable TLS (and connect on port 465 instead of 25)"/>  
+</langpack>

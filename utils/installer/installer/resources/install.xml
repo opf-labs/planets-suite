@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installation version="1.0">
+	<info>
+		<appname>PLANETS Digital Preservation Suite</appname>
+		<appversion>(June 2010)</appversion>
+		<authors>
+			<author name="The PLANETS Project" email="info@planets-project.eu" />
+		</authors>
+		<url>http://sourceforge.net/projects/planets-suite/</url>
+	</info>
+	
+	<variables>
+		<variable name="IFR_SERVER_RELATIVE_PATH" value="ifr_server"></variable>
+	</variables>
+
+	<guiprefs width="700" height="530" resizable="no">
+		<modifier key="useHeadingPanel" value="yes"></modifier>
+		<modifier key="headingLineCount" value="1"></modifier>
+		<modifier key="headingFontSize" value="1.5"></modifier>
+		<modifier key="headingBackgroundColor" value="0x00ffffff"></modifier>
+		<modifier key="headingPanelCounter" value="text"></modifier>
+		<modifier key="headingPanelCounterPos" value="inHeading"></modifier>
+	</guiprefs>
+
+	<locale>
+		<langpack iso3="eng"></langpack>
+	</locale>
+
+	<resources>
+		<res id="LicencePanel.licence" src="licence.txt" />
+		<res id="InfoPanel.info" src="readme.txt" />
+		<res id="AntActionsSpec.xml" src="ant/PLANETSAntActionsSpec.xml" />
+		<res id="customActionsLang" src="ant/CustomActionsLang.xml_eng" />
+		<res id="userInputSpec.xml" src="UserInputSpec.xml" />
+		<res id="userInputLang.xml_eng" src="userInputLang.xml_eng" />
+		<res id="logo" src="planets-logo.png" />
+	</resources>
+
+	<panels>
+		<panel classname="HelloPanel"/>
+		<panel classname="InfoPanel"/>
+		<panel classname="LicencePanel"/>
+		<panel classname="TargetPanel"/>
+		<panel classname="PacksPanel"/>
+		<panel classname="UserInputPanel" id="UserInputPanel.0"/>
+		<panel classname="UserInputPanel" id="UserInputPanel.1"/>
+		<panel classname="ExtendedInstallPanel"/>
+		<panel classname="SimpleFinishPanel"/>
+	</panels>
+
+	<listeners>
+		<listener installer="AntActionInstallerListener" uninstaller="AntActionUninstallerListener"/>
+	</listeners>
+
+	<packs>
+		<pack name="PLANETS Server" required="yes">
+			<description>PLANETS JBoss Application Server</description>
+			<fileset dir="planets-server" targetdir="$INSTALL_PATH/planets-server"/>
+			
+			<!-- Files that need token replacement -->
+			<!-- parsable targetfile="$INSTALL_PATH/planets-server/planets-server.properties" / -->
+			<!-- parsable targetfile="$INSTALL_PATH/planets-server/appserver/server/default/deploy/mail-service.xml" / -->
+		</pack>
+	
+		<pack name="PLANETS Core" required="yes">
+			<description>PLANETS Core Components</description>
+		
+			<file src="readme.txt" targetdir="$INSTALL_PATH" />
+			<file src="licence.txt" targetdir="$INSTALL_PATH" />
+			<file src="planets-buildfile.xml" targetdir="$INSTALL_PATH" />	
+			<file src="build.server.xml" targetdir="$INSTALL_PATH" />	
+			<file src="build.suite.xml" targetdir="$INSTALL_PATH" />	
+			
+			<fileset dir="planets-suite" targetdir="$INSTALL_PATH/planets-suite" />
+
+			<!-- Files that need token replacement -->
+			<!-- parsable targetfile="$INSTALL_PATH/planets-buildfile.xml"></parsable -->
+			<!-- parsable targetfile="$INSTALL_PATH/planets-suite/build.properties"></parsable -->
+		</pack>
+	</packs>
+	
+	<jar src="ant/jars/ant.jar" stage="both" />
+	<jar src="ant/jars/ant-launcher.jar" stage="both" />
+	<jar src="ant/jars/ant-antlr.jar" stage="both" />
+	<jar src="ant/jars/ant-apache-bcel.jar" stage="both" />
+	<jar src="ant/jars/ant-apache-bsf.jar" stage="both" />
+	<jar src="ant/jars/ant-apache-log4j.jar" stage="both" />
+	<jar src="ant/jars/ant-apache-oro.jar" stage="both" />
+	<jar src="ant/jars/ant-apache-regexp.jar" stage="both" />
+	<jar src="ant/jars/ant-apache-resolver.jar" stage="both" />
+	<jar src="ant/jars/ant-commons-logging.jar" stage="both" />
+	<jar src="ant/jars/ant-commons-net.jar" stage="both" />
+	<jar src="ant/jars/ant-icontract.jar" stage="both" />
+	<jar src="ant/jars/ant-jai.jar" stage="both" />
+	<jar src="ant/jars/ant-javamail.jar" stage="both" />
+	<jar src="ant/jars/ant-jdepend.jar" stage="both" />
+	<jar src="ant/jars/ant-jmf.jar" stage="both" />
+	<jar src="ant/jars/ant-jsch.jar" stage="both" />
+	<jar src="ant/jars/ant-junit.jar" stage="both" />
+	<jar src="ant/jars/ant-netrexx.jar" stage="both" />
+	<jar src="ant/jars/ant-nodeps.jar" stage="both" />
+	<jar src="ant/jars/ant-starteam.jar" stage="both" />
+	<jar src="ant/jars/ant-stylebook.jar" stage="both" />
+	<jar src="ant/jars/ant-swing.jar" stage="both" />
+	<jar src="ant/jars/ant-trax.jar" stage="both" />
+	<jar src="ant/jars/ant-vaj.jar" stage="both" />
+	<jar src="ant/jars/ant-weblogic.jar" stage="both" />
+	<jar src="ant/jars/ant-xalan1.jar" stage="both" />
+	<jar src="ant/jars/ant-xslp.jar" stage="both" />
+	<jar src="ant/jars/junit.jar" stage="both" />
+	<jar src="ant/jars/xercesImpl.jar" stage="both" />
+	<jar src="ant/jars/xml-apis.jar" stage="both" />
+	<jar src="ant/jars/emma_ant.jar" stage="both" />
+	<jar src="ant/jars/ant-contrib-1.0b1.jar" stage="both" />
+	<jar src="ant/jars/tools.jar" stage="both" />
+</installation>

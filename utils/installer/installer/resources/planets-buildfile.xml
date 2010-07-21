@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="planets-buildfile" basedir=".">	
+	<path id="planets.build.classpath">
+		<fileset dir="${installation.basedir}/planets-suite/lib">
+			<include name="*.jar"></include>
+		</fileset>
+	</path>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath refid="planets.build.classpath"></classpath>
+	</taskdef>
+	
+	<target name="replace-tokens">
+		<!-- Normalize server path -->
+		<pathconvert property="normalized.path" dirsep="/">
+			<path location="${planets-server.root}"></path>
+		</pathconvert>
+		
+		<!-- Replace tokens in planets-server.properties -->
+		<echo message="Replacing Tokens in ${installation.basedir}/planets-server/planets-server.properties" />
+		
+		<replace file="${installation.basedir}/planets-server/planets-server.properties" value="${normalized.path}">
+			<replacefilter token="@planets-server.root@" />
+		</replace>
+		
+		<replace file="${installation.basedir}/planets-server/planets-server.properties" value="${normalized.path}/server/default/conf/planets">
+			<replacefilter token="@planets-server.config.dir@" />
+		</replace>
+						
+		<replaceregexp file="${installation.basedir}/planets-server/planets-server.properties" match="planets-server.host=localhost" replace="planets-server.host=${framework.host}" byline="true"></replaceregexp>
+		<replaceregexp file="${installation.basedir}/planets-server/planets-server.properties" match="planets-server.port=8080" replace="planets-server.port=${framework.port}" byline="true"></replaceregexp>
+		<replaceregexp file="${installation.basedir}/planets-server/planets-server.properties" match="planets-server.ssl.port=8443" replace="planets-server.ssl.port=${framework.ssl.port}" byline="true"></replaceregexp>
+		
+		<replace file="${installation.basedir}/planets-server/planets-server.properties">
+			<replacefilter token="planets-server.mail.host=" value="planets-server.mail.host=${email.host}" />
+			<replacefilter token="planets-server.mail.auth=true" value="planets-server.mail.auth=${email.auth.req}" />
+			<replacefilter token="planets-server.mail.user=" value="planets-server.mail.user=${email.username}" />
+			<replacefilter token="planets-server.mail.password=" value="planets-server.mail.password=${email.password}" />
+			<replacefilter token="planets-server.mail.debug=true" value="planets-server.mail.debug=${email.debug}" />
+			<replacefilter token="planets-server.mail.from=noreply@planets-project.eu" value="planets-server.mail.from=${email.from}" />
+			<replacefilter token="planets-server.mail.use.tls=false" value="planets-server.mail.use.tls=${email.en.tls}" />
+		</replace>
+		
+		<!-- Tokens in build.properties -->
+		<echo message="Replacing Tokens in ${installation.basedir}/planets-suite/build.properties" />
+		<replace file="${installation.basedir}/planets-suite/build.properties" value="${normalized.path}">
+			<replacefilter token="@if_server.dir@" />
+		</replace>
+	
+		<replaceregexp file="${installation.basedir}/planets-suite/build.properties" match="if_server.host=localhost" replace="if_server.host=${framework.host}" byline="true"></replaceregexp>
+		<replaceregexp file="${installation.basedir}/planets-suite/build.properties" match="if_server.port=8080" replace="if_server.port=${framework.port}" byline="true"></replaceregexp>
+		<replaceregexp file="${installation.basedir}/planets-suite/build.properties" match="if_server.ssl.port=8443" replace="if_server.ssl.port=${framework.ssl.port}" byline="true"></replaceregexp>
+		<echo message="Configured server details to ${framework.host}, ${framework.port}, ${framework.ssl.port}" />
+	</target>
+	
+	<!-- Run the PLANETS build -->
+	<target name="install" depends="replace-tokens" description="Runs the PLANETS build">
+		<ant antfile="${installation.basedir}/build.server.xml" inheritAll="false" />
+		<ant antfile="${installation.basedir}/build.suite.xml" inheritAll="false" />
+	</target>
+	
+</project>

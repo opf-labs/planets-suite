@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<userInput>
+
+	<!-- Path and port settings -->
+	<panel order="0" layout="left">
+		<field type="title" id="title_userSettings" italic="false" bold="false" size="2"/>
+
+		<field type="space"/>
+		<field type="staticText" align="left" id="descr_installPath"/>
+		<field type="text" variable="planetsServerRoot">
+			<spec id="label_installPath" size="200" set="$INSTALL_PATH$FILE_SEPARATOR$IFR_SERVER_RELATIVE_PATH"/>
+		</field>
+
+		<field type="space"/>
+		<field type="staticText" align="left" id="descr_host_ports" />
+		<field type="text" variable="frameworkHost">
+			<spec id="label_host" size="200" set="localhost"/>
+		</field>
+
+		<field type="text" variable="frameworkPort">
+			<spec id="label_HTTP_port" size="200" set="8080"/>
+		</field>
+
+		<field type="text" variable="frameworkSSLPort">
+			<spec id="label_HTTPS_port" size="200" set="8443"/>
+		</field>
+	</panel>
+
+	<!-- E-mail server settings -->
+	<panel order="1" layout="left">
+		<field type="title" id="title_emailSettings" italic="false" bold="false" size="2"/>
+
+		<field type="staticText" align="left" id="descr_emailSettings"/>
+
+            <field type="space"/>
+
+		<field type="text" variable="emailhost">
+			<spec size="200" id="label_emailHost" set=""/>
+		</field>
+
+		<field type="check" align="left" variable="emailauth">
+			<spec id="label_authReq" size="200" true="true" false="false" set="true"/>
+		</field>
+
+		<field type="text" align="left" variable="emailuser">
+			<spec size="200" id="label_username" set=""/>
+		</field>
+		
+		<field type="password" align="left" variable="emailpassword">
+			<spec id="label_password" size="200" set=""/>
+		</field>
+
+            <field type="space"/>
+
+		<field type="check" align="left" variable="emaildebug">
+			<spec txt="Enable verbose output" size="200" true="true" false="false" set="true"/>
+		</field>
+
+		<field type="text" variable="emailfrom">
+			<spec size="200" id="label_fromAddress" set="noreply@planets-project.eu"/>
+		</field>
+
+		<field type="check" align="left" variable="emailtls">
+			<spec id="label_enableTLS" size="200" true="true" false="false" set="false"/>
+		</field>
+	</panel>
+
+</userInput>

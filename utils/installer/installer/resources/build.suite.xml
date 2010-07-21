@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="build" basedir="planets-suite">	
+	<target name="build" description="Runs the PLANETS suite build">
+		<echo message="" />
+		<echo message="Building PLANETS framework components" />
+		<echo message="" />
+		
+		<echo message="Running deploy:framework" />
+		<ant antfile="build.xml" target="deploy:framework" />
+
+		<echo message="Running deploy:testbed" />
+		<ant antfile="build.xml" target="deploy:testbed" />
+		
+		<echo message="Running deploy:services" />
+		<ant antfile="build.xml" target="deploy:services" />
+	</target>
+</project>

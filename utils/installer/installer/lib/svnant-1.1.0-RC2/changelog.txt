@@ -1,0 +1,15 @@
+* 1.1-rc2
+- Built against svnClientAdapter r2834 and Subversion 1.4.0,
+  incorporating numerous bug fixes and improvements from both.
+- Added support for javasvn adapter
+- Added the "url" option to <propget> command
+- Added the "lastChangedDateProperty" to <status> command
+- Added the "dateFormatter" attribute to <svn> task
+- Added the "failonerror" attribute to <svn> task and svn selectors
+- Added the <wcVersion> command
+- Added the <log> command
+- Added svn related selectors 
+- Added SvnFileSet type
+- Added the force option to <add> command
+  
+* 1.0.0
