@@ -1,0 +1,20 @@
+Services at http://planetarium.hki.uni-koeln.de:8080 :
+
+
+Png to Tiff
+basic migration of Png-files to Tiff
+PngToTiffConverter at planetarium.hki.uni-koeln.de
+http://planetarium.hki.uni-koeln.de:8080/ifr-jmagickconverter-ejb/PngToTiffConverter?wsdl
+fmt/11|fmt/12|fmt/13|#Migration#tiff 
+
+Jpg to Png
+basic migration of Jpg-files to Png
+JpgToPngConverter at planetarium.hki.uni-koeln.de
+http://planetarium.hki.uni-koeln.de:8080/ifr-jmagickconverter-ejb/JpgToPngConverter?wsdl
+fmt/41|fmt/42|fmt/43|fmt/44|fmt/112|x-fmt/398|x-fmt/390|x-fmt/391|fmt/149|#Migration#png 
+
+Ps to Pdf
+basic migration of Ps-files to Pdf
+Ps2PdfBasicMigration at planetarium.hki.uni-koeln.de
+http://planetarium.hki.uni-koeln.de:8080/ifr-ps2pdf-ejb/Ps2PdfBasicMigration?wsdl
+x-fmt/91|x-fmt/406|x-fmt/407|x-fmt/408|#Migration#pdf
