@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Plato EJB deployer build file                                                       -->
+<!-- ======================================================================= -->
+
+<project name="Plato EJB deployer" default="" basedir=".">
+
+  <property environment="env"/>
+  
+  <property name="app.name" value="plato"/>
+  <property name="war.base.name" value="${app.name}.war"/>
+  <property name="src.dir" value="${basedir}/src"/>
+  <property name="src.resources" value="${basedir}/resources"/>
+	
+  <property name="build.dir" value="${basedir}/build"/>
+  <property name="build.classes.dir" value="${build.dir}/classes"/>
+  <property name="test.dir" value="${basedir}/../test/java"/>
+  <property name="client.config" value="${basedir}/../test/client-config"/>
+	
+  <property name="ear.dir" value="exploded-archives/${app.name}.ear" />
+  <property name="jar.dir" value="exploded-archives/${app.name}.jar" />
+  <property name="war.dir" value="exploded-archives/${app.name}.war" />
+	
+  <property name="dist.dir" value="dist" />
+	
+  <!--To configure within the config.properties file-->
+  <property file="../../build.properties"/>
+  <property name="jboss.home" value="${if_server.dir}"/>
+
+  <!-- Build classpath -->
+  <path id="classpath">
+    <fileset dir="${jboss.home}/client">
+        <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${jboss.home}/server/default/lib">
+        <include name="*.jar"/>
+    </fileset>
+
+    <fileset dir="${jboss.home}/server/default/deploy/">
+      <include name="ejb3.deployer/*.jar"/>
+      <include name="jboss*web*/jsf-libs/*.jar"/>
+    	<!--
+      <include name="jboss*web*/*.jar"/>
+      -->
+    </fileset>
+    <fileset dir="${jboss.home}/lib">
+        <include name="*.jar"/>
+    </fileset>
+  	
+    <!--plato specific libs -->
+    <fileset dir="${basedir}/lib">
+    	<include name="ext/dom4j-1.6.1.jar"/>
+    	
+    	<include name="ext/testng-5.10-jdk15.jar"/>
+    	
+        <include name="jboss-el.jar"/>
+        <include name="jboss-seam-debug.jar"/>
+        <include name="jboss-seam-ioc.jar"/>
+        <include name="jboss-seam-mail.jar"/>
+        <include name="jboss-seam-pdf.jar"/>
+        <include name="jboss-seam-remoting.jar"/>
+        <include name="jboss-seam-ui.jar"/>
+        <include name="jboss-seam.jar"/>
+        <include name="jbossall-client.jar"/>
+    	
+        <include name="jsf-facelets.jar"/>
+        <include name="ext/junit-4.7.jar"/>
+    	
+        <include name="commons-digester.jar"/>
+    	<include name="commons-beanutils.jar"/>
+    	<include name="log4j.jar"/>
+    	
+    	<include name="jena/jena-2.6.2.jar"/>
+    	<include name="jena/slf4j-api-1.5.6.jar"/>
+    	<include name="jena/slf4j-log4j12-1.5.6.jar"/>
+    	<include name="jena/arq-2.8.1.jar"/>
+    	<include name="jena/icu4j-3.4.4.jar"/>
+    	<include name="jena/iri-0.7.jar"/>
+    	<include name="jena/lucene-core-2.3.1.jar"/>
+    	<include name="jena/stax-api-1.0.1.jar"/>
+    	<include name="jena/wstx-asl-3.2.9.jar"/>
+    	<include name="jena/ext/xercesImpl.jar"/>
+    	
+    	<include name="crib-integration.jar"/>
+   	  	<include name="crib-integration-remote.jar"/>
+    	<include name="axis.jar"/>
+    	<include name="droid.jar"/>
+    	
+    	<include name="ext/flanagan.jar"/>
+
+		<include name="richfaces-api-3.3.2.SR1.jar"/>
+		<include name="richfaces-impl-3.3.2.SR1.jar"/>
+		<include name="richfaces-ui-3.3.2.SR1.jar"/>
+    	
+    	<include name="commons-math-1.2.jar"/>
+
+    	<include name="jhove/jhove.jar"/>
+    	<include name="jhove/jhove-handler.jar"/>
+    	<include name="jhove/jhove-module.jar"/>
+    	
+    	<include name="planets/pserv-xcl.jar"/>
+    	
+    </fileset>
+
+  	<!--include our external resources as *.xml and *.props-->
+	<pathelement location="${basedir}/resources"/>
+	<pathelement location="${build.classes.dir}"/>
+	<!-- So that we can get jndi.properties for InitialContext -->
+	<pathelement location="${client.config}"/>
+  </path>
+
+  <property name="build.classpath" refid="classpath"/>
+
+  <target name="prepare">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.classes.dir}"/>
+  	
+	<mkdir dir="${jar.dir}" />
+	<mkdir dir="${ear.dir}" />
+	<mkdir dir="${war.dir}" />
+	<mkdir dir="${dist.dir}" />
+  </target>
+
+  <target name="compile" depends="prepare">
+   <echo message="ant.java.version: ${ant.java.version}" />
+    <javac source="1.5" target="1.5"
+		   srcdir="${src.dir}"
+           destdir="${build.classes.dir}"
+           debug="on"
+           deprecation="on"
+           optimize="off"
+           includes="**">
+         <classpath refid="classpath"/>
+    </javac>
+  </target>
+	
+  <target name="jar" depends="compile" description="Build the distribution .jar file">
+		<copy todir="${jar.dir}">
+		    <fileset dir="${build.classes.dir}">
+		      <include name="**"/>
+		    </fileset>
+			<fileset dir="${basedir}/resources">
+				<include name="seam.properties" />
+				<include name="jndi.properties" />
+				<include name="mail.properties" />
+				<include name="plato.properties" />
+			</fileset>
+			<fileset dir="${basedir}/lib/jena">
+				<include name="*.jar" />
+				<exclude name="stax-api-1.0.1.jar" />
+			</fileset>
+			<fileset dir="${basedir}/lib">
+				<include name="commons-digester.jar" />
+				<include name="droid.jar" />
+				<include name="crib-integration-remote.jar" />
+				<include name="commons-discovery-0.2.jar" />
+				<include name="crib-integration.jar" />
+			</fileset>
+			<fileset dir="${basedir}/lib/jhove">
+				<include name="jhove-handler.jar" />
+				<include name="jhove.jar" />
+				<include name="jhove-module.jar" />
+			</fileset>
+			<fileset dir="${basedir}/lib/planets">
+				<include name="pserv-xcl.jar" />
+			</fileset>
+			
+		</copy>
+		<copy todir="${jar.dir}/data">
+			<fileset dir="${basedir}/data">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<copy todir="${jar.dir}/META-INF">
+			<fileset dir="${basedir}/resources/META-INF">
+				<include name="ejb-jar.xml" />
+				<include name="persistence.xml" />
+			</fileset>
+		</copy>
+  </target>
+	
+  <target name="war" depends="compile" description="Build the distribution .war file">
+	<copy todir="${war.dir}">
+		<fileset dir="${basedir}/view" />
+	</copy>
+	<copy todir="${war.dir}/website">
+		<fileset dir="${basedir}/website" />
+	</copy>
+	<copy todir="${war.dir}/schema">
+		<fileset dir="${basedir}/data/schemas">
+			<include name="plato-*.xsd" />
+			<include name="planets_wdt-1.0.xsd" />
+		</fileset>
+	</copy>
+	<copy todir="${war.dir}/xslt">
+		<fileset dir="${basedir}/data/xslt">
+			<include name="*.*" />
+		</fileset>
+	</copy>
+	<copy todir="${war.dir}/WEB-INF/classes">
+		<fileset dir="${basedir}/resources">
+			<include name="log4j.xml" />
+			<include name="messages*.properties" />
+		</fileset>
+	</copy>
+	<copy todir="${war.dir}/WEB-INF">
+		<fileset dir="${basedir}/resources/WEB-INF">
+			<include name="**/*" />
+		</fileset>
+	</copy>
+	<copy todir="${war.dir}/WEB-INF/lib">
+		<fileset dir="${basedir}/lib">
+			<include name="jboss-seam-ui.jar" />
+			<include name="jboss-seam-debug.jar" />
+		</fileset>
+	</copy>
+		</target>
+	
+	<target name="archive" depends="jar,war,ear" description="Package the archives">
+		<jar jarfile="${dist.dir}/${app.name}.jar" basedir="${jar.dir}" />
+		<jar jarfile="${dist.dir}/${app.name}.war" basedir="${war.dir}" />
+		<jar jarfile="${dist.dir}/${app.name}.ear">
+			<fileset dir="${ear.dir}" />
+			<fileset dir="${dist.dir}">
+				<include name="${app.name}.jar" />
+				<include name="${app.name}.war" />
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="ear" description="Build the EAR">
+		<copy todir="${ear.dir}">
+			<fileset dir="${basedir}/lib">
+				<include name="jboss-seam.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${ear.dir}/META-INF">
+			<fileset dir="${basedir}/resources/META-INF">
+				<include name="application.xml" />
+				<include name="jboss-app.xml" />
+			</fileset>
+		</copy>
+		<copy todir="${ear.dir}/lib">
+			<fileset dir="${basedir}/lib/hibernate">
+				<include name="*.*" />
+			</fileset>
+			<fileset dir="${basedir}/lib">
+				<include name="jboss-el.jar" />
+			</fileset>
+		</copy>
+		
+	</target>
+	
+	<target name="deploy" depends="undeploy,archive" description="Deploy to JBoss AS">
+		<fail unless="jboss.home">jboss.home not set</fail>
+		
+		<echo message="Deploying to: ${jboss.home}" />
+		<copy todir="${jboss.home}/server/default/deploy" file="${dist.dir}/${app.name}.ear" />
+	</target>
+	
+	<target name="deploy-exploded" depends="undeploy,jar,war,ear" description="Deploy to JBoss AS">
+		<fail unless="jboss.home">jboss.home not set</fail>
+		
+		<echo message="Deploying to: ${jboss.home}/server/default/deploy" />
+
+		<copy todir="${jboss.home}/server/default/deploy/${app.name}.ear">
+			<fileset dir="${ear.dir}" />
+		</copy>
+		<copy todir="${jboss.home}/server/default/deploy/${app.name}.ear/${app.name}.jar">
+			<fileset dir="${jar.dir}" />
+		</copy>
+		<copy todir="${jboss.home}/server/default/deploy/${app.name}.ear/${app.name}.war">
+			<fileset dir="${war.dir}" />
+		</copy>
+		
+		<copy todir="${jboss.home}/server/default/deploy" file="${dist.dir}/${app.name}.ear" />
+	</target>
+	
+  <target name="clean" description="Cleans up the build directory">
+	<delete dir="${dist.dir}" />
+	<delete dir="${ear.dir}" />
+	<delete dir="${war.dir}" />
+	<delete dir="${jar.dir}" />
+  </target>
+	
+  <!-- undeploy needs to be able to delete both, plato.ear as zipped archive plato.ear as directory -->
+  <target name="undeploy" description="undeploy the Plato from the JBoss application server">
+      <delete failonerror="no" file="${jboss.home}/server/default/deploy/${app.name}.ear"/>
+  	  <delete failonerror="no" dir="${jboss.home}/server/default/deploy/${app.name}.ear"/>
+  </target>
+  
+  <target name="undeploy:ds" description="Undeploy the TB data source.">
+    <delete file="${jboss.home}/server/default/deploy/${app.name}-ds.xml"/>
+  </target>
+
+</project>
