@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+        <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+        <!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+	<!ENTITY p2-additional "http://p2-registry.ecs.soton.ac.uk/ontology/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#" xmlns:p2-additional="http://p2-registry.ecs.soton.ac.uk/ontology/#">
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink">
+	<rdfs:label>Software Link</rdfs:label>
+	<rdfs:comment>A predicate which defines a link betwen a piece of software (or web service) and a file format which this software can process in some way. The way in which the software can handle the format will be defined by the specific predicate in use.</rdfs:comment>
+</rdf:Description>
+
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink/Open">
+	<rdfs:label>Can Open</rdfs:label>
+	<rdfs:comment>A subtype of Software Link predicate which indicates that the defined software can open the specified format.</rdfs:comment>
+	<rdfs:subClassOf rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink/Save">
+	<rdfs:label>Can Save</rdfs:label>
+	<rdfs:comment>A subtype of Software Link predicate which indicates that the defined software can save in the specified format.</rdfs:comment>
+	<rdfs:subClassOf rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink/Other">
+	<rdfs:label>Other Link Type</rdfs:label>
+	<rdfs:comment>A subtype of Software Link predicate which indicates that the defined software can perform some operation other than opening and saving the specified format.</rdfs:comment>
+	<rdfs:subClassOf rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://pronom.nationalarchives.gov.uk/#CanCreate">
+	<rdf:type rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink/Save"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://pronom.nationalarchives.gov.uk/#CanRender">
+	<rdf:type rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink/Open"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://pronom.nationalarchives.gov.uk/#CanView">
+	<rdf:type rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink/Open"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://pronom.nationalarchives.gov.uk/#CanConvert">
+	<rdf:type rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink/Save"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://pronom.nationalarchives.gov.uk/#IsDevelopmentLibraryFor">
+	<rdf:type rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/SoftwareLink/Other"/>
+</rdf:Description>
+</rdf:RDF>

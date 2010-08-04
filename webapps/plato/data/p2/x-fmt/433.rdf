@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/827">
+	<pronom:FormatID>827</pronom:FormatID>
+	<pronom:FormatName>3DM</pronom:FormatName>
+	<pronom:FormatVersion>1</pronom:FormatVersion>
+	<pronom:FormatAliases>Rhino 3D Model (1), openNURBS (1)</pronom:FormatAliases>
+	<pronom:FormatTypes>Image (Vector)</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>The 3DM (openNURBS) format is a 3D model representation based on non-uniform rational B-Splines (NURBS). The file format is defined by an open source C++ toolkit that reads and writes openNURBS models.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>131</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Library Research Group / MIT Libraries</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>22 Oct 2008</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>22 Oct 2008</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/433"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/130"/>
+	<pronom:Support rdf:resource="http://nationalarchives.gov.uk/pronom/Support/130"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/82"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/839"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/215"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/828"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/433">
+	<pronom:Identifier>x-fmt/433</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/130">
+	<pronom:DeveloperID>130</pronom:DeveloperID>
+	<pronom:OrganisationName>Robert McNeel &amp; Associates</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>Robert McNeel &amp; Associates</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Support/130">
+	<pronom:SupportID>130</pronom:SupportID>
+	<pronom:OrganisationName>Robert McNeel &amp; Associates</pronom:OrganisationName>
+	<pronom:SupportCompoundName>Robert McNeel &amp; Associates</pronom:SupportCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/82">
+	<pronom:DocumentID>82</pronom:DocumentID>
+	<pronom:DisplayText>Robert McNeel &amp; Associates (n.d.) openNURBS Toolkit</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:TitleText>openNURBS Toolkit</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.opennurbs.org"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/130"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/130"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.opennurbs.org">
+	<pronom:Identifier>www.opennurbs.org</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/130">
+	<pronom:AuthorID>130</pronom:AuthorID>
+	<pronom:OrganisationName>Robert McNeel &amp; Associates</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Robert McNeel &amp; Associates</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/130">
+	<pronom:PublisherID>130</pronom:PublisherID>
+	<pronom:OrganisationName>Robert McNeel &amp; Associates</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Robert McNeel &amp; Associates</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/839">
+	<pronom:ExternalSignatureID>839</pronom:ExternalSignatureID>
+	<pronom:Signature>3dm</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/215">
+	<pronom:SignatureID>215</pronom:SignatureID>
+	<pronom:SignatureName>3DM 1</pronom:SignatureName>
+	<pronom:SignatureNote>Header with version no.</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/300"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/300">
+	<pronom:ByteSequenceID>300</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:Endianness>Little-endian</pronom:Endianness>
+	<pronom:ByteSequenceValue>33442047656F6D657472792046696C6520466F726D617420202020202020203101000000</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/828">
+	<pronom:RelationshipType>Is previous version of</pronom:RelationshipType>
+	<pronom:RelatedFormatID>828</pronom:RelatedFormatID>
+	<pronom:RelatedFormatName>3DM</pronom:RelatedFormatName>
+	<pronom:RelatedFormatVersion>2</pronom:RelatedFormatVersion>
+</rdf:Description>
+</rdf:RDF>

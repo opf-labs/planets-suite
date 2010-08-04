@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/674">
+	<pronom:FormatID>674</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Audio)</pronom:FormatName>
+	<pronom:FormatVersion>2.1</pronom:FormatVersion>
+	<pronom:FormatAliases>Exif Audio (2.1)</pronom:FormatAliases>
+	<pronom:FormatFamilies>WAVE</pronom:FormatFamilies>
+	<pronom:FormatTypes>Audio</pronom:FormatTypes>
+	<pronom:FormatDescription>Description in preparation.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-wav"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/389"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/19"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/620"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/144"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/654"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/654"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/749"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/749"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/750"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/750"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-wav">
+	<pronom:Identifier>audio/x-wav</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/389">
+	<pronom:Identifier>x-fmt/389</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/19">
+	<pronom:DocumentID>19</pronom:DocumentID>
+	<pronom:DisplayText>Japan Electronic Industry Development Association, 1998, JEIDA-49-1998 - Digital Still Camera Image File Format Standard (Exchangeable image file format for Digital Still Cameras: Exif), Version 2.1</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Dec 1998</pronom:PublicationDate>
+	<pronom:TitleText>JEIDA-49-1998 - Digital Still Camera Image File Format Standard (Exchangeable image file format for Digital Still Cameras: Exif), Version 2.1</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.exif.org/dcf-exif.PDF"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/105"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/105"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.exif.org/dcf-exif.PDF">
+	<pronom:Identifier>www.exif.org/dcf-exif.PDF</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/105">
+	<pronom:AuthorID>105</pronom:AuthorID>
+	<pronom:OrganisationName>Japan Electronic Industry Development Association</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Japan Electronic Industry Development Association</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/105">
+	<pronom:PublisherID>105</pronom:PublisherID>
+	<pronom:OrganisationName>Japan Electronic Industry Development Association</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Japan Electronic Industry Development Association</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/620">
+	<pronom:ExternalSignatureID>620</pronom:ExternalSignatureID>
+	<pronom:Signature>wav</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/144">
+	<pronom:SignatureID>144</pronom:SignatureID>
+	<pronom:SignatureName>EXIF Audio 2.1</pronom:SignatureName>
+	<pronom:SignatureNote>RIFF header, WAVE ID, Format chunk, LIST exif chunk (ever=2.1) and Data chunk</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/89"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/89">
+	<pronom:ByteSequenceID>89</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>52494646{4}57415645*666D7420{4}(01|07|11)00*4C495354{4}6578696665766572{4}30323130*64617461</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/654">
+	<pronom:FormatID>654</pronom:FormatID>
+	<pronom:FormatName>Waveform Audio</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/749">
+	<pronom:FormatID>749</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Audio)</pronom:FormatName>
+	<pronom:FormatVersion>2.2</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/750">
+	<pronom:FormatID>750</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Audio)</pronom:FormatName>
+	<pronom:FormatVersion>2.0</pronom:FormatVersion>
+</rdf:Description>
+</rdf:RDF>

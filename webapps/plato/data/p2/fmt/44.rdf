@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/669">
+	<pronom:FormatID>669</pronom:FormatID>
+	<pronom:FormatName>JPEG File Interchange Format</pronom:FormatName>
+	<pronom:FormatVersion>1.02</pronom:FormatVersion>
+	<pronom:FormatAliases>JFIF (1.02)</pronom:FormatAliases>
+	<pronom:FormatTypes>Image (Raster)</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>The JPEG File Interchange Format (JFIF) is a file format for storing JPEG-compressed raster images. It was developed by the Independent JPEG Group and C-Cube Microsystems, in the absence of any such format being defined in the JPEG standard, and rapidly became a de facto standard. A JFIF file comprises a JPEG data stream together with a JFIF marker. It begins with a Start of Image (SOI) marker, immediately followed by a JFIF Application (APP0) marker and one or more optional application extension markers. This is followed by the JPEG image data, which is terminated by an End of Image (EOI) marker. JFIF supports up to 24-bit colour and uses lossy compression (based on the Discrete Cosine Transform algorithm). Other types of compression are available through JPEG extensions, including progressive image buildup, arithmetic encoding, variable quantization, selective refinement, image tiling, and lossless compression, but these may not be supported by all JFIF readers and writers.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Big-endian (Motorola)</pronom:ByteOrders>
+	<pronom:ReleaseDate>01 Sep 1992</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/44"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/image/jpeg"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/public.jpeg"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/120"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/125"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/56"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/629"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/654"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/689"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/68"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/670"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/670"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/668"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/668"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/11"/>
+	<pronom:FormatProperties rdf:resource="http://nationalarchives.gov.uk/pronom/Format/669/FormatProperties"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/44">
+	<pronom:Identifier>fmt/44</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/image/jpeg">
+	<pronom:Identifier>image/jpeg</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/public.jpeg">
+	<pronom:Identifier>public.jpeg</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/120">
+	<pronom:DeveloperID>120</pronom:DeveloperID>
+	<pronom:OrganisationName>C-Cube Microsystems</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>C-Cube Microsystems</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/125">
+	<pronom:DeveloperID>125</pronom:DeveloperID>
+	<pronom:OrganisationName>Independent JPEG Group</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>Independent JPEG Group</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/56">
+	<pronom:DocumentID>56</pronom:DocumentID>
+	<pronom:DisplayText>Hamilton, E, 1992, JPEG File Interchange Format, Version 1.02, C-Cube Microsystems</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Sep 1992</pronom:PublicationDate>
+	<pronom:TitleText>JPEG File Interchange Format, Version 1.02, C-Cube Microsystems</pronom:TitleText>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/119"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/120"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/119">
+	<pronom:AuthorID>119</pronom:AuthorID>
+	<pronom:AuthorName>Eric Hamilton</pronom:AuthorName>
+	<pronom:OrganisationName>C-Cube Microsystems</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Eric Hamilton / C-Cube Microsystems</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/120">
+	<pronom:PublisherID>120</pronom:PublisherID>
+	<pronom:OrganisationName>C-Cube Microsystems</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>C-Cube Microsystems</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/629">
+	<pronom:ExternalSignatureID>629</pronom:ExternalSignatureID>
+	<pronom:Signature>jpg</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/654">
+	<pronom:ExternalSignatureID>654</pronom:ExternalSignatureID>
+	<pronom:Signature>jpe</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/689">
+	<pronom:ExternalSignatureID>689</pronom:ExternalSignatureID>
+	<pronom:Signature>jpeg</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/68">
+	<pronom:SignatureID>68</pronom:SignatureID>
+	<pronom:SignatureName>JFIF 1.02</pronom:SignatureName>
+	<pronom:SignatureNote>SOI and APP0 markers at BOF, EOI marker at EOF</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/172"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/173"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/172">
+	<pronom:ByteSequenceID>172</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>FFD8FFE0{2}4A464946000102(00|01|02)</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/173">
+	<pronom:ByteSequenceID>173</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from EOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>FFD9</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/670">
+	<pronom:FormatID>670</pronom:FormatID>
+	<pronom:FormatName>Raw JPEG Stream</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/668">
+	<pronom:FormatID>668</pronom:FormatID>
+	<pronom:FormatName>JPEG File Interchange Format</pronom:FormatName>
+	<pronom:FormatVersion>1.01</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/11">
+	<pronom:CompressionID>11</pronom:CompressionID>
+	<pronom:CompressionName>Baseline JPEG</pronom:CompressionName>
+	<pronom:CompressionAliases>Discrete Cosine Transform, DCT, JPEG</pronom:CompressionAliases>
+	<pronom:Description>The JPEG compression algorithm was developed in 1990 by the Joint Photographic Experts Group of ISO and CCITT, for the transmission of colour and greyscale images. It is a lossy technique which provides best compression rates with complex 24-bit (True Colour) images. It achieves its effect by discarding image data which is imperceptible to the human eye, using a technique called Discrete Cosine Transform (DCT). It then applies Huffman encoding to achieve further compression. The JPEG specification allows users to set the degree of compression, using an abstract Quality Setting. This provides a trade-off between compression rate and image quality. It is important to note that the Quality Setting is not an absolute value, with different JPEG encoders use different scales, and that even the maximum quality setting for baseline JPEG involves some loss. JPEG compression is most commonly used in the JPEG File Interchange Format (JFIF), SPIFF and TIFF.</pronom:Description>
+	<pronom:Lossiness>Lossy</pronom:Lossiness>
+	<pronom:ReleaseDate>01 Jan 1994</pronom:ReleaseDate>
+	<pronom:CompressionDocumentation>ISO/IEC 10918-1: 1994, Information technology - Digital compression and coding of continuous-tone still images: Requirements and guidelines</pronom:CompressionDocumentation>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/11"/>
+	<pronom:Developer rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/112"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/11">
+	<pronom:Identifier>x-cmp/11</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/112">
+	<pronom:DeveloperID>112</pronom:DeveloperID>
+	<pronom:OrganisationName>International Standards Organisation</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>International Standards Organisation</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/669/FormatProperties">
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/compression_type"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/compression_level"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/image_width"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/image_height"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/colour_space"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/sampling_frequency_unit"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/x_sampling_frequency"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/y_sampling_frequency"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/bits_per_sample"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/samples_per_pixel"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/byte_order"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/comments"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/compression_type">
+	<pronom:PropertyName>Compression Type</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/compression_level">
+	<pronom:PropertyName>Compression Level</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/image_width">
+	<pronom:PropertyName>Image Width</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/image_height">
+	<pronom:PropertyName>Image Height</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/colour_space">
+	<pronom:PropertyName>Colour Space</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/sampling_frequency_unit">
+	<pronom:PropertyName>Sampling Frequency Unit</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/x_sampling_frequency">
+	<pronom:PropertyName>X Sampling Frequency</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/y_sampling_frequency">
+	<pronom:PropertyName>Y Sampling Frequency</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/bits_per_sample">
+	<pronom:PropertyName>Bits Per Sample</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/samples_per_pixel">
+	<pronom:PropertyName>Samples Per Pixel</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/byte_order">
+	<pronom:PropertyName>Byte Order</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/comments">
+	<pronom:PropertyName>Comments</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+</rdf:RDF>

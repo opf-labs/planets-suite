@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	POST / HTTP/1.1
+	Host: planetarium.hki.uni-koeln.de:7627
+	User-Agent: gSOAP/2.7
+	Content-Type: text/xml; charset=utf-8
+	Content-Length: 444
+	Connection: close
+	SOAPAction: ""
+-->
+
+<SOAP-ENV:Envelope
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:req1="http://planetarium.hki.uni-koeln.de/req1.xsd">
+	<SOAP-ENV:Body>
+		<req1:request1>
+
+			<puids>fmt_10:fmt_13:</puids>
+
+		</req1:request1>	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

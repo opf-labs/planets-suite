@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/281">
+	<pronom:FormatID>281</pronom:FormatID>
+	<pronom:FormatName>WordPerfect for Windows Document</pronom:FormatName>
+	<pronom:FormatVersion>5.2</pronom:FormatVersion>
+	<pronom:FormatDescription>Description in preparation.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ReleaseDate>30 Nov 1992</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>02 Aug 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/203"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/4"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/584"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/646"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/675"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/706"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/75"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/75"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/737"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/737"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/203">
+	<pronom:Identifier>x-fmt/203</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/4">
+	<pronom:DocumentID>4</pronom:DocumentID>
+	<pronom:DisplayText>Born, G, 1995, The file formats handbook, International Thompson Computer Press</pronom:DisplayText>
+	<pronom:DocumentType>Informative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jan 1995</pronom:PublicationDate>
+	<pronom:TitleText>The file formats handbook</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/1-85032-117-5"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/115"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/117"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/1-85032-117-5">
+	<pronom:Identifier>1-85032-117-5</pronom:Identifier>
+	<pronom:IdentifierType>ISBN</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/115">
+	<pronom:AuthorID>115</pronom:AuthorID>
+	<pronom:OrganisationName>Gunter Born</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Gunter Born</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/117">
+	<pronom:PublisherID>117</pronom:PublisherID>
+	<pronom:OrganisationName>International Thompson Computer Press</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>International Thompson Computer Press</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/584">
+	<pronom:ExternalSignatureID>584</pronom:ExternalSignatureID>
+	<pronom:Signature>w52</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/646">
+	<pronom:ExternalSignatureID>646</pronom:ExternalSignatureID>
+	<pronom:Signature>wp</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/675">
+	<pronom:ExternalSignatureID>675</pronom:ExternalSignatureID>
+	<pronom:Signature>wpd</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/706">
+	<pronom:ExternalSignatureID>706</pronom:ExternalSignatureID>
+	<pronom:Signature>wp5</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/75">
+	<pronom:FormatID>75</pronom:FormatID>
+	<pronom:FormatName>WordPerfect for MS-DOS/Windows Document</pronom:FormatName>
+	<pronom:FormatVersion>6.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/737">
+	<pronom:FormatID>737</pronom:FormatID>
+	<pronom:FormatName>WordPerfect for MS-DOS/Windows Document</pronom:FormatName>
+	<pronom:FormatVersion>5.1</pronom:FormatVersion>
+</rdf:Description>
+</rdf:RDF>

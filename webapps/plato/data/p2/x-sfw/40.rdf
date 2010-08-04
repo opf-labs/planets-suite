@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/40">
+	<pronom:SoftwareID>40</pronom:SoftwareID>
+	<pronom:SoftwareName>Powerpoint</pronom:SoftwareName>
+	<pronom:Version>2000 (9.0)</pronom:Version>
+	<pronom:Description>No description available</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/40"/>
+	<pronom:SoftwareTypes>Presentation</pronom:SoftwareTypes>
+	<pronom:ReleaseDate>10 Jun 1999</pronom:ReleaseDate>
+	<pronom:WithdrawnDate>30 Jun 2006</pronom:WithdrawnDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>23 Sep 2003</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/136"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/619"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/620"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/63"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/149"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/639"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/639"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/668"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/131"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/131"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/129"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/129"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/133"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/133"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/134"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/134"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/135"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/135"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/132"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/132"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/666"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/612"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/727"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/728"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/729"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/730"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/731"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/732"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/171"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/40">
+	<pronom:Identifier>x-sfw/40</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/93">
+	<pronom:VendorID>93</pronom:VendorID>
+	<pronom:VendorName>Microsoft Corporation</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/136">
+	<pronom:FormatID>136</pronom:FormatID>
+	<pronom:FormatName>Freelance File</pronom:FormatName>
+	<pronom:Version>1.0-2.1</pronom:Version>
+	<pronom:Extension>pre</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/619">
+	<pronom:FormatID>619</pronom:FormatID>
+	<pronom:FormatName>Graphics Interchange Format</pronom:FormatName>
+	<pronom:Version>1987a</pronom:Version>
+	<pronom:Extension>gif</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/620">
+	<pronom:FormatID>620</pronom:FormatID>
+	<pronom:FormatName>Graphics Interchange Format</pronom:FormatName>
+	<pronom:Version>1989a</pronom:Version>
+	<pronom:Extension>gif</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/63">
+	<pronom:FormatID>63</pronom:FormatID>
+	<pronom:FormatName>Harvard Graphics Chart</pronom:FormatName>
+	<pronom:Version>3.0</pronom:Version>
+	<pronom:Extension>ch3</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/149">
+	<pronom:FormatID>149</pronom:FormatID>
+	<pronom:FormatName>Harvard Graphics Show</pronom:FormatName>
+	<pronom:Version>3.0</pronom:Version>
+	<pronom:Extension>sh3</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/639">
+	<pronom:FormatID>639</pronom:FormatID>
+	<pronom:FormatName>Hypertext Markup Language</pronom:FormatName>
+	<pronom:Version>2.0</pronom:Version>
+	<pronom:Extension>htm</pronom:Extension>
+	<pronom:Extension>html</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/668">
+	<pronom:FormatID>668</pronom:FormatID>
+	<pronom:FormatName>JPEG File Interchange Format</pronom:FormatName>
+	<pronom:Version>1.01</pronom:Version>
+	<pronom:Extension>jpg</pronom:Extension>
+	<pronom:Extension>jpe</pronom:Extension>
+	<pronom:Extension>jpeg</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/131">
+	<pronom:FormatID>131</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Add-In</pronom:FormatName>
+	<pronom:Extension>ppa</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/129">
+	<pronom:FormatID>129</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Design Template</pronom:FormatName>
+	<pronom:Extension>pot</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/133">
+	<pronom:FormatID>133</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:Version>4.0</pronom:Version>
+	<pronom:Extension>ppt</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/134">
+	<pronom:FormatID>134</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:Version>95</pronom:Version>
+	<pronom:Extension>ppt</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/135">
+	<pronom:FormatID>135</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:Version>97-2002</pronom:Version>
+	<pronom:Extension>ppt</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/132">
+	<pronom:FormatID>132</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Show</pronom:FormatName>
+	<pronom:Extension>pps</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/666">
+	<pronom:FormatID>666</pronom:FormatID>
+	<pronom:FormatName>Portable Network Graphics</pronom:FormatName>
+	<pronom:Version>1.2</pronom:Version>
+	<pronom:Extension>png</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/612">
+	<pronom:FormatID>612</pronom:FormatID>
+	<pronom:FormatName>Tagged Image File Format</pronom:FormatName>
+	<pronom:Version>6</pronom:Version>
+	<pronom:Extension>tiff</pronom:Extension>
+	<pronom:Extension>tif</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/727">
+	<pronom:FormatID>727</pronom:FormatID>
+	<pronom:FormatName>Windows Bitmap</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:Extension>ddb</pronom:Extension>
+	<pronom:Extension>bmp</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/728">
+	<pronom:FormatID>728</pronom:FormatID>
+	<pronom:FormatName>Windows Bitmap</pronom:FormatName>
+	<pronom:Version>2.0</pronom:Version>
+	<pronom:Extension>bmp</pronom:Extension>
+	<pronom:Extension>dib</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/729">
+	<pronom:FormatID>729</pronom:FormatID>
+	<pronom:FormatName>Windows Bitmap</pronom:FormatName>
+	<pronom:Version>3.0</pronom:Version>
+	<pronom:Extension>dib</pronom:Extension>
+	<pronom:Extension>bmp</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/730">
+	<pronom:FormatID>730</pronom:FormatID>
+	<pronom:FormatName>Windows Bitmap</pronom:FormatName>
+	<pronom:Version>3.0 NT</pronom:Version>
+	<pronom:Extension>dib</pronom:Extension>
+	<pronom:Extension>bmp</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/731">
+	<pronom:FormatID>731</pronom:FormatID>
+	<pronom:FormatName>Windows Bitmap</pronom:FormatName>
+	<pronom:Version>4.0</pronom:Version>
+	<pronom:Extension>bmp</pronom:Extension>
+	<pronom:Extension>dib</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/732">
+	<pronom:FormatID>732</pronom:FormatID>
+	<pronom:FormatName>Windows Bitmap</pronom:FormatName>
+	<pronom:Version>5.0</pronom:Version>
+	<pronom:Extension>bmp</pronom:Extension>
+	<pronom:Extension>dib</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/171">
+	<pronom:FormatID>171</pronom:FormatID>
+	<pronom:FormatName>Windows Metafile</pronom:FormatName>
+	<pronom:Extension>wmf</pronom:Extension>
+</rdf:Description>
+</rdf:RDF>

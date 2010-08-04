@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+        <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+        <!ENTITY p2-additional "http://p2-registry.ecs.soton.ac.uk/ontology/#">
+	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:p2-additional="http://p2-registry.ecs.soton.ac.uk/ontology/#" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<rdf:Description rdf:about="">
+	<rdfs:comment>This ontology encapsulates those elements of risk analysis which are potentially opinionated and thus can and should be overidden by the local repository.</rdfs:comment>
+</rdf:Description>
+
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/ubiquity/most_widely_used">
+	<rdfs:comment>Format is most widely adopted of type</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/ubiquity/widely_used">
+	<rdfs:comment>Format is one of the most widely adopted of type</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/ubiquity/occasional">
+	<rdfs:comment>Format is occasionally used</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Medium</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/ubiquity/specialised">
+	<rdfs:comment>Format is in specialist use</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Medium</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/ubiquity/deprecated">
+	<rdfs:comment>Format has been deprecated</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>High</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/ubiquity/obsolete">
+	<rdfs:comment>Format has been made obsolete and is no longer supported</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>High</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/identification/positive_specific">
+        <rdfs:comment>Format can be positively identified (specific)</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/identification/positive_generic">
+        <rdfs:comment>Format can be positively identified (generic)</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/identification/tentative">
+        <rdfs:comment>Can be tentatively identified </rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Medium</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/identification/unidentifiable">
+        <rdfs:comment>Cannot be identified</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>High</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/documentation_quality/high">
+        <rdfs:comment>Documentation is complete and of a high standard</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/documentation_quality/complete">
+        <rdfs:comment>Documentation is complete</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/documentation_quality/suitable">
+        <rdfs:comment>Documentation is suitable</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/documentation_quality/poor">
+        <rdfs:comment>Documentation is poor</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Medium</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/documentation_quality/unusable">
+        <rdfs:comment>Documentation is unusable</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>High</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/complexity/low">
+        <rdfs:comment>Low complexity format</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/complexity/medium">
+        <rdfs:comment>Medium complexity format</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Medium</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/complexity/high">
+        <rdfs:comment>High complexity format</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>High</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/stability/stable">
+	<rdfs:comment>Format is very stable and is backwards compatible</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/stability/compatible">
+	<rdfs:comment>Format changes but is backwards compatible</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/stability/not_compatible">
+	<rdfs:comment>Format is not backwards compatible, but versions change infrequently</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Medium</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/stability/unstable">
+	<rdfs:comment>Format changes frequently and is not backwards compatible</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>High</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/format_type/compressed">
+	<rdfs:comment>Format is compressed or a compresed archive</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Medium</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/format_type/lossless">
+	<rdfs:comment>Format is lossless</rdfs:comment>
+	<rdfs:comment>It is possible to obtain the original document in the original context using this format</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/format_type/lossy">
+	<rdfs:comment>Format is lossy</rdfs:comment>
+	<rdfs:comment>It is not possible to obtain the original document in the original context using this format</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>High</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/ipr_protected">
+	<rdfs:comment>Format is encumbered by IPR</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Medium</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/open">
+	<rdfs:comment>Format is open</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Low</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+<rdf:Description rdf:about="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary">
+	<rdfs:comment>Format is proprietary</rdfs:comment>
+	<p2-additional:DefaultRiskLevel>Medium</p2-additional:DefaultRiskLevel>
+</rdf:Description>
+
+</rdf:RDF>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/652">
+	<pronom:FormatID>652</pronom:FormatID>
+	<pronom:FormatName>Macromedia Flash</pronom:FormatName>
+	<pronom:FormatVersion>7</pronom:FormatVersion>
+	<pronom:FormatAliases>SWF (7)</pronom:FormatAliases>
+	<pronom:FormatDescription>Description in preparation.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/application/x-shockwave-flash"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/110"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/48"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/687"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/48"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/651"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/application/x-shockwave-flash">
+	<pronom:Identifier>application/x-shockwave-flash</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/110">
+	<pronom:Identifier>fmt/110</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/48">
+	<pronom:DocumentID>48</pronom:DocumentID>
+	<pronom:DisplayText>Macromedia, Inc., 2003, Macromedia Flash (SWF) File Format Specification, Version 7</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jan 2003</pronom:PublicationDate>
+	<pronom:TitleText>Macromedia Flash (SWF) File Format Specification, Version 7</pronom:TitleText>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/56"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/56"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/56">
+	<pronom:AuthorID>56</pronom:AuthorID>
+	<pronom:OrganisationName>Macromedia, Inc.</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Macromedia, Inc.</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/56">
+	<pronom:PublisherID>56</pronom:PublisherID>
+	<pronom:OrganisationName>Macromedia, Inc.</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Macromedia, Inc.</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/687">
+	<pronom:ExternalSignatureID>687</pronom:ExternalSignatureID>
+	<pronom:Signature>swf</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/48">
+	<pronom:SignatureID>48</pronom:SignatureID>
+	<pronom:SignatureName>SWF 7</pronom:SignatureName>
+	<pronom:SignatureNote>Header and footer</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/146"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/152"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/146">
+	<pronom:ByteSequenceID>146</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>(43|46)575307</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/152">
+	<pronom:ByteSequenceID>152</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from EOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>0000</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/651">
+	<pronom:RelationshipType>Is subsequent version of</pronom:RelationshipType>
+	<pronom:RelatedFormatID>651</pronom:RelatedFormatID>
+	<pronom:RelatedFormatName>Macromedia Flash</pronom:RelatedFormatName>
+	<pronom:RelatedFormatVersion>6</pronom:RelatedFormatVersion>
+</rdf:Description>
+</rdf:RDF>

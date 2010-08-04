@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/777">
+	<pronom:FormatID>777</pronom:FormatID>
+	<pronom:FormatName>Java Archive Format</pronom:FormatName>
+	<pronom:FormatAliases>JAR</pronom:FormatAliases>
+	<pronom:FormatDescription>Outline record only</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>17 Feb 2006</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>17 Feb 2006</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/application/java-archive"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/com.sun.java-archive"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/412"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/775"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/199"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/778"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/778"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/783"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/783"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/382"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/382"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/643"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/643"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/644"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/644"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/645"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/645"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/application/java-archive">
+	<pronom:Identifier>application/java-archive</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/com.sun.java-archive">
+	<pronom:Identifier>com.sun.java-archive</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/412">
+	<pronom:Identifier>x-fmt/412</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/775">
+	<pronom:ExternalSignatureID>775</pronom:ExternalSignatureID>
+	<pronom:Signature>jar</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/199">
+	<pronom:SignatureID>199</pronom:SignatureID>
+	<pronom:SignatureName>JAR format</pronom:SignatureName>
+	<pronom:SignatureNote>Local file header + manifest + end of central directory</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/257"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/257">
+	<pronom:ByteSequenceID>257</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>504B0304*4D4554412D494E462F4D414E49464553542E4D46*504B0506</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/778">
+	<pronom:FormatID>778</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Format</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/783">
+	<pronom:FormatID>783</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Database Format</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/382">
+	<pronom:FormatID>382</pronom:FormatID>
+	<pronom:FormatName>ZIP Format</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/643">
+	<pronom:FormatID>643</pronom:FormatID>
+	<pronom:FormatName>Extensible Hypertext Markup Language</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/644">
+	<pronom:FormatID>644</pronom:FormatID>
+	<pronom:FormatName>Extensible Hypertext Markup Language</pronom:FormatName>
+	<pronom:FormatVersion>1.1</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/645">
+	<pronom:FormatID>645</pronom:FormatID>
+	<pronom:FormatName>Hypertext Markup Language</pronom:FormatName>
+</rdf:Description>
+</rdf:RDF>

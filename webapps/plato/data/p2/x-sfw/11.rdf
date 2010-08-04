@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/11">
+	<pronom:SoftwareID>11</pronom:SoftwareID>
+	<pronom:SoftwareName>Word</pronom:SoftwareName>
+	<pronom:Version>6.0 for Windows</pronom:Version>
+	<pronom:Description>No description available</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/11"/>
+	<pronom:SoftwareTypes>Word processing</pronom:SoftwareTypes>
+	<pronom:MediaFormat>3.5" Magnetic Disk</pronom:MediaFormat>
+	<pronom:ReleaseDate>03 Nov 1993</pronom:ReleaseDate>
+	<pronom:WithdrawnDate>01 Dec 2001</pronom:WithdrawnDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>23 Sep 2003</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/51"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/51"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/434"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/434"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/405"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/406"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/407"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/733"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/734"/>
+	<pronom:HasDefaultFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/688"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/688"/>
+	<pronom:HasDefaultFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/688"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/688"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/76"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/626"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/626"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/627"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/627"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/628"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/628"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/629"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/629"/>
+	<pronom:IPR rdf:resource="http://nationalarchives.gov.uk/pronom/Source/
+        "/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/11">
+	<pronom:Identifier>x-sfw/11</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/93">
+	<pronom:VendorID>93</pronom:VendorID>
+	<pronom:VendorName>Microsoft Corporation</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/51">
+	<pronom:FormatID>51</pronom:FormatID>
+	<pronom:FormatName>7-bit ASCII Text</pronom:FormatName>
+	<pronom:Extension>asc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/434">
+	<pronom:FormatID>434</pronom:FormatID>
+	<pronom:FormatName>8-bit ASCII Text</pronom:FormatName>
+	<pronom:Extension>asc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/405">
+	<pronom:FormatID>405</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>3.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/406">
+	<pronom:FormatID>406</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>4.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/407">
+	<pronom:FormatID>407</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>5.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/733">
+	<pronom:FormatID>733</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for Windows Document</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/734">
+	<pronom:FormatID>734</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for Windows Document</pronom:FormatName>
+	<pronom:Version>2.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/688">
+	<pronom:FormatID>688</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for Windows Document</pronom:FormatName>
+	<pronom:Version>6.0/95</pronom:Version>
+	<pronom:InvarianceText>Unchanged content</pronom:InvarianceText>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/76">
+	<pronom:FormatID>76</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word Template</pronom:FormatName>
+	<pronom:Extension>dot</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/626">
+	<pronom:FormatID>626</pronom:FormatID>
+	<pronom:FormatName>Rich Text Format</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:Extension>rtf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/627">
+	<pronom:FormatID>627</pronom:FormatID>
+	<pronom:FormatName>Rich Text Format</pronom:FormatName>
+	<pronom:Version>1.1</pronom:Version>
+	<pronom:Extension>rtf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/628">
+	<pronom:FormatID>628</pronom:FormatID>
+	<pronom:FormatName>Rich Text Format</pronom:FormatName>
+	<pronom:Version>1.2</pronom:Version>
+	<pronom:Extension>rtf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/629">
+	<pronom:FormatID>629</pronom:FormatID>
+	<pronom:FormatName>Rich Text Format</pronom:FormatName>
+	<pronom:Version>1.3</pronom:Version>
+	<pronom:Extension>rtf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Source/
+        ">
+	<pronom:IPRid>34</pronom:IPRid>
+	<pronom:IPRNote>Windows</pronom:IPRNote>
+	<pronom:IPRJurisdiction>Not Known</pronom:IPRJurisdiction>
+	<pronom:IPRType>Copyright</pronom:IPRType>
+</rdf:Description>
+</rdf:RDF>

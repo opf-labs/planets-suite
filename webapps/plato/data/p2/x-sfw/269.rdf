@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/269">
+	<pronom:SoftwareID>269</pronom:SoftwareID>
+	<pronom:SoftwareName>Word</pronom:SoftwareName>
+	<pronom:Version>2003</pronom:Version>
+	<pronom:SoftwareAliases>Word (11.0)</pronom:SoftwareAliases>
+	<pronom:Description>Description in progress</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/269"/>
+	<pronom:SoftwareTypes>Word processing</pronom:SoftwareTypes>
+	<pronom:MediaFormat>DVD</pronom:MediaFormat>
+	<pronom:ReleaseDate>27 Nov 2003</pronom:ReleaseDate>
+	<pronom:WithdrawnDate>13 Jan 2009</pronom:WithdrawnDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>10 Jul 2007</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>10 Jul 2007</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:HasDefaultFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/690"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/690"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/690"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Software/3"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/269">
+	<pronom:Identifier>x-sfw/269</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/93">
+	<pronom:VendorID>93</pronom:VendorID>
+	<pronom:VendorName>Microsoft Corporation</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/690">
+	<pronom:FormatID>690</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for Windows Document</pronom:FormatName>
+	<pronom:Version>97-2003</pronom:Version>
+	<pronom:InvarianceText>Unchanged content</pronom:InvarianceText>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/3">
+	<pronom:SoftwareID>3</pronom:SoftwareID>
+	<pronom:Name>Word</pronom:Name>
+	<pronom:Version>2002/XP (10.0) for Windows</pronom:Version>
+</rdf:Description>
+</rdf:RDF>

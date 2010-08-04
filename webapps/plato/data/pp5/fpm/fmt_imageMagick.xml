@@ -1,0 +1,3932 @@
+<format puid="fmt_imageMagick">
+    <property>
+        <id>id15</id>
+        <name>bitsPerSampleBlue</name>
+        <description></description>
+        <descriptionfilespec></descriptionfilespec>
+        <unit>bit</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id14</id>
+        <name>bitsPerSampleGreen</name>
+        <description>Number of bits per green colour channel</description>
+        <descriptionfilespec></descriptionfilespec>
+        <unit>bit</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id12</id>
+        <name>bitsPerSampleRed</name>
+        <description>Number of bits per red colour channel</description>
+        <descriptionfilespec></descriptionfilespec>
+        <unit>bit</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id151</id>
+        <name>bitsPerSample</name>
+        <description></description>
+        <descriptionfilespec></descriptionfilespec>
+        <unit>bit</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id18</id>
+        <name>compressionAlgorithm</name>
+        <description></description>
+        <descriptionfilespec>Image compresion type. The default is the compression type of the specified image file.</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id6</id>
+        <name>byteOrder</name>
+        <description>Ordering of bytes for multi-byte data values within a file (intel or motorola)</description>
+        <descriptionfilespec>EndianType endian_
+Specify (or obtain) endian option for formats which support it.</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>XCLLabel</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id2</id>
+        <name>imageHeight</name>
+        <description>Height of an image in pixel</description>
+        <descriptionfilespec></descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id30</id>
+        <name>imageWidth</name>
+        <description>Width of an image. Corresponds to the x-axis.</description>
+        <descriptionfilespec>Image width (is same as imagemagick-property_ 'columns')</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id130</id>
+        <name>1931CIE_ChromaticityBlueX</name>
+        <description>Value x of pair xy specifying blue colour according to 1931 CIE colour-space.</description>
+        <descriptionfilespec>Chromaticity blue 
+float x_, float y_ primary point (e.g. x=0.15, y=0.06)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type></type>
+        <metrics>
+        </metrics>
+    </property>
+    <property>
+        <id>id131</id>
+        <name>1931CIE_ChromaticityBlueY</name>
+        <description>Value y of pair xy specifying green colour according to 1931 CIE colour space.</description>
+        <descriptionfilespec>Chromaticity blue 
+float x_, float y_ primary point (e.g. x=0.15, y=0.06)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id128</id>
+        <name>1931CIE_ChromaticityGreenX</name>
+        <description>Value x of pair xy specifying green colour according to 1931 CIE colour space.</description>
+        <descriptionfilespec>Chromaticity green 
+float x_, float y_ primary point (e.g. x=0.15, y=0.06)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id129</id>
+        <name>1931CIE_ChromaticityGreenY</name>
+        <description>Value y of pair xy specifying green colour according to 1931 CIE colour space.</description>
+        <descriptionfilespec>Chromaticity green 
+float x_, float y_ primary point (e.g. x=0.15, y=0.06)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id126</id>
+        <name>1931CIE_ChromaticityRedX</name>
+        <description>Value x of pair xy specifying red colour according to 1931 CIE colour space.</description>
+        <descriptionfilespec>Chromaticity red 
+float x_, float y_ primary point (e.g. x=0.15, y=0.06)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id127</id>
+        <name>1931CIE_ChromaticityRedY</name>
+        <description>Value y of pair xy specifying red colour according to 1931 CIE colour space.</description>
+        <descriptionfilespec>Chromaticity red 
+float x_, float y_ primary point (e.g. x=0.15, y=0.06)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id28</id>
+        <name>whitePointX</name>
+        <description>Chromaticity of a computer display's nominal white.</description>
+        <descriptionfilespec>Chromaticity white
+float x_, float y_ point (e.g. x=0.3127, y=0.329)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>rational</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>3</mId>
+                <mName>ratDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two rational values (A - B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>9</mId>
+                <mName>ratProd</mName>
+                <mDescription>
+                    Product of two rational values (A * B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>7</mId>
+                <mName>ratRatio</mName>
+                <mDescription>
+                    Quotient of two rational values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>5</mId>
+                <mName>ratSum</mName>
+                <mDescription>
+                    Arithmetical sum of two rational values (A + B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id29</id>
+        <name>whitePointY</name>
+        <description>Chromaticity of a computer display's nominal white.</description>
+        <descriptionfilespec>Chromaticity white
+float x_, float y_ point (e.g. x=0.3127, y=0.329)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>rational</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>3</mId>
+                <mName>ratDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two rational values (A - B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>9</mId>
+                <mName>ratProd</mName>
+                <mDescription>
+                    Product of two rational values (A * B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>7</mId>
+                <mName>ratRatio</mName>
+                <mDescription>
+                    Quotient of two rational values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>5</mId>
+                <mName>ratSum</mName>
+                <mDescription>
+                    Arithmetical sum of two rational values (A + B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id25</id>
+        <name>colourPalette</name>
+        <description>A colour map for palette colour images. 
+Usually for RGB coloured pictures. Should be an array of hex-colour-values... depending on bitdepth</description>
+        <descriptionfilespec>Color at color-pallet index.</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id20</id>
+        <name>colourSpaceName</name>
+        <description></description>
+        <descriptionfilespec>The colorspace (e.g. CMYK) used to represent the image pixel colors. Image pixels are always stored as RGB(A) except for the case of CMY(K).</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id160</id>
+        <name>fontColour</name>
+        <description>Font color in text formats.</description>
+        <descriptionfilespec></descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id58</id>
+        <name>textualAnnotation</name>
+        <description>General textual annotation - not formatted in any kind of metadata-standards like METS.</description>
+        <descriptionfilespec>Image comment</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id23</id>
+        <name>resolutionX</name>
+        <description>The number of pixels per ResolutionUnit in the ImageWidth direction.</description>
+        <descriptionfilespec>"Vertical and horizontal resolution in pixels of the image. This option specifies an image density when decoding a Postscript or Portable Document page. Often used with psPageSize."</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id11</id>
+        <name>BitDepth</name>
+        <description>Number of bits per sample component</description>
+        <descriptionfilespec>Image depth. Used to specify the bit depth when reading or writing raw images or when the output format supports multiple depths. 
+Defaults to the quantum depth that ImageMagick is compiled with.</descriptionfilespec>
+        <unit>bit</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id205</id>
+        <name>fileName</name>
+        <description></description>
+        <descriptionfilespec>"Image file name"</descriptionfilespec>
+        <unit>XCLLabel</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id120</id>
+        <name>fileSize</name>
+        <description></description>
+        <descriptionfilespec>Number of bytes of the image on disk</descriptionfilespec>
+        <unit>byte</unit>
+        <type>rational</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>3</mId>
+                <mName>ratDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two rational values (A - B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>9</mId>
+                <mName>ratProd</mName>
+                <mDescription>
+                    Product of two rational values (A * B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>7</mId>
+                <mName>ratRatio</mName>
+                <mDescription>
+                    Quotient of two rational values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>5</mId>
+                <mName>ratSum</mName>
+                <mDescription>
+                    Arithmetical sum of two rational values (A + B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id241</id>
+        <name>fillColour</name>
+        <description>Fill-colour for vector-object.</description>
+        <descriptionfilespec>Color to use when filling drawn objects</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id39</id>
+        <name>filter</name>
+        <description>Algorithm applied to data.</description>
+        <descriptionfilespec>Filter to use when resizing image. The reduction filter employed has a sigificant effect on the time required to resize an image and the resulting quality. The default filter is Lanczos which has been shown to produce high quality results when reducing most images.</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id158</id>
+        <name>fontSize</name>
+        <description>Size - normally measured in points - which is applied to a font (rendering information).</description>
+        <descriptionfilespec>Text rendering font point size</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id159</id>
+        <name>fontName</name>
+        <description>Name of  font</description>
+        <descriptionfilespec>Text rendering font. If the font is a fully qualified X server font name, the font is obtained from an X server. To use a TrueType font, precede the TrueType filename with an @. 
+Otherwise, specify a Postscript font name (e.g. "helvetica").</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id41</id>
+        <name>gammaValueRGB</name>
+        <description>Level of brightness for pixels ranging from black (0) to white (1). These pixel values serve as the input for the computer monitor. 
+The sRGB and Adobe RGB colour spaces are also based on a gamma of 2.2.
+Gamma-encoding is supported by certain imagefile formats.</description>
+        <descriptionfilespec>Gamma level of the image. The same color 
+image displayed on two different workstations may look different due to differences in the display monitor. Use 
+gamma correction to adjust for this 
+color difference. 
+double (typical gamma range 0.8 to void 2.3)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id43</id>
+        <name>ICCProfileName</name>
+        <description>Name of the description of the colour space (in the form of an International Colour Consortium (ICC) profile) to which the samples in the image conform, should be something like: sRGB IEC1966-2.1, Adobe RGB ´98, for cmyk: ISO Coated V2 (ECI) and ISO Uncoated.</description>
+        <descriptionfilespec>ICC color profile. 
+Supplied via a Blob since Magick++/ and ImageMagick do not currently support formating this data structure directly. 
+Specifications are available from the International Color Consortium for the 
+format of ICC color profiles.</descriptionfilespec>
+        <unit>NULL</unit>
+        <type></type>
+        <metrics>
+        </metrics>
+    </property>
+    <property>
+        <id>id19</id>
+        <name>imageData</name>
+        <description>Reference to embedded imageData.</description>
+        <descriptionfilespec>contains an image object (and it's normdata)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id45</id>
+        <name>interlace</name>
+        <description>Algorithm for encoding raster image data in multiple layers with the purpose of improved transmission and image build-up.</description>
+        <descriptionfilespec>The type of interlacing scheme (default NoInterlace). This option is used to 
+specify the type of interlacing scheme for raw image formats such as RGB 
+or YUV. NoInterlace means do not interlace, LineInterlace uses scanline interlacing, and PlaneInterlace uses plane interlacing. PartitionInterlace is like PlaneInterlace except the different planes are saved to individual files (e.g. image.R, image.G, and image.B). Use LineInterlace or PlaneInterlace to create an interlaced GIF or progressive JPEG image.</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id65</id>
+        <name>IPTC_Metadata</name>
+        <description>Standards of the International Press Telecommunications Council (IPTC) and Newspaper Association of America (NAA) for annotating content of any medial kind.</description>
+        <descriptionfilespec>IPTC profile. 
+Supplied via a Blob since Magick++ and ImageMagick do not currently support formating this data structure directly.
+Specifications are available from the International Press Telecommunications Council for IPTC profiles.</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id48</id>
+        <name>imageOrientation</name>
+        <description>Orientation of the image, e.g., landscape or portrait.</description>
+        <descriptionfilespec>image orientation</descriptionfilespec>
+        <unit>NULL</unit>
+        <type></type>
+        <metrics>
+        </metrics>
+    </property>
+    <property>
+        <id>id384</id>
+        <name>RLE_Packets</name>
+        <description>Number of RLE-Packets (compression property)</description>
+        <descriptionfilespec>The number of runlength-encoded packets inthe image</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id264</id>
+        <name>customPageSize</name>
+        <description>Size of a Text-Page in unit W x H</description>
+        <descriptionfilespec>Use this option to specify the dimensions and position of the 
+Postscript page in dots per inch or a TEXT page in pixels. 
+This option is typically used in concert with density. 
+Page may also be used to position a GIF image (such as for a scene in ananimation)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id382</id>
+        <name>compressionQuality</name>
+        <description>Quality of compression - depending on the used compressionAlgorithm</description>
+        <descriptionfilespec>JPEG/MIFF/PNG compression level (default 75).</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id141</id>
+        <name>renderingIntent</name>
+        <description>The way colour-information is displayed:
+AbsoluteColourmetric.
+RelativeColourmetric.
+Saturation.
+Perception.
+Mapped from PNG (where it is an integer) via "same_as" but should be mapped via "int_to_string".</description>
+        <descriptionfilespec>The type of rendering intent</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id22</id>
+        <name>resolutionUnit</name>
+        <description>Name of the Unit  that measures the resolution of theiImage.
+If it is none: default is generally inch.</description>
+        <descriptionfilespec>Units of image resolution</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id4</id>
+        <name>signature</name>
+        <description></description>
+        <descriptionfilespec>Image MD5 signature. Set force_ to ’true’ to force re-computation of signature.</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>string</type>
+        <metrics>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>30</mId>
+                <mName>hammingDistanceString</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length. This version works on arrays of strings.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>15</mId>
+                <mName>levenshteinDistance</mName>
+                <mDescription>
+                    The Levenshtein distance (syn. Edit distance) is a distance measure for strings. Two strings are compared with respect to the three basic operations insert, delete and replace in order to transform string A into string B. The value for this metric is the number of operations needed for transformation.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id244</id>
+        <name>lineColour</name>
+        <description>Colour of a line-/path-object</description>
+        <descriptionfilespec>Color to use when drawing object outlines</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id343</id>
+        <name>strokeDashArray</name>
+        <description>Length of strokes and gaps in a vector-Dash-Line.</description>
+        <descriptionfilespec>Specify the pattern of dashes and gaps used to stroke paths. 
+The strokeDashArray represents a zero-terminated array of numbers that specify the lengths (in pixels) of alternating dashes and gaps in user units. If an odd number of values is provided, then the list of values is repeated to yield an even number of values. A typical strokeDashArray_ array might contain the members 5 3 2 0, where the zero value indicates the end of 
+the pattern array.</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id253</id>
+        <name>lineWidth</name>
+        <description>Length of a line/path in a vector-object</description>
+        <descriptionfilespec>Stroke width for use when drawing vector objects (default one)</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>rational</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>3</mId>
+                <mName>ratDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two rational values (A - B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>9</mId>
+                <mName>ratProd</mName>
+                <mDescription>
+                    Product of two rational values (A * B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>7</mId>
+                <mName>ratRatio</mName>
+                <mDescription>
+                    Quotient of two rational values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>5</mId>
+                <mName>ratSum</mName>
+                <mDescription>
+                    Arithmetical sum of two rational values (A + B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id116</id>
+        <name>rowsPerStrip</name>
+        <description></description>
+        <descriptionfilespec></descriptionfilespec>
+        <unit>NULL</unit>
+        <type></type>
+        <metrics>
+        </metrics>
+    </property>
+    <property>
+        <id>id197</id>
+        <name>numberOfInks</name>
+        <description>numberOfInks (=number of Channels). Should be interesting only if bitDepth/ColourSpace is different than the usual ones...</description>
+        <descriptionfilespec>Number of colors in the image</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id24</id>
+        <name>resolutionY</name>
+        <description>The number of pixels per ResolutionUnit in the ImageHeigth direction.</description>
+        <descriptionfilespec>x resolution of the image</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+    <property>
+        <id>id24</id>
+        <name>resolutionY</name>
+        <description>The number of pixels per ResolutionUnit in the ImageHeigth direction.</description>
+        <descriptionfilespec>y resolution of the image</descriptionfilespec>
+        <unit>NULL</unit>
+        <type>int</type>
+        <metrics>
+            <m>
+                <mId>20</mId>
+                <mName>RMSE</mName>
+                <mDescription>
+                    Root mean squared error is a widely used measure for deviation. It is calculated as the square root of the quotient of the summed up squared diffeences of corresponding values of two sets and as denominator the number of values (values in both sets must have the same number).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>1</mId>
+                <mName>equal</mName>
+                <mDescription>
+                    simple comparison of two values (A, B) of any type on equality. Type of output value: Boolean (true, false).
+                </mDescription>
+                <mType>bool</mType>
+            </m>
+            <m>
+                <mId>17</mId>
+                <mName>euclidDistance</mName>
+                <mDescription>
+                    Euclidian distance (syn. L2 distance) is a distance measure; the square root of the sum of the single squred differnces of corresponding values of two sets.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>11</mId>
+                <mName>hammingDistance</mName>
+                <mDescription>
+                    The hamming distance counts the number of non-corresponding symbols of two ordered sequences. The sequences must have equal length.
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>2</mId>
+                <mName>intDiff</mName>
+                <mDescription>
+                    Arithmetical difference of two integer values (A - B)
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>8</mId>
+                <mName>intProd</mName>
+                <mDescription>
+                    Product of two integer values (A * B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>6</mId>
+                <mName>intRatio</mName>
+                <mDescription>
+                    Quotient of two integer values (A / B).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>4</mId>
+                <mName>intSum</mName>
+                <mDescription>
+                    Arithmetical sum of two integer values (A +B).
+                </mDescription>
+                <mType>int</mType>
+            </m>
+            <m>
+                <mId>10</mId>
+                <mName>percDeviation</mName>
+                <mDescription>
+                    Percental deviation of two values (A,B) of type integer or rational, according to the equation: PercDev= d/A*100. A is the source value, d is the difference of values B and A (B-A). The output value indicates the percental deviation of value B from value A. An output value of PercDev=0.0 indicates equal values.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>13</mId>
+                <mName>simpleMatchCoefficient</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>12</mId>
+                <mName>simpleMatchCoefficientN</mName>
+                <mDescription>
+                    Simple match coefficient is a distance measure that uses the hamming distance. In addition, the ratio of non-corresponding values (hamming distance) to the total number of compared pairs of values is calculated. N indicates the n-grams used for comparison. Default setting is N=1. The result is a rational number from range 0.0 to 1.0, indicating maximum similarity (0.0) to minimum (1.0).
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+            <m>
+                <mId>id21</mId>
+                <mName>standardDeviation</mName>
+                <mDescription>
+                    Standard deviation is a statistical measure for the distribution of the values of a random variable from the arithmetical mean.
+                </mDescription>
+                <mType>rational</mType>
+            </m>
+        </metrics>
+    </property>
+</format>

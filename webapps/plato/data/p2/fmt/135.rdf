@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/778">
+	<pronom:FormatID>778</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Format</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+	<pronom:FormatAliases>ODF (1.0)</pronom:FormatAliases>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>OpenDocument (ODF) format is a generic format for office documents, such as text, spreadsheets, presentations, drawings, and databases. It was developed by OASIS, based on the original OpenOffice document format. The format is an open standard, and is supported by a variety of office software packages. ODF is an XML format, which may comprise a single XML document, or a collection of subdocuments within a package. The package format is the commonly used form, and comprises a standard ZIP package containing the XML content and any associated binary data, together with a manifest which lists the package content.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ReleaseDate>01 May 2005</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>22 Aug 2006</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>22 Aug 2006</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/135"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/127"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/72"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/202"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/779"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/779"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/780"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/780"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/781"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/781"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/782"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/782"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/783"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/783"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/382"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/382"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/777"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/777"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/779"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/779"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/780"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/780"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/781"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/781"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/782"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/782"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/783"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/783"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/135">
+	<pronom:Identifier>fmt/135</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/127">
+	<pronom:DeveloperID>127</pronom:DeveloperID>
+	<pronom:OrganisationName>OASIS</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>OASIS</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/72">
+	<pronom:DocumentID>72</pronom:DocumentID>
+	<pronom:DisplayText>OASIS, 2005, Open Document Format for Office Applications (OpenDocument) v1.0, OASIS Standard, 1 May 2005</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 May 2005</pronom:PublicationDate>
+	<pronom:TitleText>Open Document Format for Office Applications (OpenDocument) v1.0, OASIS Standard, 1 May 2005</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/docs.oasis-open.org/office/v1.0/OpenDocument-v1.0-os.pdf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/127"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/127"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/docs.oasis-open.org/office/v1.0/OpenDocument-v1.0-os.pdf">
+	<pronom:Identifier>docs.oasis-open.org/office/v1.0/OpenDocument-v1.0-os.pdf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/127">
+	<pronom:AuthorID>127</pronom:AuthorID>
+	<pronom:OrganisationName>OASIS</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>OASIS</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/127">
+	<pronom:PublisherID>127</pronom:PublisherID>
+	<pronom:OrganisationName>OASIS</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>OASIS</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/202">
+	<pronom:SignatureID>202</pronom:SignatureID>
+	<pronom:SignatureName>ODF 1.0 generic</pronom:SignatureName>
+	<pronom:SignatureNote>ZIP header + MIME-type declaration + version number</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/260"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/260">
+	<pronom:ByteSequenceID>260</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:Endianness>Little-endian</pronom:Endianness>
+	<pronom:ByteSequenceValue>504B0304{26}6D696D65747970656170706C69636174696F6E2F766E642E6F617369732E6F70656E646F63756D656E742E*6F66666963653A76657273696F6E3D22312E30</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/779">
+	<pronom:FormatID>779</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Text Format</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/780">
+	<pronom:FormatID>780</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Spreadsheet Format</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/781">
+	<pronom:FormatID>781</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Presentation Format</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/782">
+	<pronom:FormatID>782</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Drawing Format</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/783">
+	<pronom:FormatID>783</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Database Format</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/382">
+	<pronom:FormatID>382</pronom:FormatID>
+	<pronom:FormatName>ZIP Format</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/777">
+	<pronom:FormatID>777</pronom:FormatID>
+	<pronom:FormatName>Java Archive Format</pronom:FormatName>
+</rdf:Description>
+</rdf:RDF>

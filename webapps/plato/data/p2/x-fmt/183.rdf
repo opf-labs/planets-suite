@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/256">
+	<pronom:FormatID>256</pronom:FormatID>
+	<pronom:FormatName>RealAudio Metafile</pronom:FormatName>
+	<pronom:FormatDescription>Outline record only</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>02 Aug 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/audio/vnd.rn-realaudio"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-pn-realaudio"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/183"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/250"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/210"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/audio/vnd.rn-realaudio">
+	<pronom:Identifier>audio/vnd.rn-realaudio</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-pn-realaudio">
+	<pronom:Identifier>audio/x-pn-realaudio</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/183">
+	<pronom:Identifier>x-fmt/183</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/250">
+	<pronom:ExternalSignatureID>250</pronom:ExternalSignatureID>
+	<pronom:Signature>ram</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/210">
+	<pronom:SignatureID>210</pronom:SignatureID>
+	<pronom:SignatureName>RealAudio Metafile</pronom:SignatureName>
+	<pronom:SignatureNote>Header</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/285"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/285">
+	<pronom:ByteSequenceID>285</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:Endianness>Little-endian</pronom:Endianness>
+	<pronom:ByteSequenceValue>727473703A2F2F</pronom:ByteSequenceValue>
+</rdf:Description>
+</rdf:RDF>

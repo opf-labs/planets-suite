@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<cpResponse>
+<compSet id="1" source="XCDL113586.tmp" target="XCDL213587.tmp">
+<property id="2" name="imageHeight" unit="pixel" compStatus="complete">
+<values type="int">
+<src>100</src>
+<tar>100</tar>
+</values>
+<metric id="200" name="equal" result="false"/>
+<metric id="201" name="intDiff" result="2"/>
+<metric id="210" name="percDev" result="0.001000"/>
+</property>
+<property id="30" name="imageWidth" unit="pixel" compStatus="complete">
+<values type="int">
+<src>150</src>
+<tar>150</tar>
+</values>
+<metric id="200" name="equal" result="true"/>
+<metric id="201" name="intDiff" result="0"/>
+<metric id="210" name="percDev" result="0.000003"/>
+</property>
+<property id="300" name="normData" compStatus="failed"/>
+<property id="18" name="compression" compStatus="failed"/>
+<property id="20" name="imageType" compStatus="failed"/>
+<property id="11" name="bitDepth" compStatus="failed"/>
+<property id="12" name="resolutionUnit" compStatus="failed"/>
+</compSet>
+</cpResponse>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/791">
+	<pronom:FormatID>791</pronom:FormatID>
+	<pronom:FormatName>Portable Document Format - Exchange 3:2003</pronom:FormatName>
+	<pronom:FormatAliases>PDF/X-3:2003</pronom:FormatAliases>
+	<pronom:FormatDescription>This 'exchange standard' format is based on Adobe's PDF 1.4 (2003) specification and includes additional notes specifically for delivery of high quality colour advertisements. A subset of the PDF specification, and an application standard as well as a file format standard, it is considered a  'more reliable' PDF file. There are several versions of the standard, to address specific issues.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>01 Feb 2007</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>01 Feb 2007</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/application/pdf"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/148"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/797"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/819"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/819"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/617"/>
+	<pronom:IsSubtypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/617"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/application/pdf">
+	<pronom:Identifier>application/pdf</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/148">
+	<pronom:Identifier>fmt/148</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/797">
+	<pronom:ExternalSignatureID>797</pronom:ExternalSignatureID>
+	<pronom:Signature>pdf</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/819">
+	<pronom:FormatID>819</pronom:FormatID>
+	<pronom:FormatName>Portable Document Format - Exchange 3:2002</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/617">
+	<pronom:FormatID>617</pronom:FormatID>
+	<pronom:FormatName>Portable Document Format</pronom:FormatName>
+	<pronom:FormatVersion>1.4</pronom:FormatVersion>
+</rdf:Description>
+</rdf:RDF>

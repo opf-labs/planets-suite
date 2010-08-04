@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/117">
+	<pronom:SoftwareID>117</pronom:SoftwareID>
+	<pronom:SoftwareName>Crystal Enterprise</pronom:SoftwareName>
+	<pronom:Version>8.5 for AIX</pronom:Version>
+	<pronom:Description>No description available</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/117"/>
+	<pronom:SoftwareTypes>Reporting</pronom:SoftwareTypes>
+	<pronom:ReleaseDate>27 Sep 2002</pronom:ReleaseDate>
+	<pronom:WithdrawnDate>30 Sep 2005</pronom:WithdrawnDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>10 Oct 2003</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/77"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/77"/>
+	<pronom:IPR rdf:resource="http://nationalarchives.gov.uk/pronom/Source/
+        "/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/117">
+	<pronom:Identifier>x-sfw/117</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/77">
+	<pronom:VendorID>77</pronom:VendorID>
+	<pronom:VendorName>Crystal Decisions, Inc.</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Source/
+        ">
+	<pronom:IPRid>8</pronom:IPRid>
+	<pronom:IPRJurisdiction>Not Known</pronom:IPRJurisdiction>
+	<pronom:IPRType>Copyright</pronom:IPRType>
+	<pronom:Owner rdf:resource="http://nationalarchives.gov.uk/pronom/Owner/77"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Owner/77">
+	<pronom:OwnerID>77</pronom:OwnerID>
+	<pronom:OrganisationName>Crystal Decisions, Inc.</pronom:OrganisationName>
+	<pronom:OwnerCompoundName>Crystal Decisions, Inc.</pronom:OwnerCompoundName>
+</rdf:Description>
+</rdf:RDF>

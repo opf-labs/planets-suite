@@ -1,0 +1,29 @@
+ok so here is how we generated the measurementsDescriptor from the FPM files.
+
+there is five fpm files, referenced in filelist.xml
+we merged these using mergeFPMfiles.xslt into one, called fpmcomplete.xml
+
+we then realised this needs a root element ;) so we added <formats> as a root element.
+
+from this one, we generated all properties with their possible Metrics, right as we need it, 
+using genMD.xslt. This file is perfect apart from the fact that it misses the <metrics> part at the end.
+That was the tricky part - which is done by generateMetrics.xslt using Saxon, 
+which results in generatedMetrics.xslt.
+
+That part was just copied into the other, and that results in generatedMeasurementsXCL.xml -
+which is copied over to the evlauationdescriptor directory data/evaluation.
+Which is when we noted that we forgot the collection tag element <measurableProperties>, 
+which we added by hand again ;)
+
+
+SECOND RUN, 14.6.2010: we realise that we have redundant property declarations across property files,
+which differ only in their format-specific descriptions.
+For now we leave out these format-specific descriptions and use only the general ones.
+
+So we need an updated genMD.xslt, or rather rename this to generateProperties.xslt
+and include a filter for distinct IDs.
+
+usage e.g.
+java -jar saxon9he.jar -s:fpmcomplete.xml -xsl:C:\Users\cb\workspace\plato-clean\data\pp5\fpm\generateProperties.xslt -o:OUT.xml
+
+so we have these properties-nometrics.xml that we can join in with the metrics to get a new generatedMeasurementsXCL.xml

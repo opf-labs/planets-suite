@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/263">
+	<pronom:SoftwareID>263</pronom:SoftwareID>
+	<pronom:SoftwareName>StarWriter</pronom:SoftwareName>
+	<pronom:Version>8</pronom:Version>
+	<pronom:Description>In preparation</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/263"/>
+	<pronom:SoftwareTypes>Word processing</pronom:SoftwareTypes>
+	<pronom:ReleaseDate>28 Sep 2005</pronom:ReleaseDate>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>11 Jun 2007</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>11 Jun 2007</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/71"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/71"/>
+	<pronom:HasDefaultFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/779"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/779"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/779"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/263">
+	<pronom:Identifier>x-sfw/263</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/71">
+	<pronom:VendorID>71</pronom:VendorID>
+	<pronom:VendorName>Sun Microsystems Incorporated</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/779">
+	<pronom:FormatID>779</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Text Format</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:InvarianceText>Unchanged content</pronom:InvarianceText>
+	<pronom:Extension>odt</pronom:Extension>
+	<pronom:Extension>ott</pronom:Extension>
+</rdf:Description>
+</rdf:RDF>

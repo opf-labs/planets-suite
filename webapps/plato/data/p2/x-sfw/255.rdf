@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/255">
+	<pronom:SoftwareID>255</pronom:SoftwareID>
+	<pronom:SoftwareName>JHOVE (JSTOR/Harvard Object Validation Environment)</pronom:SoftwareName>
+	<pronom:Version>1.1</pronom:Version>
+	<pronom:Description>HOVE (JSTOR/Harvard Object Validation Environment). This Java tool has been developed by Harvard University to allow the automatic identification, validation and characterisation of a range of digital object types. It is freely available under the GNU Lesser General Public License, and the maintenance pre-release 1.1 version is currently available to download.</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/255"/>
+	<pronom:ReleaseDate>01 Jun 2006</pronom:ReleaseDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>21 Jul 2006</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>21 Jul 2006</pronom:LastUpdatedDate>
+	<pronom:Note>JHOVE is written in Java to conform to Java 2 Platform, Standard Edition (J2SE) 1.4. A J2SE 1.4-compliant Java Runtime Environment (JRE) is required for proper operation of JHOVE. (JHOVE was implemented and tested using the Sun J2SE SDK 1.4.1.) JHOVE should be usable on any Unix, Windows, or OS X platform with the appropriate J2SE installation.</pronom:Note>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/128"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Availability/1"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/255">
+	<pronom:Identifier>x-sfw/255</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/128">
+	<pronom:VendorID>128</pronom:VendorID>
+	<pronom:VendorName>JSTOR - President and Fellows of Harvard College / Harvard University Library</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Availability/1">
+	<pronom:DocumentID>76</pronom:DocumentID>
+	<pronom:TitleText>JHOVE (JSTOR/Harvard Object Validation Environment)</pronom:TitleText>
+	<pronom:DisplayText>JSTOR and Harvard University Library 2006, JHOVE</pronom:DisplayText>
+	<pronom:PublicationDate>28 Jun 2006</pronom:PublicationDate>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityID>1</pronom:AvailabilityID>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/128"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/128"/>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/hul.harvard.edu/jhove/"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/128">
+	<pronom:AuthorID>128</pronom:AuthorID>
+	<pronom:AuthorName>JSTOR - President and Fellows of Harvard College</pronom:AuthorName>
+	<pronom:AuthorOrganisation>Harvard University Library</pronom:AuthorOrganisation>
+	<pronom:AuthorCompoundName>JSTOR - President and Fellows of Harvard College / Harvard University Library</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/128">
+	<pronom:PublisherID>128</pronom:PublisherID>
+	<pronom:PublisherName>JSTOR - President and Fellows of Harvard College</pronom:PublisherName>
+	<pronom:OrganisationName>Harvard University Library</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>JSTOR - President and Fellows of Harvard College / Harvard University Library</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/hul.harvard.edu/jhove/">
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+	<pronom:Identifier>hul.harvard.edu/jhove/</pronom:Identifier>
+</rdf:Description>
+</rdf:RDF>

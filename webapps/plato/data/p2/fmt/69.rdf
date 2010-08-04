@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/715">
+	<pronom:FormatID>715</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (ASCII)</pronom:FormatName>
+	<pronom:FormatVersion>2.1</pronom:FormatVersion>
+	<pronom:FormatAliases>ASCII DXF (2.1)</pronom:FormatAliases>
+	<pronom:FormatFamilies>DXF</pronom:FormatFamilies>
+	<pronom:FormatTypes>Image (Vector)</pronom:FormatTypes>
+	<pronom:FormatDisclosure>None</pronom:FormatDisclosure>
+	<pronom:FormatDescription>ASCII DXF format is the ASCII encoded variant of the Drawing Interchange File Format, an exchange format for vector graphics developed by AutoDesk. They are probably the widely-used formats for exchanging vector data, and have become a de-facto industry standard. The format is owned by AutoDesk and typically changes with each release of their AutoCAD family of products. DXF files contain a tagged representation of the vector data. The structure comprises a Header section, followed by sections containing data on Classes, Tables, Blocks, Entities and, optionally, thumbnail images. Each section contains a series of data elements. each preceded by a group code tag, which indicates the type of data element. ASCII DXF version 2.1 is the version of the format associated with Version 2.1 of the AutoCAD family of software products.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ReleaseDate>01 May 1985</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/69"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/image/vnd.dxf"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/569"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/104"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/699"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/699"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/766"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/766"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/716"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/716"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/714"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/714"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/69">
+	<pronom:Identifier>fmt/69</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/image/vnd.dxf">
+	<pronom:Identifier>image/vnd.dxf</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/569">
+	<pronom:ExternalSignatureID>569</pronom:ExternalSignatureID>
+	<pronom:Signature>dxf</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/104">
+	<pronom:SignatureID>104</pronom:SignatureID>
+	<pronom:SignatureName>Drawing Interchange File Format 2.1</pronom:SignatureName>
+	<pronom:SignatureNote>Header section with $ACADVER group code, EOF marker</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/39"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/40"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/39">
+	<pronom:ByteSequenceID>39</pronom:ByteSequenceID>
+	<pronom:PositionType>Variable</pronom:PositionType>
+	<pronom:ByteSequenceValue>300D0A53454354494F4E0D0A2020320D0A4845414445520D0A*390D0A24414341445645520D0A2020310D0A4143322E31300D0A*300D0A454E445345430D0A</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/40">
+	<pronom:ByteSequenceID>40</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from EOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>300D0A454F460D0A</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/699">
+	<pronom:FormatID>699</pronom:FormatID>
+	<pronom:FormatName>AutoCAD Drawing</pronom:FormatName>
+	<pronom:FormatVersion>2.1</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/766">
+	<pronom:FormatID>766</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (ASCII)</pronom:FormatName>
+	<pronom:FormatVersion>Generic</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/716">
+	<pronom:FormatID>716</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (ASCII)</pronom:FormatName>
+	<pronom:FormatVersion>2.2</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/714">
+	<pronom:FormatID>714</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (ASCII)</pronom:FormatName>
+	<pronom:FormatVersion>2.0</pronom:FormatVersion>
+</rdf:Description>
+</rdf:RDF>

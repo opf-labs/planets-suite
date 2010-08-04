@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/68">
+	<pronom:SoftwareID>68</pronom:SoftwareID>
+	<pronom:SoftwareName>WordPerfect Office</pronom:SoftwareName>
+	<pronom:Version>11</pronom:Version>
+	<pronom:Description>No description available</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/68"/>
+	<pronom:SoftwareTypes>Word processing</pronom:SoftwareTypes>
+	<pronom:MediaFormat>CD ROM</pronom:MediaFormat>
+	<pronom:ReleaseDate>02 Apr 2003</pronom:ReleaseDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>23 Sep 2003</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/35"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/35"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/639"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/133"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/133"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/134"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/135"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/617"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/75"/>
+	<pronom:IPR rdf:resource="http://nationalarchives.gov.uk/pronom/Source/
+        "/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/68">
+	<pronom:Identifier>x-sfw/68</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/35">
+	<pronom:VendorID>35</pronom:VendorID>
+	<pronom:VendorName>Corel Corporation</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/639">
+	<pronom:FormatID>639</pronom:FormatID>
+	<pronom:FormatName>Hypertext Markup Language</pronom:FormatName>
+	<pronom:Version>2.0</pronom:Version>
+	<pronom:Extension>htm</pronom:Extension>
+	<pronom:Extension>html</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/133">
+	<pronom:FormatID>133</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:Version>4.0</pronom:Version>
+	<pronom:Extension>ppt</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/134">
+	<pronom:FormatID>134</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:Version>95</pronom:Version>
+	<pronom:Extension>ppt</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/135">
+	<pronom:FormatID>135</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:Version>97-2002</pronom:Version>
+	<pronom:Extension>ppt</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/617">
+	<pronom:FormatID>617</pronom:FormatID>
+	<pronom:FormatName>Portable Document Format</pronom:FormatName>
+	<pronom:Version>1.4</pronom:Version>
+	<pronom:Extension>pdf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/75">
+	<pronom:FormatID>75</pronom:FormatID>
+	<pronom:FormatName>WordPerfect for MS-DOS/Windows Document</pronom:FormatName>
+	<pronom:Version>6.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+	<pronom:Extension>wpd</pronom:Extension>
+	<pronom:Extension>wp6</pronom:Extension>
+	<pronom:Extension>wp</pronom:Extension>
+	<pronom:Extension>w60</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Source/
+        ">
+	<pronom:IPRid>7</pronom:IPRid>
+	<pronom:IPRJurisdiction>Not Known</pronom:IPRJurisdiction>
+	<pronom:IPRType>Copyright</pronom:IPRType>
+	<pronom:Owner rdf:resource="http://nationalarchives.gov.uk/pronom/Owner/35"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Owner/35">
+	<pronom:OwnerID>35</pronom:OwnerID>
+	<pronom:OrganisationName>Corel Corporation</pronom:OrganisationName>
+	<pronom:OwnerCompoundName>Corel Corporation</pronom:OwnerCompoundName>
+</rdf:Description>
+</rdf:RDF>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+        <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/PdfTeX">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Prince_XML">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Pstoedit">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/XeTeX">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/SWFTools">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Antiword">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Dvipdfm">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/CUPS">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/GIMP">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/OpenOffice.org">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Zamzar">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Docudesk">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Nuance_Communications">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Software602">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/iText">
+	<pronom:IsDevelopmentLibraryFor rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/JasperReports">
+	<pronom:IsDevelopmentLibraryFor rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/PDF_Clown">
+	<pronom:IsDevelopmentLibraryFor rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Poppler_(software)">
+	<pronom:IsDevelopmentLibraryFor rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/ReportLab">
+	<pronom:IsDevelopmentLibraryFor rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/TCPDF">
+	<pronom:IsDevelopmentLibraryFor rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Xpdf">
+	<pronom:IsDevelopmentLibraryFor rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Adobe_Acrobat">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Ghostscript">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Inkscape">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/PageStream">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Pdftk">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Scribus">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/PDFedit">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/PDF_Studio">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/ClibPDF">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Xournal">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/CutePDF">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/DoPDF">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Ecopy">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Pdfescape">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/PDFFiller">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Pdfvue">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Nitro_PDF">
+	<pronom:CanConvert rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/PagePlus">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/PaperPort">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/PDFCreater">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Win2PDF">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Abode_Reader">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/GSView">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Okular">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Foxit_Reader">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Evince">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/GPdf">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/KPDF">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/PDF-XChange_Viewer">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Sumatra_PDF">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Vuzit">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Google_docs">
+	<pronom:CanCreate rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://dbpedia.org/resource/Scribd">
+	<pronom:CanView rdf:resource="http://dbpedia.org/resource/Portable_Document_Format"/>
+</rdf:Description>
+
+</rdf:RDF>

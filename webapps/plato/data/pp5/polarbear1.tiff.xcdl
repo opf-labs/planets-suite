@@ -1,0 +1,38 @@
+<xcdl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.planets-project.eu/xcl/schemas/xcl" xsi:schemaLocation="http://www.planets-project.eu/xcl/schemas/xcl ../res/xcl/xcdl/XCDLCore.xsd" id="0" >
+    <object id="o1" >
+        <normData type="image" id="nd1" ></normData>
+        <property id="p1" source="raw" cat="descr" >
+            <name id="id118" >dataType</name>
+            <valueSet id="i_i1_s11" >
+                <labValue>
+                    <value>3</value>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+            <valueSet id="i_i1_s6" >
+                <labValue>
+                    <value>3</value>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p5" source="raw" cat="descr" >
+            <name id="id30" >imageWidth</name>
+            <valueSet id="i_i1_s8" >
+                <labValue>
+                    <value>150</value>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p6" source="raw" cat="descr" >
+            <name id="id2" >imageHeight</name>
+            <valueSet id="i_i1_s13" >
+                <labValue>
+                    <value>100</value>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+    </object>
+</xcdl>

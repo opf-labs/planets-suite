@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/686">
+	<pronom:FormatID>686</pronom:FormatID>
+	<pronom:FormatName>JPEG 2000</pronom:FormatName>
+	<pronom:FormatDescription>Description in preparation.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/image/jp2"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/public.jpeg-2000"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/392"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/636"/>
+	<pronom:FormatProperties rdf:resource="http://nationalarchives.gov.uk/pronom/Format/686/FormatProperties"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/image/jp2">
+	<pronom:Identifier>image/jp2</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/public.jpeg-2000">
+	<pronom:Identifier>public.jpeg-2000</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/392">
+	<pronom:Identifier>x-fmt/392</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/636">
+	<pronom:ExternalSignatureID>636</pronom:ExternalSignatureID>
+	<pronom:Signature>jp2</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/686/FormatProperties">
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/compression_type"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/compression_level"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/image_width"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/image_height"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/colour_space"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/bits_per_sample"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/samples_per_pixel"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/byte_order"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/comments"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/compression_type">
+	<pronom:PropertyName>Compression Type</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/compression_level">
+	<pronom:PropertyName>Compression Level</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/image_width">
+	<pronom:PropertyName>Image Width</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/image_height">
+	<pronom:PropertyName>Image Height</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/colour_space">
+	<pronom:PropertyName>Colour Space</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/bits_per_sample">
+	<pronom:PropertyName>Bits Per Sample</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/samples_per_pixel">
+	<pronom:PropertyName>Samples Per Pixel</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/byte_order">
+	<pronom:PropertyName>Byte Order</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/comments">
+	<pronom:PropertyName>Comments</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+</rdf:RDF>

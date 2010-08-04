@@ -1,0 +1,967 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HTTP/1.1 200 OK Server: gSOAP/2.7 Content-Type: text/xml; charset=utf-8 Content-Length: 22863 Connection: close
+-->
+<SOAP-ENV:Envelope
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:req1="http://planetarium.hki.uni-koeln.de/req1.xsd">
+	<SOAP-ENV:Body>
+		<req1:request1Response>
+			<xmlData>
+				<request1>
+					<format puid="fmt_10">
+						<property>
+							<id>2</id>
+							<name>imageHeight</name>
+							<description>
+								Height of an image. Corresponds to the
+								y-axis. [Compatibility: PNG 1.1; TIFF
+								6.0]
+							</description>
+							<unit>pixel</unit>
+							<type>uint32</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>3</id>
+							<name>creationSoftware</name>
+							<description>
+								Data about the software package(s) used
+								to create the image
+							</description>
+							<unit></unit>
+							<type>string</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>4</id>
+							<name>signature</name>
+							<description>
+								A sequence of bytes that uniquely
+								identifies a certain fileformat
+							</description>
+							<unit></unit>
+							<type>string</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>5</id>
+							<name>filelength</name>
+							<description>
+								The length in bytes of the complete file
+							</description>
+							<unit>byte</unit>
+							<type>uint32</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>6</id>
+							<name>byteOrder</name>
+							<description>
+								Ordering of bytes for multi-byte data
+								values within a file
+							</description>
+							<unit></unit>
+							<type>string</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>11</id>
+							<name>bitDepth</name>
+							<description>
+								Number of bits per sample component
+								[Compatibility: PNG 1.1; TIFF 6.0]
+							</description>
+							<unit>bit</unit>
+							<type>uint8</type>
+							<metrics>
+								<m>
+									<mId>230</mId>
+									<mName>uint8ClusterComp</mName>
+									<mDescription>
+										Comparison of a sequence of
+										uint8 numbers, output is a
+										sequence of boolean values (as 0
+										or 1)
+									</mDescription>
+									<mType>boolCluster</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>17</id>
+							<name>blackWhiteInterpretation</name>
+							<description>
+								photometric interpretation in black and
+								white based images
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>18</id>
+							<name>compression</name>
+							<description>
+								algorithm applied to image data for the
+								purpose of minimizing storage size
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>20</id>
+							<name>imageType</name>
+							<description>
+								Interpretation of image pixels
+								representing the colour type of an image
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>21</id>
+							<name>fillOrder</name>
+							<description>
+								The logical order of bits within a byte.
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>22</id>
+							<name>resolutionUnit</name>
+							<description>
+								measure unit for measuring resolution
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>23</id>
+							<name>resolutionX</name>
+							<description>
+								number of pixels per resolution unit in
+								horizontal direction
+							</description>
+							<unit>pixel</unit>
+							<type>uint32Rational</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>24</id>
+							<name>resolutionY</name>
+							<description>
+								number of pixels per resolution unit in
+								vertical direction
+							</description>
+							<unit>pixel</unit>
+							<type>uint32Rational</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>26</id>
+							<name>samplesPerPixel</name>
+							<description>
+								number of intersections (components) of
+								a pixel in an image
+							</description>
+							<unit>sample</unit>
+							<type>uint16</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>30</id>
+							<name>imageWidth</name>
+							<description>
+								Width of an image. Corresponds to the
+								x-axis. [Compatibility: PNG 1.1; TIFF
+								6.0]
+							</description>
+							<unit>pixel</unit>
+							<type>uint32</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>31</id>
+							<name>artist</name>
+							<description>
+								Person who created the image [cit. TIFF
+								6.0] [Compatibility: TIFF 6.0]
+							</description>
+							<unit></unit>
+							<type>string</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>35</id>
+							<name>copyright</name>
+							<description>
+								Copyright notice of the person or
+								organization that claims the copyright
+								to the image [cit. TIFF 6.0]
+								[Compatibility: TIFF 6.0]
+							</description>
+							<unit></unit>
+							<type>string</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>36</id>
+							<name>creationDate</name>
+							<description>
+								Date and time of image creation [cit.
+								TIFF 6.0] [Compatibility: TIFF 6.0]
+							</description>
+							<unit></unit>
+							<type>timeISO8601</type>
+							<metrics>
+								<m>
+									<mId>150</mId>
+									<mName>timeISO8601Comp</mName>
+									<mDescription>
+										Comparison of two strings
+										formatted according to ISO 8601;
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>44</id>
+							<name>imageDescription</name>
+							<description>
+								A string that describes the subject of
+								the image [cit. TIFF 6.0]
+								[Compatibility: TIFF 6.0]
+							</description>
+							<unit></unit>
+							<type>string</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>46</id>
+							<name>minSampleValue</name>
+							<description>
+								The minimum component value used [cit.
+								TIFF 6.0] [Compatibility: TIFF 6.0]
+							</description>
+							<unit></unit>
+							<type>uint16Cluster</type>
+							<metrics>
+								<m>
+									<mId>231</mId>
+									<mName>uint16ClusterComp</mName>
+									<mDescription>
+										Comparison of a list of uint16
+										values
+									</mDescription>
+									<mType>boolCluster</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>47</id>
+							<name>maxSampleValue</name>
+							<description>
+								The maximum component value used [cit.
+								TIFF 6.0] [Compatibility: TIFF 6.0]
+							</description>
+							<unit></unit>
+							<type>uint16Cluster</type>
+							<metrics>
+								<m>
+									<mId>231</mId>
+									<mName>uint16ClusterComp</mName>
+									<mDescription>
+										Comparison of a list of uint16
+										values
+									</mDescription>
+									<mType>boolCluster</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>48</id>
+							<name>orientation</name>
+							<description>
+								The orientation of the image with
+								respect to the rows and columns [cit.
+								TIFF 6.0] [Compatibility: TIFF 6.0]
+							</description>
+							<unit></unit>
+							<type></type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>49</id>
+							<name>planarConfiguration</name>
+							<description>
+								How the components of each pixel are
+								stored [cit. TIFF 6.0] [Compatibility:
+								TIFF 6.0]
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>61</id>
+							<name>thresholding</name>
+							<description>
+								For black and white TIFF files that
+								represent shades of gray, the technique
+								used to
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+					</format>
+					<format puid="fmt_13">
+						<property>
+							<id>1</id>
+							<name>checksum</name>
+							<description>
+								A form of redundancy check, as a measure
+								for protecting the integrity of data.
+							</description>
+							<unit></unit>
+							<type>uint32</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>2</id>
+							<name>imageHeight</name>
+							<description>
+								Height of an image. Corresponds to the
+								y-axis. [Compatibility: PNG 1.1; TIFF
+								6.0]
+							</description>
+							<unit>pixel</unit>
+							<type>uint32</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>4</id>
+							<name>signature</name>
+							<description>
+								A sequence of bytes that uniquely
+								identifies a certain fileformat
+							</description>
+							<unit></unit>
+							<type>string</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>6</id>
+							<name>byteOrder</name>
+							<description>
+								Ordering of bytes for multi-byte data
+								values within a file
+							</description>
+							<unit></unit>
+							<type>string</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>10</id>
+							<name>filterMethod</name>
+							<description>
+								A filter indicates how the data must be
+								decoded before it is used.
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>11</id>
+							<name>bitDepth</name>
+							<description>
+								Number of bits per sample component
+								[Compatibility: PNG 1.1; TIFF 6.0]
+							</description>
+							<unit>bit</unit>
+							<type>uint8</type>
+							<metrics>
+								<m>
+									<mId>230</mId>
+									<mName>uint8ClusterComp</mName>
+									<mDescription>
+										Comparison of a sequence of
+										uint8 numbers, output is a
+										sequence of boolean values (as 0
+										or 1)
+									</mDescription>
+									<mType>boolCluster</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>17</id>
+							<name>blackWhiteInterpretation</name>
+							<description>
+								photometric interpretation in black and
+								white based images
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>18</id>
+							<name>compression</name>
+							<description>
+								algorithm applied to image data for the
+								purpose of minimizing storage size
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>20</id>
+							<name>imageType</name>
+							<description>
+								Interpretation of image pixels
+								representing the colour type of an image
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>100</mId>
+									<mName>stringComp</mName>
+									<mDescription>
+										comparison of two strings;
+										possible results: boolean values
+										true (is-equal) or false
+										(is-not-equal)
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>16</id>
+							<name>bitsPerPaletteIndex</name>
+							<description>
+								Number of bits per palette index
+								[Compatibility: PNG 1.1]
+							</description>
+							<unit>bit</unit>
+							<type>uint8</type>
+							<metrics></metrics>
+						</property>
+						<property>
+							<id>27</id>
+							<name>transparency</name>
+							<description>
+								Alpha information that allows the
+								reference image to be reconstructed
+							</description>
+							<unit></unit>
+							<type>uint16Cluster</type>
+							<metrics>
+								<m>
+									<mId>231</mId>
+									<mName>uint16ClusterComp</mName>
+									<mDescription>
+										Comparison of a list of uint16
+										values
+									</mDescription>
+									<mType>boolCluster</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>28</id>
+							<name>whitePointX</name>
+							<description>
+								chromaticity of a computer display's
+								nominal white x value
+							</description>
+							<unit></unit>
+							<type>uint32</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>29</id>
+							<name>whitePointY</name>
+							<description>
+								chromaticity of a computer display's
+								nominal white y value
+							</description>
+							<unit></unit>
+							<type>uint32</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>30</id>
+							<name>imageWidth</name>
+							<description>
+								Width of an image. Corresponds to the
+								x-axis. [Compatibility: PNG 1.1; TIFF
+								6.0]
+							</description>
+							<unit>pixel</unit>
+							<type>uint32</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>32</id>
+							<name>backgroundColour</name>
+							<description>
+								solid colour for the background of an
+								image to be used when presenting the
+								image [Compatibility: PNG 1.1]
+							</description>
+							<unit></unit>
+							<type>uint16Cluster</type>
+							<metrics>
+								<m>
+									<mId>231</mId>
+									<mName>uint16ClusterComp</mName>
+									<mDescription>
+										Comparison of a list of uint16
+										values
+									</mDescription>
+									<mType>boolCluster</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>25</id>
+							<name>rgbPalette</name>
+							<description>
+								palette for index-coloured image type.
+								Each pixel is a composition of red,
+								green and blue colour values which shall
+								appear in exactly this order
+							</description>
+							<unit></unit>
+							<type>uint8Cluster</type>
+							<metrics>
+								<m>
+									<mId>230</mId>
+									<mName>uint8ClusterComp</mName>
+									<mDescription>
+										Comparison of a sequence of
+										uint8 numbers, output is a
+										sequence of boolean values (as 0
+										or 1)
+									</mDescription>
+									<mType>boolCluster</mType>
+								</m>
+							</metrics>
+						</property>
+						<property>
+							<id>39</id>
+							<name>filter</name>
+							<description>
+								transformation applied to an array of
+								scanlines with the aim of improving
+								their compressibility [Compatibility:
+								PNG 1.1]
+							</description>
+							<unit></unit>
+							<type>XCLLabel</type>
+							<metrics>
+								<m>
+									<mId>200</mId>
+									<mName>numComp</mName>
+									<mDescription>
+										Compares two numbers of any
+										defined numeric datatype with a
+										simple is-equal (bool=true) or
+										is-not-equal (bool=false)
+										result.
+									</mDescription>
+									<mType>bool</mType>
+								</m>
+							</metrics>
+						</property>
+					</format>
+				</request1>
+			</xmlData>
+		</req1:request1Response>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

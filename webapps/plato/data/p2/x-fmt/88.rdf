@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/133">
+	<pronom:FormatID>133</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:FormatVersion>4.0</pronom:FormatVersion>
+	<pronom:FormatTypes>Presentation</pronom:FormatTypes>
+	<pronom:FormatDescription>Outline record only</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>02 Aug 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/application/vnd.ms-powerpoint"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/com.microsoft.powerpoint.ppt"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/88"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/127"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/181"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/135"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/135"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/767"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/767"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/134"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/134"/>
+	<pronom:FormatProperties rdf:resource="http://nationalarchives.gov.uk/pronom/Format/133/FormatProperties"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/application/vnd.ms-powerpoint">
+	<pronom:Identifier>application/vnd.ms-powerpoint</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/com.microsoft.powerpoint.ppt">
+	<pronom:Identifier>com.microsoft.powerpoint.ppt</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/88">
+	<pronom:Identifier>x-fmt/88</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/127">
+	<pronom:ExternalSignatureID>127</pronom:ExternalSignatureID>
+	<pronom:Signature>ppt</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/181">
+	<pronom:SignatureID>181</pronom:SignatureID>
+	<pronom:SignatureName>PowerPoint 4.0</pronom:SignatureName>
+	<pronom:SignatureNote>Compound document header + PowerPoint Document user stream + version number (pp40)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/218"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/219"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/220"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/218">
+	<pronom:ByteSequenceID>218</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>D0CF11E0A1B11AE1{20}FEFF</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/219">
+	<pronom:ByteSequenceID>219</pronom:ByteSequenceID>
+	<pronom:PositionType>Variable</pronom:PositionType>
+	<pronom:ByteSequenceValue>5000500034003000</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/220">
+	<pronom:ByteSequenceID>220</pronom:ByteSequenceID>
+	<pronom:PositionType>Variable</pronom:PositionType>
+	<pronom:ByteSequenceValue>4D6963726F736F667420506F776572506F696E74</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/135">
+	<pronom:FormatID>135</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:FormatVersion>97-2002</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/767">
+	<pronom:FormatID>767</pronom:FormatID>
+	<pronom:FormatName>OLE2 Compound Document Format</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/134">
+	<pronom:FormatID>134</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:FormatVersion>95</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/133/FormatProperties">
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/creation_date"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/number_of_pages"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/creating_application"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/title"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/creator"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/subject"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/comments"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/encrypted"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/word_count"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/character_count"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/creation_date">
+	<pronom:PropertyName>Creation Date</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/number_of_pages">
+	<pronom:PropertyName>Number of Pages</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/creating_application">
+	<pronom:PropertyName>Creating Application</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/title">
+	<pronom:PropertyName>Title</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/creator">
+	<pronom:PropertyName>Creator</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/subject">
+	<pronom:PropertyName>Subject</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/comments">
+	<pronom:PropertyName>Comments</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/encrypted">
+	<pronom:PropertyName>Encrypted</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/word_count">
+	<pronom:PropertyName>Word Count</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/character_count">
+	<pronom:PropertyName>Character Count</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+</rdf:RDF>

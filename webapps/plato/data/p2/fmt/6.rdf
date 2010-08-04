@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/654">
+	<pronom:FormatID>654</pronom:FormatID>
+	<pronom:FormatName>Waveform Audio</pronom:FormatName>
+	<pronom:FormatAliases>WAVE</pronom:FormatAliases>
+	<pronom:FormatFamilies>WAVE</pronom:FormatFamilies>
+	<pronom:FormatTypes>Audio</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>Waveform Audio (WAVE) is a chunk-based audio format developed by Microsoft, based on the generic Resource Interchange File Format (RIFF) specification developed by Microsoft and IBM. Structurally, a WAVE file is composed of a number of chunks, each comprising a four character code chunk identifier, the chunk size, and the chunk data. It  comprises a RIFF header with a WAVE data type identifier, followed by a series of chunks. Every file must include a Format chunk, which describes the format of the audio data, and a Data chunk, containing the audio data itself. Other optional chunks are also allowed. The format supports a wide variety of compressed and uncompressed audio encodings.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-wav"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/com.microsoft.waveform-audio"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/6"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/622"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/50"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/656"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/656"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/674"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/674"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/735"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/735"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/749"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/749"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/750"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/750"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/785"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/785"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/784"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/784"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/785"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/785"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/786"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/786"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/3"/>
+	<pronom:FormatProperties rdf:resource="http://nationalarchives.gov.uk/pronom/Format/654/FormatProperties"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-wav">
+	<pronom:Identifier>audio/x-wav</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/com.microsoft.waveform-audio">
+	<pronom:Identifier>com.microsoft.waveform-audio</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/6">
+	<pronom:Identifier>fmt/6</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/622">
+	<pronom:ExternalSignatureID>622</pronom:ExternalSignatureID>
+	<pronom:Signature>wav</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/50">
+	<pronom:SignatureID>50</pronom:SignatureID>
+	<pronom:SignatureName>WAVE</pronom:SignatureName>
+	<pronom:SignatureNote>RIFF header, WAVE ID, Format chunk and Data chunk</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/154"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/154">
+	<pronom:ByteSequenceID>154</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>52494646{4}57415645*666D7420{18-*}64617461</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/656">
+	<pronom:FormatID>656</pronom:FormatID>
+	<pronom:FormatName>Broadcast WAVE</pronom:FormatName>
+	<pronom:FormatVersion>1</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/674">
+	<pronom:FormatID>674</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Audio)</pronom:FormatName>
+	<pronom:FormatVersion>2.1</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/735">
+	<pronom:FormatID>735</pronom:FormatID>
+	<pronom:FormatName>Broadcast WAVE</pronom:FormatName>
+	<pronom:FormatVersion>0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/749">
+	<pronom:FormatID>749</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Audio)</pronom:FormatName>
+	<pronom:FormatVersion>2.2</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/750">
+	<pronom:FormatID>750</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Audio)</pronom:FormatName>
+	<pronom:FormatVersion>2.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/785">
+	<pronom:FormatID>785</pronom:FormatID>
+	<pronom:FormatName>Waveform Audio (WAVEFORMATEX)</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/784">
+	<pronom:FormatID>784</pronom:FormatID>
+	<pronom:FormatName>Waveform Audio (PCMWAVEFORMAT)</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/786">
+	<pronom:FormatID>786</pronom:FormatID>
+	<pronom:FormatName>Waveform Audio (WAVEFORMATEXTENSIBLE)</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/3">
+	<pronom:CompressionID>3</pronom:CompressionID>
+	<pronom:CompressionName>Pulse Code Modulation</pronom:CompressionName>
+	<pronom:Description>Uncompressed audio encoding method, which uses linear sampling at a wide range of sampling frequencies and resolutions.</pronom:Description>
+	<pronom:Lossiness>Lossless</pronom:Lossiness>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_PCM"/>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/3"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_PCM">
+	<pronom:Identifier>WAVE_FORMAT_PCM</pronom:Identifier>
+	<pronom:IdentifierType>WAVE Format GUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/3">
+	<pronom:Identifier>x-cmp/3</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/654/FormatProperties">
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/compression_type"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/number_of_channels"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/sampling_frequency"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/byte_order"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/creation_date"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/copyright"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/creating_application"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/creator"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/subject"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/comments"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/compression_type">
+	<pronom:PropertyName>Compression Type</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/number_of_channels">
+	<pronom:PropertyName>Number Of Channels</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/sampling_frequency">
+	<pronom:PropertyName>Sampling Frequency</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/byte_order">
+	<pronom:PropertyName>Byte Order</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/creation_date">
+	<pronom:PropertyName>Creation Date</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/copyright">
+	<pronom:PropertyName>Copyright</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/creating_application">
+	<pronom:PropertyName>Creating Application</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/creator">
+	<pronom:PropertyName>Creator</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/subject">
+	<pronom:PropertyName>Subject</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/comments">
+	<pronom:PropertyName>Comments</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+</rdf:RDF>

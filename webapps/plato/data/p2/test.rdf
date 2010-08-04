@@ -1,0 +1,18 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:prf="http://www.wapforum.org/profiles/UAPROF/ccppschema-20010330#"
+         xmlns:mms="http://www.wapforum.org/profiles/MMS/ccppschema-20010111#"
+     xmlns:pss="http://www.3gpp.org/profiles/PSS/ccppschema-YYYYMMDD#">
+
+ <rdf:Description rdf:ID="SomeDevice">
+  <prf:component>
+   <rdf:Description rdf:ID="Streaming">
+    <rdf:type rdf:resource="http://www.3gpp.org/profiles/PSS/ccppschema-PSS5#Streaming"/>
+    <pss:AudioChannels>Stereo</pss:AudioChannels>
+    <pss:VideoPreDecoderBufferSize>30720</pss:VideoPreDecoderBufferSize>
+    <pss:VideoInitialPostDecoderBufferingPeriod>0</pss:VideoInitialPostDecoderBufferingPeriod>
+    <pss:VideoDecodingByteRate>16000</pss:VideoDecodingByteRate>
+   </rdf:Description>
+  </prf:component>
+ </rdf:Description>
+</rdf:RDF>
+

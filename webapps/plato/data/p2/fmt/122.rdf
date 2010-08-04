@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/86">
+	<pronom:FormatID>86</pronom:FormatID>
+	<pronom:FormatName>Encapsulated PostScript File Format</pronom:FormatName>
+	<pronom:FormatVersion>1.2</pronom:FormatVersion>
+	<pronom:FormatAliases>EPS (1.2)</pronom:FormatAliases>
+	<pronom:FormatTypes>Page Description</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>Encapsulated Postscript (EPS) is a page description format, developed by Adobe Systems Incorporated. Version 1.2, the first version of the format, was developed in 1987. An EPS file comprises a header section followed by a PostScript document. An EPS can optionally include a preview raster image, in which case a binary header is prepended to the header.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ReleaseDate>12 Mar 1987</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>02 Aug 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/application/postscript"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/com.adobe.encapsulated-postscript"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/122"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/7"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/62"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/80"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/763"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/173"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/174"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/138"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/138"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/771"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/771"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/772"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/772"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/773"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/773"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/332"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/332"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/application/postscript">
+	<pronom:Identifier>application/postscript</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/com.adobe.encapsulated-postscript">
+	<pronom:Identifier>com.adobe.encapsulated-postscript</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/122">
+	<pronom:Identifier>fmt/122</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/7">
+	<pronom:DeveloperID>7</pronom:DeveloperID>
+	<pronom:OrganisationName>Adobe Systems Incorporated</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>Adobe Systems Incorporated</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/62">
+	<pronom:DocumentID>62</pronom:DocumentID>
+	<pronom:DisplayText>Adobe Systems Incorporated, 1987, Encapsulated PostScript File Format: EPSF Version 1.2</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>12 Mar 1987</pronom:PublicationDate>
+	<pronom:TitleText>Encapsulated PostScript File Format: EPSF Version 1.2</pronom:TitleText>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/7"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/7"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/7">
+	<pronom:AuthorID>7</pronom:AuthorID>
+	<pronom:OrganisationName>Adobe Systems Incorporated</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Adobe Systems Incorporated</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/7">
+	<pronom:PublisherID>7</pronom:PublisherID>
+	<pronom:OrganisationName>Adobe Systems Incorporated</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Adobe Systems Incorporated</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/80">
+	<pronom:ExternalSignatureID>80</pronom:ExternalSignatureID>
+	<pronom:Signature>eps</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/763">
+	<pronom:ExternalSignatureID>763</pronom:ExternalSignatureID>
+	<pronom:Signature>epsf</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/173">
+	<pronom:SignatureID>173</pronom:SignatureID>
+	<pronom:SignatureName>EPS 1.2</pronom:SignatureName>
+	<pronom:SignatureNote>Version comment</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/205"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/205">
+	<pronom:ByteSequenceID>205</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>252150532D41646F62652D322E3020455053462D312E32(0D|0A|0D0A|0A0D)</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/174">
+	<pronom:SignatureID>174</pronom:SignatureID>
+	<pronom:SignatureName>EPS 1.2 Preview</pronom:SignatureName>
+	<pronom:SignatureNote>Version comment</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/206"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/207"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/206">
+	<pronom:ByteSequenceID>206</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>C5D0D3C6</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/207">
+	<pronom:ByteSequenceID>207</pronom:ByteSequenceID>
+	<pronom:PositionType>Variable</pronom:PositionType>
+	<pronom:ByteSequenceValue>252150532D41646F62652D322E3020455053462D312E32(0D|0A|0D0A|0A0D)</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/138">
+	<pronom:FormatID>138</pronom:FormatID>
+	<pronom:FormatName>Postscript</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/771">
+	<pronom:FormatID>771</pronom:FormatID>
+	<pronom:FormatName>PostScript</pronom:FormatName>
+	<pronom:FormatVersion>2.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/772">
+	<pronom:FormatID>772</pronom:FormatID>
+	<pronom:FormatName>PostScript</pronom:FormatName>
+	<pronom:FormatVersion>2.1</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/773">
+	<pronom:FormatID>773</pronom:FormatID>
+	<pronom:FormatName>PostScript</pronom:FormatName>
+	<pronom:FormatVersion>3.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/332">
+	<pronom:FormatID>332</pronom:FormatID>
+	<pronom:FormatName>Encapsulated PostScript File Format</pronom:FormatName>
+	<pronom:FormatVersion>2.0</pronom:FormatVersion>
+</rdf:Description>
+</rdf:RDF>

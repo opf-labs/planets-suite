@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/259">
+	<pronom:SoftwareID>259</pronom:SoftwareID>
+	<pronom:SoftwareName>OpenOffice Impress</pronom:SoftwareName>
+	<pronom:Version>2.2</pronom:Version>
+	<pronom:Description>In preparation</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/259"/>
+	<pronom:SoftwareTypes>Presentation</pronom:SoftwareTypes>
+	<pronom:ReleaseDate>29 Mar 2007</pronom:ReleaseDate>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>11 Jun 2007</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>11 Jun 2007</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/103"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/103"/>
+	<pronom:HasDefaultFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/781"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/781"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/781"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/259">
+	<pronom:Identifier>x-sfw/259</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/103">
+	<pronom:VendorID>103</pronom:VendorID>
+	<pronom:VendorName>OpenOffice.org</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/781">
+	<pronom:FormatID>781</pronom:FormatID>
+	<pronom:FormatName>OpenDocument Presentation Format</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:InvarianceText>Unchanged content</pronom:InvarianceText>
+	<pronom:Extension>odp</pronom:Extension>
+	<pronom:Extension>otp</pronom:Extension>
+</rdf:Description>
+</rdf:RDF>

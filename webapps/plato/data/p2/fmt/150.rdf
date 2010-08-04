@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/793">
+	<pronom:FormatID>793</pronom:FormatID>
+	<pronom:FormatName>JPEG-LS</pronom:FormatName>
+	<pronom:FormatDescription>A standard for lossless or near-lossless compression of images, also known as ISO/IEC 14495-1 and ITU Recommendation T.87, created by the Joint Photographics Experts Group (JPEG). It was developed as a low complexity lossless image compression standard in 1999, and was based on LOCO-I algorithm. JPEG-LS also provides a lossy mode. It has faster compression than JPEG 2000 and is considered better than the original lossless JPEG standard.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>02 Feb 2007</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Feb 2007</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/150"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/800"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/150">
+	<pronom:Identifier>fmt/150</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/800">
+	<pronom:ExternalSignatureID>800</pronom:ExternalSignatureID>
+	<pronom:Signature>.jls</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+</rdf:RDF>

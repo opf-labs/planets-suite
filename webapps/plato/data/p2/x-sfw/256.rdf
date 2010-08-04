@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/256">
+	<pronom:SoftwareID>256</pronom:SoftwareID>
+	<pronom:SoftwareName>DROID (Digital Record Object Identification)</pronom:SoftwareName>
+	<pronom:Version>1.1</pronom:Version>
+	<pronom:Description>Version 1.1 is an enhanced version of the software tool developed by The National Archives to perform automated batch identification of file formats. It was released in August 2006, under an open source license. DROID 1.1 incorporates a number of enhancements, resulting from user feedback and new TNA requirements, including enhanced signature syntax in PRONOM, enhanced identification algorithm, support for identifying URIs and streams, configuration of proxy server settings from the GUI, and improved XML schemas. Existing DROID users should note that the DROID 1.1 signature file schema is not compatible with previous versions of DROID. Users are recommended to upgrade to DROID 1.1, in order to take advantage of future signature file updates from PRONOM.</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/256"/>
+	<pronom:ReleaseDate>01 Aug 2006</pronom:ReleaseDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>02 Feb 2007</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>02 Feb 2007</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/1"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Availability/1"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/1"/>
+	<pronom:FileFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/768"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/256">
+	<pronom:Identifier>x-sfw/256</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/1">
+	<pronom:VendorID>1</pronom:VendorID>
+	<pronom:VendorName>Digital Preservation Department / The National Archives</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Availability/1">
+	<pronom:DocumentID>77</pronom:DocumentID>
+	<pronom:TitleText>DROID (Digital Record Object Identification) Development History</pronom:TitleText>
+	<pronom:DisplayText>The National Archives, 2006, DROID (Digital Record Object Identification) Development History</pronom:DisplayText>
+	<pronom:DocumentType>Informative</pronom:DocumentType>
+	<pronom:AvailabilityID>1</pronom:AvailabilityID>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/126"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/1"/>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/droid.sourceforge.net/wiki/index.php/Development_History"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/126">
+	<pronom:AuthorID>126</pronom:AuthorID>
+	<pronom:AuthorName>Adrian Brown</pronom:AuthorName>
+	<pronom:AuthorOrganisation>The National Archives</pronom:AuthorOrganisation>
+	<pronom:AuthorCompoundName>Adrian Brown / The National Archives</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/1">
+	<pronom:PublisherID>1</pronom:PublisherID>
+	<pronom:PublisherName>Digital Preservation Department</pronom:PublisherName>
+	<pronom:OrganisationName>The National Archives</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Digital Preservation Department / The National Archives</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/droid.sourceforge.net/wiki/index.php/Development_History">
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+	<pronom:Identifier>droid.sourceforge.net/wiki/index.php/Development_History</pronom:Identifier>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/768">
+	<pronom:FormatID>768</pronom:FormatID>
+	<pronom:FormatName>DROID Signature File Format</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:DefaultFlag>false</pronom:DefaultFlag>
+	<pronom:Extension>xml</pronom:Extension>
+</rdf:Description>
+</rdf:RDF>

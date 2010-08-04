@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/658">
+	<pronom:FormatID>658</pronom:FormatID>
+	<pronom:FormatName>Quicktime</pronom:FormatName>
+	<pronom:FormatAliases>MOV, QT</pronom:FormatAliases>
+	<pronom:FormatTypes>Video</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>The QuickTime file format is a format for storing multimedia content, principally video, developed by Apple. The basic data unit in a QuickTime file is the atom. Each atom contains size and type information along with its data. The size field indicates the number of bytes in the atom, including the size and type fields. The type field specifies the type of data stored in the atom and, by implication, the format of that data. Atoms are hierarchical in nature. That is, one atom can contain one or more other atoms of varying types. For example, a movie atom contains one track atom for each track in the movie. The track atoms, in turn, contain one or more media atoms each, along with other atoms that define other track and movie characteristics. This hierarchical structure of atoms is referred to as a containment hierarchy. A QuickTime file is simply a collection of atoms. QuickTime does not impose any rules about the order of these atoms.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Big-endian (Motorola)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/video/quicktime"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/384"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/15"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/57"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/707"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/710"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/56"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/167"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/168"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/169"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/194"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/195"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/212"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/video/quicktime">
+	<pronom:Identifier>video/quicktime</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/384">
+	<pronom:Identifier>x-fmt/384</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/15">
+	<pronom:DeveloperID>15</pronom:DeveloperID>
+	<pronom:OrganisationName>Apple Computer, Inc.</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>Apple Computer, Inc.</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/57">
+	<pronom:DocumentID>57</pronom:DocumentID>
+	<pronom:DisplayText>Apple Computer, Incorporated, 2000, Inside QuickTime: QuickTime File Format</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jan 2000</pronom:PublicationDate>
+	<pronom:TitleText>Inside QuickTime: QuickTime File Format</pronom:TitleText>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/15"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/15"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/15">
+	<pronom:AuthorID>15</pronom:AuthorID>
+	<pronom:OrganisationName>Apple Computer, Inc.</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Apple Computer, Inc.</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/15">
+	<pronom:PublisherID>15</pronom:PublisherID>
+	<pronom:OrganisationName>Apple Computer, Inc.</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Apple Computer, Inc.</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/707">
+	<pronom:ExternalSignatureID>707</pronom:ExternalSignatureID>
+	<pronom:Signature>mov</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/710">
+	<pronom:ExternalSignatureID>710</pronom:ExternalSignatureID>
+	<pronom:Signature>qtm</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/56">
+	<pronom:SignatureID>56</pronom:SignatureID>
+	<pronom:SignatureName>QuickTime 1</pronom:SignatureName>
+	<pronom:SignatureNote>Movie atom (moov) + movie header atom (mvhd)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/159"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/159">
+	<pronom:ByteSequenceID>159</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>4</pronom:Offset>
+	<pronom:ByteSequenceValue>6D6F6F76{4}6D766864</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/167">
+	<pronom:SignatureID>167</pronom:SignatureID>
+	<pronom:SignatureName>Quicktime 2</pronom:SignatureName>
+	<pronom:SignatureNote>Movie data atom (mdat) + movie atom (moov) + movie header atom (mvhd)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/197"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/197">
+	<pronom:ByteSequenceID>197</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>4</pronom:Offset>
+	<pronom:ByteSequenceValue>6D646174*6D6F6F76{4}6D766864</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/168">
+	<pronom:SignatureID>168</pronom:SignatureID>
+	<pronom:SignatureName>Quicktime 3</pronom:SignatureName>
+	<pronom:SignatureNote>Movie atom (moov) + compressed movie atom (cmov) + data compression atom (dcom)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/198"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/198">
+	<pronom:ByteSequenceID>198</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>4</pronom:Offset>
+	<pronom:ByteSequenceValue>6D6F6F76{4}636D6F76{4}64636F6D</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/169">
+	<pronom:SignatureID>169</pronom:SignatureID>
+	<pronom:SignatureName>Quicktime 4</pronom:SignatureName>
+	<pronom:SignatureNote>Movie data atom (mdat) + movie atom (moov) + compressed movie atom (cmov) + data compression atom (dcom)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/199"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/199">
+	<pronom:ByteSequenceID>199</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>4</pronom:Offset>
+	<pronom:ByteSequenceValue>6D646174*6D6F6F76{4}636D6F76{4}64636F6D</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/194">
+	<pronom:SignatureID>194</pronom:SignatureID>
+	<pronom:SignatureName>QuickTime 5</pronom:SignatureName>
+	<pronom:SignatureNote>Placeholder atom (wide) + movie data atom (mdat) + movie atom (moov) + movie header atom (mvhd)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/252"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/252">
+	<pronom:ByteSequenceID>252</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>0000000877696465{4}6D646174*6D6F6F76{4}6D766864</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/195">
+	<pronom:SignatureID>195</pronom:SignatureID>
+	<pronom:SignatureName>QuickTime 6</pronom:SignatureName>
+	<pronom:SignatureNote>Placeholder atom (wide) + movie data atom (mdat) + movie atom (moov) + compressed movie atom (cmov) + data compression atom (dcom)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/253"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/253">
+	<pronom:ByteSequenceID>253</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>0000000877696465{4}6D646174*6D6F6F76{4}636D6F76{4}64636F6D</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/212">
+	<pronom:SignatureID>212</pronom:SignatureID>
+	<pronom:SignatureName>QuickTime</pronom:SignatureName>
+	<pronom:SignatureNote>Atoms: mdat, cmov, moov, ftyp, pnot, wide, skip, free, junk, or pict</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/286"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/286">
+	<pronom:ByteSequenceID>286</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>4</pronom:Offset>
+	<pronom:Endianness>Little-endian</pronom:Endianness>
+	<pronom:ByteSequenceValue>6D646174</pronom:ByteSequenceValue>
+</rdf:Description>
+</rdf:RDF>

@@ -1,0 +1,3359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- describes all known measurable properties and metrics -->
+<measurementsDescriptor>
+	<!-- descriptions of measurable properties -->
+	<!-- important: once published, the uri's and their corresponding scales must not be changed -->
+	<!-- important: names and descriptions may change! (do not use them as indices) -->
+<measurableProperties>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/artist</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/artist</name>
+		<description>Person who created the digital object.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/documentTitle</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/documentTitle</name>
+		<description>Title of the document, if different of fileName (possibly
+			only occuring in pdf-files).</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/rightAdjustment</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/rightAdjustment</name>
+		<description />
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/BackgroundColourRGB</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/BackgroundColourRGB</name>
+		<description>Hex-Value of a background-colour.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/lineBreak</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/lineBreak</name>
+		<description>Content-property describing if a string content breaks to
+			a new line</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/caps</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/caps</name>
+		<description>Text-property caps.</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fontColour</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fontColour</name>
+		<description>Font color in text formats.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/embeddedObjectHeight</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/embeddedObjectHeight</name>
+		<description>Height of an embedded Object (i.e.: Image,
+			Multimedia-file, table....)</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/bold</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/bold</name>
+		<description>Text-property 'bold'.</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/boldItalic</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/boldItalic</name>
+		<description>Marks text as bold italic.</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/italic</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/italic</name>
+		<description>text-property italic</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/defaultFont</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/defaultFont</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fillColour</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fillColour</name>
+		<description>Fill-colour for vector-object.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fontName</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fontName</name>
+		<description>Name of font</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fontChange</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fontChange</name>
+		<description>Entry to mark up a change in font-use within an
+			XCDLl-description-file.</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/footnote</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/footnote</name>
+		<description>Marks up a certain position in normdata to specify them
+			as a footnote related to other normdata.</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/mergedCellsHorizontal</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/mergedCellsHorizontal</name>
+		<description>Number of cells in a horizontal row that are merged to
+			one cell.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/hidden</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/hidden</name>
+		<description>Text is hidden</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/hypertextLink</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/hypertextLink</name>
+		<description>Defines that some textdata contain a hyperlink.
+		</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/imageTextRelation</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/imageTextRelation</name>
+		<description>Refers to a property-set for an embedded image
+			(id-number).</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/imageData</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/imageData</name>
+		<description>Reference to embedded imageData.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/documentLanguage</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/documentLanguage</name>
+		<description>Language of the document.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/embeddedObject</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/embeddedObject</name>
+		<description>Specifies the URL/Path or ID to an embedded object.
+		</description>
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/paragraph</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/paragraph</name>
+		<description>Describes structured continuous text data.</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/pageBreak</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/pageBreak</name>
+		<description>Property describing if a textual content breaks to a new
+			page (Unit not yet decided)</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/panoseNumber</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/panoseNumber</name>
+		<description>A PANOSE classification number consists of 10
+			concatenated values. Each value from a given category was computed
+			from a specific visual metric, such as the weight of the font and the
+			presence or absence of serifs. [cit. Wikipedia]</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/TrayNumber</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/TrayNumber</name>
+		<description>Number of the tray in a selected printer, can be stored
+			in the document.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/marginTop</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/marginTop</name>
+		<description>distance between text and margin in a formatted
+			text-document</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/pageNumberStart</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/pageNumberStart</name>
+		<description>Page-Number for the start of a new document-section
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/customPageSize</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+		</fpmFormats>
+		<name>xcl/customPageSize</name>
+		<description>Size of a Text-Page in unit W x H</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fontWidth_betweenLetters</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fontWidth_betweenLetters</name>
+		<description>Variability of the width of the font:
+			fixed (monospace)
+			variable
+			default.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/resolutionImage</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/resolutionImage</name>
+		<description>Resolution of images. Measured in dpi.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/marginRight</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/marginRight</name>
+		<description>distance between text and margin in a formatted
+			text-document</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/smallCaps</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/smallCaps</name>
+		<description>text-property smallCaps</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/strike</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/strike</name>
+		<description>text-property strike</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fontSize</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fontSize</name>
+		<description>Size - normally measured in points - which is applied to
+			a font (rendering information).</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/normDataText</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/normDataText</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/tableNumberOfColumns</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/tableNumberOfColumns</name>
+		<description>Number of Columns in a Table</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/tableNumberOfRows</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/tableNumberOfRows</name>
+		<description>Number of Rows in a Table</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/textDirection</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/textDirection</name>
+		<description>Direction of text running in the document,
+			could be right-to-left or left-to-right (also top-down or bottom-up).
+		</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/rgb</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/rgb</name>
+		<description>ColourSpace: RGB triple</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/underline</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/underline</name>
+		<description>text-property underline</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/mergedCellsVertical</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_docx</fpmFormat>
+		</fpmFormats>
+		<name>xcl/mergedCellsVertical</name>
+		<description>"Number of cells in a vertical column that are merged to
+			one cell."</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/bitsPerSampleBlue</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/bitsPerSampleBlue</name>
+		<description />
+		<integerScale>
+			<unit>bit</unit>
+		</integerScale>
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/bitsPerSampleGreen</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/bitsPerSampleGreen</name>
+		<description>Number of bits per green colour channel</description>
+		<integerScale>
+			<unit>bit</unit>
+		</integerScale>
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/bitsPerSampleRed</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/bitsPerSampleRed</name>
+		<description>Number of bits per red colour channel</description>
+		<integerScale>
+			<unit>bit</unit>
+		</integerScale>
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/bitsPerSample</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/bitsPerSample</name>
+		<description />
+		<integerScale>
+			<unit>bit</unit>
+		</integerScale>
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/compressionAlgorithm</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/compressionAlgorithm</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/byteOrder</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+		</fpmFormats>
+		<name>xcl/byteOrder</name>
+		<description>Ordering of bytes for multi-byte data values within a
+			file (intel or motorola)</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/imageHeight</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/imageHeight</name>
+		<description>Height of an image in pixel</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/imageWidth</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/imageWidth</name>
+		<description>Width of an image. Corresponds to the x-axis.
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/1931CIE_ChromaticityBlueX</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/1931CIE_ChromaticityBlueX</name>
+		<description>Value x of pair xy specifying blue colour according to
+			1931 CIE colour-space.</description>
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/1931CIE_ChromaticityBlueY</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/1931CIE_ChromaticityBlueY</name>
+		<description>Value y of pair xy specifying green colour according to
+			1931 CIE colour space.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/1931CIE_ChromaticityGreenX</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/1931CIE_ChromaticityGreenX</name>
+		<description>Value x of pair xy specifying green colour according to
+			1931 CIE colour space.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/1931CIE_ChromaticityGreenY</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/1931CIE_ChromaticityGreenY</name>
+		<description>Value y of pair xy specifying green colour according to
+			1931 CIE colour space.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/1931CIE_ChromaticityRedX</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/1931CIE_ChromaticityRedX</name>
+		<description>Value x of pair xy specifying red colour according to
+			1931 CIE colour space.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/1931CIE_ChromaticityRedY</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/1931CIE_ChromaticityRedY</name>
+		<description>Value y of pair xy specifying red colour according to
+			1931 CIE colour space.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/whitePointX</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/whitePointX</name>
+		<description>Chromaticity of a computer display's nominal white.
+		</description>
+		<floatScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="percDeviation" />
+			<metric metricId="ratDiff" />
+			<metric metricId="ratProd" />
+			<metric metricId="ratRatio" />
+			<metric metricId="ratSum" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/whitePointY</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/whitePointY</name>
+		<description>Chromaticity of a computer display's nominal white.
+		</description>
+		<floatScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="percDeviation" />
+			<metric metricId="ratDiff" />
+			<metric metricId="ratProd" />
+			<metric metricId="ratRatio" />
+			<metric metricId="ratSum" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/colourPalette</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/colourPalette</name>
+		<description>A colour map for palette colour images.
+			Usually for RGB coloured pictures. Should be an array of
+			hex-colour-values... depending on bitdepth</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/colourSpaceName</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/colourSpaceName</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/textualAnnotation</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/textualAnnotation</name>
+		<description>General textual annotation - not formatted in any kind of
+			metadata-standards like METS.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/resolutionX</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/resolutionX</name>
+		<description>The number of pixels per ResolutionUnit in the ImageWidth
+			direction.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/BitDepth</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/BitDepth</name>
+		<description>Number of bits per sample component</description>
+		<integerScale>
+			<unit>bit</unit>
+		</integerScale>
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fileName</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fileName</name>
+		<description />
+		<freeStringScale>
+			<unit>XCLLabel</unit>
+		</freeStringScale>
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fileSize</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fileSize</name>
+		<description />
+		<floatScale>
+			<unit>byte</unit>
+		</floatScale>
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="percDeviation" />
+			<metric metricId="ratDiff" />
+			<metric metricId="ratProd" />
+			<metric metricId="ratRatio" />
+			<metric metricId="ratSum" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/filter</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/filter</name>
+		<description>Algorithm applied to data.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/gammaValueRGB</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/gammaValueRGB</name>
+		<description>Level of brightness for pixels ranging from black (0) to
+			white (1). These pixel values serve as the input for the computer
+			monitor.
+			The sRGB and Adobe RGB colour spaces are also based on a gamma of 2.2.
+			Gamma-encoding is supported by certain imagefile formats.
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/ICCProfileName</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/ICCProfileName</name>
+		<description>Name of the description of the colour space (in the form
+			of an International Colour Consortium (ICC) profile) to which the
+			samples in the image conform, should be something like: sRGB
+			IEC1966-2.1, Adobe RGB ´98, for cmyk: ISO Coated V2 (ECI) and ISO
+			Uncoated.</description>
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/interlace</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/interlace</name>
+		<description>Algorithm for encoding raster image data in multiple
+			layers with the purpose of improved transmission and image build-up.
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/IPTC_Metadata</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/IPTC_Metadata</name>
+		<description>Standards of the International Press Telecommunications
+			Council (IPTC) and Newspaper Association of America (NAA) for
+			annotating content of any medial kind.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/imageOrientation</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/imageOrientation</name>
+		<description>Orientation of the image, e.g., landscape or portrait.
+		</description>
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/RLE_Packets</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+		</fpmFormats>
+		<name>xcl/RLE_Packets</name>
+		<description>Number of RLE-Packets (compression property)
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/compressionQuality</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+		</fpmFormats>
+		<name>xcl/compressionQuality</name>
+		<description>Quality of compression - depending on the used
+			compressionAlgorithm</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/renderingIntent</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/renderingIntent</name>
+		<description>The way colour-information is displayed:
+			AbsoluteColourmetric.
+			RelativeColourmetric.
+			Saturation.
+			Perception.
+			Mapped from PNG (where it is an integer) via "same_as" but should be mapped
+			via "int_to_string".</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/resolutionUnit</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/resolutionUnit</name>
+		<description>Name of the Unit that measures the resolution of
+			theiImage.
+			If it is none: default is generally inch.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/signature</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/signature</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/lineColour</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+		</fpmFormats>
+		<name>xcl/lineColour</name>
+		<description>Colour of a line-/path-object</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/strokeDashArray</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/strokeDashArray</name>
+		<description>Length of strokes and gaps in a vector-Dash-Line.
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/lineWidth</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/lineWidth</name>
+		<description>Length of a line/path in a vector-object</description>
+		<floatScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="percDeviation" />
+			<metric metricId="ratDiff" />
+			<metric metricId="ratProd" />
+			<metric metricId="ratRatio" />
+			<metric metricId="ratSum" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/rowsPerStrip</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/rowsPerStrip</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/numberOfInks</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/numberOfInks</name>
+		<description>numberOfInks (=number of Channels). Should be interesting
+			only if bitDepth/ColourSpace is different than the usual ones...
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/resolutionY</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_imageMagick</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/resolutionY</name>
+		<description>The number of pixels per ResolutionUnit in the
+			ImageHeigth direction.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/uppercaseLetters</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/uppercaseLetters</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/cmyk</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/cmyk</name>
+		<description>ColourSpaceName</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/documentCreationDate</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/documentCreationDate</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fontEncodingType</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fontEncodingType</name>
+		<description>Can be StandardEncoding, MacRomanEncoding,
+			WinAnsiEncoding, and PDF- DocEncoding.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/Helvetica</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/Helvetica</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/CourierOblique</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/CourierOblique</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/CourierBold</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/CourierBold</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/CourierBoldOblique</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/CourierBoldOblique</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/Symbol</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/Symbol</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/ZapfDingbats</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/ZapfDingbats</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/HelveticaOblique</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/HelveticaOblique</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/HelveticaBold</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/HelveticaBold</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/HelveticaBoldOblique</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/HelveticaBoldOblique</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/TimesRoman</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/TimesRoman</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/TimesItalic</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/TimesItalic</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/TimesBold</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/TimesBold</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/TimesBoldItalic</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/TimesBoldItalic</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/Courier</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/Courier</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/deflate_Zlib</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/deflate_Zlib</name>
+		<description>Compression algorithm for textfiles.</description>
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/gammaValueGray</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/gammaValueGray</name>
+		<description>Level of brightness for pixels ranging from black (0) to
+			white (1). These pixel values serve as the input for the computer
+			monitor.
+			This property is specified for GRAY pictures (no RGB-value array)
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/gray</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/gray</name>
+		<description>8 Bit ColourInformation (1 Channel) for the whole image
+		</description>
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/Interpolate</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/Interpolate</name>
+		<description>Boolean Value, if an image is interpolated</description>
+		<booleanScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/lab-colourspace</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/lab-colourspace</name>
+		<description>typical LAB colourspace</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/LineButtCap</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/LineButtCap</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/LineRoundCap</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/LineRoundCap</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/LineSquareCap</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/LineSquareCap</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/lineJoinMiter</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/lineJoinMiter</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/lineJoinRound</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/lineJoinRound</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/lineJoinBevel</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/lineJoinBevel</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/documentModificationDate</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/documentModificationDate</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/pageLayoutDisplay</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/pageLayoutDisplay</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/rotationPrint</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/rotationPrint</name>
+		<description>The number of degrees by which the page should be rotated
+			clockwise when printed</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/RLE</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/RLE</name>
+		<description>CompressionAlgorithm</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/script</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/script</name>
+		<description>Contains a script. The script-language shall be preserved
+			in the scriptLanguage Property.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/trueType3</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/trueType3</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/characterSpacing</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/characterSpacing</name>
+		<description>Distance between characters if different than default
+			values.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/wordSpacing</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_pdf</fpmFormat>
+		</fpmFormats>
+		<name>xcl/wordSpacing</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/alphaTransparency</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/alphaTransparency</name>
+		<description>Alpha channel transpareny in value 0-255</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/paletteHistogram</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/paletteHistogram</name>
+		<description>Approximate usage frequency of each colour in the palette
+			index (rgbPalette).</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/significantBits</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/significantBits</name>
+		<description>Number of bits that are significant in the samples.
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/suggestedPaletteAlpha</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/suggestedPaletteAlpha</name>
+		<description>Alpha value for suggested palette.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/suggestedPaletteFrequency</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/suggestedPaletteFrequency</name>
+		<description>Frequency of suggested palette.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/suggestedPaletteRGB</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/suggestedPaletteRGB</name>
+		<description>Name of a reduced palette that may be used when the
+			display device is not capable of displaying the full range of colours
+			in the image.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/suggestedPaletteSampleDepth</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/suggestedPaletteSampleDepth</name>
+		<description>Sample depth of a suggested palette.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/textData</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/textData</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/simpleTransparency</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_png</fpmFormat>
+		</fpmFormats>
+		<name>xcl/simpleTransparency</name>
+		<description>Simple transparency in opposition to alpha-transparency
+			(and the RGB-value for the colour which is set to be transparent).
+		</description>
+		<floatScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="percDeviation" />
+			<metric metricId="ratDiff" />
+			<metric metricId="ratProd" />
+			<metric metricId="ratRatio" />
+			<metric metricId="ratSum" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/clipPath</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/clipPath</name>
+		<description>Clipping Paths attached to image (possible in Tiff and
+			photoshop-files), defined by markers, angles and bézier-curves.
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/GDALMetadata</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/GDALMetadata</name>
+		<description>Used by the GDAL library, holds an XML list of name=value
+			pairs</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/creationSoftware</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/creationSoftware</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/thresholding</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/thresholding</name>
+		<description>For black and white images that represent shades of gray,
+			the technique used to convert from gray to black and white pixels...
+		</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/xmp_Metadata</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/xmp_Metadata</name>
+		<description>XML packet containing XMP metadata. (700) XMP is an
+			extensible way to include metadata such as meaningful descriptions
+			and titles, searchable keywords, and up-to-date author and copyright
+			information</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/cellLengthBilevel</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/cellLengthBilevel</name>
+		<description>The height of the dithering or halftoning matrix used to
+			create a dithered or halftoned bilevel file (y-axis)</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/cellHeight</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/cellHeight</name>
+		<description>"The height of the dithering or halftoning matrix used to
+			create a dithered or halftoned bilevel file. "</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/cellWidth</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/cellWidth</name>
+		<description>The width of the dithering or halftoning matrix used to
+			create a dithered or halftoned bilevel file.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/copyrightNote</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/copyrightNote</name>
+		<description>Defines the holder of the copyright.</description>
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/extraSamples</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/extraSamples</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/fillOrder</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/fillOrder</name>
+		<description>The logical order of bits within a byte.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/grayResponseCurve</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/grayResponseCurve</name>
+		<description>For grayscale data, the optical density of each possible
+			pixel value.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/grayResponseUnit</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/grayResponseUnit</name>
+		<description>0</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/hostMachineOS</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/hostMachineOS</name>
+		<description>The computer and/or operating system in use at the time
+			of object creation</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/maxSampleValue</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/maxSampleValue</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/minSampleValue</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/minSampleValue</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/normDataImage</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/normDataImage</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/photoshop</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/photoshop</name>
+		<description>Collection of Photoshop 'Image Resource Blocks'.
+		</description>
+		<integerScale>
+			<unit>byte</unit>
+		</integerScale>
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/planarConfiguration</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/planarConfiguration</name>
+		<description>How the components of each pixel are stored</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/sRGB</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/sRGB</name>
+		<description />
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/samplesPerPixel</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/samplesPerPixel</name>
+		<description>The number of components per pixel.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/analogueDocumentName</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/analogueDocumentName</name>
+		<description>The name of the document before it was digitised.
+		</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/scannerInformation</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/scannerInformation</name>
+		<description>Name and other information of the scanner that digitised
+			the image.</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/scannerModel</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/scannerModel</name>
+		<description>Name of the scanner model used to digitise the image.
+		</description>
+		<freeStringScale />
+		<possibleMetrics>
+			<metric metricId="equal" />
+			<metric metricId="hammingDistanceString" />
+			<metric metricId="levenshteinDistance" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/stripByteCount</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/stripByteCount</name>
+		<description />
+		<freeStringScale />
+		<possibleMetrics />
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/tileByteCounts</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/tileByteCounts</name>
+		<description>For each tile, the number of (compressed) bytes in that
+			tile.</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/tileLength</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/tileLength</name>
+		<description>"The tile length (height) in pixels. This is the number
+			of rows in each tile. "</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+	<property>
+		<category>outcome:object</category>
+		<propertyId>xcl/tileWidth</propertyId>
+		<fpmFormats>
+			<fpmFormat>fmt_tiff</fpmFormat>
+		</fpmFormats>
+		<name>xcl/tileWidth</name>
+		<description>"The tile width in pixels. This is the number of columns
+			in each tile"</description>
+		<integerScale />
+		<possibleMetrics>
+			<metric metricId="RMSE" />
+			<metric metricId="equal" />
+			<metric metricId="euclidDistance" />
+			<metric metricId="hammingDistance" />
+			<metric metricId="intDiff" />
+			<metric metricId="intProd" />
+			<metric metricId="intRatio" />
+			<metric metricId="intSum" />
+			<metric metricId="percDeviation" />
+			<metric metricId="simpleMatchCoefficient" />
+			<metric metricId="simpleMatchCoefficientN" />
+			<metric metricId="standardDeviation" />
+		</possibleMetrics>
+	</property>
+
+	</measurableProperties>
+<metrics>
+	<metric>
+		<name>equal</name>
+		<metricId>equal</metricId>
+		<description>
+			simple comparison of two values (A, B) of any type on equality. Type of
+			output value: Boolean (true, false).
+                </description>
+		<booleanScale />
+	</metric>
+	<metric>
+		<name>hammingDistanceString</name>
+		<metricId>hammingDistanceString</metricId>
+		<description>
+			The hamming distance counts the number of non-corresponding symbols of
+			two ordered sequences. The sequences must have equal length. This
+			version works on arrays of strings.
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>levenshteinDistance</name>
+		<metricId>levenshteinDistance</metricId>
+		<description>
+			The Levenshtein distance (syn. Edit distance) is a distance measure for
+			strings. Two strings are compared with respect to the three basic
+			operations insert, delete and replace in order to transform string A
+			into string B. The value for this metric is the number of operations
+			needed for transformation.
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>simpleMatchCoefficient</name>
+		<metricId>simpleMatchCoefficient</metricId>
+		<description>
+			Simple match coefficient is a distance measure that uses the hamming
+			distance. In addition, the ratio of non-corresponding values (hamming
+			distance) to the total number of compared pairs of values is
+			calculated. The result is a rational number from range 0.0 to 1.0,
+			indicating maximum similarity (0.0) to minimum (1.0).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>simpleMatchCoefficientN</name>
+		<metricId>simpleMatchCoefficientN</metricId>
+		<description>
+			Simple match coefficient is a distance measure that uses the hamming
+			distance. In addition, the ratio of non-corresponding values (hamming
+			distance) to the total number of compared pairs of values is
+			calculated. N indicates the n-grams used for comparison. Default
+			setting is N=1. The result is a rational number from range 0.0 to
+			1.0, indicating maximum similarity (0.0) to minimum (1.0).
+		</description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>RMSE</name>
+		<metricId>RMSE</metricId>
+		<description>
+			Root mean squared error is a widely used measure for deviation. It is
+			calculated as the square root of the quotient of the summed up
+			squared diffeences of corresponding values of two sets and as
+			denominator the number of values (values in both sets must have the
+			same number).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>euclidDistance</name>
+		<metricId>euclidDistance</metricId>
+		<description>
+			Euclidian distance (syn. L2 distance) is a distance measure; the square root
+			of the sum of the single squred differnces of corresponding values of
+			two sets.
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>hammingDistance</name>
+		<metricId>hammingDistance</metricId>
+		<description>
+			The hamming distance counts the number of non-corresponding symbols of
+			two ordered sequences. The sequences must have equal length.
+		</description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>intDiff</name>
+		<metricId>intDiff</metricId>
+		<description>
+			Arithmetical difference of two integer values (A - B)
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>intProd</name>
+		<metricId>intProd</metricId>
+		<description>
+			Product of two integer values (A * B).
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>intRatio</name>
+		<metricId>intRatio</metricId>
+		<description>
+			Quotient of two integer values (A / B).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>intSum</name>
+		<metricId>intSum</metricId>
+		<description>
+			Arithmetical sum of two integer values (A +B).
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>percDeviation</name>
+		<metricId>percDeviation</metricId>
+		<description>
+			Percental deviation of two values (A,B) of type integer or rational, according
+			to the equation: PercDev= d/A*100. A is the source value, d is the
+			difference of values B and A (B-A). The output value indicates the
+			percental deviation of value B from value A. An output value of
+			PercDev=0.0 indicates equal values.
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>standardDeviation</name>
+		<metricId>standardDeviation</metricId>
+		<description>
+			Standard deviation is a statistical measure for the distribution of the
+			values of a random variable from the arithmetical mean.
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>ratDiff</name>
+		<metricId>ratDiff</metricId>
+		<description>
+			Arithmetical difference of two rational values (A - B).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>ratProd</name>
+		<metricId>ratProd</metricId>
+		<description>
+			Product of two rational values (A * B).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>ratRatio</name>
+		<metricId>ratRatio</metricId>
+		<description>
+			Quotient of two rational values (A / B).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>ratSum</name>
+		<metricId>ratSum</metricId>
+		<description>
+			Arithmetical sum of two rational values (A + B).
+                </description>
+		<floatScale />
+	</metric>
+	</metrics>
+</measurementsDescriptor>

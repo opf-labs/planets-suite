@@ -1,0 +1,7 @@
+<fpm>
+    <file>fmt_docx.xml</file>
+    <file>fmt_imageMagick.xml</file>
+    <file>fmt_pdf.xml</file>
+    <file>fmt_png.xml</file>
+    <file>fmt_tiff.xml</file>
+</fpm>

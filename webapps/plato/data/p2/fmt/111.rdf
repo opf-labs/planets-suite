@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/767">
+	<pronom:FormatID>767</pronom:FormatID>
+	<pronom:FormatName>OLE2 Compound Document Format</pronom:FormatName>
+	<pronom:FormatDisclosure>None</pronom:FormatDisclosure>
+	<pronom:FormatDescription>The OLE2 Compound Document Format is a generic document format developed by Microsoft as the underlying native binary format for many of its Office applications. The format is proprietary and Microsoft does not make details of its structure public. The information here is derived primarily from OpenOffice.org's reverse-engineered documentation of the format and should not therefore be regarded as definitive. A Compound Document acts as a file system in which independent data streams are organised within a hierarchy of containers, called storages. All storages and streams are contained within a parent Root Storage. A Directory Stream indexes every stream and storage in the file. A Compound Document begins with the Compound Document Header, including pointers to the location of the Directory Stream and Master Sector Allocation Table. The remainder of the file is organised into Sectors, the positions of which are defined in the Sector Allocation Table and Master Sector Allocation Table.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel) and Big-endian (Motorola)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>24 Aug 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>24 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/111"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/93"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/11"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/170"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/133"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/133"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/134"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/134"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/135"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/135"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/682"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/682"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/683"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/683"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/684"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/684"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/685"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/685"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/688"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/688"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/690"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/690"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/822"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/822"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/134"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/134"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/135"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/135"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/682"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/682"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/683"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/683"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/684"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/684"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/685"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/685"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/688"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/688"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/690"/>
+	<pronom:IsSupertypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/690"/>
+	<pronom:FormatProperties rdf:resource="http://nationalarchives.gov.uk/pronom/Format/767/FormatProperties"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/111">
+	<pronom:Identifier>fmt/111</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/93">
+	<pronom:DeveloperID>93</pronom:DeveloperID>
+	<pronom:OrganisationName>Microsoft Corporation</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>Microsoft Corporation</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/11">
+	<pronom:DocumentID>11</pronom:DocumentID>
+	<pronom:DisplayText>OpenOffice.org, 2004, OpenOffice.org's documentation of the Microsoft Compound Document file format</pronom:DisplayText>
+	<pronom:DocumentType>Speculative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>15 Sep 2004</pronom:PublicationDate>
+	<pronom:TitleText>OpenOffice.org's documentation of the Microsoft Compound Document file format</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/sc.openoffice.org/compdocfileformat.pdf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/103"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/103"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/sc.openoffice.org/compdocfileformat.pdf">
+	<pronom:Identifier>sc.openoffice.org/compdocfileformat.pdf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/103">
+	<pronom:AuthorID>103</pronom:AuthorID>
+	<pronom:OrganisationName>OpenOffice.org</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>OpenOffice.org</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/103">
+	<pronom:PublisherID>103</pronom:PublisherID>
+	<pronom:OrganisationName>OpenOffice.org</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>OpenOffice.org</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/170">
+	<pronom:SignatureID>170</pronom:SignatureID>
+	<pronom:SignatureName>OLE2 Compound Document Format</pronom:SignatureName>
+	<pronom:SignatureNote>Compound Document Header</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/200"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/200">
+	<pronom:ByteSequenceID>200</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>D0CF11E0A1B11AE1{20}FEFF</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/133">
+	<pronom:FormatID>133</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:FormatVersion>4.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/134">
+	<pronom:FormatID>134</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:FormatVersion>95</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/135">
+	<pronom:FormatID>135</pronom:FormatID>
+	<pronom:FormatName>Microsoft Powerpoint Presentation</pronom:FormatName>
+	<pronom:FormatVersion>97-2002</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/682">
+	<pronom:FormatID>682</pronom:FormatID>
+	<pronom:FormatName>Binary Interchange File Format (BIFF) Workbook</pronom:FormatName>
+	<pronom:FormatVersion>5</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/683">
+	<pronom:FormatID>683</pronom:FormatID>
+	<pronom:FormatName>Binary Interchange File Format (BIFF) Workbook</pronom:FormatName>
+	<pronom:FormatVersion>7</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/684">
+	<pronom:FormatID>684</pronom:FormatID>
+	<pronom:FormatName>Binary Interchange File Format (BIFF) Workbook</pronom:FormatName>
+	<pronom:FormatVersion>8</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/685">
+	<pronom:FormatID>685</pronom:FormatID>
+	<pronom:FormatName>Binary Interchange File Format (BIFF) Workbook</pronom:FormatName>
+	<pronom:FormatVersion>8X</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/688">
+	<pronom:FormatID>688</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for Windows Document</pronom:FormatName>
+	<pronom:FormatVersion>6.0/95</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/690">
+	<pronom:FormatID>690</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for Windows Document</pronom:FormatName>
+	<pronom:FormatVersion>97-2003</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/822">
+	<pronom:FormatID>822</pronom:FormatID>
+	<pronom:FormatName>Microsoft Outlook Email Message</pronom:FormatName>
+	<pronom:FormatVersion>97-2003</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/767/FormatProperties">
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/creation_date"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/number_of_pages"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/creating_application"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/title"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/creator"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/subject"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/comments"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/encrypted"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/word_count"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/character_count"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/creation_date">
+	<pronom:PropertyName>Creation Date</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/number_of_pages">
+	<pronom:PropertyName>Number of Pages</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/creating_application">
+	<pronom:PropertyName>Creating Application</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/title">
+	<pronom:PropertyName>Title</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/creator">
+	<pronom:PropertyName>Creator</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/subject">
+	<pronom:PropertyName>Subject</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/comments">
+	<pronom:PropertyName>Comments</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/encrypted">
+	<pronom:PropertyName>Encrypted</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/word_count">
+	<pronom:PropertyName>Word Count</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/character_count">
+	<pronom:PropertyName>Character Count</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+</rdf:RDF>

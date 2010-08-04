@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/66">
+	<pronom:SoftwareID>66</pronom:SoftwareID>
+	<pronom:SoftwareName>Pagemaker</pronom:SoftwareName>
+	<pronom:Version>7.0</pronom:Version>
+	<pronom:Description>No description available</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/66"/>
+	<pronom:SoftwareTypes>Desk top publishing</pronom:SoftwareTypes>
+	<pronom:ReleaseDate>11 Jul 2001</pronom:ReleaseDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>23 Sep 2003</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/7"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/7"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/49"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/139"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/264"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/193"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/683"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/203"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/65"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/66"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/60"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/271"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/210"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/721"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/86"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/332"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/331"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/619"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/619"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/620"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/127"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/639"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/209"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/209"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/668"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/668"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/237"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/169"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/166"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/168"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/122"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/284"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/170"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/246"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/247"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/254"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/272"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/274"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/242"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/621"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/614"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/617"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/666"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/255"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/658"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/631"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/631"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/40"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/40"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/612"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/91"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/215"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/171"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/736"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/736"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/737"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/737"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/75"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/281"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/738"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/285"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/342"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/343"/>
+	<pronom:IPR rdf:resource="http://nationalarchives.gov.uk/pronom/Source/
+        "/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/66">
+	<pronom:Identifier>x-sfw/66</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/7">
+	<pronom:VendorID>7</pronom:VendorID>
+	<pronom:VendorName>Adobe Systems Incorporated</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/49">
+	<pronom:FormatID>49</pronom:FormatID>
+	<pronom:FormatName>Adobe Illustrator</pronom:FormatName>
+	<pronom:Extension>ai</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/139">
+	<pronom:FormatID>139</pronom:FormatID>
+	<pronom:FormatName>Adobe Photoshop</pronom:FormatName>
+	<pronom:Extension>psd</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/264">
+	<pronom:FormatID>264</pronom:FormatID>
+	<pronom:FormatName>AMI Professional Document</pronom:FormatName>
+	<pronom:Extension>sam</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/193">
+	<pronom:FormatID>193</pronom:FormatID>
+	<pronom:FormatName>AutoCAD Device-Independent Binary Plotter File</pronom:FormatName>
+	<pronom:Extension>adi</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/683">
+	<pronom:FormatID>683</pronom:FormatID>
+	<pronom:FormatName>Binary Interchange File Format (BIFF) Workbook</pronom:FormatName>
+	<pronom:Version>7</pronom:Version>
+	<pronom:Extension>xlw</pronom:Extension>
+	<pronom:Extension>xls</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/203">
+	<pronom:FormatID>203</pronom:FormatID>
+	<pronom:FormatName>Computer Graphics Metafile</pronom:FormatName>
+	<pronom:Extension>cgm</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/65">
+	<pronom:FormatID>65</pronom:FormatID>
+	<pronom:FormatName>Corel Presentation Exchange File</pronom:FormatName>
+	<pronom:Version>5.0</pronom:Version>
+	<pronom:Extension>cmx</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/66">
+	<pronom:FormatID>66</pronom:FormatID>
+	<pronom:FormatName>Corel Presentation Exchange File</pronom:FormatName>
+	<pronom:Version>6/7</pronom:Version>
+	<pronom:Extension>cmx</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/60">
+	<pronom:FormatID>60</pronom:FormatID>
+	<pronom:FormatName>CorelDraw Drawing</pronom:FormatName>
+	<pronom:Version>6.0</pronom:Version>
+	<pronom:Extension>cdr</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/271">
+	<pronom:FormatID>271</pronom:FormatID>
+	<pronom:FormatName>DataFlex Query Tag Name</pronom:FormatName>
+	<pronom:Extension>tag</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/210">
+	<pronom:FormatID>210</pronom:FormatID>
+	<pronom:FormatName>Desktop Color Separation File</pronom:FormatName>
+	<pronom:Extension>dcs</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/721">
+	<pronom:FormatID>721</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (ASCII)</pronom:FormatName>
+	<pronom:Version>R11/12</pronom:Version>
+	<pronom:Extension>dxf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/86">
+	<pronom:FormatID>86</pronom:FormatID>
+	<pronom:FormatName>Encapsulated PostScript File Format</pronom:FormatName>
+	<pronom:Version>1.2</pronom:Version>
+	<pronom:Extension>eps</pronom:Extension>
+	<pronom:Extension>epsf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/332">
+	<pronom:FormatID>332</pronom:FormatID>
+	<pronom:FormatName>Encapsulated PostScript File Format</pronom:FormatName>
+	<pronom:Version>2.0</pronom:Version>
+	<pronom:Extension>eps</pronom:Extension>
+	<pronom:Extension>epsf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/331">
+	<pronom:FormatID>331</pronom:FormatID>
+	<pronom:FormatName>Encapsulated PostScript File Format</pronom:FormatName>
+	<pronom:Version>3.0</pronom:Version>
+	<pronom:Extension>eps</pronom:Extension>
+	<pronom:Extension>epsf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/619">
+	<pronom:FormatID>619</pronom:FormatID>
+	<pronom:FormatName>Graphics Interchange Format</pronom:FormatName>
+	<pronom:Version>1987a</pronom:Version>
+	<pronom:Extension>gif</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/620">
+	<pronom:FormatID>620</pronom:FormatID>
+	<pronom:FormatName>Graphics Interchange Format</pronom:FormatName>
+	<pronom:Version>1989a</pronom:Version>
+	<pronom:Extension>gif</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/127">
+	<pronom:FormatID>127</pronom:FormatID>
+	<pronom:FormatName>Hewlett Packard Vector Graphic Plotter File</pronom:FormatName>
+	<pronom:Extension>plt</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/639">
+	<pronom:FormatID>639</pronom:FormatID>
+	<pronom:FormatName>Hypertext Markup Language</pronom:FormatName>
+	<pronom:Version>2.0</pronom:Version>
+	<pronom:Extension>htm</pronom:Extension>
+	<pronom:Extension>html</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/209">
+	<pronom:FormatID>209</pronom:FormatID>
+	<pronom:FormatName>IBM DisplayWrite DCA Text File</pronom:FormatName>
+	<pronom:Extension>dca</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/668">
+	<pronom:FormatID>668</pronom:FormatID>
+	<pronom:FormatName>JPEG File Interchange Format</pronom:FormatName>
+	<pronom:Version>1.01</pronom:Version>
+	<pronom:Extension>jpg</pronom:Extension>
+	<pronom:Extension>jpe</pronom:Extension>
+	<pronom:Extension>jpeg</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/237">
+	<pronom:FormatID>237</pronom:FormatID>
+	<pronom:FormatName>Kodak PhotoCD Image</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:Extension>pcd</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/169">
+	<pronom:FormatID>169</pronom:FormatID>
+	<pronom:FormatName>Lotus 1-2-3 Worksheet</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:Extension>wk4</pronom:Extension>
+	<pronom:Extension>wks</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/166">
+	<pronom:FormatID>166</pronom:FormatID>
+	<pronom:FormatName>Lotus 1-2-3 Worksheet</pronom:FormatName>
+	<pronom:Version>2.0</pronom:Version>
+	<pronom:Extension>wk1</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/168">
+	<pronom:FormatID>168</pronom:FormatID>
+	<pronom:FormatName>Lotus 1-2-3 Worksheet</pronom:FormatName>
+	<pronom:Version>4.0</pronom:Version>
+	<pronom:Extension>wk3</pronom:Extension>
+	<pronom:Extension>wk4</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/122">
+	<pronom:FormatID>122</pronom:FormatID>
+	<pronom:FormatName>Macintosh PICT Image</pronom:FormatName>
+	<pronom:Extension>pct</pronom:Extension>
+	<pronom:Extension>pict</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/284">
+	<pronom:FormatID>284</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for Windows Macro</pronom:FormatName>
+	<pronom:Extension>wpm</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/170">
+	<pronom:FormatID>170</pronom:FormatID>
+	<pronom:FormatName>Microsoft Works Spreadsheet</pronom:FormatName>
+	<pronom:Version>2.0</pronom:Version>
+	<pronom:Extension>wks</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/246">
+	<pronom:FormatID>246</pronom:FormatID>
+	<pronom:FormatName>PageMaker Document</pronom:FormatName>
+	<pronom:Version>5.0</pronom:Version>
+	<pronom:Extension>pm5</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/247">
+	<pronom:FormatID>247</pronom:FormatID>
+	<pronom:FormatName>PageMaker Document</pronom:FormatName>
+	<pronom:Version>6.0</pronom:Version>
+	<pronom:Extension>pm6</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/254">
+	<pronom:FormatID>254</pronom:FormatID>
+	<pronom:FormatName>PageMaker Document</pronom:FormatName>
+	<pronom:Version>6.5</pronom:Version>
+	<pronom:Extension>p65</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/272">
+	<pronom:FormatID>272</pronom:FormatID>
+	<pronom:FormatName>Pagemaker TableEditor Graphics</pronom:FormatName>
+	<pronom:Extension>tbl</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/274">
+	<pronom:FormatID>274</pronom:FormatID>
+	<pronom:FormatName>PageMaker Time Stamp File</pronom:FormatName>
+	<pronom:Version>4.0</pronom:Version>
+	<pronom:Extension>tym</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/242">
+	<pronom:FormatID>242</pronom:FormatID>
+	<pronom:FormatName>PC Paint Bitmap</pronom:FormatName>
+	<pronom:Extension>pic</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/621">
+	<pronom:FormatID>621</pronom:FormatID>
+	<pronom:FormatName>PCX</pronom:FormatName>
+	<pronom:Version>0</pronom:Version>
+	<pronom:Extension>pcx</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/614">
+	<pronom:FormatID>614</pronom:FormatID>
+	<pronom:FormatName>Portable Document Format</pronom:FormatName>
+	<pronom:Version>1.1</pronom:Version>
+	<pronom:Extension>pdf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/617">
+	<pronom:FormatID>617</pronom:FormatID>
+	<pronom:FormatName>Portable Document Format</pronom:FormatName>
+	<pronom:Version>1.4</pronom:Version>
+	<pronom:Extension>pdf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/666">
+	<pronom:FormatID>666</pronom:FormatID>
+	<pronom:FormatName>Portable Network Graphics</pronom:FormatName>
+	<pronom:Version>1.2</pronom:Version>
+	<pronom:Extension>png</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/255">
+	<pronom:FormatID>255</pronom:FormatID>
+	<pronom:FormatName>Quark Xpress Data File</pronom:FormatName>
+	<pronom:Extension>qxd</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/658">
+	<pronom:FormatID>658</pronom:FormatID>
+	<pronom:FormatName>Quicktime</pronom:FormatName>
+	<pronom:Extension>mov</pronom:Extension>
+	<pronom:Extension>qtm</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/631">
+	<pronom:FormatID>631</pronom:FormatID>
+	<pronom:FormatName>Rich Text Format</pronom:FormatName>
+	<pronom:Version>1.5</pronom:Version>
+	<pronom:Extension>rtf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/40">
+	<pronom:FormatID>40</pronom:FormatID>
+	<pronom:FormatName>Tab-Delimited Text File</pronom:FormatName>
+	<pronom:Extension>txt</pronom:Extension>
+	<pronom:Extension>tsv</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/612">
+	<pronom:FormatID>612</pronom:FormatID>
+	<pronom:FormatName>Tagged Image File Format</pronom:FormatName>
+	<pronom:Version>6</pronom:Version>
+	<pronom:Extension>tiff</pronom:Extension>
+	<pronom:Extension>tif</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/91">
+	<pronom:FormatID>91</pronom:FormatID>
+	<pronom:FormatName>Ventura Publisher Vector Graphics</pronom:FormatName>
+	<pronom:Extension>gem</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/215">
+	<pronom:FormatID>215</pronom:FormatID>
+	<pronom:FormatName>Windows Enhanced Metafile</pronom:FormatName>
+	<pronom:Extension>emf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/171">
+	<pronom:FormatID>171</pronom:FormatID>
+	<pronom:FormatName>Windows Metafile</pronom:FormatName>
+	<pronom:Extension>wmf</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/736">
+	<pronom:FormatID>736</pronom:FormatID>
+	<pronom:FormatName>WordPerfect for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>5.0</pronom:Version>
+	<pronom:Extension>wp</pronom:Extension>
+	<pronom:Extension>wp5</pronom:Extension>
+	<pronom:Extension>wpd</pronom:Extension>
+	<pronom:Extension>w50</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/737">
+	<pronom:FormatID>737</pronom:FormatID>
+	<pronom:FormatName>WordPerfect for MS-DOS/Windows Document</pronom:FormatName>
+	<pronom:Version>5.1</pronom:Version>
+	<pronom:Extension>wp5</pronom:Extension>
+	<pronom:Extension>wpd</pronom:Extension>
+	<pronom:Extension>w51</pronom:Extension>
+	<pronom:Extension>wp</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/75">
+	<pronom:FormatID>75</pronom:FormatID>
+	<pronom:FormatName>WordPerfect for MS-DOS/Windows Document</pronom:FormatName>
+	<pronom:Version>6.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+	<pronom:Extension>wpd</pronom:Extension>
+	<pronom:Extension>wp6</pronom:Extension>
+	<pronom:Extension>wp</pronom:Extension>
+	<pronom:Extension>w60</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/281">
+	<pronom:FormatID>281</pronom:FormatID>
+	<pronom:FormatName>WordPerfect for Windows Document</pronom:FormatName>
+	<pronom:Version>5.2</pronom:Version>
+	<pronom:Extension>w52</pronom:Extension>
+	<pronom:Extension>wp</pronom:Extension>
+	<pronom:Extension>wpd</pronom:Extension>
+	<pronom:Extension>wp5</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/738">
+	<pronom:FormatID>738</pronom:FormatID>
+	<pronom:FormatName>WordPerfect Graphics Metafile</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:Extension>wpg</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/285">
+	<pronom:FormatID>285</pronom:FormatID>
+	<pronom:FormatName>WordStar for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>5.0</pronom:Version>
+	<pronom:Extension>ws</pronom:Extension>
+	<pronom:Extension>ws5</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/342">
+	<pronom:FormatID>342</pronom:FormatID>
+	<pronom:FormatName>WordStar for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>5.5</pronom:Version>
+	<pronom:Extension>ws</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/343">
+	<pronom:FormatID>343</pronom:FormatID>
+	<pronom:FormatName>WordStar for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>6.0</pronom:Version>
+	<pronom:Extension>ws</pronom:Extension>
+	<pronom:Extension>ws6</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Source/
+        ">
+	<pronom:IPRid>1</pronom:IPRid>
+	<pronom:IPRJurisdiction>Not Known</pronom:IPRJurisdiction>
+	<pronom:IPRType>Copyright</pronom:IPRType>
+	<pronom:Owner rdf:resource="http://nationalarchives.gov.uk/pronom/Owner/7"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Owner/7">
+	<pronom:OwnerID>7</pronom:OwnerID>
+	<pronom:OrganisationName>Adobe Systems Incorporated</pronom:OrganisationName>
+	<pronom:OwnerCompoundName>Adobe Systems Incorporated</pronom:OwnerCompoundName>
+</rdf:Description>
+</rdf:RDF>

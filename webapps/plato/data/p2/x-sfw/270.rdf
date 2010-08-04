@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/270">
+	<pronom:SoftwareID>270</pronom:SoftwareID>
+	<pronom:SoftwareName>Excel</pronom:SoftwareName>
+	<pronom:Version>XP</pronom:Version>
+	<pronom:SoftwareAliases>Excel (10.0), Excel (2002)</pronom:SoftwareAliases>
+	<pronom:Description>Description in preparation</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/270"/>
+	<pronom:SoftwareTypes>Spreadsheet</pronom:SoftwareTypes>
+	<pronom:MediaFormat>CD ROM</pronom:MediaFormat>
+	<pronom:ReleaseDate>31 May 2001</pronom:ReleaseDate>
+	<pronom:WithdrawnDate>11 Jul 2006</pronom:WithdrawnDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>10 Jul 2007</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>10 Jul 2007</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:HasDefaultFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/685"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/685"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/685"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/820"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Software/20"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/270">
+	<pronom:Identifier>x-sfw/270</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/93">
+	<pronom:VendorID>93</pronom:VendorID>
+	<pronom:VendorName>Microsoft Corporation</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/685">
+	<pronom:FormatID>685</pronom:FormatID>
+	<pronom:FormatName>Binary Interchange File Format (BIFF) Workbook</pronom:FormatName>
+	<pronom:Version>8X</pronom:Version>
+	<pronom:InvarianceText>Unchanged content</pronom:InvarianceText>
+	<pronom:Extension>xlw</pronom:Extension>
+	<pronom:Extension>xls</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/820">
+	<pronom:FormatID>820</pronom:FormatID>
+	<pronom:FormatName>Microsoft Web Archive</pronom:FormatName>
+	<pronom:Extension>mht</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/20">
+	<pronom:SoftwareID>20</pronom:SoftwareID>
+	<pronom:Name>Excel</pronom:Name>
+	<pronom:Version>2000 (9.0) for Windows</pronom:Version>
+</rdf:Description>
+</rdf:RDF>

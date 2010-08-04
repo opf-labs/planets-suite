@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/72">
+	<pronom:SoftwareID>72</pronom:SoftwareID>
+	<pronom:SoftwareName>Calendar Creator</pronom:SoftwareName>
+	<pronom:Version>9.0</pronom:Version>
+	<pronom:Description>No description available</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/72"/>
+	<pronom:SoftwareTypes>Calendar</pronom:SoftwareTypes>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>23 Sep 2003</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/20"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/20"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/202"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/202"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/59"/>
+	<pronom:IPR rdf:resource="http://nationalarchives.gov.uk/pronom/Source/
+        "/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/72">
+	<pronom:Identifier>x-sfw/72</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/20">
+	<pronom:VendorID>20</pronom:VendorID>
+	<pronom:VendorName>Broderbund Software, Inc</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/202">
+	<pronom:FormatID>202</pronom:FormatID>
+	<pronom:FormatName>Calendar Creator Plus Data File</pronom:FormatName>
+	<pronom:InvarianceText>Unchanged content</pronom:InvarianceText>
+	<pronom:Extension>cce</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/59">
+	<pronom:FormatID>59</pronom:FormatID>
+	<pronom:FormatName>CALS Compressed Bitmap</pronom:FormatName>
+	<pronom:Extension>cal</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Source/
+        ">
+	<pronom:IPRid>6</pronom:IPRid>
+	<pronom:IPRJurisdiction>Not Known</pronom:IPRJurisdiction>
+	<pronom:IPRType>Copyright</pronom:IPRType>
+	<pronom:Owner rdf:resource="http://nationalarchives.gov.uk/pronom/Owner/20"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Owner/20">
+	<pronom:OwnerID>20</pronom:OwnerID>
+	<pronom:OrganisationName>Broderbund Software, Inc</pronom:OrganisationName>
+	<pronom:OwnerCompoundName>Broderbund Software, Inc</pronom:OwnerCompoundName>
+</rdf:Description>
+</rdf:RDF>

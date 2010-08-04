@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/610">
+	<pronom:FormatID>610</pronom:FormatID>
+	<pronom:FormatName>Tagged Image File Format</pronom:FormatName>
+	<pronom:FormatVersion>4</pronom:FormatVersion>
+	<pronom:FormatAliases>TIFF (4)</pronom:FormatAliases>
+	<pronom:FormatTypes>Image (Raster)</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>The Tagged Image File Format (TIFF) is a raster image format originally developed by the Aldus Corporation, primarily for use in scanning and desk-top publishing. When Adobe Systems Incorporated purchased Aldus in 1994, they acquired the rights to the TIFF format and have maintained it since then. TIFF files comprise three sections: an Image File Header (IFH), an Image File Directory (IFD), and the image data. TIFF files can contain multiple images (multi-page TIFF), and each image has a separate IFD. The IFH always appears at the beginning of the file, and is immediately followed by a pointer to the first IFD. The IFD contains metadata which describes the associated image, stored as a series of tags. The IFD also contains a pointer to the actual image data. TIFF 4.0 supports colour depths from 1 bit to 24 bit (e.g. monochrome to true colour), and a range of compression types (RLE, and CCITT Group 3 and Group 4), as well as uncompressed data.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel) and Big-endian (Motorola)</pronom:ByteOrders>
+	<pronom:ReleaseDate>31 Aug 1987</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/8"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/image/tiff"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/public.tiff"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/82"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/49"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/600"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/666"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/9"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/10"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/672"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/672"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/673"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/673"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/752"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/752"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/611"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/611"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/609"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/609"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/13"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/14"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/15"/>
+	<pronom:FormatProperties rdf:resource="http://nationalarchives.gov.uk/pronom/Format/610/FormatProperties"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/8">
+	<pronom:Identifier>fmt/8</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/image/tiff">
+	<pronom:Identifier>image/tiff</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/public.tiff">
+	<pronom:Identifier>public.tiff</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/82">
+	<pronom:DeveloperID>82</pronom:DeveloperID>
+	<pronom:OrganisationName>Aldus Corporation</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>Aldus Corporation</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/49">
+	<pronom:DocumentID>49</pronom:DocumentID>
+	<pronom:DisplayText>Aldus Corporation/Microsoft Corporation, 1987, Tag Image File Format, Revision 4.0</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Not available</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>30 Apr 1987</pronom:PublicationDate>
+	<pronom:TitleText>Tag Image File Format Revision, 4.0</pronom:TitleText>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/82"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/93"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/82"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/93"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/82">
+	<pronom:AuthorID>82</pronom:AuthorID>
+	<pronom:OrganisationName>Aldus Corporation</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Aldus Corporation</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/93">
+	<pronom:AuthorID>93</pronom:AuthorID>
+	<pronom:OrganisationName>Microsoft Corporation</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Microsoft Corporation</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/82">
+	<pronom:PublisherID>82</pronom:PublisherID>
+	<pronom:OrganisationName>Aldus Corporation</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Aldus Corporation</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/93">
+	<pronom:PublisherID>93</pronom:PublisherID>
+	<pronom:OrganisationName>Microsoft Corporation</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Microsoft Corporation</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/600">
+	<pronom:ExternalSignatureID>600</pronom:ExternalSignatureID>
+	<pronom:Signature>tif</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/666">
+	<pronom:ExternalSignatureID>666</pronom:ExternalSignatureID>
+	<pronom:Signature>tiff</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/9">
+	<pronom:SignatureID>9</pronom:SignatureID>
+	<pronom:SignatureName>TIFF generic (little-endian)</pronom:SignatureName>
+	<pronom:SignatureNote>Header</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/183"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/183">
+	<pronom:ByteSequenceID>183</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>49492A00</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/10">
+	<pronom:SignatureID>10</pronom:SignatureID>
+	<pronom:SignatureName>TIFF generic (big-endian)</pronom:SignatureName>
+	<pronom:SignatureNote>Header</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/184"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/184">
+	<pronom:ByteSequenceID>184</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>4D4D002A</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/672">
+	<pronom:FormatID>672</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Uncompressed)</pronom:FormatName>
+	<pronom:FormatVersion>2.2</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/673">
+	<pronom:FormatID>673</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Uncompressed)</pronom:FormatName>
+	<pronom:FormatVersion>2.1</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/752">
+	<pronom:FormatID>752</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Uncompressed)</pronom:FormatName>
+	<pronom:FormatVersion>2.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/611">
+	<pronom:FormatID>611</pronom:FormatID>
+	<pronom:FormatName>Tagged Image File Format</pronom:FormatName>
+	<pronom:FormatVersion>5</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/609">
+	<pronom:FormatID>609</pronom:FormatID>
+	<pronom:FormatName>Tagged Image File Format</pronom:FormatName>
+	<pronom:FormatVersion>3</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/13">
+	<pronom:CompressionID>13</pronom:CompressionID>
+	<pronom:CompressionName>Run Length Encoding</pronom:CompressionName>
+	<pronom:CompressionAliases>RLE</pronom:CompressionAliases>
+	<pronom:Description>Run length encoding (RLE) is perhaps the simplest image compression technique in common use. RLE algorithms are lossless, and work by searching for runs of bits, bytes, or pixels of the same value, and encoding the length and value of the run. As such, RLE achieves best results with images containing large areas of contiguous colour, and especially monochrome images. Complex colour images, such as photographs, do not compress well – in some cases, RLE can actually increase the file size. There are a number of RLE variants in common use, which are encountered in the TIFF, PCX and BMP graphics formats.</pronom:Description>
+	<pronom:Lossiness>Lossless</pronom:Lossiness>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/13"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/13">
+	<pronom:Identifier>x-cmp/13</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/14">
+	<pronom:CompressionID>14</pronom:CompressionID>
+	<pronom:CompressionName>CCITT T.4</pronom:CompressionName>
+	<pronom:CompressionAliases>CCITT Group 3</pronom:CompressionAliases>
+	<pronom:Description>Officially known as CCITT T.4, Group 3 is a compression algorithm developed by the International Telegraph and Telephone Consultative Committee in 1985 for encoding and compressing 1-bit (monochrome) image data. Its primary use has been in fax transmission, and it is optimised for scanned printed or handwritten documents. Group 3 is a lossless algorithm, of which two forms exist: one-dimensional (which is a modified version of Huffman encoding) and two-dimensional, which offers superior compression rates. Due to its origin as a data transmission protocol, Group 3 encoding incorporates error detection codes. Group 3 compression is most commonly used in the TIFF file format.</pronom:Description>
+	<pronom:Lossiness>Lossless</pronom:Lossiness>
+	<pronom:ReleaseDate>01 Jan 1985</pronom:ReleaseDate>
+	<pronom:CompressionDocumentation>CCITT Blue Book, 1989, Volume VII, Fascicle VII.3: Terminal equipment and protocols for telematic services, recommendations T.0 - T.63</pronom:CompressionDocumentation>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/14"/>
+	<pronom:Developer rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/124"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/14">
+	<pronom:Identifier>x-cmp/14</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/124">
+	<pronom:DeveloperID>124</pronom:DeveloperID>
+	<pronom:OrganisationName>International Telecommunication Union</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>International Telecommunication Union</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/15">
+	<pronom:CompressionID>15</pronom:CompressionID>
+	<pronom:CompressionName>CCITT T.6</pronom:CompressionName>
+	<pronom:CompressionAliases>CCITT Group 4</pronom:CompressionAliases>
+	<pronom:Description>Officially known as CCITT T.6, Group 4 is a compression algorithm developed by the International Telegraph and Telephone Consultative Committee as a development of the two-dimensional Group 3 standard for encoding and compressing 1-bit (monochrome) image data. It is faster, and offers compression rates which are typically double those of Group 3. Like Group 3, it is lossless and designed for 1-bit images. However, being designed as a storage rather than transmission format, it does not incorporate the error detection and correction functions of Group 3 compression. Group 4 compression is most commonly used in the TIFF file format.</pronom:Description>
+	<pronom:Lossiness>Lossless</pronom:Lossiness>
+	<pronom:ReleaseDate>01 Jan 1989</pronom:ReleaseDate>
+	<pronom:CompressionDocumentation>CCITT Blue Book, 1989, Volume VII, Fascicle VII.3: Terminal equipment and protocols for telematic services, recommendations T.0 - T.63</pronom:CompressionDocumentation>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/15"/>
+	<pronom:Developer rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/124"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/15">
+	<pronom:Identifier>x-cmp/15</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/610/FormatProperties">
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/compression_type"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/compression_level"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/image_width"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/image_height"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/colour_space"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/sampling_frequency_unit"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/x_sampling_frequency"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/y_sampling_frequency"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/bits_per_sample"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/samples_per_pixel"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/byte_order"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/compression_type">
+	<pronom:PropertyName>Compression Type</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/compression_level">
+	<pronom:PropertyName>Compression Level</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/image_width">
+	<pronom:PropertyName>Image Width</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/image_height">
+	<pronom:PropertyName>Image Height</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/colour_space">
+	<pronom:PropertyName>Colour Space</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/sampling_frequency_unit">
+	<pronom:PropertyName>Sampling Frequency Unit</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/x_sampling_frequency">
+	<pronom:PropertyName>X Sampling Frequency</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/y_sampling_frequency">
+	<pronom:PropertyName>Y Sampling Frequency</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/bits_per_sample">
+	<pronom:PropertyName>Bits Per Sample</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/samples_per_pixel">
+	<pronom:PropertyName>Samples Per Pixel</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/byte_order">
+	<pronom:PropertyName>Byte Order</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+</rdf:RDF>

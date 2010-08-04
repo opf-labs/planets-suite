@@ -1,0 +1,32 @@
+<preservationActionConfig>
+<preservationActionRegistries>
+    <registry>
+        <shortname>MiniMEE</shortname>
+        <logo>../img/logos/minimee.png</logo>
+        <type>eu.planets_project.pp.plato.services.action.minimee.MiniMeeServiceRegistry</type>
+        <url></url>
+        <active>true</active>       
+    </registry>
+	<registry>
+		<shortname>Planets Service Registry</shortname>
+		<logo>../img/logos/planets_sr.png</logo>
+		<type>eu.planets_project.pp.plato.services.action.planets.PlanetsServiceRegistry</type>
+		<url>http://if.planets_project.eu/tbd</url>
+		<active>true</active>
+	</registry>
+	 <registry>
+        <shortname>MiniREEF</shortname>
+        <logo>../img/logos/p2.png</logo>
+        <type>eu.planets_project.pp.plato.services.action.minimee.MiniReefServiceRegistry</type>
+        <url></url>
+        <active>true</active>       
+    </registry>
+	<registry>
+		<shortname>CRiB at TU-Wien</shortname>
+		<logo>../img/logos/crib_tu.png</logo>
+		<type>eu.planets_project.pp.plato.services.action.crib_integration.TUCRiBRegistryServiceLocator</type>
+		<url>http://apollon.ifs.tuwien.ac.at:7080/axis/services/ServiceRegistry</url>
+		<active>true</active>		
+	</registry>
+</preservationActionRegistries>
+</preservationActionConfig>

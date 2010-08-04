@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/657">
+	<pronom:FormatID>657</pronom:FormatID>
+	<pronom:FormatName>Flexible Image Transport System</pronom:FormatName>
+	<pronom:FormatAliases>FITS</pronom:FormatAliases>
+	<pronom:FormatDescription>Description in preparation.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Big-endian (Motorola)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/application/fits"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/image/fits"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/383"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/29"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/671"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/57"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/application/fits">
+	<pronom:Identifier>application/fits</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/image/fits">
+	<pronom:Identifier>image/fits</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/383">
+	<pronom:Identifier>x-fmt/383</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/29">
+	<pronom:DocumentID>29</pronom:DocumentID>
+	<pronom:DisplayText>NASA/Science Office of Standards and Technology, 1999, NOST Standard 100-2.0: Definition of the Flexible Image Transport System (FITS)</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>29 Mar 1999</pronom:PublicationDate>
+	<pronom:TitleText>NOST Standard 100-2.0: Definition of the Flexible Image Transport System (FITS)</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fits.gsfc.nasa.gov/documents.html#Standard"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/107"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/107"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fits.gsfc.nasa.gov/documents.html#Standard">
+	<pronom:Identifier>fits.gsfc.nasa.gov/documents.html#Standard</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/107">
+	<pronom:AuthorID>107</pronom:AuthorID>
+	<pronom:OrganisationName>NASA/Science Office of Standards and Technology</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>NASA/Science Office of Standards and Technology</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/107">
+	<pronom:PublisherID>107</pronom:PublisherID>
+	<pronom:OrganisationName>NASA/Science Office of Standards and Technology</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>NASA/Science Office of Standards and Technology</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/671">
+	<pronom:ExternalSignatureID>671</pronom:ExternalSignatureID>
+	<pronom:Signature>fits</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/57">
+	<pronom:SignatureID>57</pronom:SignatureID>
+	<pronom:SignatureName>FITS</pronom:SignatureName>
+	<pronom:SignatureNote>Header (SIMPLE, BITPIX and NAXIS card images)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/160"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/160">
+	<pronom:ByteSequenceID>160</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>53494D504C4520203D202020202020202020202020202020202020202054{50}42495450495820203D{19}(2038|2B38|3038|3136|3332|3634){50}4E415849532020203D</pronom:ByteSequenceValue>
+</rdf:Description>
+</rdf:RDF>

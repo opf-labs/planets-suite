@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<templates>
+<template name="Image preservation requirements">
+   <node name="Requirements on the format" weight="0.0" single="false" lock="false">
+    <changelog created="2010-06-21T19:53:21" createdBy="admin" changed="2010-06-21T19:53:27" changedBy="admin"/>
+    <node name="IPR" weight="0.0" single="false" lock="false">
+     <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     <leaf name="Format is protected" weight="1.0" single="true" lock="false">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="ipr protected" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="1.0"/>
+        <mapping ordinal="No" target="5.0"/>
+       </mappings>
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:format</category>
+        <propertyId>license/iprProtected</propertyId>
+        <name>format-license: ipr protected</name>
+        <description>Indicates if there exists IPR protection of the format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/ipr_protected</description>
+        <booleanScale unit="ipr protected" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+        </booleanScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </property>
+       <changelog created="2010-06-21T17:59:02" createdBy="admin" changed="2010-06-21T17:59:02"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Format is proprietary" weight="1.0" single="true" lock="false">
+      <changelog created="2010-06-21T19:53:27" createdBy="admin" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="proprietary" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="1.0"/>
+        <mapping ordinal="No" target="5.0"/>
+       </mappings>
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:format</category>
+        <propertyId>license/proprietary</propertyId>
+        <name>format-license: proprietary</name>
+        <description>Indicates whether this is a proprietary format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary</description>
+        <booleanScale unit="proprietary" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+        </booleanScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </property>
+       <changelog created="2010-06-21T17:59:17" createdBy="admin" changed="2010-06-21T17:59:17"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+    <leaf name="Comparative size" weight="0.0" single="false" lock="false">
+     <changelog created="2010-06-21T19:53:27" createdBy="admin" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveFloatScale unit="ratio" displayName="Positive number" restriction="">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </positiveFloatScale>
+     <numericTransformer>
+      <mode value="THRESHOLD_STEPPING"/>
+      <thresholds>
+       <threshold1>10.0</threshold1>
+       <threshold2>5.0</threshold2>
+       <threshold3>3.0</threshold3>
+       <threshold4>1.0</threshold4>
+       <threshold5>0.5</threshold5>
+      </thresholds>
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </numericTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:object</category>
+       <propertyId>relativeFileSize</propertyId>
+       <name>relative file size</name>
+       <description>factor for relative file size, calculated as: (size of result / size of source)</description>
+       <positiveFloatScale unit="ratio" displayName="Positive number" restriction="">
+        <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+       </positiveFloatScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:01:06" createdBy="admin" changed="2010-06-21T18:01:06"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+   </node>
+   <node name="Significant properties" weight="1.0" single="false" lock="false">
+    <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+    <node name="Content" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     <leaf name="Image pixelwise identical" weight="1.0" single="false" lock="false">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:object</category>
+        <propertyId>image/similarity</propertyId>
+        <name>image similarity</name>
+        <description>Quantitative indication of similarity between source and result. A variety of distance metrics for image comparison are available.</description>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </property>
+       <metric>
+        <metricId>equal</metricId>
+        <name>equal</name>
+        <description>Comparison of two values for equality</description>
+        <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+        </booleanScale>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </metric>
+       <changelog created="2010-06-21T18:03:14" createdBy="admin" changed="2010-06-21T18:03:14"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Image similarity (RMSE)" weight="1.0" single="false" lock="false">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="RMSE" displayName="Positive number" restriction="">
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="LINEAR"/>
+       <thresholds>
+        <threshold1>100000.0</threshold1>
+        <threshold2>10000.0</threshold2>
+        <threshold3>1000.0</threshold3>
+        <threshold4>100.0</threshold4>
+        <threshold5>0.0</threshold5>
+       </thresholds>
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </numericTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:object</category>
+        <propertyId>image/similarity</propertyId>
+        <name>image similarity</name>
+        <description>Quantitative indication of similarity between source and result. A variety of distance metrics for image comparison are available.</description>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </property>
+       <metric>
+        <metricId>rmse</metricId>
+        <name>RMSE</name>
+        <description>(sq)root mean squared error -- IE:  sqrt(MSE)</description>
+        <positiveFloatScale unit="RMSE" displayName="Positive number" restriction="">
+         <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+        </positiveFloatScale>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </metric>
+       <changelog created="2010-06-21T18:03:38" createdBy="admin" changed="2010-06-21T18:03:38"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Image width identical" weight="1.0" single="false" lock="false">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:object</category>
+        <propertyId>image/dimension/width</propertyId>
+        <name>image width</name>
+        <description>Width of an image, measured in number of pixels on the x-axis.</description>
+        <positiveIntegerScale unit="pixel" displayName="Positive integer" restriction="">
+         <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+        </positiveIntegerScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </property>
+       <metric>
+        <metricId>equal</metricId>
+        <name>equal</name>
+        <description>Comparison of two values for equality</description>
+        <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+        </booleanScale>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </metric>
+       <changelog created="2010-06-21T18:03:56" createdBy="admin" changed="2010-06-21T18:03:56"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Image height identical" weight="1.0" single="false" lock="false">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:object</category>
+        <propertyId>image/dimension/height</propertyId>
+        <name>image height</name>
+        <description>Height of an image, measured in number of pixels on the y-axis.</description>
+        <positiveIntegerScale unit="pixel" displayName="Positive integer" restriction="">
+         <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+        </positiveIntegerScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </property>
+       <metric>
+        <metricId>equal</metricId>
+        <name>equal</name>
+        <description>Comparison of two values for equality</description>
+        <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+        </booleanScale>
+        <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+       </metric>
+       <changelog created="2010-06-21T18:04:13" createdBy="admin" changed="2010-06-21T18:04:13"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+   </node>
+   <node name="Preservation process" weight="1.0" single="false" lock="false">
+    <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+    <leaf name="Logging output of component" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveIntegerScale unit="characters" displayName="Positive integer" restriction="">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </positiveIntegerScale>
+     <numericTransformer>
+      <mode value="LINEAR"/>
+      <thresholds>
+       <threshold1>50.0</threshold1>
+       <threshold2>100.0</threshold2>
+       <threshold3>200.0</threshold3>
+       <threshold4>400.0</threshold4>
+       <threshold5>800.0</threshold5>
+      </thresholds>
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </numericTransformer>
+     <measurementInfo>
+      <property>
+       <category>action:runtime</category>
+       <propertyId>activityLogging/amount</propertyId>
+       <name>logging amount</name>
+       <description>The amount of logging output produced by a component, measured in the length of characters</description>
+       <positiveIntegerScale unit="characters" displayName="Positive integer" restriction="">
+        <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+       </positiveIntegerScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:08:20" createdBy="admin" changed="2010-06-21T18:08:20"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="Logging format of component" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <ordinalScale restriction="text/xml/none">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </ordinalScale>
+     <ordinalTransformer>
+      <mappings>
+       <mapping ordinal="text" target="3.0"/>
+       <mapping ordinal="xml" target="5.0"/>
+       <mapping ordinal="none" target="1.0"/>
+      </mappings>
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>action:runtime</category>
+       <propertyId>activityLogging/format</propertyId>
+       <name>logging format</name>
+       <description>The format of logging output produced by a component (currently: none/text/xml)</description>
+       <ordinalScale unit="" restriction="text/xml/none">
+        <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+       </ordinalScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:08:33" createdBy="admin" changed="2010-06-21T18:08:33"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+   </node>
+   <node name="Target objects" weight="1.0" single="false" lock="false">
+    <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+    <leaf name="... are in valid format" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     <aggregationMode value="WORST"/>
+     <booleanScale unit="valid" displayName="Boolean" restriction="Yes/No">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </booleanScale>
+     <ordinalTransformer>
+      <mappings>
+       <mapping ordinal="Yes" target="5.0"/>
+       <mapping ordinal="No" target="1.0"/>
+      </mappings>
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:object</category>
+       <propertyId>format/correct/valid</propertyId>
+       <name>format valid</name>
+       <description>Indicates whether the format of the object is well formed</description>
+       <booleanScale unit="valid" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+       </booleanScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:10:09" createdBy="admin" changed="2010-06-21T18:10:09"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="... are in well-formed format" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     <aggregationMode value="WORST"/>
+     <booleanScale unit="well formed" displayName="Boolean" restriction="Yes/No">
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </booleanScale>
+     <ordinalTransformer>
+      <mappings>
+       <mapping ordinal="Yes" target="5.0"/>
+       <mapping ordinal="No" target="1.0"/>
+      </mappings>
+      <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:object</category>
+       <propertyId>format/correct/wellformed</propertyId>
+       <name>format well-formed</name>
+       <description>Indicates whether the format of the object is well formed</description>
+       <booleanScale unit="well formed" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T19:53:27" changed="2010-06-21T19:53:27"/>
+       </booleanScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" createdBy="admin" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:10:27" createdBy="admin" changed="2010-06-21T18:10:27"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+   </node>
+</template>
+
+</templates>

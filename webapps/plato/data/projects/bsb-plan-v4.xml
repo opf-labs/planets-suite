@@ -1,0 +1,3626 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<plans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.planets-project.eu/plato" xmlns:wdt="http://www.planets-project.eu/wdt" xsi:schemaLocation="http://www.planets-project.eu/plato ../../schemas/plato-2.1.xsd" version="2.1.2">
+ <plan>
+  <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-07-30T08:36:08" changedBy="admin"/>
+  <state value="14"/>
+  <properties author="Anna Kugler, Markus Brantl" organization="Bavarian State Library" name="Preservation plan VD 16-2 tiff collection" privateProject="true" reportPublic="false">
+   <description>In this preservation plan we evaluate JPEG 2000 as an alternative to the TIFF format we use as storage format for our scanned material. The scanning was done in the course of the VD 16-2 project funded by the German Research Foundation.</description>
+   <owner>admin</owner>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-08-01T14:45:54" changedBy="admin"/>
+  </properties>
+  <basis>
+   <documentTypes>TIFF version 6 images that have been mostly scanned with scan robots. The scanned books are from the 16. century.</documentTypes>
+   <applyingPolicies>See policy tree. The tree contains policies for digitized material and represents the policies of the Munich Digitisation Centre (MDZ). The tree does not contain policies referring to born-digital material. In the field of digitization the State Library is following the "Praxisregeln im Förderprogramm 'Kulturelle Überlieferung'" by the German Research Foundation (DFG).</applyingPolicies>
+   <designatedCommunity>General public. Everyone can access the material on our official website. Users access a JPEG compressed version of the TIFF master and can choose from two different sizes 100% and 150%.</designatedCommunity>
+   <mandate>Als weltweit bedeutende Universal- und Forschungsbibliothek, Teil der virtuellen deutschen Nationalbibliothek und zentraler Landes- und Archivbibliothek des Freistaates Bayern übernimmt die Bayrische Staatsbibliothek (BSB) dauerhaft Verantwortung für die Sammlung, Erschließung, den Erhalt sowie die langfristige Verfügbarkeit von Wissen und Information in analoger wie in digitaler Form, um damit heutigen wie auch zukünftigen Generationen von Wissenschaftlern, Lehrenden, Studierenden und anderen Informationssuchenden den Zugriff auf das Wissen unserer Zeit zu ermöglichen. Ziel der BSB ist es die urheberfreien Bestände vollständig zu digitalisieren.</mandate>
+   <organisationalProcedures>We work with a customized and scalable in-house system (Zentrale Erfassungs- und Nachweisdatenbank - ZEND), which controls the whole workflow from production to indexing and long-term archiving.</organisationalProcedures>
+   <planningPurpose>We want to evaluate the migration of our TIFF master images to JPEG 2000. JPEG 2000 is supposed to have several advantages such as steaming and reduced storage consumption using lossless compression. Also our two JPEG access copies used for presentation to the user could become obsolete.</planningPurpose>
+   <planRelations>This is our first preservation plan. No relations to other plans.</planRelations>
+   <preservationRights>The VD 16-2 collection is free of copyright, thus no restrictions apply.</preservationRights>
+   <referenceToAgreements>The master images are stored at the Leibniz supercomputing center which is responsible for security and update of storage media. Different contracts for storing apply but in case of the VD 16-2 collection the Leibniz supercomputing center was a cooperation partner.</referenceToAgreements>
+   <triggers>
+    <trigger type="NEW_COLLECTION" active="false"/>
+    <trigger type="PERIODIC_REVIEW" active="false"/>
+    <trigger type="CHANGED_ENVIRONMENT" active="true" description="JPEG 2000 is becoming increasingly important for libraries. We want to take a look at this file format and evaluate it with respect to our collection and requirements."/>
+    <trigger type="CHANGED_OBJECTIVE" active="false"/>
+    <trigger type="CHANGED_COLLECTION_PROFILE" active="false"/>
+   </triggers>
+   <policyTree>
+    <policyNode name="BSB Policies">
+     <policyNode name="Environment component">
+      <policyNode name="Content/self">
+       <policyNode name="Format">
+        <policy name="Target format shall be OPEN, unless impossible" value="Y"/>
+        <policy name="Target format must have open specification" value="Y"/>
+        <policy name="Target format specification must be available" value="Y"/>
+        <policy name="File formats of output manifestations must be supported by existing hard- and software" value="Y"/>
+        <policy name="File format must be suitable for cross-media publishing" value="Y"/>
+        <policyNode name="Image format">
+         <policyNode name="Scanned images">
+          <policy name="Grayscale and color images shall be in TIFF uncompressed" value="Y"/>
+          <policy name="Bitonal images can be in TIFF Group 4" value="Y"/>
+          <policyNode name="Images scanned with highest possible resolution to ensure authenticity (protection of investment)">
+           <policy name="For authenticity image must contain the 'resolution'" value="Y"/>
+           <policy name="For authenticity images must contain the 'color profile'" value="Y"/>
+          </policyNode>
+         </policyNode>
+         <policy name="JPEG must not be used for arching" value="Y"/>
+         <policy name="Master image must be convertable to a browser supported format (e.g. JPEG, PNG)" value="Y"/>
+        </policyNode>
+        <policy name="Target format must not have encryption" value="Y"/>
+        <policy name="Access copy of images must be embeddable in PDF" value="N"/>
+       </policyNode>
+       <policy name="Target content must be authentic" value="Y"/>
+       <policy name="Target content must maintain quality" value="Y"/>
+       <policy name="Target content must remain identical" value="Y"/>
+      </policyNode>
+      <policyNode name="Community">
+       <policyNode name="Policy factor">
+        <policyNode name="Internal influence">
+         <policyNode name="Personnel">
+          <policy name="There shall be expertise for the preservation action" value="Y"/>
+         </policyNode>
+         <policyNode name="Business process">
+          <policy name="Preservation action must be inline with predefined business processes" value="Y"/>
+         </policyNode>
+        </policyNode>
+        <policyNode name="External influence">
+         <policyNode name="Library and archival sciences">
+          <policy name="Best practice in active preservation management shall be followed" value="Y"/>
+         </policyNode>
+         <policyNode name="Legislation">
+          <policyNode name="IPR legislation">
+           <policyNode name="Copyright legislation">
+            <policy name="Copyright ownership must be obeyed" value="Y"/>
+           </policyNode>
+          </policyNode>
+         </policyNode>
+         <policyNode name="Standard">
+          <policyNode name="OAIS">
+           <policy name="Standard must be compliant with OAIS" value="Y"/>
+          </policyNode>
+          <policyNode name="Information security management standard">
+           <policy name="All data collections must be protected and kept secure during preservation" value="Y"/>
+          </policyNode>
+          <policyNode name="For scanned material">
+           <policy name="Metadata standards METS and TEI-P5 are preferred" value="Y"/>
+          </policyNode>
+         </policyNode>
+         <policyNode name="Reference model">
+          <policy name="nestor criteria catalog must be followed" value="Y"/>
+         </policyNode>
+        </policyNode>
+       </policyNode>
+      </policyNode>
+      <policyNode name="Software">
+       <policyNode name="Application software">
+        <policy name="Preservation action tool shall be OPEN SOURCE" value="Y"/>
+        <policy name="Preservation action tool shall be FREE OF COST" value="N"/>
+       </policyNode>
+       <policyNode name="Administrative Software">
+        <policy name="Secure networking and communications equipment shall be used" value="Y"/>
+       </policyNode>
+      </policyNode>
+      <policyNode name="Hardware">
+       <policyNode name="Computer Hardware">
+        <policy name="Servers must be protected by power surge protection systems" value="Y"/>
+        <policy name="Disaster recovery procedures must be in place" value="Y"/>
+       </policyNode>
+       <policyNode name="Storage Medium">
+        <policy name="Original data carriers shall not be preserved" value="N"/>
+        <policy name="Adequate storage capacity must be maintained for all holdings" value="Y"/>
+        <policy name="Physical carriers must be stored in a physical environment that is suitable ans secured for long-term preservation " value="Y"/>
+        <policy name="Content shall be stored on different locations" value="Y"/>
+       </policyNode>
+      </policyNode>
+     </policyNode>
+     <policy name="Target file size must not be larger than source" value="N"/>
+     <policy name="Metadata must be stored in vendor independent format" value="Y"/>
+     <policy name="All metadata as described in institutional set of metadata have to be preserved" value="Y"/>
+     <policy name="Content must be preserved unaltered" value="Y"/>
+     <policy name="Preservation action must be validated for authenticity of the substantive content" value="Y"/>
+     <policy name="Preservation action must be documented with target object to be able to trace changes" value="Y"/>
+     <policyNode name="Preservation action">
+      <policyNode name="Reconstruction">
+       <policy name="Preservation action must be emulation" value="N"/>
+      </policyNode>
+      <policyNode name="Replacement">
+       <policy name="Preservation action must be migration" value="N"/>
+      </policyNode>
+      <policy name="Preservation action must create platform independent objects" value="Y"/>
+      <policy name="Digital objects for which there is no printed backup must be preserved" value="Y"/>
+      <policy name="Before ingesting in the preservation system, documents must be put in quarantine" value="N"/>
+      <policy name="Preservation actions shall be accompanied with formal documentation specified in the preservation strategy procedures" value="Y"/>
+      <policy name="Preservation action must be without compression unless no information loss occurs" value="Y"/>
+      <policy name="Prefer preservation actions which are more stable" value="Y"/>
+      <policy name="Prefer preservation actions which are better supported" value="Y"/>
+      <policy name="Preservation action shall optimise the use of space for storage purposes" value="Y"/>
+      <policy name="Preservation actions must be compatible with the existent environment" value="Y"/>
+      <policy name="For authenticity the 'resolution' and 'color profile' must be preserved" value="Y"/>
+     </policyNode>
+    </policyNode>
+   </policyTree>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-08-01T14:59:13" changedBy="admin"/>
+  </basis>
+  <sampleRecords>
+   <samplesDescription>We choose sample records with slightly different file size, dimension, and different ICC color profiles. They have been taken from the Bible and Thierbuch collection.</samplesDescription>
+   <collectionProfile>
+    <collectionID>The preservation plan applies to the whole collection VD 16-2. The collection itself doesn't have an ID, however each sanned books has a unique ID such as bsb00024266 for the Thierbuch. The file name for a particular page from that book contains the book ID plus the number of the page: bsb00024266_00003.tif.</collectionID>
+    <description>The collection has been scanned in the course of the VD 16-2 project. In contrast to other collections this one has mostly been scanned using scan robots. Manual scanning had to be used for problematic pages resulting in TIFF files with different resolution, dimension and/or color profiles.</description>
+    <expectedGrowthRate>Scanning has been finished so no growth expected.</expectedGrowthRate>
+    <numberOfObjects>The collection contains 21.000 prints from the 16. century owned by State Library with about 3 million pages. The size of the collection is about 72 TB.</numberOfObjects>
+    <typeOfObjects>TIFF version 6, one image per page.</typeOfObjects>
+   </collectionProfile>
+   <record shortName="Page 1150 Bible" fullname="bsb00024266_01150.tif" contentType="">
+    <data hasData="false"/>
+    <formatInfo>
+     <changelog created="2009-07-30T08:36:30" createdBy="admin" changed="2009-07-30T08:36:30"/>
+    </formatInfo>
+    <changelog created="2009-07-30T08:36:30" createdBy="admin" changed="2009-07-31T16:45:49" changedBy="admin"/>
+    <description>Image described using ImageMagick:
+  Format: TIFF (Tagged Image File Format)
+  Class: DirectClass
+  Geometry: 1488x2444+0+0
+  Resolution: 300x300
+  Print size: 4.96x8.14667
+  Units: PixelsPerInch
+  Type: TrueColor
+  Base type: TrueColor
+  Endianess: MSB
+  Colorspace: RGB
+  Depth: 8-bit
+  Channel depth:
+    red: 8-bit
+    green: 8-bit
+    blue: 8-bit
+  Rendering intent: Undefined
+  Transparent color: black
+  Page geometry: 1488x2444+0+0
+  Dispose: Undefined
+  Iterations: 0
+  Compression: None
+  Orientation: TopLeft
+  Properties:
+    create-date: 2009-07-29T15:15:51+02:00
+    modify-date: 2009-07-10T02:47:38+02:00
+    signature: f1946df4c0a47bcea3ec7db628d483c4a8cb78d84220aa2e9b2f06c132dc78b8
+    tiff:rows-per-strip: 2
+  Tainted: False
+  Filesize: 10.53mb
+  Number pixels: 3.468mb
+  Version: ImageMagick 6.5.3-5 2009-06-11 Q16 OpenMP http://www.imagemagick.org</description>
+    <originalTechnicalEnvironment>Stored in Leibniz supercomputing center on magnetic tapes. Tivoli Storage Manger.</originalTechnicalEnvironment>
+   </record>
+   <record shortName="Third page Bible" fullname="bsb00024266_00003.tif" contentType="">
+    <data hasData="false"/>
+    <formatInfo>
+     <changelog created="2009-07-30T14:05:39" createdBy="admin" changed="2009-07-30T14:05:39"/>
+    </formatInfo>
+    <changelog created="2009-07-30T14:05:39" createdBy="admin" changed="2009-07-31T16:52:03" changedBy="admin"/>
+    <description>Image described using ImageMagick:
+  Format: TIFF (Tagged Image File Format)
+  Class: DirectClass
+  Geometry: 1598x2419+0+0
+  Resolution: 300x300
+  Print size: 5.32667x8.06333
+  Units: PixelsPerInch
+  Type: TrueColor
+  Base type: TrueColor
+  Endianess: MSB
+  Colorspace: RGB
+  Depth: 8-bit
+  Channel depth:
+    red: 8-bit
+    green: 8-bit
+    blue: 8-bit
+  Rendering intent: Undefined
+  Transparent color: black
+  Page geometry: 1598x2419+0+0
+  Compression: None
+  Orientation: TopLeft
+  Properties:
+    create-date: 2009-07-29T15:12:59+02:00
+    modify-date: 2009-07-10T02:31:24+02:00
+    signature: 6a2df37eece74f6a0623e5182bb7d90a7f58af1b90a62163111a57392ba95f1e
+    tiff:artist: Zeutschel Omniscan 11
+    tiff:rows-per-strip: 1
+    tiff:software: ImageGear Version:  13.05.001
+    tiff:timestamp: 2008:06:11 15:09:11
+  Profiles:
+    Profile-icc: 308720 bytes
+      OS10000_A2_B5_oG
+  Artifacts:
+    verbose: true
+  Tainted: False
+  Filesize: 11.35mb
+  Number pixels: 3.686mb
+  Elapsed time: 0:01
+  Version: ImageMagick 6.5.3-5 2009-06-11 Q16 OpenMP http://www.imagemagick.org</description>
+    <originalTechnicalEnvironment>Stored in Leibniz supercomputing center on magnetic tapes. Tivoli Storage Manger.</originalTechnicalEnvironment>
+   </record>
+   <record shortName="First page Thierbuch" fullname="bsb00027991_00001.tif" contentType="">
+    <data hasData="false"/>
+    <formatInfo>
+     <changelog created="2009-07-30T14:06:43" createdBy="admin" changed="2009-07-30T14:06:43"/>
+    </formatInfo>
+    <changelog created="2009-07-30T14:06:43" createdBy="admin" changed="2009-07-31T16:52:04" changedBy="admin"/>
+    <description>Image described using ImageMagick:
+  Format: TIFF (Tagged Image File Format)
+  Class: DirectClass
+  Geometry: 1796x2239+0+0
+  Resolution: 300x300
+  Print size: 5.98667x7.46333
+  Units: PixelsPerInch
+  Type: TrueColor
+  Base type: TrueColor
+  Endianess: MSB
+  Colorspace: RGB
+  Depth: 8-bit
+  Channel depth:
+    red: 8-bit
+    green: 8-bit
+    blue: 8-bit
+  Transparent color: black
+  Compression: None
+  Orientation: TopLeft
+  Properties:
+    create-date: 2009-07-29T14:46:29+02:00
+    modify-date: 2009-07-27T23:25:14+02:00
+    signature: 17715b4dcebff8b80272a168ed934e766d8cf0d23fdf0b7abc85a3309ecf26d7
+    tiff:artist: Bayerische Staatsbibliothek München
+    tiff:rows-per-strip: 1
+    tiff:software: ImageGear Version:  13.05.001
+    tiff:timestamp: 2008:09:04 16:48:25
+  Profiles:
+    Profile-icc: 125152 bytes
+      Scanner08_V3
+  Artifacts:
+    verbose: true
+  Tainted: False
+  Filesize: 11.62mb
+  Number pixels: 3.835mb
+  Version: ImageMagick 6.5.3-5 2009-06-11 Q16 OpenMP http://www.imagemagick.org</description>
+    <originalTechnicalEnvironment>Stored in Leibniz supercomputing center on magnetic tapes. Tivoli Storage Manger.</originalTechnicalEnvironment>
+   </record>
+   <record shortName="Third page Thierbuch" fullname="bsb00027991_00003.tif" contentType="">
+    <data hasData="false"/>
+    <formatInfo>
+     <changelog created="2009-07-30T14:08:20" createdBy="admin" changed="2009-07-30T14:08:20"/>
+    </formatInfo>
+    <changelog created="2009-07-30T14:08:20" createdBy="admin" changed="2009-07-31T16:52:07" changedBy="admin"/>
+    <description>Image described using ImageMagick:
+  Format: TIFF (Tagged Image File Format)
+  Class: DirectClass
+  Geometry: 1599x2145+0+0
+  Resolution: 300x300
+  Print size: 5.33x7.15
+  Units: PixelsPerInch
+  Type: TrueColor
+  Base type: TrueColor
+  Endianess: MSB
+  Colorspace: RGB
+  Depth: 8-bit
+  Channel depth:
+    red: 8-bit
+    green: 8-bit
+    blue: 8-bit
+  Transparent color: black
+  Compression: None
+  Orientation: TopLeft
+  Properties:
+    create-date: 2009-07-29T15:03:46+02:00
+    modify-date: 2009-07-27T23:25:14+02:00
+    signature: 271bd2f29ec5f9340ac84e484849d1a5f16e0c212a4fbf32cb32d7b2efde1d8b
+    tiff:artist: Bayerische Staatsbibliothek München
+    tiff:rows-per-strip: 1
+    tiff:software: ImageGear Version:  13.05.001
+    tiff:timestamp: 2008:09:04 16:49:42
+  Profiles:
+    Profile-icc: 125152 bytes
+      Scanner08_V3
+  Artifacts:
+    verbose: true
+  Tainted: False
+  Filesize: 9.933mb
+  Number pixels: 3.271mb
+  Version: ImageMagick 6.5.3-5 2009-06-11 Q16 OpenMP http://www.imagemagick.org</description>
+    <originalTechnicalEnvironment>Stored in Leibniz supercomputing center on magnetic tapes. Tivoli Storage Manger.</originalTechnicalEnvironment>
+   </record>
+   <record shortName="Page 23 Thierbuch" fullname="bsb00027991_00023.tif" contentType="">
+    <data hasData="false"/>
+    <formatInfo>
+     <changelog created="2009-07-30T14:08:48" createdBy="admin" changed="2009-07-30T14:08:48"/>
+    </formatInfo>
+    <changelog created="2009-07-30T14:08:48" createdBy="admin" changed="2009-07-31T16:52:08" changedBy="admin"/>
+    <description>Image described using ImageMagick:
+  Format: TIFF (Tagged Image File Format)
+  Class: DirectClass
+  Geometry: 1576x2188+0+0
+  Resolution: 300x300
+  Print size: 5.25333x7.29333
+  Units: PixelsPerInch
+  Type: TrueColor
+  Base type: TrueColor
+  Endianess: MSB
+  Colorspace: RGB
+  Depth: 8-bit
+  Channel depth:
+    red: 8-bit
+    green: 8-bit
+    blue: 8-bit
+  Transparent color: black
+  Compression: None
+  Orientation: TopLeft
+  Properties:
+    create-date: 2009-07-29T15:01:08+02:00
+    modify-date: 2009-07-27T23:25:30+02:00
+    signature: 05c2bdb249828b38c5ddb4c63e79a29b9adf25e13444eefcd155c577adbd819d
+    tiff:rows-per-strip: 2
+    tiff:software: ScanGate V1.70b
+  Profiles:
+    Profile-icc: 125076 bytes
+      links_MU1c
+  Artifacts:
+    verbose: true
+  Tainted: False
+  Filesize: 9.993mb
+  Number pixels: 3.289mb
+  Version: ImageMagick 6.5.3-5 2009-06-11 Q16 OpenMP http://www.imagemagick.org</description>
+    <originalTechnicalEnvironment>Stored in Leibniz supercomputing center on magnetic tapes. Tivoli Storage Manger.</originalTechnicalEnvironment>
+   </record>
+   <record shortName="Page 73 Thierbuch" fullname="bsb00027991_00073.tif" contentType="">
+    <data hasData="false"/>
+    <formatInfo>
+     <changelog created="2009-07-30T14:09:08" createdBy="admin" changed="2009-07-30T14:09:08"/>
+    </formatInfo>
+    <changelog created="2009-07-30T14:09:08" createdBy="admin" changed="2009-07-31T16:52:11" changedBy="admin"/>
+    <description>Image described using ImageMagick:
+  Format: TIFF (Tagged Image File Format)
+  Class: DirectClass
+  Geometry: 1576x2188+0+0
+  Resolution: 300x300
+  Print size: 5.25333x7.29333
+  Units: PixelsPerInch
+  Type: TrueColor
+  Base type: TrueColor
+  Endianess: MSB
+  Colorspace: RGB
+  Depth: 8-bit
+  Channel depth:
+    red: 8-bit
+    green: 8-bit
+    blue: 8-bit
+  Transparent color: black
+  Compression: None
+  Orientation: TopLeft
+  Properties:
+    create-date: 2009-07-29T15:01:15+02:00
+    modify-date: 2009-07-27T23:26:02+02:00
+    signature: 3545099cd445748904e064180ea812eb53c5ffe82699464f248e5ae60786bfc7
+    tiff:rows-per-strip: 2
+    tiff:software: ScanGate V1.70b
+  Profiles:
+    Profile-icc: 125076 bytes
+      links_MU1c
+  Artifacts:
+    verbose: true
+  Tainted: False
+  Filesize: 9.993mb
+  Number pixels: 3.289mb
+  Version: ImageMagick 6.5.3-5 2009-06-11 Q16 OpenMP http://www.imagemagick.org</description>
+    <originalTechnicalEnvironment>Stored in Leibniz supercomputing center on magnetic tapes. Tivoli Storage Manger.</originalTechnicalEnvironment>
+   </record>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-08-01T15:09:20" changedBy="admin"/>
+  </sampleRecords>
+  <requirementsDefinition>
+   <description>The requirements have been elicited in a workshop together with the following participants:
+- Head of Digital Library/Munich Digitization centre at Bavarian State Library
+- Employees from the Bavarian State Library, department for digitization 
+- Employees from the Leibniz supercomputing center responsible for archiving the digital objects.</description>
+   <uploads/>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-08-01T16:33:36" changedBy="admin"/>
+  </requirementsDefinition>
+  <alternatives>
+   <alternative discarded="false" name="Keep status quo">
+    <description>We leave our collection unaltered.</description>
+    <resourceDescription>
+     <configSettings>None.</configSettings>
+     <reasonForConsidering>There is no urgent risk identified for TIFF version 6, it's widely used and open.</reasonForConsidering>
+     <changelog created="2009-07-30T10:55:29" createdBy="admin" changed="2009-08-02T15:54:06" changedBy="admin"/>
+    </resourceDescription>
+    <experiment>
+     <description>Leave the TIFF masters unaltered.</description>
+     <settings>None.</settings>
+     <results/>
+     <detailedInfos/>
+     <changelog created="2009-07-30T10:55:29" createdBy="admin" changed="2009-08-02T16:26:33" changedBy="admin"/>
+    </experiment>
+    <changelog created="2009-07-30T10:55:29" createdBy="admin" changed="2009-08-02T15:54:18" changedBy="admin"/>
+   </alternative>
+   <alternative discarded="false" name="ImageMagick - TIFF to JP2">
+    <description>Version: ImageMagick 6.5.3-5 2009-06-11 Q16 OpenMP http://www.imagemagick.org
+Copyright: Copyright (C) 1999-2009 ImageMagick Studio LLC</description>
+    <resourceDescription>
+     <configSettings>-compress Lossless -quality 100</configSettings>
+     <reasonForConsidering>We already use ImageMagick for creating the access copies.</reasonForConsidering>
+     <changelog created="2009-07-30T10:55:54" createdBy="admin" changed="2009-08-01T15:23:24" changedBy="admin"/>
+    </resourceDescription>
+    <experiment>
+     <description>The experiment will be carried out on a Intel Core 2 Duo CPU, U9400 @ 1.40 GHz, 2 GB RAM running Windows XP, Version 2002, Service Pack 2. No other computational intensive operations will be carried out during the migration process. The machine will be used exclusively for the migration experiment.</description>
+     <settings>-compress Lossless -quality 100</settings>
+     <results/>
+     <detailedInfos/>
+     <changelog created="2009-07-30T10:55:54" createdBy="admin" changed="2009-08-01T15:28:06" changedBy="admin"/>
+    </experiment>
+    <changelog created="2009-07-30T10:55:54" createdBy="admin" changed="2009-08-02T15:58:19" changedBy="admin"/>
+   </alternative>
+   <alternative discarded="false" name="GraphicsMagick - TIFF to JP2">
+    <description>GraphicsMagick 1.3.6 2009-07-25 Q8 http://www.GraphicsMagick.org/
+Copyright (C) 2002-2009 GraphicsMagick Group.
+Additional copyrights and licenses apply to this software.
+See http://www.GraphicsMagick.org/www/Copyright.html for details.
+
+GraphicsMagick is originally derived from ImageMagick 5.5.2 but has been completely independent of the ImageMagick project since then. 
+
+From the online help:
+Here are some reasons to prefer GraphicsMagick over ImageMagick:
+
+        * GM is much more efficient (see the benchmarks) so it gets the job done faster using fewer resources.
+        * GM is much smaller and tighter.
+        * GM is used to process billions of files at the world's largest photo sites (e.g. Flickr, see John Allspaw's presentation).
+        * GM does not does not conflict with other installed software.
+        * GM suffers from fewer security issues and exploits.
+        * GM comes with a comprehensive manual page.
+        * GM provides API and ABI stability and managed releases that you can count on.
+        * GM provides detailed yet comprehensible ChangeLog and NEWS files.
+        * GM is available for free, and may be used to support both open and proprietary applications.
+        * GM is distributed under an X11-style license ("MIT License"), approved by the Open Source Initiative.
+        * GM developers contribute to other free projects for the public good.</description>
+    <resourceDescription>
+     <necessaryResources>Behaviour and usage (especially command line parameters) of GraphicsMagick are similar to ImageMagick. Since we heavily use ImageMagick in the Bavarian State Library no considerable effort is necessary for running GraphicsMagick.</necessaryResources>
+     <configSettings>-compress Lossless -quality 100</configSettings>
+     <reasonForConsidering>GraphicsMagick is said to be better than ImageMagick for migrating to JPEG 2000.</reasonForConsidering>
+     <changelog created="2009-07-30T10:57:00" createdBy="admin" changed="2009-08-02T16:01:24" changedBy="admin"/>
+    </resourceDescription>
+    <experiment>
+     <description>The experiment will be carried out on a Intel Core 2 Duo CPU, U9400 @ 1.40 GHz, 2 GB RAM running Windows XP, Version 2002, Service Pack 2. No other computational intensive operations will be carried out during the migration process. The machine will be used exclusively for the migration experiment.</description>
+     <settings>-compress Lossless -quality 100</settings>
+     <results/>
+     <detailedInfos/>
+     <changelog created="2009-07-30T10:57:00" createdBy="admin" changed="2009-08-01T15:28:08" changedBy="admin"/>
+    </experiment>
+    <changelog created="2009-07-30T10:57:00" createdBy="admin" changed="2009-08-02T16:02:08" changedBy="admin"/>
+   </alternative>
+   <alternative discarded="false" name="Kakadu - TIFF to JP2">
+    <description>Kakadu V6.1. Kakadu ships with several compiled commands for various application areas. We use the kdu_compress.exe command from the suite. Currently accepted image file formats are: TIFF, RAW (big-endian), RAWL (little-endian), BMP, PBM, PGM and PPM</description>
+    <resourceDescription>
+     <necessaryResources>The usage_examples.txt file which is included in the downloaded version accurately explains which command has to be used using which parameter settings for lossless migration.</necessaryResources>
+     <configSettings>kdu_compress -i &lt;input file&gt; -o &lt;output file&gt; Creversible=yes -rate -,1,0.5,0.25 Clevels=5
+Adopted from Kakadu's usage_examples.txt file</configSettings>
+     <reasonForConsidering>Kakadu is a powerful open-source, although license-fee bound library for converting images and video files. The "Truly Lossless JPEG2000 Compression" article which can be found at http://dltj.org/article/lossless-jpeg-2000/ reports positively on this tool.</reasonForConsidering>
+     <changelog created="2009-07-30T10:57:35" createdBy="admin" changed="2009-08-02T16:16:40" changedBy="admin"/>
+    </resourceDescription>
+    <experiment>
+     <description>The experiment will be carried out on a Intel Core 2 Duo CPU, U9400 @ 1.40 GHz, 2 GB RAM running Windows XP, Version 2002, Service Pack 2. No other computational intensive operations will be carried out during the migration process. The machine will be used exclusively for the migration experiment.</description>
+     <settings>kdu_compress -i &lt;input file&gt; -o &lt;output file&gt; Creversible=yes -rate -,1,0.5,0.25 Clevels=5
+These parameter settings were taken from the Kakadu Usage_Examples.txt.</settings>
+     <results/>
+     <detailedInfos/>
+     <changelog created="2009-07-30T10:57:35" createdBy="admin" changed="2009-08-01T15:28:59" changedBy="admin"/>
+    </experiment>
+    <changelog created="2009-07-30T10:57:35" createdBy="admin" changed="2009-08-02T16:16:40" changedBy="admin"/>
+   </alternative>
+   <alternative discarded="false" name="GeoJasper - TIFF to JP2">
+    <description>GeoJasper 1.3.1. GeoJasper is a Geo supporting transcoder based on enhanced jasper library (i.e., it converts image data from one format to another) correctly transferring geo information between GeoTiff and GeoJP2(tm).</description>
+    <resourceDescription>
+     <necessaryResources>GeoJasper gives very detailed usage information and is thus easy to use. It can be downloaded as zip archive and simple copied on the hard disk. From that point on GeoJasper is ready.</necessaryResources>
+     <configSettings>echo geojasper --verbose -f &lt;input file&gt; -F &lt;output file&gt; -T jp2</configSettings>
+     <reasonForConsidering>GeoJasper is reported to be one of the most frequently used tools for TIFF to JPEG2000 migration.</reasonForConsidering>
+     <changelog created="2009-07-30T10:59:25" createdBy="admin" changed="2009-08-02T16:24:38" changedBy="admin"/>
+    </resourceDescription>
+    <experiment>
+     <description>The experiment will be carried out on a Intel Core 2 Duo CPU, U9400 @ 1.40 GHz, 2 GB RAM running Windows XP, Version 2002, Service Pack 2. No other computational intensive operations will be carried out during the migration process. The machine will be used exclusively for the migration experiment.</description>
+     <settings>--verbose -f &lt;input file&gt; -F &lt;output file&gt; -T jp2</settings>
+     <results/>
+     <detailedInfos/>
+     <changelog created="2009-07-30T10:59:25" createdBy="admin" changed="2009-08-02T16:26:20" changedBy="admin"/>
+    </experiment>
+    <changelog created="2009-07-30T10:59:25" createdBy="admin" changed="2009-08-02T16:24:39" changedBy="admin"/>
+   </alternative>
+   <alternative discarded="true" name="LuraWave JP2">
+    <description>Version 2.1.05.03</description>
+    <resourceDescription>
+     <configSettings>GUI</configSettings>
+     <changelog created="2009-07-30T14:12:10" createdBy="admin" changed="2009-07-30T14:13:38" changedBy="admin"/>
+    </resourceDescription>
+    <experiment>
+     <results/>
+     <detailedInfos/>
+     <changelog created="2009-07-30T14:12:10" createdBy="admin" changed="2009-07-30T14:12:10"/>
+    </experiment>
+    <changelog created="2009-07-30T14:12:10" createdBy="admin" changed="2009-07-30T14:14:20" changedBy="admin"/>
+   </alternative>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-07-30T14:13:49" changedBy="admin"/>
+  </alternatives>
+  <decision>
+   <reason>In some pre-tests LuraWave was the only tool that successfully preserved the image resolution of our TIFF images. However, due to the fact that it's not open source we don't consider it in this evaluation.</reason>
+   <actionNeeded>Carry out the experiments using these tools.</actionNeeded>
+   <goDecision value="GO"/>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-08-02T16:25:41" changedBy="admin"/>
+  </decision>
+  <evaluation>
+   <comment>For evaluating image identity two tools were used. ImageMagick compare and GraphicsMagick compare. Only if both tools report that no pixels are different we consider the original TIFF image and the migrated JPEG 2000 image identical.</comment>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-08-02T16:34:36" changedBy="admin"/>
+  </evaluation>
+  <importanceWeighting>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-07-30T08:34:34"/>
+  </importanceWeighting>
+  <recommendation alternativeName="Keep status quo">
+   <reasoning>As the evaluation shows keeping the status quo is the preferred preservation action. The resulting JPEG 2000 files do not fulfill our requirements. At the moment it looks as if the tools do not migrate the files correctly. However further investigation on the JPEG 2000 file format must be done because we haven't yet found out if the tools fail to preserve the color profile or if the JPEG 2000 standard doesn't allow the profiles. The JPEG 2000 Extension (JPX) allows custom color profiles but we do not intend to migrate to this format as only the core part of JPEG 2000 is royalty and license-fee free.</reasoning>
+   <effects>We do not migrate the TIFF collection yet but revisit the plan within the next 6 - 12 months for re-evaluation. Maybe the tools will improve and suite our need more.</effects>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-07-30T08:34:34"/>
+  </recommendation>
+  <transformation>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-07-30T08:34:34"/>
+  </transformation>
+  <tree weightsInitialized="true">
+   <node name="Scans" weight="1.0" single="false" lock="false">
+    <description/>
+    <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T16:55:42"/>
+    <node name="Object characteristics" weight="0.25" single="false" lock="false">
+     <description/>
+     <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+     <node name="Content" weight="0.5" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <leaf name="image size identical" weight="0.11" single="false" lock="false">
+       <description>This requirement also says something about the stability of the tool used for migration. In case the tool crashes the image size might not be identical. The same pertains to "image identical"</description>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="0.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:33:17" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:10"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:15"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:16"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:18"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:19"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:20"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:31"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:35"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:37"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:38"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:40"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:41"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:03"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:05"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:06"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:07"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:07"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:09"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:14:56"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:14:57"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:14:58"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:14:58"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:15:00"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:15:02"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:21"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:22"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:26"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:27"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:29"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:30"/>
+         </booleanResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="image identical" weight="0.11" single="false" lock="false">
+       <description>The pixel information must be the same. This requirement also says something about the stability of the tool used for migration. In case the tool crashes the image might not be identical. The same pertains to "image identical"</description>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="0.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:32:27" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:36"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:37"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:39"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:40"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:41"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:43"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:16"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:17"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:30"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:31"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:34"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:35"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:26"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:27"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:28"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:29"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:30"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:32"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:16:59"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:00"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:02"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:03"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:04"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:05"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:46"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:47"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:48"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:49"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:51"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:17:52"/>
+         </booleanResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <node name="additional meta data" weight="0.11" single="false" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <leaf name="tiff propreties retained" weight="1.0" single="false" lock="false">
+        <description/>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+        <aggregationMode value="WORST"/>
+        <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+        </booleanScale>
+        <ordinalTransformer>
+         <mappings>
+          <mapping ordinal="Yes" target="5.0"/>
+          <mapping ordinal="No" target="2.0"/>
+         </mappings>
+         <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:33:42" changedBy="admin"/>
+        </ordinalTransformer>
+        <evaluation>
+         <alternative key="GraphicsMagick - TIFF to JP2">
+          <comment>artist,datetime of creation,used software are lost</comment>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:40"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:42"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:43"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:44"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:45"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:46"/>
+          </booleanResult>
+         </alternative>
+         <alternative key="GeoJasper - TIFF to JP2">
+          <comment>artist,datetime of creation,used software are lost</comment>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:23:06"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:23:08"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:23:11"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:23:13"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:23:14"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:23:15"/>
+          </booleanResult>
+         </alternative>
+         <alternative key="ImageMagick - TIFF to JP2">
+          <comment>artist,datetime of creation,used software are lost</comment>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:20:32"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:20:33"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:20:34"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:20:36"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:20:37"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:20:38"/>
+          </booleanResult>
+         </alternative>
+         <alternative key="Keep status quo">
+          <booleanResult value="Yes">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:47"/>
+          </booleanResult>
+          <booleanResult value="Yes">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:48"/>
+          </booleanResult>
+          <booleanResult value="Yes">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:49"/>
+          </booleanResult>
+          <booleanResult value="Yes">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:50"/>
+          </booleanResult>
+          <booleanResult value="Yes">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:52"/>
+          </booleanResult>
+          <booleanResult value="Yes">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:19:54"/>
+          </booleanResult>
+         </alternative>
+         <alternative key="Kakadu - TIFF to JP2">
+          <comment>artist,datetime of creation,used software are lost</comment>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:53"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:55"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:56"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:57"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:22:58"/>
+          </booleanResult>
+          <booleanResult value="No">
+           <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:23:00"/>
+          </booleanResult>
+         </alternative>
+        </evaluation>
+       </leaf>
+      </node>
+      <leaf name="color depth identical" weight="0.11" single="false" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="0.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:34:02" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:57"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:57"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:58"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:58"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:58"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:58"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:07"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:08"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:08"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:08"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:08"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:12"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:44"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:47"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:48"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:48"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:48"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:49"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:38"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:39"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:40"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:41"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:42"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:24:43"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:01"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:01"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:01"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:02"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:02"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:03"/>
+         </booleanResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="resolution identical" weight="0.11" single="false" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="1.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:34:50" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <comment>resolution information lost</comment>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:42"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:42"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:43"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:43"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:44"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:49"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <comment>resolution information lost</comment>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:54"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:54"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:55"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:55"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:56"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:57"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <comment>resolution information lost</comment>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:37"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:38"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:39"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:39"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:39"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:40"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:23"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:25"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:27"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:28"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:28"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:29"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <comment>resolution information lost</comment>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:50"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:50"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:51"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:51"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:51"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:25:52"/>
+         </booleanResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="resolution unit identical" weight="0.11" single="false" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="1.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:35:20" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <comment>GraphicsMagick,ImageMagick,Jhove say no</comment>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:46"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:47"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:48"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:48"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:49"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:50"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <comment>GraphicsMagick,ImageMagick,Jhove say no</comment>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:40:01"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:40:01"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:40:01"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:40:02"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:40:02"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:40:03"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <comment>GraphicsMagick,ImageMagick,Jhove say no</comment>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:41"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:42"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:43"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:43"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:44"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:44"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:36:56"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:37:00"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:37:02"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:37:03"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:37:05"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:36"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <comment>GraphicsMagick,ImageMagick,Jhove say no</comment>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:56"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:56"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:57"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:57"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:58"/>
+         </booleanResult>
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:39:58"/>
+         </booleanResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="color profile identical" weight="0.11" single="false" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <ordinalScale unit="" displayName="Ordinal" restriction="Yes/migrated to identical one/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </ordinalScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="1.0"/>
+         <mapping ordinal="migrated to identical one" target="5.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:36:10" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <comment>substituted with default profile</comment>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:21"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:23"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:23"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:24"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:24"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:24"/>
+         </ordinalResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <comment>substituted with default profile</comment>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:31"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:31"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:32"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:32"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:32"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:37"/>
+         </ordinalResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <comment>substituted with default profile</comment>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:18"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:19"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:19"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:19"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:20"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:20"/>
+         </ordinalResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <ordinalResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:01"/>
+         </ordinalResult>
+         <ordinalResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:05"/>
+         </ordinalResult>
+         <ordinalResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:10"/>
+         </ordinalResult>
+         <ordinalResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:11"/>
+         </ordinalResult>
+         <ordinalResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:13"/>
+         </ordinalResult>
+         <ordinalResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:14"/>
+         </ordinalResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <comment>substituted with default profile</comment>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:29"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:29"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:29"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:29"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:30"/>
+         </ordinalResult>
+         <ordinalResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:41:30"/>
+         </ordinalResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="color space identical" weight="0.12" single="false" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="0.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:36:23" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:55"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:55"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:55"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:55"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:56"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:56"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:04"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:04"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:04"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:05"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:05"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:05"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:52"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:52"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:52"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:53"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:53"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:53"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:42:39"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:42:40"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:42:41"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:42:41"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:42:41"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:42:41"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:58"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:58"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:59"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:59"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:43:59"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:00"/>
+         </booleanResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="original size identical" weight="0.11" single="false" lock="false">
+       <description>If the 'original size' was preserved. If this information is lost the digital image is not authentic any more because the size of the scanned page is lost.</description>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="1.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:36:52" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <comment>was preserved, no information why</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:39"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:39"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:40"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:40"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:40"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:41"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <comment>was preserved, no information why</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:45"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:45"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:46"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:46"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:46"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:47"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <comment>was preserved, no information why</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:36"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:37"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:37"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:37"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:37"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:38"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:18"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:19"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:19"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:19"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:44:19"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:19"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <comment>was preserved, no information why</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:42"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:43"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:43"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:43"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:43"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:45:44"/>
+         </booleanResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+     </node>
+     <node name="Context" weight="0.5" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <leaf name="existent OCR still valid" weight="1.0" single="false" lock="false">
+       <description>If there is OCR data from the source image is available can it be applied to the migrated object or do we have to OCR the migrated objects again? This mainly refers to (x,y) location information OCR contains.</description>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="0.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:37:18" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <comment>derived from req. "image size"</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:28"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:29"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:29"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:29"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:29"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:30"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <comment>derived from req. "image size"</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:35"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:35"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:35"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:35"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:35"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:36"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <comment>derived from req. "image size"</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:24"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:24"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:24"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:25"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:25"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:25"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:47:48"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:47:48"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:47:48"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:47:48"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:47:48"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:47:49"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <comment>derived from req. "image size"</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:31"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:31"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:31"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:32"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:32"/>
+         </booleanResult>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:48:33"/>
+         </booleanResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+     </node>
+    </node>
+    <node name="Technical characteristics" weight="0.25" single="false" lock="false">
+     <description/>
+     <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+     <leaf name="Supported by browsers" weight="0.08" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale unit="" displayName="Ordinal" restriction="most browsers/some/none">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="some" target="3.0"/>
+        <mapping ordinal="none" target="1.0"/>
+        <mapping ordinal="most browsers" target="5.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:38:25" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <comment>JPEG 2000 not supported by browsers</comment>
+        <ordinalResult value="none">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:51:47"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <comment>JPEG 2000 not supported by browsers</comment>
+        <ordinalResult value="none">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:51:54"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>JPEG 2000 not supported by browsers</comment>
+        <ordinalResult value="none">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:51:45"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <comment>TIFF not supported by browsers</comment>
+        <ordinalResult value="none">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:51:41"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <comment>JPEG 2000 not supported by browsers</comment>
+        <ordinalResult value="none">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:51:48"/>
+        </ordinalResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="Ubiquity" weight="0.08" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale unit="" displayName="Ordinal" restriction="Ubiquitous/Widespread/Specialized/Obsolete">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Specialized" target="1.0"/>
+        <mapping ordinal="Obsolete" target="0.0"/>
+        <mapping ordinal="Ubiquitous" target="5.0"/>
+        <mapping ordinal="Widespread" target="3.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:38:42" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <comment>Based on LoC File Formats Database</comment>
+        <ordinalResult value="Widespread">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:54:17"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <comment>Based on LoC File Formats Database</comment>
+        <ordinalResult value="Widespread">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:56:41"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>Based on LoC File Formats Database</comment>
+        <ordinalResult value="Widespread">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:54:15"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <ordinalResult value="Ubiquitous">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:53:12"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <comment>Based on LoC File Formats Database</comment>
+        <ordinalResult value="Widespread">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:54:18"/>
+        </ordinalResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="OCR possible" weight="0.08" single="true" lock="false">
+      <description>Whether there is software available that can OCR from that file format. There is plenty of software for TIFF for instance.</description>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:38:54" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <comment>Lack of Software supporting JP2</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:57:18"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <comment>Lack of Software supporting JP2</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:57:21"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>Lack of Software supporting JP2</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:57:16"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:57:05"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <comment>Lack of Software supporting JP2</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:57:19"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="reversible migration wrt. pixel information" weight="0.08" single="true" lock="false">
+      <description>Did pixel information change. We can test that by comparing the source image with a TIFF version that has been generated from the migrated object.</description>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T16:58:23" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:39:28" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <comment>But TIFF meta data is lost</comment>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:58:02"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <comment>But TIFF meta data is lost</comment>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:58:16"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>But TIFF meta data is lost</comment>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:58:01"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <comment>Already tiff</comment>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:57:46"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <comment>But TIFF meta data is lost</comment>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:58:03"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="compression" weight="0.09" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale unit="" displayName="Ordinal" restriction="none/lossless/lossy">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="none" target="5.0"/>
+        <mapping ordinal="lossless" target="5.0"/>
+        <mapping ordinal="lossy" target="0.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:40:33" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <ordinalResult value="lossless">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:59:50"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <ordinalResult value="lossless">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:59:57"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <ordinalResult value="lossless">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:59:49"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <ordinalResult value="none">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:59:47"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <ordinalResult value="lossless">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T14:59:51"/>
+        </ordinalResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="relative file size" weight="0.08" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="factor" displayName="Positive number" restriction="">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>1.1</threshold1>
+        <threshold2>1.0</threshold2>
+        <threshold3>0.8</threshold3>
+        <threshold4>0.7</threshold4>
+        <threshold5>0.6</threshold5>
+       </thresholds>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:35" changedBy="admin"/>
+      </numericTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:01:29"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:41"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:42"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:43"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:44"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:46"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:01:43"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:57"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:58"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:58"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:59"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:03:01"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:01:28"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:32"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:33"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:33"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:39"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:40"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <positiveFloatResult value="1.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:00:05"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="1.0">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:15"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="1.0">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:18"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="1.0">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:19"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="1.0">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:19"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="1.0">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:20"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:01:31"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:48"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:49"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:50"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:50"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.6">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:02:51"/>
+        </positiveFloatResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="master = access copy" weight="0.09" single="true" lock="false">
+      <description>Can we use the master image also as access copy? This would reduce the number of derivatives we need and the storage necessary.</description>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="3.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:42:52" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <comment>no adequat browser support</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:02:03"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <comment>no adequat browser support</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:02:05"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>no adequat browser support</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:02:02"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:02:01"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <comment>no adequat browser support</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:02:03"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="stability" weight="0.08" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale unit="" displayName="Ordinal" restriction="stable/changes possible/under development">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="under development" target="0.0"/>
+        <mapping ordinal="stable" target="5.0"/>
+        <mapping ordinal="changes possible" target="1.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:43:23" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <comment>core file format stable</comment>
+        <ordinalResult value="stable">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:03:49"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <comment>core file format stable</comment>
+        <ordinalResult value="stable">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:03:56"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>core file format stable</comment>
+        <ordinalResult value="stable">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:03:47"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <ordinalResult value="stable">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:03:18"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <comment>core file format stable</comment>
+        <ordinalResult value="stable">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:03:50"/>
+        </ordinalResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="creation of pdf possible" weight="0.09" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:43:57" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:10:58"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:03"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:10:55"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:06:35"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:10:59"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="publishers can work with master" weight="0.08" single="true" lock="false">
+      <description>Publishers often access our collection. In contrast to users accessing the collection via the web, publishers need the high resolution version of the image which is the TIFF master. We never had issues or had to migrate the file before publishers could use them. Potential new master formats should fulfill this requirement.</description>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:44:57" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <comment>As it's well supported by Photoshop</comment>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:19"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <comment>As it's well supported by Photoshop</comment>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:21"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>As it's well supported by Photoshop</comment>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:17"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:04"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <comment>As it's well supported by Photoshop</comment>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:20"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="standardisation" weight="0.09" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale unit="" displayName="Ordinal" restriction="ISO standard/open/proprietary">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="ISO standard" target="4.0"/>
+        <mapping ordinal="open" target="5.0"/>
+        <mapping ordinal="proprietary" target="0.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:45:30" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <ordinalResult value="ISO standard">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:54"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <ordinalResult value="ISO standard">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:56"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <ordinalResult value="ISO standard">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:52"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <ordinalResult value="open">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:50"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <ordinalResult value="ISO standard">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:11:55"/>
+        </ordinalResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="Licensing" weight="0.08" single="true" lock="false">
+      <description>Do any fees apply? JPEG 2000 for instance has 17 patent holders. Is that a problem?</description>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale unit="" displayName="Ordinal" restriction="free/costs apply">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="free" target="5.0"/>
+        <mapping ordinal="costs apply" target="0.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:45:39" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <comment>core part is free of costs</comment>
+        <ordinalResult value="free">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:12:05"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <comment>core part is free of costs</comment>
+        <ordinalResult value="free">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:12:08"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>core part is free of costs</comment>
+        <ordinalResult value="free">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:12:03"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <ordinalResult value="free">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:12:02"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <comment>core part is free of costs</comment>
+        <ordinalResult value="free">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:12:06"/>
+        </ordinalResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+    </node>
+    <node name="Costs" weight="0.25" single="false" lock="false">
+     <description/>
+     <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+     <leaf name="external expertise necessary" weight="0.2" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="1.0"/>
+        <mapping ordinal="No" target="5.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:46:10" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <comment>we know the tool</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:17:35"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <comment>we know the tool</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:17:39"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>we know the tool</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:17:34"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:17:16"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <comment>we know the tool</comment>
+        <booleanResult value="No">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:17:36"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <node name="HW" weight="0.2" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <leaf name="additional hardware needed" weight="1.0" single="true" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="3.0"/>
+         <mapping ordinal="No" target="5.0"/>
+        </mappings>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:46:43" changedBy="admin"/>
+       </ordinalTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <comment>small server needed</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:27:20"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <comment>small server needed</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:27:24"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <comment>small server needed</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:27:19"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <booleanResult value="No">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:23:11"/>
+         </booleanResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <comment>small server needed</comment>
+         <booleanResult value="Yes">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:27:21"/>
+         </booleanResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+     </node>
+     <node name="SW" weight="0.2" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <leaf name="initial costs" weight="0.33" single="true" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="AVERAGE"/>
+       <positiveFloatScale unit="euros" displayName="Positive number" restriction="">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </positiveFloatScale>
+       <numericTransformer>
+        <mode value="THRESHOLD_STEPPING"/>
+        <thresholds>
+         <threshold1>3000.0</threshold1>
+         <threshold2>2500.0</threshold2>
+         <threshold3>1500.0</threshold3>
+         <threshold4>500.0</threshold4>
+         <threshold5>0.0</threshold5>
+        </thresholds>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:47:55" changedBy="admin"/>
+       </numericTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:30:36"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:30:50"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:29:46"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:29:44"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <comment>license costs</comment>
+         <positiveFloatResult value="200.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:30:41"/>
+         </positiveFloatResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="running costs" weight="0.34" single="true" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="AVERAGE"/>
+       <positiveFloatScale unit="euros" displayName="Positive number" restriction="">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </positiveFloatScale>
+       <numericTransformer>
+        <mode value="THRESHOLD_STEPPING"/>
+        <thresholds>
+         <threshold1>4000.0</threshold1>
+         <threshold2>3000.0</threshold2>
+         <threshold3>2000.0</threshold3>
+         <threshold4>1000.0</threshold4>
+         <threshold5>0.0</threshold5>
+        </thresholds>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:48:44" changedBy="admin"/>
+       </numericTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:31:40"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:31:45"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:31:39"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:31:38"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:31:40"/>
+         </positiveFloatResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="development" weight="0.33" single="true" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="AVERAGE"/>
+       <positiveFloatScale unit="person hours" displayName="Positive number" restriction="">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </positiveFloatScale>
+       <numericTransformer>
+        <mode value="THRESHOLD_STEPPING"/>
+        <thresholds>
+         <threshold1>300.0</threshold1>
+         <threshold2>200.0</threshold2>
+         <threshold3>140.0</threshold3>
+         <threshold4>30.0</threshold4>
+         <threshold5>0.0</threshold5>
+        </thresholds>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:50:25" changedBy="admin"/>
+       </numericTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <positiveFloatResult value="200.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:33:19"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <positiveFloatResult value="200.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:33:57"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <positiveFloatResult value="200.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:33:18"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:32:08"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <positiveFloatResult value="200.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:33:20"/>
+         </positiveFloatResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+     </node>
+     <node name="migration process" weight="0.2" single="false" lock="false">
+      <description>The Leipzig supercomputing center is currently following a "pay per volume" model. Depending on the volume that is retrieved from or (re-)ingested into the archive. A migration project would mean we pay for retrieving and reingesting.</description>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <leaf name="re-ingest" weight="0.33" single="true" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="AVERAGE"/>
+       <positiveFloatScale unit="euros per TB" displayName="Positive number" restriction="">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </positiveFloatScale>
+       <numericTransformer>
+        <mode value="THRESHOLD_STEPPING"/>
+        <thresholds>
+         <threshold1>400.0</threshold1>
+         <threshold2>300.0</threshold2>
+         <threshold3>200.0</threshold3>
+         <threshold4>100.0</threshold4>
+         <threshold5>0.0</threshold5>
+        </thresholds>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:51:01" changedBy="admin"/>
+       </numericTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <positiveFloatResult value="100.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:34:39"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <positiveFloatResult value="100.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:35:00"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <positiveFloatResult value="100.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:34:38"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:40:22"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <positiveFloatResult value="100.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:34:41"/>
+         </positiveFloatResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="retrieve from archive" weight="0.34" single="true" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="AVERAGE"/>
+       <positiveFloatScale unit="euros per TB" displayName="Positive number" restriction="">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </positiveFloatScale>
+       <numericTransformer>
+        <mode value="THRESHOLD_STEPPING"/>
+        <thresholds>
+         <threshold1>400.0</threshold1>
+         <threshold2>300.0</threshold2>
+         <threshold3>200.0</threshold3>
+         <threshold4>100.0</threshold4>
+         <threshold5>0.0</threshold5>
+        </thresholds>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:51:11" changedBy="admin"/>
+       </numericTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <positiveFloatResult value="100.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:40:26"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <positiveFloatResult value="100.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:41:30"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <positiveFloatResult value="100.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:40:25"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:40:23"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <positiveFloatResult value="100.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:40:27"/>
+         </positiveFloatResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+      <leaf name="migration" weight="0.33" single="true" lock="false">
+       <description/>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+       <aggregationMode value="AVERAGE"/>
+       <positiveFloatScale unit="euros per TB" displayName="Positive number" restriction="">
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+       </positiveFloatScale>
+       <numericTransformer>
+        <mode value="THRESHOLD_STEPPING"/>
+        <thresholds>
+         <threshold1>400.0</threshold1>
+         <threshold2>300.0</threshold2>
+         <threshold3>200.0</threshold3>
+         <threshold4>100.0</threshold4>
+         <threshold5>0.0</threshold5>
+        </thresholds>
+        <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:51:23" changedBy="admin"/>
+       </numericTransformer>
+       <evaluation>
+        <alternative key="GraphicsMagick - TIFF to JP2">
+         <positiveFloatResult value="224.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:54:03"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="GeoJasper - TIFF to JP2">
+         <positiveFloatResult value="224.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:54:09"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="ImageMagick - TIFF to JP2">
+         <comment>rough est. of 4h per TB</comment>
+         <positiveFloatResult value="224.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:54:02"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Keep status quo">
+         <positiveFloatResult value="0.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:41:31"/>
+         </positiveFloatResult>
+        </alternative>
+        <alternative key="Kakadu - TIFF to JP2">
+         <positiveFloatResult value="224.0">
+          <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:54:04"/>
+         </positiveFloatResult>
+        </alternative>
+       </evaluation>
+      </leaf>
+     </node>
+     <leaf name="adaptions of existing system" weight="0.2" single="true" lock="false">
+      <description>Estimation of the costs for adapting the current system in the Bavarian State Library to the new master format. A detailed breakdown of the costs will be done in the next revision of this plan. At the moment a single figure should be provided.</description>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:37" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="euros" displayName="Positive number" restriction="">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>50000.0</threshold1>
+        <threshold2>40000.0</threshold2>
+        <threshold3>30000.0</threshold3>
+        <threshold4>22400.0</threshold4>
+        <threshold5>0.0</threshold5>
+       </thresholds>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:52:42" changedBy="admin"/>
+      </numericTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <positiveFloatResult value="22400.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:56:32"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <positiveFloatResult value="22400.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:56:38"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <comment>rough est. of 2 person months</comment>
+        <positiveFloatResult value="22400.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:56:30"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <positiveFloatResult value="0.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:54:14"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <positiveFloatResult value="22400.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T15:56:33"/>
+        </positiveFloatResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+    </node>
+    <node name="Process characteristics" weight="0.25" single="false" lock="false">
+     <description/>
+     <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T17:13:14" changedBy="admin"/>
+     <leaf name="retain filename" weight="0.11" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T17:15:46" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:53:21" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:41"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:41"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:42"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:42"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:43"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:44"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:53"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:53"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:54"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:54"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:54"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:54"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:39"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:39"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:40"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:40"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:40"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:40"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:34"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:35"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:35"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:35"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:35"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:35"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:49"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:49"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:49"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:50"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:50"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:13:50"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="pixel compare possible" weight="0.11" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T17:15:46" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:53:28" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:09"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:09"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:09"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:10"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:10"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:10"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:15"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:16"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:16"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:16"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:17"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:17"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:06"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:07"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:07"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:07"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:07"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:08"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:02"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:03"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:03"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:03"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:04"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:04"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:12"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:13"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:13"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:13"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:13"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:14:14"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="Open Source" weight="0.11" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T17:15:46" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:53:48" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:00:53"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:03"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:00:52"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:00:48"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:00:56"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="Batch support automatic" weight="0.11" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T17:15:46" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:54:21" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:06"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:09"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:05"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:04"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:07"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="duration" weight="0.11" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T17:15:46" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="Seconds per MB" displayName="Positive number" restriction="">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="LINEAR"/>
+       <thresholds>
+        <threshold1>1.0</threshold1>
+        <threshold2>0.8</threshold2>
+        <threshold3>0.6</threshold3>
+        <threshold4>0.4</threshold4>
+        <threshold5>0.2</threshold5>
+       </thresholds>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-08-01T12:46:07" changedBy="admin"/>
+      </numericTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <positiveFloatResult value="0.58">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:42:37"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.63">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:42:43"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.65">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:42:50"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.65">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:42:55"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.54">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:43:09"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.52">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:43:13"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <positiveFloatResult value="0.53">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:44:12"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.54">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:44:17"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.55">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:44:21"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.56">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:44:26"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.49">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:44:30"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.48">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:44:35"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <positiveFloatResult value="0.5">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:41:30"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.52">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:41:33"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.51">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:41:37"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.51">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:41:43"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.45">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:41:52"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.46">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:41:59"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <positiveFloatResult value="0.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:17:11"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:17:12"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:17:12"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:17:12"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:17:13"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.0">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:17:13"/>
+        </positiveFloatResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <positiveFloatResult value="0.18">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:43:22"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.19">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:43:26"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.2">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:43:30"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.19">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:43:34"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.16">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:43:50"/>
+        </positiveFloatResult>
+        <positiveFloatResult value="0.17">
+         <changelog created="2009-07-30T14:14:33" changed="2009-08-01T12:43:57"/>
+        </positiveFloatResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="log output" weight="0.11" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T17:15:46" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale unit="" displayName="Ordinal" restriction="sufficient/existent/none">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="existent" target="3.0"/>
+        <mapping ordinal="none" target="0.0"/>
+        <mapping ordinal="sufficient" target="5.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:56:19" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:45"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:45"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:45"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:46"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:46"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:46"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <ordinalResult value="existent">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:41"/>
+        </ordinalResult>
+        <ordinalResult value="existent">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:42"/>
+        </ordinalResult>
+        <ordinalResult value="existent">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:44"/>
+        </ordinalResult>
+        <ordinalResult value="existent">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:46"/>
+        </ordinalResult>
+        <ordinalResult value="existent">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:47"/>
+        </ordinalResult>
+        <ordinalResult value="existent">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:49"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:40"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:41"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:41"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:41"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:42"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:42"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:19"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:24"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:24"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:25"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:25"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:25"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:26:56"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:31"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:33"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:34"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:35"/>
+        </ordinalResult>
+        <ordinalResult value="sufficient">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:28:36"/>
+        </ordinalResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="compatibility with server environment" weight="0.11" single="true" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T17:15:46" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:56:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:53"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:59"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:52"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:49"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-31T17:00:35" changed="2009-07-31T17:01:54"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="extraction of color profile necessary" weight="0.11" single="false" lock="false">
+      <description/>
+      <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-31T17:15:46" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T14:10:27"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="1.0"/>
+        <mapping ordinal="No" target="5.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:57:16" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:43"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:45"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:45"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:45"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:46"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:46"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:13"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:14"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:14"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:14"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:14"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:15"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:41"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:41"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:41"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:41"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:42"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:42"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:35"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:35"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:36"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:36"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:36"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:29:36"/>
+        </booleanResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:11"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:11"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:11"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:12"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:12"/>
+        </booleanResult>
+        <booleanResult value="Yes">
+         <changelog created="2009-07-30T14:14:33" changed="2009-07-30T16:31:12"/>
+        </booleanResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+     <leaf name="Free of cost" weight="0.12" single="true" lock="true">
+      <description/>
+      <changelog created="2009-07-31T17:13:14" createdBy="admin" changed="2009-07-31T17:16:16" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale unit="" displayName="Ordinal" restriction="Yes/One-time fee/Volume dependent/Per image">
+       <changelog created="2009-07-31T17:16:16" createdBy="admin" changed="2009-07-31T17:16:16"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="One-time fee" target="3.0"/>
+        <mapping ordinal="Per image" target="1.0"/>
+        <mapping ordinal="Volume dependent" target="2.0"/>
+       </mappings>
+       <changelog created="2009-07-30T14:10:27" createdBy="admin" changed="2009-07-30T16:33:17" changedBy="admin"/>
+      </ordinalTransformer>
+      <evaluation>
+       <alternative key="GraphicsMagick - TIFF to JP2">
+        <ordinalResult value="Yes">
+         <changelog created="2009-07-31T17:16:38" changed="2009-07-31T17:25:48"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="GeoJasper - TIFF to JP2">
+        <ordinalResult value="Yes">
+         <changelog created="2009-07-31T17:16:38" changed="2009-07-31T17:25:51"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="ImageMagick - TIFF to JP2">
+        <ordinalResult value="Yes">
+         <changelog created="2009-07-31T17:16:38" changed="2009-07-31T17:25:47"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Keep status quo">
+        <ordinalResult value="Yes">
+         <changelog created="2009-07-31T17:16:38" changed="2009-07-31T17:25:44"/>
+        </ordinalResult>
+       </alternative>
+       <alternative key="Kakadu - TIFF to JP2">
+        <ordinalResult value="One-time fee">
+         <changelog created="2009-07-31T17:16:38" changed="2009-07-31T17:25:50"/>
+        </ordinalResult>
+       </alternative>
+      </evaluation>
+     </leaf>
+    </node>
+   </node>
+  </tree>
+  <executablePlan>
+   <objectPath>Leipzig supercomputing center.</objectPath>
+   <toolParameters>None.</toolParameters>
+   <triggersConditions>We don't migrate our master images at the moment.</triggersConditions>
+   <validateQA>We don't migrate our master images at the moment.</validateQA>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-08-02T16:37:27" changedBy="admin"/>
+  </executablePlan>
+  <planDefinition currency="EUR">
+   <triggers>
+    <trigger type="NEW_COLLECTION" active="false"/>
+    <trigger type="PERIODIC_REVIEW" active="true" description="In 6 - 12 months we'll look at this plan again to see if there are more tools available or the ones we considered in our evaluation improved. Furthermore, by then JPEG 2000 could be better supported by browsers. This would enable us to use the master copy also as access copy to reduce total memory consumption since our 2 - 3 access copies would become obsolete."/>
+    <trigger type="CHANGED_ENVIRONMENT" active="true" description="It may be an option to store the ICC profiles separate from the master images. As this would mean a rather large change to our archival system a detailed evaluation is necessary. Once the evaluation is done we revisit this plan."/>
+    <trigger type="CHANGED_OBJECTIVE" active="false"/>
+    <trigger type="CHANGED_COLLECTION_PROFILE" active="false"/>
+   </triggers>
+   <changelog created="2009-07-30T08:34:34" createdBy="admin" changed="2009-08-02T16:59:20" changedBy="admin"/>
+  </planDefinition>
+ </plan>
+</plans>

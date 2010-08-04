@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/792">
+	<pronom:FormatID>792</pronom:FormatID>
+	<pronom:FormatName>JTIP (JPEG Tiled Image Pyramid)</pronom:FormatName>
+	<pronom:FormatAliases>JTIP</pronom:FormatAliases>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>JTIP is a multi-resolution format, created for image presentation with easy transfer and handling, based on SPIFF. It allows presentation of images in various sizes and resolutions from vignette (1/16 screen size, used for browsing) through imagette (1/4 screen, for image comparison), to full screen and higher resolution images. Each layer is divided into tiles so the user can zoom or pan easily. A file contains an internal ID for tiles, with each tile associated with a single file header and separated by markers. Under header there can be and optional table noting the tile offsets, or an external ID for separate files. JTIP is not widely used and is no longer supported.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Big-endian (Motorola)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>02 Feb 2007</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Feb 2007</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/149"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/799"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/149">
+	<pronom:Identifier>fmt/149</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/799">
+	<pronom:ExternalSignatureID>799</pronom:ExternalSignatureID>
+	<pronom:Signature>jpg</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+</rdf:RDF>

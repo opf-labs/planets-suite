@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/692">
+	<pronom:FormatID>692</pronom:FormatID>
+	<pronom:FormatName>Windows Media Audio</pronom:FormatName>
+	<pronom:FormatAliases>WMA</pronom:FormatAliases>
+	<pronom:FormatTypes>Audio</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>Windows Media Audio Format is a subtype of the Advanced Systems Format, developed by Microsoft for storing audio data streams. It comprises a Header Object, which describes the properties of the data streams, a Data Object, which contains the actual data streams stored in Data Packets and, optionally, one or more Index Objects. Audio data is stored using the Windows Media Audio codec, and the format supports streaming across networks.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ReleaseDate>01 Dec 2004</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-ms-wma"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/com.microsoft.windows-media-wma"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/132"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/3"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/613"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/731"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/81"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/693"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/693"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/691"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/691"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/691"/>
+	<pronom:IsSubtypeOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/691"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-ms-wma">
+	<pronom:Identifier>audio/x-ms-wma</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/com.microsoft.windows-media-wma">
+	<pronom:Identifier>com.microsoft.windows-media-wma</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/132">
+	<pronom:Identifier>fmt/132</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/3">
+	<pronom:DocumentID>3</pronom:DocumentID>
+	<pronom:DisplayText>Microsoft Corporation, 2004, Advanced Systems Format (ASF) Specification: Revision 01.20.03</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Dec 2004</pronom:PublicationDate>
+	<pronom:TitleText>Advanced Systems Format (ASF) Specification: Revision 01.20.03</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.microsoft.com/windows/windowsmedia/format/asfspec.aspx"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/93"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/93"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.microsoft.com/windows/windowsmedia/format/asfspec.aspx">
+	<pronom:Identifier>www.microsoft.com/windows/windowsmedia/format/asfspec.aspx</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/93">
+	<pronom:AuthorID>93</pronom:AuthorID>
+	<pronom:OrganisationName>Microsoft Corporation</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Microsoft Corporation</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/93">
+	<pronom:PublisherID>93</pronom:PublisherID>
+	<pronom:OrganisationName>Microsoft Corporation</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Microsoft Corporation</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/613">
+	<pronom:ExternalSignatureID>613</pronom:ExternalSignatureID>
+	<pronom:Signature>wma</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/731">
+	<pronom:ExternalSignatureID>731</pronom:ExternalSignatureID>
+	<pronom:Signature>asf</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/81">
+	<pronom:SignatureID>81</pronom:SignatureID>
+	<pronom:SignatureName>Windows Media Audio</pronom:SignatureName>
+	<pronom:SignatureNote>Header Object + Stream Properties Object (stream type = Audio Stream) with WMA Codec ID</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/148"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/149"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/148">
+	<pronom:ByteSequenceID>148</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>3026B2758E66CF11A6D900AA0062CE6C{12}0102</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/149">
+	<pronom:ByteSequenceID>149</pronom:ByteSequenceID>
+	<pronom:PositionType>Variable</pronom:PositionType>
+	<pronom:ByteSequenceValue>{30}9107DCB7B7A9CF118EE600C00C205365{8}409E69F84D5BCF11A8FD00805F5C442B{38}(6101|6201|6301)</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/693">
+	<pronom:FormatID>693</pronom:FormatID>
+	<pronom:FormatName>Windows Media Video</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/691">
+	<pronom:FormatID>691</pronom:FormatID>
+	<pronom:FormatName>Advanced Systems Format</pronom:FormatName>
+</rdf:Description>
+</rdf:RDF>

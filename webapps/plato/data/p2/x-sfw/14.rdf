@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/14">
+	<pronom:SoftwareID>14</pronom:SoftwareID>
+	<pronom:SoftwareName>Word</pronom:SoftwareName>
+	<pronom:Version>1.0 for Windows</pronom:Version>
+	<pronom:Description>No description available</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/14"/>
+	<pronom:SoftwareTypes>Word processing</pronom:SoftwareTypes>
+	<pronom:MediaFormat>5.25" Magnetic Disk</pronom:MediaFormat>
+	<pronom:ReleaseDate>01 Jan 1989</pronom:ReleaseDate>
+	<pronom:WithdrawnDate>01 Jul 1999</pronom:WithdrawnDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>23 Sep 2003</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:SupportingVendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/93"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/405"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/406"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/407"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/408"/>
+	<pronom:HasDefaultFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/733"/>
+	<pronom:CanCreate rdf:resource="http://nationalarchives.gov.uk/pronom/Format/733"/>
+	<pronom:HasDefaultFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/733"/>
+	<pronom:CanRender rdf:resource="http://nationalarchives.gov.uk/pronom/Format/733"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/14">
+	<pronom:Identifier>x-sfw/14</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/93">
+	<pronom:VendorID>93</pronom:VendorID>
+	<pronom:VendorName>Microsoft Corporation</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/405">
+	<pronom:FormatID>405</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>3.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/406">
+	<pronom:FormatID>406</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>4.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/407">
+	<pronom:FormatID>407</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>5.0</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/408">
+	<pronom:FormatID>408</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for MS-DOS Document</pronom:FormatName>
+	<pronom:Version>5.5</pronom:Version>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/733">
+	<pronom:FormatID>733</pronom:FormatID>
+	<pronom:FormatName>Microsoft Word for Windows Document</pronom:FormatName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:InvarianceText>Unchanged content</pronom:InvarianceText>
+	<pronom:Extension>doc</pronom:Extension>
+</rdf:Description>
+</rdf:RDF>

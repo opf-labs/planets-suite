@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+        <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+        <!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<rdf:Description rdf:about="">
+	<xsd:dateTime>2009-04-21T11:00:00</xsd:dateTime>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://dbpedia.org/resource/Portable_Document_Format">
+	<pronom:ReleaseDate>01 Jun 1993</pronom:ReleaseDate>
+	<pronom:stability rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/stability/not_compatible"/>
+	<pronom:identification_type rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/identification/positive_specific"/>
+	<pronom:format_type rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/format_type/lossy"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/613">
+	<pronom:rights rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/615">
+	<pronom:rights rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/616">
+	<pronom:rights rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/617">
+	<pronom:rights rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/614">
+	<pronom:rights rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/618">
+	<pronom:rights rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/637">
+	<pronom:rights rdf:resource="http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary"/>
+</rdf:Description>
+
+
+</rdf:RDF>

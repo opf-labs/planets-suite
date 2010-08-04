@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/708">
+	<pronom:FormatID>708</pronom:FormatID>
+	<pronom:FormatName>AutoCAD Drawing</pronom:FormatName>
+	<pronom:FormatVersion>2000-2002</pronom:FormatVersion>
+	<pronom:FormatAliases>DWG (2000-2002)</pronom:FormatAliases>
+	<pronom:FormatFamilies>DWG</pronom:FormatFamilies>
+	<pronom:FormatTypes>Image (Vector)</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Partial</pronom:FormatDisclosure>
+	<pronom:FormatDescription>The AutoCAD Drawing format is a vector graphics format, and is the native file format of AutoDesk's AutoCAD family of products. The format is proprietary and AutoDesk does not make details of its structure public. The information contained here is derived primarily from the OpenDWG Alliance's reverse-engineered documentation of the format, and should not therefore be regarded as definitive. The basic structure of a DWG file comprises a header section, a drawing class definitions section, the drawing object data, a drawing object map, which contains the locations of all the objects in the drawing, and an image data section, which may contain a raster image of the drawing in either Windows Bitmap (BMP) or Windows Metafile (WMF) format. DWG version 2000-2002 is the version of the format associated with Releases 2000, 2000i and 2002 of AutoCAD.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ReleaseDate>01 Mar 1999</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/35"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/image/vnd.dwg"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/7"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/700"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/97"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/724"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/724"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/709"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/709"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/707"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/707"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/35">
+	<pronom:Identifier>fmt/35</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/image/vnd.dwg">
+	<pronom:Identifier>image/vnd.dwg</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/7">
+	<pronom:DocumentID>7</pronom:DocumentID>
+	<pronom:DisplayText>OpenDWG Alliance, 2000, AutoCAD R13/R14/R2000 DWG File Specification: Version 2.0</pronom:DisplayText>
+	<pronom:DocumentType>Speculative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jan 2000</pronom:PublicationDate>
+	<pronom:TitleText>AutoCAD R13/R14/R2000 DWG File Specification: Version 2.0</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.opendesign.com/downloads/spec/formatSpec13-15.rtf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/118"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/118"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.opendesign.com/downloads/spec/formatSpec13-15.rtf">
+	<pronom:Identifier>www.opendesign.com/downloads/spec/formatSpec13-15.rtf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/118">
+	<pronom:AuthorID>118</pronom:AuthorID>
+	<pronom:OrganisationName>OpenDWG Alliance</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>OpenDWG Alliance</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/118">
+	<pronom:PublisherID>118</pronom:PublisherID>
+	<pronom:OrganisationName>OpenDWG Alliance</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>OpenDWG Alliance</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/700">
+	<pronom:ExternalSignatureID>700</pronom:ExternalSignatureID>
+	<pronom:Signature>dwg</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/97">
+	<pronom:SignatureID>97</pronom:SignatureID>
+	<pronom:SignatureName>AutoCAD Drawing Format 2000-2002</pronom:SignatureName>
+	<pronom:SignatureNote>Header</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/15"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/15">
+	<pronom:ByteSequenceID>15</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>414331303135</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/724">
+	<pronom:FormatID>724</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (ASCII)</pronom:FormatName>
+	<pronom:FormatVersion>2000-2002</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/709">
+	<pronom:FormatID>709</pronom:FormatID>
+	<pronom:FormatName>AutoCAD Drawing</pronom:FormatName>
+	<pronom:FormatVersion>2004-2005</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/707">
+	<pronom:FormatID>707</pronom:FormatID>
+	<pronom:FormatName>AutoCAD Drawing</pronom:FormatName>
+	<pronom:FormatVersion>R14</pronom:FormatVersion>
+</rdf:Description>
+</rdf:RDF>

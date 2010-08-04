@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/619">
+	<pronom:FormatID>619</pronom:FormatID>
+	<pronom:FormatName>Graphics Interchange Format</pronom:FormatName>
+	<pronom:FormatVersion>1987a</pronom:FormatVersion>
+	<pronom:FormatAliases>GIF (1987a)</pronom:FormatAliases>
+	<pronom:FormatTypes>Image (Raster)</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>The Graphics Interchange Format (GIF) is a raster image format developed by Compuserve, primarily for use on the internet. GIF files can contain multiple images, although this feature is rarely used or supported in practice. A GIF file begins with a Header section and a Logical Screen Descriptor section. This is followed by one or more Image sections, and the file is terminated by a Trailer. GIF supports bit depths between 1 and 8 bits (i.e. up to 256 colours) and supports features such as interlacing and transparency. Images are always stored using lossless LZW compression.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ReleaseDate>15 Jun 1987</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/com.compuserve.gif"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/3"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/image/gif"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/108"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/30"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/576"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/18"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/620"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/12"/>
+	<pronom:FormatProperties rdf:resource="http://nationalarchives.gov.uk/pronom/Format/619/FormatProperties"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/com.compuserve.gif">
+	<pronom:Identifier>com.compuserve.gif</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/3">
+	<pronom:Identifier>fmt/3</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/image/gif">
+	<pronom:Identifier>image/gif</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/108">
+	<pronom:DeveloperID>108</pronom:DeveloperID>
+	<pronom:OrganisationName>Compuserve Incorporated</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>Compuserve Incorporated</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/30">
+	<pronom:DocumentID>30</pronom:DocumentID>
+	<pronom:DisplayText>Compuserve Incorporated, 1987, Graphics Interchange Format: A standard defining a mechanism for the storage and transmission of raster-based graphics information</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>15 Jun 1987</pronom:PublicationDate>
+	<pronom:TitleText>Graphics Interchange Format: A standard defining a mechanism for the storage and transmission of raster-based graphics information</pronom:TitleText>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/108"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/108"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/108">
+	<pronom:AuthorID>108</pronom:AuthorID>
+	<pronom:OrganisationName>Compuserve Incorporated</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Compuserve Incorporated</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/108">
+	<pronom:PublisherID>108</pronom:PublisherID>
+	<pronom:OrganisationName>Compuserve Incorporated</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Compuserve Incorporated</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/576">
+	<pronom:ExternalSignatureID>576</pronom:ExternalSignatureID>
+	<pronom:Signature>gif</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/18">
+	<pronom:SignatureID>18</pronom:SignatureID>
+	<pronom:SignatureName>GIF 1987a</pronom:SignatureName>
+	<pronom:SignatureNote>header &amp; trailer</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/179"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/180"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/179">
+	<pronom:ByteSequenceID>179</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>474946383761</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/180">
+	<pronom:ByteSequenceID>180</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from EOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>3B</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/620">
+	<pronom:RelationshipType>Is previous version of</pronom:RelationshipType>
+	<pronom:RelatedFormatID>620</pronom:RelatedFormatID>
+	<pronom:RelatedFormatName>Graphics Interchange Format</pronom:RelatedFormatName>
+	<pronom:RelatedFormatVersion>1989a</pronom:RelatedFormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/12">
+	<pronom:CompressionID>12</pronom:CompressionID>
+	<pronom:CompressionName>Lempel-Ziff-Welch</pronom:CompressionName>
+	<pronom:CompressionAliases>LZW</pronom:CompressionAliases>
+	<pronom:Description>The Lempel-Ziff-Welch compression algorithm was developed by Terry Welch in 1984, as a modification of the LZ78 compressor. It is a lossless technique which can be applied to almost any type of data, but is most commonly used for image compression. LZW compression is effective on images with colour depths from 1-bit (monochrome) to 24-bit (True Colour). LZW compression is encountered in a range of common graphics file formats, including TIFF and GIF.</pronom:Description>
+	<pronom:Lossiness>Lossless</pronom:Lossiness>
+	<pronom:ReleaseDate>01 Jan 1984</pronom:ReleaseDate>
+	<pronom:CompressionDocumentation>Welch, T A, 1984, A technique for high performance data compression, IEEE Computer, 17: 6</pronom:CompressionDocumentation>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/12"/>
+	<pronom:Developer rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/121"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/12">
+	<pronom:Identifier>x-cmp/12</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/121">
+	<pronom:DeveloperID>121</pronom:DeveloperID>
+	<pronom:DeveloperName>T A Welch</pronom:DeveloperName>
+	<pronom:DeveloperCompoundName>T A Welch / [No organisation specified]</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/619/FormatProperties">
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/compression_type"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/image_width"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/image_height"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/colour_space"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/bits_per_sample"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/byte_order"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/compression_type">
+	<pronom:PropertyName>Compression Type</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/image_width">
+	<pronom:PropertyName>Image Width</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/image_height">
+	<pronom:PropertyName>Image Height</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/colour_space">
+	<pronom:PropertyName>Colour Space</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/bits_per_sample">
+	<pronom:PropertyName>Bits Per Sample</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/byte_order">
+	<pronom:PropertyName>Byte Order</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+</rdf:RDF>

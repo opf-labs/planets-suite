@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metrics>
+	<metric>
+		<name>equal</name>
+		<metricId>equal</metricId>
+		<description>
+			simple comparison of two values (A, B) of any type on equality. Type of
+			output value: Boolean (true, false).
+                </description>
+		<booleanScale />
+	</metric>
+	<metric>
+		<name>hammingDistanceString</name>
+		<metricId>hammingDistanceString</metricId>
+		<description>
+			The hamming distance counts the number of non-corresponding symbols of
+			two ordered sequences. The sequences must have equal length. This
+			version works on arrays of strings.
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>levenshteinDistance</name>
+		<metricId>levenshteinDistance</metricId>
+		<description>
+			The Levenshtein distance (syn. Edit distance) is a distance measure for
+			strings. Two strings are compared with respect to the three basic
+			operations insert, delete and replace in order to transform string A
+			into string B. The value for this metric is the number of operations
+			needed for transformation.
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>simpleMatchCoefficient</name>
+		<metricId>simpleMatchCoefficient</metricId>
+		<description>
+			Simple match coefficient is a distance measure that uses the hamming
+			distance. In addition, the ratio of non-corresponding values (hamming
+			distance) to the total number of compared pairs of values is
+			calculated. The result is a rational number from range 0.0 to 1.0,
+			indicating maximum similarity (0.0) to minimum (1.0).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>simpleMatchCoefficientN</name>
+		<metricId>simpleMatchCoefficientN</metricId>
+		<description>
+			Simple match coefficient is a distance measure that uses the hamming
+			distance. In addition, the ratio of non-corresponding values (hamming
+			distance) to the total number of compared pairs of values is
+			calculated. N indicates the n-grams used for comparison. Default
+			setting is N=1. The result is a rational number from range 0.0 to
+			1.0, indicating maximum similarity (0.0) to minimum (1.0).
+		</description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>RMSE</name>
+		<metricId>RMSE</metricId>
+		<description>
+			Root mean squared error is a widely used measure for deviation. It is
+			calculated as the square root of the quotient of the summed up
+			squared diffeences of corresponding values of two sets and as
+			denominator the number of values (values in both sets must have the
+			same number).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>euclidDistance</name>
+		<metricId>euclidDistance</metricId>
+		<description>
+			Euclidian distance (syn. L2 distance) is a distance measure; the square root
+			of the sum of the single squred differnces of corresponding values of
+			two sets.
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>hammingDistance</name>
+		<metricId>hammingDistance</metricId>
+		<description>
+			The hamming distance counts the number of non-corresponding symbols of
+			two ordered sequences. The sequences must have equal length.
+		</description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>intDiff</name>
+		<metricId>intDiff</metricId>
+		<description>
+			Arithmetical difference of two integer values (A - B)
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>intProd</name>
+		<metricId>intProd</metricId>
+		<description>
+			Product of two integer values (A * B).
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>intRatio</name>
+		<metricId>intRatio</metricId>
+		<description>
+			Quotient of two integer values (A / B).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>intSum</name>
+		<metricId>intSum</metricId>
+		<description>
+			Arithmetical sum of two integer values (A +B).
+                </description>
+		<integerScale />
+	</metric>
+	<metric>
+		<name>percDeviation</name>
+		<metricId>percDeviation</metricId>
+		<description>
+			Percental deviation of two values (A,B) of type integer or rational, according
+			to the equation: PercDev= d/A*100. A is the source value, d is the
+			difference of values B and A (B-A). The output value indicates the
+			percental deviation of value B from value A. An output value of
+			PercDev=0.0 indicates equal values.
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>standardDeviation</name>
+		<metricId>standardDeviation</metricId>
+		<description>
+			Standard deviation is a statistical measure for the distribution of the
+			values of a random variable from the arithmetical mean.
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>ratDiff</name>
+		<metricId>ratDiff</metricId>
+		<description>
+			Arithmetical difference of two rational values (A - B).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>ratProd</name>
+		<metricId>ratProd</metricId>
+		<description>
+			Product of two rational values (A * B).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>ratRatio</name>
+		<metricId>ratRatio</metricId>
+		<description>
+			Quotient of two rational values (A / B).
+                </description>
+		<floatScale />
+	</metric>
+	<metric>
+		<name>ratSum</name>
+		<metricId>ratSum</metricId>
+		<description>
+			Arithmetical sum of two rational values (A + B).
+                </description>
+		<floatScale />
+	</metric>
+</metrics>

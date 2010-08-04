@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/673">
+	<pronom:FormatID>673</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Uncompressed)</pronom:FormatName>
+	<pronom:FormatVersion>2.1</pronom:FormatVersion>
+	<pronom:FormatAliases>Exif Uncompressed Image (2.1)</pronom:FormatAliases>
+	<pronom:FormatDescription>Description in preparation.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel) and Big-endian (Motorola)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/image/tiff"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/388"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/19"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/604"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/153"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/156"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/609"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/609"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/610"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/610"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/611"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/611"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/612"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/612"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/672"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/672"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/752"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/752"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/image/tiff">
+	<pronom:Identifier>image/tiff</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/388">
+	<pronom:Identifier>x-fmt/388</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/19">
+	<pronom:DocumentID>19</pronom:DocumentID>
+	<pronom:DisplayText>Japan Electronic Industry Development Association, 1998, JEIDA-49-1998 - Digital Still Camera Image File Format Standard (Exchangeable image file format for Digital Still Cameras: Exif), Version 2.1</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Dec 1998</pronom:PublicationDate>
+	<pronom:TitleText>JEIDA-49-1998 - Digital Still Camera Image File Format Standard (Exchangeable image file format for Digital Still Cameras: Exif), Version 2.1</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.exif.org/dcf-exif.PDF"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/105"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/105"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.exif.org/dcf-exif.PDF">
+	<pronom:Identifier>www.exif.org/dcf-exif.PDF</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/105">
+	<pronom:AuthorID>105</pronom:AuthorID>
+	<pronom:OrganisationName>Japan Electronic Industry Development Association</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Japan Electronic Industry Development Association</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/105">
+	<pronom:PublisherID>105</pronom:PublisherID>
+	<pronom:OrganisationName>Japan Electronic Industry Development Association</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Japan Electronic Industry Development Association</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/604">
+	<pronom:ExternalSignatureID>604</pronom:ExternalSignatureID>
+	<pronom:Signature>tif</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/153">
+	<pronom:SignatureID>153</pronom:SignatureID>
+	<pronom:SignatureName>EXIF Uncompressed Image 2.1 (big-endian)</pronom:SignatureName>
+	<pronom:SignatureNote>TIFF header, EXIF IFD (EXIF ver=2.1)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/99"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/99">
+	<pronom:ByteSequenceID>99</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>4D4D002A*900000070000000430323130</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/156">
+	<pronom:SignatureID>156</pronom:SignatureID>
+	<pronom:SignatureName>EXIF Uncompressed Image 2.1 (little-endian)</pronom:SignatureName>
+	<pronom:SignatureNote>TIFF header, EXIF IFD (EXIF ver=2.1)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/100"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/100">
+	<pronom:ByteSequenceID>100</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>49492A00*009007000400000030323130</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/609">
+	<pronom:FormatID>609</pronom:FormatID>
+	<pronom:FormatName>Tagged Image File Format</pronom:FormatName>
+	<pronom:FormatVersion>3</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/610">
+	<pronom:FormatID>610</pronom:FormatID>
+	<pronom:FormatName>Tagged Image File Format</pronom:FormatName>
+	<pronom:FormatVersion>4</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/611">
+	<pronom:FormatID>611</pronom:FormatID>
+	<pronom:FormatName>Tagged Image File Format</pronom:FormatName>
+	<pronom:FormatVersion>5</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/612">
+	<pronom:FormatID>612</pronom:FormatID>
+	<pronom:FormatName>Tagged Image File Format</pronom:FormatName>
+	<pronom:FormatVersion>6</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/672">
+	<pronom:FormatID>672</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Uncompressed)</pronom:FormatName>
+	<pronom:FormatVersion>2.2</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/752">
+	<pronom:FormatID>752</pronom:FormatID>
+	<pronom:FormatName>Exchangeable Image File Format (Uncompressed)</pronom:FormatName>
+	<pronom:FormatVersion>2.0</pronom:FormatVersion>
+</rdf:Description>
+</rdf:RDF>

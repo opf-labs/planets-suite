@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/736">
+	<pronom:FormatID>736</pronom:FormatID>
+	<pronom:FormatName>WordPerfect for MS-DOS Document</pronom:FormatName>
+	<pronom:FormatVersion>5.0</pronom:FormatVersion>
+	<pronom:FormatDescription>Description in preparation.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ReleaseDate>05 May 1988</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/393"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/4"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/611"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/730"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/743"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/756"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/130"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/737"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/393">
+	<pronom:Identifier>x-fmt/393</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/4">
+	<pronom:DocumentID>4</pronom:DocumentID>
+	<pronom:DisplayText>Born, G, 1995, The file formats handbook, International Thompson Computer Press</pronom:DisplayText>
+	<pronom:DocumentType>Informative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jan 1995</pronom:PublicationDate>
+	<pronom:TitleText>The file formats handbook</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/1-85032-117-5"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/115"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/117"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/1-85032-117-5">
+	<pronom:Identifier>1-85032-117-5</pronom:Identifier>
+	<pronom:IdentifierType>ISBN</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/115">
+	<pronom:AuthorID>115</pronom:AuthorID>
+	<pronom:OrganisationName>Gunter Born</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Gunter Born</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/117">
+	<pronom:PublisherID>117</pronom:PublisherID>
+	<pronom:OrganisationName>International Thompson Computer Press</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>International Thompson Computer Press</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/611">
+	<pronom:ExternalSignatureID>611</pronom:ExternalSignatureID>
+	<pronom:Signature>wp</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/730">
+	<pronom:ExternalSignatureID>730</pronom:ExternalSignatureID>
+	<pronom:Signature>wp5</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/743">
+	<pronom:ExternalSignatureID>743</pronom:ExternalSignatureID>
+	<pronom:Signature>wpd</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/756">
+	<pronom:ExternalSignatureID>756</pronom:ExternalSignatureID>
+	<pronom:Signature>w50</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/130">
+	<pronom:SignatureID>130</pronom:SignatureID>
+	<pronom:SignatureName>WordPerfect 5.0</pronom:SignatureName>
+	<pronom:SignatureNote>Document Header (Version=0.0)</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/71"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/71">
+	<pronom:ByteSequenceID>71</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>FF575043{5}0A0000{2}0000</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/737">
+	<pronom:RelationshipType>Is previous version of</pronom:RelationshipType>
+	<pronom:RelatedFormatID>737</pronom:RelatedFormatID>
+	<pronom:RelatedFormatName>WordPerfect for MS-DOS/Windows Document</pronom:RelatedFormatName>
+	<pronom:RelatedFormatVersion>5.1</pronom:RelatedFormatVersion>
+</rdf:Description>
+</rdf:RDF>

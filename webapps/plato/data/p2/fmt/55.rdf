@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/678">
+	<pronom:FormatID>678</pronom:FormatID>
+	<pronom:FormatName>Binary Interchange File Format (BIFF) Worksheet</pronom:FormatName>
+	<pronom:FormatVersion>2</pronom:FormatVersion>
+	<pronom:FormatAliases>Microsoft Excel Worksheet (2.1)</pronom:FormatAliases>
+	<pronom:FormatTypes>Spreadsheet</pronom:FormatTypes>
+	<pronom:FormatDisclosure>None</pronom:FormatDisclosure>
+	<pronom:FormatDescription>The Binary Interchange File Format (BIFF) is a spreadsheet file format developed by Microsoft. BIFF 2 is the native file format of Microsoft Excel 2.1 for Windows. The format is proprietary and Microsoft does not make details of its structure public. The information contained here is derived primarily from OpenOffice.org's reverse-engineered documentation of the format, and should not therefore be regarded as definitive. BIFF is a stream based format, and a BIFF 2 file comprises a single worksheet stream, containing a Beginning of File (BOF) record, followed by a series of Worksheet records, and terminated by an End of File (EOF) record.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/application/vnd.ms-excel"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/com.microsoft.excel.xls"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/55"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/10"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/574"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/735"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/745"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/72"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/679"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/application/vnd.ms-excel">
+	<pronom:Identifier>application/vnd.ms-excel</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/com.microsoft.excel.xls">
+	<pronom:Identifier>com.microsoft.excel.xls</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/55">
+	<pronom:Identifier>fmt/55</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/10">
+	<pronom:DocumentID>10</pronom:DocumentID>
+	<pronom:DisplayText>OpenOffice.org, 2004, OpenOffice.org's documentation of the Microsoft Excel file format: Excel versions 2, 3, 4, 5, 95, 97, 2000, XP, 2003</pronom:DisplayText>
+	<pronom:DocumentType>Speculative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>25 Nov 2004</pronom:PublicationDate>
+	<pronom:TitleText>OpenOffice.org's documentation of the Microsoft Excel file format: Excel versions 2, 3, 4, 5, 95, 97, 2000, XP, 2003</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/sc.openoffice.org/excelfileformat.pdf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/103"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/103"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/sc.openoffice.org/excelfileformat.pdf">
+	<pronom:Identifier>sc.openoffice.org/excelfileformat.pdf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/103">
+	<pronom:AuthorID>103</pronom:AuthorID>
+	<pronom:OrganisationName>OpenOffice.org</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>OpenOffice.org</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/103">
+	<pronom:PublisherID>103</pronom:PublisherID>
+	<pronom:OrganisationName>OpenOffice.org</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>OpenOffice.org</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/574">
+	<pronom:ExternalSignatureID>574</pronom:ExternalSignatureID>
+	<pronom:Signature>xls</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/735">
+	<pronom:ExternalSignatureID>735</pronom:ExternalSignatureID>
+	<pronom:Signature>xlc</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/745">
+	<pronom:ExternalSignatureID>745</pronom:ExternalSignatureID>
+	<pronom:Signature>xlm</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/72">
+	<pronom:SignatureID>72</pronom:SignatureID>
+	<pronom:SignatureName>BIFF 2</pronom:SignatureName>
+	<pronom:SignatureNote>BOF and EOF records</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/177"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/178"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/177">
+	<pronom:ByteSequenceID>177</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>09000400{2}(10|20|40)00</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/178">
+	<pronom:ByteSequenceID>178</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from EOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>0A000000</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/679">
+	<pronom:RelationshipType>Is previous version of</pronom:RelationshipType>
+	<pronom:RelatedFormatID>679</pronom:RelatedFormatID>
+	<pronom:RelatedFormatName>Binary Interchange File Format (BIFF) Worksheet</pronom:RelatedFormatName>
+	<pronom:RelatedFormatVersion>3</pronom:RelatedFormatVersion>
+</rdf:Description>
+</rdf:RDF>

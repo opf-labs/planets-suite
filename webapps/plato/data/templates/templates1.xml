@@ -1,0 +1,1879 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<templates>
+ <template name="Public Templates">
+  <node name="Electronic documents in a library" weight="1.0" single="false" lock="false">
+   <description>This example tree decribes requirements for preserving electronic documents in a library setting. It is a draft version that needs revision to be considered useful indeed, but provides a good starting point for refining the criteria.
+There are no automated measurements defined in this version of the tree.</description>
+   <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+   <node name="Object characteristics" weight="0.35" single="false" lock="false">
+    <description/>
+    <changelog created="2010-06-21T17:18:45" createdBy="becker" changed="2010-06-21T17:18:45" changedBy="admin"/>
+    <node name="Appearance" weight="0.3" single="false" lock="false">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <node name="Character" weight="0.6" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <leaf name="Encoding" weight="0.4" single="false" lock="true">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Original" target="5.0"/>
+         <mapping ordinal="Changed" target="3.0"/>
+         <mapping ordinal="None" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Font types unchanged" weight="0.2" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Font sizes unchanged" weight="0.2" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Color unchanged" weight="0.2" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+     </node>
+     <leaf name="Enumerations" weight="0.1" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Original" target="5.0"/>
+        <mapping ordinal="Changed" target="3.0"/>
+        <mapping ordinal="None" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:58:49" createdBy="admin" changed="2010-06-21T16:58:49"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Internal References" weight="0.15" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Original" target="5.0"/>
+        <mapping ordinal="Changed" target="3.0"/>
+        <mapping ordinal="None" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:58:52" createdBy="admin" changed="2010-06-21T16:58:52"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="URL" weight="0.15" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Original" target="5.0"/>
+        <mapping ordinal="Changed" target="3.0"/>
+        <mapping ordinal="None" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:58:55" createdBy="admin" changed="2010-06-21T16:58:55"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+    <node name="Structure" weight="0.15" single="false" lock="true">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <leaf name="Document Structure (Chapter, Section)" weight="0.2" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Original" target="5.0"/>
+        <mapping ordinal="Changed" target="3.0"/>
+        <mapping ordinal="None" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:58:59" createdBy="admin" changed="2010-06-21T16:58:59"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Reference Tables (TOC, TOF)" weight="0.15" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Original" target="5.0"/>
+        <mapping ordinal="Changed" target="3.0"/>
+        <mapping ordinal="None" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:59:03" createdBy="admin" changed="2010-06-21T16:59:03"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Line breaks" weight="0.1" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Original/Very few changes/Wide-ranging differences">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Original" target="5.0"/>
+        <mapping ordinal="Wide-ranging differences" target="1.0"/>
+        <mapping ordinal="Very few changes" target="3.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:59:05" createdBy="admin" changed="2010-06-21T16:59:05"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Headlines" weight="0.11" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Original/Very few changes/Wide-ranging differences">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Original" target="5.0"/>
+        <mapping ordinal="Wide-ranging differences" target="1.0"/>
+        <mapping ordinal="Very few changes" target="3.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:59:55" createdBy="admin" changed="2010-06-21T16:59:55"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Footers" weight="0.1" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Original" target="5.0"/>
+        <mapping ordinal="Changed" target="3.0"/>
+        <mapping ordinal="None" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:59:59" createdBy="admin" changed="2010-06-21T16:59:59"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Footnotes" weight="0.11" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Original" target="5.0"/>
+        <mapping ordinal="Changed" target="3.0"/>
+        <mapping ordinal="None" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T17:00:04" createdBy="admin" changed="2010-06-21T17:00:04"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <node name="Equations" weight="0.1" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <leaf name="Size" weight="0.5" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Original" target="5.0"/>
+         <mapping ordinal="Changed" target="3.0"/>
+         <mapping ordinal="None" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T17:00:06" createdBy="admin" changed="2010-06-21T17:00:06"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Position" weight="0.5" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Original" target="5.0"/>
+         <mapping ordinal="Changed" target="3.0"/>
+         <mapping ordinal="None" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T17:00:08" createdBy="admin" changed="2010-06-21T17:00:08"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+     </node>
+     <node name="Figures" weight="0.13" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <leaf name="Size" weight="0.5" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Original" target="5.0"/>
+         <mapping ordinal="Changed" target="3.0"/>
+         <mapping ordinal="None" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T17:00:12" createdBy="admin" changed="2010-06-21T17:00:12"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Position" weight="0.5" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <ordinalScale displayName="Ordinal" restriction="Original/Changed/None">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Original" target="5.0"/>
+         <mapping ordinal="Changed" target="3.0"/>
+         <mapping ordinal="None" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T17:00:14" createdBy="admin" changed="2010-06-21T17:00:14"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+     </node>
+    </node>
+    <node name="Content" weight="0.4" single="false" lock="true">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <node name="Characters" weight="0.6" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <leaf name="Encoding" weight="0.5" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="AVERAGE"/>
+       <positiveFloatScale unit="% of correct characters" displayName="Positive number" restriction="">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </positiveFloatScale>
+       <numericTransformer>
+        <mode value="THRESHOLD_STEPPING"/>
+        <thresholds>
+         <threshold1>85.0</threshold1>
+         <threshold2>90.0</threshold2>
+         <threshold3>95.0</threshold3>
+         <threshold4>98.0</threshold4>
+         <threshold5>100.0</threshold5>
+        </thresholds>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </numericTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Resolution" weight="0.5" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <ordinalScale displayName="Ordinal" restriction="higher/unchanged/lower">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="lower" target="1.0"/>
+         <mapping ordinal="unchanged" target="5.0"/>
+         <mapping ordinal="higher" target="3.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+     </node>
+     <node name="Figures" weight="0.4" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <leaf name="Resolution" weight="0.22" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <ordinalScale displayName="Ordinal" restriction="higher/unchanged/lower">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="lower" target="1.0"/>
+         <mapping ordinal="unchanged" target="5.0"/>
+         <mapping ordinal="higher" target="3.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Color depth" weight="0.13" single="false" lock="true">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <ordinalScale displayName="Ordinal" restriction="higher/unchanged/lower">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="lower" target="1.0"/>
+         <mapping ordinal="unchanged" target="5.0"/>
+         <mapping ordinal="higher" target="3.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Format is open specification" weight="0.22" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Format is international standard " weight="0.22" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="WORST"/>
+       <booleanScale displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </booleanScale>
+       <ordinalTransformer>
+        <mappings>
+         <mapping ordinal="Yes" target="5.0"/>
+         <mapping ordinal="No" target="1.0"/>
+        </mappings>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </ordinalTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+      <leaf name="Market share of format/encoding" weight="0.21" single="false" lock="false">
+       <description/>
+       <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       <aggregationMode value="AVERAGE"/>
+       <positiveFloatScale unit="% of market" displayName="Positive number" restriction="">
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </positiveFloatScale>
+       <numericTransformer>
+        <mode value="THRESHOLD_STEPPING"/>
+        <thresholds>
+         <threshold1>2.0</threshold1>
+         <threshold2>5.0</threshold2>
+         <threshold3>10.0</threshold3>
+         <threshold4>20.0</threshold4>
+         <threshold5>30.0</threshold5>
+        </thresholds>
+        <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+       </numericTransformer>
+       <measurementInfo>
+        <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+       </measurementInfo>
+       <evaluation/>
+      </leaf>
+     </node>
+    </node>
+    <node name="Behaviour" weight="0.15" single="false" lock="true">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <leaf name="Script blocking" weight="0.25" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Deactivation of security meachnism" weight="0.2" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="URLs clickable" weight="0.11" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Jump References" weight="0.12" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:32" createdBy="admin" changed="2010-06-21T16:29:32"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Input Forms working" weight="0.11" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Content machine readable" weight="0.21" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+   </node>
+   <node name="Technical characteristics" weight="0.15" single="false" lock="false">
+    <description/>
+    <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+    <node name="File Format" weight="0.5" single="false" lock="true">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <leaf name="Free viewers available" weight="0.28" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Open specification" weight="0.15" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="International standard" weight="0.28" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Market share" weight="0.29" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="% of market" displayName="Positive number" restriction="">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>0.0</threshold1>
+        <threshold2>2.0</threshold2>
+        <threshold3>5.0</threshold3>
+        <threshold4>10.0</threshold4>
+        <threshold5>20.0</threshold5>
+       </thresholds>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </numericTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+    <node name="Tool" weight="0.5" single="false" lock="true">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <leaf name="Error correction" weight="0.15" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Documentation about activities" weight="0.15" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="nothing/acceptable/good">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="acceptable" target="3.0"/>
+        <mapping ordinal="good" target="5.0"/>
+        <mapping ordinal="nothing" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Customization" weight="0.15" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="none/basic/good/full">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="none" target="1.0"/>
+        <mapping ordinal="basic" target="2.0"/>
+        <mapping ordinal="full" target="5.0"/>
+        <mapping ordinal="good" target="4.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Macro support" weight="0.16" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Batch process support" weight="0.15" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Usability" weight="0.16" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="poor/average/good">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="average" target="3.0"/>
+        <mapping ordinal="good" target="5.0"/>
+        <mapping ordinal="poor" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Deployment overhead" weight="0.08" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="none/little/average/big">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="none" target="5.0"/>
+        <mapping ordinal="average" target="3.0"/>
+        <mapping ordinal="big" target="1.0"/>
+        <mapping ordinal="little" target="4.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+   </node>
+   <node name="Process Characteristics" weight="0.15" single="false" lock="false">
+    <description/>
+    <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+    <leaf name="Duration" weight="0.3" single="false" lock="false">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveFloatScale unit="Seconds" displayName="Positive number" restriction="">
+      <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     </positiveFloatScale>
+     <numericTransformer>
+      <mode value="LINEAR"/>
+      <thresholds>
+       <threshold1>1.0</threshold1>
+       <threshold2>0.5</threshold2>
+       <threshold3>0.2</threshold3>
+       <threshold4>0.1</threshold4>
+       <threshold5>0.05</threshold5>
+      </thresholds>
+      <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     </numericTransformer>
+     <measurementInfo>
+      <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="Automation of the process" weight="0.4" single="false" lock="true">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <aggregationMode value="WORST"/>
+     <ordinalScale displayName="Ordinal" restriction="good/acceptable/poor">
+      <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     </ordinalScale>
+     <ordinalTransformer>
+      <mappings>
+       <mapping ordinal="acceptable" target="3.0"/>
+       <mapping ordinal="good" target="5.0"/>
+       <mapping ordinal="poor" target="1.0"/>
+      </mappings>
+      <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <node name="Integrity" weight="0.3" single="false" lock="false">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <leaf name="Traceability of change" weight="0.5" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="File format verification" weight="0.5" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="5.0"/>
+        <mapping ordinal="No" target="1.0"/>
+       </mappings>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+   </node>
+   <node name="Costs" weight="0.35" single="false" lock="false">
+    <description/>
+    <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+    <node name="HW" weight="0.2" single="false" lock="false">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <leaf name="Initial" weight="0.3" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="Euro" displayName="Positive number" restriction="">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>10000.0</threshold1>
+        <threshold2>5000.0</threshold2>
+        <threshold3>3000.0</threshold3>
+        <threshold4>1000.0</threshold4>
+        <threshold5>100.0</threshold5>
+       </thresholds>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </numericTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Running" weight="0.7" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="Euro per Year" displayName="Positive number" restriction="">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>1000.0</threshold1>
+        <threshold2>500.0</threshold2>
+        <threshold3>300.0</threshold3>
+        <threshold4>200.0</threshold4>
+        <threshold5>100.0</threshold5>
+       </thresholds>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </numericTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+    <node name="SW" weight="0.2" single="false" lock="false">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <leaf name="Inital" weight="0.3" single="false" lock="true">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="Euro" displayName="Positive number" restriction="">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>1000.0</threshold1>
+        <threshold2>500.0</threshold2>
+        <threshold3>300.0</threshold3>
+        <threshold4>100.0</threshold4>
+        <threshold5>50.0</threshold5>
+       </thresholds>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </numericTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Running" weight="0.7" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="user" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="Euro per Year" displayName="Positive number" restriction="">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>1000.0</threshold1>
+        <threshold2>500.0</threshold2>
+        <threshold3>300.0</threshold3>
+        <threshold4>100.0</threshold4>
+        <threshold5>10.0</threshold5>
+       </thresholds>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </numericTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+    <node name="Personell" weight="0.6" single="false" lock="false">
+     <description/>
+     <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+     <leaf name="Training" weight="0.5" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="Euro" displayName="Positive number" restriction="">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>10000.0</threshold1>
+        <threshold2>5000.0</threshold2>
+        <threshold3>3000.0</threshold3>
+        <threshold4>1000.0</threshold4>
+        <threshold5>100.0</threshold5>
+       </thresholds>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </numericTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Development" weight="0.5" single="false" lock="false">
+      <description/>
+      <changelog created="2010-06-21T17:18:45" createdBy="admin" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="Euro" displayName="Positive number" restriction="">
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>10000.0</threshold1>
+        <threshold2>5000.0</threshold2>
+        <threshold3>3000.0</threshold3>
+        <threshold4>1000.0</threshold4>
+        <threshold5>100.0</threshold5>
+       </thresholds>
+       <changelog created="2010-06-21T17:18:45" changed="2010-06-21T17:18:45" changedBy="admin"/>
+      </numericTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-21T16:29:33" createdBy="admin" changed="2010-06-21T16:29:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+   </node>
+  </node>
+  <node name="Image preservation requirements" weight="1.0" single="false" lock="false">
+   <description>Completely automated requirements tree for preserving image data</description>
+   <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+   <node name="Requirements on the format" weight="0.0" single="false" lock="false">
+    <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+    <leaf name="Ubiquity" weight="0.0" single="true" lock="false">
+     <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <freeStringScale unit="ubiquity" displayName="Free text">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </freeStringScale>
+     <ordinalTransformer>
+      <mappings/>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:format</category>
+       <propertyId>ubiquity</propertyId>
+       <name>ubiquity of format</name>
+       <description>Indicates to which extent this format is used. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/ubiquity/ .. comment</description>
+       <freeStringScale unit="ubiquity" displayName="Free text">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </freeStringScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T17:57:08" changed="2010-06-21T17:57:08"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="Support" weight="0.0" single="true" lock="false">
+     <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveIntegerScale unit="number of tools" displayName="Positive integer" restriction="">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </positiveIntegerScale>
+     <numericTransformer>
+      <mode value="THRESHOLD_STEPPING"/>
+      <thresholds>
+       <threshold1>0.0</threshold1>
+       <threshold2>0.0</threshold2>
+       <threshold3>0.0</threshold3>
+       <threshold4>0.0</threshold4>
+       <threshold5>0.0</threshold5>
+      </thresholds>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </numericTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:format</category>
+       <propertyId>numberOfTools/open</propertyId>
+       <name>number of tools:open</name>
+       <description>Number of tools that can open objects of this format.</description>
+       <positiveIntegerScale unit="number of tools" displayName="Positive integer" restriction="">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </positiveIntegerScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T17:57:24" changed="2010-06-21T17:57:24"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <node name="Documentation" weight="0.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <leaf name="Quality" weight="0.0" single="true" lock="false">
+      <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <freeStringScale unit="stability" displayName="Free text">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </freeStringScale>
+      <ordinalTransformer>
+       <mappings/>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:format</category>
+        <propertyId>documentation/quality</propertyId>
+        <name>documentation quality</name>
+        <description>Indicates the quality of the format documentation. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/documentation_quality/ .. comment</description>
+        <freeStringScale unit="stability" displayName="Free text">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </freeStringScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <changelog created="2010-06-21T17:57:33" changed="2010-06-21T17:57:33"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Disclosure" weight="0.0" single="true" lock="false">
+      <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <freeStringScale unit="disclosure" displayName="Free text">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </freeStringScale>
+      <ordinalTransformer>
+       <mappings/>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:format</category>
+        <propertyId>disclosure</propertyId>
+        <name>disclosure of format</name>
+        <description>Indicates the openness of this format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/disclosure/ .. comment</description>
+        <freeStringScale unit="disclosure" displayName="Free text">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </freeStringScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <changelog created="2010-06-21T17:57:40" changed="2010-06-21T17:57:40"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Openness" weight="0.0" single="true" lock="false">
+      <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="open license" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="0.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:format</category>
+        <propertyId>license/open</propertyId>
+        <name>format-license:open</name>
+        <description>Indicates where there are any rights restrictions. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/open</description>
+        <booleanScale unit="open license" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </booleanScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <changelog created="2010-06-21T17:57:49" changed="2010-06-21T17:57:49"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Availability" weight="0.0" single="false" lock="false">
+      <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <ordinalScale displayName="Ordinal" restriction="Public/Limited/None">
+       <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Public" target="0.0"/>
+        <mapping ordinal="None" target="0.0"/>
+        <mapping ordinal="Limited" target="0.0"/>
+       </mappings>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <changelog created="2010-06-14T17:39:47" changed="2010-06-14T17:39:47"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+    <leaf name="Stability" weight="0.0" single="true" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <freeStringScale unit="stability" displayName="Free text">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </freeStringScale>
+     <ordinalTransformer>
+      <mappings/>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:format</category>
+       <propertyId>stability</propertyId>
+       <name>stability of format</name>
+       <description>Indicates the stability of format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/stability/ .. comment</description>
+       <freeStringScale unit="stability" displayName="Free text">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </freeStringScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T17:59:44" changed="2010-06-21T17:59:44"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <node name="IPR" weight="0.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <leaf name="Format is protected" weight="1.0" single="true" lock="false">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="ipr protected" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="0.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:format</category>
+        <propertyId>license/iprProtected</propertyId>
+        <name>format-license: ipr protected</name>
+        <description>Indicates if there exists IPR protection of the format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/ipr_protected</description>
+        <booleanScale unit="ipr protected" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </booleanScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <changelog created="2010-06-21T17:59:02" changed="2010-06-21T17:59:02"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Format is proprietary" weight="1.0" single="true" lock="false">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="proprietary" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="0.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:format</category>
+        <propertyId>license/proprietary</propertyId>
+        <name>format-license: proprietary</name>
+        <description>Indicates whether this is a proprietary format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary</description>
+        <booleanScale unit="proprietary" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </booleanScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <changelog created="2010-06-21T17:59:17" changed="2010-06-21T17:59:17"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+    <leaf name="Complexity" weight="0.0" single="true" lock="false">
+     <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <freeStringScale unit="complexity" displayName="Free text">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </freeStringScale>
+     <ordinalTransformer>
+      <mappings/>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:format</category>
+       <propertyId>complexity</propertyId>
+       <name>complexity of format</name>
+       <description>Indicates the complexity of this format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/complexity/ .. comment</description>
+       <freeStringScale unit="complexity" displayName="Free text">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </freeStringScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T17:59:23" changed="2010-06-21T17:59:23"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="Comparative size" weight="0.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" createdBy="admin" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveFloatScale unit="ratio" displayName="Positive number" restriction="">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </positiveFloatScale>
+     <numericTransformer>
+      <mode value="THRESHOLD_STEPPING"/>
+      <thresholds>
+       <threshold1>0.0</threshold1>
+       <threshold2>0.0</threshold2>
+       <threshold3>0.0</threshold3>
+       <threshold4>0.0</threshold4>
+       <threshold5>0.0</threshold5>
+      </thresholds>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </numericTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:object</category>
+       <propertyId>relativeFileSize</propertyId>
+       <name>relative file size</name>
+       <description>factor for relative file size, calculated as: (size of result / size of source)</description>
+       <positiveFloatScale unit="ratio" displayName="Positive number" restriction="">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </positiveFloatScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:01:06" changed="2010-06-21T18:01:06"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+   </node>
+   <node name="Significant properties" weight="1.0" single="false" lock="false">
+    <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+    <node name="Content" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <leaf name="Image pixelwise identical" weight="1.0" single="false" lock="false">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="0.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:object</category>
+        <propertyId>image/similarity</propertyId>
+        <name>image similarity</name>
+        <description>Quantitative indication of similarity between source and result. A variety of distance metrics for image comparison are available.</description>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <metric>
+        <metricId>equal</metricId>
+        <name>equal</name>
+        <description>Comparison of two values for equality</description>
+        <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </booleanScale>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </metric>
+       <changelog created="2010-06-21T18:03:14" changed="2010-06-21T18:03:14"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Image similarity (RMSE)" weight="1.0" single="false" lock="false">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="AVERAGE"/>
+      <positiveFloatScale unit="RMSE" displayName="Positive number" restriction="">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </positiveFloatScale>
+      <numericTransformer>
+       <mode value="THRESHOLD_STEPPING"/>
+       <thresholds>
+        <threshold1>0.0</threshold1>
+        <threshold2>0.0</threshold2>
+        <threshold3>0.0</threshold3>
+        <threshold4>0.0</threshold4>
+        <threshold5>0.0</threshold5>
+       </thresholds>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </numericTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:object</category>
+        <propertyId>image/similarity</propertyId>
+        <name>image similarity</name>
+        <description>Quantitative indication of similarity between source and result. A variety of distance metrics for image comparison are available.</description>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <metric>
+        <metricId>rmse</metricId>
+        <name>RMSE</name>
+        <description>(sq)root mean squared error -- IE:  sqrt(MSE)</description>
+        <positiveFloatScale unit="RMSE" displayName="Positive number" restriction="">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </positiveFloatScale>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </metric>
+       <changelog created="2010-06-21T18:03:38" changed="2010-06-21T18:03:38"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Image width identical" weight="1.0" single="false" lock="false">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="0.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:object</category>
+        <propertyId>image/dimension/width</propertyId>
+        <name>image width</name>
+        <description>Width of an image, measured in number of pixels on the x-axis.</description>
+        <positiveIntegerScale unit="pixel" displayName="Positive integer" restriction="">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </positiveIntegerScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <metric>
+        <metricId>equal</metricId>
+        <name>equal</name>
+        <description>Comparison of two values for equality</description>
+        <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </booleanScale>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </metric>
+       <changelog created="2010-06-21T18:03:56" changed="2010-06-21T18:03:56"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+     <leaf name="Image height identical" weight="1.0" single="false" lock="false">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="0.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:object</category>
+        <propertyId>image/dimension/height</propertyId>
+        <name>image height</name>
+        <description>Height of an image, measured in number of pixels on the y-axis.</description>
+        <positiveIntegerScale unit="pixel" displayName="Positive integer" restriction="">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </positiveIntegerScale>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <metric>
+        <metricId>equal</metricId>
+        <name>equal</name>
+        <description>Comparison of two values for equality</description>
+        <booleanScale unit="equality" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </booleanScale>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </metric>
+       <changelog created="2010-06-21T18:04:13" changed="2010-06-21T18:04:13"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+    <node name="Context" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <leaf name="Embedded metadata" weight="1.0" single="false" lock="false">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      <aggregationMode value="WORST"/>
+      <booleanScale unit="preserved" displayName="Boolean" restriction="Yes/No">
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </booleanScale>
+      <ordinalTransformer>
+       <mappings>
+        <mapping ordinal="Yes" target="0.0"/>
+        <mapping ordinal="No" target="0.0"/>
+       </mappings>
+       <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+      </ordinalTransformer>
+      <measurementInfo>
+       <property>
+        <category>outcome:object</category>
+        <propertyId>image/metadata</propertyId>
+        <name>image metadata</name>
+        <description>Additional metadata stored in images (EXIF, ...)</description>
+        <possibleMetrics/>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </property>
+       <metric>
+        <metricId>preserved</metricId>
+        <name>preserved</name>
+        <description>Indicator if all values in source measurement do exist in result measurement</description>
+        <booleanScale unit="preserved" displayName="Boolean" restriction="Yes/No">
+         <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+        </booleanScale>
+        <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+       </metric>
+       <changelog created="2010-06-21T18:06:54" changed="2010-06-21T18:06:54"/>
+      </measurementInfo>
+      <evaluation/>
+     </leaf>
+    </node>
+   </node>
+   <node name="Preservation process" weight="1.0" single="false" lock="false">
+    <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+    <leaf name="Runtime memory usage" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveFloatScale unit="MB/MB" displayName="Positive number" restriction="">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </positiveFloatScale>
+     <numericTransformer>
+      <mode value="THRESHOLD_STEPPING"/>
+      <thresholds>
+       <threshold1>0.0</threshold1>
+       <threshold2>0.0</threshold2>
+       <threshold3>0.0</threshold3>
+       <threshold4>0.0</threshold4>
+       <threshold5>0.0</threshold5>
+      </thresholds>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </numericTransformer>
+     <measurementInfo>
+      <property>
+       <category>action:runtime</category>
+       <propertyId>performance/memory/perMB</propertyId>
+       <name>memory per MB</name>
+       <description>Memory used per megabyte of input, measured in megabyte</description>
+       <positiveFloatScale unit="MB/MB" displayName="Positive number" restriction="">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </positiveFloatScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:07:41" changed="2010-06-21T18:07:41"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="Runtime performance" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveFloatScale unit="ms/MB" displayName="Positive number" restriction="">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </positiveFloatScale>
+     <numericTransformer>
+      <mode value="THRESHOLD_STEPPING"/>
+      <thresholds>
+       <threshold1>0.0</threshold1>
+       <threshold2>0.0</threshold2>
+       <threshold3>0.0</threshold3>
+       <threshold4>0.0</threshold4>
+       <threshold5>0.0</threshold5>
+      </thresholds>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </numericTransformer>
+     <measurementInfo>
+      <property>
+       <category>action:runtime</category>
+       <propertyId>performance/time/perMB</propertyId>
+       <name>time per MB</name>
+       <description>Elapsed processing time used per MB, measured in milliseconds</description>
+       <positiveFloatScale unit="ms/MB" displayName="Positive number" restriction="">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </positiveFloatScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:08:01" changed="2010-06-21T18:08:01"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="Logging output of component" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveIntegerScale unit="characters" displayName="Positive integer" restriction="">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </positiveIntegerScale>
+     <numericTransformer>
+      <mode value="THRESHOLD_STEPPING"/>
+      <thresholds>
+       <threshold1>0.0</threshold1>
+       <threshold2>0.0</threshold2>
+       <threshold3>0.0</threshold3>
+       <threshold4>0.0</threshold4>
+       <threshold5>0.0</threshold5>
+      </thresholds>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </numericTransformer>
+     <measurementInfo>
+      <property>
+       <category>action:runtime</category>
+       <propertyId>activityLogging/amount</propertyId>
+       <name>logging amount</name>
+       <description>The amount of logging output produced by a component, measured in the length of characters</description>
+       <positiveIntegerScale unit="characters" displayName="Positive integer" restriction="">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </positiveIntegerScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:08:20" changed="2010-06-21T18:08:20"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="Logging format of component" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <freeStringScale displayName="Free text">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </freeStringScale>
+     <ordinalTransformer>
+      <mappings/>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>action:runtime</category>
+       <propertyId>activityLogging/format</propertyId>
+       <name>logging format</name>
+       <description>The format of logging output produced by a component (currently: none/text/xml)</description>
+       <freeStringScale unit="" displayName="Free text">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </freeStringScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:08:33" changed="2010-06-21T18:08:33"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="Througput" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveFloatScale unit="MB/sec" displayName="Positive number" restriction="">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </positiveFloatScale>
+     <numericTransformer>
+      <mode value="THRESHOLD_STEPPING"/>
+      <thresholds>
+       <threshold1>0.0</threshold1>
+       <threshold2>0.0</threshold2>
+       <threshold3>0.0</threshold3>
+       <threshold4>0.0</threshold4>
+       <threshold5>0.0</threshold5>
+      </thresholds>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </numericTransformer>
+     <measurementInfo>
+      <property>
+       <category>action:runtime</category>
+       <propertyId>performance/throughput</propertyId>
+       <name>throughput</name>
+       <description>Processing throughput, measured in megabytes per second</description>
+       <positiveFloatScale unit="MB/sec" displayName="Positive number" restriction="">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </positiveFloatScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:08:52" changed="2010-06-21T18:08:52"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+   </node>
+   <node name="Target objects" weight="1.0" single="false" lock="false">
+    <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+    <leaf name="... are in valid format" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="WORST"/>
+     <booleanScale unit="valid" displayName="Boolean" restriction="Yes/No">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </booleanScale>
+     <ordinalTransformer>
+      <mappings>
+       <mapping ordinal="Yes" target="0.0"/>
+       <mapping ordinal="No" target="0.0"/>
+      </mappings>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:object</category>
+       <propertyId>format/correct/valid</propertyId>
+       <name>format valid</name>
+       <description>Indicates whether the format of the object is well formed</description>
+       <booleanScale unit="valid" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </booleanScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:10:09" changed="2010-06-21T18:10:09"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="... are in well-formed format" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="WORST"/>
+     <booleanScale unit="well formed" displayName="Boolean" restriction="Yes/No">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </booleanScale>
+     <ordinalTransformer>
+      <mappings>
+       <mapping ordinal="Yes" target="0.0"/>
+       <mapping ordinal="No" target="0.0"/>
+      </mappings>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:object</category>
+       <propertyId>format/correct/wellformed</propertyId>
+       <name>format well-formed</name>
+       <description>Indicates whether the format of the object is well formed</description>
+       <booleanScale unit="well formed" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </booleanScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:10:27" changed="2010-06-21T18:10:27"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+    <leaf name="... are in declared format" weight="1.0" single="false" lock="false">
+     <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     <aggregationMode value="WORST"/>
+     <booleanScale unit="conforms" displayName="Boolean" restriction="Yes/No">
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </booleanScale>
+     <ordinalTransformer>
+      <mappings>
+       <mapping ordinal="Yes" target="0.0"/>
+       <mapping ordinal="No" target="0.0"/>
+      </mappings>
+      <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41" changedBy="admin"/>
+     </ordinalTransformer>
+     <measurementInfo>
+      <property>
+       <category>outcome:object</category>
+       <propertyId>format/correct/conforms</propertyId>
+       <name>format conforms</name>
+       <description>Indicates whether the format of the result conforms to the output format specified by the component.</description>
+       <booleanScale unit="conforms" displayName="Boolean" restriction="Yes/No">
+        <changelog created="2010-06-21T18:11:41" changed="2010-06-21T18:11:41"/>
+       </booleanScale>
+       <possibleMetrics/>
+       <changelog created="2010-06-21T17:34:41" changed="2010-06-21T17:34:41"/>
+      </property>
+      <changelog created="2010-06-21T18:10:47" changed="2010-06-21T18:10:47"/>
+     </measurementInfo>
+     <evaluation/>
+    </leaf>
+   </node>
+  </node>
+ </template>
+</templates>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/740">
+	<pronom:FormatID>740</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (Binary)</pronom:FormatName>
+	<pronom:FormatVersion>R11/12</pronom:FormatVersion>
+	<pronom:FormatAliases>Binary DXF (R11/12)</pronom:FormatAliases>
+	<pronom:FormatFamilies>DXF</pronom:FormatFamilies>
+	<pronom:FormatTypes>Image (Vector)</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>Binary DXF format is the binary encoded variant of the Drawing Interchange File Format, an exchange format for vector graphics developed by AutoDesk. They are probably the widely-used formats for exchanging vector data, and have become a de-facto industry standard. The format is owned by AutoDesk and typically changes with each release of their AutoCAD family of products. DXF files contain a tagged representation of the vector data. The structure comprises a Header section, followed by sections containing data on Classes, Tables, Blocks, Entities and, optionally, thumbnail images. Each section contains a series of data elements. each preceded by a group code tag, which indicates the type of data element. Binary DXF was first developed in AutoCAD Release 10. It should not be confused with the DXB format - this is an entirely separate AutoDesk format for binary encoding vector graphics. Binary DXF Release 11/12 is the version of the format associated with Releases 11 and 12 of the AutoCA</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ReleaseDate>01 Oct 1990</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/81"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/image/vnd.dxf"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/34"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/704"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/134"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/721"/>
+	<pronom:EquivalentTo rdf:resource="http://nationalarchives.gov.uk/pronom/Format/721"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/706"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/706"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/741"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/741"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/739"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/739"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/81">
+	<pronom:Identifier>fmt/81</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/image/vnd.dxf">
+	<pronom:Identifier>image/vnd.dxf</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/34">
+	<pronom:DocumentID>34</pronom:DocumentID>
+	<pronom:DisplayText>Autodesk Corporation, 1992, Drawing Interchange and File Formats, Release 12</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jan 1992</pronom:PublicationDate>
+	<pronom:TitleText>Drawing Interchange and File Formats, Release 12</pronom:TitleText>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/18"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/18"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/18">
+	<pronom:AuthorID>18</pronom:AuthorID>
+	<pronom:OrganisationName>Autodesk Corporation</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>Autodesk Corporation</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/18">
+	<pronom:PublisherID>18</pronom:PublisherID>
+	<pronom:OrganisationName>Autodesk Corporation</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>Autodesk Corporation</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/704">
+	<pronom:ExternalSignatureID>704</pronom:ExternalSignatureID>
+	<pronom:Signature>dxf</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/134">
+	<pronom:SignatureID>134</pronom:SignatureID>
+	<pronom:SignatureName>Binary DXF R11/12</pronom:SignatureName>
+	<pronom:SignatureNote>File header, header section with $ACADVER group code, EOF marker</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/74"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/75"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/74">
+	<pronom:ByteSequenceID>74</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>4175746F4341442042696E617279204458460D0A1A00*0053454354494F4E000248454144455200*092441434144564552000141433130303900*00454E4453454300</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/75">
+	<pronom:ByteSequenceID>75</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from EOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>00454F4600</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/721">
+	<pronom:FormatID>721</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (ASCII)</pronom:FormatName>
+	<pronom:FormatVersion>R11/12</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/706">
+	<pronom:FormatID>706</pronom:FormatID>
+	<pronom:FormatName>AutoCAD Drawing</pronom:FormatName>
+	<pronom:FormatVersion>R13</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/741">
+	<pronom:FormatID>741</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (Binary)</pronom:FormatName>
+	<pronom:FormatVersion>R13</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/739">
+	<pronom:FormatID>739</pronom:FormatID>
+	<pronom:FormatName>Drawing Interchange File Format (Binary)</pronom:FormatName>
+	<pronom:FormatVersion>R10</pronom:FormatVersion>
+</rdf:Description>
+</rdf:RDF>

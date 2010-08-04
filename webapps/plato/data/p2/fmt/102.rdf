@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/643">
+	<pronom:FormatID>643</pronom:FormatID>
+	<pronom:FormatName>Extensible Hypertext Markup Language</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+	<pronom:FormatAliases>XHTML (1.0)</pronom:FormatAliases>
+	<pronom:FormatTypes>Text (Mark-up)</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>The Extensible Hypertext Markup Language (XHTML) is a reformulation of the Hypertext Markup Language (HTML) as an application of the Extensible Markup Language (XML). This allows for the automated processing of XHTML documents using a standard XML parser. XHTML 1.0 represents the reformulation of HTML 4.01 in XML. The structure and grammar of an XHTML document is defined using a Document Type Definition (DTD). An XHTML document consists of nested elements, each of which may have attributes and content. It begins with an XHTML Document Type declaration, defining the XHTML version and Document Type Definition (DTD) to which it conforms. XHTML documents are typically encoded in UTF-8 or UTF-16.</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ReleaseDate>26 Jan 2000</pronom:ReleaseDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/application/xhtml+xml"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/102"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/106"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/23"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/560"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/739"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/39"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/638"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/638"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/777"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/777"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/645"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/645"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/644"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/644"/>
+	<pronom:FormatProperties rdf:resource="http://nationalarchives.gov.uk/pronom/Format/643/FormatProperties"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/application/xhtml+xml">
+	<pronom:Identifier>application/xhtml+xml</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/102">
+	<pronom:Identifier>fmt/102</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/106">
+	<pronom:DeveloperID>106</pronom:DeveloperID>
+	<pronom:OrganisationName>World Wide Web Consortium</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>World Wide Web Consortium</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/23">
+	<pronom:DocumentID>23</pronom:DocumentID>
+	<pronom:DisplayText>World Wide Web Consortium, 2002, W3C Recommendation: XHTML 1.0 - The Extensible HyperText Markup Language (Second Edition)</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Aug 2002</pronom:PublicationDate>
+	<pronom:TitleText>W3C Recommendation: XHTML 1.0 - The Extensible HyperText Markup Language (Second Edition)</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.w3.org/TR/xhtml1/"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/106"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/106"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.w3.org/TR/xhtml1/">
+	<pronom:Identifier>www.w3.org/TR/xhtml1/</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/106">
+	<pronom:AuthorID>106</pronom:AuthorID>
+	<pronom:OrganisationName>World Wide Web Consortium</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>World Wide Web Consortium</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/106">
+	<pronom:PublisherID>106</pronom:PublisherID>
+	<pronom:OrganisationName>World Wide Web Consortium</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>World Wide Web Consortium</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/560">
+	<pronom:ExternalSignatureID>560</pronom:ExternalSignatureID>
+	<pronom:Signature>html</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/739">
+	<pronom:ExternalSignatureID>739</pronom:ExternalSignatureID>
+	<pronom:Signature>htm</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/39">
+	<pronom:SignatureID>39</pronom:SignatureID>
+	<pronom:SignatureName>XHTML 1.0</pronom:SignatureName>
+	<pronom:SignatureNote>With DOCTYPE declaration for 1.0</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/272"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/273"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/272">
+	<pronom:ByteSequenceID>272</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:MaxOffset>1024</pronom:MaxOffset>
+	<pronom:ByteSequenceValue>3C21444F43545950452068746D6C205055424C494320222D2F2F5733432F2F445444205848544D4C20312E30</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/273">
+	<pronom:ByteSequenceID>273</pronom:ByteSequenceID>
+	<pronom:PositionType>Variable</pronom:PositionType>
+	<pronom:ByteSequenceValue>3C68746D6C20786D6C6E733D22687474703A2F2F7777772E77332E6F72672F313939392F7868746D6C22*3C7469746C653E*3C2F7469746C653E</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/638">
+	<pronom:FormatID>638</pronom:FormatID>
+	<pronom:FormatName>Extensible Markup Language</pronom:FormatName>
+	<pronom:FormatVersion>1.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/777">
+	<pronom:FormatID>777</pronom:FormatID>
+	<pronom:FormatName>Java Archive Format</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/645">
+	<pronom:FormatID>645</pronom:FormatID>
+	<pronom:FormatName>Hypertext Markup Language</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/644">
+	<pronom:FormatID>644</pronom:FormatID>
+	<pronom:FormatName>Extensible Hypertext Markup Language</pronom:FormatName>
+	<pronom:FormatVersion>1.1</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/643/FormatProperties">
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/title"/>
+	<pronom:FormatProperty rdf:resource="http://nationalarchives.gov.uk/pronom/Property/language"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/title">
+	<pronom:PropertyName>Title</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Property/language">
+	<pronom:PropertyName>Language</pronom:PropertyName>
+	<pronom:PropertyType>Instance</pronom:PropertyType>
+</rdf:Description>
+</rdf:RDF>

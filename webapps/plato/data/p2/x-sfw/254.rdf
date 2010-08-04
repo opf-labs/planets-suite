@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Software/254">
+	<pronom:SoftwareID>254</pronom:SoftwareID>
+	<pronom:SoftwareName>DROID (Digital Record Object Identification)</pronom:SoftwareName>
+	<pronom:Version>1.0</pronom:Version>
+	<pronom:Description>DROID (Digital Record Object Identification) is a software tool developed by The National Archives to perform automated batch identification of file formats. DROID uses internal and external signatures to identify and report the specific file format versions of digital files. These signatures are stored in an XML signature file, generated from information recorded in the PRONOM technical registry. New and updated signatures are regularly added to PRONOM, and DROID can be configured to automatically download updated signature files from the PRONOM website via web services. DROID allows files and folders to be selected from a file system for identification. This file list can be saved at any point. After the identification process had been run, the results can be output in XML, CSV or printer-friendly formats. DROID includes a documented, public API, for ease of integration with other systems, and can be invoked from two interfaces, a Java GUI and a command line interface.</pronom:Description>
+	<pronom:SoftwareIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/254"/>
+	<pronom:ReleaseDate>12 Oct 2005</pronom:ReleaseDate>
+	<pronom:Language>English</pronom:Language>
+	<pronom:ProvSourceID>1</pronom:ProvSourceID>
+	<pronom:ProveSourceCompoundName>Digital Preservation Department / The National Archives</pronom:ProveSourceCompoundName>
+	<pronom:ProvSourceDate>12 Oct 2005</pronom:ProvSourceDate>
+	<pronom:LastUpdatedDate>12 Oct 2005</pronom:LastUpdatedDate>
+	<pronom:SoftwareImage rdf:resource="http://nationalarchives.gov.uk/pronom/Image/21"/>
+	<pronom:Vendor rdf:resource="http://nationalarchives.gov.uk/pronom/Vendor/1"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Availability/1"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-sfw/254">
+	<pronom:Identifier>x-sfw/254</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Image/21">
+	<pronom:ImageID>21</pronom:ImageID>
+	<pronom:ImageFileName>DROID 48.gif</pronom:ImageFileName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Vendor/1">
+	<pronom:VendorID>1</pronom:VendorID>
+	<pronom:VendorName>Digital Preservation Department / The National Archives</pronom:VendorName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Availability/1">
+	<pronom:DocumentID>64</pronom:DocumentID>
+	<pronom:TitleText>Automatic format identification using PRONOM and DROID</pronom:TitleText>
+	<pronom:DisplayText>Brown, A, 2005, Automatic format identification using PRONOM and DROID, Digital Preservation Technical Paper, 1, The National Archives</pronom:DisplayText>
+	<pronom:PublicationDate>17 Sep 2005</pronom:PublicationDate>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityID>1</pronom:AvailabilityID>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.nationalarchives.gov.uk/aboutapps/fileformat/pdf/automatic_format_identification.pdf"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.nationalarchives.gov.uk/aboutapps/fileformat/pdf/automatic_format_identification.pdf">
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+	<pronom:Identifier>www.nationalarchives.gov.uk/aboutapps/fileformat/pdf/automatic_format_identification.pdf</pronom:Identifier>
+</rdf:Description>
+</rdf:RDF>

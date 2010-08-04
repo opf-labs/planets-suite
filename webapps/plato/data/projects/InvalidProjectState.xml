@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project version="1.0">
+ <changelog created="1199888085019" changed="1199888085019"/>
+ <state value="13"/>
+ <properties author="Kevin Stadler" organization="Vienna University of Technology" name="Minimalist test project in state #11" description="This is a minimalist project">
+  <changelog created="1199888085018" changed="1199888085018"/>
+ </properties>
+ <basis environment="environment" documentTypes="textdateien die der kevin alle selbst geschrieben hat :(">
+  <changelog created="1199888085018" changed="1199888085018"/>
+ </basis>
+ <sampleRecords samplesDescription="some test samples">
+  <record shortName="eins" fullname="sample 1">
+   <data value="anVzdCBhIGJ5dGUgc3RyZWFt"/>
+   <changelog created="1199888085019" changed="1199888085019"/>
+  </record>
+  <record shortName="zwo" fullname="sample number two">
+   <data value="anVzdCBhIGJ5dGUgc3RyZWFt"/>
+   <changelog created="1199888085019" changed="1199888085019"/>
+  </record>
+  <changelog created="1199888085018" changed="1199888085018"/>
+ </sampleRecords>
+ <alternatives>
+  <alternative discarded="false" name="PDF/A ToolA" description="Convert to PDF/A using this new tool named 'A'">
+   <resourceDescription>
+    <changelog created="1199888085019" changed="1199888085019"/>
+   </resourceDescription>
+   <experiment>
+    <changelog created="1199888085019" changed="1199888085019"/>
+   </experiment>
+   <changelog created="1199888085019" changed="1199888085019"/>
+  </alternative>
+  <alternative discarded="false" name="PDF/A ToolB" description="Convert to PDF/A using the well-tested tool 'B'">
+   <resourceDescription>
+    <changelog created="1199888085019" changed="1199888085019"/>
+   </resourceDescription>
+   <experiment>
+    <changelog created="1199888085019" changed="1199888085019"/>
+   </experiment>
+   <changelog created="1199888085019" changed="1199888085019"/>
+  </alternative>
+  <changelog created="1199888085018" changed="1199888085018"/>
+ </alternatives>
+ <decision reason="Reason, why no actions are needed? Hmm..." actionNeeded="also no actions needed">
+  <goDecision value="GO"/>
+  <changelog created="1199888085020" changed="1199888085020"/>
+ </decision>
+ <importanceWeighting>
+  <changelog created="1199888085019" changed="1199888085019"/>
+ </importanceWeighting>
+ <transformation>
+  <changelog created="1199888085019" changed="1199888085019"/>
+ </transformation>
+ <tree weightsInitialized="true">
+  <node name="Minimalist root node" weight="1.0" single="false" lock="false">
+   <changelog created="1199888085020" changed="1199888085020"/>
+   <node name="Image properties" weight="0.2" single="false" lock="false">
+    <changelog created="1199888085020" changed="1199888085105"/>
+    <leaf name="Amount of Pixel" weight="1.0" single="false" lock="false">
+     <changelog created="1199888085020" changed="1199888085105"/>
+     <aggregationMode value="AVERAGE"/>
+     <positiveIntegerScale unit="px" restriction="">
+      <changelog created="1199888085020" changed="1199888085020"/>
+     </positiveIntegerScale>
+     <numericTransformer>
+      <mode value="THRESHOLD_STEPPING"/>
+      <thresholds>
+       <threshold value="256.0" target="1"/>
+       <threshold value="512.0" target="2"/>
+       <threshold value="1024.0" target="3"/>
+       <threshold value="2048.0" target="4"/>
+       <threshold value="4096.0" target="5"/>
+      </thresholds>
+      <changelog created="1199888085020" changed="1199888085020"/>
+     </numericTransformer>
+     <evaluation>
+      <alternative key="PDF/A ToolB">
+       <positiveIntegerResult value="2048">
+        <changelog created="1199888085021" changed="1199888085021"/>
+       </positiveIntegerResult>
+       <positiveIntegerResult value="2048">
+        <changelog created="1199888085021" changed="1199888085021"/>
+       </positiveIntegerResult>
+      </alternative>
+      <alternative key="PDF/A ToolA">
+       <positiveIntegerResult value="1024">
+        <changelog created="1199888085021" changed="1199888085021"/>
+       </positiveIntegerResult>
+       <positiveIntegerResult value="2048">
+        <changelog created="1199888085021" changed="1199888085021"/>
+       </positiveIntegerResult>
+      </alternative>
+     </evaluation>
+    </leaf>
+   </node>
+   <leaf name="Karma" weight="0.2" single="false" lock="false">
+    <changelog created="1199888085020" changed="1199888085105"/>
+    <aggregationMode value="WORST"/>
+    <ordinalScale restriction="Good/Bad/Evil">
+     <changelog created="1199888085020" changed="1199888085020"/>
+    </ordinalScale>
+    <ordinalTransformer>
+     <mappings>
+      <mapping ordinal="Evil" target="0.0"/>
+      <mapping ordinal="Good" target="4.0"/>
+      <mapping ordinal="Bad" target="2.0"/>
+     </mappings>
+     <changelog created="1199888085020" changed="1199888085020"/>
+    </ordinalTransformer>
+    <evaluation>
+     <alternative key="PDF/A ToolB">
+      <ordinalResult value="Evil">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </ordinalResult>
+      <ordinalResult value="Bad">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </ordinalResult>
+     </alternative>
+     <alternative key="PDF/A ToolA">
+      <ordinalResult value="Good">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </ordinalResult>
+      <ordinalResult value="Bad">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </ordinalResult>
+     </alternative>
+    </evaluation>
+   </leaf>
+   <leaf name="Filesize (in Relation to Original)" weight="0.2" single="false" lock="false">
+    <changelog created="1199888085020" changed="1199888085105"/>
+    <aggregationMode value="AVERAGE"/>
+    <positiveFloatScale unit="MB" restriction="">
+     <changelog created="1199888085020" changed="1199888085020"/>
+    </positiveFloatScale>
+    <numericTransformer>
+     <mode value="LINEAR"/>
+     <thresholds>
+      <threshold value="4000.0" target="1"/>
+      <threshold value="5000.0" target="2"/>
+      <threshold value="6000.0" target="3"/>
+      <threshold value="7000.0" target="4"/>
+      <threshold value="8000.0" target="5"/>
+     </thresholds>
+     <changelog created="1199888085020" changed="1199888085020"/>
+    </numericTransformer>
+    <evaluation>
+     <alternative key="PDF/A ToolB">
+      <positiveFloatResult value="8212.65">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </positiveFloatResult>
+      <positiveFloatResult value="7921.235">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </positiveFloatResult>
+     </alternative>
+     <alternative key="PDF/A ToolA">
+      <positiveFloatResult value="6500.32">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </positiveFloatResult>
+      <positiveFloatResult value="7312.0">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </positiveFloatResult>
+     </alternative>
+    </evaluation>
+   </leaf>
+   <leaf name="A Single-Leaf" weight="0.2" single="true" lock="false">
+    <changelog created="1199888085020" changed="1199888085105"/>
+    <aggregationMode value="AVERAGE"/>
+    <positiveFloatScale unit="tbd" restriction="">
+     <changelog created="1199888085020" changed="1199888085020"/>
+    </positiveFloatScale>
+    <numericTransformer>
+     <mode value="THRESHOLD_STEPPING"/>
+     <thresholds>
+      <threshold value="2.0" target="1"/>
+      <threshold value="3.0" target="2"/>
+      <threshold value="4.0" target="3"/>
+      <threshold value="5.0" target="4"/>
+      <threshold value="6.0" target="5"/>
+     </thresholds>
+     <changelog created="1199888085020" changed="1199888085020"/>
+    </numericTransformer>
+    <evaluation>
+     <alternative key="PDF/A ToolB">
+      <positiveFloatResult value="5.2">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </positiveFloatResult>
+     </alternative>
+     <alternative key="PDF/A ToolA">
+      <positiveFloatResult value="3.2">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </positiveFloatResult>
+     </alternative>
+    </evaluation>
+   </leaf>
+   <leaf name="IntRange 0-10" weight="0.2" single="false" lock="false">
+    <changelog created="1199888085020" changed="1199888085105"/>
+    <aggregationMode value="AVERAGE"/>
+    <intRangeScale restriction="0/10">
+     <changelog created="1199888085020" changed="1199888085020"/>
+    </intRangeScale>
+    <numericTransformer>
+     <mode value="THRESHOLD_STEPPING"/>
+     <thresholds>
+      <threshold value="1.0" target="1"/>
+      <threshold value="3.0" target="2"/>
+      <threshold value="5.0" target="3"/>
+      <threshold value="7.0" target="4"/>
+      <threshold value="9.0" target="5"/>
+     </thresholds>
+     <changelog created="1199888085020" changed="1199888085020"/>
+    </numericTransformer>
+    <evaluation>
+     <alternative key="PDF/A ToolB">
+      <intRangeResult value="3">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </intRangeResult>
+      <intRangeResult value="7">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </intRangeResult>
+     </alternative>
+     <alternative key="PDF/A ToolA">
+      <intRangeResult value="8">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </intRangeResult>
+      <intRangeResult value="5">
+       <changelog created="1199888085021" changed="1199888085021"/>
+      </intRangeResult>
+     </alternative>
+    </evaluation>
+   </leaf>
+  </node>
+ </tree>
+</project>

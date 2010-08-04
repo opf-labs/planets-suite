@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="PDF-unchanged" weight="1.0">
+  <node name="Object Characteristic" weight="0.35" variance="0.0" allWeights="0.35" agg_weight="0.35">
+  <node name="Appearance" weight="0.25" variance="0.0" allWeights="0.25" agg_weight="0.0875">
+  <node name="Character appearance" weight="0.6" variance="0.0" allWeights="0.6" agg_weight="0.0525">
+  <leaf name="Encoding" weight="0.400" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.400" allWeights="0.400" value="5" agg_weight="0.021" agg_value="5" />
+  <leaf name="Font Type" weight="0.300" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.300" allWeights="0.300" value="5" agg_weight="0.01575" agg_value="5" />
+  <leaf name="Font Size" weight="0.300" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.300" allWeights="0.300" value="5" agg_weight="0.01575" agg_value="5" />
+  </node>
+  <leaf name="Enumerations appearance" weight="0.050" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.050" allWeights="0.050" value="5" agg_weight="0.0043749999999999995" agg_value="5" />
+  <leaf name="Internal References Appearance" weight="0.070" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.070" allWeights="0.070" value="5" agg_weight="0.006125" agg_value="5" />
+  <leaf name="URLs Appearance" weight="0.070" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.070" allWeights="0.070" value="5" agg_weight="0.006125" agg_value="5" />
+  <leaf name="Equations Appearance" weight="0.070" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.070" allWeights="0.070" value="5" agg_weight="0.006125" agg_value="5" />
+  <leaf name="Tables Appearance" weight="0.070" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.070" allWeights="0.070" value="5" agg_weight="0.006125" agg_value="5" />
+  <leaf name="Figures Appearance" weight="0.070" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.070" allWeights="0.070" value="5" agg_weight="0.006125" agg_value="5" />
+  </node>
+
+  <node name="Structure" weight="0.20" variance="0.0" allWeights="0.20" agg_weight="0.06999999999999999">
+  <leaf name="Document Structure" weight="0.150" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.150" allWeights="0.150" value="5" agg_weight="0.010499999999999999" agg_value="5" />
+  <leaf name="Object coherence" weight="0.090" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.090" allWeights="0.090" value="5" agg_weight="0.006299999999999999" agg_value="5" />
+  <leaf name="Reference Tables" weight="0.095" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.095" allWeights="0.095" value="5" agg_weight="0.00665" agg_value="5" />
+  <leaf name="Line break" weight="0.060" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.060" allWeights="0.060" value="5" agg_weight="0.0042" agg_value="5" />
+  <leaf name="Page break" weight="0.060" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.060" allWeights="0.060" value="5" agg_weight="0.0042" agg_value="5" />
+  <leaf name="Header" weight="0.060" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.060" allWeights="0.060" value="5" agg_weight="0.0042" agg_value="5" />
+  <leaf name="Footer" weight="0.060" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.060" allWeights="0.060" value="5" agg_weight="0.0042" agg_value="5" />
+  <leaf name="Footnote" weight="0.065" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.065" allWeights="0.065" value="5" agg_weight="0.004549999999999999" agg_value="5" />
+  <node name="Equations" weight="0.12" variance="0.0" allWeights="0.12" agg_weight="0.0084">
+  <leaf name="Size Equations" weight="0.150" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.150" allWeights="0.150" value="5" agg_weight="0.0012599999999999998" agg_value="5" />
+  <leaf name="Position Equations" weight="0.300" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.300" allWeights="0.300" value="5" agg_weight="0.0025199999999999997" agg_value="5" />
+  <leaf name="Structure Equations" weight="0.400" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.400" allWeights="0.400" value="5" agg_weight="0.00336" agg_value="5" />
+  <leaf name="Caption Equations" weight="0.150" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.150" allWeights="0.150" value="5" agg_weight="0.0012599999999999998" agg_value="5" />
+  </node>
+
+  <node name="Tables" weight="0.12" variance="0.0" allWeights="0.12" agg_weight="0.0084">
+  <leaf name="Size Tables" weight="0.150" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.150" allWeights="0.150" agg_weight="0.0012599999999999998" value="5" agg_value="5" />
+  <leaf name="Position Tables" weight="0.300" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.300" allWeights="0.300" agg_weight="0.0025199999999999997" value="5" agg_value="5" />
+  <leaf name="Structure Tables" weight="0.400" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.400" allWeights="0.400" agg_weight="0.00336" value="5" agg_value="5" />
+  <leaf name="Caption Tables" weight="0.150" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.150" allWeights="0.150" agg_weight="0.0012599999999999998" value="5" agg_value="5" />
+  </node>
+
+  <node name="Figure" weight="0.12" variance="0.0" allWeights="0.12" agg_weight="0.0084">
+  <leaf name="Size Figure" weight="0.300" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.300" allWeights="0.300" agg_weight="0.0025199999999999997" value="5" agg_value="5" />
+  <leaf name="Position Figure" weight="0.400" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.400" allWeights="0.400" agg_weight="0.00336" value="5" agg_value="5" />
+  <leaf name="Caption Figure" weight="0.300" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.300" allWeights="0.300" agg_weight="0.0025199999999999997" value="5" agg_value="5" />
+  </node>
+  </node>
+
+  <node name="Content" weight="0.4" variance="0.0" allWeights="0.4" agg_weight="0.13999999999999999">
+  <leaf name="Character" weight="0.650" measureUnit="YAN" transformationtable="1;2;3;4;5;" variance="0.650" allWeights="0.650" value="5" agg_weight="0.091" agg_value="5" />
+  <node name="Figure Content" weight="0.35" variance="0.0" allWeights="0.35" agg_weight="0.048999999999999995">
+  <leaf name="Resolution" weight="0.220" measureUnit="DPI" transformationtable="1;2;3;4;5;" variance="0.220" allWeights="0.220" agg_weight="0.01078" value="5" agg_value="5" />
+  <leaf name="Color depth" weight="0.120" measureUnit="bit" transformationtable="1;2;3;4;5;" variance="0.120" allWeights="0.120" agg_weight="0.005879999999999999" value="5" agg_value="5" />
+  <leaf name="Open specification Figure" weight="0.220" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.220" allWeights="0.220" agg_weight="0.01078" value="5" agg_value="5" />
+  <leaf name="International standard Figure" weight="0.220" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.220" allWeights="0.220" agg_weight="0.01078" value="5" agg_value="5" />
+  <leaf name="Market share Figure" weight="0.220" measureUnit="%" transformationtable="1;2;3;4;5;" variance="0.220" allWeights="0.220" agg_weight="0.01078" value="5" agg_value="5" />
+  </node>
+  </node>
+
+  <node name="Behaviour" weight="0.15" variance="0.0" allWeights="0.15" agg_weight="0.0525">
+  <leaf name="Script blocking" weight="0.210" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.210" allWeights="0.210" value="0" agg_weight="0.011024999999999998" agg_value="0" />
+  <leaf name="Deactivation of security mechanism" weight="0.210" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.210" allWeights="0.210" value="0" agg_weight="0.011024999999999998" agg_value="0" />
+  <leaf name="URLs Behaviour" weight="0.090" measureUnit="WTN" transformationtable="1;2;3;4;5;" variance="0.090" allWeights="0.090" value="5" agg_weight="0.004725" agg_value="5" />
+  <leaf name="Jump References" weight="0.090" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.090" allWeights="0.090" value="4" agg_weight="0.004725" agg_value="4" />
+  <leaf name="Content machine readable" weight="0.400" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.400" allWeights="0.400" value="5" agg_weight="0.021" agg_value="5" />
+  </node>
+  </node>
+
+  <node name="Technical Charac." weight="0.15" variance="0.0" allWeights="0.15" agg_weight="0.15">
+  <node name="File Format" weight="0.5" variance="0.0" allWeights="0.5" agg_weight="0.075">
+  <leaf name="Free viewers available" weight="0.200" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.200" allWeights="0.200" value="5" agg_weight="0.015" agg_value="5" />
+  <leaf name="Open specification" weight="0.200" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.200" allWeights="0.200" value="4" agg_weight="0.015" agg_value="4" />
+  <leaf name="International standard" weight="0.200" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.200" allWeights="0.200" value="4" agg_weight="0.015" agg_value="4" />
+  <leaf name="Market share" weight="0.200" measureUnit="%" transformationtable="1;2;3;4;5;" variance="0.200" allWeights="0.200" value="5" agg_weight="0.015" agg_value="5" />
+  <leaf name="Filesize" weight="0.200" measureUnit="MB" transformationtable="1;2;3;4;5;" variance="0.200" allWeights="0.200" value="4" agg_weight="0.015" agg_value="4" />
+  </node>
+
+  <node name="Tool" weight="0.5" variance="0.0" allWeights="0.5" agg_weight="0.075">
+  <leaf name="Error Correction" weight="0.12" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.12" allWeights="0.12" value="5" agg_weight="0.008625" agg_value="5" />
+  <leaf name="Capacity Tool" weight="0.12" measureUnit="#" transformationtable="1;2;3;4;5;" variance="0.12" allWeights="0.12" value="5" agg_weight="0.008625" agg_value="5" />
+  <leaf name="Duration Tool" weight="0.12" measureUnit="sec" transformationtable="1;2;3;4;5;" variance="0.12" allWeights="0.12" value="5" agg_weight="0.008625" agg_value="5" />
+  <leaf name="Documentation about tool activities" weight="0.12" measureUnit="0-5" transformationtable="1;2;3;4;5;" variance="0.12" allWeights="0.12" value="5" agg_weight="0.008625" agg_value="5" />
+  <leaf name="Customization" weight="0.12" measureUnit="0-5" transformationtable="1;2;3;4;5;" variance="0.12" allWeights="0.12" value="5" agg_weight="0.008625" agg_value="5" />
+  <leaf name="Macro support" weight="0.12" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.12" allWeights="0.12" value="4" agg_weight="0.008625" agg_value="4" />
+  <leaf name="Batch process support" weight="0.12" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.12" allWeights="0.12" value="4" agg_weight="0.008625" agg_value="4" />
+  <leaf name="Usability" weight="0.12" measureUnit="0-5" transformationtable="1;2;3;4;5;" variance="0.12" allWeights="0.12" value="5" agg_weight="0.008625" agg_value="5" />
+  <leaf name="Deployment overhead" weight="0.040" measureUnit="0-5" transformationtable="1;2;3;4;5;" variance="0.040" allWeights="0.040" value="5" agg_weight="0.0060" agg_value="5" />
+  </node>
+  </node>
+
+  <node name="Process Characteristic" weight="0.25" variance="0.0" allWeights="0.25" agg_weight="0.25">
+  <leaf name="Documentation about activity" weight="0.160" measureUnit="0-5" transformationtable="1;2;3;4;5;" variance="0.160" allWeights="0.160" value="2" agg_weight="0.04" agg_value="2" />
+  <leaf name="Duration" weight="0.160" measureUnit="sec" transformationtable="1;2;3;4;5;" variance="0.160" allWeights="0.160" value="5" agg_weight="0.04" agg_value="5" />
+  <leaf name="Capacity" weight="0.160" measureUnit="#" transformationtable="1;2;3;4;5;" variance="0.160" allWeights="0.160" value="5" agg_weight="0.04" agg_value="5" />
+  <leaf name="Automation of the process" weight="0.260" measureUnit="%" transformationtable="1;2;3;4;5;" variance="0.260" allWeights="0.260" value="5" agg_weight="0.065" agg_value="5" />
+  <node name="Integrity" weight="0.26" variance="0.0" allWeights="0.26" agg_weight="0.065">
+  <leaf name="Traceability of change" weight="0.500" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.500" allWeights="0.500" value="1" agg_weight="0.0325" agg_value="1" />
+  <leaf name="File format verification" weight="0.500" measureUnit="Y/N" transformationtable="1;2;3;4;5;" variance="0.500" allWeights="0.500" value="4" agg_weight="0.0325" agg_value="4" />
+  </node>
+  </node>
+
+  <node name="Cost" weight="0.25" variance="0.0" allWeights="0.25" agg_weight="0.25">
+  <node name="HW" weight="0.2" variance="0.0" allWeights="0.2" agg_weight="0.05">
+  <leaf name="Initial HW" weight="0.300" measureUnit="?" transformationtable="1;2;3;4;5;" variance="0.300" allWeights="0.300" value="5" agg_weight="0.015" agg_value="5" />
+  <leaf name="Running HW" weight="0.700" measureUnit="?" transformationtable="1;2;3;4;5;" variance="0.700" allWeights="0.700" value="5" agg_weight="0.034999999999999996" agg_value="5" />
+  </node>
+
+  <node name="SW" weight="0.2" variance="0.0" allWeights="0.2" agg_weight="0.05">
+  <leaf name="Customization SW" weight="0.150" measureUnit="?" transformationtable="1;2;3;4;5;" variance="0.150" allWeights="0.150" value="5" agg_weight="0.0075" agg_value="5" />
+  <leaf name="Initial SW" weight="0.150" measureUnit="?" transformationtable="1;2;3;4;5;" variance="0.150" allWeights="0.150" value="5" agg_weight="0.0075" agg_value="5" />
+  <leaf name="Running SW" weight="0.700" measureUnit="?" transformationtable="1;2;3;4;5;" variance="0.700" allWeights="0.700" value="5" agg_weight="0.034999999999999996" agg_value="5" />
+  </node>
+
+  <node name="Personell" weight="0.6" variance="0.0" allWeights="0.6" agg_weight="0.15">
+  <leaf name="Training" weight="0.200" measureUnit="?" transformationtable="1;2;3;4;5;" variance="0.200" allWeights="0.200" value="5" agg_weight="0.03" agg_value="5" />
+  <leaf name="Development" weight="0.200" measureUnit="?" transformationtable="1;2;3;4;5;" variance="0.200" allWeights="0.200" value="5" agg_weight="0.03" agg_value="5" />
+  <leaf name="Running" weight="0.600" measureUnit="?" transformationtable="1;2;3;4;5;" variance="0.600" allWeights="0.600" value="5" agg_weight="0.09" agg_value="5" />
+  </node>
+  </node>
+  </node>

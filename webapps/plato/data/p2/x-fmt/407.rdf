@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/772">
+	<pronom:FormatID>772</pronom:FormatID>
+	<pronom:FormatName>PostScript</pronom:FormatName>
+	<pronom:FormatVersion>2.1</pronom:FormatVersion>
+	<pronom:FormatTypes>Page Description</pronom:FormatTypes>
+	<pronom:FormatDescription>Outline record only - PostScript conforming to Document Structuring Conventions 2.1</pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Text</pronom:BinaryFileFormat>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Feb 2006</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>11 Feb 2006</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/application/postscript"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/com.adobe.postscript"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/407"/>
+	<pronom:Developers rdf:resource="http://nationalarchives.gov.uk/pronom/Developer/7"/>
+	<pronom:Support rdf:resource="http://nationalarchives.gov.uk/pronom/Support/7"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/770"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/192"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/86"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/86"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/331"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/331"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/332"/>
+	<pronom:HasLowerPriorityThan rdf:resource="http://nationalarchives.gov.uk/pronom/Format/332"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/773"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/773"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/771"/>
+	<pronom:IsSubsequentVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/771"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/application/postscript">
+	<pronom:Identifier>application/postscript</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/com.adobe.postscript">
+	<pronom:Identifier>com.adobe.postscript</pronom:Identifier>
+	<pronom:IdentifierType>Apple Uniform Type Identifier</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-fmt/407">
+	<pronom:Identifier>x-fmt/407</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Developer/7">
+	<pronom:DeveloperID>7</pronom:DeveloperID>
+	<pronom:OrganisationName>Adobe Systems Incorporated</pronom:OrganisationName>
+	<pronom:DeveloperCompoundName>Adobe Systems Incorporated</pronom:DeveloperCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Support/7">
+	<pronom:SupportID>7</pronom:SupportID>
+	<pronom:OrganisationName>Adobe Systems Incorporated</pronom:OrganisationName>
+	<pronom:SupportCompoundName>Adobe Systems Incorporated</pronom:SupportCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/770">
+	<pronom:ExternalSignatureID>770</pronom:ExternalSignatureID>
+	<pronom:Signature>ps</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/192">
+	<pronom:SignatureID>192</pronom:SignatureID>
+	<pronom:SignatureName>PostScript DSC 2.1</pronom:SignatureName>
+	<pronom:SignatureNote>PostScript DSC header version comment + EOF comment</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/246"/>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/250"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/246">
+	<pronom:ByteSequenceID>246</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>252150532D41646F62652D322E31</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/250">
+	<pronom:ByteSequenceID>250</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from EOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>2525454F46(0D|0A|0D0A)</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/86">
+	<pronom:FormatID>86</pronom:FormatID>
+	<pronom:FormatName>Encapsulated PostScript File Format</pronom:FormatName>
+	<pronom:FormatVersion>1.2</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/331">
+	<pronom:FormatID>331</pronom:FormatID>
+	<pronom:FormatName>Encapsulated PostScript File Format</pronom:FormatName>
+	<pronom:FormatVersion>3.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/332">
+	<pronom:FormatID>332</pronom:FormatID>
+	<pronom:FormatName>Encapsulated PostScript File Format</pronom:FormatName>
+	<pronom:FormatVersion>2.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/773">
+	<pronom:FormatID>773</pronom:FormatID>
+	<pronom:FormatName>PostScript</pronom:FormatName>
+	<pronom:FormatVersion>3.0</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/771">
+	<pronom:FormatID>771</pronom:FormatID>
+	<pronom:FormatName>PostScript</pronom:FormatName>
+	<pronom:FormatVersion>2.0</pronom:FormatVersion>
+</rdf:Description>
+</rdf:RDF>

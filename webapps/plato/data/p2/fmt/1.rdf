@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY pronom "http://pronom.nationalarchives.gov.uk/#">
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:pronom="http://pronom.nationalarchives.gov.uk/#">
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/735">
+	<pronom:FormatID>735</pronom:FormatID>
+	<pronom:FormatName>Broadcast WAVE</pronom:FormatName>
+	<pronom:FormatVersion>0</pronom:FormatVersion>
+	<pronom:FormatAliases>BWAVE (0)</pronom:FormatAliases>
+	<pronom:FormatFamilies>WAVE</pronom:FormatFamilies>
+	<pronom:FormatTypes>Audio</pronom:FormatTypes>
+	<pronom:FormatDisclosure>Full</pronom:FormatDisclosure>
+	<pronom:FormatDescription>Broadcast WAVE is a chunk-based audio format developed by the European Broadcasting Union, and based on the Microsoft WAVE format, which is in turn based on the generic Resource Interchange File Format (RIFF) specification developed by Microsoft and IBM. Structurally, a BWAVE file is composed of a number of chunks, each comprising a four character code chunk identifier, the chunk size, and the chunk data. It comprises a RIFF header with a WAVE data type identifier, followed by a series of chunks. Every file must include a Broadcast Audio Extension chunk, containing metadata required for exchange of information between broadcasters, a Format chunk, which describes the format of the audio data, and a Data chunk, containing the audio data itself. BWAVE files which contain MPEG-encoded audio data must also include a Fact chunk, containing file-dependent information about the audio data, and an MPEG Audio Extension chunk, containing extra information required to describe the MPEG encoding. </pronom:FormatDescription>
+	<pronom:BinaryFileFormat>Binary</pronom:BinaryFileFormat>
+	<pronom:ByteOrders>Little-endian (Intel)</pronom:ByteOrders>
+	<pronom:ReleaseDate>01 Jan 1997</pronom:ReleaseDate>
+	<pronom:WithdrawnDate>01 Jul 2001</pronom:WithdrawnDate>
+	<pronom:ProvenanceSourceID>1</pronom:ProvenanceSourceID>
+	<pronom:ProvenanceName>Digital Preservation Department / The National Archives</pronom:ProvenanceName>
+	<pronom:ProvenanceSourceDate>11 Mar 2005</pronom:ProvenanceSourceDate>
+	<pronom:LastUpdatedDate>02 Aug 2005</pronom:LastUpdatedDate>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-wav"/>
+	<pronom:FileFormatIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/fmt/1"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/13"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/14"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/15"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/16"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/17"/>
+	<pronom:Document rdf:resource="http://nationalarchives.gov.uk/pronom/Document/18"/>
+	<pronom:ExternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/ExternalSignature/742"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/129"/>
+	<pronom:InternalSignature rdf:resource="http://nationalarchives.gov.uk/pronom/Signature/159"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/654"/>
+	<pronom:HasPriorityOver rdf:resource="http://nationalarchives.gov.uk/pronom/Format/654"/>
+	<pronom:RelatedFormat rdf:resource="http://nationalarchives.gov.uk/pronom/Format/656"/>
+	<pronom:IsPreviousVersionOf rdf:resource="http://nationalarchives.gov.uk/pronom/Format/656"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/3"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/4"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/5"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/6"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/7"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/8"/>
+	<pronom:CompressionType rdf:resource="http://nationalarchives.gov.uk/pronom/Compression/9"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/audio/x-wav">
+	<pronom:Identifier>audio/x-wav</pronom:Identifier>
+	<pronom:IdentifierType>MIME</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/fmt/1">
+	<pronom:Identifier>fmt/1</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/13">
+	<pronom:DocumentID>13</pronom:DocumentID>
+	<pronom:DisplayText>European Broadcasting Union, 2001, Technical Specification 3285: BWF - a format for audio data files in broadcasting, Version 1</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jul 2001</pronom:PublicationDate>
+	<pronom:TitleText>Technical Specification 3285: BWF - a format for audio data files in broadcasting, Version 1</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_tcm6-10544.pdf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/104"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/104"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_tcm6-10544.pdf">
+	<pronom:Identifier>www.ebu.ch/CMSimages/en/tec_doc_t3285_tcm6-10544.pdf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Author/104">
+	<pronom:AuthorID>104</pronom:AuthorID>
+	<pronom:OrganisationName>European Broadcasting Union</pronom:OrganisationName>
+	<pronom:AuthorCompoundName>European Broadcasting Union</pronom:AuthorCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Publisher/104">
+	<pronom:PublisherID>104</pronom:PublisherID>
+	<pronom:OrganisationName>European Broadcasting Union</pronom:OrganisationName>
+	<pronom:PublisherCompoundName>European Broadcasting Union</pronom:PublisherCompoundName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/14">
+	<pronom:DocumentID>14</pronom:DocumentID>
+	<pronom:DisplayText>European Broadcasting Union, 1997, Technical Specification 3285: Specification of the Broadcast Wave Format - a format for audio data files in broadcasting, Supplement 1 - MPEG audio</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jul 1997</pronom:PublicationDate>
+	<pronom:TitleText>Technical Specification 3285: Specification of the Broadcast Wave Format - a format for audio data files in broadcasting, Supplement 1 - MPEG audio</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s1_tcm6-10545.pdf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/104"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/104"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s1_tcm6-10545.pdf">
+	<pronom:Identifier>www.ebu.ch/CMSimages/en/tec_doc_t3285_s1_tcm6-10545.pdf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/15">
+	<pronom:DocumentID>15</pronom:DocumentID>
+	<pronom:DisplayText>European Broadcasting Union, 2001, Technical Specification 3285: BWF - a format for audio data files in broadcasting, Supplement 2 - Capturing Report</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jul 2001</pronom:PublicationDate>
+	<pronom:TitleText>Technical Specification 3285: BWF - a format for audio data files in broadcasting, Supplement 2 - capturing report</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s2_tcm6-10482.pdf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/104"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/104"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s2_tcm6-10482.pdf">
+	<pronom:Identifier>www.ebu.ch/CMSimages/en/tec_doc_t3285_s2_tcm6-10482.pdf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/16">
+	<pronom:DocumentID>16</pronom:DocumentID>
+	<pronom:DisplayText>European Broadcasting Union, 2001, Technical Specification 3285: BWF - a format for audio data files in broadcasting, Supplement 3 - Peak Envelope Chunk</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jul 2001</pronom:PublicationDate>
+	<pronom:TitleText>Technical Specification 3285: BWF - a format for audio data files in broadcasting, Supplement 3 - Peak Envelope Chunk</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s3_tcm6-10483.pdf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/104"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/104"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s3_tcm6-10483.pdf">
+	<pronom:Identifier>www.ebu.ch/CMSimages/en/tec_doc_t3285_s3_tcm6-10483.pdf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/17">
+	<pronom:DocumentID>17</pronom:DocumentID>
+	<pronom:DisplayText>European Broadcasting Union, 2003, Technical Specification 3285: Specification of the Broadcast Wave Format - a format for audio data files in broadcasting, Supplement 4 -  Chunk</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Apr 2003</pronom:PublicationDate>
+	<pronom:TitleText>Technical Specification 3285: Specification of the Broadcast Wave Format - a format for audio data files in broadcasting, Supplement 4 -  Chunk</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s4_tcm6-10484.pdf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/104"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/104"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s4_tcm6-10484.pdf">
+	<pronom:Identifier>www.ebu.ch/CMSimages/en/tec_doc_t3285_s4_tcm6-10484.pdf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Document/18">
+	<pronom:DocumentID>18</pronom:DocumentID>
+	<pronom:DisplayText>European Broadcasting Union, 2003, Technical Specification 3285: Specification of the Broadcast Wave Format - a format for audio data files in broadcasting, Supplement 5 -  Chunk</pronom:DisplayText>
+	<pronom:DocumentType>Authoritative</pronom:DocumentType>
+	<pronom:AvailabilityDescription>Public</pronom:AvailabilityDescription>
+	<pronom:PublicationDate>01 Jul 2003</pronom:PublicationDate>
+	<pronom:TitleText>Technical Specification 3285: Specification of the Broadcast Wave Format - a format for audio data files in broadcasting, Supplement 5 -  Chunk</pronom:TitleText>
+	<pronom:DocumentIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s5_tcm6-10485.pdf"/>
+	<pronom:Author rdf:resource="http://nationalarchives.gov.uk/pronom/Author/104"/>
+	<pronom:Publisher rdf:resource="http://nationalarchives.gov.uk/pronom/Publisher/104"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/www.ebu.ch/CMSimages/en/tec_doc_t3285_s5_tcm6-10485.pdf">
+	<pronom:Identifier>www.ebu.ch/CMSimages/en/tec_doc_t3285_s5_tcm6-10485.pdf</pronom:Identifier>
+	<pronom:IdentifierType>URL</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ExternalSignature/742">
+	<pronom:ExternalSignatureID>742</pronom:ExternalSignatureID>
+	<pronom:Signature>wav</pronom:Signature>
+	<pronom:SignatureType>File extension</pronom:SignatureType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/129">
+	<pronom:SignatureID>129</pronom:SignatureID>
+	<pronom:SignatureName>BWAVE PCM 0</pronom:SignatureName>
+	<pronom:SignatureNote>RIFF header, WAVE ID, BEXT chunk (Version=0), Format chunk and Data chunk</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/68"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/68">
+	<pronom:ByteSequenceID>68</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>52494646{4}57415645*62657874{350}0000{254-*}666D7420100000000100{14-*}64617461</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Signature/159">
+	<pronom:SignatureID>159</pronom:SignatureID>
+	<pronom:SignatureName>BWAVE MPEG 0</pronom:SignatureName>
+	<pronom:SignatureNote>RIFF header, WAVE ID, BEXT chunk (Version=0), Format chunk, Fact chunk, MEXT chunk and Data chunk</pronom:SignatureNote>
+	<pronom:ByteSequence rdf:resource="http://nationalarchives.gov.uk/pronom/ByteSequence/110"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/ByteSequence/110">
+	<pronom:ByteSequenceID>110</pronom:ByteSequenceID>
+	<pronom:PositionType>Absolute from BOF</pronom:PositionType>
+	<pronom:Offset>0</pronom:Offset>
+	<pronom:ByteSequenceValue>52494646{4}57415645*62657874{350}0000{254-*}666D7420280000005000{38}6661637404000000{4}6D6578740C000000{12}64617461</pronom:ByteSequenceValue>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/654">
+	<pronom:FormatID>654</pronom:FormatID>
+	<pronom:FormatName>Waveform Audio</pronom:FormatName>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Format/656">
+	<pronom:FormatID>656</pronom:FormatID>
+	<pronom:FormatName>Broadcast WAVE</pronom:FormatName>
+	<pronom:FormatVersion>1</pronom:FormatVersion>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/3">
+	<pronom:CompressionID>3</pronom:CompressionID>
+	<pronom:CompressionName>Pulse Code Modulation</pronom:CompressionName>
+	<pronom:Description>Uncompressed audio encoding method, which uses linear sampling at a wide range of sampling frequencies and resolutions.</pronom:Description>
+	<pronom:Lossiness>Lossless</pronom:Lossiness>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_PCM"/>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/3"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_PCM">
+	<pronom:Identifier>WAVE_FORMAT_PCM</pronom:Identifier>
+	<pronom:IdentifierType>WAVE Format GUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/3">
+	<pronom:Identifier>x-cmp/3</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/4">
+	<pronom:CompressionID>4</pronom:CompressionID>
+	<pronom:CompressionName>MPEG-1 Audio Layer 1</pronom:CompressionName>
+	<pronom:Description>Compressed audio encoding method which supports bitrates of 32-448 kbits/sec, and sampling frequencies of 32, 44.1 and 48 kHz.</pronom:Description>
+	<pronom:Lossiness>Lossy</pronom:Lossiness>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_MPEG"/>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/4"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_MPEG">
+	<pronom:Identifier>WAVE_FORMAT_MPEG</pronom:Identifier>
+	<pronom:IdentifierType>WAVE Format GUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/4">
+	<pronom:Identifier>x-cmp/4</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/5">
+	<pronom:CompressionID>5</pronom:CompressionID>
+	<pronom:CompressionName>MPEG-1 Audio Layer 2</pronom:CompressionName>
+	<pronom:Description>Compressed audio encoding method which supports bitrates of 32-384 kbits/sec, and sampling frequencies of 32, 44.1 and 48 kHz.</pronom:Description>
+	<pronom:Lossiness>Lossy</pronom:Lossiness>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_MPEG"/>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/5"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/5">
+	<pronom:Identifier>x-cmp/5</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/6">
+	<pronom:CompressionID>6</pronom:CompressionID>
+	<pronom:CompressionName>MPEG-1 Audio Layer 3</pronom:CompressionName>
+	<pronom:Description>Compressed audio encoding method which supports bitrates of 32-320 kbits/sec, and sampling frequencies of 32, 44.1 and 48 kHz.</pronom:Description>
+	<pronom:Lossiness>Lossy</pronom:Lossiness>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_MPEG"/>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/6"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/6">
+	<pronom:Identifier>x-cmp/6</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/7">
+	<pronom:CompressionID>7</pronom:CompressionID>
+	<pronom:CompressionName>MPEG-2 Audio Layer 1</pronom:CompressionName>
+	<pronom:Description>Compressed audio encoding method which supports bitrates of 32-448 kbits/sec, and sampling frequencies of 8, 16, 22.05, 24, 32, 44.1 and 48 kHz.</pronom:Description>
+	<pronom:Lossiness>Lossy</pronom:Lossiness>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_MPEG"/>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/7"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/7">
+	<pronom:Identifier>x-cmp/7</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/8">
+	<pronom:CompressionID>8</pronom:CompressionID>
+	<pronom:CompressionName>MPEG-2 Audio Layer 2</pronom:CompressionName>
+	<pronom:Description>Compressed audio encoding method which supports bitrates of 32-384 kbits/sec, and sampling frequencies of 8, 16, 22.05, 24, 32, 44.1 and 48 kHz.</pronom:Description>
+	<pronom:Lossiness>Lossy</pronom:Lossiness>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_MPEG"/>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/8"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/8">
+	<pronom:Identifier>x-cmp/8</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Compression/9">
+	<pronom:CompressionID>9</pronom:CompressionID>
+	<pronom:CompressionName>MPEG-2 Audio Layer 3</pronom:CompressionName>
+	<pronom:Description>Compressed audio encoding method which supports bitrates of 8-320 kbits/sec, and sampling frequencies of 8, 16, 22.05, 24, 32, 44.1 and 48 kHz.</pronom:Description>
+	<pronom:Lossiness>Lossy</pronom:Lossiness>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/WAVE_FORMAT_MPEG"/>
+	<pronom:CompressionIdentifier rdf:resource="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/9"/>
+</rdf:Description>
+<rdf:Description rdf:about="http://nationalarchives.gov.uk/pronom/Identifier/x-cmp/9">
+	<pronom:Identifier>x-cmp/9</pronom:Identifier>
+	<pronom:IdentifierType>PUID</pronom:IdentifierType>
+</rdf:Description>
+</rdf:RDF>
