@@ -1,0 +1,24 @@
+/*******************************************************************************
+ * Copyright (c) 2006-2010 Vienna University of Technology, 
+ * Department of Software Technology and Interactive Systems
+ *
+ * All rights reserved. This program and the accompanying
+ * materials are made available under the terms of the
+ * Apache License, Version 2.0 which accompanies
+ * this distribution, and is available at
+ * http://www.apache.org/licenses/LICENSE-2.0 
+ *******************************************************************************/
+package eu.planets_project.pp.plato.util;
+
+import org.hibernate.dialect.MySQL5InnoDBDialect;
+
+public class PlatoMySQL5InnoDBDialect extends MySQL5InnoDBDialect {
+    public PlatoMySQL5InnoDBDialect(){
+        super();
+     }
+     
+      public boolean supportsCascadeDelete(){
+         System.out.println("--- supportsCascadeDelete() called.");
+         return true;
+      }
+}

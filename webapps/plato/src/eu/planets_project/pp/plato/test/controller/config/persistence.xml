@@ -1,0 +1,12 @@
+<persistence>
+	<persistence-unit name="platoDatabase">
+	<provider>org.hibernate.ejb.HibernatePersistence</provider>
+	<jta-data-source>java:/platoDatasource</jta-data-source>
+	<properties>
+		<property name="hibernate.show_sql" value="false" />
+		<property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+		<property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect" />
+		<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+	</properties>
+	</persistence-unit>
+</persistence>
