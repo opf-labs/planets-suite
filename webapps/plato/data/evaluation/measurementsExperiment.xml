@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<measurementsDescriptor>
+	<measurableProperties>
+		<property>
+	   		<category>action:runtime</category>		
+			<propertyId>activityLogging/amount</propertyId>
+			<name>logging amount</name>
+			<description>The amount of logging output produced by a component, measured in the length of characters</description>
+			<positiveIntegerScale>
+				<unit>characters</unit>
+            </positiveIntegerScale>
+		</property>
+		
+		<property>
+	   		<category>action:runtime</category>		
+			<propertyId>activityLogging/format</propertyId>
+			<name>logging format</name>
+			<description>The format of logging output produced by a component (currently: none/text/xml)</description>
+			<freeStringScale>
+            </freeStringScale>
+		</property>
+		<property>
+	   		<category>action:runtime</category>		
+			<propertyId>performance/time/perSample</propertyId>
+			<name>time per sample</name>
+			<description>Elapsed processing time used per sample object, measured in milliseconds</description>
+			<positiveFloatScale>
+    			<unit>ms</unit>
+            </positiveFloatScale>
+		</property>
+		
+		<property>
+	   		<category>action:runtime</category>		
+			<propertyId>performance/time/perMB</propertyId>
+			<name>time per MB</name>
+			<description>Elapsed processing time used per MB, measured in milliseconds</description>
+			<positiveFloatScale>
+    			<unit>ms/MB</unit>
+            </positiveFloatScale>
+		</property>
+		
+		<property>
+	   		<category>action:runtime</category>		
+			<propertyId>performance/throughput</propertyId>
+			<name>throughput</name>
+			<description>Processing throughput, measured in megabytes per second</description>
+			<positiveFloatScale>
+    			<unit>MB/sec</unit>
+            </positiveFloatScale>
+		</property>
+
+		<property>
+	   		<category>action:runtime</category>		
+			<propertyId>performance/memory/perMB</propertyId>
+			<name>memory per MB</name>
+			<description>Memory used per megabyte of input, measured in megabyte</description>
+			<positiveFloatScale>
+    			<unit>MB/MB</unit>
+            </positiveFloatScale>
+		</property>
+		
+		<property>
+	   		<category>action:runtime</category>		
+			<propertyId>performance/memory/perSample</propertyId>
+			<name>memory per sample</name>
+			<description>Memory used per sample object, measured in megabyte</description>
+			<positiveFloatScale>
+    			<unit>MB</unit>
+            </positiveFloatScale>
+		</property>	
+	</measurableProperties>
+</measurementsDescriptor>

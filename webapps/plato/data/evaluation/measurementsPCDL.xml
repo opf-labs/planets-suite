@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- describes all known measurable properties and metrics -->
+<measurementsDescriptor>
+	<!-- descriptions of measurable properties -->
+	<!-- important: once published, the uri's and their corresponding scales must not be changed -->
+	<!-- important: names and descriptions may change! (do not use them as indices) -->
+	<measurableProperties>
+		<property>
+	   		<category>action:static</category>		
+			<propertyId>openSource</propertyId>
+			<name>tool:open source</name>
+			<description>Indicates whether an open source license applies to the tool.</description>
+			<booleanScale>
+    			<unit>open source</unit>
+            </booleanScale>
+		</property>
+		<property>
+	   		<category>action:static</category>		
+			<propertyId>license</propertyId>
+			<name>license of tool</name>
+			<description>License that applies to the tool. (textual description)</description>
+			<freeStringScale>
+    			<unit>license</unit>
+            </freeStringScale>
+		</property>
+		<property>
+	   		<category>action:static</category>		
+			<propertyId>retainFilename</propertyId>
+			<name>retains filename</name>
+			<description>Indicates whether the tool retains filenames when processing documents.</description>
+			<booleanScale>
+    			<unit>retains filename</unit>
+            </booleanScale>
+		</property>
+	</measurableProperties>
+
+</measurementsDescriptor>
+ 

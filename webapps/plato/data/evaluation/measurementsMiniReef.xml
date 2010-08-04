@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- describes all known measurable properties and metrics -->
+<measurementsDescriptor>
+	<measurableProperties>
+		<property>
+	   		<category>action:static</category>		
+			<propertyId>batchSupport</propertyId>
+			<name>batch support</name>
+			<description>Indicates whether the tool supports batch processing</description>
+			<booleanScale>
+    			<unit>batch support</unit>
+            </booleanScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>numberOfTools</propertyId>
+			<name>number of tools</name>
+			<description>Number of tools that can handle (i.e. open, save and other) this format. </description>
+			<positiveIntegerScale>
+    			<unit>number of tools</unit>
+            </positiveIntegerScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>numberOfTools/open</propertyId>
+			<name>number of tools:open</name>
+			<description>Number of tools that can open objects of this format.</description>
+			<positiveIntegerScale>
+    			<unit>number of tools</unit>
+            </positiveIntegerScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>numberOfTools/save</propertyId>
+			<name>number of tools:save</name>
+			<description>Number of tools that can save objects of this format.</description>
+			<positiveIntegerScale>
+    			<unit>number of tools</unit>
+            </positiveIntegerScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>numberOfTools/others</propertyId>
+			<name>number of tools:others</name>
+			<description>Number of tools that can handle objects of this format, beyond open and save</description>
+			<positiveIntegerScale>
+    			<unit>number of tools</unit>
+            </positiveIntegerScale>
+		</property>		
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>license</propertyId>
+			<name>format-license</name>
+			<description>General information about the format license, indicates if there are any rights restrictions. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights</description>
+			<freeStringScale>
+    			<unit>license</unit>
+            </freeStringScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>license/open</propertyId>
+			<name>format-license:open</name>
+			<description>Indicates where there are any rights restrictions. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/open</description>
+			<booleanScale>
+    			<unit>open license</unit>
+            </booleanScale>
+		</property>
+		<property>
+		
+	   		<category>outcome:format</category>		
+			<propertyId>license/iprProtected</propertyId>
+			<name>format-license: ipr protected</name>
+			<description>Indicates if there exists IPR protection of the format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/ipr_protected</description>
+			<booleanScale>
+    			<unit>ipr protected</unit>
+            </booleanScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>license/proprietary</propertyId>
+			<name>format-license: proprietary</name>
+			<description>Indicates whether this is a proprietary format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/rights/proprietary</description>
+			<booleanScale>
+    			<unit>proprietary</unit>
+            </booleanScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>complexity</propertyId>
+			<name>complexity of format</name>
+			<description>Indicates the complexity of this format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/complexity/ .. comment</description>
+			<freeStringScale>
+    			<unit>complexity</unit>
+            </freeStringScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>disclosure</propertyId>
+			<name>disclosure of format</name>
+			<description>Indicates the openness of this format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/disclosure/ .. comment</description>
+			<freeStringScale>
+    			<unit>disclosure</unit>
+            </freeStringScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>ubiquity</propertyId>
+			<name>ubiquity of format</name>
+			<description>Indicates to which extent this format is used. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/ubiquity/ .. comment</description>
+			<freeStringScale>
+    			<unit>ubiquity</unit>
+            </freeStringScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>stability</propertyId>
+			<name>stability of format</name>
+			<description>Indicates the stability of format. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/stability/ .. comment</description>
+			<freeStringScale>
+    			<unit>stability</unit>
+            </freeStringScale>
+		</property>
+		<property>
+	   		<category>outcome:format</category>		
+			<propertyId>documentation/quality</propertyId>
+			<name>documentation quality</name>
+			<description>Indicates the quality of the format documentation. Refers to http://p2-registry.ecs.soton.ac.uk/pronom/risk_categories/documentation_quality/ .. comment</description>
+			<freeStringScale>
+    			<unit>quality</unit>
+            </freeStringScale>
+		</property>
+	</measurableProperties>
+</measurementsDescriptor> 

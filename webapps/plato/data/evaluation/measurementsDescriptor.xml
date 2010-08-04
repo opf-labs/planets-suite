@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- describes all known measurable properties and metrics -->
+<measurementsDescriptor>
+	<!-- descriptions of all known measurable properties -->
+	<!-- note: for some properties only derived measurements are possible/available, therefore no information about scale and unit is defined -->
+	<!-- important: once published, the uri's and their corresponding scales must not be changed -->
+	<!-- important: names and descriptions may change! (do not use them as indices) -->
+	<measurableProperties>
+
+	</measurableProperties>
+	<!-- descriptions of all known metrics -->
+	<!-- if a metric is used for a derived measurement, its scale overrides the one from the measurable property  -->
+	<metrics>
+		<metric>
+			<metricId>equal</metricId>
+			<name>equal</name>
+			<description>Comparison of two values for equality</description>
+			<booleanScale>
+                <unit>equality</unit>
+            </booleanScale>
+		</metric>
+		<metric>
+			<metricId>identical</metricId>
+			<name>identical</name>
+			<description></description>
+			<booleanScale>
+                <unit>equality</unit>
+            </booleanScale>
+		</metric>
+		<metric>
+			<metricId>preserved</metricId>
+			<name>preserved</name>
+			<description>Indicator if all values in source measurement do exist in result measurement</description>
+			<booleanScale>
+                <unit>preserved</unit>
+            </booleanScale>
+		</metric>
+		<metric>
+			<metricId>intDiff</metricId>
+			<name>int diff</name>
+			<description>difference B-A </description>
+			<integerScale/>
+		</metric>
+	</metrics>
+</measurementsDescriptor>

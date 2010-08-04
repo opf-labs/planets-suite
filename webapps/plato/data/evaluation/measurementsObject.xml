@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- describes all known measurable properties and metrics -->
+<measurementsDescriptor>
+	<!-- descriptions of measurable properties -->
+	<!-- important: once published, the uri's and their corresponding scales must not be changed -->
+	<!-- important: names and descriptions may change! (do not use them as indices) -->
+	<measurableProperties>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>format/correct/wellformed</propertyId>
+			<name>format well-formed</name>
+			<description>Indicates whether the format of the object is well formed</description>
+			<booleanScale>
+    			<unit>well formed</unit>
+            </booleanScale>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>format/correct/valid</propertyId>
+			<name>format valid</name>
+			<description>Indicates whether the format of the object is well formed</description>
+			<booleanScale>
+    			<unit>valid</unit>
+            </booleanScale>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>format/correct/conforms</propertyId>
+			<name>format conforms</name>
+			<description>Indicates whether the format of the result conforms to the output format specified by the component.</description>
+			<booleanScale>
+    			<unit>conforms</unit>
+            </booleanScale>
+		</property>
+		
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>compression/scheme</propertyId>
+			<name>compression scheme</name>
+			<description>Compression scheme of the result, expressed as a textual value.</description>
+			<freeStringScale/>
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>compression/lossless</propertyId>
+			<name>lossless compression </name>
+			<description>Indicator stating if lossless compression is used or not.</description>
+			<booleanScale>
+				<unit>lossless compression</unit>
+            </booleanScale>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>compression/lossy</propertyId>
+			<name>lossy compression </name>
+			<description>Tells if lossy compression is used.</description>
+			<booleanScale>
+				<unit>lossy compression</unit>
+            </booleanScale>
+		</property>		
+	
+	    <property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/dimension/width</propertyId>
+			<name>image width</name>
+			<description>Width of an image, measured in number of pixels on the x-axis.</description>
+			<positiveIntegerScale>
+    			<unit>pixel</unit>
+            </positiveIntegerScale>
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/dimension/height</propertyId>
+			<name>image height</name>
+			<description>Height of an image, measured in number of pixels on the y-axis.</description>
+			<positiveIntegerScale>
+    			<unit>pixel</unit>
+            </positiveIntegerScale>
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/dimension/aspectRatio</propertyId>
+			<name>aspect ratio</name>
+			<description>Aspect ratio of image, calculated as width/height. The number 1,35 can thus be read as 1,35:1</description>
+			<positiveFloatScale>
+    			<unit>aspect ratio(width/height)</unit>
+            </positiveFloatScale>
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/colorEncoding/bitsPerSample</propertyId>
+			<name>bits per sample</name>
+			<description>Number of bits per sample, e.g. "8 8 8", i.e. one byte for each R/G/B value</description>
+			<!-- at the moment bitsPerSample is only available as derived measurement, 
+			therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/colorEncoding/samplesPerPixel</propertyId>
+			<name>samples per pixel</name>
+			<description>Number of samples per pixel.</description>
+			<!-- at the moment samplesPerPixel is only available as derived measurement, 
+			therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/photometricInterpretation/colorSpace</propertyId>
+			<name>color space</name>
+			<description>Color space name</description>
+			<!-- at the moment colorSpace is only available as derived measurement, 
+			therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/photometricInterpretation/colorProfile/iccProfile</propertyId>
+			<name>ICC color profile</name>
+			<description>The name of the ICC color profile</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/spatialMetrics/samplingFrequencyUnit</propertyId>
+			<name>sampling frequency unit</name>
+			<description>The unit of measurement for XSamplingFrequency and YSamplingFrequency. (See ANSI/NISO Z39.87-2006, "Data Dictionary – Technical Metadata for Digital Still Images")</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+			
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/spatialMetrics/xSamplingFrequency</propertyId>
+			<name>x sampling frequency</name>
+			<description>The number of pixels, per definition samplingFrequencyUnit in the image width. (See ANSI/NISO Z39.87-2006, "Data Dictionary – Technical Metadata for Digital Still Images")</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/spatialMetrics/ySamplingFrequency</propertyId>
+			<name>y sampling frequency</name>
+			<description>The number of pixels, per definition samplingFrequencyUnit in the image height. (See ANSI/NISO Z39.87-2006, "Data Dictionary – Technical Metadata for Digital Still Images")</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+
+
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/metadata</propertyId>
+			<name>image metadata</name>
+			<description>Additional metadata stored in images (EXIF, ...)</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="preserved"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/metadata/software</propertyId>
+			<name>image metadata: software</name>
+			<description>Textual information about software used to create this object</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/metadata/producer</propertyId>
+			<name>image metadata: producer</name>
+			<description>Textual information about the producer of the object</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/metadata/creationDate</propertyId>
+			<name>image metadata: creationDate</name>
+			<description>The creation date of the object in textual representation</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/metadata/lastModified</propertyId>
+			<name>image metadata: lastModified</name>
+			<description>Date of last modification in textual representation</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/metadata/description</propertyId>
+			<name>image metadata: description</name>
+			<description>Textual description of the object</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/metadata/orientation</propertyId>
+			<name>image metadata: orientation</name>
+			<description>Image orientation as textual value</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+			</possibleMetrics>
+		</property>
+
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>relativeFileSize</propertyId>
+			<name>relative file size</name>
+			<description>factor for relative file size, calculated as: (size of result / size of source) </description>
+			<positiveFloatScale>
+    			<unit>ratio</unit>
+            </positiveFloatScale>
+		</property>
+			
+	</measurableProperties>
+	<metrics>
+		<metric>
+			<metricId>equal</metricId>
+			<name>equal</name>
+			<description>Comparison of two values for equality</description>
+			<booleanScale>
+                <unit>equality</unit>
+            </booleanScale>
+		</metric>
+		<metric>
+			<metricId>preserved</metricId>
+			<name>preserved</name>
+			<description>Indicator if all values in source measurement do exist in result measurement</description>
+			<booleanScale>
+                <unit>preserved</unit>
+            </booleanScale>
+		</metric>
+
+	</metrics>	
+</measurementsDescriptor>

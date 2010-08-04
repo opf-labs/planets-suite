@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- describes all known measurable properties and metrics -->
+<measurementsDescriptor>
+	<!-- descriptions of measurable properties -->
+	<!-- important: once published, the uri's and their corresponding scales must not be changed -->
+	<!-- important: names and descriptions may change! (do not use them as indices) -->
+	<measurableProperties>
+		<property>
+	   		<category>outcome:object</category>		
+			<propertyId>image/similarity</propertyId>
+			<name>image similarity</name>
+			<description>Quantitative indication of similarity between source and result. A variety of distance metrics for image comparison are available.</description>
+			<!-- at the moment this is only available as derived measurement, therefore no information about scale and unit is available -->
+			<possibleMetrics>
+				<metric metricId="equal"/>
+				<metric metricId="ae"/>
+				<metric metricId="pae"/>
+				<metric metricId="psnr"/>
+				<metric metricId="mae"/>
+				<metric metricId="mse"/>
+				<metric metricId="mae"/>
+				<metric metricId="rmse"/>
+				<metric metricId="mepp"/>
+			</possibleMetrics>
+		</property>
+	</measurableProperties>
+	<metrics>
+		<metric>
+			<metricId>equal</metricId>
+			<name>equal</name>
+			<description>Comparison of two values for equality</description>
+			<booleanScale>
+                <unit>equality</unit>
+            </booleanScale>
+		</metric>
+	
+		<metric>
+			<metricId>ae</metricId>
+			<name>AE</name>
+			<description>Absolute Error count of the number of different pixels (0=equal)</description>
+			<positiveFloatScale>
+                <unit>AE</unit>
+            </positiveFloatScale>
+		</metric>
+		<metric>
+			<metricId>pae</metricId>
+			<name>PAE</name>
+			<description>Peak Absolute Error</description>
+			<positiveFloatScale>
+                <unit>PAE</unit>
+            </positiveFloatScale>
+		</metric>
+		<metric>
+			<metricId>psnr</metricId>
+			<name>PSNR</name>
+			<description>Peak Signal to noise ratio (used in image compression papers). The ratio of mean square difference to the maximum mean square that can exist between any two images, expressed as a decibel value. The higher the PSNR the closer the closer the images are, with a maximum difference occurring at 1. A PSNR of 20 means differences are 1/100 of maximum.</description>
+			<positiveFloatScale>
+                <unit>PSNR</unit>
+            </positiveFloatScale>
+		</metric>
+		<metric>
+			<metricId>mae</metricId>
+			<name>MAE</name>
+			<description>Mean absolute error  (average channel error distance)</description>
+			<positiveFloatScale>
+                <unit>MAE</unit>
+            </positiveFloatScale>
+		</metric>
+		<metric>
+			<metricId>mse</metricId>
+			<name>MSE</name>
+			<description>Mean squared error (averaged squared error distance)</description>
+			<positiveFloatScale>
+                <unit>MSE</unit>
+            </positiveFloatScale>
+		</metric>
+		<metric>
+			<metricId>rmse</metricId>
+			<name>RMSE</name>
+			<description>(sq)root mean squared error -- IE:  sqrt(MSE)</description>
+			<positiveFloatScale>
+                <unit>RMSE</unit>
+            </positiveFloatScale>
+		</metric>
+		<metric>
+			<metricId>mepp</metricId>
+			<name>MEPP</name>
+			<description>Normalized Mean Error AND Normalized Maximum Error</description>
+			<positiveFloatScale>
+                <unit>MEPP</unit>
+            </positiveFloatScale>
+		</metric>
+	</metrics>
+</measurementsDescriptor>
