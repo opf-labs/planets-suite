@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jboss.com/products/seam/pages 
+       http://jboss.com/products/seam/pages-2.1.xsd"
+       no-conversation-view-id="/login.xhtml"
+                 login-view-id="/login.xhtml">
+
+
+	<page view-id="/*">
+		<header name="Cache-Control" value="no-cache, no-store, max-age=0, must-revalidate"/>
+	</page>
+    <page view-id="/project/bugreport.xhtml">
+        <action execute="#{exceptionHandler.handleError}" />
+    </page>
+
+    <page view-id="/requiredException.xhtml">
+        <action execute="#{session.endSession}" />
+        <navigation>
+            <redirect view-id="/project/loadplan.xhtml">
+                <message severity="ERROR">
+                    An error has occured. Probably the reason for this
+                    is that your session timed out. If you think this is
+                    not the case and want to submit a bug report, please
+                    visit the Planets gForge or send an email by using
+                    the link provided at the bottom. Thank you very
+                    much!
+                </message>
+            </redirect>
+        </navigation>
+    </page>
+
+    <page view-id="/sessiontimedout.xhtml">
+        <action execute="#{session.endSession}" />
+        <navigation>
+            <redirect view-id="/project/loadplan.xhtml">
+                <message severity="ERROR">
+                    Your session has timed out.
+                </message>
+            </redirect>
+        </navigation>
+    </page>
+
+    <!-- In most cases this exception occurs when the session has timed out. Is says something like:
+        javax.ejb.EJBNoSuchObjectException: Could not find Stateful bean: 5c4o4o25-owo5mn-fagqgifz-1-fagqjk2l-18
+        
+        Note: This exception node must be *above* the java.lang.Exception node. Otherwise it will not
+        take effect (i.e. order is important!).
+    -->
+
+    <exception class="javax.ejb.EJBNoSuchObjectException">
+        <redirect view-id="/sessiontimedout.xhtml"></redirect>
+    </exception>
+
+    <!-- In most cases this exception occurs when the session has timed out.
+        
+        Note: This exception node must be *above* the java.lang.Exception node. Otherwise it will not
+        take effect (i.e. order is important!).
+    -->
+    <exception class="java.lang.InstantiationException">
+        <redirect view-id="/sessiontimedout.xhtml"></redirect>
+    </exception>
+
+    <exception class="org.jboss.seam.RequiredException">
+        <redirect view-id="/sessiontimedout.xhtml"></redirect>
+    </exception>
+    
+    <!--
+    IllegalStateException mostly occurs when the server is busy and the
+    Seam component cannot respond within the configured time. 
+    http://seamframework.org/Community/NotAcquiringLockSynchronized 
+     -->
+    <exception class="java.lang.IllegalStateException">
+        <redirect view-id="/project/bugreport.xhtml">
+            <message severity="ERROR">
+                Due to high traffic on our server your request could not be finished
+                successfully. We are working on this issue. Thank you for your patience.
+            </message>
+        </redirect>
+    </exception>
+
+    <exception class="java.lang.Exception">
+        <redirect view-id="/project/bugreport.xhtml">
+            <message severity="ERROR">
+                An error has occured. Probably the reason for this is
+                that your session timed out. If you think this is not
+                the case and want to submit a bug report, please tell us
+                your Contact Information and describe what exactly led
+                to the Error. Thank you very much for helping us improve
+                Plato!
+            </message>
+        </redirect>
+    </exception>
+
+</pages>

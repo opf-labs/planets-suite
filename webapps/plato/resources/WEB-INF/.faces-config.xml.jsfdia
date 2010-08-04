@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::0" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{organisationalPolicies.save}:#home#home.xhtml"
+    NAME="output" PATH="/home/home.xhtml"
+    TARGET="rules:#home#home.xhtml"
+    TITLE="#{organisationalPolicies.save}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{organisationalPolicies.discard}:#home#home.xhtml"
+    NAME="output1" PATH="/home/home.xhtml"
+    TARGET="rules:#home#home.xhtml"
+    TITLE="#{organisationalPolicies.discard}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::1" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::1" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{loadPlan.load}:#workflow#FTdefinerequirements.xhtml"
+    NAME="output" PATH="/workflow/FTdefinerequirements.xhtml"
+    TARGET="rules:#workflow#FTdefinerequirements.xhtml"
+    TITLE="#{loadPlan.load}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::2" SHAPE="32,897,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::2" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{newProject.createFTE}:#project#newFTE.xhtml"
+    NAME="output" PATH="/project/newFTE.xhtml"
+    TARGET="rules:#project#newFTE.xhtml"
+    TITLE="#{newProject.createFTE}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::3" SHAPE="32,1185,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::3" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{newProject.saveFTE}:#workflow#FTdefinerequirements.xhtml"
+    NAME="output" PATH="/workflow/FTdefinerequirements.xhtml"
+    TARGET="rules:#workflow#FTdefinerequirements.xhtml"
+    TITLE="#{newProject.saveFTE}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::4" SHAPE="32,1409,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::4" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{loadPlan.listMyProjects}:#project#loadplan.xhtml"
+    NAME="output" PATH="/project/loadplan.xhtml"
+    TARGET="rules:#project#loadplan.xhtml"
+    TITLE="#{loadPlan.listMyProjects}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{loadPlan.listPublicProjects}:#project#loadplan.xhtml"
+    NAME="output1" PATH="/project/loadplan.xhtml"
+    TARGET="rules:#project#loadplan.xhtml"
+    TITLE="#{loadPlan.listPublicProjects}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{loadPlan.listAllProjects}:#project#loadplan.xhtml"
+    NAME="output2" PATH="/project/loadplan.xhtml"
+    TARGET="rules:#project#loadplan.xhtml"
+    TITLE="#{loadPlan.listAllProjects}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{loadPlan.listFTEProjects}:#project#loadplan.xhtml"
+    NAME="output3" PATH="/project/loadplan.xhtml"
+    TARGET="rules:#project#loadplan.xhtml"
+    TITLE="#{loadPlan.listFTEProjects}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{loadPlan.listPublicFTEResults}:#project#loadplan.xhtml"
+    NAME="output4" PATH="/project/loadplan.xhtml"
+    TARGET="rules:#project#loadplan.xhtml"
+    TITLE="#{loadPlan.listPublicFTEResults}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::5" SHAPE="32,1633,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::5" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{newProject.createProject}:#project#newproject.xhtml"
+    NAME="output" PATH="/project/newproject.xhtml"
+    TARGET="rules:#project#newproject.xhtml"
+    TITLE="#{newProject.createProject}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{newProject.saveProject}:#workflow#definebasis.xhtml"
+    NAME="output1" PATH="/workflow/definebasis.xhtml"
+    TARGET="rules:#workflow#definebasis.xhtml"
+    TITLE="#{newProject.saveProject}:success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="failure:#{newProject.saveProject}:#project#newproject.xhtml"
+    NAME="output2" PATH="/project/newproject.xhtml"
+    TARGET="rules:#project#newproject.xhtml"
+    TITLE="#{newProject.saveProject}:failure" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::6" SHAPE="32,1857,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::6" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{FTrequirements.proceed}:#workflow#FTevaluatealternatives.xhtml"
+    NAME="output" PATH="/workflow/FTevaluatealternatives.xhtml"
+    TARGET="rules:#workflow#FTevaluatealternatives.xhtml"
+    TITLE="#{FTrequirements.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::7" SHAPE="32,2081,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::7" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{FTevaluate.proceed}:#workflow#FTanalyseresults.xhtml"
+    NAME="output" PATH="/workflow/FTanalyseresults.xhtml"
+    TARGET="rules:#workflow#FTanalyseresults.xhtml"
+    TITLE="#{FTevaluate.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::8" SHAPE="32,2305,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::8" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{FTanalyse.createPreservationPlan}:#workflow#definebasis.xhtml"
+    NAME="output" PATH="/workflow/definebasis.xhtml"
+    TARGET="rules:#workflow#definebasis.xhtml"
+    TITLE="#{FTanalyse.createPreservationPlan}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::9" SHAPE="32,2529,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::9" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{defineBasis.proceed}:#workflow#definesamplerecords.xhtml"
+    NAME="output" PATH="/workflow/definesamplerecords.xhtml"
+    TARGET="rules:#workflow#definesamplerecords.xhtml"
+    TITLE="#{defineBasis.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::10" SHAPE="32,2865,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::10" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{defineSampleRecords.proceed}:#workflow#identrequirements.xhtml"
+    NAME="output" PATH="/workflow/identrequirements.xhtml"
+    TARGET="rules:#workflow#identrequirements.xhtml"
+    TITLE="#{defineSampleRecords.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::11" SHAPE="32,3089,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::11" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{identifyRequirements.proceed}:#workflow#definealternatives.xhtml"
+    NAME="output" PATH="/workflow/definealternatives.xhtml"
+    TARGET="rules:#workflow#definealternatives.xhtml"
+    TITLE="#{identifyRequirements.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::12" SHAPE="32,3313,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::12" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{defineAlternatives.proceed}:#workflow#gonogo.xhtml"
+    NAME="output" PATH="/workflow/gonogo.xhtml"
+    TARGET="rules:#workflow#gonogo.xhtml"
+    TITLE="#{defineAlternatives.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::13" SHAPE="32,3649,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::13" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{gonogo.proceed}:#workflow#developexperiment.xhtml"
+    NAME="output" PATH="/workflow/developexperiment.xhtml"
+    TARGET="rules:#workflow#developexperiment.xhtml"
+    TITLE="#{gonogo.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::14" SHAPE="32,3873,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::14" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{devexperiments.proceed}:#workflow#runexperiment.xhtml"
+    NAME="output" PATH="/workflow/runexperiment.xhtml"
+    TARGET="rules:#workflow#runexperiment.xhtml"
+    TITLE="#{devexperiments.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::15" SHAPE="32,4097,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::15" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{runexperiments.proceed}:#workflow#evaluateexperiment.xhtml"
+    NAME="output" PATH="/workflow/evaluateexperiment.xhtml"
+    TARGET="rules:#workflow#evaluateexperiment.xhtml"
+    TITLE="#{runexperiments.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::16" SHAPE="32,4321,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::16" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{evalexperiments.proceed}:#workflow#transform.xhtml"
+    NAME="output" PATH="/workflow/transform.xhtml"
+    TARGET="rules:#workflow#transform.xhtml"
+    TITLE="#{evalexperiments.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::17" SHAPE="32,4433,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::17" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{transform.proceed}:#workflow#importancefactors.xhtml"
+    NAME="output" PATH="/workflow/importancefactors.xhtml"
+    TARGET="rules:#workflow#importancefactors.xhtml"
+    TITLE="#{transform.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="32,2641,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="evalexperiment::#workflow#evaluateexperiment.xhtml"
+    NAME="output" PATH="/workflow/evaluateexperiment.xhtml"
+    TARGET="rules:#workflow#evaluateexperiment.xhtml"
+    TITLE="evalexperiment" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:*:1" PATH="*" SHAPE="32,3425,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:1" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="analyse::#workflow#analyseresults.xhtml"
+    NAME="output" PATH="/workflow/analyseresults.xhtml"
+    TARGET="rules:#workflow#analyseresults.xhtml" TITLE="analyse" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::18" SHAPE="32,4545,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::18" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{importanceFactors.proceed}:#workflow#analyseresults.xhtml"
+    NAME="output" PATH="/workflow/analyseresults.xhtml"
+    TARGET="rules:#workflow#analyseresults.xhtml"
+    TITLE="#{importanceFactors.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::19" SHAPE="32,1073,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::19" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{analyseResults.proceed}:#workflow#createexecutableplan.xhtml"
+    NAME="output" PATH="/workflow/createexecutableplan.xhtml"
+    TARGET="rules:#workflow#createexecutableplan.xhtml"
+    TITLE="#{analyseResults.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::20" SHAPE="32,1297,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::20" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{createExecutablePlan.proceed}:#workflow#defineplan.xhtml"
+    NAME="output" PATH="/workflow/defineplan.xhtml"
+    TARGET="rules:#workflow#defineplan.xhtml"
+    TITLE="#{createExecutablePlan.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::21" SHAPE="32,1521,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::21" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{definePlan.proceed}:#workflow#validateplan.xhtml"
+    NAME="output" PATH="/workflow/validateplan.xhtml"
+    TARGET="rules:#workflow#validateplan.xhtml"
+    TITLE="#{definePlan.proceed}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::22" SHAPE="32,1745,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::22" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="login::#login.xhtml" NAME="output"
+    PATH="/login.xhtml" TARGET="rules:#login.xhtml" TITLE="login" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::23" SHAPE="32,1969,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::23" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="logout:#{sessionManager.logout}:#logout.seam" NAME="output"
+    PATH="/logout.seam" TARGET="rules:#logout.seam"
+    TITLE="#{sessionManager.logout}:logout" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::24" SHAPE="32,2193,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::24" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="comparableTree:#{jhoveTreeComparator.getTreeLink}:#comparableTree.xhtml"
+    NAME="output" PATH="/comparableTree.xhtml"
+    TARGET="rules:#comparableTree.xhtml"
+    TITLE="#{jhoveTreeComparator.getTreeLink}:comparableTree" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::25" SHAPE="32,2417,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::25" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{defineBasis.enter}:#workflow#definebasis.xhtml"
+    NAME="output" PATH="/workflow/definebasis.xhtml"
+    TARGET="rules:#workflow#definebasis.xhtml"
+    TITLE="#{defineBasis.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::26" SHAPE="32,2753,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::26" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{defineSampleRecords.enter}:#workflow#definesamplerecords.xhtml"
+    NAME="output" PATH="/workflow/definesamplerecords.xhtml"
+    TARGET="rules:#workflow#definesamplerecords.xhtml"
+    TITLE="#{defineSampleRecords.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::27" SHAPE="32,2977,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::27" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{identifyRequirements.enter}:#workflow#identrequirements.xhtml"
+    NAME="output" PATH="/workflow/identrequirements.xhtml"
+    TARGET="rules:#workflow#identrequirements.xhtml"
+    TITLE="#{identifyRequirements.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::28" SHAPE="32,3201,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::28" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{defineAlternatives.enter}:#workflow#definealternatives.xhtml"
+    NAME="output" PATH="/workflow/definealternatives.xhtml"
+    TARGET="rules:#workflow#definealternatives.xhtml"
+    TITLE="#{defineAlternatives.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::29" SHAPE="32,3537,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::29" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{gonogo.enter}:#workflow#gonogo.xhtml" NAME="output"
+    PATH="/workflow/gonogo.xhtml" TARGET="rules:#workflow#gonogo.xhtml"
+    TITLE="#{gonogo.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::30" SHAPE="32,3761,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::30" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{devexperiments.enter}:#workflow#developexperiment.xhtml"
+    NAME="output" PATH="/workflow/developexperiment.xhtml"
+    TARGET="rules:#workflow#developexperiment.xhtml"
+    TITLE="#{devexperiments.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::31" SHAPE="32,3985,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::31" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{runexperiments.enter}:#workflow#runexperiment.xhtml"
+    NAME="output" PATH="/workflow/runexperiment.xhtml"
+    TARGET="rules:#workflow#runexperiment.xhtml"
+    TITLE="#{runexperiments.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::32" SHAPE="32,4209,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::32" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{evalexperiments.enter}:#workflow#evaluateexperiment.xhtml"
+    NAME="output" PATH="/workflow/evaluateexperiment.xhtml"
+    TARGET="rules:#workflow#evaluateexperiment.xhtml"
+    TITLE="#{evalexperiments.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::33" SHAPE="32,5281,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::33" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{transform.enter}:#workflow#transform.xhtml"
+    NAME="output" PATH="/workflow/transform.xhtml"
+    TARGET="rules:#workflow#transform.xhtml"
+    TITLE="#{transform.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::34" SHAPE="32,5313,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::34" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{importanceFactors.enter}:#workflow#importancefactors.xhtml"
+    NAME="output" PATH="/workflow/importancefactors.xhtml"
+    TARGET="rules:#workflow#importancefactors.xhtml"
+    TITLE="#{importanceFactors.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::35" SHAPE="32,273,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::35" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{analyseResults.enter}:#workflow#analyseresults.xhtml"
+    NAME="output" PATH="/workflow/analyseresults.xhtml"
+    TARGET="rules:#workflow#analyseresults.xhtml"
+    TITLE="#{analyseResults.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::36" SHAPE="32,273,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::36" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{createExecutablePlan.enter}:#workflow#createexecutableplan.xhtml"
+    NAME="output" PATH="/workflow/createexecutableplan.xhtml"
+    TARGET="rules:#workflow#createexecutableplan.xhtml"
+    TITLE="#{createExecutablePlan.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:*:2" PATH="*" SHAPE="32,273,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:2" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="requirementsExpert::#workflow#requirementsexpert.xhtml"
+    NAME="output" PATH="/workflow/requirementsexpert.xhtml"
+    TARGET="rules:#workflow#requirementsexpert.xhtml"
+    TITLE="requirementsExpert" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="loadPlan::#project#loadplan.xhtml"
+    NAME="output1" PATH="/project/loadplan.xhtml"
+    TARGET="rules:#project#loadplan.xhtml" TITLE="loadPlan" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="FTrequirements::#workflow#FTdefinerequirements.xhtml"
+    NAME="output2" PATH="/workflow/FTdefinerequirements.xhtml"
+    TARGET="rules:#workflow#FTdefinerequirements.xhtml"
+    TITLE="FTrequirements" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="FTevaluate::#workflow#FTevaluatealternatives.xhtml"
+    NAME="output3" PATH="/workflow/FTevaluatealternatives.xhtml"
+    TARGET="rules:#workflow#FTevaluatealternatives.xhtml"
+    TITLE="FTevaluate" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="FTanalyse::#workflow#FTanalyseresults.xhtml"
+    NAME="output4" PATH="/workflow/FTanalyseresults.xhtml"
+    TARGET="rules:#workflow#FTanalyseresults.xhtml" TITLE="FTanalyse" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="newProject::#project#newproject.xhtml"
+    NAME="output5" PATH="/project/newproject.xhtml"
+    TARGET="rules:#project#newproject.xhtml" TITLE="newProject" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="defineBasis::#workflow#definebasis.xhtml"
+    NAME="output6" PATH="/workflow/definebasis.xhtml"
+    TARGET="rules:#workflow#definebasis.xhtml" TITLE="defineBasis" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="defineSampleRecords::#workflow#definesamplerecords.xhtml"
+    NAME="output7" PATH="/workflow/definesamplerecords.xhtml"
+    TARGET="rules:#workflow#definesamplerecords.xhtml"
+    TITLE="defineSampleRecords" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="identifyRequirements::#workflow#identrequirements.xhtml"
+    NAME="output8" PATH="/workflow/identrequirements.xhtml"
+    TARGET="rules:#workflow#identrequirements.xhtml"
+    TITLE="identifyRequirements" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="defineAlternatives::#workflow#definealternatives.xhtml"
+    NAME="output9" PATH="/workflow/definealternatives.xhtml"
+    TARGET="rules:#workflow#definealternatives.xhtml"
+    TITLE="defineAlternatives" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="gonogo::#workflow#gonogo.xhtml"
+    NAME="output10" PATH="/workflow/gonogo.xhtml"
+    TARGET="rules:#workflow#gonogo.xhtml" TITLE="gonogo" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="devexperiments::#workflow#developexperiment.xhtml"
+    NAME="output11" PATH="/workflow/developexperiment.xhtml"
+    TARGET="rules:#workflow#developexperiment.xhtml"
+    TITLE="devexperiments" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="evalexperiments::#workflow#evaluateexperiment.xhtml"
+    NAME="output12" PATH="/workflow/evaluateexperiment.xhtml"
+    TARGET="rules:#workflow#evaluateexperiment.xhtml"
+    TITLE="evalexperiments" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="transform::#workflow#transform.xhtml"
+    NAME="output13" PATH="/workflow/transform.xhtml"
+    TARGET="rules:#workflow#transform.xhtml" TITLE="transform" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="analyseResults::#workflow#analyseresults.xhtml" NAME="output14"
+    PATH="/workflow/analyseresults.xhtml"
+    TARGET="rules:#workflow#analyseresults.xhtml" TITLE="analyseResults" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="createExecutablePlan::#workflow#createexecutableplan.xhtml"
+    NAME="output15" PATH="/workflow/createexecutableplan.xhtml"
+    TARGET="rules:#workflow#createexecutableplan.xhtml"
+    TITLE="createExecutablePlan" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="definePlan::#workflow#defineplan.xhtml"
+    NAME="output16" PATH="/workflow/defineplan.xhtml"
+    TARGET="rules:#workflow#defineplan.xhtml" TITLE="definePlan" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="validatePlan::#workflow#validateplan.xhtml"
+    NAME="output17" PATH="/workflow/validateplan.xhtml"
+    TARGET="rules:#workflow#validateplan.xhtml" TITLE="validatePlan" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="report::#workflow#report.xhtml"
+    NAME="output18" PATH="/workflow/report.xhtml"
+    TARGET="rules:#workflow#report.xhtml" TITLE="report" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#home#home.xhtml" PATH="/home/home.xhtml"
+  SHAPE="240,881,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#importancefactors.xhtml"
+  PATH="/workflow/importancefactors.xhtml" SHAPE="304,1985,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#analyseresults.xhtml"
+  PATH="/workflow/analyseresults.xhtml" SHAPE="304,2097,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#defineplan.xhtml"
+  PATH="/workflow/defineplan.xhtml" SHAPE="304,2321,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#gonogo.xhtml"
+  PATH="/workflow/gonogo.xhtml" SHAPE="304,1425,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#requirementsexpert.xhtml"
+  PATH="/workflow/requirementsexpert.xhtml" SHAPE="304,289,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#logout.seam" PATH="/logout.seam"
+  SHAPE="240,5441,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#project#newproject.xhtml"
+  PATH="/project/newproject.xhtml" SHAPE="304,289,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#runexperiment.xhtml"
+  PATH="/workflow/runexperiment.xhtml" SHAPE="304,1649,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#definebasis.xhtml"
+  PATH="/workflow/definebasis.xhtml" SHAPE="304,913,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#definealternatives.xhtml"
+  PATH="/workflow/definealternatives.xhtml" SHAPE="304,1313,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#home#home.seam" PATH="/home/home.seam"
+  SHAPE="304,977,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#validateplan.xhtml"
+  PATH="/workflow/validateplan.xhtml" SHAPE="304,2433,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#report.xhtml"
+  PATH="/workflow/report.xhtml" SHAPE="304,2545,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#identrequirements.xhtml"
+  PATH="/workflow/identrequirements.xhtml" SHAPE="304,1201,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#definesamplerecords.xhtml"
+  PATH="/workflow/definesamplerecords.xhtml" SHAPE="304,1089,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#evaluateexperiment.xhtml"
+  PATH="/workflow/evaluateexperiment.xhtml" SHAPE="304,1761,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#developexperiment.xhtml"
+  PATH="/workflow/developexperiment.xhtml" SHAPE="304,1537,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#comparableTree.xhtml"
+  PATH="/comparableTree.xhtml" SHAPE="240,4561,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#login.xhtml" PATH="/login.xhtml"
+  SHAPE="240,4449,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#project#loadplan.xhtml"
+  PATH="/project/loadplan.xhtml" SHAPE="304,145,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#project#projectsettings.xhtml"
+  PATH="/project/projectsettings.xhtml" SHAPE="240,4673,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#createexecutableplan.xhtml"
+  PATH="/workflow/createexecutableplan.xhtml" SHAPE="304,2209,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#transform.xhtml"
+  PATH="/workflow/transform.xhtml" SHAPE="304,1873,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::37" SHAPE="32,273,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::37" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{definePlan.enter}:#workflow#defineplan.xhtml"
+    NAME="output" PATH="/workflow/defineplan.xhtml"
+    TARGET="rules:#workflow#defineplan.xhtml"
+    TITLE="#{definePlan.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::38" SHAPE="32,273,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::38" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{validatePlan.enter}:#workflow#validateplan.xhtml"
+    NAME="output" PATH="/workflow/validateplan.xhtml"
+    TARGET="rules:#workflow#validateplan.xhtml"
+    TITLE="#{validatePlan.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::39" SHAPE="32,273,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::39" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{projectSettings.enter}:#project#projectsettings.xhtml"
+    NAME="output" PATH="/project/projectsettings.xhtml"
+    TARGET="rules:#project#projectsettings.xhtml"
+    TITLE="#{projectSettings.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#workflow#FTanalyseresults.xhtml"
+  PATH="/workflow/FTanalyseresults.xhtml" SHAPE="304,289,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#FTevaluatealternatives.xhtml"
+  PATH="/workflow/FTevaluatealternatives.xhtml" SHAPE="304,289,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#workflow#FTdefinerequirements.xhtml"
+  PATH="/workflow/FTdefinerequirements.xhtml" SHAPE="304,177,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#project#newFTE.xhtml"
+  PATH="/project/newFTE.xhtml" SHAPE="240,1537,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::40" SHAPE="32,273,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::40" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="success:#{requirementsExpert.enter}:#workflow#requirementsexpert.xhtml"
+    NAME="output" PATH="/workflow/requirementsexpert.xhtml"
+    TARGET="rules:#workflow#requirementsexpert.xhtml"
+    TITLE="#{requirementsExpert.enter}:success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>

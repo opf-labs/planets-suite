@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<datasources>
+
+  <local-tx-datasource>
+
+    <!-- The jndi name of the DataSource, it is prefixed with java:/ -->
+    <!-- Datasources are not available outside the virtual machine -->
+    <jndi-name>platoDatasource</jndi-name>
+
+   <connection-url>jdbc:mysql://localhost:3306/platodb?useUnicode=true&amp;connectionCollation=utf8_general_ci&amp;characterSetResults=utf8&amp;characterEncoding=UTF-8</connection-url>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+     <min-pool-size>1</min-pool-size>
+      <max-pool-size>20</max-pool-size>
+      <user-name>plato</user-name>
+      <password>plato</password>
+      <max_allowed_packet>536870912</max_allowed_packet>
+     <metadata>
+       <type-mapping>mySQL</type-mapping>
+    </metadata>
+
+    <!-- We have to test the connection for being timed out. Default wait_timeout it MySQL is
+         set to 28800 seconds (8 hrs). After that period of time hibernate just throws an exception.
+         By checking validity of the connection it will be reestablished by hibernate. -->
+    <check-valid-connection-sql>
+       select 1
+    </check-valid-connection-sql>
+    <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.MySQLValidConnectionChecker</valid-connection-checker-class-name>
+
+    <!-- The time before an unused connection is destroyed -->
+    <!-- NOTE: This is the check period. It will be destroyed somewhere between 1x and 2x this timeout after last use -->
+    <!-- Disable when using HSQLDB as it has a problem with not reaping threads on closed connections -->
+    <idle-timeout-minutes>0</idle-timeout-minutes>
+
+    <!-- Whether to check all statements are closed when the connection is returned to the pool,
+      this is a debugging feature that should be turned off in production -->
+    <track-statements />
+
+  </local-tx-datasource>
+
+</datasources>

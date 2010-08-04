@@ -1,0 +1,19 @@
+ <!DOCTYPE jboss-web PUBLIC
+    "-//JBoss//DTD Web Application 4.2//EN"
+    "http://www.jboss.org/j2ee/dtd/jboss-web_4_2.dtd">
+
+<jboss-web>  
+ 
+ <!--  NOTE THAT THIS SEEMS TO BE IGNORED!! 
+ startup gives WARNING:
+  15:55:06,736 WARN  [DeploymentInfo] Only the root deployment can set the loader repository, ignoring config=LoaderRepositoryConfig(repositoryName: seam.jboss.org:loader=plato, repositoryClassName: org.jboss.mx.loading.HeirarchicalLoaderRepository3, configParserClassName: org.jboss.mx.loading.HeirarchicalLoaderRepository3ConfigParser, repositoryConfig: java2ParentDelegation=false)
+ 
+  cf. http://docs.jboss.org/jbossas/jboss4guide/r4/html/ch9.chapt.html
+   -->
+    <class-loading java2ClassLoadingCompliance="false">
+        <loader-repository>
+            seam.jboss.org:loader=plato
+            <loader-repository-config>java2ParentDelegation=false</loader-repository-config>
+        </loader-repository>
+    </class-loading>
+</jboss-web>
