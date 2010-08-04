@@ -1,0 +1,59 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:p="http://planets-project.eu/taglibs/plato"  
+   template="../template.xhtml">
+   <ui:define name="scripts"></ui:define>
+      <ui:define name="title">PLANETS Preservation Planning Tool - Start fast track evaluation</ui:define>
+   <ui:define name="content">
+      <h1>Start fast track evaluation</h1>
+      <div class="margin-top-small">
+         <h:form id="mainform">
+         	 <h:inputText id="changedflag" value="#{changed}"
+               style="display:none" />
+
+            <fieldset id="identification">
+               <s:validateAll>
+                  <p:inputTextArea labelText="Plan name" id="name"
+                     input="#{selectedPlan.planProperties.name}"
+                     bean="#{selectedPlan.planProperties}"
+                     actionMethodName="touch"
+                     required="true" />
+                  <p:inputTextArea labelText="Plan description"
+                     id="description"
+                     input="#{selectedPlan.planProperties.description}"
+                     bean="#{selectedPlan.planProperties}"
+                     actionMethodName="touch"
+                     required="true" />
+                  <p:inputText labelText="Responsible planner"
+                     id="author"
+                     input="#{selectedPlan.planProperties.author}"
+                     bean="#{selectedPlan.planProperties}"
+                     actionMethodName="touch"
+                     required="true" />
+                  <p:inputText labelText="Organisation"
+                     id="organization"
+                     input="#{selectedPlan.planProperties.organization}"
+                     bean="#{selectedPlan.planProperties}"
+                     actionMethodName="touch"
+                     required="true" />
+
+                  <h:commandButton value="Start evaluation" id="createFTE"
+                     action="#{newProject.saveFTE}" />
+                  <h:commandButton value="Discard Changes" id="discardChanges"
+                     action="#{loadPlan.closeProject}" immediate="true"/>
+               </s:validateAll>
+            </fieldset>
+         </h:form>
+      </div>
+      <div>
+      <fieldset id="message">
+      <img src="../img/icons/big/emblem-important.png"/>
+      Dear users, this is a new feature that we added upon numerous requests. We had to strip down a lot of the flexibility of the planning workflow to enable a fast evaluation. Please let us know what you think about the current procedure and whether you think there is anything that should be added back!
+      </fieldset>
+      </div>
+   </ui:define>
+</ui:composition>

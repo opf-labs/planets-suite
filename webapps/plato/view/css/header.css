@@ -1,0 +1,59 @@
+#header {
+	border: 0px none;
+	margin: 0px;
+	padding: 0px;
+	height: 5.25em;
+	width: 100%;
+}
+
+#polarbear {
+	border: 0px none;
+	width: 7.9em;
+	height: 5.24em;
+}
+
+#header h1 {
+	color: #000000;
+	display: inline;
+	font-size: 1.78em;
+	font-weight: normal;
+	margin-top: 0.6em;
+	position: absolute;
+}
+
+#planetsLogo {
+	margin-top: 1px;
+	margin-right: 0.2em;
+	border: 0px none;
+	width: 8.25em;
+	height: 3.675em;
+	position: absolute;
+	right: 0%;
+}
+#header h3 {
+	color: #000000;
+	display: inline;
+	font-size: 1.2em;
+	font-weight: normal;
+	margin-top: 2.8em;
+	position: absolute;
+}
+
+#header form {
+	margin: 3.8em 0px 0px;
+	padding: 0px;
+	position: absolute;
+	right: 0%;
+	text-align: right;
+	top: 0px;
+}
+
+#header a:visited, #header a:link {
+	color: #0028b8;
+	text-decoration: none;
+}
+
+#header a:active, #header a:hover {
+	color: #FF0000;
+	text-decoration: underline;
+}

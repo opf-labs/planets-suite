@@ -1,0 +1,256 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:p="http://planets-project.eu/taglibs/plato" 
+    xmlns:rich="http://richfaces.org/rich"  
+    template="../template.xhtml">
+    <ui:define name="scripts" />
+    <ui:define name="title">
+        PLANETS Preservation Planning Tool - Define Alternatives
+    </ui:define>
+    <ui:define name="content">
+        <div id="content" class="margin-bottom-huge">
+         <h1>Define the alternatives to consider for the plan</h1>
+            <div class="margin-bottom-small">
+                <h:form id="mainform">
+                    <h:inputText id="changedflag" value="#{changed}"
+                        style="display:none" />
+                    <h:outputText value="No alternatives added so far"
+                        rendered="#{alternativeList != null and alternativeList.rowCount==0}" />
+                    <h:dataTable value="#{alternativeList}" var="alt"
+                        rendered="#{alternativeList != null and alternativeList.rowCount&gt;0}"
+                        columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xl, margin-top-small margin-bottom-small margin-left-big margin-right-big border, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs"
+                        headerClass="margin-left-big margin-right-big border nowrap"
+                        rowClasses="border" styleClass="size-max" id="alternativeTable">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="ID" />
+                            </f:facet>
+                            <h:commandLink value="#{alt.id}"
+                                action="#{defineAlternatives.select}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Name" />
+                            </f:facet>
+                            <h:commandLink value="#{alt.name}"
+                                action="#{defineAlternatives.select}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Description" />
+                            </f:facet>
+                            <h:outputText value="#{alt.description}" />
+                        </h:column>
+                        
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Experience" />
+                            </f:facet>
+                            <s:div rendered="#{alt.action != null and alt.action.experienceBase != ''}">
+                            	<a target="_blank" href="#{alt.action.experienceBase}">Experience base</a>
+                            </s:div>
+                        </h:column>
+                        
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Remove" />
+                            </f:facet>
+                            <h:commandButton id="cbutton#{alt.id}"
+                                rendered="#{allowRemove != alt.id}" value="Remove"
+                                action="#{defineAlternatives.askRemoveAlternative}" />
+                            <h:outputText
+                                rendered="#{allowRemove == alt.id}"
+                                value="This alternative has associated evaluation values. These will be removed as well. Are you sure?"
+                                class="size-max" />
+                            <h:commandButton
+                                rendered="#{allowRemove == alt.id}" value="Yes, remove it."
+                                onclick="changed()"
+                                action="#{defineAlternatives.removeAlternative}" />
+                        </h:column>
+                    </h:dataTable>
+                    <div class="margin-top-big">
+                    <h:commandButton value="Add new Alternative"
+                        id="addAlternative" onclick="changed()"
+                        action="#{defineAlternatives.create}" />
+                    </div>
+                    <s:div styleClass="size-max margin-top-big margin-bottom-big border-bottom big"
+                        rendered="#{(alt == null)}">
+                        <fieldset id="automated" class="size-full">
+                            <legend>
+                                Create alternatives from applicable services
+                            </legend>
+                            <s:div styleClass="margin-bottom-huge margin-left-big margin-top-big" 
+                            rendered="#{selectedPlan.sampleRecordsDefinition.firstSampleWithFormat == null}">
+                                <strong>
+                                    <h:outputText value="To enable the automated search for services, please provide at least one sample object with data and use DROID to identify it."/><br/>
+                                </strong>
+                            </s:div>
+                            <s:div rendered="#{selectedPlan.sampleRecordsDefinition.firstSampleWithFormat != null}">
+                            <div class="margin-bottom-huge margin-left-big margin-top-big">
+                                <strong>
+                                    <h:outputText
+                                        value="Sample #{selectedPlan.sampleRecordsDefinition.firstSampleWithFormat.fullname} has 
+                                        the following format: #{selectedPlan.sampleRecordsDefinition.firstSampleWithFormat.formatInfo.longName}. " />
+                                    <br />
+                                    <h:outputText
+                                        value="You can look up preservation services that are able to handle this object type in the following registries:" />
+                                </strong>
+                            </div>
+                            <div class="size-max">
+                                <div class="float-on margin-top-huge">
+                                    <rich:dataTable
+                                        value="#{availableRegistries}" var="registry"
+                                        columnClasses="margin-top-big margin-bottom-big margin-left-big margin-right-big border size-l align-horizontal-center, align-vertical-center size-xs border-transparent"
+                                        rowClasses="border">
+                                        <rich:column
+                                            style="#{registrySelection[registry] ? 'background-color:#ffffff': ''}">
+                                            <strong>
+                                                <h:outputText
+                                                    value="#{registry.shortname}" />
+                                            </strong>
+                                            <br />
+                                            <img src="#{registry.logo}"
+                                                alt="#{registry.shortname}" height="40" width="120" />
+                                            <br />
+                                            <h:commandButton
+                                                id="showServices" value="Show Services"
+                                                action="#{defineAlternatives.showPreservationServices(registry)}" />
+                                        </rich:column>
+                                        <rich:column
+                                            style="#{registrySelection[registry] ? 'background-color:#ffffff': ''}">
+                                            <h:graphicImage id="active"
+                                                alt="active" url="../img/icons/small/go-next.png"
+                                                height="25" width="25"
+                                                rendered="#{registrySelection[registry]}" />
+                                        </rich:column>
+                                    </rich:dataTable>
+                                </div>
+                                <div class="margin-top-huge">
+                                    <s:div styleClass="margin-bottom-big margin-top-huge" rendered="#{numOfAvailableActions &gt; 20}" >
+                                        <h:commandButton
+                                        id="createAlternatives_2"
+                                        value="Create alternatives for selected services"
+                                        action="#{defineAlternatives.createAlternativesForPreservationActions}" />
+                                    </s:div>                                    
+                                    <h:dataTable
+                                        value="#{availableActions}" var="action" id="table"
+                                        headerClass="margin-left-big margin-right-big border nowrap"
+                                        columnClasses="background-baseE margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs, background-baseE margin-top-small margin-bottom-small margin-left-big margin-right-big border, background-baseE margin-top-small margin-bottom-small margin-left-big margin-right-big border, background-baseE margin-top-small margin-bottom-small margin-left-big margin-right-big border"
+                                        rendered="#{not empty availableActions}">
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{rowIndex}" />
+                                            <h:selectBooleanCheckbox
+                                                value="#{action.selected}" />
+                                        </h:column>
+                                        <h:column id="shortname">
+                                            <f:facet name="header">
+                                                <h:outputText
+                                                    value="Preservation Action" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{action.shortname}" />
+                                        </h:column>
+                                        <h:column id="targetformat">
+                                            <f:facet name="header">
+                                                <h:outputText
+                                                    value="Target Format" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{action.targetFormat}" />
+                                        </h:column>
+                                        <h:column id="info">
+                                            <f:facet name="header">
+                                                <h:outputText
+                                                    value="Info" />
+                                            </f:facet>
+                                            <h:outputText
+                                                value="#{action.info}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText
+                                                    value="Experience" />
+                                            </f:facet>
+                                            <s:div rendered="#{action.experienceBase != ''}">
+                                            	<a target="_blank" href="#{action.experienceBase}">Experience base</a>
+                                            </s:div>
+                                        
+                                        </h:column>
+                                        
+                                    </h:dataTable>
+                                    <h:commandButton
+                                        id="createAlternatives"
+                                        value="Create alternatives for selected services"
+                                        action="#{defineAlternatives.createAlternativesForPreservationActions}"
+                                        rendered="#{not empty availableActions}" />
+                                </div>
+                            </div>
+                            </s:div>
+                        </fieldset>
+                    </s:div>
+                    <s:div
+                        styleClass="margin-top-big margin-bottom-big border-bottom big"
+                        rendered="#{alt!=null}">
+                        <!-- This form we only want to show, if an alternative was selected it does not contain calls to changed(),
+                            but adding a new alternative or editing an existing one sets the main form to "changed"  -->
+                        <fieldset id="alternative" class="size-full">
+                            <legend>Alternative</legend>
+                            <p:inputText
+                                labelText="Name of alternative" id="nameOfAlternative"
+                                input="#{alt.name}" required="true" maxlength="30" 
+                                bean="#{alt}" actionMethodName="touch" />
+                            <p:inputTextArea
+                                labelText="Description of alternative"
+                                id="descriptionOfAlternative" input="#{alt.description}"
+                                required="true" />
+                            <p:inputTextArea
+                                labelText="Reason for considering" id="reasonForConsidering"
+                                input="#{alt.resourceDescription.reasonForConsidering}"
+                                bean="#{alt.resourceDescription}" actionMethodName="touch" />
+                            <p:inputTextArea labelText="Description of configuration"
+                                id="configSettings"
+                                input="#{alt.resourceDescription.configSettings}"
+                                bean="#{alt.resourceDescription}" actionMethodName="touch" />
+                            <p:inputTextArea
+                                labelText="Indicator of necessary resources"
+                                id="indicatorOfNecessaryResources"
+                                input="#{alt.resourceDescription.necessaryResources}"
+                                bean="#{alt.resourceDescription}" actionMethodName="touch" />
+                            <div>
+                                <h:commandButton
+                                    value="Save Alternative" id="updateAlternative"
+                                    action="#{defineAlternatives.editAlternative}" />
+                            </div>
+                        </fieldset>
+                    </s:div>
+                    
+                    <s:div styleClass="margin-top-big margin-bottom-big border-bottom big">
+		               <fieldset id="description" class="size-full">
+		                  <legend>
+		                     <ui:include src="../legend_nav.xhtml"></ui:include>
+		                     <h:outputText value="Descriptive Information" />
+		                  </legend>
+		                  
+		                  <p:inputTextArea labelText="Documentation"
+		                     id="alternativesDescription"
+		                     input="#{selectedPlan.alternativesDefinition.description}"
+		                     bean="#{selectedPlan.requirementsDefinition}"
+		                     actionMethodName="touch" />
+		               </fieldset>                    
+                    </s:div>
+                    
+                    <p:buttons bean="#{defineAlternatives}" />
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

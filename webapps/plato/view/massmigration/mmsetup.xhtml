@@ -1,0 +1,407 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:c="http://java.sun.com/jstl/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich"
+   xmlns:p="http://planets-project.eu/taglibs/plato"  >
+   <head>
+      <title>
+         PLANETS Preservation Planning Tool - Mass Migration
+      </title>
+      <meta http-equiv="Content-Type"
+         content="text/html; charset=UTF-8" />
+      <meta name="description"
+         content="PLANETS Preservation Planning Tool" />
+      <meta http-equiv="Pragma" content="no-cache" />
+      <link rel="shortcut icon" type="image/png"
+         href="../img/plato_icon.png" />
+      <link rel="stylesheet" href="../css/content.css" type="text/css" />
+      <link rel="stylesheet" media="screen" href="../css/plato.css"
+         type="text/css" title="Plato" />
+      <link rel="stylesheet" media="screen" href="../css/header.css"
+         type="text/css" title="Plato" />
+      <link rel="stylesheet" href="../css/menu.css" type="text/css" />
+      <link rel="stylesheet" media="screen" href="../css/footer.css"
+         type="text/css" title="Plato" />
+      <link rel="stylesheet" media="print" href="../css/print.css"
+         type="text/css" />
+      <link rel="stylesheet" href="../css/content-treetable.css"
+         type="text/css" />
+      <link rel="stylesheet" href="../css/content-slider.css"
+         type="text/css" />
+   </head>
+   <body id="top">
+      <div id="header">
+         <a href="/plato" title="home" alt="home site">
+            <img src="../img/polarbear.gif" id="polarbear"
+               alt="Vienna University of Technology" height="100"
+               width="150" />
+         </a>
+         <h1>
+            PLANETS Preservation Planning Tool
+            <em>(Plato)</em>
+         </h1>
+         <img src="../img/plato_right.jpg" id="planetsLogo"
+            alt="Information &amp; Software Engineering Group"
+            height="100" width="150" />
+            
+         <rich:modalPanel id="selectSetupPanel" width="300" height="20" autosized="true">
+            <f:facet name="header">
+                <h:outputText value="Select Setup" />
+            </f:facet>
+            <f:facet name="controls">
+                <h:graphicImage value="../img/icons/small/close.png"
+                    style="cursor:pointer"
+                    onclick="Richfaces.hideModalPanel('selectSetupPanel')" />
+            </f:facet>
+            <s:div id="myModalDiv">
+                <div style="overflow: auto;height:150px;">
+                <h:form id="selectsetupform">
+                   <div>
+                      <h:outputText style="font-weight:bold" value="Choose a mass migration setup below:" />
+                   </div>
+                   <h:dataTable rendered="#{not empty setupList}"
+                      value="#{setupList}" var="setup"
+                      columnClasses="{ border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; }">
+                      <h:column>
+                          <f:facet name="header">
+                             <h:outputText style="{font-size:0.9em;font-weight:normal}" value="Setup name"/>
+                          </f:facet>
+                          <h:outputText style="{font-size:1em;}" value="#{setup.name}" />
+                      </h:column>
+                      <h:column>
+                         <a4j:commandButton style="font-size:1em;"
+                            id="idloadsetup"
+                            action="#{massmigrator.loadSetup(setup)}"
+                            value="Load"
+                            oncomplete="Richfaces.hideModalPanel('selectSetupPanel');"
+                            reRender="myModalDiv,content"
+                            onclick="this.disabled=true"/> 
+                      </h:column>
+                      <h:column>
+                         <a4j:commandButton 
+                            action="#{massmigrator.deleteSetup(setup)}"
+                            image="../img/treetable/trash-node.png"
+                            oncomplete="Richfaces.hideModalPanel('selectSetupPanel');"
+                            reRender="myModalDiv,content"
+                            onclick="this.disabled=true" />                  
+                      </h:column>
+                      
+                   </h:dataTable>
+                   </h:form>                
+                </div>
+            </s:div>
+        </rich:modalPanel>           
+            
+         <a4j:region id="sessionRegion">
+         <!-- Contact server every 20 sec. to keep the session alive
+              -other aj4-ppr requests should use the same eventQueue (pprQueue)
+         -->
+         <h:form id="session">
+            <a4j:poll id="keepAlive" interval="300000" enabled="#{sessionManager != null}"
+               reRender="keepAlive" limitToList="true" eventsQueue="pprQueue" actionListener="#{sessionManager.keepAlive}"/>
+<!-- On the one hand we have to keep alive the session
+     this could be also used to refresh the current migration status!!!
+     
+Could be used to display the polling action, maybe spinning the planetsLogo above?
+            <a4j:status id="keepAliveStatus">
+                <f:facet name="start">
+                    <h:graphicImage value="/img/spinner.gif" />
+                </f:facet>
+            </a4j:status>
+-->
+         </h:form>
+         </a4j:region>       
+       </div>
+       <s:div id="content">
+          <h1>Mass Migration</h1> 
+          <h:form id="setupForm">
+<div>
+                <a4j:commandButton
+                   id="unlock"
+                   value="Reload"
+                   reRender="content"
+                   onclick="document.getElementById('setupForm:newsetup').disabled=false;document.getElementById('setupForm:listsetups').disabled=false;"/>
+</div>          
+              <s:div>
+                <a4j:commandButton
+                   id="newsetup"
+                   action="#{massmigrator.createSetup}"
+                   value="New"
+                   reRender="content"
+                   onclick="this.disabled=true"
+                   oncomplete="document.getElementById('setupForm:newsetup').disabled=false"                   />
+                <a4j:commandButton id="listsetups"
+                   action="#{massmigrator.listSetups}"
+                   value="Load Existing"
+                   reRender="myModalDiv,content"
+                   onclick="this.disabled=true"
+                   oncomplete="document.getElementById('setupForm:listsetups').disabled=false;Richfaces.showModalPanel('selectSetupPanel',{top:200});"/>      
+                   <s:div rendered="#{selectedSetup == null}">
+                      <h:outputText value="Please create a new mass migration setup or load an existing one."/>
+                   </s:div>
+                   <s:div id="setupDiv" rendered="#{selectedSetup != null}">          
+                           <s:decorate>
+                              <div class="inputDecorate">
+                                 <span class="#{invalid?'errors':''}">
+                                    <s:validateAll>
+                                        <h:outputLabel for="idname" class="size-m">Name</h:outputLabel>
+                                        <h:inputText id="idname" value="#{selectedSetup.name}" class="size-xxl" >
+                                           <f:validateLength maximum="60" />
+                                        </h:inputText>
+                                    </s:validateAll>
+                                 </span>
+                                 <s:message styleClass="errorMessage" />
+                              </div>
+                           </s:decorate>
+                           <s:decorate>
+                              <div class="inputDecorate">
+                                 <span class="#{invalid?'errors':''}">
+                                    <s:validateAll>
+                                        <h:outputLabel for="iddesc" class="size-m">Description</h:outputLabel>
+                                        <h:inputTextarea id="iddesc" value="#{selectedSetup.description}" style="{ width: 70%; }" >
+                                           <f:validateLength maximum="2000" />
+                                        </h:inputTextarea>
+                                    </s:validateAll>
+                                 </span>
+                                 <s:message styleClass="errorMessage" />
+                              </div>
+                           </s:decorate>
+                           <s:decorate>
+                              <div class="inputDecorate">
+                                 <span class="#{invalid?'errors':''}">
+                                    <s:validateAll>
+                                        <h:outputLabel for="idsourcepath" class="size-m">Source Path</h:outputLabel>
+                                        <h:inputText id="idsourcepath" value="#{selectedSetup.sourcePath}" class="size-xxl" >
+                                           <f:validateLength maximum="255" />
+                                        </h:inputText>
+                                    </s:validateAll>
+                                 </span>
+                                 <s:message styleClass="errorMessage" />
+                              </div>
+                           </s:decorate>
+                           <s:decorate>
+                              <div class="inputDecorate">
+                                 <span class="#{invalid?'errors':''}">
+                                    <s:validateAll>
+                                        <h:outputLabel for="idresultpath" class="size-m">Result Path</h:outputLabel>             
+                                        <h:inputText id="idresultpath" value="#{selectedSetup.resultPath}" class="size-xxl" >
+                                           <f:validateLength maximum="255" />
+                                        </h:inputText>
+                                    </s:validateAll>
+                                 </span>
+                                 <s:message styleClass="errorMessage" />
+                              </div>
+                           </s:decorate>
+                    <div>
+                    <a4j:commandButton id="idsavesetup" 
+                       action="#{massmigrator.saveSetup}" 
+                       value="Save this Setup" 
+                       reRender="content" 
+                       onclick="this.disabled=true" 
+                       oncomplete="document.getElementById('setupForm:idsavesetup').disabled=false"/> 
+                    <a4j:commandButton 
+                       action="#{massmigrator.deleteSetup(selectedSetup)}"
+                       image="../img/treetable/trash-node.png"
+                       reRender="content"
+                       onclick="if(1 == confirm('Do you really want to delete this setup?')) {this.disabled=true;} else {return false;}"/> 
+                                         
+
+                 </div>
+                 <div class="margin-top-huge">
+                    <s:div id="statusDiv" >
+                       <a4j:poll id="idprogress" interval="2000" enabled="#{(selectedSetup.status.statusAsString == 'RUNNING')}"
+                          reRender="content" limitToList="true" eventsQueue="pprQueue"/>
+                          <div>
+                             <h:outputText value="Status: running ..." rendered="#{(selectedSetup.status.statusAsString == 'RUNNING')}"/>
+                             <h:outputText value="Status: failed" rendered="#{(selectedSetup.status.statusAsString == 'FAILED')}"/>
+                          </div>
+                          <div>
+                             <s:div rendered="#{(selectedSetup.status.statusAsString == 'RUNNING')}">
+                                <div>
+                                   <h:outputText value="Migrating sample #{selectedSetup.status.currentSample} of #{selectedSetup.status.numOfSamples}."/>
+                                </div>
+                                <h:outputText value=" .. with tool: #{selectedSetup.status.currentTool} of #{selectedSetup.status.numOfTools}."/>
+                             </s:div>
+                             <h:outputText value="Migration finished!."
+                                rendered="#{(selectedSetup.status.statusAsString == 'FINISHED') }"/>
+                          </div>
+
+                    </s:div>                 
+                    <s:div id="idselectactionsDiv" rendered="#{(selectedSetup.status.statusAsString != 'RUNNING')}">
+                    <rich:tabPanel id="idexperimentPanel" selectedTab="existing_exp" switchType="client" width="600">
+                       <rich:tab name="existing_exp" label="Currently selected actions">
+                           <s:div rendered="#{empty selectedSetup.experiments}" styleClass="margin-top-big margin-bottom-big margin-left-big">
+                              <h:outputText value="No actions have been added so far." style="font-weight:bold"/>
+                           </s:div>
+                           <h:dataTable class="margin-top-big margin-bottom-big margin-left-big margin-right-big"
+                                 width="98%"
+                                 value="#{selectedSetup.experiments}" var="exp" id="idexistingexp"
+                                 headerClass="margin-left-big margin-top-big margin-bottom-big margin-right-big border nowrap"
+                                 columnClasses="background-baseE margin-top-big margin-bottom-big margin-left-big margin-right-big border"
+                                 rendered="#{not empty selectedSetup.experiments}">
+                                 <h:column id="eshortname">
+                                     <f:facet name="header">
+                                         <h:outputText
+                                             value="Preservation Action" />
+                                     </f:facet>
+                                     <h:outputText
+                                         value="#{exp.action.shortname}" />
+                                 </h:column>
+                                 <h:column id="etargetformat">
+                                     <f:facet name="header">
+                                         <h:outputText
+                                             value="Target Format" />
+                                     </f:facet>
+                                     <h:outputText
+                                         value="#{exp.action.targetFormat}" />
+                                 </h:column>
+                                 <h:column id="einfo">
+                                     <f:facet name="header">
+                                         <h:outputText
+                                             value="Info" />
+                                     </f:facet>
+                                     <h:outputText
+                                         value="#{exp.action.info}" />
+                                 </h:column>
+                                 <h:column id="remove">
+                                     <f:facet name="header">
+                                     </f:facet>
+                                     <a4j:commandButton
+                                         id="idremoveexp"
+                                         image="../img/treetable/trash-node.png"
+                                         action="#{massmigrator.removeExperiment(exp)}"
+                                         reRender="content" />
+                                 </h:column>
+                             </h:dataTable>
+                       </rich:tab>
+                       <rich:tab name="create_exp" label="Available actions">
+                           <div class="margin-top-big margin-bottom-big margin-left-big">
+                           <div>
+                           <h:outputText value="Limit actions to formats with:"  style="font-weight:bold"/>
+                           </div>
+                           <div>
+                              <h:outputLabel for="idformatname" class="size-m">Name</h:outputLabel>
+                              <h:inputText id="idformatname" value="#{sourceFormat.name}" class="size-xxl" />
+                           </div>
+                           <div>
+                              <h:outputLabel for="idformatext" class="size-m">Extension</h:outputLabel>
+                              <h:inputText id="idformatext" value="#{sourceFormat.defaultExtension}" class="size-xxl" />
+                           </div>
+                           </div>
+                           <a4j:commandButton id="idqueryactions"
+                               action="#{massmigrator.listActions}"
+                               value="Show available actions"
+                               reRender="idexperimentPanel" />
+                           <s:div rendered="#{empty availableMMActions}" styleClass="margin-top-big margin-bottom-big margin-left-big">
+                              <h:outputText style="font-weight:bold" value="Sorry! - No migration actions found for given format."/>
+                           </s:div>
+                           <h:dataTable
+                                 class="margin-top-big margin-bottom-big margin-left-big margin-right-big"
+                                 width="98%"
+                                 value="#{availableMMActions}" var="action" id="idnewexperimenttable"
+                                 headerClass="margin-left-big margin-right-big border nowrap"
+                                 columnClasses="background-baseE margin-top-big margin-bottom-big margin-left-big margin-right-big border"
+                                 rendered="#{not empty availableMMActions}">
+                                 <h:column>
+                                     <f:facet name="header">
+                                         <h:outputText value="" />
+                                     </f:facet>
+                                     <h:outputText
+                                         value="#{rowIndex}" />
+                                     <h:selectBooleanCheckbox
+                                         value="#{action.selected}" />
+                                 </h:column>
+                                 <h:column id="shortname">
+                                     <f:facet name="header">
+                                         <h:outputText
+                                             value="Preservation Action" />
+                                     </f:facet>
+                                     <h:outputText
+                                         value="#{action.shortname}" />
+                                 </h:column>
+                                 <h:column id="targetformat">
+                                     <f:facet name="header">
+                                         <h:outputText
+                                             value="Target Format" />
+                                     </f:facet>
+                                     <h:outputText
+                                         value="#{action.targetFormat}" />
+                                 </h:column>
+                                 <h:column id="info">
+                                     <f:facet name="header">
+                                         <h:outputText
+                                             value="Info" />
+                                     </f:facet>
+                                     <h:outputText
+                                         value="#{action.info}" />
+                                 </h:column>
+                             </h:dataTable>
+                             <a4j:commandButton
+                                 id="idcreateexperiments"
+                                 value="Create experiments for selected services"
+                                 action="#{massmigrator.createExperimentsForActions}"
+                                 rendered="#{not empty availableMMActions}"
+                                 reRender="content" />
+                           </rich:tab>
+                        </rich:tabPanel>
+                        <div>
+                           <a4j:commandButton id="startMM"
+                              action="#{massmigrator.runMassMigration}"
+                              value="Start mass migration"
+                              reRender="content"/> 
+                        </div>
+
+                    </s:div>         
+                    </div>
+                    <s:div id="statistics" rendered="#{(selectedSetup.status.statusAsString == 'FINISHED') }">
+                         <h2>Results of last execution:</h2> 
+                    
+                         <h:outputText value="All files written to: #{selectedSetup.lastResultPath}"/>
+                    
+                         <h:dataTable value="#{selectedSetup.allAverageProperties}" var="property"
+                              headerClass="align-horizontal-center margin-bottom-big margin-top-big margin-right-big margin-left-big" 
+                              columnClasses="margin-bottom-big margin-top-big margin-right-big margin-left-big align-horizontal-left border"
+                              rowClasses="margin-bottom-big margin-top-big border"
+                              styleClass="margin-top-big margin-bottom-big margin-left-big">
+                              <h:column>
+                                  <f:facet name="header">
+                                      <h:outputText style="font-weight:normal" value="Properties" />
+                                  </f:facet>
+                                  <h:outputText style="font-weight:bold" value="#{property} " />
+                              </h:column>
+                              <c:forEach items="#{selectedSetup.experiments}" var="exp" varStatus="expStatus">
+                                  <h:column>
+                                      <f:facet name="header">
+                                          <h:outputText style="font-weight:bold" value="#{exp.action.shortname}" />
+                                      </f:facet>
+                                      <s:div rendered="#{exp.averages.measurements[property] != null}">
+                                       <h:outputText value="#{exp.averages.measurements[property].value.formattedValue}"/>
+                                      </s:div>
+                                  </h:column>
+                              </c:forEach>
+                          </h:dataTable>                    
+                    </s:div>
+                 </s:div>             
+              </s:div>
+     </h:form>
+       </s:div>       
+       <div id="footer">
+         <p id="teamInfo">
+            Release 2.0 - Institute of Software Technology and
+            Interactive Systems: &#171;
+            <a
+               href="mailto:plato@ifs.tuwien.ac.at?subject=[Planets-Plato:]">
+               off-ice bears
+            </a>
+            &#187;
+         </p>
+         <a class="toplink" href="#top" title="top" alt="top">
+            <img src="../img/icons/small/go-top.png" border="0" />
+         </a>
+      </div>
+   </body>
+</html>

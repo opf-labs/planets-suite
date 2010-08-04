@@ -1,0 +1,104 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://planets-project.eu/taglibs/plato"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich"  
+   template="../template.xhtml">
+   <ui:define name="scripts"></ui:define>
+      <ui:define name="title">PLANETS Preservation Planning Tool - Organisational Policies</ui:define>
+   <ui:define name="content">
+      <h1>Organisational Policies</h1>
+      <div class="margin-top-small">
+
+         <fieldset id="policytree_upload" class="size-full">
+            <legend>
+               <ui:include src="../legend_nav.xhtml"></ui:include>
+               <h:outputText value=" Policies upload" />
+            </legend>
+
+
+	         <h:form id="uploadform" enctype="multipart/form-data">
+	            <table>
+	               <tr>
+	                  <td class="size-xl">
+	                     <a target="_blank" href="/plato/help/policy.html">How can I define a policy tree?</a>
+	                  </td>
+	               </tr>
+	            
+	               <tr>
+	                  <td>
+				        <s:fileUpload data="#{organisationalPolicies.organisationalPoliciesMindMap}" 
+				                      id="fileupload" 
+				                      filename="#{organisationalPolicies.fileName}"/>
+				                      
+						   <h:commandButton value="Upload policies"	action="#{organisationalPolicies.uploadFreemindTree}" /><br/>
+	                  </td>
+	               </tr>
+	            </table>
+	         </h:form>
+         
+         </fieldset>
+         
+         <fieldset id="policytree" class="size-full">
+            <legend>
+               <ui:include src="../legend_nav.xhtml"></ui:include>
+               <h:outputText value=" Policies" />
+            </legend>
+
+            <a4j:outputPanel ajaxRendered="true">
+
+				<h:outputText value="No policies have been defined yet." rendered="#{user.organisation == null or user.organisation.policyTree == null}"/>
+				
+				<s:div rendered="#{user.organisation != null and user.organisation.policyTree != null}">
+                	<p>
+                    	<a4j:commandLink
+							actionListener="#{policyTreeHelper.expandAll(user.organisation.policyTree.root)}"
+							ajaxSingle="true"
+							eventsQueue="ajaxQ" ignoreDupResponses="true"
+							value="Expand all"
+							reRender="ytree"/>
+                    </p>
+                    <rich:tree
+                        id="ytree"
+                        switchType="client" 
+                        immediate="true"
+                        adviseNodeOpened="#{policyTreeHelper.adviseNodeOpened}"
+                        style="padding-top:10px;">
+                        
+                        <rich:recursiveTreeNodesAdaptor
+                            roots="#{user.organisation.policyTree.root}" var="node"
+                            nodes="#{node.children}">
+                            <rich:treeNode iconLeaf="" icon="">
+								<div style="height: 20px;">
+				  					<div style="float:left; position: relative; white-space:normal;  width:80%;">
+				      					<h:outputText value="#{node.name}"/>
+				  					</div>
+				  					<div style="float:right; position: relative; width:80px;">
+					  					<h:outputText style="text-align:right;" value="#{node.value}" rendered="#{node.policy}"/>
+                         	      	</div>
+								</div>
+    					    </rich:treeNode>
+                        </rich:recursiveTreeNodesAdaptor>
+			         </rich:tree>
+			         </s:div>
+			    </a4j:outputPanel>					
+
+		    </fieldset>
+		    
+		    <h:form id="command_form">
+		    
+		    <h:commandButton rendered="#{user.organisation != null and user.organisation.policyTree != null}"
+		    	value="Delete policy tree" action="#{organisationalPolicies.removePolicyTree}"/>
+		    	
+		    <h:commandButton value="Save" action="#{organisationalPolicies.save}"/>
+		    
+		    <h:commandButton value="Discard" action="#{organisationalPolicies.discard}"/>
+		    
+		    </h:form>
+         
+      </div>
+   </ui:define>
+</ui:composition>

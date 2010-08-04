@@ -1,0 +1,28 @@
+/* Please see the LICENSE.GPL file for copyright and distribution information */
+
+body {
+  background-color:#FFFFFF;
+  margin:0px;
+  font-family: Verdana, Helvetica, sans-serif; 
+  font-size: 0.75em; 
+  color: #000000;
+}
+/* Browser Bug, set textarea explicitly */
+textarea, input, select {
+  font-family: Verdana, Helvetica, sans-serif; 
+  font-size: 1em; 
+}  
+
+a:link     { color:#425d73; text-decoration:none; }
+a:visited  { color:#425d73; text-decoration:none; }
+a:hover    { color:#FF0000; text-decoration:underline; }
+a:active   { color:#FF0000; text-decoration:underline; }
+
+#header, #menu, #sidemenu, #footer-left, #footer-right, #debug { 
+  border:0px none;
+  margin:0px; 
+  padding:0px; 
+  display:none;
+}
+
+#content .noprint { display:none; }

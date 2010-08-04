@@ -1,0 +1,268 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"  
+	template="../template.xhtml">
+
+	<ui:define name="scripts"></ui:define>
+
+	<ui:define name="content">
+		<div id="content">
+		<div class="margin-bottom-small border-bottom big">Utilities for
+		the administrator</div>
+		<div class="margin-bottom-big">
+
+		<h:form id="adminform">
+	<fieldset id="exportimport">
+	 <legend><h:outputText value="export"/></legend>
+			<s:div id="exportStatus">
+				<h:outputText
+				    value="Export files are written to #{exportDir}. A 'finished.info' or 'error.info' file is created when finished."
+				    rendered="#{not empty(exportDir)}"/>
+			</s:div>
+			<br />
+            <h:commandButton id="exportAllsToZip"
+				action="#{admin.exportAllProjectsToZip}"
+               value="Export all plans to a ZIP containing all XML files"/>
+			<br />
+         <h:commandButton id="exportPrivateTemplates"
+            action="#{admin.exportPrivateTemplates}"
+            value="export all private templates and fragments to an XML file" />
+         <br />
+         <h:commandButton id="exportAllTemplates"
+            action="#{admin.exportAllTemplates}"
+            value="export ALL templates and fragments to an XML file" />
+            </fieldset>
+			<hr/>
+			Admin commands need passcode:		<h:inputSecret value="#{password}" id="passwordField"/>
+			<hr/>
+			<fieldset id="cleanup">
+				 <legend><h:outputText value="cleanup"/></legend>
+			
+			<h:commandButton id="clearData" action="#{admin.clearData}"
+				onclick="if (!confirm('Are you sure you want to delete all the plans?')) return false"
+				value="Delete all plans from database" />
+			<br />
+			<h:commandButton id="clearKB" action="#{admin.clearKB}"
+				value="Clear knowledge base" />
+			<br />
+			<h:commandButton id="cleanValues" action="#{admin.cleanupValues}"
+				value="Clean up loose values of all plans" />
+			<br />
+
+         <!-- TODO delete private templates of specific user? -->
+
+			<h:commandButton id="clearAllData" action="#{admin.clearAllData}"
+				value="Delete EVERYTHING (plans, public and private template trees) from database" />
+			<br />
+         <h:commandButton id="clearPublicTemplates" action="#{admin.resetPublicLibraries}"
+            value="Reset public templates" />
+         <br />
+         <h:commandButton id="unlock" action="#{admin.unlockAll}"
+				value="Unlock all plans" />
+			<br />
+</fieldset>
+<fieldset id="unlock">
+	 <legend><h:outputText value="unlock/delete one plan"/></legend>
+
+			<h:outputLabel for="IDField" value="planID:"/>
+			<h:inputText value="#{projectID}" id="planIDField"/>
+			<br />
+			<h:commandButton id="unlockUsingPlanID" action="#{admin.unlockUsingProjectID}"
+				value="Unlock plan using id" />
+			<br />
+			<h:commandButton id="clone" action="#{xml.clone}"
+				value="Clone selectedPlan" />
+			<br/>
+			<h:commandButton id="clearDataUsingPlanID" 
+				onclick="if (!confirm('Are you sure you want to delete this ?')) return false"
+				action="#{admin.clearDataUsingProjectID}"
+				value="Delete plan using id" />
+</fieldset>
+			<hr/>
+			<h:commandButton rendered="#{user.admin}"
+				action="#{identifyRequirements.startExpert()}" value="Start requiremets expert" />
+			<br/>
+			<h:commandButton id="exception" action="#{admin.throwException}"
+				value="Throw Runtime Exception" />
+			<br />
+
+			<f:subview rendered="#{!empty allmessages.errors}">
+				<h:outputText value="Error Messages" />
+				<h:commandButton value="Clear Error Message List"
+					action="#{admin.clearErrors}" />
+				<h:dataTable value="#{allmessages.errors}" var="error"
+					columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xxl, margin-top-small margin-bottom-small margin-left-big margin-right-big border, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-l, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs"
+					headerClass="margin-left-big margin-right-big border nowrap"
+					rowClasses="border" styleClass="size-max">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Type" />
+						</f:facet>
+						<h:outputText value="#{error.type}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Message" />
+						</f:facet>
+						<h:outputText value="#{error.message}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Timestamp" />
+						</f:facet>
+						<h:outputText value="#{error.timestamp}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Session ID" />
+						</f:facet>
+						<h:outputText value="#{error.sessionID}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="User" />
+						</f:facet>
+						<h:outputText value="#{error.user}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Browser" />
+						</f:facet>
+						<h:outputText value="#{error.userAgent}" />
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Step" />
+						</f:facet>
+						<h:outputText value="#{error.step}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="PlanId" />
+						</f:facet>
+						<h:outputText value="#{error.projectId}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="PlanName" />
+						</f:facet>
+						<h:outputText value="#{error.projectName}" />
+					</h:column>
+					<!-- h:column>
+						<f:facet name="header">
+							<h:outputText value="Site" />
+						</f:facet>
+						<h:outputText value="#{error.site}" />
+					</h:column-->
+				</h:dataTable>
+			</f:subview>
+			<h:outputLabel for="author" value="Author" />
+			<h:inputText id="author" value="#{author}" />
+			<h:outputLabel for="news" value="News" />
+			<h:inputTextarea id="news" value="#{news}" class="size-max" />
+			<h:commandButton value="Add News" action="#{admin.addNews}" />
+			<hr/>
+			<f:subview rendered="#{!empty allmessages.news}">
+				<h:commandButton value="Clear News List" action="#{admin.clearNews}" />
+				<h:dataTable value="#{allmessages.news}" var="news"
+					columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xxl, margin-top-small margin-bottom-small margin-left-big margin-right-big border, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-l, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs"
+					headerClass="margin-left-big margin-right-big border nowrap"
+					rowClasses="border" styleClass="size-max">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Timestamp" />
+						</f:facet>
+						<h:outputText value="#{news.timestamp}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Author" />
+						</f:facet>
+						<h:outputText value="#{news.author}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="News" />
+						</f:facet>
+						<h:outputText value="#{news.news}" />
+					</h:column>
+				</h:dataTable>
+			</f:subview>
+			<fieldset id="memory">
+			<legend><h:outputText value="Memory Tests"/></legend>
+            Munching too much memory will result in an OutOfMemoryError
+            <h:commandButton id="memtestadd" action="#{admin.munchMem(500)}"
+                value="Munch 500MB" />
+            <h:commandButton id="memtestrelease" action="#{admin.releaseMem()}"
+                value="Release memory" />
+			</fieldset>		
+			
+			<fieldset id="import">
+			<legend><h:outputText value="XML import"/></legend>
+			Path:<h:inputText id="importDir" value="#{xml.directory}" class="size-max" />
+			<h:commandButton id="xmlimportDir" action="#{xml.importFromDir}"
+				value="Import all XMLs in server directory" />
+			
+			<h:inputTextarea id="importxml" value="#{xml.input}" class="size-max" />
+			<h:commandButton id="xmlimport" action="#{xml.doImport}"
+				value="Import XML string" />
+			</fieldset>
+         
+				
+		</h:form>
+	<br/>
+		<fieldset id="import">
+			<h:form id="uploadform" enctype="multipart/form-data">
+			<legend><h:outputText value="XML import from file"/></legend>
+			
+			<s:fileUpload data="#{xml.file}" id="fileupload" filename="#{xml.filename}"/>
+					<h:commandButton value="Import plans" action="#{xml.uploadPlans}" /> 	
+					<h:commandButton value="Import plans for myself" action="#{xml.uploadPlans(true)}" />
+					<br/>						
+				</h:form>
+                <br/>
+			<h:form id="templateuploadform" enctype="multipart/form-data">
+			<s:fileUpload data="#{xml.file}" id="templatefileupload" filename="#{xml.filename}"/>
+					<h:commandButton value="Import templates"
+						action="#{xml.uploadTemplates}" /><br/>
+						
+						</h:form>
+			</fieldset>
+   
+   <br/>
+   
+   <fieldset>
+      <legend><h:outputText value="Store objective tree as template in KB"/></legend>
+      
+      <h:form id="importexporttemplates">
+         
+         <h:outputLabel for="templateLibrary" value="Template Library (e.g. 'Public Templates'):"/>    
+         <h:inputText id="templateLibrary" value="#{xml.templateLibrary}"  /><br/>
+         
+         <h:outputLabel for="templateName" value="Name:"/>
+         <h:inputText id="templateName" value="#{xml.templateName}"  /><br/>
+         
+         <h:outputLabel for="templateDescription" value="Description:"/> <br/>
+         <h:inputTextarea id="templateDescription" value="#{xml.templateDescription}" class="size-max" />
+         <h:commandButton id="addtreetotemplLibrary" action="#{xml.addTreeToTemplateLibrary}"
+            value="Import tree in template lib" />
+            
+      </h:form>
+   </fieldset>
+		
+		</div>
+		
+		</div>
+	</ui:define>
+
+	<!--
+	<ui:define name="controls">
+		<h:commandButton id="newPlan3" action="#{newProject.createProject}" value="New plan" />
+	</ui:define>
+-->
+
+</ui:composition>

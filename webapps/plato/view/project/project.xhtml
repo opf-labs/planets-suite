@@ -1,0 +1,53 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:s="http://jboss.com/products/seam/taglib"
+			  template="../template.xhtml">
+      
+<ui:define name="scripts"></ui:define>
+   <ui:define name="title">PLANETS Preservation Planning Tool - Plan</ui:define>
+<ui:define name="content">
+  <div id="content">
+    <div class="margin-bottom-huge">PLAN</div>
+    <div class="margin-top-small">
+      <h:form id="basis">
+      
+        <f:facet name="afterInvalidField">
+	      <s:message/>
+	    </f:facet>
+	    <f:facet name="aroundInvalidField">
+	       <s:span styleClass="errors"/>
+	    </f:facet>
+              
+	    <table class="margin-bottom-huge">
+	      <s:validateAll>
+	      <tr>
+	        <td class="margin-right-huge align-vertical-center"><h:outputLabel for="projectName">Plan name:</h:outputLabel></td>
+	        <td><h:inputText id="projectName" value="#{project.name}" size="40" maxlength="256" required="true" class="size-max"/></td>
+	      </tr>
+	      <tr>
+	        <td class="margin-right-huge align-vertical-center"><h:outputLabel for="projectDescription">Plan description:</h:outputLabel></td>
+	        <td><h:inputTextarea id="projectDescription" value="#{project.description}" rows="3" cols="40" class="size-max"/></td>
+	      </tr>      
+	      <tr>
+	        <td class="margin-right-huge align-vertical-center"><h:outputLabel for="projectAuthor">Author of the plan:</h:outputLabel></td>
+	        <td><h:inputText id="projectAuthor" value="#{project.author}" size="40" maxlength="256" class="size-max"/></td>
+	      </tr>
+	      <tr>
+	        <td class="margin-right-huge align-vertical-center"><h:outputLabel for="projectOrganization">Organization:</h:outputLabel></td>
+	        <td><h:inputText id="projectOrganization" value="#{project.organization}" size="40" maxlength="256" class="size-max"/></td>
+	      </tr>
+		  <tr>
+		    <td class="margin-right-huge align-vertical-center"><h:commandButton value="Proceed" action="#{saveProject.saveProject}"/></td>
+		  </tr>
+		</s:validateAll>		  	  
+	    </table>	    
+	    <h:messages/>     
+	  </h:form>	
+	</div>         
+  </div>
+</ui:define>
+
+</ui:composition>

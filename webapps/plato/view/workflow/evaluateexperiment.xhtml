@@ -1,0 +1,112 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.com/products/seam/taglib" xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0" 
+    xmlns:rich="http://richfaces.org/rich" xmlns:p="http://planets-project.eu/taglibs/plato"
+    xmlns:c="http://java.sun.com/jstl/core" template="../template.xhtml">
+    <ui:define name="scripts"></ui:define>
+    <ui:define name="title">PLANETS Preservation Planning Tool - Evaluate Experiment</ui:define>
+    <ui:define name="content">
+	<p:jhoveTree tree1_root="#{jhoveTree1.root}"
+			tree2_root="#{jhoveTree2.root}" />
+
+        <h:form id="mainform">
+        
+            <h:inputText id="changedflag" value="#{changed}" style="display:none" />
+            <div id="content">
+            <h1>Evaluate Experiment</h1>
+          <p:help url="/plato/help/evaluate.html"  text="What is the task here?"/>
+            <div class="margin-bottom-huge">
+                  <div>
+                    <div style="float:left;width:50%">
+            	<fieldset id="treenavigationset" style="width:50%">
+            	<legend>
+                  <h:outputText value="Select the tree parts to display" />
+               </legend>
+                    <rich:tree switchType="client" immediate="true"
+						iconLeaf="" icon="">
+						<rich:recursiveTreeNodesAdaptor roots="#{selectedPlan.tree.root}" var="node"
+							nodes="#{node.children}">
+							<rich:treeNode>
+								<a4j:commandLink reRender="content" immediate="true"
+									eventsQueue="ajaxQ" ignoreDupResponses="true" 
+								    action="#{evalexperiments.select(node)}">  
+						           	      <h:outputText value="#{node.name}" />
+								</a4j:commandLink>  
+								
+							</rich:treeNode>
+						</rich:recursiveTreeNodesAdaptor>
+					</rich:tree>
+				</fieldset>					
+					 
+		            <s:div rendered="#{not empty(measurableProperties)}">
+		              <a href="../workflow/showmigrationresult-metadata.seam" target="_blank">Show measured properties</a>
+		            </s:div>
+                  </div>
+                      
+                  <ui:include src="shared/fileMatrix.xhtml"/>
+                  </div>
+				</div>  
+				<fieldset id="comments" style="width:100%">
+				<legend>
+                  <h:outputText value="Comments" />
+               </legend>
+				<p:inputTextArea id="evaluateExperimentComments" 
+							 input="#{selectedPlan.evaluation.comment}"
+        	                bean="#{selectedPlan.evaluation}"
+        	                actionMethodName="touch" />
+				</fieldset>
+				
+				<fieldset id="leafSet" style="width:100%">
+				<legend>
+                  <h:outputText value="Leaves to evaluate" />
+               </legend>
+			 <s:div  style="width:100%" rendered="#{(empty leaves) and (empty errorleaves)}">
+                   <h:outputText value="No leaves selected" />
+            </s:div>
+                        
+			<s:div  style="width:100%" rendered="#{not empty leaves}">
+				<p:evaluationLeafList listofleaves="#{leaves}"/>
+			</s:div>
+			
+			<s:div  style="width:100%" rendered="#{not empty errorleaves}">
+				<p:evaluationLeafList listofleaves="#{errorleaves}"/>
+			</s:div>
+			</fieldset>						
+				 
+			<fieldset id="evalButtons" style="width:100%">
+			<s:div rendered="#{hasAutomatedMeasurements.bool}">
+				<p>
+				Since your tree contains criteria that are mapped to measurable properties and metrics, you can call the evaluation plugins here.<br/>
+            	<a4j:commandButton value="Evaluate all criteria" 
+            					action="#{evalexperiments.evaluateAll}" 
+            					styleClass="save" 
+                    			style="height: 4.5em; width:20em; background-image: url(../img/play.png)"
+				                eventsQueue="ajaxQ" 
+				                reRender="content"
+            					ignoreDupResponses="true"/>
+            	<br/>
+            	</p>
+           	</s:div>
+           	<s:div style="width:100%">	
+           		<h:inputTextarea style="width:70%" rows="10" value="#{evaluationMessage}" disabled="true"/>
+           	</s:div>
+					<div style="height:20px;font-weight:bold;">
+						<a4j:status id="evalstatus" startText="Processing, please wait.... " 
+									stopText="&nbsp;" />
+					</div>
+            	<hr/>
+            	<p>
+            	Please make sure you check all evaluation results and approve them. Values that have not been evaluated or not yet approved are marked with a star (*).
+            		The planning process requires you to either enter by yourself or confirm all evaluation results.
+            		In order to confirm values that you have not entered yourself, please select<br/>
+            		<h:commandButton value="Approve all values" action="#{evalexperiments.approve}" />
+            	</p>
+			</fieldset>
+            <p:buttons bean="#{evalexperiments}" />
+           </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:p="http://planets-project.eu/taglibs/plato"
+   xmlns:rich="http://richfaces.org/rich"
+   template="../template.xhtml"  >
+   <ui:define name="title">PLANETS Preservation Planning Tool - Define Basis</ui:define>
+   <ui:define name="content">
+      <div id="content">
+         <h1>Define basis</h1>
+         <div id="anchors">
+            <ul>
+               <li>
+                  <a href="#identification">Identification</a>
+               </li>
+               <li>
+                  <a href="#status">Status</a>
+               </li>
+               <li>
+                  <a href="#description">Description</a>
+               </li>
+               <li>
+                  <a href="#policytree">Policies</a>
+               </li>
+            </ul>
+         </div>
+         <h:form id="mainform">
+            <h:inputText id="changedflag" value="#{changed}"
+               style="display:none" />
+            <fieldset id="identification" class="size-full">
+               <legend>
+                  <ui:include src="../legend_nav.xhtml"></ui:include>
+                  <h:outputText value=" Identification" />
+               </legend>
+               <p:inputText labelText="Identification Code"
+                  id="identificationCode"
+                  input="#{selectedPlan.projectBasis.identificationCode}"
+                  bean="#{selectedPlan.projectBasis}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Document types"
+                  id="documentTypes"
+                  input="#{selectedPlan.projectBasis.documentTypes}"
+                  bean="#{selectedPlan.projectBasis}" required="true"
+                  actionMethodName="touch" />
+               <p:inputText labelText="Plan name" id="planName"
+                  input="#{selectedPlan.planProperties.name}"
+                  bean="#{selectedPlan.planProperties}"
+                  required="true" actionMethodName="touch" />
+               <p:inputTextArea labelText="Plan description"
+                  id="planDescription"
+                  input="#{selectedPlan.planProperties.description}"
+                  bean="#{selectedPlan.planProperties}"
+                  required="true" actionMethodName="touch" />
+               <p:inputText labelText="Responsible planners" id="responsiblePlanner"
+                  input="#{selectedPlan.planProperties.author}"
+                  bean="#{selectedPlan.planProperties}"
+                  required="true" actionMethodName="touch" />
+               <p:inputText labelText="Organisation" id="organisation"
+                  input="#{selectedPlan.planProperties.organization}"
+                  bean="#{selectedPlan.planProperties}"
+                  required="true" actionMethodName="touch" />
+            </fieldset>
+            <fieldset id="status" class="size-full">
+               <legend>
+                  <ui:include src="../legend_nav.xhtml"></ui:include>
+                  <h:outputText value=" Status" />
+               </legend>
+               <p:inputTextArea
+                  labelText="Mandate (e.g. Mission statement)"
+                  id="mandate"
+                  input="#{selectedPlan.projectBasis.mandate}"
+                  bean="#{selectedPlan.projectBasis}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Planning purpose"
+                  id="planningPurpose"
+                  input="#{selectedPlan.projectBasis.planningPurpose}"
+                  bean="#{selectedPlan.projectBasis}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Designated community"
+                  id="designatedCommunity"
+                  input="#{selectedPlan.projectBasis.designatedCommunity}"
+                  bean="#{selectedPlan.projectBasis}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Applying policies"
+                  id="applyingPolicies"
+                  input="#{selectedPlan.projectBasis.applyingPolicies}"
+                  bean="#{selectedPlan.projectBasis}"
+                  actionMethodName="touch" />
+               <p:inputTextArea
+                  labelText="Relevant organisational procedures and workflows"
+                  id="organisationalProcedures"
+                  input="#{selectedPlan.projectBasis.organisationalProcedures}"
+                  bean="#{selectedPlan.projectBasis}"
+                  actionMethodName="touch" />
+               <p:inputTextArea
+                  labelText="Contracts and agreements specifying preservation
+                  rights"
+                  id="preservationRights"
+                  input="#{selectedPlan.projectBasis.preservationRights}"
+                  bean="#{selectedPlan.projectBasis}"
+                  actionMethodName="touch" />
+               <p:inputTextArea
+                  labelText="Reference to agreements of maintenance and access"
+                  id="referenceToAgreements"
+                  input="#{selectedPlan.projectBasis.referenceToAgreements}"
+                  bean="#{selectedPlan.projectBasis}"
+                  actionMethodName="touch" />
+            </fieldset>
+
+            <fieldset id="description" class="size-full">
+               <legend>
+                  <ui:include src="../legend_nav.xhtml"></ui:include>
+                  <h:outputText value=" Description" />
+               </legend>
+
+               <p:inputTextArea labelText="Relations to other plans" id="planRelations"
+                  input="#{selectedPlan.projectBasis.planRelations}"
+                  bean="#{selectedPlan.projectBasis}"
+                  actionMethodName="touch" />
+
+                  <table cellpadding="30" class="size-full">
+                    <tr>
+                    	<th width="40px" style="nowrap;">Active&nbsp;&nbsp;</th>
+                    	<th width="80px">Trigger</th>
+                    	<th>Description</th>
+                    </tr>
+
+					 <p:inputTrigger id="newCollection"
+					 				 trigger="#{selectedPlan.projectBasis.triggers.newCollection}"
+					 				 bean="#{selectedPlan.projectBasis}"
+					 				 actionMethodName="touch" 
+					 				 helpid="triggerComment" />
+
+					 <p:inputTrigger id="periodicReview"
+					 				 trigger="#{selectedPlan.projectBasis.triggers.periodicReview}"
+					 				 bean="#{selectedPlan.projectBasis}"
+					 				 actionMethodName="touch" 
+					 				 helpid="triggerComment" />
+
+					 <p:inputTrigger id="changedEnvironment"
+					 				 trigger="#{selectedPlan.projectBasis.triggers.changedEnvironment}"
+					 				 bean="#{selectedPlan.projectBasis}"
+					 				 actionMethodName="touch" 
+					 				 helpid="triggerComment" />
+
+					 <p:inputTrigger id="changedObjective"
+					 				 trigger="#{selectedPlan.projectBasis.triggers.changedObjective}"
+					 				 bean="#{selectedPlan.projectBasis}"
+					 				 actionMethodName="touch" 
+					 				 helpid="triggerComment" />
+
+					 <p:inputTrigger id="changedCollectionProfile"
+					 				 trigger="#{selectedPlan.projectBasis.triggers.changedCollectionProfile}"
+					 				 bean="#{selectedPlan.projectBasis}"
+					 				 actionMethodName="touch" 
+					 				 helpid="triggerComment" />
+
+                  </table>
+            </fieldset>
+
+						<p:help url="/plato/help/policy.html" text="How can I define a policy tree?"/>
+          <ui:include src="shared/policytree.xhtml"/>
+          
+ 			<h:commandButton value="Remove Policy Tree"
+                  	action="#{defineBasis.removePolicyTree}"
+                    rendered="#{selectedPlan.projectBasis.policyTree.policyTreeDefined}"/>
+                    
+            <p:buttons bean="#{defineBasis}" />
+         </h:form>
+      </div>
+
+         <div class="margin-bottom-huge">
+            <div class="margin-bottom-small border-bottom big">
+               Upload Freemind XML
+            </div>
+            <div>
+               <h:form id="uploadform" enctype="multipart/form-data">
+                  <table>
+                     <tr>
+                        <td>
+                           <p:fileUpload data="#{policyMindMap.data.data}"
+                              fileName="#{policyMindMap.fullname}"
+                              contentType="#{policyMindMap.contentType}"
+                              id="policyMindMapUpload"
+                              bean="#{defineBasis}"
+                              actionMethodName="uploadPolicyMindMap" />
+                        </td>
+                     </tr>
+                  </table>
+               </h:form>
+               <p>
+               You can base your policy tree on the template which you can download <a href="/plato/website/docs/PP2-Policy-template.mm">&gt;here&lt;</a>. 
+               </p>
+               <p>
+               Further information on how you can specify a tree using Freemind can be found <a href="/plato/help/upload.html">&gt;here&lt;</a>. 
+               </p>
+            </div>
+         </div>
+
+
+   </ui:define>
+   <ui:define name="tabs">
+      <li>
+         <a href="#identification">Identification</a>
+      </li>
+      <li>
+         <a href="#status">Status</a>
+      </li>
+      <li>
+         <a href="#description">Description</a>
+      </li>
+   </ui:define>
+</ui:composition>

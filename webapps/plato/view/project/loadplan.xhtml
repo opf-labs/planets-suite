@@ -1,0 +1,100 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"  
+	template="../template.xhtml">
+
+	<ui:define name="scripts"></ui:define>
+   <ui:define name="title">PLANETS Preservation Planning Tool - Load Plans</ui:define>
+	<ui:define name="content">
+		<div id="content">
+		<h1>Load Plan</h1>
+
+		<h:form id="listprojects">
+		 <f:subview rendered="#{projectList != null}">
+				<h2><h:outputText value="Showing #{planlist}:"/></h2>
+				<h:dataTable value="#{projectList}" var="p"
+					columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xxl, margin-top-small margin-bottom-small margin-left-big margin-right-big border, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-l, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs"
+					headerClass="margin-left-big margin-right-big border nowrap"
+					rowClasses="border" styleClass="size-max">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="ID" />
+						</f:facet>
+						<h:outputText value="#{p.id}" />
+					</h:column>
+					<h:column class="size-m">
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{p.name}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Description" />
+						</f:facet>
+						<h:outputText value="#{p.description}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Author" />
+						</f:facet>
+						<h:outputText value="#{p.author}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<h:commandButton value="Load" action="#{loadPlan.load}"
+							rendered="#{p.open}"
+							disabled="#{p.readOnly}" />
+
+						<h:outputText value="locked" rendered="#{not p.open}" />
+
+						<h:commandButton value="Unlock" action="#{loadPlan.unlockselectedPlan}"
+							rendered="#{not p.open and p.allowReload}"/>
+
+						<br/>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Report" />
+						</f:facet>
+			      <h:outputLink
+			         rendered="#{p.reportUpload.dataExistent}"
+			         value="#{facesContext.externalContext.requestContextPath}/servlets/DownloadServlet?fileId=report&amp;ppId=#{p.id}">
+			         <h:outputText value="Download Report" />
+			      </h:outputLink>
+					</h:column>
+				</h:dataTable>
+			</f:subview>
+
+			<h3>Create a new plan:</h3>
+			<h:commandButton id="newProjectButton"
+				action="#{newProject.createProject}" value="New plan" />
+				
+			<h3>Perform fast-track evaluation:</h3>
+			<h:commandButton id="fastTrackEvaluationButton"
+				action="#{newProject.createFTE}" value="Start fast track evaluation" />
+				<hr/>
+				<h3>Create a new demo plan for me:</h3>
+			<h:commandButton id="newDemoProjectButton1"	action="#{testDataLoader.createDemoProject('docs')}" value="New demo plan for electronic documents" /> <br/>
+			<h:commandButton id="newDemoProjectButton2"	action="#{testDataLoader.createDemoProject('scans')}" value="New demo plan for scanned images" /> <br/>
+			<h:commandButton id="newDemoProjectButton3"	action="#{testDataLoader.createDemoProject('scans-feature-complete')}" value="New demo plan: scans feature complete" rendered="#{user.admin}" />
+		<br/> 
+		</h:form>
+			<h:form id="uploadform" enctype="multipart/form-data">
+			<h3>Load plan from file:</h3>
+			<s:fileUpload data="#{xml.file}" id="fileupload" filename="#{xml.fileName}"/>
+					<h:commandButton id="importplan" value="Import plan"
+						action="#{xml.uploadPlans(false)}" />
+					<h:commandButton id="importplanAdmin" value="Import plan for myself"
+						action="#{xml.uploadPlans(true)}" rendered="#{user.admin}"/><br/>
+						
+			</h:form>
+</div>
+	</ui:define>
+
+</ui:composition>

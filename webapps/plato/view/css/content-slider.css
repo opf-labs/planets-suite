@@ -1,0 +1,77 @@
+.dr-insldr-tip {
+	position : absolute;
+	white-space	: nowrap;
+	padding : 0px 2px 0px 2px;
+	top: -17px;
+	border : 1px solid #E5973E;
+}
+
+.dr-insldr-size {
+	width: 100%;
+}
+
+.dr-insldr-left-num {
+	text-align : left;
+	border-left : 1px solid #678BBD;
+	padding : 0px 3px 0px 3px;
+}
+.dr-insldr-right-num {
+	text-align : right;
+	border-right : 1px solid #678BBD;
+	padding : 0px 3px 0px 3px;
+}
+.dr-insldr-vert-spacer {
+	padding-top: 3px;
+}
+.dr-insldr-handler {
+	background-color: transparent;
+	width : 7px;
+	height : 8px;
+	font-size : 1px;
+	position : absolute;
+	text-align : center;
+	z-index : 1;
+}
+.dr-insldr-handler-sel {
+	background-color: transparent;
+	width : 7px;
+	height : 8px;
+	font-size : 1px;
+	position : absolute;
+	text-align : center;
+	z-index : 1;
+}
+.dr-insldr-track {
+	background-position: left top;
+	background-repeat: repeat-x;
+	height : 8px;
+	font-size : 1px;
+	vertical-align:bottom;
+}
+.dr-insldr-track-decor-1 {
+	height : 100%;
+	width : 100%;
+	border : 1px solid #678BBD;
+	vertical-align:bottom;
+}
+.dr-insldr-track-decor-2 {
+	border : 1px solid #DDDDDD;
+}
+.dr-insldr-field {
+	border-left: #000000 1px solid;
+	border-top: #000000 1px solid;
+	border-bottom: #b0b0b0 1px solid;
+	border-right: #b0b0b0 1px solid;
+	padding: 0px 0px 0px 3px;
+	margin: 0px 0px 0px 10px;
+	background-position: left top;
+	background-repeat: repeat-x;
+}
+.dr-insldr-tip           { font-family:Arial, Verdana, sans-serif; font-size:11px; }
+.dr-insldr-left-num      { font-family:Arial, Verdana, sans-serif; font-size:11px; color:#000000; border-color:#C4C0B9; line-height:11px; }
+.dr-insldr-right-num     { font-family:Arial, Verdana, sans-serif; font-size:11px; color:#000000; border-color:#C4C0B9; line-height:11px; }
+.dr-insldr-track         { background-color:#ffffff; background-image: url(/plato/img/slider/slider-track-gradient.gif); }
+.dr-insldr-track-decor-1 { border-color:#C4C0B9; }
+.dr-insldr-handler       { background-image: url(/plato/img/slider/slider-arrow-image.gif); }
+.dr-insldr-handler-sel   { background-image: url(/plato/img/slider/slider-arrow-selected-image.gif); }
+.dr-insldr-field         { background-image: url(/plato/img/slider/slider-field-gradient.gif); background-color:#ffffff; font-family:Arial, Verdana, sans-serif; font-size:11px; color:#000000; }

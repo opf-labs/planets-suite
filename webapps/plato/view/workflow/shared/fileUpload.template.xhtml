@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:f="http://java.sun.com/jsf/core">
+   <f:subview rendered="#{rendered != null? rendered : true}">
+      <s:fileUpload id="#{id != null? id : 'fileUpload'}_theUpload" data="#{data}"
+         fileName="#{fileName}" contentType="#{contentType}" />
+      <h:commandButton value="#{text != null? text : 'Upload File'}"
+         id="#{id != null? id : 'fileUpload'}_theCommandButton"
+         action="#{bean[actionMethodName]}" onclick="changed()" />
+      <a href="../help/fields.html##{id != null? id : 'fileUpload'}" target="_blank">
+         <img src="../img/help-browser.png" alt="Help Link"/>
+      </a>
+   </f:subview>
+</ui:composition>

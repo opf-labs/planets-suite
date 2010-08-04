@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://w3.org/1999/xhtml"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:a4j="http://richfaces.org/a4j" 
+   xmlns:c="http://java.sun.com/jstl/core"
+   xmlns:p="http://planets-project.eu/taglibs/plato"  >
+   <p:inputLabel />
+   <s:decorate id="#{id}Decorate">
+      <div class="inputDecorate">
+         <span class="#{invalid?'errors':''}">
+            <s:validateAll>
+               <h:inputTextarea id="#{id}" rows="#{empty rows ? 3 : rows}"
+                  class="#{empty labelText? 'size-xxl' : 'size-m'}"
+                  value="#{input}"
+                  required="#{required != null? required : false}"
+                  readonly="readonly != null? readonly : false}"
+                  disabled="#{disabled != null? disabled : false}">
+                  <f:validateLength
+                     maximum="#{maxlength != null? maxlength : 32672}" />
+                  <a4j:support ajaxSingle="true" event="onchange" onsubmit="changed()"
+                     rendered="#{not empty bean}"
+                     action="#{bean[actionMethodName]}" />
+               </h:inputTextarea>
+               <c:if test="#{empty noHelpLink}">
+               
+	               <c:if test="#{empty helpid}">
+		               <a href="../help/fields.html##{id}" title="Help page for #{id}" target="_blank">
+    		           <img src="../img/help-browser.png" alt="Help Link"/></a>
+	               </c:if>
+	               <c:if test="#{not empty helpid}">
+		               <a href="../help/fields.html##{helpid}" title="Help page for #{helpid}" target="_blank">
+    		           <img src="../img/help-browser.png" alt="Help Link"/></a>
+	               </c:if>
+               </c:if>
+               <c:if test="#{required}">
+                  <p class="requiredIndicator">*</p>
+               </c:if>
+            </s:validateAll>
+         </span>
+         <s:message styleClass="errorMessage" />
+      </div>
+   </s:decorate>
+</ui:composition>

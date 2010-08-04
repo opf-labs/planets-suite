@@ -1,0 +1,61 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich">
+ <div style="float:right">
+                  
+                     <table
+						style="width:350px;border-style:solid;border-width:1px;border-color:#d2c8c8;">
+						<tr>
+							<td align="center"><b>Alternatives</b></td>
+							<td colspan="2" align="center"><b>Sample</b></td>
+						</tr>
+						<tr>
+							<td></td>
+							<ui:repeat var="record"
+								value="#{selectedPlan.sampleRecordsDefinition.records}">
+								<td align="center">
+								<h:outputText id="recordname" value="#{record.sampleIndex}" rendered="#{not record.dataExistent}"/><br/>
+								<rich:toolTip value="#{record.shortName}" for="recordname"/>
+								<h:commandLink rendered="#{record.dataExistent}" action="#{runexperiments.download(record)}">
+									<h:outputText value="Download #{record.sampleIndex}" />
+									<rich:toolTip value="Download #{record.shortName}"/>
+								</h:commandLink>
+								</td>
+							</ui:repeat>
+						</tr>
+						<ui:repeat var="altern"
+							value="#{selectedPlan.alternativesDefinition.consideredAlternatives}">
+							<tr
+								style="width:350px;border-style:solid;border-width:1px;border-color:#d2c8c8;">
+								<td><h:outputText value="#{altern.name}" /></td>
+								<ui:repeat var="record"
+									value="#{selectedPlan.sampleRecordsDefinition.records}">
+									<td
+										style="width:350px;border-style:solid;border-width:1px;border-color:#d2c8c8;text-align:center;">
+                        <h:commandButton value="Download"
+  						  rendered="#{record!=null and altern.experiment.results[record]!=null  and altern.experiment.results[record].dataExistent}"
+                          action="#{runexperiments.download(altern.experiment.results[record])}" />
+										
+										<a4j:commandButton
+										rendered="#{record!=null and altern.experiment.results[record]!=null  and altern.experiment.results[record].dataExistent}"
+										action="#{evalexperiments.setTreeFromRecordAltern(record,altern)}"
+										styleClass="small" value="Compare"
+										eventsQueue="ajaxQ" ignoreDupResponses="true"
+										image="/img/icons/small/compareView.png"
+										oncomplete="Richfaces.showModalPanel('jhovePanel', {top:'100px'});"
+										reRender="jhovePanel" />	
+										</td>
+								</ui:repeat>
+
+							</tr>
+						</ui:repeat>
+
+					</table>
+				 </div>
+</ui:composition>
+		

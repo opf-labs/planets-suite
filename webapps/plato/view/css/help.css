@@ -1,0 +1,26 @@
+table {
+	width: 100%;
+}
+
+#helpContent {
+	margin: 0px 3em;
+}
+
+tr:hover{
+	background-color: #9cd5e8;
+	}
+
+td[id] {
+	width: 20%;
+	font-weight: bold;
+}
+
+#navigationBar {
+	width: 100%;
+	background-color: #9cd5e8;
+	height: 25px;
+}
+
+h2 {
+	background-color: #9cd5e8;
+}

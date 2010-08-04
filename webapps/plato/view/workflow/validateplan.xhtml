@@ -1,0 +1,953 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	 xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:p="http://planets-project.eu/taglibs/plato"
+   xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jstl/core" template="../template.xhtml">
+	<ui:define name="title">PLANETS Preservation Planning Tool - Validate Preservation Plan</ui:define>
+	<ui:define name="scripts"></ui:define>
+	<ui:define name="content">
+		<div id="content">
+		<h1><h:outputText value="Validate plan for #{selectedPlan.planProperties.name}" /></h1>
+
+		<div><small><h:outputText value="Report creation date: #{currentDate}" /></small></div>
+
+		<div class="margin-bottom-huge"><h:form>
+			<h:commandButton rendered="#{displayChangelogs.bool}" value="Hide Changelogs"
+				actionListener="#{validatePlan.switchDisplayChangelogs}" />
+			<h:commandButton rendered="#{!displayChangelogs.bool}" value="Display Changelogs"
+				actionListener="#{validatePlan.switchDisplayChangelogs}" />
+		</h:form></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="planname">Plan name</h:outputLabel></strong> <h:outputText
+			id="planname" value="#{selectedPlan.planProperties.name}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="statename">Current state</h:outputLabel></strong> <h:outputText
+			id="statename" value="#{selectedPlan.stateName}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="plandescription">Plan description</h:outputLabel></strong> <h:outputText
+			id="plandescription" value="#{selectedPlan.planProperties.description}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="planners">Responsible planners</h:outputLabel></strong> <h:outputText
+			id="planners" value="#{selectedPlan.planProperties.author}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="organization">Organization</h:outputLabel></strong> <h:outputText
+			id="organization" value="#{selectedPlan.planProperties.organization}" /></div>
+
+		<c:if test="#{displayChangelogs.bool}">
+			<table>
+				<tr>
+					<th width="80px"></th>
+					<th width="160px">Date</th>
+					<th width="160px">User</th>
+				</tr>
+				<tr>
+					<td>Created</td>
+					<td><h:outputText value="#{selectedPlan.planProperties.changeLog.createdString}" /></td>
+					<td><h:outputText value="#{selectedPlan.planProperties.changeLog.createdBy}" /></td>
+				</tr>
+				<tr>
+					<td>Changed</td>
+					<td><h:outputText value="#{selectedPlan.planProperties.changeLog.changedString}" /></td>
+					<td><h:outputText value="#{selectedPlan.planProperties.changeLog.changedBy}" /></td>
+				</tr>
+			</table>
+		</c:if>
+
+		<ul>
+			<li><a href="#identification">Identification and Status</a></li>
+			<li><a href="#institution">Institutional setting</a></li>
+			<li><a href="#samplerecords">Collection and Sample Records</a></li>
+
+			<li><a href="#requirements">Requirements</a></li>
+			<li><a href="#alternatives">Alternatives</a></li>
+			<li><a href="#gonogo">Go-Decision</a></li>
+			<li><a href="#experiments">Experiments</a></li>
+			<li><a href="#evaluation">Evaluation &amp; Transformation</a></li>
+			<li><a href="#resultsMult">Results: Weighted multiplication</a></li>
+			<li><a href="#resultsSum">Results: Weighted sum</a></li>
+			<li><a href="#conclusion">Conclusion and Decision for Preservation Strategy</a></li>
+			<li><a href="#execution">Preservation Action Plan</a></li>
+			<li><a href="#costs">Costs</a></li>
+			<li><a href="#monitoring">Monitoring</a></li>
+			<li><a href="#approval">Approval</a></li>
+		</ul>
+
+		<a name="identification" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Identification and Status</h2>
+		</div>
+
+
+		<table width="100%">
+			<tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+
+
+
+			<tr>
+				<td  style="padding-top:10px"><b>Identification code<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode1"
+					value="#{selectedPlan.projectBasis.identificationCode}" /></td>
+			</tr>
+
+			<tr>
+				<td  style="padding-top:10px"><b>Planning purpose<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode4"
+					value="#{selectedPlan.projectBasis.planningPurpose}" /></td>
+			</tr>
+
+			<tr>
+				<td  style="padding-top:10px"><b>Plan relations</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode10"
+					value="#{selectedPlan.projectBasis.planRelations}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Triggers</b></td>
+        <td style="padding-top:10px">
+
+              <table cellpadding="30" class="size-full">
+                    <tr>
+                    	<th width="170px">Trigger</th>
+                    	<th>Description</th>
+                    </tr>
+
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.newCollection}" />
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.periodicReview}" />
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.changedEnvironment}" />
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.changedObjective}" />
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.changedCollectionProfile}" />
+
+                    </table>
+
+				</td>
+			</tr>
+			<tr>
+			  <td colspan="2" style="padding-top:10px;">
+			<h:form id="policytreeform">					
+             <ui:include src="shared/policytree.xhtml"/>
+        
+		    </h:form>
+			  </td>
+			</tr>
+		</table>
+
+		<c:if test="#{displayChangelogs.bool}">
+			<table>
+				<tr>
+					<th width="80px"></th>
+					<th width="160px">Date</th>
+					<th width="160px">User</th>
+				</tr>
+				<tr>
+					<td>Created</td>
+					<td><h:outputText value="#{selectedPlan.projectBasis.changeLog.createdString}" /></td>
+					<td><h:outputText value="#{selectedPlan.projectBasis.changeLog.createdBy}" /></td>
+				</tr>
+				<tr>
+					<td>Changed</td>
+					<td><h:outputText value="#{selectedPlan.projectBasis.changeLog.changedString}" /></td>
+					<td><h:outputText value="#{selectedPlan.projectBasis.changeLog.changedBy}" /></td>
+				</tr>
+			</table>
+		</c:if>
+
+		<a name="institution" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Institutional setting</h2>
+		</div>
+
+
+		<table width="100%">
+			<tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+
+			<tr>
+				<td  style="padding-top:10px"><b>Document types<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode2"
+					value="#{selectedPlan.projectBasis.documentTypes}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Mandate<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode3" value="#{selectedPlan.projectBasis.mandate}" />
+				</td>
+			</tr>
+
+			<tr>
+				<td  style="padding-top:10px"><b>Designated community<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode5"
+					value="#{selectedPlan.projectBasis.designatedCommunity}" /></td>
+			</tr>
+
+			<tr>
+				<td  style="padding-top:10px"><b>Applying policies</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode6"
+					value="#{selectedPlan.projectBasis.applyingPolicies}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Relevant organisational procedures and workflows</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode7"
+					value="#{selectedPlan.projectBasis.organisationalProcedures}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Contracts and agreements specifying preservation rights</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode8"
+					value="#{selectedPlan.projectBasis.preservationRights}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Reference to agreements of maintenance and access</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode9"
+					value="#{selectedPlan.projectBasis.referenceToAgreements}" /></td>
+			</tr>
+
+		</table>
+
+
+		<a name="samplerecords" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Collection and Sample Records</h2>
+		</div>
+
+		<table width="100%">
+			<tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Samples description:<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idsamplesdescription"
+					value="#{selectedPlan.sampleRecordsDefinition.samplesDescription}" /></td>
+			</tr>
+		</table>
+
+		<h3>Collection profile</h3>
+		<fieldset class="size-full">
+		<div style="clear:both;"><strong><h:outputLabel for="collid">Collection ID:</h:outputLabel></strong> <h:outputText
+			id="collid" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.collectionID}" /></div>
+		<div style="clear:both;"><strong><h:outputLabel for="colldesc">Description:</h:outputLabel></strong> <h:outputText
+			id="colldesc" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.description}" /></div>
+		<div style="clear:both;"><strong><h:outputLabel for="colltype">Type of objects:</h:outputLabel></strong> <h:outputText
+			id="colltype" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.typeOfObjects}" /></div>
+		<div style="clear:both;"><strong><h:outputLabel for="collnum">Number of objects:</h:outputLabel></strong> <h:outputText
+			id="collnum" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.numberOfObjects}" /></div>
+		<div style="clear:both;"><strong><h:outputLabel for="growthrate">Expected growth rate:</h:outputLabel></strong> <h:outputText
+			id="growthrate" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.expectedGrowthRate}" /></div>
+
+
+		<c:if test="#{displayChangelogs.bool}">
+			<tr>
+				<td><strong>Changelog:</strong></td>
+				<td>
+				<table>
+					<tr>
+						<th width="80px"></th>
+						<th width="160px">Date</th>
+						<th width="160px">User</th>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td><h:outputText value="#{selectedPlan.sampleRecordsDefinition.changeLog.createdString}" /></td>
+						<td><h:outputText value="#{selectedPlan.sampleRecordsDefinition.changeLog.createdBy}" /></td>
+					</tr>
+					<tr>
+						<td>Changed</td>
+						<td><h:outputText value="#{selectedPlan.sampleRecordsDefinition.changeLog.changedString}" /></td>
+						<td><h:outputText value="#{selectedPlan.sampleRecordsDefinition.changeLog.changedBy}" /></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</c:if></fieldset>
+
+		<h:form id="samplesform">
+			<div><h:dataTable value="#{selectedPlan.sampleRecordsDefinition.records}" var="row"
+				columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big border,
+			 margin-top-small margin-bottom-small margin-left-big margin-right-big border,
+			 margin-top-small margin-bottom-small margin-left-big margin-right-big border"
+				rowClasses="border" style="width: 100%;">
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Name" />
+					</f:facet>
+					<h:outputText rendered="#{not row.dataExistent}" value="#{row.fullname}" />
+					<h:commandLink rendered="#{row.dataExistent}" action="#{validatePlan.download(row)}">
+						<h:outputText value="#{row.fullname}" />
+					</h:commandLink>
+
+
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Short name" />
+					</f:facet>
+					<h:outputText value="#{row.shortName}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Description" />
+					</f:facet>
+					<h:outputText value="#{row.description}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Original environment" />
+					</f:facet>
+					<h:outputText value="#{row.originalTechnicalEnvironment}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Data" />
+					</f:facet>
+					<h:outputText value="No data" rendered="#{not row.dataExistent}" />
+					<h:outputText value="Data existent (#{row.data.size}B)" rendered="#{row.dataExistent}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Object-format" />
+					</f:facet>
+					<table class="margin-bottom-huge">
+						<tr>
+							<td width="200px"><strong>PUID:</strong></td>
+							<td><h:outputText value="#{row.formatInfo.puid}" /></td>
+						</tr>
+						<tr>
+							<td><strong>Name:</strong></td>
+							<td><h:outputText value="#{row.formatInfo.name}" /></td>
+						</tr>
+						<tr>
+							<td><strong>Version:</strong></td>
+							<td><h:outputText value="#{row.formatInfo.version}" /></td>
+						</tr>
+						<tr>
+							<td><strong>mime-type:</strong></td>
+							<td><h:outputText value="#{row.formatInfo.mimeType}" /></td>
+						</tr>
+					</table>
+				</h:column>
+
+				<h:column rendered="#{displayChangelogs.bool}">
+					<f:facet name="header">
+						<h:outputText value="Changelog" />
+					</f:facet>
+					<table>
+						<tr>
+							<th width="80px"></th>
+							<th width="160px">Date</th>
+							<th width="160px">User</th>
+						</tr>
+						<tr>
+							<td>Created</td>
+							<td><h:outputText value="#{row.changeLog.createdString}" /></td>
+							<td><h:outputText value="#{row.changeLog.createdBy}" /></td>
+						</tr>
+						<tr>
+							<td>Changed</td>
+							<td><h:outputText value="#{row.changeLog.changedString}" /></td>
+							<td><h:outputText value="#{row.changeLog.changedBy}" /></td>
+						</tr>
+					</table>
+				</h:column>
+
+			</h:dataTable></div>
+		</h:form>
+		
+		<a name="requirements" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Requirements &amp; Weighting</h2>
+		</div>
+
+		<ui:include src="shared/treeSummary.xhtml"/>
+		
+		<a name="alternatives" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Alternatives</h2>
+		</div>
+				<div style="clear:both;"><strong><h:outputLabel for="alternativesDescription">Evaluation comments:</h:outputLabel></strong> <h:outputText
+					id="alternativesDescription" value="#{selectedPlan.alternativesDefinition.description}" /></div>
+
+		<h:dataTable value="#{selectedPlan.alternativesDefinition.alternatives}" var="alt"
+			headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border "
+			columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big ">
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Name" />
+				</f:facet>
+				<h:outputText value="#{alt.name}" class="size-max" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Description" />
+				</f:facet>
+				<h:outputText value="#{alt.description}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Reason for considering" />
+				</f:facet>
+				<h:outputText value="#{alt.resourceDescription.reasonForConsidering}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Config settings" />
+				</f:facet>
+				<h:outputText value="#{alt.resourceDescription.configSettings}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Necessary resources" />
+				</f:facet>
+				<h:outputText value="#{alt.resourceDescription.necessaryResources}" />
+			</h:column>
+
+			<h:column rendered="#{displayChangelogs.bool}">
+				<f:facet name="header">
+					<h:outputText value="Changelog" />
+				</f:facet>
+				<table>
+					<tr>
+						<th width="80px"></th>
+						<th width="160px">Date</th>
+						<th width="160px">User</th>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td><h:outputText value="#{alt.changeLog.createdString}" /></td>
+						<td><h:outputText value="#{alt.changeLog.createdBy}" /></td>
+					</tr>
+					<tr>
+						<td>Changed</td>
+						<td><h:outputText value="#{alt.changeLog.changedString}" /></td>
+						<td><h:outputText value="#{alt.changeLog.changedBy}" /></td>
+					</tr>
+				</table>
+			</h:column>
+
+		</h:dataTable> <!-- TODO "Alternatives in italics have been discarded when taking the go-decision" --> <a
+			name="gonogo" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Go-Decision</h2>
+		</div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="godecision">Decision:</h:outputLabel></strong> <h:outputText
+			id="godecision" value="#{selectedPlan.decision.decision}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="goreason">Reason:</h:outputLabel></strong> <h:outputText
+			id="goreason" value="#{selectedPlan.decision.reason}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="actionneeded">Action needed:</h:outputLabel></strong> <h:outputText
+			id="actionneeded" value="#{selectedPlan.decision.actionNeeded}" /></div>
+
+		<a name="experiments" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Experiments</h2>
+		</div>
+
+		<h:dataTable value="#{selectedPlan.alternativesDefinition.consideredAlternatives}" var="alt"
+			headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border"
+			columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big">
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Alternative" />
+				</f:facet>
+				<h:outputText value="#{alt.name}" class="size-max" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Experiment description" />
+				</f:facet>
+				<h:outputText value="#{alt.experiment.description}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Run description" />
+				</f:facet>
+				<h:outputText value="#{alt.experiment.detailedRunDescription}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Experiment data uploaded" />
+				</f:facet>
+
+				<h:outputText value="Yes" rendered="#{alt.experiment.recordUploaded}" />
+				<h:outputText value="No" rendered="#{not alt.experiment.recordUploaded}" />
+			</h:column>
+
+			<!-- TODO
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="Result" />
+			</f:facet>
+			Download
+		</h:column> -->
+
+			<h:column rendered="#{displayChangelogs.bool}">
+				<f:facet name="header">
+					<h:outputText value="Changelog" />
+				</f:facet>
+				<table>
+					<tr>
+						<th width="80px"></th>
+						<th width="160px">Date</th>
+						<th width="160px">User</th>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td><h:outputText value="#{alt.experiment.changeLog.createdString}" /></td>
+						<td><h:outputText value="#{alt.experiment.changeLog.createdBy}" /></td>
+					</tr>
+					<tr>
+						<td>Changed</td>
+						<td><h:outputText value="#{alt.experiment.changeLog.changedString}" /></td>
+						<td><h:outputText value="#{alt.experiment.changeLog.changedBy}" /></td>
+					</tr>
+				</table>
+			</h:column>
+
+		</h:dataTable> <a name="evaluation" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Evaluation &amp; Transformation</h2>
+		</div>
+
+
+		<h:form>
+
+			<h:commandButton rendered="#{not displayEvalTransform.bool}" value="Show Evaluation &amp; Transformation"
+				action="#{validatePlan.switchDisplayEvalTransform}" />
+
+			<s:div rendered="#{displayEvalTransform.bool}">
+				<h:commandButton value="Hide Evaluation &amp; Transformation" action="#{validatePlan.switchDisplayEvalTransform}" />
+
+				<c:forEach items="#{leafBeans}"
+					var="bean">
+					<a name="results#{bean.leaf.id}" />
+					<h3><h:outputText value="#{bean.leaf.parent.name} > #{bean.leaf.name}" /></h3>
+
+					<!-- TABLE LAYOUT! -->
+					<table>
+						<tr>
+							<td class="margin-right-huge">
+							<h4>Results</h4>
+
+							<h:dataTable value="#{selectedPlan.alternativesDefinition.consideredAlternatives}" var="alter"
+								headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border "
+								columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big ">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Alternatives" />
+									</f:facet>
+									<h:outputText value="#{alter.name}" />
+								</h:column>
+
+								<c:choose>
+									<c:when test="#{bean.leaf.single}">
+										<h:column>
+											<f:facet name="header">
+												<h:outputText value="Result" />
+											</f:facet>
+											<h:outputText value="#{bean.leaf.valueMap[alter.name].list[0].value}" />
+										</h:column>
+									</c:when>
+
+									<c:otherwise>
+										<c:forEach items="#{selectedPlan.sampleRecordsDefinition.records}" varStatus="status">
+											<h:column>
+												<f:facet name="header">
+													<h:outputText value="#{status.index + 1}" />
+												</f:facet>
+												<h:outputText value="#{bean.leaf.valueMap[alter.name].list[status.index].value}" />
+											</h:column>
+										</c:forEach>
+
+									</c:otherwise>
+
+								</c:choose>
+
+							</h:dataTable> <!-- TABLE LAYOUT! --></td>
+							<td class="margin-right-huge">
+							<h4>Transformer</h4>
+
+							<!-- Ordinal --> <f:subview rendered='#{bean.leaf.scale.type == "ordinal"}'>
+								<h:dataTable value="#{bean.leaf.scale.list}" var="ordinalValue"
+									headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border "
+									columnClasses="margin-top-small margin-bottom-small margin-left-small margin-right-small">
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Ordinal Value" />
+										</f:facet>
+										<h:outputText value="#{ordinalValue}" />
+									</h:column>
+
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Target Value" />
+										</f:facet>
+										<h:outputText value="-> " />
+										<h:outputText value="#{bean.leaf.transformer.mapping[ordinalValue].value}" />
+									</h:column>
+
+								</h:dataTable>
+							</f:subview> <!-- Numerical --> <f:subview rendered='#{bean.leaf.scale.type != "ordinal"}'>
+								<table>
+									<tr>
+										<th class="margin-top-small margin-bottom-small margin-left-big margin-right-big border nowrap">Threshold</th>
+										<th class="margin-top-small margin-bottom-small margin-left-big margin-right-big border nowrap">Target value</th>
+									</tr>
+
+									<p:thresholditem threshold="#{bean.leaf.transformer.threshold1}" index="1" unit="#{bean.leaf.scale.unit}"/>
+									<p:thresholditem threshold="#{bean.leaf.transformer.threshold2}" index="2" unit="#{bean.leaf.scale.unit}"/>
+									<p:thresholditem threshold="#{bean.leaf.transformer.threshold3}" index="3" unit="#{bean.leaf.scale.unit}"/>
+									<p:thresholditem threshold="#{bean.leaf.transformer.threshold4}" index="4" unit="#{bean.leaf.scale.unit}"/>
+									<p:thresholditem threshold="#{bean.leaf.transformer.threshold5}" index="5" unit="#{bean.leaf.scale.unit}"/>
+							
+								</table>
+								<h:outputText value="Threshold stepping: #{bean.leaf.transformer.mode}" />
+
+							</f:subview> <c:if test="#{displayChangelogs.bool}">
+
+								<h4>Transformer-Changelog</h4>
+
+								<table>
+									<tr>
+										<th width="80px"></th>
+										<th width="160px">Date</th>
+										<th width="160px">User</th>
+									</tr>
+									<tr>
+										<td>Created</td>
+										<td><h:outputText value="#{bean.leaf.transformer.changeLog.createdString}" /></td>
+										<td><h:outputText value="#{bean.leaf.transformer.changeLog.createdBy}" /></td>
+									</tr>
+									<tr>
+										<td>Changed</td>
+										<td><h:outputText value="#{bean.leaf.transformer.changeLog.changedString}" /></td>
+										<td><h:outputText value="#{bean.leaf.transformer.changeLog.changedBy}" /></td>
+									</tr>
+								</table>
+							</c:if></td>
+							<td>
+
+							<h4>Transformed Results</h4>
+
+							<!-- Transformed + aggregated values --> <h:dataTable
+								value="#{selectedPlan.alternativesDefinition.consideredAlternatives}" var="alter"
+								headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border nowrap"
+								columnClasses="margin-top-small margin-bottom-small margin-left-big comment-medium">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Alternatives" />
+									</f:facet>
+									<h:outputText value="#{alter.name}" />
+								</h:column>
+
+								<c:choose>
+									<c:when test="#{bean.leaf.single}">
+										<h:column>
+											<f:facet name="header">
+												<h:outputText value="Result" />
+											</f:facet>
+											<h:outputText value="#{bean.resultValues[alter]}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>
+										</h:column>
+									</c:when>
+
+									<c:otherwise>
+										<c:forEach items="#{selectedPlan.sampleRecordsDefinition.records}" varStatus="status">
+											<h:column>
+												<f:facet name="header">
+													<h:outputText value="#{status.index + 1}" />
+												</f:facet>
+												<h:outputText value="#{bean.transformedValues[alter].list[status.index].value}">
+													<f:convertNumber maxFractionDigits="2" />
+												</h:outputText>
+											</h:column>
+										</c:forEach>
+
+										<h:column>
+											<f:facet name="header">
+												<h:outputText value="Aggregated result" />
+											</f:facet>
+											<h:outputText value="#{bean.resultValues[alter]}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>
+
+										</h:column>
+
+									</c:otherwise>
+
+								</c:choose>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Comments" />
+									</f:facet>
+									<h:outputText value="#{bean.leaf.valueMap[alter.name].comment}" />
+								</h:column>
+
+							</h:dataTable> <h:outputText value="Aggregation mode: #{bean.leaf.aggregationMode}"
+								rendered="#{!bean.leaf.single}" /></td>
+						</tr>
+					</table>
+
+					<div class="margin-top-small margin-bottom-small border-bottom big" />
+
+
+				</c:forEach>
+
+				<div style="clear:both;"><strong><h:outputLabel for="evalcomments">Evaluation comments:</h:outputLabel></strong> <h:outputText
+					id="evalcomments" value="#{selectedPlan.evaluation.comment}" /></div>
+
+				<div style="clear:both;"><strong><h:outputLabel for="transcomments">Transformation comments:</h:outputLabel></strong>
+				<h:outputText id="transcomments" value="#{selectedPlan.transformation.comment}" /></div>
+			</s:div>
+		</h:form> 
+		
+
+		<ui:include src="shared/resultTrees.xhtml"/>
+
+		<a name="conclusion" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Conclusion and Decision for Preservation Strategy</h2>
+		</div>
+		<div style="clear:both;"><strong><h:outputLabel for="conclusionrecommandation">Recommendation:</h:outputLabel></strong>
+		<h:outputText id="conclusionrecommandation" value="#{selectedPlan.recommendation.alternative.name}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="conclusionreasoning">Reasoning:</h:outputLabel></strong> <h:outputText
+			id="conclusionreasoning" value="#{selectedPlan.recommendation.reasoning}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="conclusioneffects">Effects of applying recommended solution:
+		</h:outputLabel></strong> <h:outputText id="conclusioneffects" value="#{selectedPlan.recommendation.effects}" />
+		<br/><br/>
+		</div>
+
+		<a name="execution" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Preservation Action Plan</h2>
+		</div>
+
+		<h2>When</h2>
+		<div style="clear:both;"><strong><h:outputLabel for="triggers_">Triggers and conditions:</h:outputLabel></strong>
+		<h:outputText id="triggers_" value="#{selectedPlan.executablePlanDefinition.triggersConditions}" /></div>
+
+        <div style="clear:both;"><strong><h:outputLabel for="validateQA_">Validate and QA:</h:outputLabel></strong>
+		<h:outputText id="validateQA_" value="#{selectedPlan.executablePlanDefinition.validateQA}" /></div>
+
+        <div style="clear:both;">
+		  <s:div rendered="#{planetsExecutablePlanPrettyFormat != ''}">
+             <strong><h:outputLabel for="execPP_planets">Planets executable plan:</h:outputLabel></strong><br/><br/>
+             <pre>
+		       <h:outputText id="execPP_planets" value="#{planetsExecutablePlanPrettyFormat}" />
+             </pre>
+          </s:div>
+        </div>
+
+        <div style="clear:both;">
+		  <s:div rendered="#{eprintsExecutablePlanPrettyFormat != ''}">
+             <strong><h:outputLabel for="execPP_eprints">EPrints executable plan:</h:outputLabel></strong><br/><br/>
+             <pre>
+		       <h:outputText id="execPP_eprints" value="#{eprintsExecutablePlanPrettyFormat}" />
+             </pre>
+          </s:div>
+        </div>
+
+		<br/>
+
+		<h2>What</h2>
+		<table width="100%">
+			<tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Tool<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="toolagain"
+					value="#{selectedPlan.recommendation.alternative.name}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Location of records<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="executionpath"
+					value="#{selectedPlan.executablePlanDefinition.objectPath}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Parameters for tool<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="executionparameters"
+					value="#{selectedPlan.executablePlanDefinition.toolParameters}" /></td>
+			</tr>
+		</table>
+
+		<a name="costs" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Costs</h2>
+		</div>
+		<h2>Estimate of Costs</h2>
+		Costs in <h:outputText id="currency" value=" #{selectedPlan.planDefinition.currency}." /> <br />
+		<br />
+		<b>Life-Costmodel</b>
+		<table width="100%">
+			<tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px">CIG (Integrate new solution)</td>
+				<td  style="padding-top:10px"><h:outputText id="cig" value="#{selectedPlan.planDefinition.costsIG}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px">CPE (Perform preservation action)</td>
+				<td  style="padding-top:10px"><h:outputText id="cpe" value="#{selectedPlan.planDefinition.costsPE}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px">CQA (Quality assure preservation action)</td>
+				<td  style="padding-top:10px"><h:outputText id="cqa" value="#{selectedPlan.planDefinition.costsQA}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px">CRM (Record preservation action metadata)</td>
+				<td  style="padding-top:10px"><h:outputText id="crm" value="#{selectedPlan.planDefinition.costsRM}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Preservation action total (CIG+CPE+CQA+CRM)</b></td>
+				<td  style="padding-top:10px"><h:outputText id="cpa" value="#{selectedPlan.planDefinition.costsPA}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px">Reingest</td>
+				<td  style="padding-top:10px"><h:outputText id="rei" value="#{selectedPlan.planDefinition.costsREI}" /><br/></td>
+			</tr>
+		</table>
+
+		<table width="100%">
+			<tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>TCO (Total Cost of Owneship)</b></td>
+				<td  style="padding-top:10px"><h:outputText id="tco" value="#{selectedPlan.planDefinition.costsTCO}" /><br/></td>
+			</tr>
+		</table>
+
+		<table width="100%">
+			<tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px">Remarks</td>
+				<td  style="padding-top:10px"><h:outputText id="costremarks"
+					value="#{selectedPlan.planDefinition.costsRemarks}" /><br/></td>
+			</tr>
+		</table>
+
+		<hr />
+
+		<a name="monitoring" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Monitoring</h2>
+		</div>
+
+		<table width="100%">
+			<tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+
+			<tr>
+				<td  style="padding-top:10px"><b>Person responsible for execution<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="executionresponsible"
+					value="#{selectedPlan.planDefinition.responsibleExecution}" /></td>
+			</tr>
+
+			<tr>
+				<td  style="padding-top:10px"><b>Person responsible for monitoring<br />
+				</b></td>
+				<td  style="padding-top:10px"><h:outputText id="planmonitoring"
+					value="#{selectedPlan.planDefinition.responsibleMonitoring}" /></td>
+			</tr>
+
+
+			<tr>
+				<td  style="padding-top:10px"><b>Triggers for Re-Evaluation</b></td>
+			<td>
+
+              <table cellpadding="30" class="size-full">
+                    <tr>
+                    	<th width="170px">Trigger</th>
+                    	<th>Description</th>
+                    </tr>
+
+                    <p:outputTrigger trigger="#{selectedPlan.planDefinition.triggers.periodicReview}" />
+                    <p:outputTrigger trigger="#{selectedPlan.planDefinition.triggers.changedEnvironment}" />
+                    <p:outputTrigger trigger="#{selectedPlan.planDefinition.triggers.changedObjective}" />
+                    <p:outputTrigger trigger="#{selectedPlan.planDefinition.triggers.changedCollectionProfile}" />
+
+                  </table>
+
+				</td>
+			</tr>
+
+		</table>
+
+
+		<a name="approval" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Plan Approval</h2>
+		</div>
+		<h:form id="mainform">
+			<fieldset id="approval" class="size-full">
+			<div align="center">
+			<h:commandButton id="approveButton" value="          Approve this plan"
+				rendered="#{not selectedPlan.approved}"
+				action="#{validatePlan.approve}" class="approve" />
+				 <s:div
+				rendered="#{selectedPlan.approved}">
+				<p><h:outputText
+					value="Plan '#{selectedPlan.planProperties.name}' has been created by
+              #{selectedPlan.planProperties.changeLog.createdBy}." />
+				<br />
+				<h:outputText
+					value="It has been approved by #{selectedPlan.changeLog.changedBy} on #{selectedPlan.changeLog.changedString}." />
+				<br />
+				<h:outputText
+					value="This implies that it cannot be changed anymore unless it is formally revised again. Only the approving person can revise the plan." />
+				</p>
+				<h:commandButton id="reviseButton" value="         Revise this plan" action="#{validatePlan.revise}" class="discard" />
+			</s:div></div>
+			</fieldset>
+		</h:form>
+
+
+		</div>
+
+	</ui:define>
+</ui:composition>
