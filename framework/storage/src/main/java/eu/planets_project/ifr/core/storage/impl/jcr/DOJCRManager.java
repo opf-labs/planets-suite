@@ -66,6 +66,8 @@ public class DOJCRManager {
 	 */
 	public static final String PLANETS_NAMESPACE_PREFIX = "planets";
 	
+	private static final String DEFAULT_PROPERTY_VALUE = "default";
+	
 	/**
 	 * String constant for PLANETS namespace URI
 	 */
@@ -1008,6 +1010,30 @@ public class DOJCRManager {
     {
     	eu.planets_project.services.datatypes.Property res = null;
     	try {
+	    	if (!node.hasProperty(DOJCRConstants.DOJCR_EVENTS_PROPERTIES_URI)) {
+	    		node.setProperty( DOJCRConstants.DOJCR_EVENTS_PROPERTIES_URI
+	    		                        , DEFAULT_PROPERTY_VALUE);
+	    	}
+	    	if (!node.hasProperty(DOJCRConstants.DOJCR_EVENTS_PROPERTIES_NAME)) {
+	    		node.setProperty( DOJCRConstants.DOJCR_EVENTS_PROPERTIES_NAME
+	    		                        , DEFAULT_PROPERTY_VALUE);
+	    	}
+	    	if (!node.hasProperty(DOJCRConstants.DOJCR_EVENTS_PROPERTIES_VALUE)) {
+	    		node.setProperty( DOJCRConstants.DOJCR_EVENTS_PROPERTIES_VALUE
+	    		                        , DEFAULT_PROPERTY_VALUE);
+	    	}
+	    	if (!node.hasProperty(DOJCRConstants.DOJCR_EVENTS_PROPERTIES_DESCRIPTION)) {
+	    		node.setProperty( DOJCRConstants.DOJCR_EVENTS_PROPERTIES_DESCRIPTION
+	    		                        , DEFAULT_PROPERTY_VALUE);
+	    	}
+	    	if (!node.hasProperty(DOJCRConstants.DOJCR_EVENTS_PROPERTIES_UNIT)) {
+	    		node.setProperty( DOJCRConstants.DOJCR_EVENTS_PROPERTIES_UNIT
+	    		                        , DEFAULT_PROPERTY_VALUE);
+	    	}
+	    	if (!node.hasProperty(DOJCRConstants.DOJCR_EVENTS_PROPERTIES_TYPE)) {
+	    		node.setProperty( DOJCRConstants.DOJCR_EVENTS_PROPERTIES_TYPE
+	    		                        , DEFAULT_PROPERTY_VALUE);
+	    	}
 	    	Property _propUri = node.getProperty(DOJCRConstants.DOJCR_EVENTS_PROPERTIES_URI);
 	    	Property _propName = node.getProperty(DOJCRConstants.DOJCR_EVENTS_PROPERTIES_NAME);
 	    	Property _propValue = node.getProperty(DOJCRConstants.DOJCR_EVENTS_PROPERTIES_VALUE);

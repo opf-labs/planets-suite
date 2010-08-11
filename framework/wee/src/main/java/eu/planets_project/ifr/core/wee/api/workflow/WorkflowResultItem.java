@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 
 import eu.planets_project.ifr.core.wee.api.ReportingLog;
+import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -225,9 +226,13 @@ public class WorkflowResultItem implements Serializable{
 	
 	public void addLogInfo(String logInfo){
 		this.logInfo.add(logInfo);
-		logger.info("addLogInfo: "+logInfo);
+		logger.info(logInfo);
 	}
 	
+	public void addLogInfo(Message logInfo){
+		logger.info(logInfo);
+	}
+
 	public List<String> getLogInfo(){
 		return this.logInfo;
 	}

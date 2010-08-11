@@ -5,10 +5,10 @@
   </template>
   <services>
     <service id="identify">
-      <endpoint>http://localhost:8080/pserv-pc-droid/Droid?wsdl</endpoint>
+      <endpoint>http://localhost:8080/psuite-droid/Droid?wsdl</endpoint>
     </service>
     <service id="migrate">
-      <endpoint>http://localhost:8080/pserv-pa-java-se/JavaImageIOMigrate?wsdl</endpoint>
+      <endpoint>http://localhost:8080/psuite-java-se/JavaImageIOMigrate?wsdl</endpoint>
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_to_fmt</name>

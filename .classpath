@@ -90,11 +90,10 @@
 	<classpathentry kind="lib" path="framework/storage/lib/jackrabbit-core-1.4.5.jar"/>
 	<classpathentry kind="lib" path="framework/storage/lib/jackrabbit-api-1.4.jar"/>
 	<classpathentry kind="lib" path="framework/storage/lib/jaxen-1.1.1.jar"/>
-	<classpathentry kind="lib" path="framework/storage/lib/jcr-1.0.jar"/>
+	<classpathentry kind="lib" path="framework/wee/lib/jcr-1.0.jar"/>
 	<classpathentry kind="lib" path="framework/storage/lib/oai4j-0.6b1.jar"/>
 	<classpathentry kind="lib" path="framework/storage/lib/soap.jar"/>
 	<classpathentry kind="lib" path="framework/wee/lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="framework/wee/lib/jcr-1.0.jar"/>
 	<classpathentry kind="lib" path="framework/wee/lib/tools.jar"/>
 	<classpathentry kind="lib" path="framework/wdt/lib/jets3t-0.7.0.jar"/>
 	<classpathentry kind="lib" path="services/jhove/lib/jhove.jar"/>
@@ -116,5 +115,27 @@
 	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/protege.jar"/>
 	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/protege-owl.jar"/>
 	<classpathentry kind="lib" path="webapps/testbed/src/main/web/WEB-INF/lib/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/axis.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/batik-all.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/commons-dbcp-1.2.1.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/commons-discovery.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/jai_codec.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/jai_core.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/java-getopt-1.0.11.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/jaxrpc-api-1.1.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/jhbasic.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/mail-1.4.1.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/mulgara-core-2.1.1.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/openrdf-sesame-2.2.1-onejar.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/saxon9.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/slf4j-api-1.5.2.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/slf4j-jdk14-1.5.2.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/sunxacml-patched.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/trippi-1.4.1-core.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/fedora-client-3.2.1.jar"/>
+	<classpathentry kind="lib" path="framework/storage/lib/FedoraClient/lib/fedora-support.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

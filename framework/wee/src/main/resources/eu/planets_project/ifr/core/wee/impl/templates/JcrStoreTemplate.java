@@ -91,8 +91,11 @@ public class JcrStoreTemplate extends WorkflowTemplateHelper implements Workflow
     
     /** {@inheritDoc} */
     public WorkflowResult finalizeExecution() {
+    	System.out.println("finalizeExecution");
     	this.getWFResult().setEndTime(System.currentTimeMillis());
+    	System.out.println("finalizeExecution 2.");
 		LogReferenceCreatorWrapper.createLogReferences(this);
+    	System.out.println("finalizeExecution 3");
 		return this.getWFResult();
     }
 

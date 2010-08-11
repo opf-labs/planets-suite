@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
+  <template>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.FitsCharMigrationTemplate_v2</class>
+  </template>
+  <services>
+    <service id="characterise">
+      <endpoint>http://localhost:8080/pserv-pc-fits/FitsCharacterise?wsdl</endpoint>
+    </service>
+    <service id="identify">
+      <endpoint>http://localhost:8080/psuite-droid/Droid?wsdl</endpoint>
+    </service>
+    <service id="migrate">
+      <endpoint>http://localhost:8080/psuite-pdfbox/PDFBoxMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_from_fmt</name>
+          <value>info:pronom/fmt/20</value>
+        </param>
+        <param>
+          <name>planets:service/migration/input/migrate_to_fmt</name>
+          <value>info:pronom/fmt/99</value>
+        </param>
+      </parameters>
+    </service>
+  </services>
+</workflowConf>

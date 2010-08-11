@@ -36,7 +36,7 @@ public class OAIDigitalObjectManagerDCBase extends DigitalObjectManagerBase {
 	
 	public static String PREFIX = "oai_dc";
 	
-	public static String REGISTRY_NAME = "oai-dc";
+	public static String REGISTRY_NAME = "eprints";
 	
 
     /**

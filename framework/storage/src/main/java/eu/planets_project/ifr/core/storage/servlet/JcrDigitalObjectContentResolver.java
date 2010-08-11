@@ -69,7 +69,7 @@ public class JcrDigitalObjectContentResolver extends HttpServlet {
 			// unfortunately, we have to search for the right metadata field
 			DigitalObject object = jcrDo.retrieve(new URI(id), false);			
 			for(Metadata md : object.getMetadata()) {
-				if(md.getName().equals(MIME_TYPE_METADATA_NAME))
+				if(md.getName() != null && md.getName().equals(MIME_TYPE_METADATA_NAME))
 					response.setContentType(md.getContent());
 			}			
 			is = jcrDo.retrieveContentAsStream(object.getPermanentUri());
