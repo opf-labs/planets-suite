@@ -9,7 +9,7 @@
 	<module>
 		<web>
 			<web-uri>psuite-framework-storage.war</web-uri>
-			<context-root>/storage</context-root>
+			<context-root>storage</context-root>
 		</web>
 	</module>
     <module>
