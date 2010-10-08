@@ -317,7 +317,7 @@ final class ImmutableDigitalObject implements DigitalObject, Serializable {
     /* Schema generation: */
 
     /***/
-    private static java.io.File baseDir = new java.io.File("IF/common/src/resources");
+    private static java.io.File baseDir = new java.io.File("core/services/src/main/resources");
     /***/
     private static String schemaFileName = "digital_object.xsd";
 

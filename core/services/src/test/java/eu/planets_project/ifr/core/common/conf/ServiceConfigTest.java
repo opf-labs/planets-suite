@@ -37,7 +37,7 @@ public class ServiceConfigTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		System.setProperty(ServiceConfig.BASE_DIR_PROPERTY, baseDir);
+		//System.setProperty(ServiceConfig.BASE_DIR_PROPERTY, baseDir);
 	}
 
 	@Before

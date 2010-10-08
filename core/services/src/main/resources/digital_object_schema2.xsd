@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema version="1.0" targetNamespace="http://planets-project.eu/objects" xmlns:tns="http://planets-project.eu/objects" xmlns:ns1="http://planets-project.eu/services/datatypes" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:swaRef="http://ws-i.org/profiles/basic/1.1/xsd">
+<xs:schema version="1.0" targetNamespace="http://planets-project.eu/objects" xmlns:ns1="http://planets-project.eu/services/datatypes" xmlns:tns="http://planets-project.eu/objects" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:import namespace="http://planets-project.eu/services/datatypes" schemaLocation="digital_object_schema1.xsd"/>
 
-  <xs:import namespace="http://ws-i.org/profiles/basic/1.1/xsd" schemaLocation="http://ws-i.org/profiles/basic/1.1/swaref.xsd"/>
   <xs:element name="digitalObject" type="tns:immutableDigitalObject"/>
 
   <xs:complexType name="immutableDigitalObject" final="extension restriction">
@@ -29,12 +28,12 @@
 
   <xs:complexType name="immutableContent" final="extension restriction">
     <xs:sequence>
-      <xs:element name="bytes" type="xs:base64Binary" minOccurs="0"/>
-      <xs:element name="dataHandler" ns2:expectedContentTypes="application/octet-stream" type="swaRef:swaRef" form="qualified" minOccurs="0" xmlns:ns2="http://www.w3.org/2005/05/xmlmime"/>
+      <xs:element name="bytes" type="xs:base64Binary" form="qualified" minOccurs="0"/>
+      <xs:element name="dataHandler" ns2:expectedContentTypes="application/octet-stream" type="xs:base64Binary" form="qualified" minOccurs="0" xmlns:ns2="http://www.w3.org/2005/05/xmlmime"/>
       <xs:element name="checksum" type="tns:checksum" form="qualified" minOccurs="0"/>
     </xs:sequence>
-    <xs:attribute name="reference" type="xs:anyURI"/>
-    <xs:attribute name="length" type="xs:long" use="required"/>
+    <xs:attribute ref="tns:reference"/>
+    <xs:attribute ref="tns:length" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="checksum" final="extension restriction">
@@ -59,5 +58,9 @@
     <xs:attribute name="name" type="xs:string"/>
     <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
+
+  <xs:attribute name="length" type="xs:long"/>
+
+  <xs:attribute name="reference" type="xs:string"/>
 </xs:schema>
 

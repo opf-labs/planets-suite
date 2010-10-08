@@ -95,6 +95,7 @@ public final class ServiceConfig {
 		 * Determine the absolute filename of the properties file.
 		 */
 		String baseDirectory = System.getProperty(BASE_DIR_PROPERTY);
+		_log.info("BASE:" + baseDirectory);
         if (baseDirectory == null) {
             _log.warning(String.format("System property %s is not set, looking for file in current directory...",
                     BASE_DIR_PROPERTY));
