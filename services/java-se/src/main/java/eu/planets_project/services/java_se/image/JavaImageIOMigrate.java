@@ -129,7 +129,7 @@ public class JavaImageIOMigrate implements Migrate {
         if(extensionsForURI.isEmpty() ) {
             return this.returnWithErrorMessage("Unsupported output format: "+outputFormat,null);
         } else {
-            log.info("Outputing image to format: "+format.toString());
+            log.info("Outputing image to format: "+format.getExtensions(outputFormat).iterator().next());
         }
         
         String extension = extensionsForURI.iterator().next();
