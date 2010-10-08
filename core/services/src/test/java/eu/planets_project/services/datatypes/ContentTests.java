@@ -34,7 +34,7 @@ import org.junit.Test;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class ContentTests {
-    private static final String LOCATION = "IF/common/src/test/resources/sample_content.txt";
+    private static final String LOCATION = "test/data/content/sample_content.txt";
 
     private File file;
     private URL url;
