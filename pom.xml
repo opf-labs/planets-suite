@@ -22,6 +22,14 @@
 	<build>
 		<resources>
 		</resources>
+    <extensions>
+	  <!-- Added to get SFTP working without relying on external processes. -->
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh</artifactId>
+        <version>1.0-beta-6</version>
+      </extension>
+    </extensions>  
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -84,6 +92,11 @@
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
+        <repository>
+        	<id>planets-suite-repository</id>
+        	<name>The Planets Suite Maven Repository, hosted by SourceForge.</name>
+        	<url>http://planets-suite.sourceforge.net/maven2/</url>
+        </repository>
     </repositories>
 	
 	<!--
@@ -92,6 +105,9 @@
 		<id>planets-suite.sourceforge.net</id>
 		<username>andy_j,planets-suite</username>
 		<password>????????</password> </server> </servers>
+		
+		Once set up, the maven command is:
+		maven deploy
 	-->
 	<distributionManagement>
 		<site>
