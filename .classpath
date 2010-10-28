@@ -9,13 +9,11 @@
 	<classpathentry kind="src" path="framework/generic/src/main/java"/>
 	<classpathentry kind="src" path="framework/generic/src/test/java"/>
 	<classpathentry kind="src" path="framework/selfreg/src/main/java"/>
-	<classpathentry kind="src" path="framework/selfreg/src/test/java"/>
 	<classpathentry kind="src" path="framework/servreg/src/main/java"/>
 	<classpathentry kind="src" path="framework/servreg/src/test/java"/>
 	<classpathentry kind="src" path="framework/storage/src/main/java"/>
 	<classpathentry kind="src" path="framework/storage/src/test/java"/>
 	<classpathentry kind="src" path="framework/techreg/src/main/java"/>
-	<classpathentry kind="src" path="framework/techreg/src/test/java"/>
 	<classpathentry kind="src" path="framework/users/src/main/java"/>
 	<classpathentry kind="src" path="framework/wdt/src/main/java"/>
 	<classpathentry kind="src" path="framework/wdt/src/test/java"/>
