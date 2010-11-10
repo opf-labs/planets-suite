@@ -9,6 +9,18 @@
 	<groupId>planets-suite</groupId>
 	<artifactId>planets-core-utils</artifactId>
 	<name>Planets Service Development Utilities</name>
+  <build>
+  <plugins>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+     <source>1.5</source>
+     <target>1.5</target>
+    </configuration>
+   </plugin>
+  </plugins>
+  </build>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -16,20 +28,6 @@
 			<version>4.7</version>
 			<type>jar</type>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>planets.suite.core</groupId>
-			<artifactId>services</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>planets.suite.core</groupId>
-			<artifactId>techreg</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.ws</groupId>
@@ -119,6 +117,20 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>planets-suite</groupId>
+			<artifactId>planets-core-services</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>planets-suite</groupId>
+			<artifactId>planets-core-techreg</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

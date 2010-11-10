@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
+import eu.planets_project.ifr.core.common.conf.ConfigurationException;
 import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 
 /**
@@ -44,14 +45,19 @@ class DroidConfig {
     	// String to hold the location
         String sigFileLocation = null;
         // Get the configuration object from the ServiceConfig util
+        try {
         Configuration conf = ServiceConfig.getConfiguration(COMMON_CONF_FILE_NAME);
         // Create the file name from the properties
         sigFileLocation = conf.getString(SIG_FILE_LOC_KEY) +
         		File.separator + conf.getString(SIG_FILE_NAME_KEY);
+        } catch( ConfigurationException e ) {
+        	log.severe("Could not find configuration file! "+e);
+        }
         log.info("DROID Signature File location:" + sigFileLocation);
         // Check if the sigFileLocation is sane, and override with internal resource if not:
-        File sfl = new File(sigFileLocation);
-        if( ! sfl.exists() || ! sfl.isFile() ) {
+        File sfl = null;
+        if( sigFileLocation != null ) sfl = new File(sigFileLocation);
+        if( sfl == null || ! sfl.exists() || ! sfl.isFile() ) {
 			try {
 	        	File tmp =  File.createTempFile("DroidSigFile", "xml");
 	        	tmp.deleteOnExit();

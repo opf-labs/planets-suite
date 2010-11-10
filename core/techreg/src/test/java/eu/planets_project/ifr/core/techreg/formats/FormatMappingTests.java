@@ -25,13 +25,18 @@ public class FormatMappingTests {
 
     @Test
     public void uriToExtension() {
-        String ext = "png";
         String puid = "fmt/13";
+        // Expected extensions include:
+        String ext = "png";
         Set<String> extensions = registry.getExtensions(registry
                 .createPronomUri(puid));
         Assert.assertTrue(String.format(
                 "Found no '%s' extension for puid '%s'", ext, puid), extensions
                 .contains(ext));
+        System.out.print("For puid "+puid+" :: ");
+        for( String pext : extensions ) {
+        	System.out.print(pext+" ");
+        }
     }
 
     @Test
@@ -40,5 +45,9 @@ public class FormatMappingTests {
         Set<URI> set = registry.getUrisForExtension(x);
         Assert.assertTrue(String.format(
                 "Found no Pronom URIs for extension %s", x), set.size() > 0);
+        System.out.print("For extension "+x+" :: ");
+        for( URI puid : set ) {
+        	System.out.print(puid+" ");
+        }
     }
 }
