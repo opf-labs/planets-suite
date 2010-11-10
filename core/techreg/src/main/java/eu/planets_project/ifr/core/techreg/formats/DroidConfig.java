@@ -14,7 +14,11 @@
 package eu.planets_project.ifr.core.techreg.formats;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.logging.Logger;
+
+import org.apache.commons.io.IOUtils;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.common.conf.ServiceConfig;
@@ -45,6 +49,20 @@ class DroidConfig {
         sigFileLocation = conf.getString(SIG_FILE_LOC_KEY) +
         		File.separator + conf.getString(SIG_FILE_NAME_KEY);
         log.info("DROID Signature File location:" + sigFileLocation);
+        // Check if the sigFileLocation is sane, and override with internal resource if not:
+        File sfl = new File(sigFileLocation);
+        if( ! sfl.exists() || ! sfl.isFile() ) {
+			try {
+	        	File tmp =  File.createTempFile("DroidSigFile", "xml");
+	        	tmp.deleteOnExit();
+	        	IOUtils.copy( DroidConfig.class.getResourceAsStream("/droid/DROID_SignatureFile.xml"), new FileOutputStream(tmp));
+	        	sigFileLocation = tmp.getAbsolutePath();
+	        	log.info("Wrote cached Droid sig file to "+sigFileLocation);
+			} catch (IOException e) {
+				e.printStackTrace();
+				log.severe("Could not generate external Droid Sig File.");
+			}
+        }
         return sigFileLocation;
     }
 
