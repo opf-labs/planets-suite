@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.soap.MTOM;
 
@@ -50,7 +49,6 @@ import eu.planets_project.services.utils.ServiceUtils;
  * JTidy migration service.
  * @author Peter Melms
  */
-@Stateless
 @WebService(name = JTidy.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
 @MTOM
 @StreamingAttachment( parseEagerly=true, memoryThreshold=ServiceUtils.JAXWS_SIZE_THRESHOLD )
