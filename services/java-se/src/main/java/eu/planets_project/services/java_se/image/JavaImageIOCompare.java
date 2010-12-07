@@ -240,7 +240,7 @@ public class JavaImageIOCompare implements Compare {
         bmse = bmse.add(new BigDecimal(bg));
         bmse = bmse.add(new BigDecimal(bb));
         bmse = bmse.add(new BigDecimal(ba));
-        bmse = bmse.divide( BigDecimal.valueOf(i1.getWidth() * i1.getHeight() * cc) );
+        bmse = new BigDecimal( bmse.doubleValue() / (i1.getWidth() * i1.getHeight() * cc) );
         System.out.println("bmse = "+bmse);
         //mse = bmse.doubleValue();
         // Get the bits per pixel:
@@ -258,7 +258,7 @@ public class JavaImageIOCompare implements Compare {
         // Compute the peak signal to noise ratio:
         double psnr = 10.0 * StrictMath.log10( max*max / mse );
         log.info("Peak signal to noise ratio: " + psnr); //43.82041101171352
-        log.info("Peak signal to noise ratio (BigDecimal): " + 10.0 * StrictMath.log10(BigDecimal.valueOf(max*max).divide(bmse).doubleValue()) );
+        log.info("Peak signal to noise ratio (BigDecimal): " + 10.0 * StrictMath.log10(max*max/bmse.doubleValue()) );
 
         return new Double( psnr );
     }

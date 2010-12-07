@@ -21,7 +21,7 @@
 				<version>2.5</version>
 				<configuration>
                     <includes>
-                        <include>**/*Tests.java</include>
+                        <include>**/*Test.java</include>
                     </includes>
 				</configuration>
 			</plugin>
@@ -48,13 +48,6 @@
 			<version>4.7</version>
 			<type>jar</type>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.4</version>
-			<type>jar</type>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>planets-suite</groupId>
