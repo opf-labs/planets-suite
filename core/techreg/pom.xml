@@ -19,60 +19,6 @@
      <target>1.5</target>
     </configuration>
    </plugin>
-			<plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-install-plugin</artifactId>
-            <executions>
-                <execution>
-                    <id>deploy-binary-droid-jar</id>
-                    <phase>validate</phase>
-                    <configuration>
-                        <file>${basedir}/lib/droid.jar</file>
-                        <repositoryLayout>default</repositoryLayout>
-                        <groupId>droid</groupId>
-                        <artifactId>droid</artifactId>
-                        <version>4.0.0</version>
-                        <packaging>jar</packaging>
-                        <generatePom>true</generatePom>
-                    </configuration>
-                    <goals>
-                        <goal>install-file</goal>
-                    </goals>
-                </execution>
-                <execution>
-                    <id>deploy-binary-jboss-ejb3-annotations-jar</id>
-                    <phase>validate</phase>
-                    <configuration>
-                        <file>${basedir}/lib/jboss-annotations-ejb3.jar</file>
-                        <repositoryLayout>default</repositoryLayout>
-                        <groupId>org.jboss</groupId>
-                        <artifactId>annotations-ejb3</artifactId>
-                        <version>1</version>
-                        <packaging>jar</packaging>
-                        <generatePom>true</generatePom>
-                    </configuration>
-                    <goals>
-                        <goal>install-file</goal>
-                    </goals>
-                </execution>
-                <execution>
-                    <id>deploy-binary-jboss-ejb3-jar</id>
-                    <phase>validate</phase>
-                    <configuration>
-                        <file>${basedir}/lib/jboss-ejb3x.jar</file>
-                        <repositoryLayout>default</repositoryLayout>
-                        <groupId>org.jboss</groupId>
-                        <artifactId>ejb3</artifactId>
-                        <version>1</version>
-                        <packaging>jar</packaging>
-                        <generatePom>true</generatePom>
-                    </configuration>
-                    <goals>
-                        <goal>install-file</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

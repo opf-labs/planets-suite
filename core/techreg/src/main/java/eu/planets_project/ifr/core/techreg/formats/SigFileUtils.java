@@ -132,41 +132,6 @@ public class SigFileUtils {
 		return root.getValue();
 	}
 	
-	/**
-	 * @throws JAXBException 
-	 * @throws IOException
-	 */
-	public static void main(String[] args) throws JAXBException, IOException {
-		// Do it....
-		downloadSigFile();
-		
-		// Sig file other download...
-		SigFile sigFile = getLatestSigFile();
-		System.out.println("SigFile v"+sigFile.getFFSignatureFile().getVersion());
-		for( FileFormatType fft : sigFile.getFFSignatureFile().getFileFormatCollection().getFileFormat()) {
-			System.out.println("PUID "+fft.getPUID());
-		}
-		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		writeSigFileTypeToOutputStream(sigFile.getFFSignatureFile(),bos);
-		// Turn it into a string:
-		String xml = bos.toString("UTF-8");
-		System.out.println(xml.substring(0, 500));
-	
-		// Write it to a file:
-		String filename = "droid-signature_"+sigFile.getFFSignatureFile().getVersion()+".xml";
-		writeSigFileTypeToOutputStream( sigFile.getFFSignatureFile(), new FileOutputStream(filename) );
-		
-		// Read it back:
-		SignatureFileType s2 = readSigFileType( new File(filename) );
-		System.out.println("Read back sigfile: "+s2.getVersion());
-		
-		System.out.println(downloadPronomRecordForPUID("fmt/1").substring(0, 500));
-		
-		// This downloads all the valid PRONOM record files.
-		//downloadAllPronomFormatRecords();
-	}
-	
 	public static void downloadAllPronomFormatRecords() {
 		File outputFolder = new File("src/main/resources/uk/gov/nationalarchives/pronom/");
 		outputFolder.mkdirs();
@@ -248,4 +213,44 @@ public class SigFileUtils {
 	        return auth;
 	    }
 	}
+
+	/**
+	 * @throws JAXBException 
+	 * @throws IOException
+	 */
+	public static void main(String[] args) throws JAXBException, IOException {
+		// Do it....
+		downloadSigFile();
+		
+		// Sig file other download...
+		SigFile sigFile = getLatestSigFile();
+		System.out.println("SigFile v"+sigFile.getFFSignatureFile().getVersion());
+		for( FileFormatType fft : sigFile.getFFSignatureFile().getFileFormatCollection().getFileFormat()) {
+			System.out.println("PUID "+fft.getPUID());
+		}
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		writeSigFileTypeToOutputStream(sigFile.getFFSignatureFile(),bos);
+		// Turn it into a string:
+		String xml = bos.toString("UTF-8");
+		System.out.println(xml.substring(0, 500));
+	
+		// Write it to a file:
+		String filename = "droid-signature_"+sigFile.getFFSignatureFile().getVersion()+".xml";
+		writeSigFileTypeToOutputStream( sigFile.getFFSignatureFile(), new FileOutputStream(filename) );
+		
+		// Write it out raw:
+		File raw = new File("droid-signature-raw_"+sigFile.getFFSignatureFile().getVersion()+".xml");
+		writeSigFileToOutputStream( sigFile, new FileOutputStream(raw) );
+		
+		// Read it back:
+		SignatureFileType s2 = readSigFileType( new File(filename) );
+		System.out.println("Read back sigfile: "+s2.getVersion());
+		
+		System.out.println(downloadPronomRecordForPUID("fmt/1").substring(0, 500));
+		
+		// This downloads all the valid PRONOM record files.
+		//downloadAllPronomFormatRecords();
+	}
+	
 }
