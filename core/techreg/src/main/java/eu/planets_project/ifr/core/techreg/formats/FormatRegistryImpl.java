@@ -23,25 +23,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-
 import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 
 /**
  * This is the Planets Format Registry and Resolver.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
-@Stateless(mappedName = "planets-project.eu/FormatRegistry")
-// @Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
-@Local(FormatRegistry.class)
-@LocalBinding(jndiBinding = "planets-project.eu/FormatRegistry/local")
-@Remote(FormatRegistry.class)
-@RemoteBinding(jndiBinding = "planets-project.eu/FormatRegistry/remote")
 class FormatRegistryImpl implements FormatRegistry {
     private static Logger log = Logger.getLogger(FormatRegistryImpl.class.getName());
 

@@ -13,6 +13,7 @@
  */
 package eu.planets_project.ifr.core.techreg.formats;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,9 +22,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import uk.gov.nationalarchives.droid.AnalysisController;
-import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
-import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
+
+import uk.gov.nationalarchives.pronom.FileFormatType;
+import uk.gov.nationalarchives.pronom.SignatureFileType;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -35,7 +38,7 @@ class DroidFormatRegistry  {
 
     private static final String INFO_PRONOM = "pronom/";
     
-    FFSignatureFile sigFile;
+    SignatureFileType sigFile;
     
     int numFormats = 0;
     
@@ -43,12 +46,9 @@ class DroidFormatRegistry  {
      * Constructor to set up the look-up tables.
      */
     public DroidFormatRegistry() {
-        // Grab a Droid analyser:
-        AnalysisController controller = getController();
-        
         // Get the list of file formats
-        sigFile = controller.getSigFile();
-        numFormats = sigFile.getNumFileFormats();
+        sigFile = SigFileUtils.getLatestSigFile().getFFSignatureFile();
+        numFormats = sigFile.getFileFormatCollection().getFileFormat().size();
 
     }
     
@@ -84,7 +84,7 @@ class DroidFormatRegistry  {
      * @param ff The droid file format
      * @return A Planets format created from the given droid format
      */
-    private MutableFormat fillFormatFromPRONOM( FileFormat ff ) {
+    private MutableFormat fillFormatFromPRONOM( FileFormatType ff ) {
         if( ff == null ) return null;
         
         // Store the unique id and the description
@@ -98,16 +98,23 @@ class DroidFormatRegistry  {
         fmt.setVersion( ff.getVersion() );
         
         // Store mime-type:
-        if( ff.getMimeType() != null && ! "".equals(ff.getMimeType()) ) {
+        if( ff.getMIMEType() != null && ! "".equals(ff.getMIMEType()) ) {
             HashSet<String> mimes = new HashSet<String>();
-            mimes.add(ff.getMimeType());
+            mimes.add(ff.getMIMEType());
             fmt.setMimeTypes(mimes);
         }
         
         // Store extensions:
+        QName FileFormatTypeExtension_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "Extension");
         HashSet<String> exts = new HashSet<String>();
-        for( int j = 0; j < ff.getNumExtensions(); j++ ) 
-            exts.add(ff.getExtension(j));
+        for( JAXBElement<? extends Serializable> el :  ff.getInternalSignatureIDOrExtensionOrHasPriorityOverFileFormatID() ) {
+        	if( el.getName().equals( FileFormatTypeExtension_QNAME ) ) {
+        		String extension = (String)el.getValue();
+        		exts.add(extension);
+        	}
+        }
+        //for( int j = 0; j < ff.getNumExtensions(); j++ ) 
+        //    exts.add(ff.getExtension(j));
         fmt.setExtensions(exts);
         
         // Return
@@ -120,24 +127,10 @@ class DroidFormatRegistry  {
      */
     public Set<MutableFormat> getFormats() {
        HashSet<MutableFormat> fmts = new HashSet<MutableFormat>();
-       for( int i = 0; i < sigFile.getNumFileFormats(); i++ ) {
-           fmts.add( fillFormatFromPRONOM(sigFile.getFileFormat(i)) );
+       for( int i = 0; i < sigFile.getFileFormatCollection().getFileFormat().size(); i++ ) {
+           fmts.add( fillFormatFromPRONOM(sigFile.getFileFormatCollection().getFileFormat().get(i)) );
        }
        return fmts;
     }
     
-    /**
-     * @return the DROID analysis controller or null, if reading the signature file failed
-     */
-    public static AnalysisController getController() {
-        AnalysisController controller = new AnalysisController();
-        try {
-            controller.readSigFile(DroidConfig.getSigFileLocation());
-        } catch (Exception e) {
-            e.printStackTrace();
-            /* No point in failing later, we can't go on here: */
-            throw new IllegalStateException("Could not instantiate AnalysisController: " + e.getMessage(), e);
-        }
-        return controller;
-    }
 }
