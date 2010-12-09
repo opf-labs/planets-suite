@@ -132,19 +132,20 @@ public class SigFileUtils {
 		return root.getValue();
 	}
 	
-	public static void downloadAllPronomFormatRecords() {
-		File outputFolder = new File("src/main/resources/uk/gov/nationalarchives/pronom/");
-		outputFolder.mkdirs();
+	public static void downloadAllPronomFormatRecords(File outputFolder) throws Exception {
+		//File outputFolder = new File("src/main/resources/uk/gov/nationalarchives/pronom/");
+		//outputFolder.mkdirs();
 		SigFile sigFile = SigFileUtils.getLatestSigFile();
 		BigInteger version = sigFile.getFFSignatureFile().getVersion();
 		System.out.println("Got version "+version);
-		String filename = "SignatureFile.xml";
+		String filename = "droid-signature-file.xml";
 		try {
 			writeSigFileTypeToOutputStream( sigFile.getFFSignatureFile(),
 					new FileOutputStream( new File( outputFolder, filename) ) );
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw(e);
 		}
 		//
 		File fmtFolder = new File(outputFolder,"fmt"); fmtFolder.mkdir();
@@ -163,6 +164,7 @@ public class SigFileUtils {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw(e);
 		}
 
 	}
