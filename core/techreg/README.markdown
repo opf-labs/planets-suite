@@ -21,3 +21,6 @@ were some minor issues with the WSDL which meant they had to be cached and
 patched manually (see comments tagged as 'ANJ' in the WSDL files). To make this
 possible, a catalogue file has been used to replace the remote references with 
 local copies.
+
+However, because of this, the generated stubs will have the local file location 
+embedded within them. This should be removed before deployment.
