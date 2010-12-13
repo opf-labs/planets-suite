@@ -59,9 +59,9 @@ public class SigFileUtils {
 	 * @return
 	 */
 	public static SigFile getLatestSigFile() {
-		PronomService_Service pss = new PronomService_Service();
-		PronomService pronomService = pss.getPronomServiceSoap();
 		try {
+			PronomService_Service pss = new PronomService_Service();
+			PronomService pronomService = pss.getPronomServiceSoap();
 			return pronomService.getSignatureFileV1();
 		} catch ( Exception e ) {
 			log.warning("Could not download the latest DROID Signature File. Using an embedded one instead.");
