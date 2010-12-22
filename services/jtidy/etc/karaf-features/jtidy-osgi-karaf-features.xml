@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Karaf Features allow you to name a collection of bundles and other Karaf Features for easy installation using a single command.  If you’ve never heard of a Karaf Feature, refer to the Karaf documentation  for a good tutorial.  By combining a feature descriptor with the PAX URL Wrap Protocol and Maven Protocol, you can provide your users with a simple deployment mechanism to support provisioning existing bundles as well as creating bundles from non-OSGi ready JARs at deployment time. 
+-->
+<features name="jtidy-osgi-karaf-features">
+    <feature name="planets-service-jtidy" version="1.0.1.SNAPSHOT">
+		
+		<!--features this feature depends upon-->
+		<!--feature version='2.1.0'>http</feature-->
+		
+        <!-- use the org.ops4j.pax.url wrapper for deploying jars that aren't available as bundles-->
+        <bundle>wrap:mvn:com.sun.xml.ws/jaxws-rt/2.2</bundle>
+        <bundle>mvn:commons-io/commons-io/1.4</bundle>
+        
+        <bundle>wrap:mvn:planets-suite/planets-core-services/1.0.1-SNAPSHOT</bundle>
+        <bundle>wrap:mvn:planets-suite/planets-core-techreg/1.0.1-SNAPSHOT</bundle>
+        <bundle>wrap:mvn:planets-suite/planets-core-utils/1.0.1-SNAPSHOT</bundle>
+        
+        <bundle>wrap:mvn:planets-suite/planets-services-3rdpartyjars-jtidy/1</bundle>
+        
+        <!--bundle>mvn:planets-suite/planets-services-jtidy/1.0.1.SNAPSHOT</bundle-->
+        
+    </feature>
+</features>
