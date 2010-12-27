@@ -149,12 +149,12 @@ public class SigFileUtils {
 			throw(e);
 		}
 		//
-		File fmtFolder = new File(outputFolder,"fmt"); fmtFolder.mkdir();
-		File xfmtFolder = new File(outputFolder,"x-fmt"); xfmtFolder.mkdir();
+		File xmlFolder = new File(outputFolder,"xml"); xmlFolder.mkdir();
 		try {
 			for( FileFormatType fft : sigFile.getFFSignatureFile().getFileFormatCollection().getFileFormat() ) {
 				String puid = fft.getPUID();
-				FileOutputStream fos = new FileOutputStream(new File(outputFolder, puid+".xml") );
+				String puidFilename = "puid."+puid.replace("/", ".")+".xml";
+				FileOutputStream fos = new FileOutputStream(new File(xmlFolder, puidFilename) );
 				URL repurl = getPronomUrlForPUID(puid);
 				System.out.println("Downloading "+repurl);
 				IOUtils.copy( repurl.openStream(), fos );
