@@ -65,6 +65,7 @@ public class SigFileUtils {
 			return pronomService.getSignatureFileV1();
 		} catch ( Exception e ) {
 			log.warning("Could not download the latest DROID Signature File. Using an embedded one instead.");
+			log.warning("Exception was "+e);
 		}
 		// Load from resource path
 		return getEmbeddedSigFile();
