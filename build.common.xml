@@ -671,7 +671,7 @@
       </then>
     </if>
 
-    <copy todir="${war.build.dir}/${app.name}/WEB-INF/classes">
+    <copy todir="${war.build.dir}/${app.name}/WEB-INF/classes" failonerror="false">
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />

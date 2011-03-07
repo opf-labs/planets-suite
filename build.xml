@@ -63,6 +63,7 @@
     <fileset dir="${basedir}">
       <include name="*/*/build.xml"/>
       <exclude name="lib/**"/>
+      <exclude name="utils/**"/>
     </fileset>
   </path>
   
