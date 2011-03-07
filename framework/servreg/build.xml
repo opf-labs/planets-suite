@@ -41,7 +41,7 @@
 	<import file="${psuite.root.dir}/build.common.xml" />
 
 	<!-- Copy the registered services into the server config directory -->
-	<copy todir="${if_server.dir}/server/default/data/service-description-registry/" overwrite="true">
+	<copy todir="${if_server.dir}/server/default/data/service-description-registry/" overwrite="true" failonerror="false">
 		<fileset dir="src/main/resources/service-description-registry/">
 			<include name="*" />
 		</fileset>
