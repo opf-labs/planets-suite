@@ -13,7 +13,7 @@
 	<property name="psuite.app.build.type" value="ejb" />
 
 	<property name="src.dir" location="${app.dir}/src/main/java" />
-	<property name="lib.dir" location="${app.dir}/lib" />
+	<!-- property name="lib.dir" location="${app.dir}/lib" /-->
 	<property name="src.resources" location="${app.dir}/src/main/resources" />
 	<property name="src.config" location="${app.dir}/src/main/config" />
 	<property name="src.config.properties" value="if-generic.properties" />

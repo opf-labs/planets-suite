@@ -15,7 +15,7 @@
 	<property name="psuite.app.deploy.mode" value="pure-java" />
 
 	<property name="src.dir" value="${app.dir}/src/main/java" />
-	<property name="lib.dir" value="${app.dir}/lib" />
+	<!-- property name="lib.dir" value="${app.dir}/lib" / -->
 	<property name="src.resources" value="${app.dir}/src/main/resources" />
 	<property name="src.web" value="${app.dir}/src/main/webapp" />
 

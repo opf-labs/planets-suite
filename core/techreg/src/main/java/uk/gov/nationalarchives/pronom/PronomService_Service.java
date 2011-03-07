@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "PronomService", targetNamespace = "http://pronom.nationalarchives.gov.uk", wsdlLocation = "http://www.nationalarchives.gov.uk/pronom/service.wsdl")
+@WebServiceClient(name = "PronomService", targetNamespace = "http://pronom.nationalarchives.gov.uk", wsdlLocation = "http://www.nationalarchives.gov.uk/pronom/service.asmx?WSDL")
 public class PronomService_Service
     extends Service
 {
@@ -30,9 +30,9 @@ public class PronomService_Service
         try {
             URL baseUrl;
             baseUrl = uk.gov.nationalarchives.pronom.PronomService_Service.class.getResource(".");
-            url = new URL(baseUrl, "http://www.nationalarchives.gov.uk/pronom/service.wsdl");
+            url = new URL(baseUrl, "http://www.nationalarchives.gov.uk/pronom/service.asmx?WSDL");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://www.nationalarchives.gov.uk/pronom/service.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'http://www.nationalarchives.gov.uk/pronom/service.asmx?WSDL', retrying as a local file");
             logger.warning(e.getMessage());
         }
         PRONOMSERVICE_WSDL_LOCATION = url;
