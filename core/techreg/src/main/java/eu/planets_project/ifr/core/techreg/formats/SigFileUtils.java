@@ -209,12 +209,12 @@ public class SigFileUtils {
 	static class ProxyAuth extends Authenticator {
 	    private PasswordAuthentication auth;
 
-	    private ProxyAuth(String user, String password) {
-	        auth = new PasswordAuthentication(user, password == null ? new char[]{} : password.toCharArray());
+	    protected ProxyAuth(String user, String password) {
+	        this.auth = new PasswordAuthentication(user, password == null ? new char[]{} : password.toCharArray());
 	    }
 
 	    protected PasswordAuthentication getPasswordAuthentication() {
-	        return auth;
+	        return this.auth;
 	    }
 	}
 

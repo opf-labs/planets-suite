@@ -226,24 +226,24 @@ public final class ServiceDescription {
     /**
      * @param builder The builder to construct a service description from
      */
-    private ServiceDescription(final Builder builder) {
-        name = builder.name;
-        type = builder.type;
-        endpoint = builder.endpoint;
-        paths = builder.paths;
-        properties = builder.properties;
-        inputFormats = builder.inputFormats;
-        logo = builder.logo;
-        furtherInfo = builder.furtherInfo;
-        instructions = builder.instructions;
-        serviceProvider = builder.serviceProvider;
-        author = builder.author;
-        identifier = builder.identifier;
-        version = builder.version;
-        description = builder.description;
-        tool = builder.tool;
-        parameters = builder.parameters;
-        classname = builder.classname;
+    protected ServiceDescription(final Builder builder) {
+        this.name = builder.name;
+        this.type = builder.type;
+        this.endpoint = builder.endpoint;
+        this.paths = builder.paths;
+        this.properties = builder.properties;
+        this.inputFormats = builder.inputFormats;
+        this.logo = builder.logo;
+        this.furtherInfo = builder.furtherInfo;
+        this.instructions = builder.instructions;
+        this.serviceProvider = builder.serviceProvider;
+        this.author = builder.author;
+        this.identifier = builder.identifier;
+        this.version = builder.version;
+        this.description = builder.description;
+        this.tool = builder.tool;
+        this.parameters = builder.parameters;
+        this.classname = builder.classname;
     }
 
     /**
@@ -256,27 +256,27 @@ public final class ServiceDescription {
 
         /** No-arg constructor for JAXB. API clients should not use this. */
         @SuppressWarnings("unused")
-        private Builder() {}
+        private Builder() {/** Non-instantiation */}
 
         /* Required parameters: */
-        private String name;
-        private String type;
+        protected String name;
+        protected String type;
         /* Optional parameters, initialised to default values: */
-        private List<MigrationPath> paths = new ArrayList<MigrationPath>();
-        private List<Property> properties = new ArrayList<Property>();
-        private List<URI> inputFormats = new ArrayList<URI>();
-        private URI logo = null;
-        private URL endpoint = null;
-        private URI furtherInfo = null;
-        private String instructions = null;
-        private String serviceProvider = null;
-        private String author = null;
-        private String identifier = null;
-        private String version = null;
-        private String description = null;
-        private Tool tool = null;
-        private List<Parameter> parameters = null;
-        private String classname = null;
+        protected List<MigrationPath> paths = new ArrayList<MigrationPath>();
+        protected List<Property> properties = new ArrayList<Property>();
+        protected List<URI> inputFormats = new ArrayList<URI>();
+        protected URI logo = null;
+        protected URL endpoint = null;
+        protected URI furtherInfo = null;
+        protected String instructions = null;
+        protected String serviceProvider = null;
+        protected String author = null;
+        protected String identifier = null;
+        protected String version = null;
+        protected String description = null;
+        protected Tool tool = null;
+        protected List<Parameter> parameters = null;
+        protected String classname = null;
 
         /** @return The instance created using this builder. */
         public ServiceDescription build() {
@@ -315,23 +315,23 @@ public final class ServiceDescription {
          */
         private void initialize(final ServiceDescription serviceDescription) {
 	    if( serviceDescription == null ) return;
-            name = serviceDescription.name;
-            type = serviceDescription.type;
-            endpoint = serviceDescription.endpoint;
-            paths = serviceDescription.paths;
-            properties = serviceDescription.properties;
-            inputFormats = serviceDescription.inputFormats;
-            logo = serviceDescription.logo;
-            furtherInfo = serviceDescription.furtherInfo;
-            instructions = serviceDescription.instructions;
-            serviceProvider = serviceDescription.serviceProvider;
-            author = serviceDescription.author;
-            identifier = serviceDescription.identifier;
-            version = serviceDescription.version;
-            description = serviceDescription.description;
-            tool = serviceDescription.tool;
-            parameters = serviceDescription.parameters;
-            classname = serviceDescription.classname;
+            this.name = serviceDescription.name;
+            this.type = serviceDescription.type;
+            this.endpoint = serviceDescription.endpoint;
+            this.paths = serviceDescription.paths;
+            this.properties = serviceDescription.properties;
+            this.inputFormats = serviceDescription.inputFormats;
+            this.logo = serviceDescription.logo;
+            this.furtherInfo = serviceDescription.furtherInfo;
+            this.instructions = serviceDescription.instructions;
+            this.serviceProvider = serviceDescription.serviceProvider;
+            this.author = serviceDescription.author;
+            this.identifier = serviceDescription.identifier;
+            this.version = serviceDescription.version;
+            this.description = serviceDescription.description;
+            this.tool = serviceDescription.tool;
+            this.parameters = serviceDescription.parameters;
+            this.classname = serviceDescription.classname;
         }
 
         /**
@@ -499,7 +499,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -507,7 +507,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public String getClassname() {
-        return classname;
+        return this.classname;
     }
 
     /**
@@ -515,7 +515,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public String getType() {
-        return type;
+        return this.type;
     }
 
     /**
@@ -523,7 +523,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public URL getEndpoint() {
-        return endpoint;
+        return this.endpoint;
     }
 
     /**
@@ -531,7 +531,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public List<Parameter> getParameters() {
-        return parameters;
+        return this.parameters;
     }
 
     /**
@@ -539,7 +539,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public Tool getTool() {
-        return tool;
+        return this.tool;
     }
 
     /**
@@ -547,7 +547,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     /**
@@ -555,7 +555,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public String getVersion() {
-        return version;
+        return this.version;
     }
 
     /**
@@ -563,7 +563,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public String getAuthor() {
-        return author;
+        return this.author;
     }
 
     /**
@@ -571,7 +571,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public String getServiceProvider() {
-        return serviceProvider;
+        return this.serviceProvider;
     }
 
     /**
@@ -579,7 +579,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public String getInstructions() {
-        return instructions;
+        return this.instructions;
     }
 
     /**
@@ -587,7 +587,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public URI getFurtherInfo() {
-        return furtherInfo;
+        return this.furtherInfo;
     }
 
     /**
@@ -595,7 +595,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public URI getLogo() {
-        return logo;
+        return this.logo;
     }
 
     /**
@@ -603,7 +603,7 @@ public final class ServiceDescription {
      */
     @Queryable
     public String getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     /**
@@ -611,8 +611,8 @@ public final class ServiceDescription {
      */
     @Queryable
     public List<MigrationPath> getPaths() {
-        return paths == null ? new ArrayList<MigrationPath>() : Collections
-                .unmodifiableList(paths);
+        return this.paths == null ? new ArrayList<MigrationPath>() : Collections
+                .unmodifiableList(this.paths);
     }
 
     /**
@@ -620,8 +620,8 @@ public final class ServiceDescription {
      */
     @Queryable
     public List<URI> getInputFormats() {
-        return inputFormats == null ? new ArrayList<URI>() : Collections
-                .unmodifiableList(inputFormats);
+        return this.inputFormats == null ? new ArrayList<URI>() : Collections
+                .unmodifiableList(this.inputFormats);
     }
 
     /**
@@ -629,8 +629,8 @@ public final class ServiceDescription {
      */
     @Queryable
     public List<Property> getProperties() {
-        return properties == null ? new ArrayList<Property>() : Collections
-                .unmodifiableList(properties);
+        return this.properties == null ? new ArrayList<Property>() : Collections
+                .unmodifiableList(this.properties);
     }
 
     /*
@@ -644,11 +644,10 @@ public final class ServiceDescription {
      */
     @Override
     public int hashCode() {
-        if (identifier != null) {
-            return identifier.hashCode();
-        } else {
-            return toXml().hashCode();
+        if (this.identifier != null) {
+            return this.identifier.hashCode();
         }
+		return toXml().hashCode();
     }
 
     /**
@@ -661,11 +660,10 @@ public final class ServiceDescription {
             return false;
         }
         ServiceDescription other = (ServiceDescription) obj;
-        if (identifier != null) {
-            return identifier.equals(other.identifier);
-        } else {
-            return toXml().equals(other.toXml());
+        if (this.identifier != null) {
+            return this.identifier.equals(other.identifier);
         }
+		return toXml().equals(other.toXml());
     }
 
     /**
@@ -730,10 +728,10 @@ public final class ServiceDescription {
     }
 
     /***/
-    private static java.io.File baseDir = new java.io.File(
+    protected static java.io.File baseDir = new java.io.File(
             System.getProperty("app.dir")+"/src/main/resources");
     /***/
-    private static String schemaFileName = "service_description.xsd";
+    protected static String schemaFileName = "service_description.xsd";
 
     /** Resolver for schema generation. */
     static class Resolver extends SchemaOutputResolver {
@@ -742,7 +740,8 @@ public final class ServiceDescription {
          * @see javax.xml.bind.SchemaOutputResolver#createOutput(java.lang.String,
          *      java.lang.String)
          */
-        public Result createOutput(final String namespaceUri,
+        @Override
+		public Result createOutput(final String namespaceUri,
                 final String suggestedFileName) throws IOException {
             return new StreamResult(new java.io.File(baseDir, schemaFileName
                     .split("\\.")[0]
