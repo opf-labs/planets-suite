@@ -69,8 +69,7 @@ public final class Droid implements Identify, Serializable {
      * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject,
      *      java.util.List)
      */
-    @Override
-	public IdentifyResult identify(final DigitalObject digitalObject,
+    public IdentifyResult identify(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
         File file = DigitalObjectUtils.toFile(digitalObject);
         List<URI> types = identifyOneBinary(file);
@@ -98,8 +97,7 @@ public final class Droid implements Identify, Serializable {
      * {@inheritDoc}
      * @see eu.planets_project.services.identify.Identify#describe()
      */
-    @Override
-	public ServiceDescription describe() {
+    public ServiceDescription describe() {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(
                 "DROID Identification Service", Identify.class
                         .getCanonicalName());
