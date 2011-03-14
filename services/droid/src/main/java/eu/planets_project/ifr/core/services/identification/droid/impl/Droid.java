@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.soap.MTOM;
 
@@ -38,7 +37,6 @@ import eu.planets_project.services.utils.ServiceUtils;
  * Droid identification service.
  * @author Fabian Steeg, Carl Wilson
  */
-@Stateless
 @WebService(
 		name = Droid.NAME, 
 		serviceName = Identify.NAME, 
@@ -71,7 +69,8 @@ public final class Droid implements Identify, Serializable {
      * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject,
      *      java.util.List)
      */
-    public IdentifyResult identify(final DigitalObject digitalObject,
+    @Override
+	public IdentifyResult identify(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
         File file = DigitalObjectUtils.toFile(digitalObject);
         List<URI> types = identifyOneBinary(file);
@@ -99,7 +98,8 @@ public final class Droid implements Identify, Serializable {
      * {@inheritDoc}
      * @see eu.planets_project.services.identify.Identify#describe()
      */
-    public ServiceDescription describe() {
+    @Override
+	public ServiceDescription describe() {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(
                 "DROID Identification Service", Identify.class
                         .getCanonicalName());
