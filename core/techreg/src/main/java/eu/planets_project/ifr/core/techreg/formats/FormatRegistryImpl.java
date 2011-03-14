@@ -63,13 +63,13 @@ class FormatRegistryImpl implements FormatRegistry {
             // ff.getSummary());
 
             // Store the format in a PUID map:
-            uriMap.put(ff.getUri(), ff);
+            this.uriMap.put(ff.getUri(), ff);
             // log.debug("Stored under PUID: "+ff.getTypeURI());
 
             // Store the mime mapping:
             if (ff.getMimeTypes() != null) {
                 for (String mimeType : ff.getMimeTypes()) {
-                    Set<URI> mimeSet = mimeMap.get(mimeType);
+                    Set<URI> mimeSet = this.mimeMap.get(mimeType);
                     if (mimeSet == null) {
                         mimeSet = new HashSet<URI>();
                     }
@@ -79,14 +79,14 @@ class FormatRegistryImpl implements FormatRegistry {
                             mimeSet.add(furi);
                         }
                     }
-                    mimeMap.put(mimeType, mimeSet);
+                    this.mimeMap.put(mimeType, mimeSet);
                     // log.debug("Referenced under MIME: "+mimeType);
                 }
             }
             // Store the extension mapping:
             if (ff.getExtensions() != null) {
                 for (String ext : ff.getExtensions()) {
-                    Set<URI> extSet = extMap.get(ext);
+                    Set<URI> extSet = this.extMap.get(ext);
                     if (extSet == null) {
                         extSet = new HashSet<URI>();
                     }
@@ -96,7 +96,7 @@ class FormatRegistryImpl implements FormatRegistry {
                             extSet.add(furi);
                         }
                     }
-                    extMap.put(ext, extSet);
+                    this.extMap.put(ext, extSet);
                     // log.debug("Referenced under extension: "+ext);
                 }
             }
@@ -112,8 +112,8 @@ class FormatRegistryImpl implements FormatRegistry {
         if (isMimeUri(puri) || isExtensionUri(puri)) {
             return new MutableFormat(puri);
         } else {
-            if( uriMap.containsKey(puri ) ) {
-                return uriMap.get(puri);
+            if( this.uriMap.containsKey(puri ) ) {
+                return this.uriMap.get(puri);
             } else {
                 // Unknown format:
                 MutableFormat fmt = new MutableFormat(puri);
@@ -128,8 +128,7 @@ class FormatRegistryImpl implements FormatRegistry {
      * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getUrisForExtension(java.lang.String)
      */
     public Set<URI> getUrisForExtension(String ext) {
-        ext = ext.toLowerCase();
-        return extMap.get(ext);
+        return this.extMap.get(ext.toLowerCase());
     }
 
     /**
@@ -137,7 +136,7 @@ class FormatRegistryImpl implements FormatRegistry {
      * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getUrisForMimeType(java.lang.String)
      */
     public Set<URI> getUrisForMimeType(String mimetype) {
-        return mimeMap.get(mimetype);
+        return this.mimeMap.get(mimetype);
     }
 
     /**
@@ -172,7 +171,7 @@ class FormatRegistryImpl implements FormatRegistry {
         } else {
             // This is a known format, ID, so add it, any aliases, and the ext
             // and mime forms:
-            MutableFormat f = uriMap.get(typeURI);
+            MutableFormat f = this.uriMap.get(typeURI);
             // Aliases:
             for (URI uri : f.getAliases()) {
                 turis.add(uri);

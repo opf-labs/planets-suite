@@ -5,13 +5,11 @@ package eu.planets_project.ifr.core.simple.impl;
 
 import java.net.URI;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
-
-import java.util.logging.Logger;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 

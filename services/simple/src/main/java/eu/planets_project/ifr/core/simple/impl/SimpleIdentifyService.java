@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 
 import com.sun.xml.ws.developer.StreamingAttachment;

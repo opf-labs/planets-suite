@@ -1,16 +1,13 @@
 package eu.planets_project.ifr.core.techreg.formats;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.Authenticator;
 import java.net.MalformedURLException;
@@ -28,7 +25,11 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.IOUtils;
 
-import uk.gov.nationalarchives.pronom.*;
+import uk.gov.nationalarchives.pronom.FileFormatType;
+import uk.gov.nationalarchives.pronom.PronomService;
+import uk.gov.nationalarchives.pronom.PronomService_Service;
+import uk.gov.nationalarchives.pronom.SigFile;
+import uk.gov.nationalarchives.pronom.SignatureFileType;
 
 /**
  * 

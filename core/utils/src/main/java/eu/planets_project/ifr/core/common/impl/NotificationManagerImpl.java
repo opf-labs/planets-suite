@@ -28,9 +28,9 @@ public class NotificationManagerImpl implements NotificationManager
 
 	private NotificationManagerImpl()
 	{
-		activeSubscriber = new HashMap();
-		suspendedSubscriber = new HashMap();
-		backlog = new HashMap();
+		activeSubscriber = new HashMap<Integer, LinkedList<EventSubscriber>>();
+		suspendedSubscriber = new HashMap<Integer, LinkedList<EventSubscriber>>();
+		backlog = new HashMap<EventSubscriber, ArrayList<PlanetsEvent>>();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class NotificationManagerImpl implements NotificationManager
 			LinkedList<Integer> subEvents = subscriber.get(sub);
 			if(subEvents == null)
 			{
-				subEvents = new LinkedList();
+				subEvents = new LinkedList<Integer>();
 				subscriber.put(sub, subEvents);
 			}
 
@@ -70,7 +70,7 @@ public class NotificationManagerImpl implements NotificationManager
 			LinkedList<EventSubscriber> list = activeSubscriber.get(id);
 			if(list == null)
 			{
-				list = new LinkedList();
+				list = new LinkedList<EventSubscriber>();
 				activeSubscriber.put(id, list);
 			}
 			list.add(sub);
@@ -186,7 +186,7 @@ public class NotificationManagerImpl implements NotificationManager
 			ArrayList<PlanetsEvent> log = backlog.get(sub);
 			if(log == null)
 			{
-				log = new ArrayList();
+				log = new ArrayList<PlanetsEvent>();
 				backlog.put(sub, log);
 			}
 			log.add(e);
