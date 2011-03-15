@@ -413,7 +413,8 @@ public class ExperimentChartServlet extends HttpServlet {
                     	success = res.getHasExecutionSucceededOK();
                     }
                     log.info("Found DOB: {"+exr.getDigitalObjectReferenceCopy()+"} {"+dobName+"} w/ time "+time);
-                    log.info("Timing: "+res.getExecutionRecord().getStartDate()+" "+res.getExecutionRecord().getEndDate());
+                    if( res.getExecutionRecord() != null )
+                    	log.info("Timing: "+res.getExecutionRecord().getStartDate()+" "+res.getExecutionRecord().getEndDate());
                     if( time != null ) {
                         if( success ) {
                             dataset.addValue( time, "Succeeded", dobName);
