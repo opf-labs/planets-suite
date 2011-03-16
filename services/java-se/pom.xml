@@ -12,7 +12,7 @@
 	<name>JavaSE Preservation Services</name>
 	<build>
 		<resources>
-		</resources>
+		</resources>webapp
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -28,7 +28,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.5</version>
 				<configuration>
-                    <includes>
+                    <includes>webapp
                         <include>**/*Test.java</include>
                     </includes>
 				</configuration>
@@ -36,6 +36,9 @@
 			<plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+                <warSourceDirectory>src/webapp</warSourceDirectory>
+            </configuration>
             </plugin>
 		</plugins>
 	</build>
