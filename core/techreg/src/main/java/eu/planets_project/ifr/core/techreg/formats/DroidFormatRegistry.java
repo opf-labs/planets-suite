@@ -47,8 +47,8 @@ class DroidFormatRegistry  {
      */
     public DroidFormatRegistry() {
         // Get the list of file formats
-        sigFile = SigFileUtils.getLatestSigFile().getFFSignatureFile();
-        numFormats = sigFile.getFileFormatCollection().getFileFormat().size();
+        this.sigFile = SigFileUtils.getLatestSigFile().getFFSignatureFile();
+        this.numFormats = this.sigFile.getFileFormatCollection().getFileFormat().size();
 
     }
     
@@ -127,8 +127,8 @@ class DroidFormatRegistry  {
      */
     public Set<MutableFormat> getFormats() {
        HashSet<MutableFormat> fmts = new HashSet<MutableFormat>();
-       for( int i = 0; i < sigFile.getFileFormatCollection().getFileFormat().size(); i++ ) {
-           fmts.add( fillFormatFromPRONOM(sigFile.getFileFormatCollection().getFileFormat().get(i)) );
+       for( int i = 0; i < this.sigFile.getFileFormatCollection().getFileFormat().size(); i++ ) {
+           fmts.add( fillFormatFromPRONOM(this.sigFile.getFileFormatCollection().getFileFormat().get(i)) );
        }
        return fmts;
     }
