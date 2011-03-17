@@ -56,9 +56,9 @@
         </plugins>
     </build>
     <modules>
-        <module>services</module>
-        <module>techreg</module>
-        <module>utils</module>
+        <module>core-services</module>
+        <module>core-techreg</module>
+        <module>core-utils</module>
     </modules>
     <repositories>
         <repository>
