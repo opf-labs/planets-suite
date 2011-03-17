@@ -1,31 +1,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.opf.suite</groupId>
-		<artifactId>parent</artifactId>
-		<version>1.1.0</version>
-	</parent>
-  <groupId>org.opf.suite</groupId>
-  <artifactId>services-javase</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <name>JavaSE Preservation Services</name>
-  <dependencies>
-		<dependency>
-			<groupId>org.opf.suite</groupId>
-			<artifactId>core-services</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.opf.suite</groupId>
-			<artifactId>core-techreg</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.opf.suite</groupId>
-			<artifactId>core-utils</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
-		</dependency>
-  </dependencies>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.opf.suite</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.1.0</version>
+    </parent>
+    <groupId>org.opf.suite</groupId>
+    <artifactId>services-javase</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <name>JavaSE Preservation Services</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-services</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-techreg</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-utils</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -40,27 +40,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SignatureFileType.FileFormatCollection }
-     * 
-     */
-    public SignatureFileType.FileFormatCollection createSignatureFileTypeFileFormatCollection() {
-        return new SignatureFileType.FileFormatCollection();
-    }
-
-    /**
-     * Create an instance of {@link SignatureFileType }
-     * 
-     */
-    public SignatureFileType createSignatureFileType() {
-        return new SignatureFileType();
-    }
-
-    /**
      * Create an instance of {@link ShiftType }
      * 
      */
     public ShiftType createShiftType() {
         return new ShiftType();
+    }
+
+    /**
+     * Create an instance of {@link ByteSequenceType }
+     * 
+     */
+    public ByteSequenceType createByteSequenceType() {
+        return new ByteSequenceType();
+    }
+
+    /**
+     * Create an instance of {@link GetSignatureFileVersionV1 }
+     * 
+     */
+    public GetSignatureFileVersionV1 createGetSignatureFileVersionV1() {
+        return new GetSignatureFileVersionV1();
+    }
+
+    /**
+     * Create an instance of {@link InternalSignatureType }
+     * 
+     */
+    public InternalSignatureType createInternalSignatureType() {
+        return new InternalSignatureType();
     }
 
     /**
@@ -80,27 +88,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link InternalSignatureType }
+     * Create an instance of {@link GetSignatureFileV1 }
      * 
      */
-    public InternalSignatureType createInternalSignatureType() {
-        return new InternalSignatureType();
-    }
-
-    /**
-     * Create an instance of {@link FragmentType }
-     * 
-     */
-    public FragmentType createFragmentType() {
-        return new FragmentType();
-    }
-
-    /**
-     * Create an instance of {@link SignatureFileType.InternalSignatureCollection }
-     * 
-     */
-    public SignatureFileType.InternalSignatureCollection createSignatureFileTypeInternalSignatureCollection() {
-        return new SignatureFileType.InternalSignatureCollection();
+    public GetSignatureFileV1 createGetSignatureFileV1() {
+        return new GetSignatureFileV1();
     }
 
     /**
@@ -112,14 +104,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ByteSequenceType }
-     * 
-     */
-    public ByteSequenceType createByteSequenceType() {
-        return new ByteSequenceType();
-    }
-
-    /**
      * Create an instance of {@link GetSignatureFileVersionV1Response }
      * 
      */
@@ -128,19 +112,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetSignatureFileVersionV1 }
+     * Create an instance of {@link SignatureFileType }
      * 
      */
-    public GetSignatureFileVersionV1 createGetSignatureFileVersionV1() {
-        return new GetSignatureFileVersionV1();
+    public SignatureFileType createSignatureFileType() {
+        return new SignatureFileType();
     }
 
     /**
-     * Create an instance of {@link Version }
+     * Create an instance of {@link SignatureFileType.FileFormatCollection }
      * 
      */
-    public Version createVersion() {
-        return new Version();
+    public SignatureFileType.FileFormatCollection createSignatureFileTypeFileFormatCollection() {
+        return new SignatureFileType.FileFormatCollection();
+    }
+
+    /**
+     * Create an instance of {@link SignatureFileType.InternalSignatureCollection }
+     * 
+     */
+    public SignatureFileType.InternalSignatureCollection createSignatureFileTypeInternalSignatureCollection() {
+        return new SignatureFileType.InternalSignatureCollection();
+    }
+
+    /**
+     * Create an instance of {@link FragmentType }
+     * 
+     */
+    public FragmentType createFragmentType() {
+        return new FragmentType();
     }
 
     /**
@@ -152,11 +152,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetSignatureFileV1 }
+     * Create an instance of {@link Version }
      * 
      */
-    public GetSignatureFileV1 createGetSignatureFileV1() {
-        return new GetSignatureFileV1();
+    public Version createVersion() {
+        return new Version();
     }
 
     /**
