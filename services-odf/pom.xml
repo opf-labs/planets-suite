@@ -12,5 +12,36 @@
     <packaging>war</packaging>
     <name>Planets Service - ODF</name>
     <dependencies>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-services</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-techreg</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-utils</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-ejb3x</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>absent</groupId>
+            <artifactId>zip64</artifactId>
+        </dependency>
     </dependencies>
 </project>
