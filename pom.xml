@@ -1,55 +1,49 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>planets-suite</groupId>
-	<artifactId>planets-suite</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>Planets Suite</name>
-	<url>http://planets-suite.sourceforge.net/maven2/site/</url>
-	<scm>
-		<connection>scm:svn:https://planets-suite.svn.sourceforge.net/svnroot/planets-suite/trunk</connection>
-		<developerConnection>scm:svn:https://planets-suite.svn.sourceforge.net/svnroot/planets-suite/trunk/</developerConnection>
-		<url>http://planets-suite.svn.sourceforge.net/viewvc/planets-suite/trunk</url>
-	</scm>
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<build>
-		<resources>
-		</resources>
-    <extensions>
-	  <!-- Added to get SFTP working without relying on external processes. -->
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh</artifactId>
-        <version>1.0-beta-6</version>
-      </extension>
-    </extensions>  
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<systemPropertyVariables>
-						<app.dir>${basedir}</app.dir>
-						<eu.planets-project.config.dir>${basedir}/../../test/config</eu.planets-project.config.dir>
-					</systemPropertyVariables>
-					<includes>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>planets-suite</groupId>
+    <artifactId>planets-suite</artifactId>
+    <version>1.1.0</version>
+    <packaging>pom</packaging>
+    <name>Planets Suite</name>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <build>
+        <resources>
+        </resources>
+        <extensions>
+            <!-- Added to get SFTP working without relying on external processes. -->
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>1.0-beta-6</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <app.dir>${basedir}</app.dir>
+                        <eu.planets-project.config.dir>${basedir}/../../test/config</eu.planets-project.config.dir>
+                    </systemPropertyVariables>
+                    <includes>
                         <include>**/*Testsuite.java</include>
                         <!-- 
                         The above duplicates the ant build behaviour, but perhaps we should use this instead:
@@ -57,27 +51,16 @@
                         <include>**/*Test.java</include>
                          -->
                     </includes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jboss-maven-plugin</artifactId>
-				<version>1.4.1</version>
-				<configuration>
-				    <!-- You can set this up in .m2/settings.xml, or as an environment variable:
-					<jbossHome>${env.JBOSS_HOME}</jbossHome>
-                     -->
-					<serverName>default</serverName>
-					<fileName>${project.build.directory}/${project.build.finalName}.war</fileName>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-	<modules>
-		<module>core</module>
-		<module>services</module>
-	</modules>
-	<repositories>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <modules>
+        <module>services</module>
+        <module>techreg</module>
+        <module>utils</module>
+    </modules>
+    <repositories>
         <repository>
             <id>jboss-public-repository-group</id>
             <name>JBoss Public Maven Repository Group</name>
@@ -91,63 +74,35 @@
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
             </snapshots>
-          </repository>
-          <repository>
-                   <id>maven2-repository.dev.java.net</id>
-                          <name>Java.net Repository for Maven 2</name>
-                                 <url>http://download.java.net/maven/2/</url>
-                                      </repository>
+        </repository>
         <repository>
-        	<id>planets-suite-repository</id>
-        	<name>The Planets Suite Maven Repository, hosted by SourceForge.</name>
-        	<url>http://planets-suite.sourceforge.net/maven2/snapshots/</url>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven 2</name>
+            <url>http://download.java.net/maven/2/</url>
+        </repository>
+        <repository>
+            <id>planets-suite-repository</id>
+            <name>The Planets Suite Maven Repository, hosted by SourceForge.</name>
+            <url>http://planets-suite.sourceforge.net/maven2/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
     <pluginRepositories>
-         <pluginRepository>
-                <id>maven2-repository.dev.java.net</id>
-                     <url>http://download.java.net/maven/2/</url>
-                        </pluginRepository>
-                         </pluginRepositories>   
-	<!--
-		NOTE that for uploading to work, you need something like this in your
-		.m2/settings.xml <servers> <server>
-		<id>planets-suite.sourceforge.net</id>
-		<username>andy_j,planets-suite</username>
-		<password>????????</password> </server> </servers>
-		
-		Once set up, the maven command is:
-		maven deploy
-	-->
-	<distributionManagement>
-		<site>
-			<id>planets-suite.sourceforge.net</id>
-			<url>sftp://web.sourceforge.net/home/groups/p/pl/planets-suite/htdocs/maven2/site</url>
-		</site>
-		<repository>
-			<id>planets-suite.sourceforge.net</id>
-			<name>planets-suite maven 2 repository at sourceforge</name>
-			<url>sftp://web.sourceforge.net/home/groups/p/pl/planets-suite/htdocs/maven2/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>planets-suite.sourceforge.net</id>
-			<name>planets-suite maven 2 repository at sourceforge</name>
-			<url>sftp://web.sourceforge.net/home/groups/p/pl/planets-suite/htdocs/maven2/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<show>public</show>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
+        <pluginRepository>
+            <id>maven2-repository.dev.java.net</id>
+            <url>http://download.java.net/maven/2/</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <!--
+         NOTE that for uploading to work, you need something like this in your
+         .m2/settings.xml <servers> <server>
+         <id>planets-suite.sourceforge.net</id>
+         <username>andy_j,planets-suite</username>
+         <password>????????</password> </server> </servers>
+
+         Once set up, the maven command is:
+         maven deploy
+     -->
 </project>
