@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>planets-suite</groupId>
-    <artifactId>planets-suite</artifactId>
+    <groupId>org.opf.suite</groupId>
+    <artifactId>parent</artifactId>
     <version>1.1.0</version>
     <packaging>pom</packaging>
     <name>Planets Suite</name>
@@ -25,6 +25,14 @@
             </extension>
         </extensions>
         <plugins>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+     <source>1.6</source>
+     <target>1.6</target>
+    </configuration>
+   </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -53,12 +61,58 @@
                     </includes>
                 </configuration>
             </plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>jaxws-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>wsimport</goal>
+								</goals>
+								<configuration>
+									<wsdlUrls>
+										<wsdlUrl>http://www.nationalarchives.gov.uk/pronom/service.asmx?WSDL</wsdlUrl>
+									</wsdlUrls>
+									<wsdlFiles>
+										<wsdlFile>www.nationalarchives.gov.uk/pronom/service.wsdl</wsdlFile>
+									</wsdlFiles>
+									<packageName>uk.gov.nationalarchives.pronom</packageName>
+									<catalog>src/wsdl/catalog.xml</catalog>
+									<keep>true</keep>
+									<sourceDestDir>src/main/java</sourceDestDir>
+									<destDir></destDir>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
         </plugins>
     </build>
     <modules>
         <module>core-services</module>
         <module>core-techreg</module>
         <module>core-utils</module>
+<module>framework-admin</module>
+<module>framework-generic</module>
+<module>framework-selfreg</module>
+<module>framework-servreg</module>
+<module>framework-storage</module>
+<module>framework-techreg</module>
+<module>framework-users</module>
+<module>framework-wdt</module>
+<module>framework-wee</module>
+<module>services-droid</module>
+<module>services-javadigest</module>
+<module>services-javase</module>
+<module>services-jhove</module>
+<module>services-jtidy</module>
+<module>services-libtiff</module>
+<module>services-metadata</module>
+<module>services-odf</module>
+<module>services-pdfbox</module>
+<module>services-sanselan</module>
+<module>services-simple</module>
+<module>webaap-testbed</module>
+<module>webapp-plato</module>
     </modules>
     <repositories>
         <repository>
@@ -105,4 +159,156 @@
          Once set up, the maven command is:
          maven deploy
      -->
+
+    <dependencyManagement>
+		<dependencies>
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>2.2</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+    <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>1.4</version>
+        <type>jar</type>
+        <scope>compile</scope>
+    </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.7</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>2.3.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.2</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.acegisecurity</groupId>
+			<artifactId>acegi-security</artifactId>
+			<version>1.0.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>josso</groupId>
+			<artifactId>josso</artifactId>
+			<version>1.7</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/josso-1.7.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts-core</artifactId>
+			<version>1.3.10</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>zip64</groupId>
+			<artifactId>zip64</artifactId>
+			<version>1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/Zip64File.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.2</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.6.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.facelets</groupId>
+			<artifactId>jsf-facelets</artifactId>
+			<version>1.1.14</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>1.2_02</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>catalina</artifactId>
+			<version>6.0.28</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		</dependencies>
+    </dependencyManagement>
+
 </project>
