@@ -184,7 +184,11 @@
                 <artifactId>commons-io</artifactId>
                 <version>2.0</version>
             </dependency>
-
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.4</version>
+            </dependency>
             <dependency>
                 <groupId>woodstox</groupId>
                 <artifactId>wstx-asl</artifactId>
@@ -228,11 +232,6 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>absent</groupId>
-                <artifactId>zip64</artifactId>
-                <version>1.01</version>
-            </dependency>
-            <dependency>
                 <groupId>struts</groupId>
                 <artifactId>struts</artifactId>
                 <version>1.2.9</version>
@@ -246,6 +245,26 @@
                 <groupId>jboss</groupId>
                 <artifactId>jboss-ejb3x</artifactId>
                 <version>4.2.3.GA</version>
+            </dependency>
+            <dependency>
+                <groupId>absent</groupId>
+                <artifactId>zip64</artifactId>
+                <version>1.01</version>
+            </dependency>
+            <dependency>
+                <groupId>absent</groupId>
+                <artifactId>jhove</artifactId>
+                <version>1.6</version>
+            </dependency>
+            <dependency>
+                <groupId>absent</groupId>
+                <artifactId>jhove-handler</artifactId>
+                <version>1.6</version>
+            </dependency>
+            <dependency>
+                <groupId>absent</groupId>
+                <artifactId>jhove-module</artifactId>
+                <version>1.6</version>
             </dependency>
             <!--<dependency>-->
             <!--<groupId>javax.xml.bind</groupId>-->

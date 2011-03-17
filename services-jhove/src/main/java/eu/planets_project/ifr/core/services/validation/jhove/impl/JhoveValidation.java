@@ -44,8 +44,6 @@ public final class JhoveValidation implements Validate, Serializable {
 
     /**
      * {@inheritDoc}
-     * @see Validate#validate(eu.planets_project.services.datatypes.DigitalObject,
-     *      java.net.URI, eu.planets_project.services.datatypes.Parameter)
      */
     public ValidateResult validate(final DigitalObject digitalObject,
             final URI format, final List<Parameter> parameters) {
@@ -87,8 +85,6 @@ public final class JhoveValidation implements Validate, Serializable {
      * @param fmt The pronom URI the binary should be validated against
      * @return Returns true if the given pronom URI describes the given binary
      *         file, else false
-     * @see eu.planets_project.services.validate.BasicValidateOneBinary#basicValidateOneBinary(byte[],
-     *      java.net.URI)
      */
     private boolean basicValidateOneBinary(final DigitalObject digitalObject,
             final URI fmt) {
