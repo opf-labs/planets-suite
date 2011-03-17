@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=Zip64File.jar -DgroupId=absent -DartifactId=zip64 -Dversion=1.01 -Dpackaging=jar
