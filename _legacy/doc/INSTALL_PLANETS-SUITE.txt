@@ -1,0 +1,58 @@
+********************************************************************************
+*                           PLANETS SOFTWARE SUITE                             *
+*                                                                              *
+*                          Installation Instructions                           *
+*                                                                              *
+*  Author: Andrew Jackson (BL), Carl Wilson (BL)                               *
+*  Last changed on 21/06/2010 by Carl Wilson (BL)                              *
+********************************************************************************
+
+Before installing the Planets-Suite software you should have already installed the
+Planets-Server project, (see http://sourceforge.net/projects/planets-server).  This
+sets up a customised JBOSS server, which is required to run the Planets Software Suite.
+
+(1) checkout planets-server from the SourceForge:
+svn checkout https://planets-server.svn.sourceforge.net/svnroot/planets-server/trunk planets-server
+
+Installing the PLANETS Suite software
+--------------------------------------
+(1) checkout planets-suite from the SourceForge:
+svn checkout https://planets-suite.svn.sourceforge.net/svnroot/planets-suite/trunk planets-suite
+
+(2) create a build.properties file from the build.properties.template in planets-suite
+
+(3) modify (at least all required) properties in the planets-server.properties file
+
+    - Set the root directory of the JBOSS install: if_server.dir
+    - Set the planets config directory: if_server.conf
+    - Set the planets data registry config directory: if_server.doms.config.dir
+    - Add your required server details, such as name, and ports
+
+(4) run "ant deploy:framework" from %checkout_dir%
+    This will install the Planets Suite web GUI applications to the JBOSS server at if-server.dir
+    You should now be able start the local IF instanceL
+    
+        - From if_server.dir/bin start JBOSS (./run.sh from linux, run.bat for windows)
+        - Once JBOSS has started you should be able to see the login page at
+          http://servername:port, the default is http://localhost:8080
+          the default login is admin / admin, or user / user
+          
+(5) run "ant deploy:testbed" from %checkout_dir%
+	This will install the Planets testbed application
+
+(6) run "ant deploy:services" from %checkout_dir% to build and deploy the core
+    digital preservation services that are part of Planets-Suite 
+
+N.B.  running "ant deploy:all" to effectively run stages 4-6
+
+Planets-Contrib
+---------------
+More digital preservation services can be found at the Planets Suite - Contributions project page
+http://sourceforge.net/projects/planets-contrib/ .
+
+IF Developers
+-------------
+The IF developers can be contacted on 'interoperability-framework@planets-project.eu'.
+
+When reporting errors, please include as much information as you can, including any 
+relevant logging information and stack traces.
