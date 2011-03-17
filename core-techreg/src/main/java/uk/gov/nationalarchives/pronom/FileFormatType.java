@@ -49,8 +49,8 @@ public class FileFormatType {
 
     @XmlElementRefs({
         @XmlElementRef(name = "HasPriorityOverFileFormatID", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class),
-        @XmlElementRef(name = "Extension", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class),
-        @XmlElementRef(name = "InternalSignatureID", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class)
+        @XmlElementRef(name = "InternalSignatureID", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class),
+        @XmlElementRef(name = "Extension", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class)
     })
     protected List<JAXBElement<? extends Serializable>> internalSignatureIDOrExtensionOrHasPriorityOverFileFormatID;
     @XmlAttribute(name = "ID", required = true)
@@ -83,8 +83,8 @@ public class FileFormatType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link BigInteger }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link BigInteger }{@code >}
      * {@link JAXBElement }{@code <}{@link BigInteger }{@code >}
      * 
      * 

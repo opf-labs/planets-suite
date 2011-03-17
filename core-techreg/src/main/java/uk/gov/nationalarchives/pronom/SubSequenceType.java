@@ -56,9 +56,9 @@ public class SubSequenceType {
     @XmlElement(name = "DefaultShift", required = true)
     protected BigInteger defaultShift;
     @XmlElementRefs({
+        @XmlElementRef(name = "Shift", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class),
         @XmlElementRef(name = "LeftFragment", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class),
-        @XmlElementRef(name = "RightFragment", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class),
-        @XmlElementRef(name = "Shift", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class)
+        @XmlElementRef(name = "RightFragment", namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", type = JAXBElement.class)
     })
     protected List<JAXBElement<?>> shiftOrLeftFragmentOrRightFragment;
     @XmlAttribute(name = "Position", required = true)

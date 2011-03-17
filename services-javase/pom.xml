@@ -10,7 +10,7 @@
     <artifactId>services-javase</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>JavaSE Preservation Services</name>
+    <name>Planets Service - JavaSE</name>
     <dependencies>
         <dependency>
             <groupId>org.opf.suite</groupId>

@@ -25,26 +25,18 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _SubSequenceTypeLeftFragment_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "LeftFragment");
-    private final static QName _SubSequenceTypeShift_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "Shift");
-    private final static QName _SubSequenceTypeRightFragment_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "RightFragment");
     private final static QName _FileFormatTypeHasPriorityOverFileFormatID_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "HasPriorityOverFileFormatID");
     private final static QName _FileFormatTypeExtension_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "Extension");
     private final static QName _FileFormatTypeInternalSignatureID_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "InternalSignatureID");
+    private final static QName _SubSequenceTypeLeftFragment_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "LeftFragment");
+    private final static QName _SubSequenceTypeShift_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "Shift");
+    private final static QName _SubSequenceTypeRightFragment_QNAME = new QName("http://www.nationalarchives.gov.uk/pronom/SignatureFile", "RightFragment");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: uk.gov.nationalarchives.pronom
      * 
      */
     public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link ShiftType }
-     * 
-     */
-    public ShiftType createShiftType() {
-        return new ShiftType();
     }
 
     /**
@@ -56,27 +48,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetSignatureFileVersionV1 }
+     * Create an instance of {@link FragmentType }
      * 
      */
-    public GetSignatureFileVersionV1 createGetSignatureFileVersionV1() {
-        return new GetSignatureFileVersionV1();
+    public FragmentType createFragmentType() {
+        return new FragmentType();
     }
 
     /**
-     * Create an instance of {@link InternalSignatureType }
+     * Create an instance of {@link GetSignatureFileVersionV1Response }
      * 
      */
-    public InternalSignatureType createInternalSignatureType() {
-        return new InternalSignatureType();
+    public GetSignatureFileVersionV1Response createGetSignatureFileVersionV1Response() {
+        return new GetSignatureFileVersionV1Response();
     }
 
     /**
-     * Create an instance of {@link SubSequenceType }
+     * Create an instance of {@link Version }
      * 
      */
-    public SubSequenceType createSubSequenceType() {
-        return new SubSequenceType();
+    public Version createVersion() {
+        return new Version();
     }
 
     /**
@@ -96,19 +88,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetSignatureFileV1Response }
+     * Create an instance of {@link GetSignatureFileVersionV1 }
      * 
      */
-    public GetSignatureFileV1Response createGetSignatureFileV1Response() {
-        return new GetSignatureFileV1Response();
+    public GetSignatureFileVersionV1 createGetSignatureFileVersionV1() {
+        return new GetSignatureFileVersionV1();
     }
 
     /**
-     * Create an instance of {@link GetSignatureFileVersionV1Response }
+     * Create an instance of {@link InternalSignatureType }
      * 
      */
-    public GetSignatureFileVersionV1Response createGetSignatureFileVersionV1Response() {
-        return new GetSignatureFileVersionV1Response();
+    public InternalSignatureType createInternalSignatureType() {
+        return new InternalSignatureType();
     }
 
     /**
@@ -120,27 +112,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SignatureFileType.FileFormatCollection }
+     * Create an instance of {@link ShiftType }
      * 
      */
-    public SignatureFileType.FileFormatCollection createSignatureFileTypeFileFormatCollection() {
-        return new SignatureFileType.FileFormatCollection();
-    }
-
-    /**
-     * Create an instance of {@link SignatureFileType.InternalSignatureCollection }
-     * 
-     */
-    public SignatureFileType.InternalSignatureCollection createSignatureFileTypeInternalSignatureCollection() {
-        return new SignatureFileType.InternalSignatureCollection();
-    }
-
-    /**
-     * Create an instance of {@link FragmentType }
-     * 
-     */
-    public FragmentType createFragmentType() {
-        return new FragmentType();
+    public ShiftType createShiftType() {
+        return new ShiftType();
     }
 
     /**
@@ -152,38 +128,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Version }
+     * Create an instance of {@link SignatureFileType.InternalSignatureCollection }
      * 
      */
-    public Version createVersion() {
-        return new Version();
+    public SignatureFileType.InternalSignatureCollection createSignatureFileTypeInternalSignatureCollection() {
+        return new SignatureFileType.InternalSignatureCollection();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FragmentType }{@code >}}
+     * Create an instance of {@link SignatureFileType.FileFormatCollection }
      * 
      */
-    @XmlElementDecl(namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", name = "LeftFragment", scope = SubSequenceType.class)
-    public JAXBElement<FragmentType> createSubSequenceTypeLeftFragment(FragmentType value) {
-        return new JAXBElement<FragmentType>(_SubSequenceTypeLeftFragment_QNAME, FragmentType.class, SubSequenceType.class, value);
+    public SignatureFileType.FileFormatCollection createSignatureFileTypeFileFormatCollection() {
+        return new SignatureFileType.FileFormatCollection();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ShiftType }{@code >}}
+     * Create an instance of {@link SubSequenceType }
      * 
      */
-    @XmlElementDecl(namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", name = "Shift", scope = SubSequenceType.class)
-    public JAXBElement<ShiftType> createSubSequenceTypeShift(ShiftType value) {
-        return new JAXBElement<ShiftType>(_SubSequenceTypeShift_QNAME, ShiftType.class, SubSequenceType.class, value);
+    public SubSequenceType createSubSequenceType() {
+        return new SubSequenceType();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link FragmentType }{@code >}}
+     * Create an instance of {@link GetSignatureFileV1Response }
      * 
      */
-    @XmlElementDecl(namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", name = "RightFragment", scope = SubSequenceType.class)
-    public JAXBElement<FragmentType> createSubSequenceTypeRightFragment(FragmentType value) {
-        return new JAXBElement<FragmentType>(_SubSequenceTypeRightFragment_QNAME, FragmentType.class, SubSequenceType.class, value);
+    public GetSignatureFileV1Response createGetSignatureFileV1Response() {
+        return new GetSignatureFileV1Response();
     }
 
     /**
@@ -211,6 +184,33 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", name = "InternalSignatureID", scope = FileFormatType.class)
     public JAXBElement<BigInteger> createFileFormatTypeInternalSignatureID(BigInteger value) {
         return new JAXBElement<BigInteger>(_FileFormatTypeInternalSignatureID_QNAME, BigInteger.class, FileFormatType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FragmentType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", name = "LeftFragment", scope = SubSequenceType.class)
+    public JAXBElement<FragmentType> createSubSequenceTypeLeftFragment(FragmentType value) {
+        return new JAXBElement<FragmentType>(_SubSequenceTypeLeftFragment_QNAME, FragmentType.class, SubSequenceType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ShiftType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", name = "Shift", scope = SubSequenceType.class)
+    public JAXBElement<ShiftType> createSubSequenceTypeShift(ShiftType value) {
+        return new JAXBElement<ShiftType>(_SubSequenceTypeShift_QNAME, ShiftType.class, SubSequenceType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link FragmentType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile", name = "RightFragment", scope = SubSequenceType.class)
+    public JAXBElement<FragmentType> createSubSequenceTypeRightFragment(FragmentType value) {
+        return new JAXBElement<FragmentType>(_SubSequenceTypeRightFragment_QNAME, FragmentType.class, SubSequenceType.class, value);
     }
 
 }

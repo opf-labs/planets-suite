@@ -10,7 +10,7 @@
     <artifactId>framework-wee</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Planets Framework Workflow Execution Engine</name>
+    <name>Planets Framework - Workflow Execution Engine</name>
     <dependencies>
     </dependencies>
 </project>
