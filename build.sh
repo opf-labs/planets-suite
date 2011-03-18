@@ -26,7 +26,7 @@ cd services-jtidy; mvn $MVN; cd ..
 # cd services-metadata; mvn $MVN; cd ..
 cd services-odf; mvn $MVN; cd ..
 cd services-pdfbox; mvn $MVN; cd ..
-#cd services-sanselan; mvn $MVN; cd ..
+cd services-sanselan; mvn $MVN; cd ..
 cd services-simple; mvn $MVN; cd ..
 # cd webapp-plato; mvn $MVN; cd ..
 # cd webapp-testbed; mvn $MVN; cd ..
