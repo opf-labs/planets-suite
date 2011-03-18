@@ -47,8 +47,9 @@
             <artifactId>catalina</artifactId>
         </dependency>
         <dependency>
-            <groupId>absent</groupId>
-            <artifactId>zip64</artifactId>
+            <groupId>net.sourceforge.zip64file</groupId>
+            <artifactId>zip64file</artifactId>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>struts</groupId>

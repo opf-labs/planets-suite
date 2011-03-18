@@ -83,6 +83,7 @@
         <module>core-services</module>
         <module>core-techreg</module>
         <module>core-utils</module>
+        <module>external-zip64file</module>
         <module>framework-admin</module>
         <module>framework-generic</module>
         <module>framework-selfreg</module>
