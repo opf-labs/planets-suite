@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
 import javax.jws.WebService;
 
 import org.apache.commons.io.FileUtils;
@@ -37,8 +35,6 @@ import eu.planets_project.services.utils.ServiceUtils;
 /**
  * Generic Migration.
  */
-@Stateless
-@Remote(Migrate.class)
 @WebService(name = GenericMigration.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
 public class GenericMigration implements Migrate, Serializable {
     private static final long serialVersionUID = -2186431821310098736L;
