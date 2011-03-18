@@ -12,9 +12,9 @@ import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.xml.ws.soap.MTOM;
 
-import uk.gov.nationalarchives.droid.AnalysisController;
-import uk.gov.nationalarchives.droid.FileFormatHit;
-import uk.gov.nationalarchives.droid.IdentificationFile;
+//import uk.gov.nationalarchives.droid.AnalysisController;
+//import uk.gov.nationalarchives.droid.FileFormatHit;
+//import uk.gov.nationalarchives.droid.IdentificationFile;
 
 import com.sun.xml.ws.developer.StreamingAttachment;
 
@@ -32,6 +32,7 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ServiceUtils;
+import uk.gov.nationalarchives.droid.core.signature.FileFormatHit;
 
 /**
  * Droid identification service.

@@ -12,5 +12,25 @@
     <packaging>war</packaging>
     <name>Planets Service - Droid</name>
     <dependencies>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-services</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-techreg</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-utils</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.nationalarchives</groupId>
+            <artifactId>droid-core</artifactId>
+            <version>6.0</version>
+        </dependency>
     </dependencies>
 </project>
