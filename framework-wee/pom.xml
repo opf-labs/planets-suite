@@ -12,5 +12,15 @@
     <packaging>war</packaging>
     <name>Planets Framework - Workflow Execution Engine</name>
     <dependencies>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>core-utils</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opf.suite</groupId>
+            <artifactId>framework-storage</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
