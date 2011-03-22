@@ -22,7 +22,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.soap.encoding.soapenc.Base64;
+import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -93,7 +93,7 @@ public class FileHandler {
 	 * @return
 	 */
 	public static byte[] decodeBase64EncodedString(String encodedString) {
-		return Base64.decode(encodedString);
+		return Base64.decodeBase64(encodedString);
 	}
 	
 	/**
@@ -129,7 +129,7 @@ public class FileHandler {
 	 * @return
 	 */
 	public static String base64EncodeBytes(byte[] decodedBytes) {
-		return Base64.encode(decodedBytes);
+		return Base64.encodeBase64String(decodedBytes);
 	}
 	/**
 	 * 

@@ -111,7 +111,7 @@
         <repository>
             <id>jboss-public-repository-group</id>
             <name>JBoss Public Maven Repository Group</name>
-            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
@@ -205,6 +205,11 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-core</artifactId>
                 <version>2.9.1</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>javax.mail</groupId>
@@ -315,28 +320,28 @@
             <dependency>
                 <groupId>javax.jcr</groupId>
                 <artifactId>jcr</artifactId>
-                <version>2.0</version>
+                <version>1.0</version>
             </dependency>
-            <!--<dependency>-->
-                <!--<groupId>org.richfaces.framework</groupId>-->
-                <!--<artifactId>richfaces-api</artifactId>-->
-                <!--<version>${richfaces.version}</version>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-                <!--<groupId>org.richfaces.framework</groupId>-->
-                <!--<artifactId>richfaces-impl</artifactId>-->
-                <!--<version>${richfaces.version}</version>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-                <!--<groupId>org.richfaces.framework</groupId>-->
-                <!--<artifactId>richfaces-impl-jsf2</artifactId>-->
-                <!--<version>${richfaces.version}</version>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-                <!--<groupId>org.apache.myfaces.tomahawk</groupId>-->
-                <!--<artifactId>tomahawk</artifactId>-->
-                <!--<version>1.1.10</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>org.richfaces.framework</groupId>
+                <artifactId>richfaces-api</artifactId>
+                <version>${richfaces.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.richfaces.framework</groupId>
+                <artifactId>richfaces-impl</artifactId>
+                <version>${richfaces.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.richfaces.ui</groupId>
+                <artifactId>richfaces-ui</artifactId>
+                <version>${richfaces.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.myfaces.tomahawk</groupId>
+                <artifactId>tomahawk</artifactId>
+                <version>1.1.10</version>
+            </dependency>
             <dependency>
                 <groupId>se.kb.oai</groupId>
                 <artifactId>oai4j</artifactId>
@@ -393,7 +398,7 @@
         <jdkLevel>1.6</jdkLevel>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <richfaces.version>3.3.3-Final</richfaces.version>
+        <richfaces.version>3.3.3.Final</richfaces.version>
     </properties>
 
 </project>
