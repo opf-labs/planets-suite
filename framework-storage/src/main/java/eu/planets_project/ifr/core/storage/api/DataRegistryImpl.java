@@ -19,9 +19,9 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
+//import org.jboss.annotation.ejb.LocalBinding;
+//import org.jboss.annotation.ejb.RemoteBinding;
+//import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
@@ -44,9 +44,9 @@ import eu.planets_project.services.datatypes.Metadata;
 @Stateless(mappedName="data/DataRegistry")
 @Local(DataRegistry.class)
 @Remote(DataRegistry.class)
-@LocalBinding(jndiBinding="planets-project.eu/DataRegistry/local")
-@RemoteBinding(jndiBinding="planets-project.eu/DataRegistry/remote")
-@SecurityDomain("PlanetsRealm")
+//@LocalBinding(jndiBinding="planets-project.eu/DataRegistry/local")
+//@RemoteBinding(jndiBinding="planets-project.eu/DataRegistry/remote")
+//@SecurityDomain("PlanetsRealm")
 class DataRegistryImpl implements DataRegistry {
 	// The logger
 	private static Logger log = Logger.getLogger(DataRegistryImpl.class.getName());

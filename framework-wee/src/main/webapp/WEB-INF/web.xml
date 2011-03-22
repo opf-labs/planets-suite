@@ -14,10 +14,10 @@ http://www.apache.org/licenses/LICENSE-2.0 -->
 
   <display-name>WorkflowExecutionEngine</display-name>
 
-  <servlet>
-    <servlet-name>ContextServlet</servlet-name>
-    <servlet-class>eu.planets_project.ifr.core.wee.gui.WeeContextServlet</servlet-class>
-  </servlet>
+  <!--<servlet>-->
+    <!--<servlet-name>ContextServlet</servlet-name>-->
+    <!--<servlet-class>eu.planets_project.ifr.core.wee.gui.WeeContextServlet</servlet-class>-->
+  <!--</servlet>-->
 
   <servlet>
     <servlet-name>PortComponentLinkServlet</servlet-name>
@@ -36,10 +36,10 @@ http://www.apache.org/licenses/LICENSE-2.0 -->
   
   <!-- now the mappings -->
   
-  <servlet-mapping>
-    <servlet-name>ContextServlet</servlet-name>
-    <url-pattern>/wee-monitor/*</url-pattern>
-  </servlet-mapping>
+  <!--<servlet-mapping>-->
+    <!--<servlet-name>ContextServlet</servlet-name>-->
+    <!--<url-pattern>/wee-monitor/*</url-pattern>-->
+  <!--</servlet-mapping>-->
 
   <servlet-mapping>
     <servlet-name>PortComponentLinkServlet</servlet-name>

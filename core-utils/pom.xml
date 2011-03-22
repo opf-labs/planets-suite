@@ -47,17 +47,16 @@
             <artifactId>catalina</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.sourceforge.zip64file</groupId>
-            <artifactId>zip64file</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        <dependency>
             <groupId>struts</groupId>
             <artifactId>struts</artifactId>
         </dependency>
         <dependency>
             <groupId>antlr</groupId>
             <artifactId>antlr</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>absent</groupId>
+            <artifactId>zip64</artifactId>
         </dependency>
     </dependencies>
 </project>

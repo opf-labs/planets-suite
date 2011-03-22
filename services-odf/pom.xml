@@ -39,9 +39,5 @@
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
         </dependency>
-        <dependency>
-            <groupId>absent</groupId>
-            <artifactId>zip64</artifactId>
-        </dependency>
     </dependencies>
 </project>

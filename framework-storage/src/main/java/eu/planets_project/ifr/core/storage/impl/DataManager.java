@@ -33,9 +33,9 @@ import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 import javax.xml.ws.soap.MTOM;
 
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
+//import org.jboss.annotation.ejb.LocalBinding;
+//import org.jboss.annotation.ejb.RemoteBinding;
+//import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DataManagerRemote;
@@ -76,11 +76,11 @@ import eu.planets_project.ifr.core.storage.impl.util.PDURI;
 @Stateless(mappedName="data/LocalDataManager")
 @Local(DataManagerLocal.class)
 @Remote(DataManagerRemote.class)
-@LocalBinding(jndiBinding="planets-project.eu/DataManager/local")
-@RemoteBinding(jndiBinding="planets-project.eu/DataManager/remote")
+//@LocalBinding(jndiBinding="planets-project.eu/DataManager/local")
+//@RemoteBinding(jndiBinding="planets-project.eu/DataManager/remote")
 @MTOM
 @javax.jws.soap.SOAPBinding(style = SOAPBinding.Style.RPC)
-@SecurityDomain("PlanetsRealm")
+//@SecurityDomain("PlanetsRealm")
 //@RunAs("admin")
 public class DataManager implements DataManagerRemote, DataManagerLocal {
 

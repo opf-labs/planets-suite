@@ -11,12 +11,12 @@ cd core-utils; mvn $MVN; cd ..
 cd framework-generic; mvn $MVN; cd ..
 cd framework-admin; mvn $MVN; cd ..
 cd framework-storage; mvn $MVN; cd ..
+# cd framework-wee; mvn $MVN; cd ..
 # cd framework-selfreg; mvn $MVN; cd ..
 # cd framework-servreg; mvn $MVN; cd ..
 # cd framework-techreg; mvn $MVN; cd ..
 # cd framework-users; mvn $MVN; cd ..
 # cd framework-wdt; mvn $MVN; cd ..
-# cd framework-wee; mvn $MVN; cd ..
 # cd services-droid; mvn $MVN; cd ..
 cd services-javadigest; mvn $MVN; cd ..
 cd services-javase; mvn $MVN; cd ..

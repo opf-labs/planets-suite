@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jboss.logging.Logger;
-import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.management.EndpointRegistry;
+import org.apache.log4j.Logger;
 
 /**
  * The servlet that is associated with context /wee-monitor
@@ -37,7 +35,7 @@ public abstract class MonitoringContextServlet extends HttpServlet
    protected final Logger log = Logger.getLogger(MonitoringContextServlet.class);
 
 //   protected ServiceEndpointManager epManager;
-   protected EndpointRegistry epManager;
+//   protected EndpointRegistry epManager;
 
 
    public void init(ServletConfig config) throws ServletException
@@ -73,76 +71,79 @@ public abstract class MonitoringContextServlet extends HttpServlet
 
       // begin iteration
       
-      Set<ObjectName> endpoints = epManager.getEndpoints(); //getRegisteredEndpoints(requestURL);
+//      Set<ObjectName> endpoints = epManager.getEndpoints(); //getRegisteredEndpoints(requestURL);
+//
+//      if(endpoints.isEmpty())
+//      {
+//         writer.print("<tr>");
+//         writer.print("	<td><h3>There are currently no PLANETS workflows deployed</h3></td>");
+//         writer.print("</tr>");
+//      }
+//
+//      for(ObjectName on : endpoints)
+//      {
+//    	 Endpoint ep = epManager.getEndpoint(on);
+//    	 if(ep.getAddress().endsWith("Workflow")){
+//	         writer.print("<tr>");
+//	         writer.print("	<td>ServiceEndpointID</td>");
+//	         writer.print("	<td>"+ep.getProperty(Endpoint.SEPID_DOMAIN_ENDPOINT)+"</td>");
+//	         writer.print("</tr>");
+//	         writer.print("<tr>");
+//	         writer.print("	<td>ServiceEndpointAddress</td>");
+//	         writer.print("	<td><a href='"+ep.getAddress()+"?wsdl'>"+ep.getAddress()+"?wsdl</a></td>");
+//	         writer.print("</tr>");
+//	         writer.print("<tr>");
+//	         writer.print("	<td colspan=2>");
+//	         writer.print("	");
+//	         writer.print("<fieldset><legend>PLANETS Workflow Data</legend>");
+//	         writer.print("<table width='650' class='item-date'>");
+//	         writer.print("<tr>");
+//	         writer.print("	<td><b>StartTime</b></td>");
+//	         writer.print("	<td><b>StopTime</b></td>");
+//	         writer.print("	<td></td>");
+//	         writer.print("</tr>");
+//	         writer.print("<tr>");
+//	         writer.print("	<td>"+ep.getEndpointMetrics().getStartTime()+"</td>");
+//
+//	         String stopTime = ep.getEndpointMetrics().getStopTime() != null ? ep.getEndpointMetrics().getStopTime().toString() : "";
+//	         writer.print("	<td>"+stopTime+"</td>");
+//	         writer.print("	<td></td>");
+//	         writer.print("</tr>");
+//	         writer.print("<tr>");
+//
+//	         writer.print("	<td><b>RequestCount</b></td>");
+//	         writer.print("	<td><b>ResponseCount</b></td>");
+//	         writer.print("	<td><b>FaultCount</b></td>");
+//	         writer.print("</tr>");
+//	         writer.print("<tr>");
+//	         writer.print("	<td>"+ep.getEndpointMetrics().getRequestCount()+"</td>");
+//	         writer.print("	<td>"+ep.getEndpointMetrics().getResponseCount()+"</td>");
+//	         writer.print("	<td>"+ep.getEndpointMetrics().getFaultCount()+"</td>");
+//	         writer.print("</tr>");
+//	         writer.print("<tr>");
+//	         writer.print("	<td><b>MinProcessingTime</b></td>");
+//	         writer.print("	<td><b>MaxProcessingTime</b></td>");
+//	         writer.print("	<td><b>AvgProcessingTime</b></td>");
+//	         writer.print("</tr>");
+//	         writer.print("<tr>");
+//	         writer.print("	<td>"+ep.getEndpointMetrics().getMinProcessingTime()+"</td>");
+//	         writer.print("	<td>"+ep.getEndpointMetrics().getMaxProcessingTime()+"</td>");
+//	         writer.print("	<td>"+ep.getEndpointMetrics().getAverageProcessingTime()+"</td>");
+//	         writer.print("</tr>");
+//	         writer.print("");
+//	         writer.print("");
+//	         writer.print("</table></fieldset>");
+//	         writer.print("");
+//	         writer.print("	</td>");
+//	         writer.print("</tr>");
+//
+//	         writer.print("<tr><td colspan='3'>&nbsp;</td></tr>");
+//    	 }
+//      }
 
-      if(endpoints.isEmpty())
-      {
-         writer.print("<tr>");
-         writer.print("	<td><h3>There are currently no PLANETS workflows deployed</h3></td>");
-         writer.print("</tr>");
-      }
+       // todo: remove this line, when it has been done
+       writer.print("<tr><td><h1>FIXME</h1></td></tr>");
 
-      for(ObjectName on : endpoints)
-      {
-    	 Endpoint ep = epManager.getEndpoint(on);
-    	 if(ep.getAddress().endsWith("Workflow")){
-	         writer.print("<tr>");
-	         writer.print("	<td>ServiceEndpointID</td>");
-	         writer.print("	<td>"+ep.getProperty(Endpoint.SEPID_DOMAIN_ENDPOINT)+"</td>");
-	         writer.print("</tr>");
-	         writer.print("<tr>");
-	         writer.print("	<td>ServiceEndpointAddress</td>");
-	         writer.print("	<td><a href='"+ep.getAddress()+"?wsdl'>"+ep.getAddress()+"?wsdl</a></td>");
-	         writer.print("</tr>");
-	         writer.print("<tr>");
-	         writer.print("	<td colspan=2>");
-	         writer.print("	");
-	         writer.print("<fieldset><legend>PLANETS Workflow Data</legend>");
-	         writer.print("<table width='650' class='item-date'>");
-	         writer.print("<tr>");
-	         writer.print("	<td><b>StartTime</b></td>");
-	         writer.print("	<td><b>StopTime</b></td>");
-	         writer.print("	<td></td>");
-	         writer.print("</tr>");
-	         writer.print("<tr>");
-	         writer.print("	<td>"+ep.getEndpointMetrics().getStartTime()+"</td>");
-	
-	         String stopTime = ep.getEndpointMetrics().getStopTime() != null ? ep.getEndpointMetrics().getStopTime().toString() : "";
-	         writer.print("	<td>"+stopTime+"</td>");
-	         writer.print("	<td></td>");
-	         writer.print("</tr>");
-	         writer.print("<tr>");
-	
-	         writer.print("	<td><b>RequestCount</b></td>");
-	         writer.print("	<td><b>ResponseCount</b></td>");
-	         writer.print("	<td><b>FaultCount</b></td>");
-	         writer.print("</tr>");
-	         writer.print("<tr>");
-	         writer.print("	<td>"+ep.getEndpointMetrics().getRequestCount()+"</td>");
-	         writer.print("	<td>"+ep.getEndpointMetrics().getResponseCount()+"</td>");
-	         writer.print("	<td>"+ep.getEndpointMetrics().getFaultCount()+"</td>");
-	         writer.print("</tr>");
-	         writer.print("<tr>");
-	         writer.print("	<td><b>MinProcessingTime</b></td>");
-	         writer.print("	<td><b>MaxProcessingTime</b></td>");
-	         writer.print("	<td><b>AvgProcessingTime</b></td>");
-	         writer.print("</tr>");
-	         writer.print("<tr>");
-	         writer.print("	<td>"+ep.getEndpointMetrics().getMinProcessingTime()+"</td>");
-	         writer.print("	<td>"+ep.getEndpointMetrics().getMaxProcessingTime()+"</td>");
-	         writer.print("	<td>"+ep.getEndpointMetrics().getAverageProcessingTime()+"</td>");
-	         writer.print("</tr>");
-	         writer.print("");
-	         writer.print("");
-	         writer.print("</table></fieldset>");
-	         writer.print("");
-	         writer.print("	</td>");
-	         writer.print("</tr>");
-	
-	         writer.print("<tr><td colspan='3'>&nbsp;</td></tr>");
-    	 }
-      }
-      
       // end iteration
       writer.print("</table>");
       writer.print("");

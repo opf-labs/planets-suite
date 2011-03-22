@@ -28,7 +28,7 @@ import javax.jcr.query.QueryResult;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.jboss.annotation.security.SecurityDomain;
+//import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.storage.api.InvocationEvent;
 import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
@@ -43,7 +43,7 @@ import eu.planets_project.ifr.core.storage.common.PlanetsJCRAccessManager;
  * @author CFwilson
  *
  */
-@SecurityDomain("PlanetsRealm")
+//@SecurityDomain("PlanetsRealm")
 public class JCRManager {
 	// Static constant holding the path to the properties file
 	private static final String PROP_FILE_PATH = "eu/planets_project/ifr/core/storage/jcrmanager.properties";

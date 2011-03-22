@@ -13,7 +13,7 @@ import javax.jcr.RepositoryException;
 import javax.naming.NamingException;
 import javax.xml.soap.SOAPException;
 
-import org.jboss.annotation.ejb.LocalBinding;
+//import org.jboss.annotation.ejb.LocalBinding;
 
 import eu.planets_project.ifr.core.storage.api.InvocationEvent;
 import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
@@ -29,7 +29,7 @@ import eu.planets_project.ifr.core.storage.impl.util.JCRManager;
  */
 @Stateless(mappedName="data/WorkflowManager")
 @Local(WorkflowManager.class)
-@LocalBinding(jndiBinding="planets-project.eu/WorkflowManager")
+//@LocalBinding(jndiBinding="planets-project.eu/WorkflowManager")
 public class WorkflowManagerImpl implements WorkflowManager {
 	// PLANETS logger
 	private static Logger log = Logger.getLogger(WorkflowManagerImpl.class.getName());

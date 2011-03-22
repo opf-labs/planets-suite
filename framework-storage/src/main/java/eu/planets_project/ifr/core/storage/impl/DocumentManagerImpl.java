@@ -29,7 +29,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.jboss.annotation.ejb.LocalBinding;
+//import org.jboss.annotation.ejb.LocalBinding;
 import org.w3c.dom.Document;
 
 import eu.planets_project.ifr.core.storage.api.DocumentManager;
@@ -43,7 +43,7 @@ import eu.planets_project.ifr.core.storage.impl.util.JCRManager;
  */
 @Stateless(mappedName="data/DocumentManager")
 @Local(DocumentManager.class)
-@LocalBinding(jndiBinding="planets-project.eu/DocumentManager")
+//@LocalBinding(jndiBinding="planets-project.eu/DocumentManager")
 public class DocumentManagerImpl implements DocumentManager {
 	// PLANETS logger
 	private static Logger log = Logger.getLogger(DocumentManagerImpl.class.getName());
