@@ -10,9 +10,9 @@ cd core-techreg; mvn $MVN; cd ..
 cd core-utils; mvn $MVN; cd ..
 cd framework-generic; mvn $MVN; cd ..
 cd framework-admin; mvn $MVN; cd ..
+cd framework-storage; mvn $MVN; cd ..
 # cd framework-selfreg; mvn $MVN; cd ..
 # cd framework-servreg; mvn $MVN; cd ..
-# cd framework-storage; mvn $MVN; cd ..
 # cd framework-techreg; mvn $MVN; cd ..
 # cd framework-users; mvn $MVN; cd ..
 # cd framework-wdt; mvn $MVN; cd ..
