@@ -135,6 +135,11 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>k-int</id>
+            <name>k-int</name>
+            <url>http://developer.k-int.com/maven2/</url>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -163,7 +168,7 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
+            <version>1.2.14</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -219,7 +224,7 @@
             <dependency>
                 <groupId>javax.faces</groupId>
                 <artifactId>jsf-api</artifactId>
-                <version>1.2</version>
+                <version>1.2_02</version>
             </dependency>
             <dependency>
                 <groupId>josso</groupId>
@@ -259,6 +264,11 @@
             <dependency>
                 <groupId>jboss</groupId>
                 <artifactId>jboss-ejb3x</artifactId>
+                <version>4.2.3.GA</version>
+            </dependency>
+            <dependency>
+                <groupId>jboss</groupId>
+                <artifactId>jboss-annotations-ejb3</artifactId>
                 <version>4.2.3.GA</version>
             </dependency>
             <dependency>
@@ -307,32 +317,45 @@
                 <artifactId>jcr</artifactId>
                 <version>2.0</version>
             </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.richfaces.framework</groupId>-->
+                <!--<artifactId>richfaces-api</artifactId>-->
+                <!--<version>${richfaces.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.richfaces.framework</groupId>-->
+                <!--<artifactId>richfaces-impl</artifactId>-->
+                <!--<version>${richfaces.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.richfaces.framework</groupId>-->
+                <!--<artifactId>richfaces-impl-jsf2</artifactId>-->
+                <!--<version>${richfaces.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.apache.myfaces.tomahawk</groupId>-->
+                <!--<artifactId>tomahawk</artifactId>-->
+                <!--<version>1.1.10</version>-->
+            <!--</dependency>-->
             <dependency>
-                <groupId>org.richfaces.framework</groupId>
-                <artifactId>richfaces-api</artifactId>
-                <version>${richfaces.version}</version>
+                <groupId>se.kb.oai</groupId>
+                <artifactId>oai4j</artifactId>
+                <version>0.6b1</version>
             </dependency>
             <dependency>
-                <groupId>org.richfaces.framework</groupId>
-                <artifactId>richfaces-ui</artifactId>
-                <version>${richfaces.version}</version>
+                <groupId>org.apache.jackrabbit</groupId>
+                <artifactId>jackrabbit-core</artifactId>
+                <version>1.6.4</version>
             </dependency>
             <dependency>
-                <groupId>org.richfaces.framework</groupId>
-                <artifactId>richfaces-impl</artifactId>
-                <version>${richfaces.version}</version>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>3.1</version>
             </dependency>
             <!--<dependency>-->
             <!--<groupId>javax.xml.bind</groupId>-->
             <!--<artifactId>jaxb-api</artifactId>-->
             <!--<version>2.1</version>-->
-            <!--<scope>compile</scope>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--<groupId>log4j</groupId>-->
-            <!--<artifactId>log4j</artifactId>-->
-            <!--<version>1.2.14</version>-->
-            <!--<type>jar</type>-->
             <!--<scope>compile</scope>-->
             <!--</dependency>-->
             <!--<dependency>-->
@@ -357,13 +380,6 @@
             <!--<scope>compile</scope>-->
             <!--</dependency>-->
             <!--<dependency>-->
-            <!--<groupId>javax.faces</groupId>-->
-            <!--<artifactId>jsf-api</artifactId>-->
-            <!--<version>1.2_02</version>-->
-            <!--<type>jar</type>-->
-            <!--<scope>compile</scope>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
             <!--<groupId>org.apache.tomcat</groupId>-->
             <!--<artifactId>catalina</artifactId>-->
             <!--<version>6.0.28</version>-->
@@ -377,7 +393,7 @@
         <jdkLevel>1.6</jdkLevel>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <richfaces.version>3.3.2.SR1</richfaces.version>
+        <richfaces.version>3.3.3-Final</richfaces.version>
     </properties>
 
 </project>
