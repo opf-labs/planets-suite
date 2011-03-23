@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
+  <template>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.JIPDemonstrationWorkflow_v1_02122009</class>
+  </template>
+  <services>
+    <service id="migrate1">
+      <endpoint>http://localhost:8080/pserv-pa-sanselan/SanselanMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_from_fmt</name>
+          <value>planets:fmt/ext/png</value>
+        </param>
+        <param>
+          <name>planets:service/migration/input/migrate_to_fmt</name>
+          <value>planets:fmt/ext/gif</value>
+        </param>
+		<!-- BSpecify 1 for raw output, 0 for ascii output -->
+        <param>
+          <name>pbm-raw</name>
+          <value>1</value>
+        </param>
+      </parameters>
+    </service>
+    <service id="migrate2">
+      <endpoint>http://localhost:8080/pserv-pa-java-se/JavaImageIOMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_from_fmt</name>
+          <value>planets:fmt/ext/gif</value>
+        </param>
+        <param>
+          <name>planets:service/migration/input/migrate_to_fmt</name>
+          <value>planets:fmt/ext/jpg</value>
+        </param>
+		<!-- Floating point number indicating the quality -->
+        <param>
+          <name>rate</name>
+          <value>1.0</value>
+        </param>
+		<!-- Integer indicating the number of resolution levels -->
+        <param>
+          <name>numrlvls</name>
+          <value>6</value>
+        </param>
+		<!-- Set the x-coordinate of the top-left corner of the image area to this value -->
+        <param>
+          <name>imgareatlx</name>
+          <value>0</value>
+        </param>
+		<!-- Set the y-coordinate of the top-left corner of the image area to this value -->
+        <param>
+          <name>imgareatly</name>
+          <value>0</value>
+        </param>
+		<!-- Set the nominal tile width to this value -->
+        <param>
+          <name>tilewidth</name>
+          <value>7000</value>
+        </param>
+		<!-- Set the nominal tile height to this value -->
+        <param>
+          <name>tileheight</name>
+          <value>7000</value>
+        </param>
+		<!-- Set the precinct width to this value. The argument w must be an integer power of two -->
+        <param>
+          <name>prcwidth</name>
+          <value>32768</value>
+        </param>
+		<!-- Set the precinct height to this value. The argument h must be an integer power of two -->
+        <param>
+          <name>prcheight</name>
+          <value>32768</value>
+        </param>
+      </parameters>
+    </service>
+    <service id="identify">
+      <endpoint>http://localhost:8080/pserv-pc-droid/Droid?wsdl</endpoint>
+    </service>
+    <service id="migrate3">
+      <endpoint>http://localhost:8080/pserv-pa-java-se/JavaImageIOMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_from_fmt</name>
+          <value>planets:fmt/ext/jpg</value>
+        </param>
+        <param>
+          <name>planets:service/migration/input/migrate_to_fmt</name>
+          <value>planets:fmt/ext/bmp</value>
+        </param>
+      </parameters>
+    </service>
+  </services>
+</workflowConf>

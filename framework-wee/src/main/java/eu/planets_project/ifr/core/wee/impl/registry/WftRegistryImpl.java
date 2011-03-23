@@ -15,7 +15,7 @@ import javax.jws.soap.SOAPBinding;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.annotation.ejb.RemoteBinding;
+//import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
@@ -34,7 +34,7 @@ import eu.planets_project.services.PlanetsServices;
  */
 @Stateless(name = WftRegistryImpl.NAME)
 @Remote(WftRegistryService.class)
-@RemoteBinding(jndiBinding = "planets-project.eu/"+WftRegistryService.NAME+"/remote")
+//@RemoteBinding(jndiBinding = "planets-project.eu/"+WftRegistryService.NAME+"/remote")
 @WebService(name=WftRegistryImpl.NAME,
 			serviceName = WftRegistryService.NAME, 
 			targetNamespace = PlanetsServices.NS,

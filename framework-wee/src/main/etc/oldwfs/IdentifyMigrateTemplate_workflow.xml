@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
+  <template>
+    <class>eu.planets_project.ifr.core.wee.impl.templates.IdentifyMigrateTemplate</class>
+  </template>
+  <services>
+    <service id="identify">
+      <endpoint>http://localhost:80/pserv-pc-droid/Droid?wsdl</endpoint>
+    </service>
+    <service id="migrate">
+      <endpoint>http://localhost:80/pserv-pa-imagemagick/ImageMagickMigrate?wsdl</endpoint>
+      <parameters>
+        <param>
+          <name>planets:service/migration/input/migrate_to_fmt</name>
+          <value>planets:fmt/ext/png</value>
+        </param>
+        <param>
+          <name>compressionType</name>
+          <value>7</value>
+        </param>
+        <param>
+          <name>compressionQuality</name>
+          <value>50</value>
+        </param>
+      </parameters>
+    </service>
+  </services>
+</workflowConf>

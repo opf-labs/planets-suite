@@ -14,13 +14,17 @@
     <dependencies>
         <dependency>
             <groupId>org.opf.suite</groupId>
-            <artifactId>core-utils</artifactId>
+            <artifactId>core-services</artifactId>
             <version>1.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.opf.suite</groupId>
-            <artifactId>framework-storage</artifactId>
+            <artifactId>core-utils</artifactId>
             <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.jcr</groupId>
+            <artifactId>jcr</artifactId>
         </dependency>
     </dependencies>
 </project>

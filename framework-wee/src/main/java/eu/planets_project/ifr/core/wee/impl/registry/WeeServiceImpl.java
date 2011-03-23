@@ -12,7 +12,7 @@ import javax.jws.soap.SOAPBinding;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.annotation.ejb.RemoteBinding;
+//import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.ifr.core.storage.api.DataRegistry;
 import eu.planets_project.ifr.core.storage.api.DataRegistryFactory;
@@ -30,7 +30,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 
 @Stateless(name=WeeServiceImpl.NAME)
 @Remote(WeeService.class)
-@RemoteBinding(jndiBinding = "planets-project.eu/"+WeeService.NAME+"/remote")
+//@RemoteBinding(jndiBinding = "planets-project.eu/"+WeeService.NAME+"/remote")
 @WebService(name= WeeServiceImpl.NAME, 
 			serviceName = WeeService.NAME, 
 			targetNamespace = PlanetsServices.NS,
