@@ -37,9 +37,5 @@
             <artifactId>pdfbox</artifactId>
             <version>0.7.3</version>
         </dependency>
-        <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-ejb3x</artifactId>
-        </dependency>
     </dependencies>
 </project>

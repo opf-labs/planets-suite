@@ -33,9 +33,5 @@
             <artifactId>commons-codec</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-ejb3x</artifactId>
-        </dependency>
     </dependencies>
 </project>

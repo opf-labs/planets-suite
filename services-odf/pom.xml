@@ -32,12 +32,12 @@
             <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-ejb3x</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>absent</groupId>
+            <artifactId>zip64</artifactId>
         </dependency>
     </dependencies>
 </project>

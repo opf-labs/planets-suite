@@ -23,10 +23,6 @@
             <version>1.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
         </dependency>
@@ -37,10 +33,6 @@
         <dependency>
             <groupId>josso</groupId>
             <artifactId>josso</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.faces</groupId>
-            <artifactId>jsf-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
