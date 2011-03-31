@@ -100,7 +100,10 @@
         <repository>
         	<id>planets-suite-repository</id>
         	<name>The Planets Suite Maven Repository, hosted by SourceForge.</name>
-        	<url>http://planets-suite.sourceforge.net/maven2/</url>
+        	<url>http://planets-suite.sourceforge.net/maven2/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
     <pluginRepositories>

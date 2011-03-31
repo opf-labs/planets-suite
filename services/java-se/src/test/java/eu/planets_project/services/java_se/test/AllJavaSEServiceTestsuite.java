@@ -20,5 +20,5 @@ import eu.planets_project.services.java_se.image.JavaImageIOMigrateTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { JavaImageIOIdentifyTest.class, JavaImageIOMigrateTest.class, JavaImageIOCompareTest.class })
 public class AllJavaSEServiceTestsuite {
-    public static final String TEST_FILE_LOCATION = "services/java-se/src/test/resources/";
+    public static final String TEST_FILE_LOCATION = "src/test/resources/";
 }

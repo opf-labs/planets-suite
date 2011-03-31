@@ -16,7 +16,7 @@
     <property name="src.resources" location="${app.dir}/src/main/resources"/>
 	<property name="src.config" location="${app.dir}/src/main/config" />
 	<property name="src.web" value="${app.dir}/src/main/webapp"/>
-    <property name="lib.dir" location="${app.dir}/lib"/>
+    <!-- property name="lib.dir" location="${app.dir}/lib"/ -->
     <property name="psuite.root.dir" location="../.." />
 	<property name="psuite.test.config" location="${psuite.root.dir}/test/config" />
 
@@ -41,7 +41,7 @@
 	<import file="${psuite.root.dir}/build.common.xml" />
 
 	<!-- Copy the registered services into the server config directory -->
-	<copy todir="${if_server.dir}/server/default/data/service-description-registry/" overwrite="true">
+	<copy todir="${if_server.dir}/server/default/data/service-description-registry/" overwrite="true" failonerror="false">
 		<fileset dir="src/main/resources/service-description-registry/">
 			<include name="*" />
 		</fileset>

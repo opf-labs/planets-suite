@@ -15,7 +15,6 @@
 package eu.planets_project.services.utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Properties;
@@ -124,7 +123,6 @@ public class WebContentHelper {
         
         try {
         	properties.load(this.getClass().getResourceAsStream(CONTENT_PROPERTIES_PATH));
-        	if(properties == null) throw new IOException();
         } catch(Exception e) {
         	logger.info("Unable to load content properties file: " + CONTENT_PROPERTIES_PATH);
         	return;

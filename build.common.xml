@@ -113,6 +113,9 @@
   </path>    
   
   <!-- The classpath elements for the current component -->
+  <if>
+    <isset property="lib.dir"/>
+    <then>
   <path id="component_classpath">
     
     <!-- specific libs -->
@@ -131,7 +134,23 @@
     <!-- So that we can get jndi.properties for InitialContext -->
     <pathelement location="${client.config}"/>
   </path>
-
+   </then>
+   <else>
+  <path id="component_classpath">
+    
+    <fileset dir="${psuite.root.dir}/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+    
+    <!--include our external resources as *.xml and *.props-->
+    <pathelement location="${src.resources}"/>
+    <pathelement location="${build.classes.dir}"/>
+    <!-- So that we can get jndi.properties for InitialContext -->
+    <pathelement location="${client.config}"/>
+  </path>
+   </else>
+   </if>
+  
   <!-- Build classpath -->
   <path id="classpath">
     <path refid="server_classpath"/>
@@ -652,7 +671,7 @@
       </then>
     </if>
 
-    <copy todir="${war.build.dir}/${app.name}/WEB-INF/classes">
+    <copy todir="${war.build.dir}/${app.name}/WEB-INF/classes" failonerror="false">
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />

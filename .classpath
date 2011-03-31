@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="core/services/src/main/java"/>
+	<classpathentry kind="src" path="core/techreg/src/test/java"/>
 	<classpathentry kind="src" path="core/services/src/test/java"/>
 	<classpathentry kind="src" path="core/techreg/src/main/java"/>
-	<classpathentry kind="src" path="core/techreg/src/test/java"/>
 	<classpathentry kind="src" path="core/utils/src/main/java"/>
 	<classpathentry kind="src" path="core/utils/src/test/java"/>
 	<classpathentry kind="src" path="framework/generic/src/main/java"/>

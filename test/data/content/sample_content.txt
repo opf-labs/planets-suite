@@ -1,2 +1,1 @@
-Some sample content.
-Another line.
+This folder contains sets of sample content.

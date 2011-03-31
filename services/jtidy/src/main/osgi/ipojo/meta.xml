@@ -1,0 +1,15 @@
+<ipojo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="org.apache.felix.ipojo http://felix.apache.org/ipojo/schemas/CURRENT/core.xsd
+	    org.apache.felix.ipojo.extender http://felix.apache.org/ipojo/schemas/CURRENT/extender-pattern.xsd"
+	xmlns="org.apache.felix.ipojo">
+	<component 
+		classname="eu.planets_project.services.migrate.jtidy.JTidy"
+		name="PlanetsServiceJTidy">
+		
+		<!-- provides a service of the impl's interface: Migrate -->
+		<provides />
+		<!--requires field="logger"/-->
+	</component>
+	
+	<instance component="PlanetsServiceJTidy" />
+</ipojo>

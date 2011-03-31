@@ -1,44 +1,40 @@
 package eu.planets_project.ifr.core.storage.impl.fedora;
 
-import eu.planets_project.ifr.core.common.conf.Configuration;
-import eu.planets_project.ifr.core.storage.impl.fedora.connector.planets.ContentdatastreamType;
-import eu.planets_project.ifr.core.storage.impl.fedora.connector.planets.MetadatastreamType;
-import eu.planets_project.ifr.core.storage.impl.fedora.connector.planets.MetadatastreamsType;
-import eu.planets_project.ifr.core.storage.impl.fedora.connector.planets.PlanetsDatastreamType;
-import eu.planets_project.ifr.core.storage.impl.fedora.connector.FedoraConnectionException;
-import eu.planets_project.ifr.core.storage.impl.fedora.connector.FedoraConnector;
-import eu.planets_project.ifr.core.storage.impl.fedora.connector.ParseException;
-import eu.planets_project.ifr.core.storage.impl.fedora.connector.StoreException;
-import eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl;
-import eu.planets_project.ifr.core.storage.impl.util.PDURI;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
-import eu.planets_project.ifr.core.storage.api.query.Query;
-import eu.planets_project.ifr.core.storage.api.query.QueryString;
-import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Metadata;
-
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.w3c.dom.Document;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.JAXBElement;
+import eu.planets_project.ifr.core.common.conf.Configuration;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManagerBase;
+import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.ifr.core.storage.impl.fedora.connector.FedoraConnectionException;
+import eu.planets_project.ifr.core.storage.impl.fedora.connector.FedoraConnector;
+import eu.planets_project.ifr.core.storage.impl.fedora.connector.ParseException;
+import eu.planets_project.ifr.core.storage.impl.fedora.connector.StoreException;
+import eu.planets_project.ifr.core.storage.impl.fedora.connector.planets.ContentdatastreamType;
+import eu.planets_project.ifr.core.storage.impl.fedora.connector.planets.MetadatastreamType;
+import eu.planets_project.ifr.core.storage.impl.fedora.connector.planets.MetadatastreamsType;
+import eu.planets_project.ifr.core.storage.impl.fedora.connector.planets.PlanetsDatastreamType;
+import eu.planets_project.ifr.core.storage.impl.util.PDURI;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Metadata;
 
 /**
  * The Fedora Digital Object Manager. Implements the DigitalObjectManager from planets.

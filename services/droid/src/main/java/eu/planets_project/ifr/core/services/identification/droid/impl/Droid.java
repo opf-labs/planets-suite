@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.soap.MTOM;
 
@@ -38,7 +37,6 @@ import eu.planets_project.services.utils.ServiceUtils;
  * Droid identification service.
  * @author Fabian Steeg, Carl Wilson
  */
-@Stateless
 @WebService(
 		name = Droid.NAME, 
 		serviceName = Identify.NAME, 

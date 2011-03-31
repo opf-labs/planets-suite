@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>planets-core</artifactId>
-        <groupId>planets-suite</groupId>
-        <version>1.0.1-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<artifactId>planets-core</artifactId>
+		<groupId>planets-suite</groupId>
+		<version>1.0.1-SNAPSHOT</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>planets-suite</groupId>
 	<artifactId>planets-core-techreg</artifactId>
@@ -15,64 +15,10 @@
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-compiler-plugin</artifactId>
     <configuration>
-     <source>1.5</source>
-     <target>1.5</target>
+     <source>1.6</source>
+     <target>1.6</target>
     </configuration>
    </plugin>
-			<plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-install-plugin</artifactId>
-            <executions>
-                <execution>
-                    <id>deploy-binary-droid-jar</id>
-                    <phase>validate</phase>
-                    <configuration>
-                        <file>${basedir}/lib/droid.jar</file>
-                        <repositoryLayout>default</repositoryLayout>
-                        <groupId>droid</groupId>
-                        <artifactId>droid</artifactId>
-                        <version>4.0.0</version>
-                        <packaging>jar</packaging>
-                        <generatePom>true</generatePom>
-                    </configuration>
-                    <goals>
-                        <goal>install-file</goal>
-                    </goals>
-                </execution>
-                <execution>
-                    <id>deploy-binary-jboss-ejb3-annotations-jar</id>
-                    <phase>validate</phase>
-                    <configuration>
-                        <file>${basedir}/lib/jboss-annotations-ejb3.jar</file>
-                        <repositoryLayout>default</repositoryLayout>
-                        <groupId>org.jboss</groupId>
-                        <artifactId>annotations-ejb3</artifactId>
-                        <version>1</version>
-                        <packaging>jar</packaging>
-                        <generatePom>true</generatePom>
-                    </configuration>
-                    <goals>
-                        <goal>install-file</goal>
-                    </goals>
-                </execution>
-                <execution>
-                    <id>deploy-binary-jboss-ejb3-jar</id>
-                    <phase>validate</phase>
-                    <configuration>
-                        <file>${basedir}/lib/jboss-ejb3x.jar</file>
-                        <repositoryLayout>default</repositoryLayout>
-                        <groupId>org.jboss</groupId>
-                        <artifactId>ejb3</artifactId>
-                        <version>1</version>
-                        <packaging>jar</packaging>
-                        <generatePom>true</generatePom>
-                    </configuration>
-                    <goals>
-                        <goal>install-file</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -95,13 +41,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>droid</groupId>
-			<artifactId>droid</artifactId>
-			<version>4.0.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
 			<version>2.3.2</version>
@@ -113,18 +52,6 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.1</version>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss</groupId>
-			<artifactId>annotations-ejb3</artifactId>
-			<version>1</version>
-            <scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss</groupId>
-			<artifactId>ejb3</artifactId>
-			<version>1</version>
-            <scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jdom</groupId>
@@ -141,4 +68,52 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+
+
+	<profiles>
+		<profile>
+			<id>build-stubs</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>jaxws-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>wsimport</goal>
+								</goals>
+								<configuration>
+									<wsdlUrls>
+										<wsdlUrl>http://www.nationalarchives.gov.uk/pronom/service.asmx?WSDL</wsdlUrl>
+									</wsdlUrls>
+									<wsdlFiles>
+										<wsdlFile>www.nationalarchives.gov.uk/pronom/service.wsdl</wsdlFile>
+									</wsdlFiles>
+									<packageName>uk.gov.nationalarchives.pronom</packageName>
+									<catalog>src/wsdl/catalog.xml</catalog>
+									<keep>true</keep>
+									<sourceDestDir>src/main/java</sourceDestDir>
+									<destDir></destDir>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<repositories>
+				<repository>
+					<id>maven2-repository.dev.java.net</id>
+					<name>Java.net Repository for Maven 2</name>
+					<url>http://download.java.net/maven/2/</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>maven2-repository.dev.java.net</id>
+					<url>http://download.java.net/maven/2/</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
 </project>

@@ -108,7 +108,7 @@ public final class JavaImageIOMigrateTest extends TestCase {
         System.out.println("Output: " + doOut);
         System.out.println("Output.content: " + doOut.getContent());
 
-        File out = new File("services/java-se/test/results/test."+newExt);
+        File out = new File("src/test/results/test."+newExt);
 
         FileOutputStream fo = new FileOutputStream(out);
         IOUtils.copyLarge( doOut.getContent().getInputStream(), fo);
