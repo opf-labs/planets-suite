@@ -1,0 +1,1330 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY swrl "http://www.w3.org/2003/11/swrl#" >
+    <!ENTITY swrlb "http://www.w3.org/2003/11/swrlb#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY PLATO "http://planetarium.hki.uni-koeln.de/public/PLATO.owl#" >
+    <!ENTITY PC3Ont "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/PC3Ont#" >
+    <!ENTITY PP2 "http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#" >
+    <!ENTITY PC3Ontology "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/PC3Ontology#" >
+    <!ENTITY XCLOntology "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#" >
+    <!ENTITY PP2Ontology "http://planetarium.hki.uni-koeln.de/public/observational/PP2Ontology.owl#" >
+    <!ENTITY TB3Ontology "http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#" >
+    <!ENTITY PLANETSOntology "http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#" >
+    <!ENTITY InspectOntology "http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#"
+     xml:base="http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl"
+     xmlns:PC3Ont="http://planetarium.hki.uni-koeln.de/public/XCL/ontology/PC3Ont#"
+     xmlns:PP2="http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#"
+     xmlns:XCLOntology="http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#"
+     xmlns:PLATO="http://planetarium.hki.uni-koeln.de/public/PLATO.owl#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:PC3Ontology="http://planetarium.hki.uni-koeln.de/public/XCL/ontology/PC3Ontology#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:PP2Ontology="http://planetarium.hki.uni-koeln.de/public/observational/PP2Ontology.owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:TB3Ontology="http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:InspectOntology="http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#"
+     xmlns:PLANETSOntology="http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#">
+    <owl:Ontology rdf:about="">
+        <rdfs:label
+            >PLANETS Ontology</rdfs:label>
+        <rdfs:comment
+            >The PLANETS-wide ontology as an implementation in OWL. It is based on the work of the Digital Object Property Working Group.</rdfs:comment>
+        <owl:imports rdf:resource="http://planetarium.hki.uni-koeln.de/public/PLATO.owl"/>
+        <owl:imports rdf:resource="http://planetarium.hki.uni-koeln.de/public/XCL/ontology/2010/1/PC3Ontology.owl"/>
+        <owl:imports rdf:resource="http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl"/>
+        <owl:imports rdf:resource="http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl"/>
+        <owl:imports rdf:resource="http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl"/>
+        <owl:imports rdf:resource="http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <owl:AnnotationProperty rdf:about="&XCLOntology;Datatype"/>
+    <owl:AnnotationProperty rdf:about="&XCLOntology;Unit"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#contains -->
+
+    <owl:ObjectProperty rdf:about="#contains">
+        <rdfs:range rdf:resource="#Property"/>
+        <rdfs:domain rdf:resource="#Property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#isClassifiedBy -->
+
+    <owl:ObjectProperty rdf:about="#isClassifiedBy">
+        <rdfs:range rdf:resource="#Classification"/>
+        <rdfs:domain rdf:resource="#Property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#functionDescription -->
+
+    <owl:DatatypeProperty rdf:about="#functionDescription">
+        <rdfs:domain rdf:resource="#Property"/>
+        <rdfs:range rdf:resource="&rdfs;Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/PC3Ontology#Algorithms -->
+
+    <owl:Class rdf:about="&PC3Ontology;Algorithms">
+        <owl:equivalentClass rdf:resource="&XCLOntology;Algorithm"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/PC3Ontology#Hardware_Layer -->
+
+    <owl:Class rdf:about="&PC3Ontology;Hardware_Layer">
+        <owl:equivalentClass rdf:resource="#HardwareLayer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/PC3Ontology#Middleware-OS -->
+
+    <owl:Class rdf:about="&PC3Ontology;Middleware-OS">
+        <owl:equivalentClass rdf:resource="&XCLOntology;OperatingSystem"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/PC3Ontology#Middleware_Layer -->
+
+    <owl:Class rdf:about="&PC3Ontology;Middleware_Layer">
+        <owl:equivalentClass rdf:resource="#MiddlewareLayer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/PC3Ontology#Software_Layer -->
+
+    <owl:Class rdf:about="&PC3Ontology;Software_Layer">
+        <owl:equivalentClass rdf:resource="#SoftwareLayer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Algorithm -->
+
+    <owl:Class rdf:about="&XCLOntology;Algorithm">
+        <owl:equivalentClass rdf:resource="#Algorithm"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#AudioInformation -->
+
+    <owl:Class rdf:about="&XCLOntology;AudioInformation">
+        <rdfs:subClassOf rdf:resource="#ExtractableProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#AudioProcessing -->
+
+    <owl:Class rdf:about="&XCLOntology;AudioProcessing">
+        <owl:equivalentClass rdf:resource="#AudioProcessing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#GeneralInformation -->
+
+    <owl:Class rdf:about="&XCLOntology;GeneralInformation">
+        <rdfs:subClassOf rdf:resource="#ExtractableProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#ImageInformation -->
+
+    <owl:Class rdf:about="&XCLOntology;ImageInformation">
+        <rdfs:subClassOf rdf:resource="#ExtractableProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#ImageProcessing -->
+
+    <owl:Class rdf:about="&XCLOntology;ImageProcessing">
+        <owl:equivalentClass rdf:resource="#ImageProcessing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#OperatingSystem -->
+
+    <owl:Class rdf:about="&XCLOntology;OperatingSystem"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#OtherInformation -->
+
+    <owl:Class rdf:about="&XCLOntology;OtherInformation">
+        <rdfs:subClassOf rdf:resource="#ExtractableProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#TextInformation -->
+
+    <owl:Class rdf:about="&XCLOntology;TextInformation">
+        <rdfs:subClassOf rdf:resource="#ExtractableProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#TextProcessing -->
+
+    <owl:Class rdf:about="&XCLOntology;TextProcessing">
+        <owl:equivalentClass rdf:resource="#TextProcessing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#VideoInformation -->
+
+    <owl:Class rdf:about="&XCLOntology;VideoInformation">
+        <rdfs:subClassOf rdf:resource="#ExtractableProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#VideoProcessing -->
+
+    <owl:Class rdf:about="&XCLOntology;VideoProcessing">
+        <owl:equivalentClass rdf:resource="#VideoProcessing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#derivedInformation -->
+
+    <owl:Class rdf:about="&XCLOntology;derivedInformation">
+        <rdfs:subClassOf rdf:resource="#DerivedRenderingProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Algorithm -->
+
+    <owl:Class rdf:about="#Algorithm">
+        <rdfs:subClassOf rdf:resource="#Method"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Architecture -->
+
+    <owl:Class rdf:about="#Architecture">
+        <rdfs:subClassOf rdf:resource="#PLANETSEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#AudioProcessing -->
+
+    <owl:Class rdf:about="#AudioProcessing">
+        <rdfs:subClassOf rdf:resource="#SoftwareLayer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Classification -->
+
+    <owl:Class rdf:about="#Classification">
+        <rdfs:subClassOf rdf:resource="#PLANETSEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Concept -->
+
+    <owl:Class rdf:about="#Concept">
+        <rdfs:subClassOf rdf:resource="#PLANETSEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Data -->
+
+    <owl:Class rdf:about="#Data">
+        <rdfs:subClassOf rdf:resource="#PLANETSEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#DataDictionary -->
+
+    <owl:Class rdf:about="#DataDictionary">
+        <rdfs:subClassOf rdf:resource="#Model"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#DerivedRenderingProperty -->
+
+    <owl:Class rdf:about="#DerivedRenderingProperty">
+        <rdfs:subClassOf rdf:resource="#FileProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#ExtractableProperty -->
+
+    <owl:Class rdf:about="#ExtractableProperty">
+        <rdfs:label
+            >Extractable Properties</rdfs:label>
+        <rdfs:subClassOf rdf:resource="#FileProperty"/>
+        <rdfs:comment
+            >Extractable properties comprise items that can be extracted by common software tools.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#FileObjects -->
+
+    <owl:Class rdf:about="#FileObjects">
+        <rdfs:subClassOf rdf:resource="#Data"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#FileProperty -->
+
+    <owl:Class rdf:about="#FileProperty">
+        <rdfs:label>File Property</rdfs:label>
+        <rdfs:label
+            >File properties comprise certain features that are associated with a file. They need to be observed becauser their comparison before and after a file migration process is an indicator for success. Examples are: The aspect ratio of an image, the bit rate of an audio file.</rdfs:label>
+        <rdfs:subClassOf rdf:resource="#Property"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#FunctionClassificator -->
+
+    <owl:Class rdf:about="#FunctionClassificator">
+        <rdfs:subClassOf rdf:resource="#Classification"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#HardwareLayer -->
+
+    <owl:Class rdf:about="#HardwareLayer">
+        <rdfs:subClassOf rdf:resource="#Architecture"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#ImageProcessing -->
+
+    <owl:Class rdf:about="#ImageProcessing">
+        <rdfs:subClassOf rdf:resource="#SoftwareLayer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Method -->
+
+    <owl:Class rdf:about="#Method">
+        <rdfs:subClassOf rdf:resource="#PLANETSEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#MiddlewareLayer -->
+
+    <owl:Class rdf:about="#MiddlewareLayer">
+        <rdfs:subClassOf rdf:resource="#Architecture"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Model -->
+
+    <owl:Class rdf:about="#Model">
+        <rdfs:subClassOf rdf:resource="#PLANETSEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#ObservationalProperty -->
+
+    <owl:Class rdf:about="#ObservationalProperty">
+        <rdfs:subClassOf rdf:resource="#FileProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#PLANETSEntity -->
+
+    <owl:Class rdf:about="#PLANETSEntity">
+        <rdfs:label>PLANETS Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >This class comprises all things in the universe of discourse of the PLANETS Digital Object Properties Working Group.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#PlanningProperty -->
+
+    <owl:Class rdf:about="#PlanningProperty">
+        <rdfs:subClassOf rdf:resource="#Property"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Property -->
+
+    <owl:Class rdf:about="#Property">
+        <rdfs:label>Property</rdfs:label>
+        <rdfs:subClassOf rdf:resource="#PLANETSEntity"/>
+        <rdfs:comment
+            >This class comprises all properties that have been considered relevant for the preservation process. Preservation managers need to be aware of these properties to control and evaluate the digtial preservation process. Properties can affect the preservation process either negatively or positively.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#RothenbergClassificator -->
+
+    <owl:Class rdf:about="#RothenbergClassificator">
+        <rdfs:subClassOf rdf:resource="#Classification"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#SoftwareLayer -->
+
+    <owl:Class rdf:about="#SoftwareLayer">
+        <rdfs:subClassOf rdf:resource="#Architecture"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Standards -->
+
+    <owl:Class rdf:about="#Standards">
+        <rdfs:subClassOf rdf:resource="#PLANETSEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#TextProcessing -->
+
+    <owl:Class rdf:about="#TextProcessing">
+        <rdfs:subClassOf rdf:resource="#SoftwareLayer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#VideoProcessing -->
+
+    <owl:Class rdf:about="#VideoProcessing">
+        <rdfs:subClassOf rdf:resource="#SoftwareLayer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#topLeftMostPoint -->
+
+    <owl:Thing rdf:about="&XCLOntology;topLeftMostPoint"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Appearance -->
+
+    <owl:Thing rdf:about="#Appearance">
+        <rdfs:comment xml:lang="en"
+            >rothenberg classification</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Behaviour -->
+
+    <owl:Thing rdf:about="#Behaviour">
+        <rdfs:comment xml:lang="en"
+            >rothenberg classification</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Content -->
+
+    <owl:Thing rdf:about="#Content">
+        <rdfs:comment xml:lang="en"
+            >rothenberg classification</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Context -->
+
+    <owl:Thing rdf:about="#Context">
+        <rdfs:comment xml:lang="en"
+            >rothenberg classification</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Structure -->
+
+    <owl:Thing rdf:about="#Structure">
+        <rdfs:comment xml:lang="en"
+            >rothenberg classification</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#contentFunction -->
+
+    <owl:Thing rdf:about="#contentFunction">
+        <rdf:type rdf:resource="#FunctionClassificator"/>
+        <rdfs:label>Content</rdfs:label>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#contextFunction -->
+
+    <owl:Thing rdf:about="#contextFunction">
+        <rdf:type rdf:resource="#FunctionClassificator"/>
+        <rdfs:label>Context</rdfs:label>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#description -->
+
+    <owl:Thing rdf:about="#description">
+        <rdf:type rdf:resource="#RothenbergClassificator"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#external -->
+
+    <RothenbergClassificator rdf:about="#external">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </RothenbergClassificator>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#lengthFunction -->
+
+    <owl:Thing rdf:about="#lengthFunction">
+        <rdf:type rdf:resource="#FunctionClassificator"/>
+        <rdfs:label>Length</rdfs:label>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#omnipage -->
+
+    <owl:Thing rdf:about="#omnipage"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#provenance -->
+
+    <RothenbergClassificator rdf:about="#provenance">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </RothenbergClassificator>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#relationship -->
+
+    <RothenbergClassificator rdf:about="#relationship">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </RothenbergClassificator>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#renderingFunction -->
+
+    <owl:Thing rdf:about="#renderingFunction">
+        <rdf:type rdf:resource="#FunctionClassificator"/>
+        <rdfs:label>Rendering</rdfs:label>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Audio_resolution -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Audio_resolution">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Color_depth -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Color_depth">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Colour_space_defined -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Colour_space_defined">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Columns_spacing -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Columns_spacing">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Contains_phasing -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Contains_phasing">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Drop-Out -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Drop-Out">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Duration_audio -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Duration_audio">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Dynamic -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Dynamic">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Footer_font_colour -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Footer_font_colour">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Footer_font_size -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Footer_font_size">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Footer_font_style -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Footer_font_style">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Footer_line_spacing -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Footer_line_spacing">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Footer_spacing-bottom -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Footer_spacing-bottom">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Footer_spacing-left -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Footer_spacing-left">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Footer_spacing-right -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Footer_spacing-right">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Footer_spacing-top -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Footer_spacing-top">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Frame_rate -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Frame_rate">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Header_font_colour -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Header_font_colour">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Header_font_size -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Header_font_size">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Header_font_style -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Header_font_style">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Header_line_spacing -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Header_line_spacing">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Header_spacing-bottom -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Header_spacing-bottom">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Header_spacing-left -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Header_spacing-left">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Header_spacing-right -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Header_spacing-right">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Header_spacing-top -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Header_spacing-top">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#High_Definition -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;High_Definition">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Human_readability -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Human_readability">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Image_height -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Image_height">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Image_width -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Image_width">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Letter_or_word_spacing -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Letter_or_word_spacing">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Level -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Level">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Machine_readability -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Machine_readability">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Mono_Stereo -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Mono_Stereo">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Multitrack -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Multitrack">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_characters -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Number_of_characters">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_columns -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Number_of_columns">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_different_footers -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Number_of_different_footers">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_different_headers -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Number_of_different_headers">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_footnote_references_indicators -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Number_of_footnote_references_indicators">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_footnotes -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Number_of_footnotes">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_formulas -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Number_of_formulas">
+        <rdf:type rdf:resource="#FileProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_graphics -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Number_of_graphics">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_graphics_captions -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Number_of_graphics_captions">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_image_captions -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Number_of_image_captions">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_images -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Number_of_images">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_level_1_subdivisions -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Number_of_level_1_subdivisions">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_levels -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Number_of_levels">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_lines -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Number_of_lines">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_pages -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Number_of_pages">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_table_captions -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Number_of_table_captions">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_tables -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Number_of_tables">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Number_of_working_hyperlinks -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Number_of_working_hyperlinks">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Page_height -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Page_height">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Page_margin-bottom -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Page_margin-bottom">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Page_margin-left -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Page_margin-left">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Page_margin-right -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Page_margin-right">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Page_margin-top -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Page_margin-top">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Page_width -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Page_width">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Paragraph_font_colour -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Paragraph_font_colour">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Paragraph_font_size -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Paragraph_font_size">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Paragraph_font_style -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Paragraph_font_style">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Paragraph_indentation -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Paragraph_indentation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Paragraph_line_spacing -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Paragraph_line_spacing">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Paragraph_spacing-bottom -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Paragraph_spacing-bottom">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Paragraph_spacing-left -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Paragraph_spacing-left">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Paragraph_spacing-right -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Paragraph_spacing-right">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Paragraph_spacing-top -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Paragraph_spacing-top">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Picture_Aspect_Ratio -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Picture_Aspect_Ratio">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Picture_Drop-Out -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Picture_Drop-Out">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#ResolutionVideo -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;ResolutionVideo">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Sample_Rate -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Sample_Rate">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Signal-to-noise-ratio -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Signal-to-noise-ratio">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Signal_representation -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Signal_representation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Size_of_smallest_detail -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Size_of_smallest_detail">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Sound_Drop-Out -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Sound_Drop-Out">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Spectral_components -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Spectral_components">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Speed_variance -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Speed_variance">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Stereo -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Stereo">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Tracking -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Tracking">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Use_of_footers -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Use_of_footers">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Use_of_headers -->
+
+    <ExtractableProperty rdf:about="&TB3Ontology;Use_of_headers">
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ExtractableProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Use_of_signatures -->
+
+    <ObservationalProperty rdf:about="&TB3Ontology;Use_of_signatures">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </ObservationalProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Use_of_watermarks_or_background_images -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Use_of_watermarks_or_background_images">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+        <rdf:type rdf:resource="#ObservationalProperty"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#Water_marking -->
+
+    <owl:Thing rdf:about="&TB3Ontology;Water_marking">
+        <rdf:type rdf:resource="#ExtractableProperty"/>
+    </owl:Thing>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net -->
+

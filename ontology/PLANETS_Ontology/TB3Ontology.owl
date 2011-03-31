@@ -1,0 +1,1176 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY XCLOntology "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#" >
+    <!ENTITY TB3Ontology "http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#" >
+    <!ENTITY PLANETSOntology "http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#"
+     xml:base="http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:TB3Ontology="http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#"
+     xmlns:PLANETSOntology="http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#"
+     xmlns:XCLOntology="http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+    <owl:Ontology rdf:about="">
+        <rdfs:label
+            >Management and Execution of Tests and Experiments Ontology (TB/3)</rdfs:label>
+        <rdfs:comment
+            >This ontology comprises concepts that have been defined at ftp://www.planets-project.eu:1924/docs/Deliverables/5Testbed_(TB)/Planets_TB3-D2_MethodsforTesting_final.pdf</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <owl:AnnotationProperty rdf:about="&XCLOntology;Datatype"/>
+    <owl:AnnotationProperty rdf:about="&XCLOntology;Unit"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#AudioProperty -->
+
+    <owl:Class rdf:about="#AudioProperty">
+        <rdfs:subClassOf rdf:resource="#TB3Property"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#ImageProperty -->
+
+    <owl:Class rdf:about="#ImageProperty">
+        <rdfs:subClassOf rdf:resource="#TB3Property"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#TB3Entity -->
+
+    <owl:Class rdf:about="#TB3Entity">
+        <rdfs:label
+            >Testbed Entities</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >This class comprises things in the universe of discourse of quality assurance by testing.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#TB3Property -->
+
+    <owl:Class rdf:about="#TB3Property">
+        <rdfs:subClassOf rdf:resource="#TB3Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#TextProperty -->
+
+    <owl:Class rdf:about="#TextProperty">
+        <rdfs:subClassOf rdf:resource="#TB3Property"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#VideoProperty -->
+
+    <owl:Class rdf:about="#VideoProperty">
+        <rdfs:subClassOf rdf:resource="#TB3Property"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#NULL -->
+
+    <owl:Thing rdf:about="&XCLOntology;NULL"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#bool -->
+
+    <owl:Thing rdf:about="&XCLOntology;bool"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#inch -->
+
+    <owl:Thing rdf:about="&XCLOntology;inch"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#int -->
+
+    <owl:Thing rdf:about="&XCLOntology;int"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#seconds -->
+
+    <owl:Thing rdf:about="&XCLOntology;seconds"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#string -->
+
+    <owl:Thing rdf:about="&XCLOntology;string"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Appearance -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;Appearance"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Behaviour -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;Behaviour">
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Content -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;Content">
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Context -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;Context">
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#Structure -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;Structure">
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#audioResolution -->
+
+    <AudioProperty rdf:about="#audioResolution">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >Describes the band-width;Describes the band-width</rdfs:comment>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#colorDepth -->
+
+    <ImageProperty rdf:about="#colorDepth">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Describes the number of bits used to represent the colour of a single pixel;Can not be determined by visual inspection (you cannot simply see it) but only by a tool.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </ImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#colourSpaceDefined -->
+
+    <owl:Thing rdf:about="#colourSpaceDefined">
+        <rdf:type rdf:resource="#ImageProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates whether or not the colour space has been defined.;The colour space defines how an application interprets the value of a colour. Can not be determined by visual inspection (you cannot simply see it) but only by a tool.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#columnsSpacing -->
+
+    <TextProperty rdf:about="#columnsSpacing">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the white space between two columns. . Define the unused space between two columns. If there are several values for this property, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#containsPhasing -->
+
+    <owl:Thing rdf:about="#containsPhasing">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Describes the band-width;Describes the band-width</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#dropOut -->
+
+    <AudioProperty rdf:about="#dropOut">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Short periods during which the sound is interrupted;Count or estimate of the average number of drop-outs per minute in the audio record.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#durationAudio -->
+
+    <owl:Thing rdf:about="#durationAudio">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Length of recording. Length of recording, induding &quot;silence&quot; before and after sound.&quot;</rdfs:comment>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;seconds"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#dynamic -->
+
+    <AudioProperty rdf:about="#dynamic">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Defines the difference between the loudest and the softest sounds.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#footerFontColour -->
+
+    <TextProperty rdf:about="#footerFontColour">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the font colour of footers.. The font colour of footers. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;string"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#footerFontSize -->
+
+    <owl:Thing rdf:about="#footerFontSize">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Font size of footers.. The font size of footers. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#footerFontStyle -->
+
+    <owl:Thing rdf:about="#footerFontStyle">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Font style of footers.. The font style of footers. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;string"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#footerLineSpacing -->
+
+    <owl:Thing rdf:about="#footerLineSpacing">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the line spacing of footers.. The spacing between two lines of footers. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#footerSpacingBottom -->
+
+    <TextProperty rdf:about="#footerSpacingBottom">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from bottom of footer to element below. . Space from right of footer to element below. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#footerSpacingLeft -->
+
+    <TextProperty rdf:about="#footerSpacingLeft">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from left of footer to element at the left. . Space from left of footer to element at the left. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#footerSpacingRight -->
+
+    <owl:Thing rdf:about="#footerSpacingRight">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from right of footer to element at the right.. Space from right of footer to element at the right. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#footerSpacingTop -->
+
+    <owl:Thing rdf:about="#footerSpacingTop">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from top of footer to element above.. Space from top of footer to element above. If there are several instances of footers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#framRate -->
+
+    <VideoProperty rdf:about="#framRate">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >The speed of change between the pictures;In frames per second</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </VideoProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#headerFontColour -->
+
+    <owl:Thing rdf:about="#headerFontColour">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the font colour of headers.. The font colour of headers. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;string"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#headerFontSize -->
+
+    <owl:Thing rdf:about="#headerFontSize">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Font size of headers.. The font size of headers. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#headerFontStyle -->
+
+    <TextProperty rdf:about="#headerFontStyle">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Font style of headers.. The font style of headers. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;string"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#headerLineSpacing -->
+
+    <TextProperty rdf:about="#headerLineSpacing">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the line spacing of headers.. The spacing between two lines of headers. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;string"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#headerSpacingBottom -->
+
+    <TextProperty rdf:about="#headerSpacingBottom">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from bottom of header to element below. . Space from right of header to element below. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#headerSpacingLeft -->
+
+    <owl:Thing rdf:about="#headerSpacingLeft">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from left of Header to element at the left. . Space from left of header to element at the left. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#headerSpacingRight -->
+
+    <owl:Thing rdf:about="#headerSpacingRight">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from right of header to element at the right.. Space from right of header to element at the right. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#headerSpacingTop -->
+
+    <TextProperty rdf:about="#headerSpacingTop">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from top of header to element above.. Space from top of header to element above. If there are several instances of headers with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#highDefinition -->
+
+    <VideoProperty rdf:about="#highDefinition">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Defines if the video conforms to the High Definition standard.;The amount of information transmitted to the screen. High Definition is the upcoming standard for television sets.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </VideoProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#humanReadability -->
+
+    <TextProperty rdf:about="#humanReadability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates how well the text is readable.;Grade how well the text is readable. 1 is completely different, 10 is excellent.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#imageHeight -->
+
+    <owl:Thing rdf:about="#imageHeight">
+        <rdf:type rdf:resource="#ImageProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the height of the image.. Size from top to bottom.. appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#imageWidth -->
+
+    <ImageProperty rdf:about="#imageWidth">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the width of the image.. Size from left to right.. appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </ImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#letterOrWordSpacing -->
+
+    <owl:Thing rdf:about="#letterOrWordSpacing">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the letter / word spacing of plain text. . Indicate if the white space of a line is evenly distributed between the letters or words. If there are several values for this property, choose one to focus on. proportional / absolute (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#level -->
+
+    <AudioProperty rdf:about="#level">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"></rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#machineReadability -->
+
+    <TextProperty rdf:about="#machineReadability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates which percentage of the characters of the text are machine readable.;Define this value with a reference application, e.g. an OCR-application. 0% means nothing readable, 100% means every character readable.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#monoStereo -->
+
+    <AudioProperty rdf:about="#monoStereo">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Describes whether the recording is in mono or in stereo (1 or 2 channels)</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#multitrack -->
+
+    <owl:Thing rdf:about="#multitrack">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Describes the number of channels used in recording the sound.;Give the number of tracks. Cannot be heard, should be known in advance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfCharacters -->
+
+    <owl:Thing rdf:about="#numberOfCharacters">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Defines the number of characters.. Count the number of characters.. appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfColumns -->
+
+    <owl:Thing rdf:about="#numberOfColumns">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the number of columns.. Count the number of columns on a page. No columns means the number is 1. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfDifferentFooters -->
+
+    <owl:Thing rdf:about="#numberOfDifferentFooters">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of different footers used in the text.. Count the number of different footers e.g. each chapter could have a different footer.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfDifferentHeaders -->
+
+    <owl:Thing rdf:about="#numberOfDifferentHeaders">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of different headers used in the text.. Count the number of different headers, e.g. each chapter could have a different header.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfFootnoteReferencesIndicators -->
+
+    <owl:Thing rdf:about="#numberOfFootnoteReferencesIndicators">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of footnote references (indicators). Count the number of footnote references (indicators) in the entire text.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfFootnotes -->
+
+    <owl:Thing rdf:about="#numberOfFootnotes">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of footnotes in the text.. Count the number of footnotes in the entire text.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfFormulas -->
+
+    <TextProperty rdf:about="#numberOfFormulas">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of formulas used in the text.. Count the number of formulas.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfGraphics -->
+
+    <TextProperty rdf:about="#numberOfGraphics">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of graphics used in the text.. Count the number of graphics.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfGraphicsCaptions -->
+
+    <owl:Thing rdf:about="#numberOfGraphicsCaptions">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of graphic captions used in the text.. Count the number of graphic captions.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfImageCaptions -->
+
+    <owl:Thing rdf:about="#numberOfImageCaptions">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of images used in the text.. Count the number of images.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfImages -->
+
+    <TextProperty rdf:about="#numberOfImages">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of image captions used in the text.. Count the number of image captions.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfLevel1Subdivisions -->
+
+    <TextProperty rdf:about="#numberOfLevel1Subdivisions">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the number of highest level parts the text is divided in.. If the text has a table of contents, a preface and 3 chapters, this number could be 5. Makes it possible to decide whether the structure has been preserved / characterised, and e.g. no chapters have been lost.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfLevels -->
+
+    <TextProperty rdf:about="#numberOfLevels">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Defines the number of subdivision levels beneath the highest level in a text.. If the text is e.g. divided in parts, which each have chapters, which are divided in paragraphs, the number of levels would be 3. For most emails, the number of levels will be 0 if they are not subdivided. Makes it possible to decide whether the structure has been preserved / characterised.. structure.&quot;</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfLines -->
+
+    <owl:Thing rdf:about="#numberOfLines">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Defines the number of lines.. Count the number of lines. . appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfPages -->
+
+    <TextProperty rdf:about="#numberOfPages">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Defines the number of pages.. Count the number of pages, including the front page.. appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfTableCaptions -->
+
+    <TextProperty rdf:about="#numberOfTableCaptions">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of table captions.. Count the number of table captions.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfTables -->
+
+    <TextProperty rdf:about="#numberOfTables">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of tables used in the text.. Count the number of tables.. structure.</rdfs:comment>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#numberOfWorkingHyperlinks -->
+
+    <TextProperty rdf:about="#numberOfWorkingHyperlinks">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the number of working hyperlinks used in the text.. Count the number of working hyperlinks.. behaviour.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#pageHeight -->
+
+    <owl:Thing rdf:about="#pageHeight">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Total height of the page... appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#pageMarginBottom -->
+
+    <owl:Thing rdf:about="#pageMarginBottom">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Unused space at the bottom of the document above the text... appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#pageMarginLeft -->
+
+    <TextProperty rdf:about="#pageMarginLeft">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Unused space at the left of the document above the text... appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#pageMarginRight -->
+
+    <owl:Thing rdf:about="#pageMarginRight">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Unused space at the right of the document above the text... appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#pageMarginTop -->
+
+    <TextProperty rdf:about="#pageMarginTop">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Unused space at the top of the document above the text... appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#pageWidth -->
+
+    <TextProperty rdf:about="#pageWidth">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Total width of the page... appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#paragraphFontColour -->
+
+    <owl:Thing rdf:about="#paragraphFontColour">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the font colour of plain text.. The font colour of plain text. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;string"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#paragraphFontSize -->
+
+    <TextProperty rdf:about="#paragraphFontSize">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Font size of plain text.. The font size of plain text. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#paragraphFontStyle -->
+
+    <TextProperty rdf:about="#paragraphFontStyle">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Font style of plain text.. The font style of plain text. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;string"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#paragraphIndentation -->
+
+    <TextProperty rdf:about="#paragraphIndentation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from page margin to left of first line of paragraph.. Space from the page margin to the left of the first line of the paragraph. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#paragraphLineSpacing -->
+
+    <owl:Thing rdf:about="#paragraphLineSpacing">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the line spacing of plain text.. The spacing between two lines of plain text. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#paragraphSpacingBottom -->
+
+    <TextProperty rdf:about="#paragraphSpacingBottom">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from bottom of paragraph to element below. . Space from right of paragraph to element below. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#paragraphSpacingLeft -->
+
+    <TextProperty rdf:about="#paragraphSpacingLeft">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from left of paragraph to element at the left. . Space from left of paragraph to element at the left. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#paragraphSpacingRight -->
+
+    <TextProperty rdf:about="#paragraphSpacingRight">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from right of paragraph to element at the right.. Space from right of paragraph to element at the right. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#paragraphSpacingTop -->
+
+    <TextProperty rdf:about="#paragraphSpacingTop">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Identifies the space from top of paragraph to element above.. Space from top of paragraph to element above. If there are several instances of &quot;plain text&quot; with different values, choose one to focus on. (for first version). appearance.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;inch"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#pictureAspectRatio -->
+
+    <owl:Thing rdf:about="#pictureAspectRatio">
+        <rdf:type rdf:resource="#VideoProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Relation of width to length of a picture</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#pictureDropOut -->
+
+    <owl:Thing rdf:about="#pictureDropOut">
+        <rdf:type rdf:resource="#VideoProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Small errors in the picture stream, e.g. a short black screen.;Count or estimate of the avarage number of drop-outs per minute in the video record.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#resolutionVideo -->
+
+    <owl:Thing rdf:about="#resolutionVideo">
+        <rdf:type rdf:resource="#VideoProperty"/>
+        <rdfs:comment xml:lang="en"
+            >The granularity of the picture</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#sampleRate -->
+
+    <owl:Thing rdf:about="#sampleRate">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Describes how often per second the data source is touched.;Cannot be defined manually, tool needed.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#signalRepresentation -->
+
+    <VideoProperty rdf:about="#signalRepresentation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates the colour representation scheme, such as RGB</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </VideoProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#signalToNoiseRatio -->
+
+    <AudioProperty rdf:about="#signalToNoiseRatio">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Compares the level of a desired signal (such as music) to the level of background noise. The higher the ratio, the less obtrusive the background noise is.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;int"/>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#sizeOfSmallestDetail -->
+
+    <ImageProperty rdf:about="#sizeOfSmallestDetail">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Defines the smallest detail that can be distinguished in an image.;Can be resolution in a .jpeg or .bmp image, but different for a vector image.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </ImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#soundDropOut -->
+
+    <VideoProperty rdf:about="#soundDropOut">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Small errors in the sound, such as no sound for a short term;Count or estimate of the avarage number of drop-outs per minute in the video record.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </VideoProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#spectralComponents -->
+
+    <AudioProperty rdf:about="#spectralComponents">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">??</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#speedVariance -->
+
+    <owl:Thing rdf:about="#speedVariance">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Describes whether the speed gets sometimes a little faster or a little slower.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#stereo -->
+
+    <VideoProperty rdf:about="#stereo">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Describes whether files are opened with one or two sound channels;yes for stereo, no for mono.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </VideoProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#tracking -->
+
+    <owl:Thing rdf:about="#tracking">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:comment xml:lang="en"></rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#useOfFooters -->
+
+    <TextProperty rdf:about="#useOfFooters">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates whether or not footers are used in the text.. Yes if (one or more) footers are used, no if not.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#useOfHeaders -->
+
+    <TextProperty rdf:about="#useOfHeaders">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates whether or not headers are used in the text.. Yes if (one or more) headers are used, no if not.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#useOfSignatures -->
+
+    <TextProperty rdf:about="#useOfSignatures">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates whether or not the text contains any signatures.. Yes if text contains one ore more signatures, no otherwise. Can be in any form, e.g. digital signature ir watermark-like.. structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </TextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#useOfWatermarksOrBackgroundImages -->
+
+    <owl:Thing rdf:about="#useOfWatermarksOrBackgroundImages">
+        <rdf:type rdf:resource="#TextProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Indicates whether or not the text contains a watermark or background image.. Yes if text contains (one ore more) watermarks or background images. . structure.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/TB3Ontology.owl#waterMarking -->
+
+    <owl:Thing rdf:about="#waterMarking">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:comment xml:lang="en"
+            >Describes if the object contains a watermark;Cannot de defined manually, tool needed.</rdfs:comment>
+        <XCLOntology:Unit rdf:resource="&XCLOntology;NULL"/>
+        <XCLOntology:Datatype rdf:resource="&XCLOntology;bool"/>
+    </owl:Thing>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net -->
+

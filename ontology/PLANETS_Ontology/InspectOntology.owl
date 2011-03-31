@@ -1,0 +1,2192 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY PLANETSOntology "http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#" >
+    <!ENTITY InspectOntology "http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#"
+     xml:base="http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:PLANETSOntology="http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:InspectOntology="http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+    <owl:Ontology rdf:about="">
+        <rdfs:label
+            >Investigating the Significant Properties of Electronic Content Over Time Ontology (InSPECT)</rdfs:label>
+        <rdfs:comment
+            >This ontology comprises properties that have been defined in the scope of the InSPECT project at http://www.significantproperties.org.uk/resources.html.</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#contains -->
+
+    <owl:ObjectProperty rdf:about="&PLANETSOntology;contains"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#isClassifiedBy -->
+
+    <owl:ObjectProperty rdf:about="&PLANETSOntology;isClassifiedBy"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#description -->
+
+    <owl:DatatypeProperty rdf:about="#description"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#functionDescription -->
+
+    <owl:DatatypeProperty rdf:about="#functionDescription">
+        <rdfs:range rdf:resource="&rdfs;Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#significanceDescription -->
+
+    <owl:DatatypeProperty rdf:about="#significanceDescription"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#AudioProperty -->
+
+    <owl:Class rdf:about="#AudioProperty">
+        <rdfs:subClassOf rdf:resource="#InspectProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#EmailProperty -->
+
+    <owl:Class rdf:about="#EmailProperty">
+        <rdfs:subClassOf rdf:resource="#InspectProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#InspectEntity -->
+
+    <owl:Class rdf:about="#InspectEntity">
+        <rdfs:label>InSPECT Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >This class comprises all things in the universe of discourse of the InSPECT project.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#InspectProperty -->
+
+    <owl:Class rdf:about="#InspectProperty">
+        <rdfs:subClassOf rdf:resource="#InspectEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#RasterImageProperty -->
+
+    <owl:Class rdf:about="#RasterImageProperty">
+        <rdfs:subClassOf rdf:resource="#InspectProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#StructuredTextProperty -->
+
+    <owl:Class rdf:about="#StructuredTextProperty">
+        <rdfs:subClassOf rdf:resource="#InspectProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#abbreviationStructuredText -->
+
+    <StructuredTextProperty rdf:about="#abbreviationStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Abbreviation</rdfs:label>
+        <rdfs:comment>&lt;abbr&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+        <description
+            >Indicates that enclosed text is an abbreviation.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#acronymStructuredText -->
+
+    <StructuredTextProperty rdf:about="#acronymStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Acronym</rdfs:label>
+        <rdfs:comment>&lt;acronym&gt;</rdfs:comment>
+        <description
+            >Indicates the enclosed text is an acronym.</description>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#addressStructuredText -->
+
+    <StructuredTextProperty rdf:about="#addressStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Address</rdfs:label>
+        <rdfs:comment
+            >&lt;address&gt;&lt;/address&gt;</rdfs:comment>
+        <description
+            >Denotes contact information for the page creator or other contact.</description>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#alinkStructuredText -->
+
+    <owl:Thing rdf:about="#alinkStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>alink</rdfs:label>
+        <significanceDescription
+            >Yes in certain circumstances
+
+The colour of a hypertext link is not considered to be significant aspect of the intellectual content. However, it is recognized that it may have an artistic role for a small number of documents as above.</significanceDescription>
+        <rdfs:comment>Alink=[colour]</rdfs:comment>
+        <description
+            >Attribute that sets the colour of text marking hyperlink text when visited by the user.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#appletStructuredText -->
+
+    <StructuredTextProperty rdf:about="#appletStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Applet</rdfs:label>
+        <description
+            >The element displays a referenced image at the location specified in the document.</description>
+        <significanceDescription
+            >Yes
+
+Indicates the relationship between a document and associated objects to be displayed in-line.</significanceDescription>
+        <rdfs:comment
+            >&lt;APPLET code=&quot;Bubbles.class&quot; width=&quot;500&quot; height=&quot;500&quot;&gt;</rdfs:comment>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#attachment -->
+
+    <owl:Thing rdf:about="#attachment">
+        <rdf:type rdf:resource="#EmailProperty"/>
+        <rdfs:comment
+            >The attachment may identify objects that must be identified to understand the message (e.g. a message body containing the text &#8216;please comment on attached document&#8217; cannot be understood if the attachment is not referenced. However, it is unnecessary if an email does not contain an attachment.</rdfs:comment>
+        <rdfs:comment
+            >An identifier that indicates one or more attachments associated with the email.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;external"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#bitDepthAudio -->
+
+    <owl:Thing rdf:about="#bitDepthAudio">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label>Bit depth</rdfs:label>
+        <rdfs:comment
+            >The number of bits of information stored for each sample. Bit depth corresponds to the resolution of each sample. It limit quantities such as dynamic range and signal-to-noise ratio.</rdfs:comment>
+        <rdfs:comment
+            >Bit depth is primarily applied to lossless encoding, such as PCM. Lossy formats, such as MP3 assign a bit value to each individual sample.</rdfs:comment>
+        <functionDescription
+            >The bit depth may provide an indicator of the audio quality. A reduction in the bit depth value of a converted object may indicate that the dynamic range of sample has been reduced and, as a result some quality loss has occurred.</functionDescription>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;renderingFunction"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#bitsPerSample -->
+
+    <owl:Thing rdf:about="#bitsPerSample">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label>Bits per sample</rdfs:label>
+        <rdfs:comment
+            >This is the number of bits per component (channel) for each pixel and has two data elements:
+
+Bits per sample value 
+Bits per sample unit</rdfs:comment>
+        <rdfs:comment
+            >This is a quantative value which can be used to evaluate image quality, tone and colour.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#bodyBackgroundStructuredText -->
+
+    <owl:Thing rdf:about="#bodyBackgroundStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Body background</rdfs:label>
+        <description
+            >Attribute that specifies the page background to be displayed &#8211; an image or colour.</description>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although the background may be utilised as a constituent component in creating the identity of the web resource, it is considered unlikely (except in a limited number of examples) that the background display will have a direct contribution to the intellectual content of the document. However, there are instances where it may be considered part of the intellectual content and would be significant. An example would be a &#8216;draft&#8217; stamp, or an artistic decision about the type or colour of background used.</significanceDescription>
+        <rdfs:comment
+            >Background = URI
+Bgcolor</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#bodyLinkStructuredText -->
+
+    <owl:Thing rdf:about="#bodyLinkStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Body link</rdfs:label>
+        <significanceDescription
+            >Yes in certain circumstances
+
+The colour of a hypertext link is not considered to be significant aspect of the intellectual content. However, it is recognized that it may have an artistic role for a small number of documents as above.</significanceDescription>
+        <description
+            >Attribute that specifies the colour of text marking unvisited hypertext links (for visual browsers).</description>
+        <rdfs:comment>Link=[colour]</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#bodyTextColourStructuredText -->
+
+    <StructuredTextProperty rdf:about="#bodyTextColourStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Body text colour</rdfs:label>
+        <rdfs:comment>Text=[colour]</rdfs:comment>
+        <significanceDescription
+            >Yes in certain circumstances. 
+
+The significance of the text colour is ambiguous and may vary between research disciplines. Web Accessibility Initiative guidelines specify that information should not be communicated through colour alone for accessibility purposes. However, it is recognised that many authors use colour artistically and to convey meaning e.g. using red to indicate a negative number.</significanceDescription>
+        <description
+            >Attribute that specifies the foreground colour for text on the page.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#boldStructuredText -->
+
+    <owl:Thing rdf:about="#boldStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Bold</rdfs:label>
+        <description
+            >The enclosed text is formatted in bold.</description>
+        <rdfs:comment>&lt;b&gt;&lt;/b&gt;</rdfs:comment>
+        <description
+            >Yes
+
+Its significance is ambiguous &#8211; it may be utilised to indicate key concepts in the document text or for presentational purposes. The InSPECT team have taken the former viewpoint.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#buttonStructuredText -->
+
+    <StructuredTextProperty rdf:about="#buttonStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Button</rdfs:label>
+        <description
+            >Inserts a push button.</description>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+        <rdfs:comment
+            >&lt;BUTTON name=&quot;submit&quot; value=&quot;submit&quot; type=&quot;submit&quot;&gt;
+    Send&lt;IMG src=&quot;/icons/wow.gif&quot; alt=&quot;wow&quot;&gt;&lt;/BUTTON&gt;</rdfs:comment>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#cellSpacingStructuredText -->
+
+    <owl:Thing rdf:about="#cellSpacingStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <description
+            >An attribute that indicates the spacing between cells.</description>
+        <rdfs:comment
+            >Cellspacing = length</rdfs:comment>
+        <rdfs:comment>Cell Spacing</rdfs:comment>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although it may assist the aesthetic appearance of the table, the cell spacing should not affect its underlying meaning. However, in some circumstances it may be an artistic decision as with centring above.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#centreStructuredText -->
+
+    <owl:Thing rdf:about="#centreStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Centre</rdfs:label>
+        <rdfs:comment
+            >&lt;center&gt;&lt;/center&gt;
+&lt;DIV align=center&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Its significance is ambiguous and will vary from case-to-case. Text centring is commonly used for presentational purposes only and the risk of affecting the intellectual interpretation of the content is low. However, it may have significance for artistic works.</significanceDescription>
+        <description
+            >The enclosed text is formatted to the centre of the page.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#channelAssignmentChannelNumber -->
+
+    <owl:Thing rdf:about="#channelAssignmentChannelNumber">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label
+            >Channel Assignment: Channel Number</rdfs:label>
+        <functionDescription
+            >An identifier assigned to each channel.</functionDescription>
+        <rdfs:comment
+            >A unique ID assigned to each audio channel.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;contentFunction"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#channelAssignmentSoundMapLocation -->
+
+    <AudioProperty rdf:about="#channelAssignmentSoundMapLocation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Channel Assignment: Sound map location</rdfs:label>
+        <rdfs:comment
+            >Maps a sound channel to a designated output.</rdfs:comment>
+        <functionDescription
+            >The output location of a channel may communicate intrinsic information that supports the interpretation of the sound. It has only limited use when handling a mono recording. However, its value will increase when handling a greater number of audio channels. The corruption or loss of the sound map location may cause confusion to the listener.</functionDescription>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#characterEncoding -->
+
+    <owl:Thing rdf:about="#characterEncoding">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Character Encoding</rdfs:label>
+        <significanceDescription
+            >No
+
+This may be considered a type of Representation Information rather than a significant property (see 1.4 above).</significanceDescription>
+        <rdfs:comment
+            >&lt;meta http-equiv=&#8221;content-type&#8221; content=&#8221;text/html; charset=ISO-8859-5&#8221;&gt;</rdfs:comment>
+        <description
+            >The standard and version number to which the document conforms.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#citeStructuredText -->
+
+    <owl:Thing rdf:about="#citeStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Cite</rdfs:label>
+        <description
+            >Denotes a citation or a reference to a source.</description>
+        <rdfs:comment>&lt;cite&gt;&lt;/cite&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#codeStructuredText -->
+
+    <StructuredTextProperty rdf:about="#codeStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Code</rdfs:label>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+        <rdfs:comment>&lt;code&gt;&lt;/code&gt;</rdfs:comment>
+        <description
+            >Indicates that enclosed text is software code.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#codingHistory -->
+
+    <AudioProperty rdf:about="#codingHistory">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Coding History</rdfs:label>
+        <rdfs:comment
+            >An ASCII text field of non-restricted length that may be used to describe the encoding process applied to each manifestation of the Information Object. Each entry is terminated by a Carriage Return+Line Feed. Recommendations for a Coding History format are provided in EBU Recommendation R98-1999.</rdfs:comment>
+        <functionDescription
+            >The field may be beneficial for curators who wish to understand the activities performed on a digital object, particularly if it has been provided by a third-party and no other information is available. However, the Coding History is not essential for the performance of the audio recording or understanding the context of its creation.</functionDescription>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;provenance"/>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#colourMap -->
+
+    <owl:Thing rdf:about="#colourMap">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label>Colour Table</rdfs:label>
+        <rdfs:comment
+            >This gives the location of the colour map being used.
+
+A colour map defines values for palletised colours (i.e. for the Palette colour space) so that pixel colour values are defined as an index into the colour map (rather than storing specific colour values for each pixel).</rdfs:comment>
+        <rdfs:comment
+            >This is information related to a specific colour space. For the reasons set out above under colour space, this would not be regarded as a significant property.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#colourProfiles -->
+
+    <RasterImageProperty rdf:about="#colourProfiles">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Colour Profiles</rdfs:label>
+        <rdfs:comment
+            >The colour profile associated with the digital image. 
+
+This maps colour values between input, display and output devices and a device-independent colour space, with the aim that accurate and consistent rendering of the colour of the raster images should result, whatever the media.</rdfs:comment>
+        <rdfs:comment
+            >It logically follows the same reasoning as above for colour spaces i.e. the colour space, and therefore the colour profile doesn&#8217;t have to remain the same between migrations and therefore is not a significant property.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#colourSpace -->
+
+    <RasterImageProperty rdf:about="#colourSpace">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Colour Space</rdfs:label>
+        <rdfs:comment
+            >The designated colour space of the decompressed image data e.g. RGB, CMYK, YCbCr.</rdfs:comment>
+        <rdfs:comment
+            >The property is used by the rendering device to set the tone and colour of the reconstructed image. However, this colour space doesn&#8217;t have to remain the same between migrations. Colours can be rendered accurately by different colour spaces.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#creatorStructuredText -->
+
+    <owl:Thing rdf:about="#creatorStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Creator</rdfs:label>
+        <rdfs:comment
+            >&lt;meta name=&#8221;author&#8221; lang=&#8221;eng&#8221; content=&#8221;Gareth Knight&#8221;&gt;</rdfs:comment>
+        <significanceDescription>Yes</significanceDescription>
+        <description
+            >A meta element that enables an author to specify one or more creators.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#cueSheet -->
+
+    <owl:Thing rdf:about="#cueSheet">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label>Cue Sheet</rdfs:label>
+        <functionDescription
+            >The field may provide contextual information that enables the listener to identify specific components of the audio stream.</functionDescription>
+        <rdfs:comment
+            >A list that identifies one or more events within the sound recording, e.g. the beginning of an aria or the starting point of an important speech. Each event is recorded using a time code and description.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;provenance"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#dateStructuredText -->
+
+    <owl:Thing rdf:about="#dateStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Date</rdfs:label>
+        <rdfs:comment
+            >&lt;meta name=&#8221;date&#8221; content=&#8221;2009-01-05T08:48:39+00:00&quot;/&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes 
+
+It  helps establish the provenance of a message</significanceDescription>
+        <description
+            >A meta element that indicates the date of creation and modification.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#definitionListStructuredText -->
+
+    <StructuredTextProperty rdf:about="#definitionListStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Definition List</rdfs:label>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+        <rdfs:comment
+            >&lt;dl&gt;
+&lt;dt&gt;&lt;/dt&gt;
+&lt;/dd&gt;&lt;/dd&gt;
+&lt;/dl&gt;</rdfs:comment>
+        <description
+            >A list that consists of two parts: a term and description.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#deletedTextStructuredText -->
+
+    <StructuredTextProperty rdf:about="#deletedTextStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Deleted Text</rdfs:label>
+        <rdfs:comment>&lt;del&gt;&lt;/del&gt;</rdfs:comment>
+        <description
+            >Denotes that the HTML document has been modified and the enclosed text has been deleted from an earlier version.</description>
+        <significanceDescription
+            >Yes
+
+The &lt;del&gt; may be useful as a primitive form of version control in HTML documents.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#descriptionAudio -->
+
+    <owl:Thing rdf:about="#descriptionAudio">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label>Description</rdfs:label>
+        <functionDescription
+            >If completed, it may provide qualitative information that establishes the provenance of the audio recording.</functionDescription>
+        <rdfs:comment
+            >An ASCII string that contains a free text description of the sound sequence.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;contextFunction"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#dfnStructuredText -->
+
+    <StructuredTextProperty rdf:about="#dfnStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Dfn</rdfs:label>
+        <rdfs:comment>&lt;dfn&gt;&lt;/dfn&gt;</rdfs:comment>
+        <description
+            >The defining instance of an enclosed term.</description>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#digitalCameraCapture -->
+
+    <owl:Thing rdf:about="#digitalCameraCapture">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label
+            >Digital Camera Capture</rdfs:label>
+        <rdfs:comment
+            >This specifies the orientation of the image in relation to the placement of its rows and columns when it was saved to disk i.e. it denotes whether the image has been rotated or flipped.</rdfs:comment>
+        <rdfs:comment
+            >Yes in specific contexts but does not apply to all rasters and therefore is outside the scope of the InSPECT project.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#displayName -->
+
+    <owl:Thing rdf:about="#displayName">
+        <rdf:type rdf:resource="#EmailProperty"/>
+        <rdfs:comment
+            >Establishes the provenance (and as a result support or contradict its authenticity) of message by identifying the name of the Agent specified for the mail account.</rdfs:comment>
+        <rdfs:comment
+            >A plain text indication of the Agent&#8217;s name.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;provenance"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#divStructuredText -->
+
+    <StructuredTextProperty rdf:about="#divStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>div</rdfs:label>
+        <significanceDescription
+            >Yes
+
+Communicates the context and structure of the text for interpretation by a reader.</significanceDescription>
+        <rdfs:comment>&lt;div&gt;</rdfs:comment>
+        <description
+            >A block-element in a page that indicates a division or section. It is a generic language/style container.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#domainLiteral -->
+
+    <EmailProperty rdf:about="#domainLiteral">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >The IP address of the source or destination domain.</rdfs:comment>
+        <rdfs:comment
+            >Establishes the provenance (and as a result support or contradict its authenticity) of message by identifying the machine address from which the message originated.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;provenance"/>
+    </EmailProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#domainPart -->
+
+    <EmailProperty rdf:about="#domainPart">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >The host or domain name used by a DNS to indicate the mail provider that handles the email message.</rdfs:comment>
+        <rdfs:comment
+            >Establishes the provenance (and as a result support or contradict its authenticity) of message by identifying the domain from which the message originated.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;provenance"/>
+    </EmailProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#durationAudio -->
+
+    <owl:Thing rdf:about="#durationAudio">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label>Duration</rdfs:label>
+        <rdfs:comment
+            >The intended length of the sound recording in Time-code character format (TCF).</rdfs:comment>
+        <functionDescription
+            >Indicates if the audio is complete in its intended length. It may provide a simple indicator to identify if sound has been lost, as a result of mis-configuration or corruption.</functionDescription>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;lengthFunction"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#embeddedColourMap -->
+
+    <RasterImageProperty rdf:about="#embeddedColourMap">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Embedded Colour map</rdfs:label>
+        <rdfs:comment
+            >This is information related to a specific colour space. For the reasons set out above under colour space, this would not be regarded as a significant property.</rdfs:comment>
+        <rdfs:comment
+            >Where a colour map is embedded into the image itself.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#emphasisStructuredText -->
+
+    <StructuredTextProperty rdf:about="#emphasisStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Emphasis</rdfs:label>
+        <rdfs:comment>&lt;em&gt;&lt;/em&gt;</rdfs:comment>
+        <description
+            >Indicates key words within the document.</description>
+        <significanceDescription
+            >Yes
+
+Its significance is ambiguous &#8211; it may be utilised to indicate key concepts in the document text or for presentational purposes. The InSPECT team have taken the former viewpoint.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#extraSamples -->
+
+    <owl:Thing rdf:about="#extraSamples">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label>Extra samples</rdfs:label>
+        <rdfs:comment
+            >This is a quantative value which can be used to evaluate image quality, tone and colour.</rdfs:comment>
+        <rdfs:comment
+            >The value of any extra components in each pixel.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#fontStructuredText -->
+
+    <owl:Thing rdf:about="#fontStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Font</rdfs:label>
+        <rdfs:comment
+            >&lt;font size=2&gt;&lt;/font&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes in certain circumstances
+
+The font is not considered to be an essential element of a web page. However, it may be important for published papers and other documentation. It could in some contexts convey meaning or artistic intent, or may be a conscious decision made by a web designer for e.g. ease of use.</significanceDescription>
+        <description
+            >Defines the font in which text should be displayed, the size and colour.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#frameStructuredText -->
+
+    <StructuredTextProperty rdf:about="#frameStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Frame</rdfs:label>
+        <significanceDescription
+            >Yes
+
+Communicates the context and structure of the text for interpretation by a reader.</significanceDescription>
+        <rdfs:comment
+            >&lt;FRAME src=&quot;contents_of_frame1.html&quot;&gt;</rdfs:comment>
+        <description
+            >The element defines the contents and appearance of a single frame or subwindow.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#framesetStructuredText -->
+
+    <StructuredTextProperty rdf:about="#framesetStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Frameset</rdfs:label>
+        <significanceDescription
+            >Yes
+
+Communicates the context and structure of the text for interpretation by a reader.</significanceDescription>
+        <description
+            >The element specifies the layout of the main user window in terms of rectangular subspaces.</description>
+        <rdfs:comment
+            >&lt;FRAMESET&gt;&lt;/FRAMESET&gt;</rdfs:comment>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#generalCaptureInformation -->
+
+    <owl:Thing rdf:about="#generalCaptureInformation">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label
+            >General Capture Information</rdfs:label>
+        <rdfs:comment
+            >Yes in specific contexts but does not apply to all rasters and therefore is outside the scope of the InSPECT project.</rdfs:comment>
+        <rdfs:comment
+            >This contains three data elements:
+
+Date Time Created 
+Image Producer 
+Capture Device</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#grayResponseCurve -->
+
+    <owl:Thing rdf:about="#grayResponseCurve">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label
+            >Gray Response Curve</rdfs:label>
+        <rdfs:comment
+            >This is information related to a specific colour space. For the reasons set out above under colour space, this would not be regarded as a significant property.</rdfs:comment>
+        <rdfs:comment
+            >Specifies the optical density of each possible pixel value in terms of greyscale data
+
+It only applies to the grayscale colour space.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#headingsStructuredText -->
+
+    <owl:Thing rdf:about="#headingsStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Headings 1-6</rdfs:label>
+        <significanceDescription
+            >Yes
+
+Communicates the context of the text for interpretation by a reader.</significanceDescription>
+        <description
+            >A heading element may be used to indicate the logical internal structure of a document.</description>
+        <rdfs:comment
+            >&lt;h1&gt;&lt;/h1&gt;
+&lt;h6&gt;&lt;/h6&gt;</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#horizontalRuleStructuredText -->
+
+    <owl:Thing rdf:about="#horizontalRuleStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Horizontal Rule</rdfs:label>
+        <rdfs:comment>&lt;hr&gt;</rdfs:comment>
+        <description
+            >A horizontal line that is visually rendered on the screen.</description>
+        <significanceDescription
+            >Yes
+
+The &lt;hr&gt; tag may be used by authors to provide a visual distinction between information as with line break above.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#imageHeight -->
+
+    <owl:Thing rdf:about="#imageHeight">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label>Image Height</rdfs:label>
+        <rdfs:comment
+            >The vertical height of a digital image, in pixels.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#imageProcessing -->
+
+    <RasterImageProperty rdf:about="#imageProcessing">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Image Processing</rdfs:label>
+        <rdfs:comment
+            >Significant in specific contexts but does not apply to all raster images, as these elements are used only for images that are subsequently processed and changed from the original therefore is outside the scope of the InSPECT project.</rdfs:comment>
+        <rdfs:comment
+            >This contains 9 data elements and 1 sub-container e.g.:
+
+Date Time Processed
+Processing Agency</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#imageStructuredText -->
+
+    <StructuredTextProperty rdf:about="#imageStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Image</rdfs:label>
+        <rdfs:comment
+            >&lt;IMG src=&quot;sitemap.gif&quot; alt=&quot;HP Labs Site Map&quot; longdesc=&quot;sitemap.html&quot;&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+Indicates the relationship between a document and associated objects to be displayed in-line.</significanceDescription>
+        <description
+            >The element displays a referenced image at the location specified in the document.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#imageWidth -->
+
+    <owl:Thing rdf:about="#imageWidth">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label>Image Width</rdfs:label>
+        <rdfs:comment
+            >The horizontal width of a digital image, in pixels.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#inReplyTo -->
+
+    <EmailProperty rdf:about="#inReplyTo">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >A series of words and message identifiers that indicate the email to which the message is a reply.</rdfs:label>
+        <rdfs:label>In-Reply-To</rdfs:label>
+        <rdfs:label
+            >In-Reply-To may be beneficial to indicate the relationship between the current email and earlier email within a message body. However, it has been noted that the complicated syntax  and syntactically incorrect values cannot be interpreted by many message readers.</rdfs:label>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;external"/>
+    </EmailProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#insertedTextStructuredText -->
+
+    <StructuredTextProperty rdf:about="#insertedTextStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Inserted Text</rdfs:label>
+        <significanceDescription
+            >Yes
+
+The &lt;ins&gt; may be useful as a primitive form of version control in HTML documents.</significanceDescription>
+        <rdfs:comment>&lt;ins&gt;&lt;/ins&gt;</rdfs:comment>
+        <description
+            >Denotes that the enclosed text has been inserted as  a modification of an earlier version.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#italicsStructuredText -->
+
+    <StructuredTextProperty rdf:about="#italicsStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Italics</rdfs:label>
+        <description
+            >The enclosed text is formatted in italics.</description>
+        <rdfs:comment>&lt;i&gt;&lt;/i&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+Its significance is ambiguous &#8211; it may be utilised to indicate key concepts in the document text or for presentational purposes. The InSPECT team have taken the former viewpoint.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#keyboardStructuredText -->
+
+    <StructuredTextProperty rdf:about="#keyboardStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Keyboard</rdfs:label>
+        <rdfs:comment>&lt;kbd&gt;</rdfs:comment>
+        <description
+            >Indicates text to be entered by the user.</description>
+        <significanceDescription
+            >No
+
+Structured text files that contain dynamic content that may change, based on interaction with the user, are outside the scope of the project.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#keywords -->
+
+    <owl:Thing rdf:about="#keywords">
+        <rdf:type rdf:resource="#EmailProperty"/>
+        <rdfs:comment
+            >Words and phrases that may summarise the content of the message. Keywords may be created by the person or software application that creates, receives the message, or archives the message.</rdfs:comment>
+        <rdfs:comment
+            >The Subject may provide qualitative information that indicates the message purpose.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;description"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#keywordsStructuredText -->
+
+    <StructuredTextProperty rdf:about="#keywordsStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Keywords</rdfs:label>
+        <description
+            >A meta element used to specify keywords associated with the document.</description>
+        <rdfs:comment
+            >&lt;meta name=&#8221;keywords&#8221; lang=&#8221;en&#8221; content=&#8221;significant properties, representation information&#8221;&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes. 
+
+If used correctly to indicate key terms associated with the document topic, keywords may be useful for location and retrieval.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#languageStructuredText -->
+
+    <StructuredTextProperty rdf:about="#languageStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Language</rdfs:label>
+        <description
+            >This is a language code that identifies a natural language which is spoken, written, or used for communication of information among people in another manner. These codes do not include computer languages.</description>
+        <significanceDescription
+            >Yes
+
+This communicates the language of the text for interpretation by a reader.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#lineBreakStructuredText -->
+
+    <owl:Thing rdf:about="#lineBreakStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Line Break</rdfs:label>
+        <description
+            >A character that indicates the end of a line. Text that appears after the line break will appear on a new line.</description>
+        <rdfs:comment>&lt;br&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+Communicates the context of the text for interpretation by a reader.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#linkStructuredText -->
+
+    <owl:Thing rdf:about="#linkStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Link</rdfs:label>
+        <significanceDescription
+            >Yes
+
+The link may be significant, if the page is one of several pages that are held by the archive. However, it may be insignificant if the page is stand-alone.</significanceDescription>
+        <description
+            >A &#8216;media independent&#8217; link found in the header that denotes relationships between one or more pages.</description>
+        <rdfs:comment
+            >&lt;LINK rel=&quot;Next&quot;  href=&quot;Chapter3.html&quot;&gt;</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#listItemStructuredText -->
+
+    <owl:Thing rdf:about="#listItemStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>List Item</rdfs:label>
+        <rdfs:comment>&lt;li&gt;&lt;/li&gt;</rdfs:comment>
+        <description
+            >An distinct item in a list.</description>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#localPart -->
+
+    <EmailProperty rdf:about="#localPart">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >Establishes the provenance (and as a result support or contradict its authenticity) of message by identifying the user account that was used to transmit the message.</rdfs:comment>
+        <rdfs:comment
+            >The user account of the Agent assigned by a mail provider. The local-part is identified by alphanumeric characters prior to the @ symbol of an email address.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;provenance"/>
+    </EmailProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#messageID -->
+
+    <EmailProperty rdf:about="#messageID">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >A unique identifier created by the domain from which the email originated that is embedded within the email header. The message-id is found in received emails and is not present in local emails.</rdfs:comment>
+        <rdfs:comment
+            >The message-id should be used when attempting to understand the relationship between two or more emails that constitute a thread. It is beneficial when the subject line has changed. However, it has only limited use when handling a single email.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;external"/>
+    </EmailProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#methodology -->
+
+    <owl:Thing rdf:about="#methodology">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label>Methodology</rdfs:label>
+        <rdfs:comment
+            >Yes in specific contexts but does not apply to all rasters and therefore is outside the scope of the InSPECT project.</rdfs:comment>
+        <rdfs:comment
+            >Specifies the methodology used in digitising the image.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#numberOfChannels -->
+
+    <owl:Thing rdf:about="#numberOfChannels">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label
+            >Number of channels</rdfs:label>
+        <functionDescription
+            >The value is not essential, duplicating information that can be found by examining the Channel Number. However, it may be useful to store a value for curators to validate that content loss has not occurred. 
+
+A comparison of a source and destination object that identifies a reduction in the channel number may indicate quality loss (one or more channels has been lost) or reduction (the channels have been merged and can no longer be treated independently.</functionDescription>
+        <rdfs:comment
+            >A numeric value that indicates the number of distinct streams within an audio object. An audio recording that contains two or more channels may output each channel through a different speaker or other output.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;contentFunction"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#orderedListStructuredText -->
+
+    <StructuredTextProperty rdf:about="#orderedListStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Ordered List</rdfs:label>
+        <description
+            >A list of items that must be displayed in a pre-defined order.</description>
+        <rdfs:comment>&lt;ol&gt;&lt;/ol&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#orientation -->
+
+    <RasterImageProperty rdf:about="#orientation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Orientation</rdfs:label>
+        <rdfs:comment
+            >This specifies the orientation of the image in relation to the placement of its rows and columns when it was saved to disk i.e. it denotes whether the image has been rotated or flipped.</rdfs:comment>
+        <rdfs:comment
+            >Yes in specific contexts but does not apply to all rasters and therefore is outside the scope of the InSPECT project.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#originationDate -->
+
+    <AudioProperty rdf:about="#originationDate">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>OriginationDate</rdfs:label>
+        <rdfs:comment
+            >Indicates the creation date of the audio sequence. Format is YYYY-MM-DD.</rdfs:comment>
+        <functionDescription
+            >If completed it may establish the creation point of the original recording, which is useful for establishing its provenance. However, it may be considered unnecessary for some users if it indicates the date at which a digital manifestation of an analogue original was created.</functionDescription>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;contextFunction"/>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#originationTime -->
+
+    <owl:Thing rdf:about="#originationTime">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label>OriginationTime</rdfs:label>
+        <functionDescription
+            >If completed it may establish the creation point of the original recording, which is useful for establishing its provenance. However, it may be considered unnecessary for some users if it indicates the date at which a digital manifestation of an analogue original was created.</functionDescription>
+        <rdfs:comment
+            >The time that the audio sequence was created. Format is hh-mm-ss.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;contextFunction"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#originator -->
+
+    <AudioProperty rdf:about="#originator">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Originator</rdfs:label>
+        <functionDescription
+            >If completed, it may provide qualitative information that establishes the provenance of the audio recording.</functionDescription>
+        <rdfs:comment
+            >An ASCII string that may contain the name of the creator of the audio.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;contextFunction"/>
+    </AudioProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#originatorReference -->
+
+    <owl:Thing rdf:about="#originatorReference">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label
+            >OriginatorReference</rdfs:label>
+        <rdfs:comment
+            >An ASCII string that contains a non ambiguous reference allocated by the originating organization.</rdfs:comment>
+        <functionDescription
+            >If completed, it may provide qualitative information that establishes the provenance of the audio recording.</functionDescription>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;contextFunction"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#paragraphStructuredText -->
+
+    <StructuredTextProperty rdf:about="#paragraphStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>&lt;p&gt;&lt;/p&gt;</rdfs:label>
+        <rdfs:label>Paragraph</rdfs:label>
+        <significanceDescription
+            >Yes
+
+Communicates the context of the text for interpretation by a reader.</significanceDescription>
+        <description
+            >The enclosed text indicates a linear set of text that is distinct from other paragraphs.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#preformattedTextStructuredText -->
+
+    <owl:Thing rdf:about="#preformattedTextStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Preformatted Text</rdfs:label>
+        <rdfs:comment>&lt;pre&gt;&lt;/pre&gt;</rdfs:comment>
+        <significanceDescription
+            >No
+
+The significance of preformatted text is ambiguous. The tag is a characteristic of HTML that is often used to define a specific text layout. However, it does not perform a function that is distinct from other types of text markup in the sample web resources analysed. It is recommend that preformatted text is examined and character encoding line breaks are converted to markup line breaks.</significanceDescription>
+        <description
+            >The enclosed text is &#8220;preformatted&#8221; &#8211; white space remains intact and word wrap is disabled.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#previousImageMetadata -->
+
+    <RasterImageProperty rdf:about="#previousImageMetadata">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Previous Image Metadata</rdfs:label>
+        <rdfs:comment
+            >Any previous metadata from previous manifestation of the image.</rdfs:comment>
+        <rdfs:comment
+            >Significant in specific contexts but does not apply to all raster images, as these elements are used only for images that are subsequently processed and changed from the original therefore is outside the scope of the InSPECT project.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#primaryChromaticitiesRendering -->
+
+    <owl:Thing rdf:about="#primaryChromaticitiesRendering">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label
+            >Primary Chromaticities  (rendering)</rdfs:label>
+        <rdfs:comment
+            >This describes the x and y values for the chromaticities of the primary colours of the imaging process when the CIE 1931 XYZ colour space is being used.</rdfs:comment>
+        <rdfs:comment
+            >This is information related to a specific colour space. For the reasons set out above under colour space, this would not be regarded as a significant property.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#qualityReport -->
+
+    <owl:Thing rdf:about="#qualityReport">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label>Quality Report</rdfs:label>
+        <functionDescription
+            >The field may be beneficial for curators who wish to understand the activities performed on a digital object, particularly if it has been provided by a third-party and no other information is available. However, the Coding History is not essential for the performance of the audio recording or understanding the context of its creation.</functionDescription>
+        <rdfs:comment
+            >A text field that may be used to describe events that affect the quality of the recording sound signal. Each event is listed with details of the type of event, exact time stamps, priority, event status and other quality parameters.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;provenance"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#quotationsStructuredText -->
+
+    <StructuredTextProperty rdf:about="#quotationsStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Quotations</rdfs:label>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+        <rdfs:comment
+            >&lt;q&gt; (short quotations)
+&lt;blockquote&gt; (long quotations)</rdfs:comment>
+        <description
+            >The enclosed text is a quotation.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#receivedDate -->
+
+    <owl:Thing rdf:about="#receivedDate">
+        <rdf:type rdf:resource="#EmailProperty"/>
+        <rdfs:comment
+            >Indicates the datetime that an email was received. However, it does not confirm that the email was downloaded or read by a recipient.</rdfs:comment>
+        <rdfs:comment
+            >The date and time that an email was received by the recipient&#8217;s host.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;provenance"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#referenceBlackWhite -->
+
+    <RasterImageProperty rdf:about="#referenceBlackWhite">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Reference Black White</rdfs:label>
+        <rdfs:comment
+            >This is information related only to specific colour spaces. For the reasons set out above under Colour Space, this would not be regarded as a significant property.</rdfs:comment>
+        <rdfs:comment
+            >This is encoded headroom and footroom image data for each pixel which describes image colorimetry information for an image when the YCbCr or RGB colour spaces are used.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#references -->
+
+    <EmailProperty rdf:about="#references">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >The References should be used to interpret the relationship between the current email and earlier emails. However, it has little value when the object to be preserved is a standalone email that does not relate to a previous email, or handling an email where the referenced email has been deleted.</rdfs:comment>
+        <rdfs:comment
+            >One or more identifiers that may be expressed as a series of message-IDs separated by a space or a tokenized set of words and message identifiers.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;external"/>
+    </EmailProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#relationshipType -->
+
+    <owl:Thing rdf:about="#relationshipType">
+        <rdf:type rdf:resource="#EmailProperty"/>
+        <rdfs:comment
+            >The relationship that the Agent has with the email message, e.g. creator, sender, recipient (primary, CC, BCC).</rdfs:comment>
+        <rdfs:comment
+            >Establishes the provenance (and as a result support or contradict its authenticity) of message by identifying how each agent relates to the email.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;relationship"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#rightsStructuredText -->
+
+    <owl:Thing rdf:about="#rightsStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Rights</rdfs:label>
+        <significanceDescription
+            >Yes. 
+
+Establishes the rights holder(s) of the intellectual content and layout.</significanceDescription>
+        <description
+            >A meta element that indicates the copyright status of the document.</description>
+        <rdfs:comment
+            >&lt;meta name=&#8221;copyright&#8221; content=&#8221;&amp;copy&#8217; 2009 Gareth Knight&#8221;&gt;</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#sampStructuredText -->
+
+    <StructuredTextProperty rdf:about="#sampStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Samp</rdfs:label>
+        <description
+            >Denotes sample output, such as from a program or script.</description>
+        <rdfs:comment>&lt;samp&gt;&lt;/samp&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#sampleRateAudio -->
+
+    <owl:Thing rdf:about="#sampleRateAudio">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label
+            >The number of samples per second (or per other unit) at which each channel should be played.</rdfs:label>
+        <rdfs:label>Sample rate</rdfs:label>
+        <functionDescription
+            >The sample rate may provide an indicator of audio quality. A greater number of samples may be recorded at higher sampling frequencies, e.g. 44.1kz or higher indicates CD quality, 8kHz is equivalent to telephone quality. A reduction in sample rate of a converted object may indicate that quality loss has occurred. However, an increase in sample rate may not be a source of concern.</functionDescription>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;renderingFunction"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#samplesPerPixel -->
+
+    <owl:Thing rdf:about="#samplesPerPixel">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label
+            >Samples per pixel</rdfs:label>
+        <rdfs:comment
+            >This is a quantative value which can be used to evaluate image quality, tone and colour.</rdfs:comment>
+        <rdfs:comment
+            >The number of colour components per pixel.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#samplingFrequencyPlane -->
+
+    <RasterImageProperty rdf:about="#samplingFrequencyPlane">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Sampling frequency plane</rdfs:label>
+        <rdfs:comment
+            >Yes in specific contexts but does not apply to all raster images, as this element is used specifically for analogue-digital conversions and therefore is outside the scope of the InSPECT project.</rdfs:comment>
+        <rdfs:comment
+            >This specifies the reference plane location for which the x sampling frequency and y sampling frequency are designated.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#samplingFrequencyUnit -->
+
+    <owl:Thing rdf:about="#samplingFrequencyUnit">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label
+            >Sampling Frequency Unit</rdfs:label>
+        <rdfs:comment
+            >This is the unit of measurement for the two data elements it contains.</rdfs:comment>
+        <rdfs:comment
+            >This gives a value for the resolution of the image.</rdfs:comment>
+        <PLANETSOntology:contains rdf:resource="#xSamplingFrequency"/>
+        <PLANETSOntology:contains rdf:resource="#ySamplingFrequency"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#scannerCapture -->
+
+    <RasterImageProperty rdf:about="#scannerCapture">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Scanner Capture</rdfs:label>
+        <rdfs:comment
+            >This contains information about any scanner and scanner capture settings used e.g.:
+
+Scanner Model 
+Scanner Model Number 
+Maximum Optical Resolution 
+Scanning System Software (S-C)</rdfs:comment>
+        <rdfs:comment
+            >Yes in specific contexts but does not apply to all rasters and therefore is outside the scope of the InSPECT project.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#sentDate -->
+
+    <owl:Thing rdf:about="#sentDate">
+        <rdf:type rdf:resource="#EmailProperty"/>
+        <rdfs:comment
+            >The date and time that an email was completed by a Creator and/or transmitted by the Sender, or received by a Recipient.</rdfs:comment>
+        <rdfs:comment
+            >The sent-date is obtained from the system settings of the sender&#8217;s machine. It may indicate the datetime in which an idea was expressed. However, there is the potential that the datetime has been accidentally or deliberately altered, which may result in the value being untrustworthy.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;provenance"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#soundField -->
+
+    <owl:Thing rdf:about="#soundField">
+        <rdf:type rdf:resource="#AudioProperty"/>
+        <rdfs:label>Sound field</rdfs:label>
+        <functionDescription
+            >Sound field indicates the intended environment in which the designated community should experience the audio recording. The value complements the sound map location. The corruption of the sound field (e.g. surround-to-stereo, stereo-to-mono) may cause software to combine audio streams and output them to a limited number of speakers.</functionDescription>
+        <rdfs:comment
+            >The aural space to which the channels are mapped, e.g. mono, stereo.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;contentFunction"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#sourceInformation -->
+
+    <RasterImageProperty rdf:about="#sourceInformation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Source Information</rdfs:label>
+        <rdfs:comment
+            >Information about the analog source object e.g.:
+
+Source Type 
+Source X Dimension
+Source Y Dimension
+Source Z Unit</rdfs:comment>
+        <rdfs:comment
+            >Yes in specific contexts but does not apply to all rasters and therefore is outside the scope of the InSPECT project.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#spanStructuredText -->
+
+    <owl:Thing rdf:about="#spanStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>span</rdfs:label>
+        <rdfs:comment>&lt;span&gt;</rdfs:comment>
+        <description
+            >An inline element in a page that indicates a division or section.</description>
+        <significanceDescription
+            >Yes
+
+Communicates the context and structure of the text for interpretation by a reader.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#specialFormatCharacteristics -->
+
+    <RasterImageProperty rdf:about="#specialFormatCharacteristics">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Special Format Characteristics</rdfs:label>
+        <rdfs:comment
+            >This format-specific and therefore outside the scope of the project.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#strikethroughStructuredText -->
+
+    <StructuredTextProperty rdf:about="#strikethroughStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Strikethrough</rdfs:label>
+        <significanceDescription>Yes</significanceDescription>
+        <description
+            >The enclosed text is struck through. The markup may be used to visually indicate that information has been deleted or modified.</description>
+        <rdfs:comment>&lt;s&gt;&lt;/s&gt;</rdfs:comment>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#strongEmphasisStructuredText -->
+
+    <StructuredTextProperty rdf:about="#strongEmphasisStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Strong Emphasis</rdfs:label>
+        <rdfs:comment
+            >&lt;strong&gt;&lt;/strong&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+Its significance is ambiguous &#8211; it may be utilised to indicate key concepts in the document text or for presentational purposes. The InSPECT team have taken the former viewpoint.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#subject -->
+
+    <EmailProperty rdf:about="#subject">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >A short string that may identify the topic of the message. The subject line may be blank, indicate the content of the email to which the Sender is replying, or contain other information.</rdfs:comment>
+        <rdfs:comment
+            >The Subject may provide qualitative information that indicates the message purpose. Additionally, it may provide a simple method to sort several emails into a thread when used in conjunction with the received date.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;description"/>
+    </EmailProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#subscriptSuperscriptStructuredText -->
+
+    <StructuredTextProperty rdf:about="#subscriptSuperscriptStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Subscript / Superscript</rdfs:label>
+        <description
+            >The enclosed text is displayed smaller than other text and is displayed slightly below or above it.</description>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+        <rdfs:comment
+            >&lt;sub&gt;&lt;/sub&gt;
+&lt;sup&gt;&lt;/sup&gt;</rdfs:comment>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableBorderStructured -->
+
+    <StructuredTextProperty rdf:about="#tableBorderStructured">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Table Border</rdfs:label>
+        <description
+            >The visual appearance of a border that appears around a table, including colour and size.</description>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although it may assist the aesthetic appearance of the table, the text direction should not affect its underlying meaning. However, in some circumstances it may be an artistic decision as with centring above.</significanceDescription>
+        <rdfs:comment>&lt;table border&gt;</rdfs:comment>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCaptionAlignmentStructuredText -->
+
+    <owl:Thing rdf:about="#tableCaptionAlignmentStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Table Caption Alignment</rdfs:label>
+        <description
+            >Attribute that specifies the position of the caption with respect to the table.</description>
+        <significanceDescription
+            >Yes in certain circumstances
+
+May be an artistic decision as with centring above.</significanceDescription>
+        <rdfs:comment
+            >Align=top|bottom | left | right</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCaptionStructuredText -->
+
+    <owl:Thing rdf:about="#tableCaptionStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Table Caption</rdfs:label>
+        <significanceDescription
+            >Yes
+
+Indicates the purpose of the table which may be useful for interpretation.</significanceDescription>
+        <rdfs:comment
+            >&lt;caption&gt;&lt;/caption&gt;</rdfs:comment>
+        <description
+            >A short description of the table&#8217;s purpose.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCellAbbreviationStructuredText -->
+
+    <owl:Thing rdf:about="#tableCellAbbreviationStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Table Cell Abbreviation</rdfs:label>
+        <rdfs:comment>abbr</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+Provides contextual information that may be useful for screen-readers.</significanceDescription>
+        <description
+            >An abbreviated form of the cell&#8217;s contents.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCellAlignmentStructuredText -->
+
+    <owl:Thing rdf:about="#tableCellAlignmentStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Table Cell Alignment</rdfs:label>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although it may assist the aesthetic appearance of the table, the alignment should not affect its underlying meaning. However, in some circumstances it may be an artistic decision as with centring above.</significanceDescription>
+        <description
+            >The alignment and justification of text in a cell.</description>
+        <rdfs:comment
+            >Align (horizontal)
+Valign (vertical)</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCellAxisStructuredText -->
+
+    <StructuredTextProperty rdf:about="#tableCellAxisStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Table Cell Axis</rdfs:label>
+        <rdfs:comment>axis</rdfs:comment>
+        <description
+            >Comma-separated list of related headers.</description>
+        <significanceDescription>Yes</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCellHeightStructuredText -->
+
+    <owl:Thing rdf:about="#tableCellHeightStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Table Cell Height</rdfs:label>
+        <rdfs:comment>height</rdfs:comment>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although it may assist the aesthetic appearance of the table, the cell height should not affect its underlying meaning. However, in some circumstances it may be an artistic decision as with centring above.</significanceDescription>
+        <description
+            >An attribute that indicates the recommended cell height.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCellPaddingStructuredText -->
+
+    <StructuredTextProperty rdf:about="#tableCellPaddingStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Table Cell Padding</rdfs:label>
+        <rdfs:comment
+            >Cellpadding = length</rdfs:comment>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although it may assist the aesthetic appearance of the table, the cell padding should not affect its underlying meaning. However, in some circumstances it may be an artistic decision as with centring above.</significanceDescription>
+        <description
+            >An attribute that indicates the spacing within cells.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCellScopeStructuredText -->
+
+    <owl:Thing rdf:about="#tableCellScopeStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Table Cell Scope</rdfs:label>
+        <significanceDescription>Yes</significanceDescription>
+        <description
+            >The set of data cells for which the header cell provides header information.</description>
+        <rdfs:comment>Scope</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCellWidthStructuredText -->
+
+    <owl:Thing rdf:about="#tableCellWidthStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Table Cell Width</rdfs:label>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although it may assist the aesthetic appearance of the table, the cell width should not affect its underlying meaning. However, in some circumstances it may be an artistic decision as with centring above.</significanceDescription>
+        <rdfs:comment>width</rdfs:comment>
+        <description
+            >An attribute that indicates the recommended cell width.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableCellWrappingStructuredText -->
+
+    <owl:Thing rdf:about="#tableCellWrappingStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Table Cell Wrapping</rdfs:label>
+        <rdfs:comment>nowrap</rdfs:comment>
+        <description
+            >A Boolean attribute that indicates that the cell should not be wrapped when visually rendered.</description>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although it may assist the aesthetic appearance of the table, the cell wrapping should not affect its underlying meaning. However, in some circumstances it may be an artistic decision as with centring above.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableColumnGroupStructuredText -->
+
+    <owl:Thing rdf:about="#tableColumnGroupStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Table: Column Group</rdfs:label>
+        <description
+            >An explicit group of two or more columns.</description>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+        <rdfs:comment
+            >&lt;colgroup&gt;
+&lt;/colgroup&gt;</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableColumnSpanStructuredText -->
+
+    <owl:Thing rdf:about="#tableColumnSpanStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label
+            >Table Column Span</rdfs:label>
+        <rdfs:comment>colspan</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+Communicates information on how the information contained in the cells inter-relate.</significanceDescription>
+        <description
+            >The number of columns spanned by the cell.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableDirectionalityStructuredText -->
+
+    <StructuredTextProperty rdf:about="#tableDirectionalityStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Table Directionality</rdfs:label>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although it may assist the aesthetic appearance of the table, the text direction should not affect its underlying meaning. However, in some circumstances it may be an artistic decision as with centring above.</significanceDescription>
+        <rdfs:comment
+            >&lt;table dir=&#8221;&#8221;&gt;
+&lt;/table&gt;</rdfs:comment>
+        <description
+            >The direction of text displayed in the table. The default is left-to-right.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableFooterStructuredText -->
+
+    <StructuredTextProperty rdf:about="#tableFooterStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Table Footer</rdfs:label>
+        <rdfs:comment>&lt;tfoot&gt;</rdfs:comment>
+        <significanceDescription>Yes</significanceDescription>
+        <description
+            >Table footers communicate information about the cell that may be useful for visual or non-visual representation.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableHeadersStructuredText -->
+
+    <StructuredTextProperty rdf:about="#tableHeadersStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Table Headers</rdfs:label>
+        <rdfs:comment
+            >&lt;th&gt;&lt;/th&gt;
+&lt;thead&gt;&lt;/thead&gt;</rdfs:comment>
+        <significanceDescription>Yes</significanceDescription>
+        <description
+            >Table headers communicate information about the cell that may be useful for visual or non-visual representation.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableIdStructuredText -->
+
+    <owl:Thing rdf:about="#tableIdStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Table ID</rdfs:label>
+        <significanceDescription
+            >Yes
+
+May be useful for maintaining internal navigation.</significanceDescription>
+        <description
+            >A document-wide identifier.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableLangStructuredText -->
+
+    <StructuredTextProperty rdf:about="#tableLangStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Table Lang</rdfs:label>
+        <description>Language</description>
+        <significanceDescription>Yes</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableRowSpanStructuredText -->
+
+    <owl:Thing rdf:about="#tableRowSpanStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>rowspan</rdfs:label>
+        <rdfs:label>Table Row Span</rdfs:label>
+        <description
+            >The number of rows spanned by the cell.</description>
+        <significanceDescription
+            >Yes
+
+Communicates information on how the information contained in the cells inter-relate.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableRowStructuredText -->
+
+    <owl:Thing rdf:about="#tableRowStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Table Row</rdfs:label>
+        <rdfs:comment>&lt;tr&gt;&lt;/tr&gt;</rdfs:comment>
+        <description
+            >Rows convey structural information.</description>
+        <significanceDescription
+            >Yes
+
+Indicates the logical structure of the information contained in the table.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableSummaryStructuredText -->
+
+    <owl:Thing rdf:about="#tableSummaryStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Table Summary</rdfs:label>
+        <significanceDescription
+            >Yes
+
+Indicates the purpose of the table which may be useful for interpretation.</significanceDescription>
+        <description
+            >The purpose or structure of the table.</description>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#tableWidthStructuredText -->
+
+    <owl:Thing rdf:about="#tableWidthStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Table Width</rdfs:label>
+        <description
+            >The visual width of a table.</description>
+        <significanceDescription
+            >Yes in certain circumstances
+
+Although it may assist the aesthetic appearance of the table, the text direction should not affect its underlying meaning. However, in some circumstances it may be an artistic decision as with centring above.</significanceDescription>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#targetData -->
+
+    <owl:Thing rdf:about="#targetData">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label>Target Data</rdfs:label>
+        <rdfs:comment
+            >Yes in specific contexts but does not apply to all raster images, only those which are digitised, and therefore is outside the scope of the InSPECT project.</rdfs:comment>
+        <rdfs:comment
+            >Specifies info about targets used in digitisation.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#titleStructuredText -->
+
+    <StructuredTextProperty rdf:about="#titleStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Title</rdfs:label>
+        <description
+            >The title is a property of the document that may be used by a creator to provide a short description of the page content.</description>
+        <significanceDescription>Yes</significanceDescription>
+        <rdfs:comment>&lt;title&gt;&lt;/title&gt;</rdfs:comment>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#traceField -->
+
+    <EmailProperty rdf:about="#traceField">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >Indicates the route that the email took to travel from the sender from the recipient and when it occurred. A repeatable value consisting of an optional &#8220;Return-Path&#8221; field  and one or more &#8220;Received&#8221; fields.</rdfs:comment>
+        <rdfs:comment
+            >The trace fields are external to the control of the sender and recipient and, therefore may be thought more trustworthy than the Sent and Received date for validation.</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;description"/>
+    </EmailProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#underlineStructuredText -->
+
+    <StructuredTextProperty rdf:about="#underlineStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>Underline</rdfs:label>
+        <description
+            >The enclosed text is underlined.</description>
+        <rdfs:comment>&lt;u&gt;&lt;/u&gt;</rdfs:comment>
+        <significanceDescription
+            >Yes
+
+Its significance is ambiguous &#8211; it may be utilised to indicate key concepts in the document text or for presentational purposes. The InSPECT team have taken the former viewpoint.</significanceDescription>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#unorderedListStructuredText -->
+
+    <owl:Thing rdf:about="#unorderedListStructuredText">
+        <rdf:type rdf:resource="#StructuredTextProperty"/>
+        <rdfs:label>Unordered List</rdfs:label>
+        <significanceDescription
+            >Yes
+
+This communicates the purpose of the text for interpretation by a reader.</significanceDescription>
+        <description
+            >A list of items that may be interpreted in any order but which shares a common basis.</description>
+        <rdfs:comment>&lt;ul&gt;&lt;/ul&gt;</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#vlinkStructuredText -->
+
+    <StructuredTextProperty rdf:about="#vlinkStructuredText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>vlink</rdfs:label>
+        <significanceDescription
+            >Yes in certain circumstances
+
+The colour of a hypertext link is not considered to be significant aspect of the intellectual content. However, it is recognized that it may have an artistic role for a small number of documents as above.</significanceDescription>
+        <rdfs:comment
+            >Vlink = [colour]</rdfs:comment>
+        <description
+            >Attribute that sets the colour of text marking visited hypertext links.</description>
+    </StructuredTextProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#whitePointRendering -->
+
+    <owl:Thing rdf:about="#whitePointRendering">
+        <rdf:type rdf:resource="#RasterImageProperty"/>
+        <rdfs:label
+            >White Point (rendering)</rdfs:label>
+        <rdfs:comment
+            >Specifies white point details [when the CIE 1931 XYZ colour space is being used] and is used to help display an image colour consistently on different devices
+http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf</rdfs:comment>
+        <rdfs:comment
+            >This is information related to a specific colour space. For the reasons set out above under colour space, this would not be regarded as a significant property.</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#xSamplingFrequency -->
+
+    <RasterImageProperty rdf:about="#xSamplingFrequency">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >X sampling frequency</rdfs:label>
+        <rdfs:label
+            >X sampling frequency - The number of pixels per sampling frequency unit in the image width.</rdfs:label>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#ySamplingFrequency -->
+
+    <RasterImageProperty rdf:about="#ySamplingFrequency">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label
+            >Y sampling frequency</rdfs:label>
+        <rdfs:comment
+            >The number of pixels per sampling frequency unit in the image length.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/InspectOntology.owl#ycbcr -->
+
+    <RasterImageProperty rdf:about="#ycbcr">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:label>YCbCr</rdfs:label>
+        <rdfs:comment
+            >YCbCr is a specific colour space.</rdfs:comment>
+        <rdfs:comment
+            >This is information related to a specific colour space. For the reasons set out above under colour space, this would not be regarded as a significant property.</rdfs:comment>
+    </RasterImageProperty>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#contentFunction -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;contentFunction"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#contextFunction -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;contextFunction"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#description -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;description"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#external -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;external"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#lengthFunction -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;lengthFunction"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#provenance -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;provenance"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#relationship -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;relationship"/>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#renderingFunction -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;renderingFunction"/>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net -->
+

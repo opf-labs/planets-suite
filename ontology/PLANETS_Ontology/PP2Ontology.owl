@@ -1,0 +1,3861 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY PP2 "http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#"
+     xml:base="http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:PP2="http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#">
+    <owl:Ontology rdf:about="">
+        <rdfs:label
+            >Organisational Policy and Strategy Model Ontology (PP/2)</rdfs:label>
+        <rdfs:comment
+            >This ontology comprises concepts that have been compiled by Angela Dappert at http://www.planets-project.eu/private/pages/wiki/index.php/PP/2_Draft_Conceptual_Model.</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#pP2Entity -->
+
+    <owl:Class rdf:about="#pP2Entity">
+        <rdfs:label
+            >Preservation Planning Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >This class comprises all things in the universe of discourse of preservation policies and strategies that are required for decision support and pro-active planning tools.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#PP2Property -->
+
+    <owl:Class rdf:about="#PP2Property">
+        <rdfs:subClassOf rdf:resource="#pP2Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#abstract -->
+
+    <PP2Property rdf:about="#abstract">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#acquisitionBudget -->
+
+    <PP2Property rdf:about="#acquisitionBudget">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#administrativeSupport -->
+
+    <owl:Thing rdf:about="#administrativeSupport">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#alternativeText -->
+
+    <PP2Property rdf:about="#alternativeText">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#animation -->
+
+    <owl:Thing rdf:about="#animation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#appearanceProperty -->
+
+    <PP2Property rdf:about="#appearanceProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#appendixGroup -->
+
+    <PP2Property rdf:about="#appendixGroup">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#appendixStructure -->
+
+    <PP2Property rdf:about="#appendixStructure">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#applicationsUsingThisFileFormat -->
+
+    <owl:Thing rdf:about="#applicationsUsingThisFileFormat">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#archivalLegislation -->
+
+    <PP2Property rdf:about="#archivalLegislation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#attachments -->
+
+    <owl:Thing rdf:about="#attachments">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#audio -->
+
+    <PP2Property rdf:about="#audio">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#auditTrailQuality -->
+
+    <owl:Thing rdf:about="#auditTrailQuality">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#authenticity -->
+
+    <owl:Thing rdf:about="#authenticity">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#author -->
+
+    <PP2Property rdf:about="#author">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#automation -->
+
+    <owl:Thing rdf:about="#automation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#availabilityOfDocumentation -->
+
+    <PP2Property rdf:about="#availabilityOfDocumentation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#backMatter -->
+
+    <owl:Thing rdf:about="#backMatter">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#backgroundColour -->
+
+    <owl:Thing rdf:about="#backgroundColour">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#backwardsCompatibility -->
+
+    <PP2Property rdf:about="#backwardsCompatibility">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#basicnessOfRepresentation -->
+
+    <owl:Thing rdf:about="#basicnessOfRepresentation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#behaviour -->
+
+    <owl:Thing rdf:about="#behaviour">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#behaviourProperty -->
+
+    <PP2Property rdf:about="#behaviourProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#bestPractice -->
+
+    <owl:Thing rdf:about="#bestPractice">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#bitDepth -->
+
+    <PP2Property rdf:about="#bitDepth">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#bitSequence -->
+
+    <PP2Property rdf:about="#bitSequence">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#bitsPerSample -->
+
+    <owl:Thing rdf:about="#bitsPerSample">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#bitstream -->
+
+    <PP2Property rdf:about="#bitstream">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#body -->
+
+    <owl:Thing rdf:about="#body">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#boxedText -->
+
+    <owl:Thing rdf:about="#boxedText">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#break -->
+
+    <owl:Thing rdf:about="#break">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#budget -->
+
+    <PP2Property rdf:about="#budget">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#budgetProperty -->
+
+    <owl:Thing rdf:about="#budgetProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#businessContext -->
+
+    <owl:Thing rdf:about="#businessContext">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#businessProcess -->
+
+    <PP2Property rdf:about="#businessProcess">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#bytestream -->
+
+    <PP2Property rdf:about="#bytestream">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#bytestreamProperty -->
+
+    <owl:Thing rdf:about="#bytestreamProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#cYM -->
+
+    <owl:Thing rdf:about="#cYM">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#capacity -->
+
+    <PP2Property rdf:about="#capacity">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#cell -->
+
+    <PP2Property rdf:about="#cell">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#cellContentProperty -->
+
+    <owl:Thing rdf:about="#cellContentProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#cellHighlighting -->
+
+    <PP2Property rdf:about="#cellHighlighting">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#characterSequence -->
+
+    <owl:Thing rdf:about="#characterSequence">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#characteristic -->
+
+    <PP2Property rdf:about="#characteristic">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#citation -->
+
+    <owl:Thing rdf:about="#citation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#colour -->
+
+    <owl:Thing rdf:about="#colour">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#colourSpace -->
+
+    <owl:Thing rdf:about="#colourSpace">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#coloured -->
+
+    <owl:Thing rdf:about="#coloured">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#columnBreak -->
+
+    <PP2Property rdf:about="#columnBreak">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#commonComponents -->
+
+    <PP2Property rdf:about="#commonComponents">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#community -->
+
+    <PP2Property rdf:about="#community">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#communityOutreach -->
+
+    <owl:Thing rdf:about="#communityOutreach">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#communitySupport -->
+
+    <owl:Thing rdf:about="#communitySupport">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#comparativeFileSize -->
+
+    <owl:Thing rdf:about="#comparativeFileSize">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#competitor -->
+
+    <PP2Property rdf:about="#competitor">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#complexity -->
+
+    <PP2Property rdf:about="#complexity">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#component -->
+
+    <owl:Thing rdf:about="#component">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#compression -->
+
+    <owl:Thing rdf:about="#compression">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#compressionRatio -->
+
+    <PP2Property rdf:about="#compressionRatio">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#compressionScheme -->
+
+    <PP2Property rdf:about="#compressionScheme">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#compressionSchemeLocalList -->
+
+    <PP2Property rdf:about="#compressionSchemeLocalList">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#compressionSchemeLocalValue -->
+
+    <owl:Thing rdf:about="#compressionSchemeLocalValue">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#computerHardware -->
+
+    <PP2Property rdf:about="#computerHardware">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#conferenceInformation -->
+
+    <PP2Property rdf:about="#conferenceInformation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#constraintsOnCertainFileFormats -->
+
+    <owl:Thing rdf:about="#constraintsOnCertainFileFormats">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#consumer -->
+
+    <owl:Thing rdf:about="#consumer">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#consumerInformation -->
+
+    <PP2Property rdf:about="#consumerInformation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#content -->
+
+    <owl:Thing rdf:about="#content">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#contentProperty -->
+
+    <owl:Thing rdf:about="#contentProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#contextProperty -->
+
+    <owl:Thing rdf:about="#contextProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#contractLaw -->
+
+    <owl:Thing rdf:about="#contractLaw">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#contractualPolicy -->
+
+    <PP2Property rdf:about="#contractualPolicy">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#contributor -->
+
+    <PP2Property rdf:about="#contributor">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#copyrightLegislation -->
+
+    <owl:Thing rdf:about="#copyrightLegislation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#copyrightOwnership -->
+
+    <PP2Property rdf:about="#copyrightOwnership">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#core -->
+
+    <owl:Thing rdf:about="#core">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#costOfUpkeep -->
+
+    <owl:Thing rdf:about="#costOfUpkeep">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">private</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#costProperty -->
+
+    <PP2Property rdf:about="#costProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#counts -->
+
+    <owl:Thing rdf:about="#counts">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#creationProcess -->
+
+    <PP2Property rdf:about="#creationProcess">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#curationOrganisation -->
+
+    <PP2Property rdf:about="#curationOrganisation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#currentDateTime -->
+
+    <owl:Thing rdf:about="#currentDateTime">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#dRMProtection -->
+
+    <owl:Thing rdf:about="#dRMProtection">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#dataCopyRedundancy -->
+
+    <owl:Thing rdf:about="#dataCopyRedundancy">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#dataCopyType -->
+
+    <owl:Thing rdf:about="#dataCopyType">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#dataFormatDocumentation -->
+
+    <owl:Thing rdf:about="#dataFormatDocumentation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#dataProtectionLegislation -->
+
+    <PP2Property rdf:about="#dataProtectionLegislation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#descriptiveMetadata -->
+
+    <PP2Property rdf:about="#descriptiveMetadata">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#designation -->
+
+    <owl:Thing rdf:about="#designation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#designationName -->
+
+    <PP2Property rdf:about="#designationName">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#designationVersion -->
+
+    <PP2Property rdf:about="#designationVersion">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#desire -->
+
+    <owl:Thing rdf:about="#desire">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#developmentCoordination -->
+
+    <PP2Property rdf:about="#developmentCoordination">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#digitalPolicyActionPerformed -->
+
+    <PP2Property rdf:about="#digitalPolicyActionPerformed">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#digitalPolicyActionsPermissible -->
+
+    <owl:Thing rdf:about="#digitalPolicyActionsPermissible">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#dimensionValue -->
+
+    <PP2Property rdf:about="#dimensionValue">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#disasterTolerance -->
+
+    <owl:Thing rdf:about="#disasterTolerance">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#disclosureOfDocumentation -->
+
+    <owl:Thing rdf:about="#disclosureOfDocumentation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#displays -->
+
+    <owl:Thing rdf:about="#displays">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#distributionProcess -->
+
+    <PP2Property rdf:about="#distributionProcess">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#documentComponent -->
+
+    <PP2Property rdf:about="#documentComponent">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#documentStructurePreserved? -->
+
+    <PP2Property rdf:about="#documentStructurePreserved?">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#drambora -->
+
+    <PP2Property rdf:about="#drambora">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#drivers -->
+
+    <owl:Thing rdf:about="#drivers">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#dropDowmMenu -->
+
+    <PP2Property rdf:about="#dropDowmMenu">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#easeOfIdentification -->
+
+    <PP2Property rdf:about="#easeOfIdentification">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#easeOfValidation -->
+
+    <owl:Thing rdf:about="#easeOfValidation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#economy -->
+
+    <owl:Thing rdf:about="#economy">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#editingSoftware -->
+
+    <PP2Property rdf:about="#editingSoftware">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#embeddedDocuments -->
+
+    <PP2Property rdf:about="#embeddedDocuments">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#emulationTool -->
+
+    <PP2Property rdf:about="#emulationTool">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#encryption -->
+
+    <PP2Property rdf:about="#encryption">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#energetics -->
+
+    <PP2Property rdf:about="#energetics">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#environment -->
+
+    <PP2Property rdf:about="#environment">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#errorReporting -->
+
+    <PP2Property rdf:about="#errorReporting">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#event -->
+
+    <PP2Property rdf:about="#event">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#eventAgent -->
+
+    <owl:Thing rdf:about="#eventAgent">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#eventType -->
+
+    <owl:Thing rdf:about="#eventType">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#expectation -->
+
+    <owl:Thing rdf:about="#expectation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#expectedLifeSpan -->
+
+    <owl:Thing rdf:about="#expectedLifeSpan">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#externalInfluence -->
+
+    <owl:Thing rdf:about="#externalInfluence">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#externalLink -->
+
+    <owl:Thing rdf:about="#externalLink">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#externalLinkPresent -->
+
+    <owl:Thing rdf:about="#externalLinkPresent">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#externalLinkValueCorrect -->
+
+    <owl:Thing rdf:about="#externalLinkValueCorrect">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#featureDocumentation -->
+
+    <owl:Thing rdf:about="#featureDocumentation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#file -->
+
+    <owl:Thing rdf:about="#file">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileDateTimeInformation -->
+
+    <owl:Thing rdf:about="#fileDateTimeInformation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileFormat -->
+
+    <PP2Property rdf:about="#fileFormat">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileFormatAuthor -->
+
+    <PP2Property rdf:about="#fileFormatAuthor">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileFormatDocumentation -->
+
+    <owl:Thing rdf:about="#fileFormatDocumentation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileFormatInformation -->
+
+    <owl:Thing rdf:about="#fileFormatInformation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileFormatKnowledge -->
+
+    <owl:Thing rdf:about="#fileFormatKnowledge">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileFormatOwner -->
+
+    <PP2Property rdf:about="#fileFormatOwner">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileFormatPropertyRegistry -->
+
+    <owl:Thing rdf:about="#fileFormatPropertyRegistry">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileFormatProvenanceEvents -->
+
+    <PP2Property rdf:about="#fileFormatProvenanceEvents">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileFormatSpecification -->
+
+    <owl:Thing rdf:about="#fileFormatSpecification">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileSizeInformation -->
+
+    <PP2Property rdf:about="#fileSizeInformation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fileSystem -->
+
+    <PP2Property rdf:about="#fileSystem">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fixity -->
+
+    <owl:Thing rdf:about="#fixity">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#floatingComponents -->
+
+    <owl:Thing rdf:about="#floatingComponents">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#folderHierarchyPreserved? -->
+
+    <PP2Property rdf:about="#folderHierarchyPreserved?">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#font -->
+
+    <owl:Thing rdf:about="#font">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fontName -->
+
+    <PP2Property rdf:about="#fontName">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fontSize -->
+
+    <owl:Thing rdf:about="#fontSize">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#footer -->
+
+    <PP2Property rdf:about="#footer">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#footerStructure -->
+
+    <owl:Thing rdf:about="#footerStructure">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#formatType -->
+
+    <PP2Property rdf:about="#formatType">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#freedomOfInformatiom -->
+
+    <owl:Thing rdf:about="#freedomOfInformatiom">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#frequencyOfContact -->
+
+    <PP2Property rdf:about="#frequencyOfContact">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#frequencyOfMonitoring -->
+
+    <PP2Property rdf:about="#frequencyOfMonitoring">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#frontMatter -->
+
+    <PP2Property rdf:about="#frontMatter">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#fundingAgency -->
+
+    <owl:Thing rdf:about="#fundingAgency">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#glossaryElementList -->
+
+    <owl:Thing rdf:about="#glossaryElementList">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#glossaryGroup -->
+
+    <PP2Property rdf:about="#glossaryGroup">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#greyScale -->
+
+    <owl:Thing rdf:about="#greyScale">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#groupingInformationWithOtherDUs -->
+
+    <owl:Thing rdf:about="#groupingInformationWithOtherDUs">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#hardware -->
+
+    <owl:Thing rdf:about="#hardware">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#hardwareInfrastructure -->
+
+    <PP2Property rdf:about="#hardwareInfrastructure">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#hardwareProperty -->
+
+    <PP2Property rdf:about="#hardwareProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#hasCharacteristic -->
+
+    <PP2Property rdf:about="#hasCharacteristic">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#hasRealisation -->
+
+    <PP2Property rdf:about="#hasRealisation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#hasRepresentationInformation -->
+
+    <owl:Thing rdf:about="#hasRepresentationInformation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#header -->
+
+    <owl:Thing rdf:about="#header">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#headerStructure -->
+
+    <owl:Thing rdf:about="#headerStructure">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#headingStructure -->
+
+    <owl:Thing rdf:about="#headingStructure">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#highlighting -->
+
+    <owl:Thing rdf:about="#highlighting">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#histogram -->
+
+    <owl:Thing rdf:about="#histogram">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#humanRightsLegislation -->
+
+    <PP2Property rdf:about="#humanRightsLegislation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#iOLoad -->
+
+    <PP2Property rdf:about="#iOLoad">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#iPR -->
+
+    <PP2Property rdf:about="#iPR">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#iPRLegislation -->
+
+    <PP2Property rdf:about="#iPRLegislation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#identifier -->
+
+    <PP2Property rdf:about="#identifier">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#identifierType -->
+
+    <PP2Property rdf:about="#identifierType">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#image -->
+
+    <PP2Property rdf:about="#image">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#imageProperty -->
+
+    <PP2Property rdf:about="#imageProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#imagingPerformanceAssessment -->
+
+    <PP2Property rdf:about="#imagingPerformanceAssessment">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#immediacyOfAccess -->
+
+    <owl:Thing rdf:about="#immediacyOfAccess">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#informationSecurityManagementStandard -->
+
+    <owl:Thing rdf:about="#informationSecurityManagementStandard">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#inputDevice -->
+
+    <PP2Property rdf:about="#inputDevice">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#inputDeviceProperty -->
+
+    <owl:Thing rdf:about="#inputDeviceProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#integrity -->
+
+    <owl:Thing rdf:about="#integrity">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#intellectualEntity -->
+
+    <PP2Property rdf:about="#intellectualEntity">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#interest -->
+
+    <owl:Thing rdf:about="#interest">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#interestInContent -->
+
+    <PP2Property rdf:about="#interestInContent">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#interestInTechnicalAspects -->
+
+    <owl:Thing rdf:about="#interestInTechnicalAspects">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#internalInfluence -->
+
+    <PP2Property rdf:about="#internalInfluence">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#internalLink -->
+
+    <PP2Property rdf:about="#internalLink">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#internalLinkPresent -->
+
+    <owl:Thing rdf:about="#internalLinkPresent">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#internalLinkProperty -->
+
+    <PP2Property rdf:about="#internalLinkProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#internalLinkWorking -->
+
+    <owl:Thing rdf:about="#internalLinkWorking">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#internalPolicy -->
+
+    <owl:Thing rdf:about="#internalPolicy">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#interpares -->
+
+    <owl:Thing rdf:about="#interpares">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#keywords -->
+
+    <PP2Property rdf:about="#keywords">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#labourMarket -->
+
+    <PP2Property rdf:about="#labourMarket">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#layout -->
+
+    <PP2Property rdf:about="#layout">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#legalAccessRegulations -->
+
+    <owl:Thing rdf:about="#legalAccessRegulations">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#legalDepositAccessRegulation -->
+
+    <owl:Thing rdf:about="#legalDepositAccessRegulation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#legalDepositLegislation -->
+
+    <PP2Property rdf:about="#legalDepositLegislation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#legislation -->
+
+    <PP2Property rdf:about="#legislation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#libraryAndArchivalSciences -->
+
+    <PP2Property rdf:about="#libraryAndArchivalSciences">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#link -->
+
+    <owl:Thing rdf:about="#link">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#linkHighlighting -->
+
+    <PP2Property rdf:about="#linkHighlighting">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#linkWithinCollection -->
+
+    <owl:Thing rdf:about="#linkWithinCollection">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#linkWithinCollectionPresent -->
+
+    <PP2Property rdf:about="#linkWithinCollectionPresent">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#linkWithinCollectionValid -->
+
+    <owl:Thing rdf:about="#linkWithinCollectionValid">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#links -->
+
+    <owl:Thing rdf:about="#links">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#location -->
+
+    <PP2Property rdf:about="#location">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#log -->
+
+    <PP2Property rdf:about="#log">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#logFileDestination -->
+
+    <owl:Thing rdf:about="#logFileDestination">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#longevity -->
+
+    <owl:Thing rdf:about="#longevity">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#lossiness -->
+
+    <PP2Property rdf:about="#lossiness">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#mETS -->
+
+    <PP2Property rdf:about="#mETS">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#mIX -->
+
+    <owl:Thing rdf:about="#mIX">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#mODS -->
+
+    <PP2Property rdf:about="#mODS">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#mailTo -->
+
+    <PP2Property rdf:about="#mailTo">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#maintenanceBudget -->
+
+    <PP2Property rdf:about="#maintenanceBudget">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#maintenanceCost -->
+
+    <PP2Property rdf:about="#maintenanceCost">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#managementSupport -->
+
+    <owl:Thing rdf:about="#managementSupport">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#manufacturer -->
+
+    <PP2Property rdf:about="#manufacturer">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#memoryUsage -->
+
+    <PP2Property rdf:about="#memoryUsage">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#menu -->
+
+    <owl:Thing rdf:about="#menu">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#messageDigest -->
+
+    <PP2Property rdf:about="#messageDigest">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#metadata -->
+
+    <owl:Thing rdf:about="#metadata">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#minimalLifeSpan -->
+
+    <owl:Thing rdf:about="#minimalLifeSpan">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#model -->
+
+    <PP2Property rdf:about="#model">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#modelName -->
+
+    <owl:Thing rdf:about="#modelName">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#modelNumber -->
+
+    <PP2Property rdf:about="#modelNumber">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#modelSerialNumber -->
+
+    <PP2Property rdf:about="#modelSerialNumber">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#multiplicityOfStorageLocation -->
+
+    <owl:Thing rdf:about="#multiplicityOfStorageLocation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#multiplicityOfStorageMediumTypes -->
+
+    <owl:Thing rdf:about="#multiplicityOfStorageMediumTypes">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#naturalReadingOrderPreserved -->
+
+    <PP2Property rdf:about="#naturalReadingOrderPreserved">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#need -->
+
+    <PP2Property rdf:about="#need">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#networkingSoftware -->
+
+    <PP2Property rdf:about="#networkingSoftware">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#newsFeed -->
+
+    <PP2Property rdf:about="#newsFeed">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#notes -->
+
+    <owl:Thing rdf:about="#notes">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#numberOfColumns -->
+
+    <PP2Property rdf:about="#numberOfColumns">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#numberOfPages -->
+
+    <PP2Property rdf:about="#numberOfPages">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#numberOfRows -->
+
+    <PP2Property rdf:about="#numberOfRows">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#numberOfStaff -->
+
+    <owl:Thing rdf:about="#numberOfStaff">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#numberOfUnits -->
+
+    <PP2Property rdf:about="#numberOfUnits">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#oAIS -->
+
+    <owl:Thing rdf:about="#oAIS">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#oCLCTrustedRepositoryGuidelines -->
+
+    <PP2Property rdf:about="#oCLCTrustedRepositoryGuidelines">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#objectDescription -->
+
+    <owl:Thing rdf:about="#objectDescription">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#objectIdentification -->
+
+    <PP2Property rdf:about="#objectIdentification">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#objectImplementation -->
+
+    <PP2Property rdf:about="#objectImplementation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#objectInformation -->
+
+    <PP2Property rdf:about="#objectInformation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#objectSize -->
+
+    <owl:Thing rdf:about="#objectSize">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#objectTypesExchanged -->
+
+    <PP2Property rdf:about="#objectTypesExchanged">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#openness -->
+
+    <owl:Thing rdf:about="#openness">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#operatingSystem -->
+
+    <owl:Thing rdf:about="#operatingSystem">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#outputDestination -->
+
+    <PP2Property rdf:about="#outputDestination">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#outputDevice -->
+
+    <owl:Thing rdf:about="#outputDevice">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#ownership -->
+
+    <owl:Thing rdf:about="#ownership">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#pREMIS -->
+
+    <PP2Property rdf:about="#pREMIS">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#page -->
+
+    <owl:Thing rdf:about="#page">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#pageBreak -->
+
+    <PP2Property rdf:about="#pageBreak">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#pageLabel -->
+
+    <PP2Property rdf:about="#pageLabel">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#pagePosition -->
+
+    <PP2Property rdf:about="#pagePosition">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#pageSequenceNumber -->
+
+    <PP2Property rdf:about="#pageSequenceNumber">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#pagination -->
+
+    <owl:Thing rdf:about="#pagination">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#parallelProcessingOfFilesRequired? -->
+
+    <owl:Thing rdf:about="#parallelProcessingOfFilesRequired?">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#performance -->
+
+    <PP2Property rdf:about="#performance">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#peripherals -->
+
+    <PP2Property rdf:about="#peripherals">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#personOrGroupProperty -->
+
+    <PP2Property rdf:about="#personOrGroupProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#personOrGroupPropertyInventory -->
+
+    <owl:Thing rdf:about="#personOrGroupPropertyInventory">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#personOrGroupPropertyRegistry -->
+
+    <PP2Property rdf:about="#personOrGroupPropertyRegistry">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#personnel -->
+
+    <PP2Property rdf:about="#personnel">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#photometricInterpretation -->
+
+    <PP2Property rdf:about="#photometricInterpretation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#physicalDocumentComponent -->
+
+    <owl:Thing rdf:about="#physicalDocumentComponent">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#platformDependences -->
+
+    <owl:Thing rdf:about="#platformDependences">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#platformIndependence -->
+
+    <owl:Thing rdf:about="#platformIndependence">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#policy -->
+
+    <PP2Property rdf:about="#policy">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#policyFactor -->
+
+    <PP2Property rdf:about="#policyFactor">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#pop-Up -->
+
+    <owl:Thing rdf:about="#pop-Up">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#position -->
+
+    <PP2Property rdf:about="#position">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#preferredAccessTools -->
+
+    <owl:Thing rdf:about="#preferredAccessTools">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#presence -->
+
+    <PP2Property rdf:about="#presence">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#presenceOfPatent -->
+
+    <PP2Property rdf:about="#presenceOfPatent">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#preservationActionTool -->
+
+    <owl:Thing rdf:about="#preservationActionTool">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#preservationGuidingRequirementsSet -->
+
+    <owl:Thing rdf:about="#preservationGuidingRequirementsSet">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#preservationObject -->
+
+    <owl:Thing rdf:about="#preservationObject">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#preservationToolOrService -->
+
+    <owl:Thing rdf:about="#preservationToolOrService">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#previousMetadata -->
+
+    <PP2Property rdf:about="#previousMetadata">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#printers -->
+
+    <PP2Property rdf:about="#printers">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#privacy -->
+
+    <PP2Property rdf:about="#privacy">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#privacyLegislation -->
+
+    <owl:Thing rdf:about="#privacyLegislation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#producer -->
+
+    <PP2Property rdf:about="#producer">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#productProperty -->
+
+    <owl:Thing rdf:about="#productProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#productPropertyInventory -->
+
+    <owl:Thing rdf:about="#productPropertyInventory">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#productPropertyRegistry -->
+
+    <owl:Thing rdf:about="#productPropertyRegistry">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#property -->
+
+    <owl:Thing rdf:about="#property">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#provenance -->
+
+    <PP2Property rdf:about="#provenance">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#publicationDate -->
+
+    <owl:Thing rdf:about="#publicationDate">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#publishersPermissions -->
+
+    <PP2Property rdf:about="#publishersPermissions">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#purchaseDate -->
+
+    <owl:Thing rdf:about="#purchaseDate">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#quality -->
+
+    <PP2Property rdf:about="#quality">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#qualityOfDisplay -->
+
+    <owl:Thing rdf:about="#qualityOfDisplay">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#qualityOfDocumentation -->
+
+    <PP2Property rdf:about="#qualityOfDocumentation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#rGB -->
+
+    <owl:Thing rdf:about="#rGB">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#randomImage -->
+
+    <owl:Thing rdf:about="#randomImage">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#rasterGraphicsFile -->
+
+    <PP2Property rdf:about="#rasterGraphicsFile">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#rationale -->
+
+    <owl:Thing rdf:about="#rationale">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#readWriteProperty -->
+
+    <PP2Property rdf:about="#readWriteProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#readability -->
+
+    <PP2Property rdf:about="#readability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#realisation -->
+
+    <owl:Thing rdf:about="#realisation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#realisationProperty -->
+
+    <owl:Thing rdf:about="#realisationProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#redundantRepresentation -->
+
+    <PP2Property rdf:about="#redundantRepresentation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#referenceList -->
+
+    <PP2Property rdf:about="#referenceList">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#referenceModel -->
+
+    <owl:Thing rdf:about="#referenceModel">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#registryInformation -->
+
+    <PP2Property rdf:about="#registryInformation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#registryKey -->
+
+    <owl:Thing rdf:about="#registryKey">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#registryName -->
+
+    <owl:Thing rdf:about="#registryName">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#regulatoryEnvironment -->
+
+    <PP2Property rdf:about="#regulatoryEnvironment">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#relatedObject -->
+
+    <PP2Property rdf:about="#relatedObject">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#relationshipIntegrity -->
+
+    <owl:Thing rdf:about="#relationshipIntegrity">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#relationshipToOtherFileFormats -->
+
+    <owl:Thing rdf:about="#relationshipToOtherFileFormats">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#reliability -->
+
+    <PP2Property rdf:about="#reliability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#renderingHardware -->
+
+    <PP2Property rdf:about="#renderingHardware">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#renderingSoftware -->
+
+    <PP2Property rdf:about="#renderingSoftware">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#replacementCost -->
+
+    <owl:Thing rdf:about="#replacementCost">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#reporting -->
+
+    <PP2Property rdf:about="#reporting">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#repositoryDataInformation -->
+
+    <owl:Thing rdf:about="#repositoryDataInformation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#repositoryLocation -->
+
+    <PP2Property rdf:about="#repositoryLocation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#repositoryManager -->
+
+    <PP2Property rdf:about="#repositoryManager">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#repositoryName -->
+
+    <owl:Thing rdf:about="#repositoryName">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#repositoryProperty -->
+
+    <PP2Property rdf:about="#repositoryProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#representation -->
+
+    <PP2Property rdf:about="#representation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#representationBitstream -->
+
+    <PP2Property rdf:about="#representationBitstream">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#representsContent -->
+
+    <PP2Property rdf:about="#representsContent">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#requirement -->
+
+    <PP2Property rdf:about="#requirement">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#researchInstitution -->
+
+    <PP2Property rdf:about="#researchInstitution">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#resolution -->
+
+    <owl:Thing rdf:about="#resolution">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#responsibility -->
+
+    <owl:Thing rdf:about="#responsibility">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#riskProperty -->
+
+    <owl:Thing rdf:about="#riskProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#role -->
+
+    <PP2Property rdf:about="#role">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#runtimeParameter -->
+
+    <PP2Property rdf:about="#runtimeParameter">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#sWDocumentation -->
+
+    <owl:Thing rdf:about="#sWDocumentation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#safety -->
+
+    <PP2Property rdf:about="#safety">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#salaryBudget -->
+
+    <PP2Property rdf:about="#salaryBudget">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#salaryCost -->
+
+    <PP2Property rdf:about="#salaryCost">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#salaryRightOfAccessLegislation -->
+
+    <PP2Property rdf:about="#salaryRightOfAccessLegislation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#scalability -->
+
+    <PP2Property rdf:about="#scalability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#screenSequence -->
+
+    <PP2Property rdf:about="#screenSequence">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#scriptElement -->
+
+    <PP2Property rdf:about="#scriptElement">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#security -->
+
+    <PP2Property rdf:about="#security">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#selfDocumentation -->
+
+    <owl:Thing rdf:about="#selfDocumentation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#semanticExternalDependency -->
+
+    <PP2Property rdf:about="#semanticExternalDependency">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#semanticResilience -->
+
+    <owl:Thing rdf:about="#semanticResilience">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#semanticValidation -->
+
+    <PP2Property rdf:about="#semanticValidation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#sequence -->
+
+    <PP2Property rdf:about="#sequence">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#sequenceStructure -->
+
+    <owl:Thing rdf:about="#sequenceStructure">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#serviceDefinition -->
+
+    <owl:Thing rdf:about="#serviceDefinition">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#skill -->
+
+    <owl:Thing rdf:about="#skill">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#software -->
+
+    <owl:Thing rdf:about="#software">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#softwareDependence -->
+
+    <owl:Thing rdf:about="#softwareDependence">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#softwareProperty -->
+
+    <PP2Property rdf:about="#softwareProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#softwarePropertyRegistry -->
+
+    <PP2Property rdf:about="#softwarePropertyRegistry">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#soundProperty -->
+
+    <owl:Thing rdf:about="#soundProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#spatialMetric -->
+
+    <owl:Thing rdf:about="#spatialMetric">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#spatialObjectProperty -->
+
+    <PP2Property rdf:about="#spatialObjectProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#spatialObjectSize -->
+
+    <PP2Property rdf:about="#spatialObjectSize">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#speed -->
+
+    <owl:Thing rdf:about="#speed">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#speedOfChange -->
+
+    <owl:Thing rdf:about="#speedOfChange">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#stability -->
+
+    <PP2Property rdf:about="#stability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#staff -->
+
+    <owl:Thing rdf:about="#staff">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#standard -->
+
+    <PP2Property rdf:about="#standard">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#standardDeviationOfLifeSpan -->
+
+    <owl:Thing rdf:about="#standardDeviationOfLifeSpan">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#standardPropertyRegistry -->
+
+    <owl:Thing rdf:about="#standardPropertyRegistry">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#standardizationOfCharacterEncoding -->
+
+    <owl:Thing rdf:about="#standardizationOfCharacterEncoding">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#storageMedium -->
+
+    <owl:Thing rdf:about="#storageMedium">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#storageMediumAccessibility -->
+
+    <owl:Thing rdf:about="#storageMediumAccessibility">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#storageMediumProperty -->
+
+    <PP2Property rdf:about="#storageMediumProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#storageMediumPropertyRegistry -->
+
+    <owl:Thing rdf:about="#storageMediumPropertyRegistry">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#storageMediumQuality -->
+
+    <owl:Thing rdf:about="#storageMediumQuality">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#storageMediumType -->
+
+    <owl:Thing rdf:about="#storageMediumType">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#streamability -->
+
+    <PP2Property rdf:about="#streamability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#structuralProperty -->
+
+    <owl:Thing rdf:about="#structuralProperty">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#styleSheet -->
+
+    <owl:Thing rdf:about="#styleSheet">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#substring -->
+
+    <PP2Property rdf:about="#substring">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#support -->
+
+    <owl:Thing rdf:about="#support">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#syntacticValidation -->
+
+    <PP2Property rdf:about="#syntacticValidation">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#tOCStructure -->
+
+    <owl:Thing rdf:about="#tOCStructure">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#table -->
+
+    <owl:Thing rdf:about="#table">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#tableProperty -->
+
+    <PP2Property rdf:about="#tableProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#technicalExternalDependency -->
+
+    <PP2Property rdf:about="#technicalExternalDependency">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#text -->
+
+    <owl:Thing rdf:about="#text">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#textEncoding -->
+
+    <owl:Thing rdf:about="#textEncoding">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#textFile -->
+
+    <PP2Property rdf:about="#textFile">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#textFlow -->
+
+    <owl:Thing rdf:about="#textFlow">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#textProperty -->
+
+    <PP2Property rdf:about="#textProperty">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#throughput -->
+
+    <PP2Property rdf:about="#throughput">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#title -->
+
+    <owl:Thing rdf:about="#title">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#toolTip -->
+
+    <owl:Thing rdf:about="#toolTip">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#training -->
+
+    <PP2Property rdf:about="#training">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#trainingAvailability -->
+
+    <PP2Property rdf:about="#trainingAvailability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#trainingBudget -->
+
+    <PP2Property rdf:about="#trainingBudget">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#trainingCost -->
+
+    <PP2Property rdf:about="#trainingCost">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#transformationToolInformation -->
+
+    <owl:Thing rdf:about="#transformationToolInformation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#transparency -->
+
+    <PP2Property rdf:about="#transparency">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#types -->
+
+    <owl:Thing rdf:about="#types">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#ubiquity -->
+
+    <owl:Thing rdf:about="#ubiquity">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#unit -->
+
+    <owl:Thing rdf:about="#unit">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#upgradeBudget -->
+
+    <PP2Property rdf:about="#upgradeBudget">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#usability -->
+
+    <owl:Thing rdf:about="#usability">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#usageCost -->
+
+    <owl:Thing rdf:about="#usageCost">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#usageOfObject -->
+
+    <PP2Property rdf:about="#usageOfObject">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#useability -->
+
+    <PP2Property rdf:about="#useability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#validation -->
+
+    <owl:Thing rdf:about="#validation">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#value -->
+
+    <owl:Thing rdf:about="#value">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#valueOfObject -->
+
+    <PP2Property rdf:about="#valueOfObject">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#vectorGraphicsFile -->
+
+    <owl:Thing rdf:about="#vectorGraphicsFile">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#video -->
+
+    <PP2Property rdf:about="#video">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#visitorCounter -->
+
+    <PP2Property rdf:about="#visitorCounter">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#wordCount -->
+
+    <PP2Property rdf:about="#wordCount">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#hasEnvironment -->
+
+    <owl:Thing rdf:about="#hasEnvironment">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#hasRequirement -->
+
+    <owl:Thing rdf:about="#hasRequirement">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#hasRisk -->
+
+    <owl:Thing rdf:about="#hasRisk">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#xDimension -->
+
+    <PP2Property rdf:about="#xDimension">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#yDimension -->
+
+    <owl:Thing rdf:about="#yDimension">
+        <rdf:type rdf:resource="#PP2Property"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PP2.owl#zDimension -->
+
+    <PP2Property rdf:about="#zDimension">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment xml:lang="en">public</rdfs:comment>
+    </PP2Property>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net -->
+

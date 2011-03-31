@@ -1,0 +1,978 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY PLATO "http://planetarium.hki.uni-koeln.de/public/PLATO.owl#" >
+    <!ENTITY PLATO2 "http://planetarium.hki.uni-koeln.de/public/PLATO.owl#2" >
+    <!ENTITY PLATO3 "http://planetarium.hki.uni-koeln.de/public/PLATO.owl#3" >
+    <!ENTITY current_date "http://planetarium.hki.uni-koeln.de/public/PLATO.owl#current_date/" >
+    <!ENTITY PLANETSOntology "http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://planetarium.hki.uni-koeln.de/public/PLATO.owl#"
+     xml:base="http://planetarium.hki.uni-koeln.de/public/PLATO.owl"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:PLANETSOntology="http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#"
+     xmlns:current_date="&PLATO;current_date/"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:PLATO2="&PLATO;2"
+     xmlns:PLATO3="&PLATO;3"
+     xmlns:PLATO="http://planetarium.hki.uni-koeln.de/public/PLATO.owl#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+    <owl:Ontology rdf:about="">
+        <rdfs:label
+            >PLANETS Preservation Planning Tool Ontology (PLATO)</rdfs:label>
+        <rdfs:comment
+            >This ontology comprises concepts that have been taken from a preservation plan template at http://gforge.planets-project.eu/svn/planningtool/trunk/data/templates/public_fragments/Significant%20properties.mm</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#isClassifiedBy -->
+
+    <owl:ObjectProperty rdf:about="&PLANETSOntology;isClassifiedBy"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#ConsoleVideoGames -->
+
+    <owl:Class rdf:about="#ConsoleVideoGames">
+        <rdfs:subClassOf rdf:resource="#PLATOProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#ControllerFeedback -->
+
+    <owl:Class rdf:about="#ControllerFeedback">
+        <rdfs:subClassOf rdf:resource="#RecreatedControlsWithGameHardware"/>
+        <rdfs:subClassOf rdf:resource="#RecreatedControlsWithStandardPersonalComputerHardware"/>
+        <rdfs:subClassOf rdf:resource="#SpecialController"/>
+        <rdfs:subClassOf rdf:resource="#StandardController"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#DocumentStructure -->
+
+    <owl:Class rdf:about="#DocumentStructure">
+        <rdfs:subClassOf rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Documents -->
+
+    <owl:Class rdf:about="#Documents">
+        <rdfs:subClassOf rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#ElectronicTheses -->
+
+    <owl:Class rdf:about="#ElectronicTheses">
+        <rdfs:subClassOf rdf:resource="#PLATOProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Graphics -->
+
+    <owl:Class rdf:about="#Graphics">
+        <rdfs:subClassOf rdf:resource="#ConsoleVideoGames"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Highlighting -->
+
+    <owl:Class rdf:about="#Highlighting">
+        <rdfs:subClassOf rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#ImageProperty -->
+
+    <owl:Class rdf:about="#ImageProperty">
+        <rdfs:subClassOf rdf:resource="#InteractiveMultimediaPresentations"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Images -->
+
+    <owl:Class rdf:about="#Images">
+        <rdfs:subClassOf rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Input -->
+
+    <owl:Class rdf:about="#Input">
+        <rdfs:subClassOf rdf:resource="#Interactivity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#InteractiveMultimediaPresentations -->
+
+    <owl:Class rdf:about="#InteractiveMultimediaPresentations">
+        <rdfs:subClassOf rdf:resource="#PLATOProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Interactivity -->
+
+    <owl:Class rdf:about="#Interactivity">
+        <rdfs:subClassOf rdf:resource="#ConsoleVideoGames"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Music -->
+
+    <owl:Class rdf:about="#Music">
+        <rdfs:subClassOf rdf:resource="#Sound"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#NetworkSupport -->
+
+    <owl:Class rdf:about="#NetworkSupport">
+        <rdfs:subClassOf rdf:resource="#ConsoleVideoGames"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#OverlaySupport -->
+
+    <owl:Class rdf:about="#OverlaySupport">
+        <rdfs:subClassOf rdf:resource="#Input"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#PLATOEntity -->
+
+    <owl:Class rdf:about="#PLATOEntity">
+        <rdfs:label>PLATO Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >This class comprises all things that have been formalized to support the PLATO tool.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#PLATOProperty -->
+
+    <owl:Class rdf:about="#PLATOProperty">
+        <rdfs:subClassOf rdf:resource="#PLATOEntity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Pagination -->
+
+    <owl:Class rdf:about="#Pagination">
+        <rdfs:subClassOf rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#RecreatedControlsWithGameHardware -->
+
+    <owl:Class rdf:about="#RecreatedControlsWithGameHardware">
+        <rdfs:subClassOf rdf:resource="#Input"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#RecreatedControlsWithStandardPersonalComputerHardware -->
+
+    <owl:Class rdf:about="#RecreatedControlsWithStandardPersonalComputerHardware">
+        <rdfs:subClassOf rdf:resource="#Input"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Sound -->
+
+    <owl:Class rdf:about="#Sound">
+        <rdfs:subClassOf rdf:resource="#ConsoleVideoGames"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#SoundEffects -->
+
+    <owl:Class rdf:about="#SoundEffects">
+        <rdfs:subClassOf rdf:resource="#Sound"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#SoundProperty -->
+
+    <owl:Class rdf:about="#SoundProperty">
+        <rdfs:subClassOf rdf:resource="#InteractiveMultimediaPresentations"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#SpecialController -->
+
+    <owl:Class rdf:about="#SpecialController">
+        <rdfs:subClassOf rdf:resource="#SupportforOriginalPhysicalLayer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Speed -->
+
+    <owl:Class rdf:about="#Speed">
+        <rdfs:subClassOf rdf:resource="#ConsoleVideoGames"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#StandardController -->
+
+    <owl:Class rdf:about="#StandardController">
+        <rdfs:subClassOf rdf:resource="#SupportforOriginalPhysicalLayer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#StaticWebPagesReferencingPDFDocumentsAndImages -->
+
+    <owl:Class rdf:about="#StaticWebPagesReferencingPDFDocumentsAndImages">
+        <rdfs:subClassOf rdf:resource="#PLATOProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#SupportforOriginalPhysicalLayer -->
+
+    <owl:Class rdf:about="#SupportforOriginalPhysicalLayer">
+        <rdfs:subClassOf rdf:resource="#Input"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#Tables -->
+
+    <owl:Class rdf:about="#Tables">
+        <rdfs:subClassOf rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#TextProperty -->
+
+    <owl:Class rdf:about="#TextProperty">
+        <rdfs:subClassOf rdf:resource="#InteractiveMultimediaPresentations"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#VideoPictureProperty -->
+
+    <owl:Class rdf:about="#VideoPictureProperty">
+        <rdfs:subClassOf rdf:resource="#VideoProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#VideoProperty -->
+
+    <owl:Class rdf:about="#VideoProperty">
+        <rdfs:subClassOf rdf:resource="#InteractiveMultimediaPresentations"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#VideoSoundProperty -->
+
+    <owl:Class rdf:about="#VideoSoundProperty">
+        <rdfs:subClassOf rdf:resource="#VideoProperty"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#deactivate -->
+
+    <owl:Class rdf:about="#deactivate">
+        <rdfs:subClassOf rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#freeze -->
+
+    <owl:Class rdf:about="#freeze">
+        <rdfs:subClassOf rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+    </owl:Class>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#preserve -->
+
+    <owl:Class rdf:about="#preserve">
+        <rdfs:subClassOf rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#2dBackgroundScrolling -->
+
+    <owl:Thing rdf:about="#2dBackgroundScrolling">
+        <rdf:type rdf:resource="#Graphics"/>
+        <rdfs:comment
+            >no 2D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#2dCollisionDetection -->
+
+    <owl:Thing rdf:about="#2dCollisionDetection">
+        <rdf:type rdf:resource="#Graphics"/>
+        <rdfs:comment
+            >no 2D objects displayed/not applicable/severe errors/errors noticeable but do not affect gameplay/no errors noticeable</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#2dObjectLayerPlacement -->
+
+    <owl:Thing rdf:about="#2dObjectLayerPlacement">
+        <rdf:type rdf:resource="#Graphics"/>
+        <rdfs:comment
+            >no 2D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#2dObjectPositionPlacement -->
+
+    <Graphics rdf:about="#2dObjectPositionPlacement">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >no 2D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</rdfs:comment>
+    </Graphics>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#3dObjectCalculation -->
+
+    <owl:Thing rdf:about="#3dObjectCalculation">
+        <rdf:type rdf:resource="#Graphics"/>
+        <rdfs:comment
+            >no 3D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#3dObjectClipping -->
+
+    <Graphics rdf:about="#3dObjectClipping">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >no 3D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</rdfs:comment>
+    </Graphics>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#3dTextureQuality -->
+
+    <Graphics rdf:about="#3dTextureQuality">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >no 3D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</rdfs:comment>
+    </Graphics>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#additionalItemsSupported -->
+
+    <Interactivity rdf:about="#additionalItemsSupported">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >not applicable/not supported/supported</rdfs:comment>
+    </Interactivity>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#appendices -->
+
+    <owl:Thing rdf:about="#appendices">
+        <rdf:type rdf:resource="#DocumentStructure"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#audible -->
+
+    <owl:Thing rdf:about="#audible">
+        <rdf:type rdf:resource="#ControllerFeedback"/>
+        <rdfs:comment
+            >not applicable/not supported/supported</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#bitDepth -->
+
+    <Images rdf:about="#bitDepth">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >&gt;= original/&lt; original</rdfs:comment>
+    </Images>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#cellContentUnchanged -->
+
+    <Tables rdf:about="#cellContentUnchanged">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </Tables>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#cells -->
+
+    <Highlighting rdf:about="#cells">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </Highlighting>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#colourSpace -->
+
+    <owl:Thing rdf:about="#colourSpace">
+        <rdf:type rdf:resource="#Images"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#columnsUnchanged -->
+
+    <Tables rdf:about="#columnsUnchanged">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </Tables>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#controlsResembleLookOfOriginalController -->
+
+    <RecreatedControlsWithStandardPersonalComputerHardware rdf:about="#controlsResembleLookOfOriginalController">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >Y/N/no controls supported</rdfs:comment>
+    </RecreatedControlsWithStandardPersonalComputerHardware>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#currentDateTtime -->
+
+    <freeze rdf:about="#currentDateTtime">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >frozen/missing/current</rdfs:comment>
+    </freeze>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#deviationInPercent -->
+
+    <owl:Thing rdf:about="#deviationInPercent">
+        <rdf:type rdf:resource="#Speed"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#encoding -->
+
+    <owl:Thing rdf:about="#encoding">
+        <rdf:type rdf:resource="#Highlighting"/>
+        <rdfs:comment>Text/Image</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#externalLinksPresentAndUnchanged -->
+
+    <owl:Thing rdf:about="#externalLinksPresentAndUnchanged">
+        <rdf:type rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#feel -->
+
+    <RecreatedControlsWithGameHardware rdf:about="#feel">
+        <rdf:type rdf:resource="#OverlaySupport"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >controllers resembling original controller not available/controllers resembling original controller not supported/controllers resembling original controller supported</rdfs:comment>
+    </RecreatedControlsWithGameHardware>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#feelOfOriginalGamingExperience -->
+
+    <owl:Thing rdf:about="#feelOfOriginalGamingExperience">
+        <rdf:type rdf:resource="#RecreatedControlsWithStandardPersonalComputerHardware"/>
+        <rdfs:comment
+            >not acceptable/fairly playable/well playable/perfectly recreated</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#fonts -->
+
+    <StaticWebPagesReferencingPDFDocumentsAndImages rdf:about="#fonts">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;appearance"/>
+    </StaticWebPagesReferencingPDFDocumentsAndImages>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#footers -->
+
+    <DocumentStructure rdf:about="#footers">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </DocumentStructure>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#force -->
+
+    <ControllerFeedback rdf:about="#force">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >not applicable/not supported/supported</rdfs:comment>
+    </ControllerFeedback>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#frameRate -->
+
+    <Graphics rdf:about="#frameRate">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >deviation in percent</rdfs:comment>
+    </Graphics>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#hardwareSupportedSpecialEffects -->
+
+    <Graphics rdf:about="#hardwareSupportedSpecialEffects">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >no objects displayed/not applicable/severe differences to original/small differences to original/no differences noticeable</rdfs:comment>
+    </Graphics>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#headers -->
+
+    <owl:Thing rdf:about="#headers">
+        <rdf:type rdf:resource="#DocumentStructure"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#headingStructure -->
+
+    <owl:Thing rdf:about="#headingStructure">
+        <rdf:type rdf:resource="#DocumentStructure"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#height -->
+
+    <Images rdf:about="#height">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </Images>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#histogramIdentical -->
+
+    <Images rdf:about="#histogramIdentical">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </Images>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#imageQuality -->
+
+    <Graphics rdf:about="#imageQuality">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >nothing displayed/severe errors on whole image/errors noticeable but do not affect gameplay/near perfect/no difference to original noticeable</rdfs:comment>
+    </Graphics>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#internalLinksPresentAndWorking -->
+
+    <owl:Thing rdf:about="#internalLinksPresentAndWorking">
+        <rdf:type rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#lagForNetworkPlay -->
+
+    <owl:Thing rdf:about="#lagForNetworkPlay">
+        <rdf:type rdf:resource="#NetworkSupport"/>
+        <rdfs:comment
+            >not applicable/considerable delay/short delay/delay not noticeable</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#links -->
+
+    <Highlighting rdf:about="#links">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </Highlighting>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#linksWithinTheCollectionPresentAndValid -->
+
+    <StaticWebPagesReferencingPDFDocumentsAndImages rdf:about="#linksWithinTheCollectionPresentAndValid">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </StaticWebPagesReferencingPDFDocumentsAndImages>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#look -->
+
+    <OverlaySupport rdf:about="#look">
+        <rdf:type rdf:resource="#RecreatedControlsWithGameHardware"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >controllers resembling original controller not available/controllers resembling original controller not supported/controllers resembling original controller supported</rdfs:comment>
+    </OverlaySupport>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#mailto -->
+
+    <deactivate rdf:about="#mailto">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </deactivate>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#menus -->
+
+    <owl:Thing rdf:about="#menus">
+        <rdf:type rdf:resource="#preserve"/>
+        <rdfs:comment
+            >complete/navigable/missing</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#networkProtocols -->
+
+    <owl:Thing rdf:about="#networkProtocols">
+        <rdf:type rdf:resource="#NetworkSupport"/>
+        <rdfs:comment
+            >not applicable/not supported/supported</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#newsfeeds -->
+
+    <freeze rdf:about="#newsfeeds">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >frozen/missing/current</rdfs:comment>
+    </freeze>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#noOfPages -->
+
+    <Pagination rdf:about="#noOfPages">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </Pagination>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#objectInterpretable -->
+
+    <owl:Thing rdf:about="#objectInterpretable">
+        <rdf:type rdf:resource="#ConsoleVideoGames"/>
+        <rdfs:comment
+            >boolean value y/n</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#pageBreaks -->
+
+    <Pagination rdf:about="#pageBreaks">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/A/N</rdfs:comment>
+    </Pagination>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#pageLayout -->
+
+    <owl:Thing rdf:about="#pageLayout">
+        <rdf:type rdf:resource="#StaticWebPagesReferencingPDFDocumentsAndImages"/>
+        <rdf:type rdf:resource="#Tables"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+        <PLANETSOntology:isClassifiedBy rdf:resource="&PLANETSOntology;appearance"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#popUps -->
+
+    <owl:Thing rdf:about="#popUps">
+        <rdf:type rdf:resource="#preserve"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#quality -->
+
+    <Music rdf:about="#quality">
+        <rdf:type rdf:resource="#SoundEffects"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >no music supported/errors not acceptable/errors acceptable/near perfect/like original</rdfs:comment>
+    </Music>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#resolution -->
+
+    <Images rdf:about="#resolution">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </Images>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#responseDelay -->
+
+    <owl:Thing rdf:about="#responseDelay">
+        <rdf:type rdf:resource="#OverlaySupport"/>
+        <rdf:type rdf:resource="#RecreatedControlsWithGameHardware"/>
+        <rdf:type rdf:resource="#RecreatedControlsWithStandardPersonalComputerHardware"/>
+        <rdf:type rdf:resource="#SpecialController"/>
+        <rdf:type rdf:resource="#StandardController"/>
+        <rdfs:comment
+            >not applicable/considerable delay/short delay/delay not noticeable</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#rowsUnchanged -->
+
+    <owl:Thing rdf:about="#rowsUnchanged">
+        <rdf:type rdf:resource="#Tables"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#screenOverlay -->
+
+    <Graphics rdf:about="#screenOverlay">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >not applicable/not supported/supported manually by loading image/supported by auto-detection/supported through encapsulation</rdfs:comment>
+    </Graphics>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#sequence -->
+
+    <owl:Thing rdf:about="#sequence">
+        <rdf:type rdf:resource="#DocumentStructure"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#supported -->
+
+    <StandardController rdf:about="#supported">
+        <rdf:type rdf:resource="#SpecialController"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >not supported/supported with special hardware/supported without special hardware</rdfs:comment>
+    </StandardController>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#synchronousToVideo -->
+
+    <SoundEffects rdf:about="#synchronousToVideo">
+        <rdf:type rdf:resource="#Music"/>
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment
+            >not applicable/severe errors apparent/small errors noticeable/no errors noticeable</rdfs:comment>
+    </SoundEffects>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#text -->
+
+    <Highlighting rdf:about="#text">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </Highlighting>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#textContent -->
+
+    <owl:Thing rdf:about="#textContent">
+        <rdf:type rdf:resource="#Documents"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#toc -->
+
+    <owl:Thing rdf:about="#toc">
+        <rdf:type rdf:resource="#DocumentStructure"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#useOfOriginalServers -->
+
+    <owl:Thing rdf:about="#useOfOriginalServers">
+        <rdf:type rdf:resource="#NetworkSupport"/>
+        <rdfs:comment
+            >not applicable/not supported/supported</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#visitorCounter -->
+
+    <owl:Thing rdf:about="#visitorCounter">
+        <rdf:type rdf:resource="#freeze"/>
+        <rdfs:comment
+            >frozen/missing/current</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#visual -->
+
+    <owl:Thing rdf:about="#visual">
+        <rdf:type rdf:resource="#ControllerFeedback"/>
+        <rdfs:comment
+            >not applicable/not supported/supported</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/PLATO.owl#width -->
+
+    <owl:Thing rdf:about="#width">
+        <rdf:type rdf:resource="#Images"/>
+        <rdfs:comment>Y/N</rdfs:comment>
+    </owl:Thing>
+    
+
+
+    <!-- http://planetarium.hki.uni-koeln.de/public/observational/PLANETSOntology.owl#appearance -->
+
+    <owl:Thing rdf:about="&PLANETSOntology;appearance"/>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net -->
+
