@@ -139,7 +139,7 @@ public final class CharacteriseResult {
             final String fragmentID) {
         this.props = props;
         this.report = report;
-        this.results = new ArrayList<CharacteriseResult>(); 
+        this.results = results; 
         this.fragmentID = fragmentID;
         this.formatURI = null;
     }
@@ -155,7 +155,7 @@ public final class CharacteriseResult {
             final URI formatURI) {
         this.props = props;
         this.report = report;
-        this.results = new ArrayList<CharacteriseResult>(); 
+        this.results = results; 
         this.fragmentID = null;
         this.formatURI =formatURI;
     }
@@ -172,7 +172,7 @@ public final class CharacteriseResult {
             final String fragmentID, URI formatURI) {
         this.props = props;
         this.report = report;
-        this.results = new ArrayList<CharacteriseResult>(); 
+        this.results = results; 
         this.fragmentID = fragmentID;
         this.formatURI = formatURI;
     }

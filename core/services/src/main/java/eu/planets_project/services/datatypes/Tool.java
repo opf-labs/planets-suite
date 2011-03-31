@@ -12,7 +12,14 @@ package eu.planets_project.services.datatypes;
 
 import eu.planets_project.services.PlanetsServices;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
+
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -22,6 +29,7 @@ import java.net.URL;
  * tool registry.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
+@XmlRootElement(namespace = PlanetsServices.TOOLS_NS)
 @XmlType(namespace = PlanetsServices.TOOLS_NS)
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public final class Tool {
@@ -104,6 +112,107 @@ public final class Tool {
      */
     public String getVersion() {
         return version;
+    }
+
+    /**
+     * @param xml The XML representation of an Container (as created
+     *        from calling toXml)
+     * @return An Container instance created from the given XML
+     */
+    public static Tool of(final String xml) {
+        try {
+            /* Unmarshall with JAXB: */
+            JAXBContext context = JAXBContext
+                    .newInstance(Tool.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            Object object = unmarshaller.unmarshal(new StringReader(xml));
+            Tool unmarshalled = (Tool) object;
+            return unmarshalled;
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @return An XML representation of this Container (can be used to
+     *         instantiate an object using the static factory method)
+     */
+    public String toXml() {
+        return toXml(false);
+    }
+
+    /**
+     * @return A formatted (pretty-printed) XML representation of this Container
+     */
+    public String toXmlFormatted() {
+        return toXml(true);
+    }
+
+	private String toXml(boolean formatted) {
+        try {
+            /* Marshall with JAXB: */
+            JAXBContext context = JAXBContext
+                    .newInstance(Tool.class);
+            Marshaller marshaller = context.createMarshaller();
+            StringWriter writer = new StringWriter();
+            marshaller.setProperty("jaxb.formatted.output", formatted);
+            marshaller.marshal(this, writer);
+            return writer.toString();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (this.description == null ? 0 : this.description.hashCode());
+        result = prime * result + (this.name == null ? 0 : this.name.hashCode());
+        result = prime * result + (this.version == null ? 0 : this.version.hashCode());
+        result = prime * result + (this.description == null ? 0 : this.description.hashCode());
+        result = prime * result + (this.homepage == null ? 0 : this.homepage.hashCode());
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof Tool) {
+            final Tool other = (Tool) obj;
+            
+            if ((this.identifier == null) && (other.identifier != null)) return false;
+            else if (!this.identifier.equals(other.identifier)) return false;
+            		
+            if ((this.name == null) && (other.name != null)) return false;
+            else if (!this.name.equals(other.name)) return false;
+
+            if ((this.version == null) && (other.version != null)) return false;
+            else if (!this.version.equals(other.version)) return false;
+
+            if ((this.description == null) && (other.description != null)) return false;
+            else if (!this.description.equals(other.description)) return false;
+
+            if ((this.homepage == null) && (other.homepage != null)) return false;
+            else if (!this.homepage.equals(other.homepage)) return false;
+        } else
+        	return false;
+       return true;
     }
 
     /* -------------------------------------------- */
