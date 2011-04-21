@@ -35,7 +35,7 @@ public enum TestFile {
      * CAUTION: adding an extension here without adding a corresponding file to
      * the test files folder of PSERV will cause all these tests to fail!
      */
-    BMP, RTF, XML, ZIP, PDF, GIF, JPG, TIF, PCX, JP2, RAW, TGA, PNM, PNG, ARJ, AIFF, WAV, HTML, TXT;
+    XML, PDF, GIF, JPG, PNG, HTML, TXT;
     /** We retrieve test files and correct PRONOM IDs automatically. */
     private final String location = FileAccess.INSTANCE.get(toString())
             .getAbsolutePath();

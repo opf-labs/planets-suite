@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -117,26 +118,34 @@ public final class ServiceConfig {
 		 * Check that the file exists
 		 */
 		if (properties.exists()) {
-			/*
-			 * Parse properties file and return appropriate Configuration instance
-			 */
-			Properties configuration = new Properties();
 			try {
-				configuration.load(new FileInputStream(properties));
+				return ServiceConfig.getConfiguration(new FileInputStream(properties));
 			} catch (FileNotFoundException e) {
 				// This shouldn't happen as we've previously checked...
 				throw new ConfigurationException("Configuration file missing: " + properties.getName(), e);
+			}
+		}
+		_log.info("Properties file doesn't exist at " + properties.getAbsolutePath());
+		throw new ConfigurationException("Can't find properties files at: " + properties.getAbsolutePath());
+	}
+
+	/**
+	 * Return a configuration based on the contents of the passed InputStream
+	 * @param properties the config file
+	 * @return Representation of the config stream
+	 */
+	public static Configuration getConfiguration(InputStream properties) {
+			Properties configuration = new Properties();
+			try {
+				configuration.load(properties);
 			} catch (IOException e) {
-				throw new ConfigurationException("Error reading configuration file: " + properties.getName(), e);
+				throw new ConfigurationException("Error reading configuration stream.", e);
 			}
 			/*
 			 * Return a local implementation of the Configuration interface
 			 * from the loaded properties.
 			 */
 			return new ConfigurationImpl(configuration);
-		}
-		_log.info("Properties file doesn't exist at " + properties.getAbsolutePath());
-		throw new ConfigurationException("Can't find properties files at: " + properties.getAbsolutePath());
 	}
 
 	private static final class ConfigurationImpl implements Configuration {

@@ -38,17 +38,11 @@ public class DroidTests {
      * To get more informative test reports, we wrap every enum element into its
      * own test. We could iterate over the enum elements instead (see below).
      */
-    @Test public void testRtf() { test(TestFile.RTF, droid); }
-    @Test public void testBmp() { test(TestFile.BMP, droid); }
     @Test public void testXml() { test(TestFile.XML, droid); }
-    @Test public void testZip() { test(TestFile.ZIP, droid); }
     @Test public void testPdf() { test(TestFile.PDF, droid); }
     @Test public void testGif() { test(TestFile.GIF, droid); }
     @Test public void testJpg() { test(TestFile.JPG, droid); }
-    @Test public void testTif() { test(TestFile.TIF, droid); }
-    @Test public void testPcx() { test(TestFile.PCX, droid); }
     @Test public void testPng() { test(TestFile.PNG, droid); }
-    @Test public void testWav() { test(TestFile.WAV, droid); }
     @Test public void testHtml(){ test(TestFile.HTML, droid);}
     
     /*

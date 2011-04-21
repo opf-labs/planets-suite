@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="billres.xsl"?>
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<?xml-stylesheet href="\billres.xsl" type="text/xsl"?>-->
+<!--<!DOCTYPE bill PUBLIC "-//US Congress//DTDs/bill v2.8 20020720//EN" "http://thomas.loc.gov/dtd/bill.dtd">-->
+<!DOCTYPE bill PUBLIC "-//US Congress//DTDs/bill v2.8 20020720//EN" "http://thomas.loc.gov/dtd/bill.dtd">
+<bill bill-stage="Introduced-in-House" dms-id="H0E2D85E73EEF4BD5A4A3C8B30600CC1" public-private="public" bill-type="olc"> 
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+<dublinCore>
+<dc:title>110 HR 3838 IH: To temporarily increase the portfolio caps applicable to Freddie Mac and Fannie Mae, to provide the necessary financing to curb foreclosures by facilitating the refinancing of at-risk subprime borrowers into safe, affordable loans, and for other purposes.</dc:title>
+<dc:publisher>U.S. House of Representatives</dc:publisher>
+<dc:date>2007-10-16</dc:date>
+<dc:format>text/xml</dc:format>
+<dc:language>EN</dc:language>
+<dc:rights>Pursuant to Title 17 Section 105 of the United States Code, this file is not subject to copyright protection and is in the public domain.</dc:rights>
+</dublinCore>
+</metadata>
+<form> 
+<distribution-code display="yes">I</distribution-code> 
+<congress>110th CONGRESS</congress> <session>1st Session</session> 
+<legis-num>H. R. 3838</legis-num> 
+<current-chamber>IN THE HOUSE OF REPRESENTATIVES</current-chamber> 
+<action> 
+<action-date date="20071016">October 16, 2007</action-date> 
+<action-desc><sponsor name-id="F000339">Mr. Frank of Massachusetts</sponsor> introduced the following bill; which was referred to the <committee-name committee-id="HBA00">Committee on Financial Services</committee-name></action-desc> 
+</action> 
+<legis-type>A BILL</legis-type> 
+<official-title>To temporarily increase the portfolio caps applicable to Freddie Mac and Fannie Mae, to provide the necessary financing to curb foreclosures by facilitating the refinancing of at-risk subprime borrowers into safe, affordable loans, and for other purposes.</official-title> 
+</form> 
+<legis-body id="H573F08404AD64937BF2C03EF5F91175C" style="OLC"> 
+<section id="H7785EA12698F4F1781D37C59967EF4BC" section-type="section-one"><enum>1.</enum><header>Findings</header><text display-inline="no-display-inline">The Congress finds that—</text> 
+<paragraph id="H340E409217F649618DB071A0082E96B"><enum>(1)</enum><text>American families will be severely harmed by an unprecedented wave of anticipated foreclosures expected to occur over the coming months, as adjustable rate subprime mortgages reset to higher interest rates;</text></paragraph> 
+<paragraph id="HF6C6A1AEF8A94E83B81CE851BCCD1F7E"><enum>(2)</enum><text>preventing such foreclosures and facilitating the refinancing of at-risk subprime borrowers into safe, affordable loans will require the additional liquidity provided by the Federal National Mortgage Association and the Federal Home Loan Mortgage Association, and any affiliates thereof;</text></paragraph> 
+<paragraph id="H072C5CCFD9664B358B5B151246B09FE0"><enum>(3)</enum><text>the failure to prevent these anticipated foreclosures could have devastating effects on household wealth, neighborhood property values, and the overall health of the broader economy; and</text></paragraph> 
+<paragraph id="H24793DB4179B41A6B1D07083E3DCD5D7"><enum>(4)</enum><text>the Federal National Mortgage Association and the Federal Home Loan Mortgage Corporation, and any affiliates thereof, are uniquely positioned to provide the financing necessary to alleviate the predicted wave of anticipated foreclosures.</text></paragraph></section> 
+<section id="H07093BB5139C4CCF8100F6929BA6F183"><enum>2.</enum><header>Definitions</header><text display-inline="no-display-inline">For purposes of this Act, the following definitions shall apply:</text> 
+<paragraph id="HFC785207E0DC41629DA5C630EDD976CC"><enum>(1)</enum><header>Director</header><text>The term <term>Director</term> means the Director of the Office of Federal Housing Enterprise Oversight of the Department of Housing and Urban Development.</text></paragraph> 
+<paragraph id="H5C2C92F27DB640A1BDF295BD010045A5"><enum>(2)</enum><header>Enterprise</header><text>The term <term>enterprise</term> means—</text> 
+<subparagraph id="HAA3375C0E57049D5BEA64D3B50FBAFA7"><enum>(A)</enum><text>the Federal National Mortgage Association, and any affiliate thereof; and</text></subparagraph> 
+<subparagraph id="H21A6FF76553641989EC311E4C6AD5CF9"><enum>(B)</enum><text>the Federal Home Loan Mortgage Corporation, and any affiliate thereof.</text></subparagraph></paragraph> 
+<paragraph id="HDE4FDDE411B54117911F16ACEA12DBED"><enum>(3)</enum><header>Fannie mae consent decree</header><text>The term <term>Fannie Mae Consent Decree</term> means the order of the Office of Federal Housing Enterprises Oversight dated May 23, 2006, in the matter of the Federal National Mortgage Association.</text></paragraph> 
+<paragraph id="H6EF4F5B9738E4826B4A05276C031069"><enum>(4)</enum><header>Freddie mac letter</header><text>The term <term>Freddie Mac Letter</term> means the letter dated July 31, 2006, from the Chairman and Chief Executive Officer of the Federal Home Loan Mortgage Corporation to the Director.</text></paragraph> 
+<paragraph id="H8EB1C007C037432891AB2CE13FCDCEB"><enum>(5)</enum><header>OFHEO</header><text>The term <term>OFHEO</term> means the Office of Federal Housing Enterprises Oversight.</text></paragraph></section> 
+<section id="H9D9FA201E4EB4E31B46C364B00EC62B7"><enum>3.</enum><header>Lifting Of Portfolio Caps</header> 
+<subsection id="H947BFF8D0B714F09B6EFC3DD62B6D203"><enum>(a)</enum><header>In general</header><text>Immediately upon the date of enactment of this Act, the Director shall terminate, suspend, modify, or otherwise lift—</text> 
+<paragraph id="HBFF4ADEE8ED5492AADC9B9E128AB8653"><enum>(1)</enum><text>the limitation on growth provision set forth in section 4, Article III of the Fannie Mae Consent Decree; and</text></paragraph> 
+<paragraph id="HA81B75C10A53437200FCFA6C472C5C62"><enum>(2)</enum><text>the voluntary temporary growth limitation described in the Freddie Mac Letter.</text></paragraph></subsection> 
+<subsection commented="no" display-inline="no-display-inline" id="H89B2D346066244BC87E61FF09937FB3C"><enum>(b)</enum><header>Factors</header><text>In carrying out subsection (a), the Director shall increase the mortgage portfolio limitations of both enterprises by not less than 10 percent.</text></subsection> 
+<subsection commented="no" display-inline="no-display-inline" id="H36C1D0CE42EB4F118B3C006B311E387B"><enum>(c)</enum><header>Allocation</header> 
+<paragraph commented="no" display-inline="no-display-inline" id="H4D6FC7DF45D84228A66E84D651F589CE"><enum>(1)</enum><header>In general</header><text>Eighty-five percent of the portfolio increase described in subsection (b) shall be used for the purpose of refinancing subprime mortgages at risk of foreclosure.</text></paragraph> 
+<paragraph commented="no" display-inline="no-display-inline" id="H4413162437AD43BC8B655DEB960788C7"><enum>(2)</enum><header>Definitions</header><text>The Director may establish criteria defining the term <term>subprime mortgage</term>, as the Director determines necessary.</text></paragraph></subsection> 
+<subsection id="H5A9F6C2140E740B50021C919A7D9A819"><enum>(d)</enum><header>Rule of construction</header><text>Nothing in this section shall be construed to prevent or prohibit the Director from exercising any authority of the Director to terminate, suspend, modify, or otherwise lift the limitations referenced in paragraphs (1) and (2) of subsection (a) beyond the minimum increase specified in subsection (b), as the Director deems appropriate.</text></subsection></section> 
+<section id="H3EDC44B5317A45A294B22F7B812CF030"><enum>4.</enum><header>Sunset provision</header><text display-inline="no-display-inline">This Act is repealed, effective 6 months after the date of enactment of this Act, and the authority of the Director under this Act is terminated on that date of repeal.</text></section> 
+</legis-body> 
+</bill> 
+
+

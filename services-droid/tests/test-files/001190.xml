@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="billres.xsl"?>
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<?xml-stylesheet href="\billres.xsl" type="text/xsl"?>-->
+<!--<!DOCTYPE resolution PUBLIC "-//US Congress//DTDs/res v2.8 20020720//EN" "http://xml.house.gov/res.dtd">-->
+<!DOCTYPE resolution PUBLIC "-//US Congress//DTDs/res v2.8 20020720//EN" "http://thomas.loc.gov/dtd/res.dtd">
+<resolution dms-id="H00FF991396244C66812E6FC6E2A4AFF9" public-private="public" resolution-stage="Engrossed-in-House" resolution-type="house-resolution" star-print="no-star-print" key="H"> 
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+<dublinCore>
+<dc:title>110 HRES 611 EH: Raising a question of the privileges of the House.</dc:title>
+<dc:publisher>U.S. House of Representatives</dc:publisher>
+<dc:date>2007-08-03</dc:date>
+<dc:format>text/xml</dc:format>
+<dc:language>EN</dc:language>
+<dc:rights>Pursuant to Title 17 Section 105 of the United States Code, this file is not subject to copyright protection and is in the public domain.</dc:rights>
+</dublinCore>
+</metadata>
+<form> 
+<distribution-code display="no">IV</distribution-code> 
+<congress display="no">110th CONGRESS</congress> 
+<session display="no">1st Session</session> 
+<legis-num>H. RES. 611</legis-num> 
+<current-chamber display="yes">In the House of Representatives, U. S.,</current-chamber>
+<action>
+<action-date date="20070803">August 3, 2007</action-date>
+</action> 
+<legis-type display="yes">RESOLUTION</legis-type> 
+<official-title display="no">Raising a question of the privileges of the House.</official-title> 
+</form> 
+<resolution-body style="traditional" id="H7AD9C1B7F8C94F9EB559F3ED745BBE25"> 
+<section display-inline="yes-display-inline" section-type="undesignated-section" id="H2F703C291CA0480CAB1D44667DC05E21"><text>That—</text>
+<paragraph id="H247CD06662A94343007B852700A36135"><enum>(1)</enum><text display-inline="yes-display-inline">the Officers of the House of Representatives are immediately directed to preserve all records, documents, recordings, electronic transmissions, or other material, regardless of form, related to the voting irregularities of August 2, 2007;</text></paragraph>
+<paragraph id="HC6A4C1BC6F924A2D9E4FD89DFC809500"><enum>(2)</enum><text>there is hereby established a select committee to investigate the voting irregularities of August 2, 2007 (hereinafter referred to as the <quote>select committee</quote>). The select committee shall be comprised of 6 Members, of which 3 Members shall be appointed by the Speaker and 3 by the Minority Leader. The select committee shall—</text>
+<subparagraph id="H2341DABF95744E4283D269CA6CDCAD54"><enum>(A)</enum><text>investigate the circumstances surrounding the record vote requested by the gentleman from California (Mr. Lewis) on the motion to recommit to H.R. 3161, including the Chair’s ruling over the objections of the Parliamentarian; and</text></subparagraph>
+<subparagraph id="HF67EA6A6A5434CAC83791E0037D0F200"><enum>(B)</enum><text>make an interim report to the House not later than September 30, 2007, and a final report not later than September 15, 2008—</text>
+<clause id="HEF711FF6661346C6901500F406DA7DD"><enum>(i)</enum><text>regarding the actions of any Members, officers, or employees of the House engaged in the disenfranchisement of Members in voting on the question; and</text></clause>
+<clause id="HB5982826F89A43FBAFFD8C675D4FFC60"><enum>(ii)</enum><text>recommending changes to the rules and procedures of the House of Representatives necessary to protect the voting rights of constitutionally elected Members chosen by the people of the United States of America; and</text></clause></subparagraph></paragraph>
+<paragraph id="H1B36FC9B5AC349F9A9EB953C3B4BF323"><enum>(3)</enum><text>the select committee shall have the same powers to obtain testimony and documents pursuant to subpoena as authorized under clause 2(m) of rule XI.</text></paragraph></section> 
+</resolution-body> 
+<attestation><attestation-group><attestor display="no">Lorraine C. Miller,</attestor><role>Clerk.</role></attestation-group></attestation>
+</resolution> 
+
+
