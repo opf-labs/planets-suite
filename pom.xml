@@ -1,364 +1,386 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.opf.suite</groupId>
-    <artifactId>parent</artifactId>
-    <version>1.1.0</version>
-    <packaging>pom</packaging>
-    <name>Planets Suite - Parent</name>
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-    <build>
-        <resources>
-        </resources>
-        <extensions>
-            <!-- Added to get SFTP working without relying on external processes. -->
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh</artifactId>
-                <version>1.0-beta-6</version>
-            </extension>
-        </extensions>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <systemPropertyVariables>
-                        <app.dir>${basedir}</app.dir>
-                        <eu.planets-project.config.dir>${basedir}/../../test/config</eu.planets-project.config.dir>
-                    </systemPropertyVariables>
-                    <includes>
-                        <include>**/*Testsuite.java</include>
-                        <!-- 
-                        The above duplicates the ant build behaviour, but perhaps we should use this instead:
-                        <include>**/*Tests.java</include>
-                        <include>**/*Test.java</include>
-                         -->
-                    </includes>
-                </configuration>
-            </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.codehaus.mojo</groupId>-->
-            <!--<artifactId>jaxws-maven-plugin</artifactId>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<goals>-->
-            <!--<goal>wsimport</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-            <!--<wsdlUrls>-->
-            <!--<wsdlUrl>http://www.nationalarchives.gov.uk/pronom/service.asmx?WSDL</wsdlUrl>-->
-            <!--</wsdlUrls>-->
-            <!--<wsdlFiles>-->
-            <!--<wsdlFile>www.nationalarchives.gov.uk/pronom/service.wsdl</wsdlFile>-->
-            <!--</wsdlFiles>-->
-            <!--<packageName>uk.gov.nationalarchives.pronom</packageName>-->
-            <!--<catalog>src/wsdl/catalog.xml</catalog>-->
-            <!--<keep>true</keep>-->
-            <!--<sourceDestDir>src/main/java</sourceDestDir>-->
-            <!--<destDir></destDir>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--</plugin>-->
-        </plugins>
-    </build>
-    <modules>
-        <module>core-services</module>
-        <module>core-techreg</module>
-        <module>core-utils</module>
-        <module>external-zip64file</module>
-        <module>framework-admin</module>
-        <module>framework-generic</module>
-        <module>framework-selfreg</module>
-        <module>framework-servreg</module>
-        <module>framework-storage</module>
-        <module>framework-techreg</module>
-        <module>framework-users</module>
-        <module>framework-wdt</module>
-        <module>framework-wee</module>
-        <module>services-droid</module>
-        <module>services-javadigest</module>
-        <module>services-javase</module>
-        <module>services-jhove</module>
-        <module>services-jtidy</module>
-        <module>services-libtiff</module>
-        <module>services-metadata</module>
-        <module>services-odf</module>
-        <module>services-pdfbox</module>
-        <module>services-sanselan</module>
-        <module>services-simple</module>
-        <module>webapp-testbed</module>
-        <module>webapp-plato</module>
-    </modules>
-    <repositories>
-        <repository>
-            <id>jboss-public-repository-group</id>
-            <name>JBoss Public Maven Repository Group</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>java.net1</id>
-            <name>Java.Net Maven1 Repository, hosts the javaee-api dependency</name>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven 2</name>
-            <url>http://download.java.net/maven/2/</url>
-        </repository>
-        <repository>
-            <id>planets-suite-repository</id>
-            <name>The Planets Suite Maven Repository, hosted by SourceForge.</name>
-            <url>http://planets-suite.sourceforge.net/maven2/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>k-int</id>
-            <name>k-int</name>
-            <url>http://developer.k-int.com/maven2/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven2-repository.dev.java.net</id>
-            <url>http://download.java.net/maven/2/</url>
-        </pluginRepository>
-    </pluginRepositories>
-    <!--
-         NOTE that for uploading to work, you need something like this in your
-         .m2/settings.xml <servers> <server>
-         <id>planets-suite.sourceforge.net</id>
-         <username>andy_j,planets-suite</username>
-         <password>????????</password> </server> </servers>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.opf.suite</groupId>
+	<artifactId>parent</artifactId>
+	<version>1.1.0</version>
+	<packaging>pom</packaging>
+	<name>Planets Suite - Parent</name>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<build>
+		<resources>
+		</resources>
+		<extensions>
+			<!-- Added to get SFTP working without relying on external processes. -->
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>1.0-beta-6</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<systemPropertyVariables>
+						<app.dir>${basedir}</app.dir>
+						<eu.planets-project.config.dir>${basedir}/../../test/config
+						</eu.planets-project.config.dir>
+					</systemPropertyVariables>
+					<includes>
+						<include>**/*Testsuite.java</include>
+						<!-- The above duplicates the ant build behaviour, but perhaps we should 
+							use this instead: <include>**/*Tests.java</include> <include>**/*Test.java</include> -->
+					</includes>
+				</configuration>
+			</plugin>
+			<!--<plugin> -->
+			<!--<groupId>org.codehaus.mojo</groupId> -->
+			<!--<artifactId>jaxws-maven-plugin</artifactId> -->
+			<!--<executions> -->
+			<!--<execution> -->
+			<!--<goals> -->
+			<!--<goal>wsimport</goal> -->
+			<!--</goals> -->
+			<!--<configuration> -->
+			<!--<wsdlUrls> -->
+			<!--<wsdlUrl>http://www.nationalarchives.gov.uk/pronom/service.asmx?WSDL</wsdlUrl> -->
+			<!--</wsdlUrls> -->
+			<!--<wsdlFiles> -->
+			<!--<wsdlFile>www.nationalarchives.gov.uk/pronom/service.wsdl</wsdlFile> -->
+			<!--</wsdlFiles> -->
+			<!--<packageName>uk.gov.nationalarchives.pronom</packageName> -->
+			<!--<catalog>src/wsdl/catalog.xml</catalog> -->
+			<!--<keep>true</keep> -->
+			<!--<sourceDestDir>src/main/java</sourceDestDir> -->
+			<!--<destDir></destDir> -->
+			<!--</configuration> -->
+			<!--</execution> -->
+			<!--</executions> -->
+			<!--</plugin> -->
+		</plugins>
+	</build>
+	<modules>
+		<module>core-services</module>
+		<module>core-techreg</module>
+		<module>core-utils</module>
+		<module>external-zip64file</module>
+		<module>framework-admin</module>
+		<module>framework-generic</module>
+		<module>framework-selfreg</module>
+		<module>framework-servreg</module>
+		<module>framework-storage</module>
+		<module>framework-techreg</module>
+		<module>framework-users</module>
+		<module>framework-wdt</module>
+		<module>framework-wee</module>
+		<module>services-droid</module>
+		<module>services-javadigest</module>
+		<module>services-javase</module>
+		<module>services-jhove</module>
+		<module>services-jtidy</module>
+		<module>services-libtiff</module>
+		<module>services-metadata</module>
+		<module>services-odf</module>
+		<module>services-pdfbox</module>
+		<module>services-sanselan</module>
+		<module>services-simple</module>
+		<module>webapp-testbed</module>
+		<module>webapp-plato</module>
+	</modules>
+	<repositories>
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Maven Repository Group</name>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>java.net1</id>
+			<name>Java.Net Maven1 Repository, hosts the javaee-api dependency
+			</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven 2</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+		<repository>
+			<id>opf-releases</id>
+			<name>The Planets Suite Maven Repository, hosted by github.
+			</name>
+			<url>https://github.com/openplanets/opf-mvn-repo/raw/master/releases
+			</url>
+		</repository>
+		<repository>
+			<id>k-int</id>
+			<name>k-int</name>
+			<url>http://developer.k-int.com/maven2/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven2-repository.dev.java.net</id>
+			<url>http://download.java.net/maven/2/</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<!-- NOTE that for uploading to work, you need something like this in your 
+		.m2/settings.xml <servers> <server> <id>planets-suite.sourceforge.net</id> 
+		<username>andy_j,planets-suite</username> <password>????????</password> </server> 
+		</servers> Once set up, the maven command is: maven deploy -->
 
-         Once set up, the maven command is:
-         maven deploy
-     -->
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.7</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
-        </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>6.0</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.sun.xml.ws</groupId>
+				<artifactId>jaxws-rt</artifactId>
+				<version>2.2</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.4</version>
+			</dependency>
+			<dependency>
+				<groupId>woodstox</groupId>
+				<artifactId>wstx-asl</artifactId>
+				<version>3.2.0</version>
+			</dependency>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.sun.xml.ws</groupId>
-                <artifactId>jaxws-rt</artifactId>
-                <version>2.2</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.0</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>1.4</version>
-            </dependency>
-            <dependency>
-                <groupId>woodstox</groupId>
-                <artifactId>wstx-asl</artifactId>
-                <version>3.2.0</version>
-            </dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-core</artifactId>
+				<version>2.9.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.velocity</groupId>
+				<artifactId>velocity</artifactId>
+				<version>1.7</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.facelets</groupId>
+				<artifactId>jsf-facelets</artifactId>
+				<version>1.1.14</version>
+			</dependency>
+			<dependency>
+				<groupId>josso</groupId>
+				<artifactId>josso</artifactId>
+				<version>1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tomcat</groupId>
+				<artifactId>catalina</artifactId>
+				<version>6.0.29</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>struts</groupId>
+				<artifactId>struts</artifactId>
+				<version>1.2.9</version>
+				<!--<dependency> -->
+				<!--<groupId>org.apache.struts</groupId> -->
+				<!--<artifactId>struts-core</artifactId> -->
+				<!--<version>1.3.10</version> -->
+				<!--<type>jar</type> -->
+				<!--<scope>compile</scope> -->
+				<!--</dependency> -->
+				<!--<dependency> -->
+				<!--<groupId>org.apache.struts</groupId> -->
+				<!--<artifactId>struts-core</artifactId> -->
+				<!--<version>1.3.10</version> -->
+				<!--<type>jar</type> -->
+				<!--<scope>compile</scope> -->
+				<!--</dependency> -->
+			</dependency>
+			<dependency>
+				<groupId>antlr</groupId>
+				<artifactId>antlr</artifactId>
+				<version>2.7.7</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.enterag.utils</groupId>
+				<artifactId>zip64</artifactId>
+				<version>1.01</version>
+			</dependency>
+			<dependency>
+				<groupId>edu.harvard.jhove</groupId>
+				<artifactId>jhove</artifactId>
+				<version>1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>edu.harvard.jhove</groupId>
+				<artifactId>jhove-handler</artifactId>
+				<version>1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>edu.harvard.jhove</groupId>
+				<artifactId>jhove-module</artifactId>
+				<version>1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>1.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>jaxen</groupId>
+				<artifactId>jaxen</artifactId>
+				<version>1.1.1</version>
+				<!--<exclusions> -->
+				<!--<exclusion> -->
+				<!--<artifactId>xom</artifactId> -->
+				<!--<groupId>xom</groupId> -->
+				<!--</exclusion> -->
+				<!--</exclusions> -->
+			</dependency>
+			<dependency>
+				<groupId>javax.jcr</groupId>
+				<artifactId>jcr</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.richfaces.framework</groupId>
+				<artifactId>richfaces-api</artifactId>
+				<version>${richfaces.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.richfaces.framework</groupId>
+				<artifactId>richfaces-impl</artifactId>
+				<version>${richfaces.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.richfaces.ui</groupId>
+				<artifactId>richfaces-ui</artifactId>
+				<version>${richfaces.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.myfaces.tomahawk</groupId>
+				<artifactId>tomahawk</artifactId>
+				<version>1.1.10</version>
+			</dependency>
+			<dependency>
+				<groupId>se.kb.oai</groupId>
+				<artifactId>oai4j</artifactId>
+				<version>0.6b1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-core</artifactId>
+				<version>1.4.6</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>3.1</version>
+			</dependency>
+			<!--<dependency> -->
+			<!--<groupId>com.sun.facelets</groupId> -->
+			<!--<artifactId>jsf-facelets</artifactId> -->
+			<!--<version>1.1.14</version> -->
+			<!--<type>jar</type> -->
+			<!--<scope>compile</scope> -->
+			<!--</dependency> -->
+			<!--<dependency> -->
+			<!--<groupId>org.apache.tomcat</groupId> -->
+			<!--<artifactId>catalina</artifactId> -->
+			<!--<version>6.0.28</version> -->
+			<!--<type>jar</type> -->
+			<!--<scope>compile</scope> -->
+			<!--</dependency> -->
+			<dependency>
+				<groupId>com.sun.jna</groupId>
+				<artifactId>jna</artifactId>
+				<version>3.0.9</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.4</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>jboss</groupId>
+				<artifactId>jboss-annotations-ejb3</artifactId>
+				<version>4.2.0.GA</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-annotations</artifactId>
+				<version>3.2.0.ga</version>
+			</dependency>
+			<dependency>
+				<groupId>jboss</groupId>
+				<artifactId>jbossall-client</artifactId>
+				<version>4.2.2.GA</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-core</artifactId>
-                <version>2.9.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.velocity</groupId>
-                <artifactId>velocity</artifactId>
-                <version>1.7</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.facelets</groupId>
-                <artifactId>jsf-facelets</artifactId>
-                <version>1.1.14</version>
-            </dependency>
-            <dependency>
-                <groupId>josso</groupId>
-                <artifactId>josso</artifactId>
-                <version>1.6</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tomcat</groupId>
-                <artifactId>catalina</artifactId>
-                <version>6.0.29</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>struts</groupId>
-                <artifactId>struts</artifactId>
-                <version>1.2.9</version>
-                <!--<dependency>-->
-                <!--<groupId>org.apache.struts</groupId>-->
-                <!--<artifactId>struts-core</artifactId>-->
-                <!--<version>1.3.10</version>-->
-                <!--<type>jar</type>-->
-                <!--<scope>compile</scope>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                <!--<groupId>org.apache.struts</groupId>-->
-                <!--<artifactId>struts-core</artifactId>-->
-                <!--<version>1.3.10</version>-->
-                <!--<type>jar</type>-->
-                <!--<scope>compile</scope>-->
-                <!--</dependency>-->
-            </dependency>
-            <dependency>
-                <groupId>antlr</groupId>
-                <artifactId>antlr</artifactId>
-                <version>2.7.7</version>
-            </dependency>
-            <dependency>
-                <groupId>absent</groupId>
-                <artifactId>zip64</artifactId>
-                <version>1.01</version>
-            </dependency>
-            <dependency>
-                <groupId>absent</groupId>
-                <artifactId>jhove</artifactId>
-                <version>1.6</version>
-            </dependency>
-            <dependency>
-                <groupId>absent</groupId>
-                <artifactId>jhove-handler</artifactId>
-                <version>1.6</version>
-            </dependency>
-            <dependency>
-                <groupId>absent</groupId>
-                <artifactId>jhove-module</artifactId>
-                <version>1.6</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jdom</groupId>
-                <artifactId>jdom</artifactId>
-                <version>1.1</version>
-            </dependency>
-            <dependency>
-                <groupId>dom4j</groupId>
-                <artifactId>dom4j</artifactId>
-                <version>1.6.1</version>
-            </dependency>
-            <dependency>
-                <groupId>jaxen</groupId>
-                <artifactId>jaxen</artifactId>
-                <version>1.1.1</version>
-                <!--<exclusions>-->
-                <!--<exclusion>-->
-                <!--<artifactId>xom</artifactId>-->
-                <!--<groupId>xom</groupId>-->
-                <!--</exclusion>-->
-                <!--</exclusions>        -->
-            </dependency>
-            <dependency>
-                <groupId>javax.jcr</groupId>
-                <artifactId>jcr</artifactId>
-                <version>1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.richfaces.framework</groupId>
-                <artifactId>richfaces-api</artifactId>
-                <version>${richfaces.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.richfaces.framework</groupId>
-                <artifactId>richfaces-impl</artifactId>
-                <version>${richfaces.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.richfaces.ui</groupId>
-                <artifactId>richfaces-ui</artifactId>
-                <version>${richfaces.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.myfaces.tomahawk</groupId>
-                <artifactId>tomahawk</artifactId>
-                <version>1.1.10</version>
-            </dependency>
-            <dependency>
-                <groupId>se.kb.oai</groupId>
-                <artifactId>oai4j</artifactId>
-                <version>0.6b1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.jackrabbit</groupId>
-                <artifactId>jackrabbit-core</artifactId>
-                <version>1.4.6</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-httpclient</groupId>
-                <artifactId>commons-httpclient</artifactId>
-                <version>3.1</version>
-            </dependency>
-            <!--<dependency>-->
-            <!--<groupId>com.sun.facelets</groupId>-->
-            <!--<artifactId>jsf-facelets</artifactId>-->
-            <!--<version>1.1.14</version>-->
-            <!--<type>jar</type>-->
-            <!--<scope>compile</scope>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--<groupId>org.apache.tomcat</groupId>-->
-            <!--<artifactId>catalina</artifactId>-->
-            <!--<version>6.0.28</version>-->
-            <!--<type>jar</type>-->
-            <!--<scope>compile</scope>-->
-            <!--</dependency>-->
-        </dependencies>
-    </dependencyManagement>
-
-    <properties>
-        <jdkLevel>1.6</jdkLevel>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <richfaces.version>3.3.3.Final</richfaces.version>
-    </properties>
+	<properties>
+		<jdkLevel>1.6</jdkLevel>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8
+		</project.reporting.outputEncoding>
+		<richfaces.version>3.3.3.Final</richfaces.version>
+	</properties>
 
 </project>
