@@ -28,13 +28,6 @@
 			<type>pom</type>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.opf.suite</groupId>
-			<artifactId>framework-storage</artifactId>
-			<version>1.1.0</version>
-			<type>war</type>
-			<scope>compile</scope>
-		</dependency>
 			<dependency>
 				<groupId>org.apache.myfaces.tomahawk</groupId>
 				<artifactId>tomahawk</artifactId>
@@ -57,6 +50,13 @@
 				<groupId>org.opf.suite</groupId>
 				<artifactId>framework-wee</artifactId>
 				<version>1.1.0</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opf.suite</groupId>
+				<artifactId>core-storage</artifactId>
+				<version>1.1.0</version>
+				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 	</dependencies>

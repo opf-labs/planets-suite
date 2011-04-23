@@ -47,7 +47,6 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 	
     /**
      * Create a digital object manager for BL newspaper scans stored on the file system.
-     * @param root the directory storing image and XML files
      */
     public SimpleBLNewspaperDigitalObjectManagerImpl() {
         Properties properties = new Properties();
@@ -94,12 +93,12 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
                     new IOException("The specified Data Registry already exists, but is a file, not a directory! : "+localDataDir);
             }
             // Attempt to convert to URI:
-            root = ldd.toURI().normalize();
-            log.fine("(init) Got local data dir for bl newspaper: " + root);
+            this.root = ldd.toURI().normalize();
+            log.fine("(init) Got local data dir for bl newspaper: " + this.root);
             
         } catch (IOException e) {
             log.severe("Exception: Reading JBoss.LocalDataDir from BackendResources.properties failed!"+e.toString());
-            root = null;
+            this.root = null;
         }
     }
 	
@@ -107,15 +106,18 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#storeAsNew(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
 	 */
+	@Override
 	public URI storeAsNew(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
 		throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
 	}
 
-    public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
+    @Override
+	public URI storeAsNew(DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException {
         throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
     }
 
-    public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
+    @Override
+	public URI updateExisting(URI pdURI, DigitalObject digitalObject) throws eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException, eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException {
         throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
     }
 
@@ -123,7 +125,8 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
      */
-    public boolean isWritable( URI pdURI ) {
+    @Override
+	public boolean isWritable( URI pdURI ) {
     	return false;
     }
     
@@ -131,21 +134,23 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
      */
-    public List<URI> list(URI pdURI) {    	
+    @Override
+	public List<URI> list(URI pdURI) {    	
 		ArrayList<URI> children = new ArrayList<URI>();
 
 		if (pdURI == null) {
 			// 'null' - return mirror base URL
-    		children.add(root);
+    		children.add(this.root);
 			return children;
-		} else if (pdURI.equals(root)) {
+		} else if (pdURI.equals(this.root)) {
 			// Directory contents
-			File searchRoot = new File(root);
+			File searchRoot = new File(this.root);
 			log.info("Looking at: " + searchRoot.toString());	
 			
 			if (searchRoot.exists() && searchRoot.isDirectory()) {
 				// Filter to avoid XML metadata files
 				FilenameFilter filter = new FilenameFilter() {
+					@Override
 					public boolean accept(File f, String name) {
 						return !name.endsWith(".xml");
 					}
@@ -156,7 +161,7 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 					File sf = new File(searchRoot, s);
 				    if(!sf.isDirectory()) {
 				    	try {
-				    		children.add(new URI(root + s));
+				    		children.add(new URI(this.root + s));
 				    	} catch (URISyntaxException e) {
 				    		throw new RuntimeException(e);
 				    	}
@@ -174,7 +179,8 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
 	 */
-    public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
+    @Override
+	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
 		// Get file reference
 		log.info("retrieving: " + pdURI.toString());
 		File file = new File(pdURI);
@@ -213,6 +219,7 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
 	 */
+	@Override
 	public List<Class<? extends Query>> getQueryTypes() {
 		return null;
 	}
@@ -221,12 +228,16 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
-    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
+    @Override
+	public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
         throw new QueryValidationException("This implementation does not support queries.");
     }
     
+    /**
+     * @return the root uri
+     */
     public URI getRootURI() {
-    	return root;
+    	return this.root;
     }
     
 	private String extractPageImageSection(File file) throws IOException {	

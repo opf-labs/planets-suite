@@ -31,17 +31,17 @@
 				<artifactId>jdom</artifactId>
 			</dependency>
 			<dependency>
-				<groupId>org.opf.suite</groupId>
-				<artifactId>framework-storage</artifactId>
-				<version>1.1.0</version>
-				<type>war</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
 				<groupId>com.sun</groupId>
 				<artifactId>tools</artifactId>
 				<version>1.4.2</version>
 				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opf.suite</groupId>
+				<artifactId>core-storage</artifactId>
+				<version>1.1.0</version>
+				<type>jar</type>
+				<scope>compile</scope>
 			</dependency>
     </dependencies>
 </project>

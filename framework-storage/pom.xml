@@ -66,5 +66,12 @@
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
         </dependency>
+        <dependency>
+        	<groupId>org.opf.suite</groupId>
+        	<artifactId>core-storage</artifactId>
+        	<version>1.1.0</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>
