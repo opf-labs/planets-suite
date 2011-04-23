@@ -8,24 +8,24 @@
     </parent>
     <groupId>org.opf.suite</groupId>
     <artifactId>services-sanselan</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>war</packaging>
     <name>Planets Service - Sanselan</name>
     <dependencies>
         <dependency>
             <groupId>org.opf.suite</groupId>
             <artifactId>core-services</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.opf.suite</groupId>
             <artifactId>core-techreg</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.opf.suite</groupId>
             <artifactId>core-utils</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.sanselan</groupId>

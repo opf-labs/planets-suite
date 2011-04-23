@@ -10,4 +10,4 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { JavaDigestTests.class })
-public class AllJavaDigestSuite { }
+public class AllJavaDigestSuite {/** Test suite intentionally empty */}

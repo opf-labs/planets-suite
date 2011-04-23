@@ -50,22 +50,10 @@ public class JavaDigestTests {
      * To get more informative test reports, we wrap every enum element into its
      * own test. We could iterate over the enum elements instead (see below).
      */
-	/**
-	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
-	 */
-    @Test public void testRtf() { testDefaultDigest(TestFile.RTF, javaDigest); }
-	/**
-	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
-	 */
-    @Test public void testBmp() { testDefaultDigest(TestFile.BMP, javaDigest); }
     /**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testXml() { testDefaultDigest(TestFile.XML, javaDigest); }
-    /**
-	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
-	 */
-    @Test public void testZip() { testDefaultDigest(TestFile.ZIP, javaDigest); }
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
@@ -78,22 +66,10 @@ public class JavaDigestTests {
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testJpg() { testDefaultDigest(TestFile.JPG, javaDigest); }
-    /**
-	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
-	 */
-    @Test public void testTif() { testDefaultDigest(TestFile.TIF, javaDigest); }
-	/**
-	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
-	 */
-    @Test public void testPcx() { testDefaultDigest(TestFile.PCX, javaDigest); }
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */
     @Test public void testPng() { testDefaultDigest(TestFile.PNG, javaDigest); }
-	/**
-	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
-	 */
-    @Test public void testWav() { testDefaultDigest(TestFile.WAV, javaDigest); }
 	/**
 	 * Test method for {@link eu.planets_project.ifr.core.services.fixity.javadigest.JavaDigest#calculateChecksum(eu.planets_project.services.datatypes.DigitalObject, java.util.List)}.
 	 */

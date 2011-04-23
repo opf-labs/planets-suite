@@ -8,35 +8,35 @@
     </parent>
     <groupId>org.opf.suite</groupId>
     <artifactId>services-jhove</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>war</packaging>
     <name>Planets Service - JHOVE</name>
     <dependencies>
         <dependency>
             <groupId>org.opf.suite</groupId>
             <artifactId>core-services</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.opf.suite</groupId>
             <artifactId>core-techreg</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.opf.suite</groupId>
             <artifactId>core-utils</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
-            <groupId>absent</groupId>
+            <groupId>edu.harvard.jhove</groupId>
             <artifactId>jhove</artifactId>
         </dependency>
         <dependency>
-            <groupId>absent</groupId>
+            <groupId>edu.harvard.jhove</groupId>
             <artifactId>jhove-handler</artifactId>
         </dependency>
         <dependency>
-            <groupId>absent</groupId>
+            <groupId>edu.harvard.jhove</groupId>
             <artifactId>jhove-module</artifactId>
         </dependency>
     </dependencies>

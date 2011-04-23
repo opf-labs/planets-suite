@@ -55,11 +55,11 @@ public class JhoveIdentificationTests {
     @Test public void testPdf() { test(TestFile.PDF, jhove); }
     @Test public void testGif() { test(TestFile.GIF, jhove); }
     @Test public void testJpg() { test(TestFile.JPG, jhove); }
-    @Test public void testTif() { test(TestFile.TIF, jhove); }
-    @Test public void testWav() { test(TestFile.WAV, jhove); }
+//    @Test public void testTif() { test(TestFile.TIF, jhove); }
+//    @Test public void testWav() { test(TestFile.WAV, jhove); }
     @Test public void testTxt() { test(TestFile.TXT, jhove); }
     @Test public void testHtml(){ test(TestFile.HTML, jhove);}
-    @Test public void testAiff(){ test(TestFile.AIFF, jhove);}
+//    @Test public void testAiff(){ test(TestFile.AIFF, jhove);}
 
     private void test(TestFile f, Identify identify) {
         Assert.assertNotNull("File has not types to compare to: " + f, f
@@ -68,13 +68,13 @@ public class JhoveIdentificationTests {
         Assert.assertTrue("Identification failed for: " + f, b);
     }
 
-    @Test
-    public void testUnsupportedBmp() throws MalformedURLException {
-        IdentifyResult identify = jhove.identify(new DigitalObject.Builder(
-                Content.byReference(new File(TestFile.BMP.getLocation())
-                        .toURI().toURL())).build(), null);
-        checkUnidentified(identify);
-    }
+//    @Test
+//    public void testUnsupportedBmp() throws MalformedURLException {
+//        IdentifyResult identify = jhove.identify(new DigitalObject.Builder(
+//                Content.byReference(new File(TestFile.BMP.getLocation())
+//                        .toURI().toURL())).build(), null);
+//        checkUnidentified(identify);
+//    }
 
     @Test
     public void testUnsupportedPng() throws MalformedURLException {

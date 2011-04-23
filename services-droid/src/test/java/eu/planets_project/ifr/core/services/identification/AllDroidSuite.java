@@ -12,4 +12,4 @@ import eu.planets_project.ifr.core.services.identification.droid.impl.DroidTests
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { DroidTests.class })
-public class AllDroidSuite { }
+public class AllDroidSuite {/** Test suite intentionally empty */}

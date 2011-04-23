@@ -35,7 +35,7 @@ import eu.planets_project.services.utils.test.TestFile;
 public class DataRegistryTests {
 
 	private static TestFile[] testFiles = 
-		new TestFile[]{TestFile.HTML, TestFile.RTF, TestFile.TXT, TestFile.XML};
+		new TestFile[]{TestFile.HTML, TestFile.PDF, TestFile.TXT, TestFile.XML};
 	
 	// The DataRegistry to test
 	private static DataRegistry dataReg = null;

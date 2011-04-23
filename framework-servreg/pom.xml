@@ -1,16 +1,45 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.opf.suite</groupId>
-        <artifactId>parent</artifactId>
-        <version>1.1.0</version>
-    </parent>
-    <groupId>org.opf.suite</groupId>
-    <artifactId>framework-servreg</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
-    <name>Planets Framework - Server Registry</name>
-    <dependencies>
-    </dependencies>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.opf.suite</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.1.0</version>
+	</parent>
+	<groupId>org.opf.suite</groupId>
+	<artifactId>framework-servreg</artifactId>
+	<version>1.1.0</version>
+	<packaging>war</packaging>
+	<name>Planets Framework - Server Registry</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.opf.suite</groupId>
+			<artifactId>core-services</artifactId>
+			<version>1.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.opf.suite</groupId>
+			<artifactId>core-techreg</artifactId>
+			<version>1.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.richfaces.ui</groupId>
+			<artifactId>richfaces-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.richfaces.framework</groupId>
+			<artifactId>richfaces-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opf.suite</groupId>
+			<artifactId>core-utils</artifactId>
+			<version>1.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
 </project>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Copyright (c) 2007,2010 The Planets Project Partners.
+
+All rights reserved. This program and the accompanying 
+materials are made available under the terms of the 
+Apache License, Version 2.0 which accompanies 
+this distribution, and is available at 
+http://www.apache.org/licenses/LICENSE-2.0 -->
+
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <description>droid</description>
+    <display-name>droid</display-name>
+  
+  <!--  On JBoss you use this plain POJO deployment to deploy the service. -->  
+  
+  <!-- Under the Metro JAX-WS RI stack, you would use something like this, along with an associated sun-jaxws.xml file. -->
+  
+     
+    <listener>
+        <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+    </listener>
+    
+    <servlet>
+	    <servlet-name>Droid</servlet-name>
+	    <servlet-class>eu.planets_project.ifr.core.services.identification.droid.impl.Droid</servlet-class>
+  	</servlet>
+  
+	  <servlet-mapping>
+	    <servlet-name>Droid</servlet-name>
+	    <url-pattern>/Droid</url-pattern>
+	  </servlet-mapping>
+	  
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+     
+     
+    <!--
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>
+                Im4JavaImageMagickMigrate
+            </web-resource-name>
+            <url-pattern>/view.jsp*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Allow only registered user to access these pages.</description>
+            <role-name>user</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>PlanetsRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/login-redirect.jsp</form-login-page>
+            <form-error-page>/login-redirect.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+
+    <security-role>
+        <description>Planets User</description>
+        <role-name>user</role-name>
+    </security-role>
+    
+	-->
+
+</web-app>

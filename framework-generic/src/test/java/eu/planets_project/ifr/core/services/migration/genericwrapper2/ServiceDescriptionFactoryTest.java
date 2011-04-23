@@ -315,7 +315,7 @@ public class ServiceDescriptionFactoryTest {
 			+ "                           -t, --truncate-set1\n"
 			+ "                                 first truncate SET1 to length of SET2\n"
 			+ "                                 \n"
-			+ "                           SETs  are  specified  as  strings  of characters.  Most represent them‐\n"
+			+ "                           SETs  are  specified  as  strings  of characters.  Most represent them-\n"
 			+ "                           selves.  Interpreted sequences are:\n"
 			+ "                           \n"
 			+ "                           \\NNN   character with octal value NNN (1 to 3 octal digits)\n"

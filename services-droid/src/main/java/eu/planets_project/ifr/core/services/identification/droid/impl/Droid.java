@@ -53,6 +53,7 @@ import eu.planets_project.services.utils.ServiceUtils;
 @MTOM
 @StreamingAttachment(parseEagerly = true, memoryThreshold = ServiceUtils.JAXWS_SIZE_THRESHOLD)
 public final class Droid implements Identify, Serializable {
+	@SuppressWarnings("unused")
 	private static Logger LOG = Logger.getLogger(Droid.class.getName());
 
 	/** The ID for serialization */
@@ -93,6 +94,7 @@ public final class Droid implements Identify, Serializable {
 	 * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject,
 	 *      java.util.List)
 	 */
+	@Override
 	public IdentifyResult identify(final DigitalObject digitalObject,
 			final List<Parameter> parameters) {
 		File file = DigitalObjectUtils.toFile(digitalObject);
@@ -119,6 +121,7 @@ public final class Droid implements Identify, Serializable {
 	 * 
 	 * @see eu.planets_project.services.identify.Identify#describe()
 	 */
+	@Override
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(
 				"DROID Identification Service",

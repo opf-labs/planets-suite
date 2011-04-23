@@ -78,7 +78,8 @@ public final class MetadataExtractor implements Characterise {
      * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject,
      *      java.lang.String, eu.planets_project.services.datatypes.Parameter)
      */
-    public CharacteriseResult characterise(final DigitalObject digitalObject,
+    @Override
+	public CharacteriseResult characterise(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
         String resultString = basicCharacteriseOneBinary(digitalObject);
         List<Property> props = readProperties(resultString);
@@ -90,7 +91,8 @@ public final class MetadataExtractor implements Characterise {
      * empty. {@inheritDoc}
      * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
      */
-    public List<Property> listProperties(final URI formatURI) {
+    @Override
+	public List<Property> listProperties(final URI formatURI) {
         ArrayList<Property> result = new ArrayList<Property>();
         /* Get the extensions for the supplied Pronom ID: */
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
@@ -115,7 +117,8 @@ public final class MetadataExtractor implements Characterise {
      * {@inheritDoc}
      * @see eu.planets_project.services.PlanetsService#describe()
      */
-    public ServiceDescription describe() {
+    @Override
+	public ServiceDescription describe() {
         /*
          * Gather all supported input formats using the tech reg and the types enum:
          */

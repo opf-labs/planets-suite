@@ -8,9 +8,28 @@
     </parent>
     <groupId>org.opf.suite</groupId>
     <artifactId>framework-techreg</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>war</packaging>
     <name>Planets Framework - Technology Registry</name>
     <dependencies>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-core</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>org.richfaces.ui</groupId>
+				<artifactId>richfaces-ui</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>org.richfaces.framework</groupId>
+				<artifactId>richfaces-impl</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>org.opf.suite</groupId>
+				<artifactId>core-techreg</artifactId>
+				<version>1.1.0</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
     </dependencies>
 </project>

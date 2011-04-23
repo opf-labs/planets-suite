@@ -64,6 +64,7 @@ public final class JavaDigest implements Fixity, Serializable {
 	/**
 	 * @see eu.planets_project.services.fixity.Fixity#calculateChecksum(DigitalObject, List)
 	 */
+	@Override
 	public FixityResult calculateChecksum(DigitalObject digitalObject,
 			List<Parameter> parameters) {
 
@@ -126,6 +127,7 @@ public final class JavaDigest implements Fixity, Serializable {
 	/**
 	 * @see eu.planets_project.services.PlanetsService#describe()
 	 */
+	@Override
 	public ServiceDescription describe() {
 		// Call the method from the utility class
 		return JavaDigestDescription.getDescription();
