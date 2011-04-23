@@ -81,7 +81,6 @@
 		<module>core-services</module>
 		<module>core-techreg</module>
 		<module>core-utils</module>
-		<module>external-zip64file</module>
 		<module>framework-admin</module>
 		<module>framework-generic</module>
 		<module>framework-selfreg</module>
@@ -89,7 +88,6 @@
 		<module>framework-storage</module>
 		<module>framework-techreg</module>
 		<module>framework-users</module>
-		<module>framework-wdt</module>
 		<module>framework-wee</module>
 		<module>services-droid</module>
 		<module>services-javadigest</module>
@@ -102,6 +100,7 @@
 		<module>services-pdfbox</module>
 		<module>services-sanselan</module>
 		<module>services-simple</module>
+		<module>framework-wdt</module>
 		<module>webapp-testbed</module>
 		<module>webapp-plato</module>
 	</modules>
@@ -374,7 +373,12 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+	<distributionManagement>
+		<repository>
+			<id>opf-mvn-snapshots</id>
+			<url>file:../opf-mvn-repo/snapshots</url>
+		</repository>
+	</distributionManagement>
 	<properties>
 		<jdkLevel>1.6</jdkLevel>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
