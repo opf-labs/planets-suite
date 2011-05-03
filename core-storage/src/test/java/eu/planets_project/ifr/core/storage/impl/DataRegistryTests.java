@@ -34,9 +34,6 @@ import eu.planets_project.services.utils.test.TestFile;
  */
 public class DataRegistryTests {
 
-	private static TestFile[] testFiles = 
-		new TestFile[]{TestFile.HTML, TestFile.PDF, TestFile.TXT, TestFile.XML};
-	
 	// The DataRegistry to test
 	private static DataRegistry dataReg = null;
 
@@ -199,7 +196,7 @@ public class DataRegistryTests {
 	private void testStoreAsNew(URI uri, DigitalObjectManager dom) {
 		// if it's not writeable skip the tests
 		if (!dom.isWritable(null)) return; 
-		for (TestFile file : DataRegistryTests.testFiles) {
+		for (TestFile file : TestFile.values()) {
 			try {
 				File testFile = new File(file.getLocation());
 				URI purl = testFile.toURI();

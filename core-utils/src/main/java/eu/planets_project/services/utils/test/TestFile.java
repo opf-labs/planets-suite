@@ -46,14 +46,14 @@ public enum TestFile {
      * @return the location of the test file
      */
     public String getLocation() {
-        return location;
+        return this.location;
     }
 
     /**
      * @return the expected pronom IDs for the file
      */
     public Set<URI> getTypes() {
-        return expected;
+        return this.expected;
     }
 
     /**

@@ -20,4 +20,4 @@ import org.junit.runners.Suite;
 
 @RunWith( Suite.class )
 @Suite.SuiteClasses( { ZipUtilsTest.class } )
-public class AllUtilsTestsuite {}
+public class AllUtilsTestSuite {}

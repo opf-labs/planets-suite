@@ -45,7 +45,7 @@
 						</eu.planets-project.config.dir>
 					</systemPropertyVariables>
 					<includes>
-						<include>**/*Testsuite.java</include>
+						<include>**/*Suite.java</include>
 						<!-- The above duplicates the ant build behaviour, but perhaps we should 
 							use this instead: <include>**/*Tests.java</include> <include>**/*Test.java</include> -->
 					</includes>
@@ -81,6 +81,7 @@
 		<module>core-services</module>
 		<module>core-techreg</module>
 		<module>core-utils</module>
+		<module>core-storage</module>
 		<module>framework-admin</module>
 		<module>framework-generic</module>
 		<module>framework-selfreg</module>

@@ -33,7 +33,7 @@ public interface WftRegistryService {
 
     /**
      * Registers a new WorkflowTemplate
-     * @param QWorkflowTemplateName the fully qualified name of the submitted class. e.g. 'eu.planet_project.ifr.core.Template1.java'
+     * @param qWorkflowTemplateName the fully qualified name of the submitted class. e.g. 'eu.planet_project.ifr.core.Template1.java'
      * @param javaBinary a byte[] of the java class which will be stored in the registry
      * @result
      * @throws PlanetsException if e.g. no valid fully qualified java name, not valid against interface, etc.
@@ -70,7 +70,7 @@ public interface WftRegistryService {
     /**
      * Returns the source (Java Workflow Template .java file) for a registered
      * template
-     * @param QWorkflowTemplateName the fully qualified name of a registered class. e.g. 'eu.planet_project.ifr.core.Template1.java'
+     * @param qWorkflowTemplateName the fully qualified name of a registered class. e.g. 'eu.planet_project.ifr.core.Template1.java'
      * @return
      * @throws PlanetsException
      */

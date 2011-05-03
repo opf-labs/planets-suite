@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -43,53 +44,54 @@ public final class ContentTests {
     private String content;
 
     @Before
-    public void init() throws IOException {
-        file = new File(LOCATION);
-        url = file.toURI().toURL();
-        stream = url.openStream();
-        byteArray = IOUtils.toByteArray(new FileInputStream(file));
-        content = FileUtils.readFileToString(file);
+    public void init() throws IOException, URISyntaxException {
+    	this.url=ClassLoader.getSystemResource(LOCATION);
+        this.file = new File(this.url.toURI());
+        this.stream = this.url.openStream();
+        this.byteArray = IOUtils.toByteArray(new FileInputStream(this.file));
+        this.content = read(new FileInputStream(this.file));
     }
 
     @Test
     public void byReferenceToFile() {
-        test(Content.byReference(file));
+        test(Content.byReference(this.file));
     }
     
     @Test
     public void byReferenceToInputStream() {
-        test(Content.byReference(stream));
+        test(Content.byReference(this.stream));
     }
     
     @Test
     public void byReferenceToUrl() {
-        test(Content.byReference(url));
+        test(Content.byReference(this.url));
     }
 
     @Test
     public void byValueOfFile() {
-        test(Content.byValue(file));
+        test(Content.byValue(this.file));
     }
     
     @Test
     public void byValueOfInputStream() {
-        test(Content.byValue(stream));
+        test(Content.byValue(this.stream));
     }
     
     @Test
     public void byValueOfByteArray() {
-        test(Content.byValue(byteArray));
+        test(Content.byValue(this.byteArray));
     }
 
     private void test(DigitalObjectContent object) {
-        Assert.assertEquals("Original content and wrapped content should be equal", content,
-                read(object.getInputStream()));
+    	System.out.println(this.content);
+    	System.out.println(read(object.getInputStream()));
+        Assert.assertTrue("Original content and wrapped content should be equal", this.content.equals(read(object.getInputStream())));
     }
 
     @Test
     public void equals() {
-        DigitalObjectContent c1 = Content.byReference(url);
-        DigitalObjectContent c2 = Content.byReference(url);
+        DigitalObjectContent c1 = Content.byReference(this.url);
+        DigitalObjectContent c2 = Content.byReference(this.url);
         assertEquals("Equal object don't equal;", c1, c2);
         assertEquals("Equal objects have different string representations;", c1.toString(), c2
                 .toString());
@@ -99,7 +101,7 @@ public final class ContentTests {
     @Test
     public void hashcode() {
         Set<DigitalObjectContent> set = new HashSet<DigitalObjectContent>(Arrays.asList(Content
-                .byReference(url), Content.byReference(url), Content.byReference(url)));
+                .byReference(this.url), Content.byReference(this.url), Content.byReference(this.url)));
         assertEquals("Set contains duplicates;", 1, set.size());
     }
 

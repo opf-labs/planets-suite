@@ -33,11 +33,21 @@ public class ServiceConfigTest {
 	/**
 	 * Base location for all configuration values. This is for TEST ONLY
 	 */
-	private static final String baseDir = System.getProperty("app.dir")+"/src/test/resources/config";
+	private static final String BASE_DIR;
+	static {
+		try {
+			File file = new File(ClassLoader.getSystemResource("config").toURI());
+			BASE_DIR = file.getAbsolutePath();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			throw new IllegalStateException(e);
+		}
+	}
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		//System.setProperty(ServiceConfig.BASE_DIR_PROPERTY, baseDir);
+		System.out.println(BASE_DIR);
+		System.setProperty(ServiceConfig.BASE_DIR_PROPERTY, BASE_DIR);
 	}
 
 	@Before
@@ -47,7 +57,7 @@ public class ServiceConfigTest {
 	@Test
 	public void testGetConfigurationClassCheckPropsExist() throws ConfigurationException {
 		Configuration config = ServiceConfig.getConfiguration(getClass());
-		assertNotNull("Expected to find properties in: " + baseDir + File.separatorChar + getClass().getName() + ".properties", config);
+		assertNotNull("Expected to find properties in: " + BASE_DIR + File.separatorChar + getClass().getName() + ".properties", config);
 	}
 
 	@Test(expected=ConfigurationException.class)

@@ -53,10 +53,10 @@ import eu.planets_project.services.utils.DigitalObjectUtils;
  */
 public class JcrDigitalObjectManagerTests {
 	// The Source dir for testing 
-	private static final String TEST_DATA_PATH = AllStorageSuite.TEST_DATA_BASE + "jcr/";
+	private static final String TEST_DATA_PATH = AllStorageSuite.TEST_DATA_BASE + "/jcr/";
 	private static final String TEST_CONTENT = TEST_DATA_PATH + "test.jpg";
 	private static final String TEST_CONTENT_2 = TEST_DATA_PATH + "test2.gif";
-	private static final String JCR_BASE_PATH = AllStorageSuite.RESOURCE_BASE + "jcr/";
+	private static final String JCR_BASE_PATH = AllStorageSuite.RESOURCE_BASE + "/jcr/";
 	private static final String JCR_DATA_PATH = JCR_BASE_PATH + "data/"; 	
 	private static final String JCR_CONFIG_PATH = JCR_BASE_PATH + "config/" + 
 	"planets-test-repository.xml";	
@@ -108,10 +108,13 @@ public class JcrDigitalObjectManagerTests {
 	.unit("unit2")
 	.type("type2")
 	.build();
-	private Event event1 = new Event("summary1", "datetime1", 10.23d, agent, propList);
-	private Event event2 = new Event("summary2", "datetime2", 22.45d, agent, propList);
+	private Event event1 = new Event("summary1", "datetime1", 10.23d, this.agent, this.propList);
+	private Event event2 = new Event("summary2", "datetime2", 22.45d, this.agent, this.propList);
 
 	private static File file = new File(TEST_CONTENT);
+	static {
+		System.out.println("TEST_CONTENT" + file.exists());
+	}
 	private static DigitalObjectContent c1 = Content.byValue(file);
 	private static File file2 = new File(TEST_CONTENT_2);
 	private static DigitalObjectContent c2 = Content.byValue(file2);
@@ -168,8 +171,8 @@ public class JcrDigitalObjectManagerTests {
 	public void startRepository() throws Exception, Throwable {
 		System.out.println("startRepository()");
 		try {
-			if (keepAliveSession == null) {
-				keepAliveSession = repository.login();
+			if (this.keepAliveSession == null) {
+				this.keepAliveSession = repository.login();
 			}
 			prepareDataForDigitalObject();
 		} catch (RuntimeException e) {
@@ -192,11 +195,11 @@ public class JcrDigitalObjectManagerTests {
 
 	@After
 	public void shutdownRepository() throws Exception {
-		if (keepAliveSession != null) {
+		if (this.keepAliveSession != null) {
 			try {
-				keepAliveSession.logout();
+				this.keepAliveSession.logout();
 			} finally {
-				keepAliveSession = null;
+				this.keepAliveSession = null;
 			}
 		}
 	}
@@ -206,12 +209,12 @@ public class JcrDigitalObjectManagerTests {
 	 */
 	public void prepareDataForDigitalObject()
 	{
-		metaList[0] = META1;
-		metaList[1] = META2;
-		propList.add(prop1);
-		propList.add(prop2);
-		eventList[0] = event1;
-		eventList[1] = event2;		
+		this.metaList[0] = this.META1;
+		this.metaList[1] = this.META2;
+		this.propList.add(this.prop1);
+		this.propList.add(this.prop2);
+		this.eventList[0] = this.event1;
+		this.eventList[1] = this.event2;		
 	}
 
 	/**
@@ -225,8 +228,8 @@ public class JcrDigitalObjectManagerTests {
 		.permanentUri(file.toURI())
 		.manifestationOf(DOFORMAT)
 		.format(DOFORMAT)
-		.metadata(metaList)
-		.events(eventList)
+		.metadata(this.metaList)
+		.events(this.eventList)
 		.build();	
 	}
 
@@ -239,7 +242,7 @@ public class JcrDigitalObjectManagerTests {
 		// digital object is null
 		try {
 			System.out.println("Storing PERMANENT_URI_NOT_EXIST");
-			retObject = dom.store(PERMANENT_URI_NOT_EXIST, null, true);		
+			retObject = this.dom.store(PERMANENT_URI_NOT_EXIST, null, true);		
 			fail("Expected DigitalObjectNotStoredException");
 		} catch (DigitalObjectNotStoredException e) {
 			System.out.println("Caught expected DigitalObjectNotStoredException");
@@ -250,7 +253,7 @@ public class JcrDigitalObjectManagerTests {
 		// permanent URI does not exist in repository
 		try {
 			System.out.println("Retrieving PERMANENT_URI_NOT_EXIST");
-			retObject = dom.retrieve(PERMANENT_URI_NOT_EXIST, true);
+			retObject = this.dom.retrieve(PERMANENT_URI_NOT_EXIST, true);
 			fail("Expected DigitalObjectNotFoundException");
 		} catch (DigitalObjectNotFoundException e) {
 			System.out.println("Caught expected DigitalObjectNotFoundException");
@@ -260,7 +263,7 @@ public class JcrDigitalObjectManagerTests {
 		// permanent URI is null
 		try {
 			System.out.println("Retrieving an object for a null URI");
-			retObject = dom.retrieve(null, true);
+			retObject = this.dom.retrieve(null, true);
 			fail("Expected DigitalObjectNotFoundException");
 		} catch (DigitalObjectNotFoundException e) {
 			System.out.println("Caught expected DigitalObjectNotFoundException");
@@ -279,11 +282,11 @@ public class JcrDigitalObjectManagerTests {
 		// store object with content
 		System.out.println("Storing objects");
 		DigitalObject resContentByValueObject = 
-			dom.store(PERMANENT_URI_PATH, contentByValueObject, true);
+			this.dom.store(PERMANENT_URI_PATH, contentByValueObject, true);
 		DigitalObject retObjectWithContent = 
-			dom.retrieve(resContentByValueObject.getPermanentUri(), true);
+			this.dom.retrieve(resContentByValueObject.getPermanentUri(), true);
 		DigitalObject retObjectWithoutContent = 
-			dom.retrieve(resContentByValueObject.getPermanentUri(), false);
+			this.dom.retrieve(resContentByValueObject.getPermanentUri(), false);
 
 		// this is a content resolver link
 		System.out.println("Creating resolver link");
@@ -350,7 +353,7 @@ public class JcrDigitalObjectManagerTests {
 
 		// store object without content
 		resContentByValueObject =
-			dom.store(PERMANENT_URI_PATH, contentByValueObject, false);
+			this.dom.store(PERMANENT_URI_PATH, contentByValueObject, false);
 
 		// this is a content resolver link
 		resolverLink = Content.byReference(
@@ -363,14 +366,14 @@ public class JcrDigitalObjectManagerTests {
 
 		try {
 			retObjectWithContent = 
-				dom.retrieve(resContentByValueObject.getPermanentUri(), true);
+				this.dom.retrieve(resContentByValueObject.getPermanentUri(), true);
 			fail("retrieve content for object stored without content should throw " +
 			"DigialObjectNotFoundException");
 		} catch(DigitalObjectNotFoundException e) {
 			/*expected*/
 		}
 		retObjectWithoutContent = 
-			dom.retrieve(resContentByValueObject.getPermanentUri(), false);
+			this.dom.retrieve(resContentByValueObject.getPermanentUri(), false);
 
 		// equal because retObjectWithoutContent content is a content by reference pointing to 
 		// content resolver
@@ -407,11 +410,11 @@ public class JcrDigitalObjectManagerTests {
 
 		// store object with content
 		DigitalObject resContentByRefObject = 
-			dom.store(PERMANENT_URI_PATH, contentByRefObject, true);		
+			this.dom.store(PERMANENT_URI_PATH, contentByRefObject, true);		
 		DigitalObject retObjectWithContent = 
-			dom.retrieve(resContentByRefObject.getPermanentUri(), true);
+			this.dom.retrieve(resContentByRefObject.getPermanentUri(), true);
 		DigitalObject retObjectWithoutContent = 
-			dom.retrieve(resContentByRefObject.getPermanentUri(), false);
+			this.dom.retrieve(resContentByRefObject.getPermanentUri(), false);
 
 		// The permanent URI is generated during the processing of store method. 
 		// We need an injection of the generated permanent URI in object to 
@@ -432,17 +435,17 @@ public class JcrDigitalObjectManagerTests {
 
 		// without storing and retrieving of content
 		resContentByRefObject = 
-			dom.store(PERMANENT_URI_PATH, contentByRefObject, false);		
+			this.dom.store(PERMANENT_URI_PATH, contentByRefObject, false);		
 		try {
 			retObjectWithContent = 
-				dom.retrieve(resContentByRefObject.getPermanentUri(), true);
+				this.dom.retrieve(resContentByRefObject.getPermanentUri(), true);
 			fail("retrieve content for object stored without content should throw " +
 			"DigialObjectNotFoundException");
 		} catch(DigitalObjectNotFoundException e) {
 			/*expected*/
 		}
 		retObjectWithoutContent = 
-			dom.retrieve(resContentByRefObject.getPermanentUri(), false);
+			this.dom.retrieve(resContentByRefObject.getPermanentUri(), false);
 
 		assertNotNull(retObjectWithoutContent);
 		assertFalse(contentByRefObject.equals(retObjectWithoutContent));
@@ -458,8 +461,8 @@ public class JcrDigitalObjectManagerTests {
 		DigitalObject object = createDigitalObject();
 
 		// store two equal digital objects
-		DigitalObject resDo = dom.store(PERMANENT_URI_PATH, object, true);
-		DigitalObject resDo2 = dom.store(PERMANENT_URI_PATH, object, true);
+		DigitalObject resDo = this.dom.store(PERMANENT_URI_PATH, object, true);
+		DigitalObject resDo2 = this.dom.store(PERMANENT_URI_PATH, object, true);
 
 		assertFalse(resDo.getPermanentUri().equals(resDo2.getPermanentUri()));		
 	}
@@ -473,7 +476,7 @@ public class JcrDigitalObjectManagerTests {
 		DigitalObject object = createDigitalObject();
 
 		// store and retrieve content
-		DigitalObject resDo = dom.store(PERMANENT_URI_PATH, object, true);
+		DigitalObject resDo = this.dom.store(PERMANENT_URI_PATH, object, true);
 
 		// this is a content resolver link
 		DigitalObjectContent resolverLink = Content.byReference(
@@ -502,7 +505,7 @@ public class JcrDigitalObjectManagerTests {
 		assertEquals(resDo, expectedStoreDigitalObject);
 
 		DigitalObject retObject = 
-			dom.retrieve(resDo.getPermanentUri(), true);
+			this.dom.retrieve(resDo.getPermanentUri(), true);
 
 		// this is a digital object we expect after retrieve method with includeContent = true.
 		// we need an injection of the generated permanent URI in object to 
@@ -525,11 +528,11 @@ public class JcrDigitalObjectManagerTests {
 		// should be equal		
 		assertEquals(retObject, expectedRetrieveTrueDigitalObject);	
 
-		DigitalObjectContent c2 = dom.retrieveContent(resDo.getPermanentUri());
+		DigitalObjectContent c2 = this.dom.retrieveContent(resDo.getPermanentUri());
 		assertTrue(c2.length()>0);		
 		assertEquals(c1, c2);	
 
-		InputStream contentStream=dom.retrieveContentAsStream(resDo.getPermanentUri());		
+		InputStream contentStream=this.dom.retrieveContentAsStream(resDo.getPermanentUri());		
 		try {
 			assertNotNull(contentStream);
 			assertTrue(contentStream.available()>0);
@@ -550,7 +553,7 @@ public class JcrDigitalObjectManagerTests {
 			DigitalObject object = createDigitalObject();
 			object = new DigitalObject.Builder(object).title("mytitle_" + i).build();
 			// store digital object in JCR repository
-			DigitalObject resDigitalObject = dom.store(PERMANENT_URI_PATH, object, true);
+			DigitalObject resDigitalObject = this.dom.store(PERMANENT_URI_PATH, object, true);
 
 			// this is a content resolver link
 			DigitalObjectContent resolverLink = Content.byReference(
@@ -567,7 +570,7 @@ public class JcrDigitalObjectManagerTests {
 		for (int i = 0; i < MAX_COUNT; i++)
 		{
 			//  retrieve digital object from JCR repository
-			DigitalObject retObject = dom.retrieve(digitalObjectList.get(i).getPermanentUri(), true);
+			DigitalObject retObject = this.dom.retrieve(digitalObjectList.get(i).getPermanentUri(), true);
 
 			// the content of the retObject object after retrieve method should be 
 			// an initial content c1
@@ -597,10 +600,10 @@ public class JcrDigitalObjectManagerTests {
 		// use this object to test storing digital object with content
 		DigitalObject object = createDigitalObject();
 		// store and retrieve content
-		DigitalObject resDo = dom.store(PERMANENT_URI_PATH, object, true);
+		DigitalObject resDo = this.dom.store(PERMANENT_URI_PATH, object, true);
 
 		// change digital object parameters
-		Event addEvent = new Event(NEW_SUMMARY, "datetime3", 12.35d, agent, propList);
+		Event addEvent = new Event(NEW_SUMMARY, "datetime3", 12.35d, this.agent, this.propList);
 
 		// this is a digital object we expect after store method.
 		// we have to add the permanent URI and content after store method to check for equality
@@ -617,7 +620,7 @@ public class JcrDigitalObjectManagerTests {
 		// try update existing digital object with parameters from new digital object that is null
 		DigitalObject retObject = null;
 		try {
-			retObject = dom.updateDigitalObject(null, true);
+			retObject = this.dom.updateDigitalObject(null, true);
 			fail("Expected DigitalObjectUpdateException");
 		} catch (DigitalObjectUpdateException e) {
 			System.out.println("Catch expected DigitalObjectUpdateException");
@@ -626,13 +629,13 @@ public class JcrDigitalObjectManagerTests {
 
 		// update existing digital object with parameters from new digital object
 		try {
-			retObject = dom.updateDigitalObject(expectedStoreDigitalObject, true);
+			retObject = this.dom.updateDigitalObject(expectedStoreDigitalObject, true);
 		} catch (DigitalObjectUpdateException e) {
 			System.out.println("Catch DigitalObjectUpdateException");
 		}		
 
 		// retrieve updated digital object updDo and compare it with expectedStoreDigitalObject
-		DigitalObject updDo = dom.retrieve(expectedStoreDigitalObject.getPermanentUri(), true);
+		DigitalObject updDo = this.dom.retrieve(expectedStoreDigitalObject.getPermanentUri(), true);
 		assertEquals(expectedStoreDigitalObject, updDo);		
 
 		String initSummary = "";
@@ -690,7 +693,7 @@ public class JcrDigitalObjectManagerTests {
 		// update existing digital object with parameters from new digital object
 		DigitalObject cdoRes = null;
 		try {
-			cdoRes = dom.updateDigitalObject(cdo, true);
+			cdoRes = this.dom.updateDigitalObject(cdo, true);
 		} catch (DigitalObjectUpdateException e) {
 			System.out.println("Catch DigitalObjectUpdateException");
 		}		
@@ -700,7 +703,7 @@ public class JcrDigitalObjectManagerTests {
 		assertTrue(!cdoRes.equals(expectedStoreDigitalObject));
 
 		// retrieve updated digital object updDo and compare it with cdo
-		updDo = dom.retrieve(cdo.getPermanentUri(), true);
+		updDo = this.dom.retrieve(cdo.getPermanentUri(), true);
 		assertEquals(cdo, updDo);	
 
 		// test update without content
@@ -708,7 +711,7 @@ public class JcrDigitalObjectManagerTests {
 		DigitalObject digitalObject = new DigitalObject.Builder(cdo).content(c1).build();
 		digitalObject = new DigitalObject.Builder(digitalObject).title(DO_TITLE).build();
 
-		DigitalObject retObjectWithoutContent = dom.store(PERMANENT_URI_PATH, digitalObject, false);
+		DigitalObject retObjectWithoutContent = this.dom.store(PERMANENT_URI_PATH, digitalObject, false);
 
 		// create new digital object with new title
 		DigitalObject digitalObjectWithNewTitle = new DigitalObject.Builder(cdo)
@@ -726,7 +729,7 @@ public class JcrDigitalObjectManagerTests {
 
 		// update existing digital object with parameters from new digital object
 		try {
-			resultObjectWithoutContent = dom.updateDigitalObject(digitalObjectWithNewTitle, false);
+			resultObjectWithoutContent = this.dom.updateDigitalObject(digitalObjectWithNewTitle, false);
 		} catch (DigitalObjectUpdateException e) {
 			System.out.println("Catch DigitalObjectUpdateException");
 		}		
@@ -738,7 +741,7 @@ public class JcrDigitalObjectManagerTests {
 		// retrieve updated digital object updObjectWithoutContent and compare it 
 		// with digitalObjectWithNewTitle
 		DigitalObject updObjectWithoutContent = 
-			dom.retrieve(digitalObjectWithNewTitle.getPermanentUri(), false);
+			this.dom.retrieve(digitalObjectWithNewTitle.getPermanentUri(), false);
 
 		// change the content to compare for equality because content points to content resolver
 		// change the title to compare for equality because title was updated
@@ -762,14 +765,14 @@ public class JcrDigitalObjectManagerTests {
 		System.out.println("testList()");
 		DigitalObject object = createDigitalObject();		
 		// store digital objects in JCR repository
-		dom.store(PERMANENT_URI_PATH, object, true);
-		dom.store(PERMANENT_URI_PATH_2, object, true);
-		dom.store(PERMANENT_URI_PATH_3, object, true);
+		this.dom.store(PERMANENT_URI_PATH, object, true);
+		this.dom.store(PERMANENT_URI_PATH_2, object, true);
+		this.dom.store(PERMANENT_URI_PATH_3, object, true);
 
 		// retrieve digital objects from JCR repository and return 
 		// permanent URIs list
 		List<URI> listUri = null;
-		listUri = dom.list(URI.create(DOJCRManager.PERMANENT_URI));
+		listUri = this.dom.list(URI.create(DOJCRManager.PERMANENT_URI));
 
 		assertNotNull("Expecting listUri not to be null", listUri);
 		assertTrue("Expecting listUri.size() > 2", listUri.size() > 2);
@@ -792,7 +795,7 @@ public class JcrDigitalObjectManagerTests {
 		// retrieve digital objects from JCR repository and return
 		// digital objects list
 		List<DigitalObject> listDO = null;
-		listDO = dom.listDigitalObject(URI.create(DOJCRManager.PERMANENT_URI));
+		listDO = this.dom.listDigitalObject(URI.create(DOJCRManager.PERMANENT_URI));
 
 		assertNotNull("Expecting listDO not to be null", listDO);
 		assertTrue("Expecting listDO.size() > 2", listDO.size() > 2);
@@ -820,12 +823,12 @@ public class JcrDigitalObjectManagerTests {
 		System.out.println("testRemoveDigitalObject()");
 		DigitalObject object = createDigitalObject();		
 		// store digital objects in JCR repository
-		DigitalObject resDo = dom.store(PERMANENT_URI_PATH, object, true);
+		DigitalObject resDo = this.dom.store(PERMANENT_URI_PATH, object, true);
 
 		// remove digital object
 		try {
 			assertEquals("Expecting dom.remove() to return " + DOJCRConstants.RESULT_OK,
-						 dom.remove(resDo.getPermanentUri()),
+						 this.dom.remove(resDo.getPermanentUri()),
 						 DOJCRConstants.RESULT_OK);
 		} catch (DigitalObjectNotRemovedException e) {
 			System.out.println("Caught DigitalObjectNotRemovedException");
@@ -835,7 +838,7 @@ public class JcrDigitalObjectManagerTests {
 		// permanent URI should not exist in repository after remove method
 		DigitalObject retObject = null;
 		try {
-			retObject = dom.retrieve(resDo.getPermanentUri(), true);
+			retObject = this.dom.retrieve(resDo.getPermanentUri(), true);
 			fail("Expected DigitalObjectNotFoundException");
 		} catch (DigitalObjectNotFoundException e) {
 			System.out.println("Caught expected DigitalObjectNotFoundException");
@@ -845,7 +848,7 @@ public class JcrDigitalObjectManagerTests {
 		// remove content for all nodes
 		try {
 			assertEquals("Expecting domRemoveAll() to equal " + DOJCRConstants.RESULT_OK,
-						 dom.removeAll(), DOJCRConstants.RESULT_OK);
+						 this.dom.removeAll(), DOJCRConstants.RESULT_OK);
 		} catch (DigitalObjectNotRemovedException e) {
 			System.out.println("Caught DigitalObjectNotRemovedException");
 			fail("DigitalObjectNotRemovedException");
@@ -853,7 +856,7 @@ public class JcrDigitalObjectManagerTests {
 
 		// retrieve digital objects URIs from JCR repository
 		List<URI> listUri = null;
-		listUri = dom.list(URI.create(DOJCRManager.PERMANENT_URI));
+		listUri = this.dom.list(URI.create(DOJCRManager.PERMANENT_URI));
 
 		// no digital object more in repository after removeAll method calling 
 		assertTrue("Expecting listURI.size equal to zero", listUri.size() == 0);

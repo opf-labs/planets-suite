@@ -24,6 +24,7 @@ import javax.ejb.Stateless;
 //import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.common.conf.Configuration;
+import eu.planets_project.ifr.core.common.conf.ConfigurationException;
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.common.conf.ServiceConfig;
 import eu.planets_project.ifr.core.storage.api.query.Query;
@@ -484,7 +485,12 @@ class DataRegistryImpl implements DataRegistry {
     private static boolean setUpDefaultFolders() {
 
     	boolean defaultsOK = false;
-    	Configuration conf = ServiceConfig.getConfiguration("DataRegistry");
+    	Configuration conf;
+    	try {
+        	conf = ServiceConfig.getConfiguration("DataRegistry");
+    	} catch (ConfigurationException e) {
+    		conf = ServiceConfig.getConfiguration(ClassLoader.getSystemResourceAsStream("eu/planets_project/ifr/core/storage/api/DataRegistry.properties"));
+    	}
 
     	try {
     		DataRegistryImpl.defaultDomDirName = conf.getString(DataRegistryImpl.DEFAULT_CONFIG_KEY);

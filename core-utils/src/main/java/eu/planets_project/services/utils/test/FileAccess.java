@@ -11,6 +11,7 @@
 package eu.planets_project.services.utils.test;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,17 +23,23 @@ import org.apache.commons.io.FilenameUtils;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public enum FileAccess {
-    INSTANCE;
+	INSTANCE;
     private HashMap<String, File> map;
 
     private FileAccess() {
-        File root = new File("tests/test-files");
+        File root;
+		try {
+			root = new File(ClassLoader.getSystemResource("test-files").toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			throw new IllegalStateException(e);
+		}
         map = new HashMap<String, File>();
         index(root, map);
         System.out.println("Indexed test files for " + map.keySet().size()
                 + " extensions");
     }
-
+    
     /**
      * @param extension The extension of the desired file
      * @return A random file from the test files pool with the given extension,
