@@ -2,11 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.opf.suite</groupId>
+			<groupId>org.opf_labs.suite</groupId>
 		<artifactId>parent</artifactId>
 		<version>1.1.0</version>
 	</parent>
-	<groupId>org.opf.suite</groupId>
+			<groupId>org.opf_labs.suite</groupId>
 	<artifactId>framework-wee</artifactId>
 	<version>1.1.0</version>
 	<packaging>war</packaging>
@@ -33,12 +33,12 @@
 	</profiles>
 	<dependencies>
 		<dependency>
-			<groupId>org.opf.suite</groupId>
+			<groupId>org.opf_labs.suite</groupId>
 			<artifactId>core-services</artifactId>
 			<version>1.1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.opf.suite</groupId>
+			<groupId>org.opf_labs.suite</groupId>
 			<artifactId>core-utils</artifactId>
 			<version>1.1.0</version>
 		</dependency>
@@ -51,7 +51,7 @@
 			<artifactId>jdom</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.opf.suite</groupId>
+			<groupId>org.opf_labs.suite</groupId>
 			<artifactId>core-storage</artifactId>
 			<version>1.1.0</version>
 			<type>jar</type>

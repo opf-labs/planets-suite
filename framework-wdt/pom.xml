@@ -2,18 +2,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.opf.suite</groupId>
+		<groupId>org.opf_labs.suite</groupId>
 		<artifactId>parent</artifactId>
 		<version>1.1.0</version>
 	</parent>
-	<groupId>org.opf.suite</groupId>
+	<groupId>org.opf_labs.suite</groupId>
 	<artifactId>framework-wdt</artifactId>
 	<version>1.1.0</version>
 	<packaging>war</packaging>
 	<name>Planets Framework - WDT</name>
 	<dependencies>
 		<dependency>
-			<groupId>org.opf.suite</groupId>
+			<groupId>org.opf_labs.suite</groupId>
 			<artifactId>core-utils</artifactId>
 			<version>1.1.0</version>
 		</dependency>
@@ -28,43 +28,43 @@
 			<type>pom</type>
 			<scope>compile</scope>
 		</dependency>
-			<dependency>
-				<groupId>org.apache.myfaces.tomahawk</groupId>
-				<artifactId>tomahawk</artifactId>
-				<version>1.1.10</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opf.suite</groupId>
-				<artifactId>framework-servreg</artifactId>
-				<version>1.1.0</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>net.java.dev.jets3t</groupId>
-				<artifactId>jets3t</artifactId>
-				<version>0.7.4</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.opf.suite</groupId>
-				<artifactId>framework-wee</artifactId>
-				<version>1.1.0</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.opf.suite</groupId>
-				<artifactId>core-storage</artifactId>
-				<version>1.1.0</version>
-				<type>jar</type>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.opf.suite</groupId>
-				<artifactId>framework-storage</artifactId>
-				<version>1.1.0</version>
-				<type>war</type>
-				<scope>compile</scope>
-			</dependency>
+		<dependency>
+			<groupId>org.apache.myfaces.tomahawk</groupId>
+			<artifactId>tomahawk</artifactId>
+			<version>1.1.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>framework-servreg</artifactId>
+			<version>1.1.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jets3t</groupId>
+			<artifactId>jets3t</artifactId>
+			<version>0.7.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>framework-wee</artifactId>
+			<version>1.1.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>core-storage</artifactId>
+			<version>1.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>framework-storage</artifactId>
+			<version>1.1.0</version>
+			<type>war</type>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 </project>
