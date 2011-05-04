@@ -23,6 +23,13 @@
             <version>1.1.0</version>
         </dependency>
         <dependency>
+			<groupId>org.opf_labs.suite</groupId>
+        	<artifactId>core-storage</artifactId>
+        	<version>1.1.0</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.richfaces.framework</groupId>
             <artifactId>richfaces-api</artifactId>
         </dependency>
@@ -55,23 +62,12 @@
             <artifactId>jcr</artifactId>
         </dependency>
         <dependency>
-            <groupId>se.kb.oai</groupId>
-            <artifactId>oai4j</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.jackrabbit</groupId>
             <artifactId>jackrabbit-core</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
-        </dependency>
-        <dependency>
-			<groupId>org.opf_labs.suite</groupId>
-        	<artifactId>core-storage</artifactId>
-        	<version>1.1.0</version>
-        	<type>jar</type>
-        	<scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

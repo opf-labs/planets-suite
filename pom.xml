@@ -104,6 +104,8 @@
 		<module>framework-wdt</module>
 		<module>webapp-testbed</module>
 		<module>webapp-plato</module>
+		<module>core-servreg</module>
+		<module>core-wee</module>
 	</modules>
 	<repositories>
 		<repository>

@@ -18,6 +18,24 @@
 			<version>1.1.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>core-servreg</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>core-wee</artifactId>
+			<version>1.1.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>core-storage</artifactId>
+			<version>1.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom</artifactId>
 		</dependency>
@@ -34,36 +52,10 @@
 			<version>1.1.10</version>
 		</dependency>
 		<dependency>
-			<groupId>org.opf_labs.suite</groupId>
-			<artifactId>framework-servreg</artifactId>
-			<version>1.1.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>net.java.dev.jets3t</groupId>
 			<artifactId>jets3t</artifactId>
 			<version>0.7.4</version>
 			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.opf_labs.suite</groupId>
-			<artifactId>framework-wee</artifactId>
-			<version>1.1.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.opf_labs.suite</groupId>
-			<artifactId>core-storage</artifactId>
-			<version>1.1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.opf_labs.suite</groupId>
-			<artifactId>framework-storage</artifactId>
-			<version>1.1.0</version>
-			<type>war</type>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

@@ -42,6 +42,10 @@
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>se.kb.oai</groupId>
+            <artifactId>oai4j</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>

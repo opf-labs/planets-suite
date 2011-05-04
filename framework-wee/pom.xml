@@ -34,28 +34,17 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opf_labs.suite</groupId>
-			<artifactId>core-services</artifactId>
+			<artifactId>core-utils</artifactId>
 			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opf_labs.suite</groupId>
-			<artifactId>core-utils</artifactId>
+			<artifactId>core-wee</artifactId>
 			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.jcr</groupId>
 			<artifactId>jcr</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>jdom</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opf_labs.suite</groupId>
-			<artifactId>core-storage</artifactId>
-			<version>1.1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>
