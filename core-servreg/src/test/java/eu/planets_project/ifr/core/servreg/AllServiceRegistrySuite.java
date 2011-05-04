@@ -11,14 +11,17 @@ import eu.planets_project.ifr.core.servreg.api.ServiceRegistryLocalTests;
 
 /**
  * Suite to run all tests in the registry component.
+ * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( {
+@Suite.SuiteClasses({
 /* Service description registry tests: */
-    RemoteServiceRegistryTests.class, CoreRegistryTests.class, PersistentRegistryTests.class, ServiceRegistryLocalTests.class,
-        ServiceRegistryFactoryRemoteTests.class,
-        /* And the sample usage: */
-        ServiceRegistrySampleUsage.class })
-public class AllServiceRegistrySuite { }
+RemoteServiceRegistryTests.class, CoreRegistryTests.class,
+		PersistentRegistryTests.class, ServiceRegistryLocalTests.class,
+		ServiceRegistryFactoryRemoteTests.class,
+		/* And the sample usage: */
+		ServiceRegistrySampleUsage.class })
+public class AllServiceRegistrySuite {
+}
