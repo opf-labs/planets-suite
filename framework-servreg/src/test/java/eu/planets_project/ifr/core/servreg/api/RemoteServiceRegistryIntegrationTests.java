@@ -21,13 +21,13 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  * @see ServiceDescription
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public class RemoteServiceRegistryTests {
+public class RemoteServiceRegistryIntegrationTests {
     protected static final String WSDL = "/pserv-if-servreg-pserv-if-servreg/RemoteServiceRegistry?wsdl";
     static ServiceRegistry registry;
 
     @BeforeClass
     public static void registryCreation() throws MalformedURLException {
-        registry = new RemoteServiceRegistryTests().createRegistry();
+        registry = new RemoteServiceRegistryIntegrationTests().createRegistry();
         Assert.assertNotNull("Service registry to test must not be null", registry);
     }
 

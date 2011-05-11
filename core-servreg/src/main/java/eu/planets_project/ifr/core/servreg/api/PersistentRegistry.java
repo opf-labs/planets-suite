@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -19,24 +20,29 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 final class PersistentRegistry implements ServiceRegistry {
+    private static Logger LOG = Logger.getLogger(PersistentRegistry.class.getName());
     private static final String SUFFIX = ".xml";
-    private static Logger log = Logger.getLogger(PersistentRegistry.class.getName());
-    private static final String DESCRIPTION_REGISTRY = "service-description-registry";
-    private static final String LOCAL = "IF/servreg/src/main/resources/";
+    private static final String SERVICE_REGISTRY = "service-registry";
+    private static final String LOCAL = "servreg/";
     private static final String SERVER_DEFAULT_CONF = "/server/default/data/";
     private static final String JBOSS_HOME_DIR = "jboss.home.dir";
-    private static String rootLocation = null;
-    private static File root = null;
+    private static URI ROOT_LOCATION = null;
+    private static File ROOT = null;
     /*
      * If running in JBoss we use the deployment directory, else (like when
      * running a unit test) we use the project directory to persist the service
      * descriptions:
      */
     static {
+    	String rootLoc = "";
         String deployed = System.getProperty(JBOSS_HOME_DIR);
-        rootLocation = (deployed != null ? deployed + SERVER_DEFAULT_CONF
-                : LOCAL)
-                + DESCRIPTION_REGISTRY;
+        if (deployed != null) {
+            rootLoc = SERVER_DEFAULT_CONF + SERVICE_REGISTRY;
+        } else {
+        	rootLoc = PersistentRegistry.class.getResource("/").toString() + LOCAL + SERVICE_REGISTRY;
+        }
+        	
+        ROOT_LOCATION = URI.create(rootLoc);
     }
     private ServiceRegistry registry;
     private long updated;
@@ -59,7 +65,7 @@ final class PersistentRegistry implements ServiceRegistry {
      */
     static ServiceRegistry getInstance(final ServiceRegistry registry,
             final String location) {
-        rootLocation = location;
+        ROOT_LOCATION = new File(location).toURI();
         return new PersistentRegistry(registry);
     }
 
@@ -106,7 +112,7 @@ final class PersistentRegistry implements ServiceRegistry {
         Response response = registry.register(serviceDescription);
         if (response.success()) {
             String xml = serviceDescription.toXml();
-            File f = new File(root, filename(serviceDescription));
+            File f = new File(ROOT, filename(serviceDescription));
             writeTo(xml, f);
             updateRootModified();
         }
@@ -118,9 +124,9 @@ final class PersistentRegistry implements ServiceRegistry {
      * @see eu.planets_project.ifr.core.servreg.api.ServiceRegistry#clear()
      */
     public Response clear() {
-        String[] list = root.list();
+        String[] list = ROOT.list();
         for (String name : list) {
-            File file = new File(root, name);
+            File file = new File(ROOT, name);
             if (!file.isHidden() && file.getName().endsWith(SUFFIX)) {
                 boolean delete = file.delete();
                 if (file.exists() && !delete) {
@@ -137,7 +143,7 @@ final class PersistentRegistry implements ServiceRegistry {
      * Updates the registry content from disk if it has been modified on disk.
      */
     private void updateIfChanged() {
-        if (root.lastModified() != updated) {
+        if (ROOT.lastModified() != updated) {
             initFromDisk();
         }
     }
@@ -156,13 +162,14 @@ final class PersistentRegistry implements ServiceRegistry {
      * @param registry The backing registry instance
      */
     private PersistentRegistry(final ServiceRegistry registry) {
-        log.fine("Using registry root: " + rootLocation);
-        root = new File(rootLocation);
+        LOG.fine("Using registry root: " + ROOT_LOCATION);
+    	System.out.println(ROOT_LOCATION);
+        ROOT = new File(ROOT_LOCATION);
         this.registry = registry;
-        boolean mkdir = root.mkdir();
-        if (!mkdir && !root.exists()) {
+        boolean mkdir = ROOT.mkdir();
+        if (!mkdir && !ROOT.exists()) {
             throw new IllegalStateException("Could not create registry root: "
-                    + root);
+                    + ROOT);
         }
         initFromDisk();
     }
@@ -176,9 +183,9 @@ final class PersistentRegistry implements ServiceRegistry {
          * inconsistent results and its behavior varies on different platforms.
          * Instead, we explicitly set it to the current time in nanoseconds.
          */
-        boolean ok = root.setLastModified(System.nanoTime());
+        boolean ok = ROOT.setLastModified(System.nanoTime());
         if (!ok) {
-            log.warning("Could not set root modified time");
+            LOG.warning("Could not set root modified time");
         }
     }
 
@@ -187,15 +194,15 @@ final class PersistentRegistry implements ServiceRegistry {
      */
     private void initFromDisk() {
         this.registry.clear();
-        String[] list = root.list();
+        String[] list = ROOT.list();
         for (String string : list) {
-            File f = new File(root, string);
+            File f = new File(ROOT, string);
             if (!f.isHidden() && f.getName().endsWith(SUFFIX)) {
                 String xml = readFrom(f);
                 this.registry.register(ServiceDescription.of(xml));
             }
         }
-        updated = root.lastModified();
+        updated = ROOT.lastModified();
     }
 
     /**

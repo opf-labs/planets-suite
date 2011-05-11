@@ -5,8 +5,6 @@ import org.junit.runners.Suite;
 
 import eu.planets_project.ifr.core.servreg.api.CoreRegistryTests;
 import eu.planets_project.ifr.core.servreg.api.PersistentRegistryTests;
-import eu.planets_project.ifr.core.servreg.api.RemoteServiceRegistryTests;
-import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactoryRemoteTests;
 import eu.planets_project.ifr.core.servreg.api.ServiceRegistryLocalTests;
 
 /**
@@ -18,9 +16,8 @@ import eu.planets_project.ifr.core.servreg.api.ServiceRegistryLocalTests;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 /* Service description registry tests: */
-RemoteServiceRegistryTests.class, CoreRegistryTests.class,
+CoreRegistryTests.class,
 		PersistentRegistryTests.class, ServiceRegistryLocalTests.class,
-		ServiceRegistryFactoryRemoteTests.class,
 		/* And the sample usage: */
 		ServiceRegistrySampleUsage.class })
 public class AllServiceRegistrySuite {

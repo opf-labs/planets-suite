@@ -29,7 +29,7 @@ public enum FileAccess {
     private FileAccess() {
         File root;
 		try {
-			root = new File(ClassLoader.getSystemResource("test-files").toURI());
+			root = new File(ClassLoader.getSystemResource("tests/test-files").toURI());
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			throw new IllegalStateException(e);

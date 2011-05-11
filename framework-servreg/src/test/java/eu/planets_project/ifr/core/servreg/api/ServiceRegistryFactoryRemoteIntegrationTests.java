@@ -11,14 +11,14 @@ import eu.planets_project.ifr.core.servreg.api.ServiceRegistryFactory;
  * Tests for a remote registry instance retrieved via the factory.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public class ServiceRegistryFactoryRemoteTests extends RemoteServiceRegistryTests {
+public class ServiceRegistryFactoryRemoteIntegrationTests extends RemoteServiceRegistryIntegrationTests {
 
-    private static final String REGISTRY_WEBSERVICE_WSDL = "http://localhost:8080" + RemoteServiceRegistryTests.WSDL;
+    private static final String REGISTRY_WEBSERVICE_WSDL = "http://localhost:8080" + RemoteServiceRegistryIntegrationTests.WSDL;
 
     /** Get a remote registry instance for testing. */
     @BeforeClass
     public static void registryCreation() {
-        registry = new ServiceRegistryFactoryRemoteTests().createRegistry();
+        registry = new ServiceRegistryFactoryRemoteIntegrationTests().createRegistry();
     }
 
     /**

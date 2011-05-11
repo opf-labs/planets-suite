@@ -59,9 +59,6 @@ final class Query {
         if (candidate == null) {
             throw new IllegalArgumentException("Candidate service description is null!");
         }
-        if (!Access.authorized(candidate)) {
-            return false;
-        }
         /* If no sample is given any description matches: */
         if (sample == null) {
             return true;

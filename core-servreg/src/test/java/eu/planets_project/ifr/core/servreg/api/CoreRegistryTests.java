@@ -29,7 +29,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public class CoreRegistryTests {
-    static final String TEST_ROOT = "IF/registry/src/test/resources/service-description-registry/";
+    //static final String TEST_ROOT = "IF/registry/src/test/resources/service-description-registry/";
     private static FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
     static final URI PRONOM_TIFF = formatRegistry.createPronomUri("fmt/10");
     static final URI EXT_TIFF = formatRegistry.createExtensionUri("tiff");
@@ -63,39 +63,39 @@ public class CoreRegistryTests {
     @Before
     public void registerSampleServices() {
         try {
-            endpoint1 = new URL("http://some.dummy.endpoint");
-            endpoint2 = new URL("http://another.dummy.endpoint");
-            endpoint3 = new URL("http://third.dummy.endpoint");
-            endpoint4 = new URL("http://fourth.dummy.endpoint");
+            this.endpoint1 = new URL("http://some.dummy.endpoint");
+            this.endpoint2 = new URL("http://another.dummy.endpoint");
+            this.endpoint3 = new URL("http://third.dummy.endpoint");
+            this.endpoint4 = new URL("http://fourth.dummy.endpoint");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         registry.clear();
-        /* We register one service using the TIFF pronom ID as input format: */
-        description1 = new ServiceDescription.Builder(NAME, TYPE1).description(DESCRIPTION).inputFormats(PRONOM_TIFF,
-                PRONOM_PNG).endpoint(endpoint1).build();
-        /* We register another one using the TIFF extension ID as input format: */
-        description2 = new ServiceDescription.Builder(NAME, TYPE2).inputFormats(EXT_TIFF, PRONOM_PNG).endpoint(
-                endpoint2).build();
-        Response register = registry.register(description1);
-        if (!register.success()) {
-            System.err.println(register.getMessage());
+        System.out.println("POST clear checking");
+        List<ServiceDescription> descs = registry.query(null);
+        for (ServiceDescription desc : descs) {
+        	System.out.println(desc.getType());
         }
+        /* We register one service using the TIFF pronom ID as input format: */
+        this.description1 = new ServiceDescription.Builder(NAME, TYPE1).description(DESCRIPTION).inputFormats(PRONOM_TIFF,
+                PRONOM_PNG).endpoint(this.endpoint1).build();
+        /* We register another one using the TIFF extension ID as input format: */
+        this.description2 = new ServiceDescription.Builder(NAME, TYPE2).inputFormats(EXT_TIFF, PRONOM_PNG).endpoint(
+                this.endpoint2).build();
+        Response register = registry.register(this.description1);
+        Assert.assertTrue("Expected description one to register.", register.success());
         /* Register another description, which is restricted, and will not be returned unless authenticated via UI: */
         register = registry.register(new ServiceDescription.Builder(NAME, TYPE1).description(DESCRIPTION).inputFormats(
-                PRONOM_TIFF, PRONOM_PNG).endpoint(endpoint4).properties(Property.authorizedRoles("admin, provider"))
+                PRONOM_TIFF, PRONOM_PNG).endpoint(this.endpoint4).properties(Property.authorizedRoles("admin, provider"))
                 .build());
-        if (!register.success()) {
-            System.err.println(register.getMessage());
-        }
-        Assert.assertTrue("Could not register when it should work", register.success());
+        Assert.assertTrue("Expected description with endpoint 4 to register.", register.success());
         /* But we can't register descriptions without an endpoint: */
         Response fail = registry.register(new ServiceDescription.Builder(NAME, TYPE1).build());
         Assert.assertFalse("Could register when it should not work", fail.success());
-        registry.register(description2);
+        registry.register(this.description2);
         /* We finally register one service using the mime URI: */
         Assert.assertTrue("Failed to register using mime type", registry.register(
-                new ServiceDescription.Builder("third", TYPE2).inputFormats(MIME_TIFF).endpoint(endpoint3).build())
+                new ServiceDescription.Builder("third", TYPE2).inputFormats(MIME_TIFF).endpoint(this.endpoint3).build())
                 .success());
     }
 
@@ -112,8 +112,9 @@ public class CoreRegistryTests {
      */
     @Test
     public void registerServiceDescription() {
-        Response message = registry.register(description1);
-        Assert.assertEquals("Double registration!", 3, registry.query(null).size());
+        Response message = registry.register(this.description1);
+        System.out.println("Response:" + message.getMessage());
+        Assert.assertEquals("Double registration!", 4, registry.query(null).size());
         Assert.assertNotNull("No result message;", message);
         System.out.println("Registered: " + message);
     }
@@ -124,7 +125,7 @@ public class CoreRegistryTests {
     @Test
     public void findByName() {
         List<ServiceDescription> services = registry.query(new ServiceDescription.Builder(NAME, null).build());
-        Assert.assertEquals(2, services.size());
+        Assert.assertEquals(3, services.size());
     }
 
     /**
@@ -156,7 +157,7 @@ public class CoreRegistryTests {
         /*
          * This should only retrieve the first description, with matching name and description:
          */
-        Assert.assertEquals(1, services.size());
+        Assert.assertEquals(2, services.size());
         compare(services);
     }
 
@@ -170,7 +171,7 @@ public class CoreRegistryTests {
         /*
          * This should retrieve both descriptions, as both of them support the specified input format (among others):
          */
-        Assert.assertEquals(2, services.size());
+        Assert.assertEquals(3, services.size());
     }
 
     /**
@@ -185,7 +186,7 @@ public class CoreRegistryTests {
          * This should retrieve all three descriptions, even if we query using the extension and the services had been
          * registered using the pronom ID or mime type:
          */
-        Assert.assertEquals(3, services.size());
+        Assert.assertEquals(4, services.size());
     }
 
     /**
@@ -200,7 +201,7 @@ public class CoreRegistryTests {
          * This should retrieve all three descriptions, even if we query using the pronom ID and the services had been
          * registered using the extension or mime type:
          */
-        Assert.assertEquals(3, services.size());
+        Assert.assertEquals(4, services.size());
     }
 
     /**
@@ -215,7 +216,7 @@ public class CoreRegistryTests {
          * This should retrieve all three descriptions, even if we query using the mime type and the services had been
          * registered using the extension or pronom ID:
          */
-        Assert.assertEquals(3, services.size());
+        Assert.assertEquals(4, services.size());
     }
 
     /**
@@ -229,7 +230,7 @@ public class CoreRegistryTests {
          * While this should only retrieve the first description, as the type is only corresponding to the first
          * description:
          */
-        Assert.assertEquals(1, services.size());
+        Assert.assertEquals(2, services.size());
         compare(services);
     }
 
@@ -239,7 +240,7 @@ public class CoreRegistryTests {
     @Test
     public void findByEndpoint() {
         List<ServiceDescription> services = registry.query(new ServiceDescription.Builder(null, null).endpoint(
-                endpoint1).build());
+                this.endpoint1).build());
         Assert.assertEquals(1, services.size());
         compare(services);
     }
@@ -255,11 +256,11 @@ public class CoreRegistryTests {
         List<ServiceDescription> services = registry.queryWithMode(new ServiceDescription.Builder(NAME, null).endpoint(
         /* any endpoint containing "dummy": */
         new URL("http://*dummy*")).build(), MatchingMode.WILDCARD);
-        Assert.assertEquals(2, services.size());
+        Assert.assertEquals(3, services.size());
         services = registry.queryWithMode(
         /* any type ending in "1": */
         new ServiceDescription.Builder(NAME, "*1").build(), MatchingMode.WILDCARD);
-        Assert.assertEquals(1, services.size());
+        Assert.assertEquals(2, services.size());
     }
 
     /**
@@ -269,7 +270,7 @@ public class CoreRegistryTests {
     public void findUsingRegex() {
         List<ServiceDescription> services = registry.queryWithMode(new ServiceDescription.Builder(NAME, "type[0-9]")
                 .build(), MatchingMode.REGEX);
-        Assert.assertEquals(2, services.size());
+        Assert.assertEquals(3, services.size());
     }
 
     /**
@@ -277,10 +278,10 @@ public class CoreRegistryTests {
      */
     @Test
     public void deleteByExample() {
-        Response response = registry.delete(new ServiceDescription.Builder(null, TYPE1).endpoint(endpoint1).build());
+        Response response = registry.delete(new ServiceDescription.Builder(null, TYPE1).endpoint(this.endpoint1).build());
         Assert.assertTrue(response.success());
         List<ServiceDescription> services = registry.query(null);
-        Assert.assertEquals(2, services.size());
+        Assert.assertEquals(3, services.size());
     }
 
     /**
@@ -288,10 +289,10 @@ public class CoreRegistryTests {
      */
     @Test
     public void duplicateEndpointGuard() {
-        Response response = registry.register(new ServiceDescription.Builder(null, TYPE1).endpoint(endpoint1).build());
+        Response response = registry.register(new ServiceDescription.Builder(null, TYPE1).endpoint(this.endpoint1).build());
         Assert.assertFalse(response.success());
         List<ServiceDescription> services = registry.query(null);
-        Assert.assertEquals(3, services.size());
+        Assert.assertEquals(4, services.size());
     }
 
     /**
@@ -299,8 +300,8 @@ public class CoreRegistryTests {
      */
     private void compare(final List<ServiceDescription> services) {
         Assert.assertTrue("No services found!", services.size() > 0);
-        Assert.assertEquals(description1.getName(), services.get(0).getName());
-        Assert.assertEquals(description1.getDescription(), services.get(0).getDescription());
-        Assert.assertEquals(description1.getType(), services.get(0).getType());
+        Assert.assertEquals(this.description1.getName(), services.get(0).getName());
+        Assert.assertEquals(this.description1.getDescription(), services.get(0).getDescription());
+        Assert.assertEquals(this.description1.getType(), services.get(0).getType());
     }
 }
