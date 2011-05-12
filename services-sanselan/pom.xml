@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.opf_labs.suite</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.1.0</version>
+	</parent>
+	<groupId>org.opf_labs.suite</groupId>
+	<artifactId>services-sanselan</artifactId>
+	<version>1.1.0</version>
+	<packaging>war</packaging>
+	<name>Planets Service - Sanselan</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>core-services</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>core-techreg</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>core-utils</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.sanselan</groupId>
+			<artifactId>sanselan</artifactId>
+			<version>0.97-incubator</version>
+		</dependency>
+	</dependencies>
+</project>

@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.opf_labs.suite</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.1.0</version>
+	</parent>
+	<groupId>org.opf_labs.suite</groupId>
+	<artifactId>framework-users</artifactId>
+	<version>1.1.0</version>
+	<packaging>war</packaging>
+	<name>Planets Framework - User Registry</name>
+	<dependencies>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opf_labs.suite</groupId>
+			<artifactId>core-utils</artifactId>
+			<version>1.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>jboss</groupId>
+			<artifactId>jboss-annotations-ejb3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jboss</groupId>
+			<artifactId>jbossall-client</artifactId>
+		</dependency>
+	</dependencies>
+</project>

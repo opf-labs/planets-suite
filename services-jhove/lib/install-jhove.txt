@@ -1,0 +1,3 @@
+mvn install:install-file -Dfile=jhove.jar -DgroupId=absent -DartifactId=jhove -Dversion=1.6 -Dpackaging=jar
+mvn install:install-file -Dfile=jhove-handler.jar -DgroupId=absent -DartifactId=jhove-handler -Dversion=1.6 -Dpackaging=jar
+mvn install:install-file -Dfile=jhove-module.jar -DgroupId=absent -DartifactId=jhove-module -Dversion=1.6 -Dpackaging=jar

@@ -1,0 +1,4 @@
+mvn install:install-file -Dfile=byteseek/byteseek-1.1.jar -DgroupId=byteseek -DartifactId=byteseek -Dversion=1.1 -Dpackaging=jar
+mvn install:install-file -Dfile=uk/gov/nationalarchives/droid/6.0/droid-6.0.pom -DgroupId=uk.gov.nationalarchives -DartifactId=droid -Dversion=6.0 -Dpackaging=pom
+mvn install:install-file -Dfile=uk/gov/nationalarchives/droid-core/6.0/droid-core-6.0.jar -DpomFile=uk/gov/nationalarchives/droid-core/6.0/droid-core-6.0.pom -DgroupId=uk.gov.nationalarchives -DartifactId=droid-core -Dversion=6.0 -Dpackaging=jar
+mvn install:install-file -Dfile=uk/gov/nationalarchives/droid-core-interfaces/6.0/droid-core-interfaces-6.0.jar -DpomFile=uk/gov/nationalarchives/droid-core-interfaces/6.0/droid-core-interfaces-6.0.pom -DgroupId=uk.gov.nationalarchives -DartifactId=droid-core-interfaces -Dversion=6.0 -Dpackaging=jar

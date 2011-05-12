@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=oai4j-0.6b1.jar -DgroupId=se.kb.oai -DartifactId=oai4j -Dversion=0.6b1 -Dpackaging=jar
