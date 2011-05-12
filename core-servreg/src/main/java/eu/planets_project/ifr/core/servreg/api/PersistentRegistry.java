@@ -166,7 +166,7 @@ final class PersistentRegistry implements ServiceRegistry {
     	System.out.println(ROOT_LOCATION);
         ROOT = new File(ROOT_LOCATION);
         this.registry = registry;
-        boolean mkdir = ROOT.mkdir();
+        boolean mkdir = ROOT.mkdirs();
         if (!mkdir && !ROOT.exists()) {
             throw new IllegalStateException("Could not create registry root: "
                     + ROOT);
