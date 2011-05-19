@@ -70,7 +70,6 @@ import eu.planets_project.pp.plato.services.characterisation.FormatIdentificatio
 import eu.planets_project.pp.plato.services.characterisation.FormatIdentification.FormatIdentificationResult;
 import eu.planets_project.pp.plato.services.characterisation.fits.FitsIntegration;
 import eu.planets_project.pp.plato.services.characterisation.jhove.JHoveAdaptor;
-import eu.planets_project.pp.plato.services.characterisation.xcl.XcdlExtractor;
 import eu.planets_project.pp.plato.util.Downloader;
 import eu.planets_project.pp.plato.util.FileUtils;
 import eu.planets_project.pp.plato.util.OS;
@@ -728,69 +727,6 @@ public class RunExperimentsAction extends AbstractWorkflowStep implements
     
 
     
-    /**
-     * Extracts object properties of all experiment results. 
-     */
-    public void extractObjectProperties(){
-        List<SampleObject> records = selectedPlan.getSampleRecordsDefinition().getRecords();
-        XcdlExtractor extractor = new XcdlExtractor();
-        
-        boolean missingResultfiles = false;
-        ArrayList<String> failed = new ArrayList<String>();
-        
-        for(Alternative alt : consideredAlternatives) {
-            for (SampleObject record : records) {
-                // each experiment has one experiment result per sample record
-                DigitalObject result = alt.getExperiment().getResults().get(record);
-                
-                XcdlDescription xcdl = null;
-                if ((result != null)&&(result.isDataExistent())) {
-                    try {
-                        String filepath = tempFiles.get(result);
-                        if ((filepath != null) && (!"".equals(filepath))) {
-                            xcdl = extractor.extractProperties(result.getFullname(), filepath);
-                        } else {
-                            // we have to merge it back into the session because we the data bytestream
-                            // is lazy loaded
-                            DigitalObject u = (DigitalObject)em.merge(result);
-                            xcdl = extractor.extractProperties(u);
-                            // Should we call System.gc afterwards?
-                        }
-                        // there should be a file now
-                        if (xcdl == null) { 
-                            failed.add(alt.getName()+ ", " + record.getFullname() + ": The description service returned an empty result.");
-                        }                                               
-                    } catch (PlatoServiceException e) {
-                        failed.add(alt.getName()+ ", " + record.getFullname() + ": " + e.getMessage()); 
-                    }
-                } else {
-                    if (record.isDataExistent()) {
-                        // The sample record has values, so there should be some result files
-                        missingResultfiles = true;                        
-                    }
-                }
-                result.setXcdlDescription(xcdl);
-            }
-        }
-        if (missingResultfiles) {
-            FacesMessages.instance().add(FacesMessage.SEVERITY_INFO, "Some result files could not be described, because they are missing. Please upload them first.");            
-        }
-        if (failed.size() > 0) {
-            StringBuffer msg = new StringBuffer();
-            msg.append("Description failed for following result files:<br/><br/>");
-            msg.append("<ul>");
-            for (String f : failed) {
-                msg.append("<li>").append(f).append("</li>");
-            }
-            msg.append("</ul>");
-            
-            FacesMessages.instance().add(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Some result files could not be decribed successfully.", msg.toString()));
-        }
-        if ((!missingResultfiles)&&(failed.size() == 0)) {
-            FacesMessages.instance().add(FacesMessage.SEVERITY_INFO, "Successfully described all result files.");
-        }
-        
-    }
     public void selectEmulationAlternative(Object alt){
         emulationAlternative = (Alternative)alt;
     }
@@ -917,5 +853,11 @@ public class RunExperimentsAction extends AbstractWorkflowStep implements
     
         return null;
     }
+
+	@Override
+	public void extractObjectProperties() {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

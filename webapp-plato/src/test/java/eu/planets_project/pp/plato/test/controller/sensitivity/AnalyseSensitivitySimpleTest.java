@@ -13,6 +13,9 @@ package eu.planets_project.pp.plato.test.controller.sensitivity;
 import java.util.List;
 import java.util.Vector;
 
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import eu.planets_project.pp.plato.bean.ResultNode;
 import eu.planets_project.pp.plato.model.Alternative;
 import eu.planets_project.pp.plato.model.aggregators.WeightedSum;
