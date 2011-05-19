@@ -11,21 +11,15 @@
 
 package eu.planets_project.pp.plato.services.characterisation.xcl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Serializable;
-
-import org.apache.commons.logging.Log;
-
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.CoreExtractor;
 import eu.planets_project.pp.plato.model.XcdlDescription;
 import eu.planets_project.pp.plato.services.PlatoServiceException;
 import eu.planets_project.pp.plato.util.FileUtils;
 import eu.planets_project.pp.plato.util.PlatoLogger;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
+import org.apache.commons.logging.Log;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
 
 public class XcdlExtractor implements Serializable {
 
@@ -76,37 +70,35 @@ public class XcdlExtractor implements Serializable {
     
     private XcdlDescription extract(String fullname, byte[] data) {
         
-
-        DigitalObject dIn = new DigitalObject.Builder( Content.byValue(data) ).title(fullname).build();
-        
-        CoreExtractor extractor = new CoreExtractor("PlatoXcdlExtractor");
-        
-        
-        File xcdlFile = extractor.extractXCDL(dIn, null, null, null);
-        
-        
+//
+//        DigitalObject dIn = new DigitalObject.Builder( Content.byValue(data) ).title(fullname).build();
+//
+//        CoreExtractor extractor = new CoreExtractor("PlatoXcdlExtractor");
+//        File xcdlFile = extractor.extractXCDL(dIn, null, null, null);
+//
+//
         XcdlDescription xcdl = null;
         
-        if (xcdlFile.exists()) {
-            FileInputStream fileInputStream;
-            byte[] binaryXcdl = null;
-            try {
-                fileInputStream = new FileInputStream(xcdlFile);
-                binaryXcdl = new byte[(int) xcdlFile.length()];
-                fileInputStream.read(binaryXcdl);
-                fileInputStream.close();            
-
-            } catch (FileNotFoundException e) {
-                return null;
-            } catch (IOException e) {
-                return null;
-            }
-            
-            xcdlFile.delete();
-            xcdl = new XcdlDescription();
-            xcdl.getData().setData(binaryXcdl);
-            xcdl.setFullname(fullname + ".xcdl");
-        }
+//        if (xcdlFile.exists()) {
+//            FileInputStream fileInputStream;
+//            byte[] binaryXcdl = null;
+//            try {
+//                fileInputStream = new FileInputStream(xcdlFile);
+//                binaryXcdl = new byte[(int) xcdlFile.length()];
+//                fileInputStream.read(binaryXcdl);
+//                fileInputStream.close();
+//
+//            } catch (FileNotFoundException e) {
+//                return null;
+//            } catch (IOException e) {
+//                return null;
+//            }
+//
+//            xcdlFile.delete();
+//            xcdl = new XcdlDescription();
+//            xcdl.getData().setData(binaryXcdl);
+//            xcdl.setFullname(fullname + ".xcdl");
+//        }
         return xcdl;
     }
 
