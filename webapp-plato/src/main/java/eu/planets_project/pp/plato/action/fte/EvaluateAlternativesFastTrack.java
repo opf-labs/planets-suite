@@ -69,7 +69,7 @@ import eu.planets_project.pp.plato.validators.TreeValidator;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("FTevaluate")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class EvaluateAlternativesFastTrack extends AbstractWorkflowStep
         implements IFastTrackEvaluateAlternatives, INodeValidator {
 

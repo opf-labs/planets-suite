@@ -11,7 +11,7 @@
 package eu.planets_project.pp.plato.services.characterisation.jhove;
 
 /**
- * Information of the module used from {@link JHoveExecutor}
+ * Information of the module used from {JHoveExecutor}
  * 
  * @author riccardo
  * 

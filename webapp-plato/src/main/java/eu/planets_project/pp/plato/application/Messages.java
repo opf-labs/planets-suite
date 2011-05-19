@@ -42,7 +42,7 @@ import eu.planets_project.pp.plato.action.interfaces.IMessages;
 @Name("allmessages")
 @Stateful
 @Synchronized
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class Messages implements IMessages, Serializable {
 
     /**

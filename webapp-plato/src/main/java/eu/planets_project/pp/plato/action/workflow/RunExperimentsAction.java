@@ -66,7 +66,6 @@ import eu.planets_project.pp.plato.services.action.IMigrationAction;
 import eu.planets_project.pp.plato.services.action.IPreservationAction;
 import eu.planets_project.pp.plato.services.action.MigrationResult;
 import eu.planets_project.pp.plato.services.action.PreservationActionServiceFactory;
-import eu.planets_project.pp.plato.services.characterisation.DROIDIntegration;
 import eu.planets_project.pp.plato.services.characterisation.FormatIdentification;
 import eu.planets_project.pp.plato.services.characterisation.FormatIdentification.FormatIdentificationResult;
 import eu.planets_project.pp.plato.services.characterisation.fits.FitsIntegration;
@@ -88,7 +87,7 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("runexperiments")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class RunExperimentsAction extends AbstractWorkflowStep implements
         IRunExperiments {
     
@@ -568,19 +567,19 @@ public class RunExperimentsAction extends AbstractWorkflowStep implements
         
         String filename = tempFiles.get(dobject);
         
-        if (filename == null || "".equals(filename)) {
-            DigitalObject o2 = em.merge(dobject);
-            try {
-                ident = DROIDIntegration.getInstance().identifyFormat(
-                        o2.getData().getData(), 
-                        o2.getFullname());
-            } catch (Exception e) {
-                log.error(e.getMessage(),e);
-            }    
-        } else {
-            ident = DROIDIntegration.getInstance().identify(filename);
-        }
-        
+//        if (filename == null || "".equals(filename)) {
+//            DigitalObject o2 = em.merge(dobject);
+//            try {
+//                ident = DROIDIntegration.getInstance().identifyFormat(
+//                        o2.getData().getData(),
+//                        o2.getFullname());
+//            } catch (Exception e) {
+//                log.error(e.getMessage(),e);
+//            }
+//        } else {
+//            ident = DROIDIntegration.getInstance().identify(filename);
+//        }
+//
         if (ident == null)  {
             return;
         }

@@ -50,7 +50,7 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Scope(ScopeType.APPLICATION)
 @Name("miniMeeAdmin")
 @Synchronized
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class MiniMeeAdminAction implements IMiniMeeAdmin, Serializable {
     /**
      * 

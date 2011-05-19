@@ -10,14 +10,13 @@
  *******************************************************************************/
 package eu.planets_project.pp.plato.sensitivity;
 
-import org.apache.commons.math.random.JDKRandomGenerator;
-import org.apache.commons.math.random.RandomGenerator;
-
 import eu.planets_project.pp.plato.model.tree.TreeNode;
+
+import java.util.Random;
 
 public class GaussianRandomModifier implements IWeightModifier {
     
-    private RandomGenerator generator = new JDKRandomGenerator();
+    private Random generator = new Random();
     
     private int counter = 0;
     

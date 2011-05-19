@@ -50,7 +50,7 @@ import eu.planets_project.pp.plato.model.PlanState;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("gonogo")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class GoNoGoAction extends AbstractWorkflowStep implements IGoNoGo {
 
     /**

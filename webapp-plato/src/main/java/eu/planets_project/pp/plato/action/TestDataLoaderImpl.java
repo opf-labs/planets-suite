@@ -62,7 +62,7 @@ import eu.planets_project.pp.plato.xml.ProjectImporter;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("testDataLoader")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class TestDataLoaderImpl implements Serializable, TestDataLoader {
 
     private static final long serialVersionUID = 2155152208617526555L;

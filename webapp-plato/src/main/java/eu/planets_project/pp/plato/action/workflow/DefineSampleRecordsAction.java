@@ -57,7 +57,6 @@ import eu.planets_project.pp.plato.model.XcdlDescription;
 import eu.planets_project.pp.plato.model.tree.Leaf;
 import eu.planets_project.pp.plato.model.tree.ObjectiveTree;
 import eu.planets_project.pp.plato.services.PlatoServiceException;
-import eu.planets_project.pp.plato.services.characterisation.DROIDIntegration;
 import eu.planets_project.pp.plato.services.characterisation.FormatHit;
 import eu.planets_project.pp.plato.services.characterisation.FormatIdentification;
 import eu.planets_project.pp.plato.services.characterisation.FormatIdentification.FormatIdentificationResult;
@@ -74,7 +73,7 @@ import eu.planets_project.pp.plato.xml.plato.StringCapsule;
 /**
  * Implements actions for workflow step 'Define Sample Records'
  *
- * We use DROID to identify the record the user has uploaded. ({@link DROIDIntegration} is
+ * We use DROID to identify the record the user has uploaded. ({DROIDIntegration} is
  * doing the job. {@link FormatIdentification} is the information we receive from DROID.  
  *
  * @author Hannes Kulovits
@@ -82,7 +81,7 @@ import eu.planets_project.pp.plato.xml.plato.StringCapsule;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("defineSampleRecords")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class DefineSampleRecordsAction extends AbstractWorkflowStep
 implements   IDefineSampleRecords {
    
@@ -687,12 +686,12 @@ implements   IDefineSampleRecords {
             
             String filename = tempDigitalObjects.get(rec);
             
-            if (filename == null || "".equals(filename)) {
-                SampleObject rec2 = em.merge(rec);
-                ident = DROIDIntegration.getInstance().identifyFormat(rec2.getData().getData(), rec2.getFullname());    
-            } else {
-                ident = DROIDIntegration.getInstance().identify(filename);
-            }
+//            if (filename == null || "".equals(filename)) {
+//                SampleObject rec2 = em.merge(rec);
+//                ident = DROIDIntegration.getInstance().identifyFormat(rec2.getData().getData(), rec2.getFullname());
+//            } else {
+//                ident = DROIDIntegration.getInstance().identify(filename);
+//            }
             
             if (ident.getResult() == FormatIdentificationResult.ERROR) {
                 /*

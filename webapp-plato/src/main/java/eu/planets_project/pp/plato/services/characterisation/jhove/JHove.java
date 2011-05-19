@@ -35,8 +35,6 @@ public class JHove {
 
     String tmpPath = OS.getJhoveTmpPath();
 
-    JHoveExecutor jhove;
-
     /**
      * describes a bytestream with Jhove.
      * Creates a tempfile for this and deletes it afterwards. 
@@ -78,7 +76,7 @@ public class JHove {
         try {
 
             log.debug("Executing JHove...");
-            new JHoveExecutor().execute(jhoveOutputFileName, tmpFile);
+//            new JHoveExecutor().execute(jhoveOutputFileName, tmpFile);
 
             log.debug("Reading file " + jhoveOutputFileName + " ...");
             String tmpLine = "";
@@ -104,9 +102,6 @@ public class JHove {
     /**
      * Extract the JHoveFileProperty from the String and returns a
      * {@link JHoveFileProperty} class.
-     * 
-     * @param fileName
-     * @return
      */
     public JHoveFileProperty digestString(String stringToDigest) {
         Digester digester = null;

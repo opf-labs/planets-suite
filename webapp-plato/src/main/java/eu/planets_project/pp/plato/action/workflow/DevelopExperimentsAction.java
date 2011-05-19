@@ -39,7 +39,7 @@ import eu.planets_project.pp.plato.model.User;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("devexperiments")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class DevelopExperimentsAction extends AbstractWorkflowStep implements IDevelopExperiments {
 
     /**

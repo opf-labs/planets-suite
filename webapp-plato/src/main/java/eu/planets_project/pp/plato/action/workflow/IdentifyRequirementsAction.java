@@ -74,7 +74,7 @@ import eu.planets_project.pp.plato.xml.TreeLoader;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("identifyRequirements")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class IdentifyRequirementsAction extends AbstractWorkflowStep implements
         IIdentifyRequirements {
 

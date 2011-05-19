@@ -40,7 +40,7 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Name("massmigrator")
 @Scope(ScopeType.SESSION)
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class MassMigratorAction implements IMassMigrator, Serializable {
     /**
      * 
