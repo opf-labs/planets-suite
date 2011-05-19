@@ -13,7 +13,7 @@ import java.io.IOException;
  * @author Gerald de Jong <geralddejong@gmail.com>
  */
 
-public class ServicesStarter {
+public class PlatoStarter {
 
     public static void main(String... args) throws Exception {
         int port = 8080;
