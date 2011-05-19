@@ -17,9 +17,6 @@ import javax.ejb.Stateful;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,9 +48,6 @@ import eu.planets_project.tb.api.system.TestbedStatelessAdmin;
 @Stateful
 @Local(TestbedStatelessAdmin.class)
 @Remote(TestbedStatelessAdmin.class)
-@LocalBinding(jndiBinding="planets-project.eu/tb/TestbedAdminBean")
-@RemoteBinding(jndiBinding="planets-project.eu/tb/TestbedAdminBean")
-@SecurityDomain("PlanetsRealm")
 @RunAs("admin")
 public class TestbedStatelessAdminBean implements TestbedStatelessAdmin {
 

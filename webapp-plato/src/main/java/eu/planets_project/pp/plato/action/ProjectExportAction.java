@@ -46,7 +46,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.DocumentSource;
 import org.dom4j.io.XMLWriter;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;

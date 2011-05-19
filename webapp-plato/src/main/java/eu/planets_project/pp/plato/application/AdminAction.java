@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.dom4j.Document;
 import org.dom4j.io.XMLWriter;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;

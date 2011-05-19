@@ -18,10 +18,6 @@ import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import javax.rmi.PortableRemoteObject;
 
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
-
 import eu.planets_project.ifr.core.security.api.model.Role;
 import eu.planets_project.ifr.core.security.api.services.RoleManager;
 
@@ -33,9 +29,6 @@ import eu.planets_project.ifr.core.security.api.services.RoleManager;
 @Stateless(mappedName="security/LocalRoleManager")
 @Local(RoleManager.class)
 @Remote(RoleManager.class)
-@LocalBinding(jndiBinding="planets-project.eu/RoleManager/local")
-@RemoteBinding(jndiBinding="planets-project.eu/RoleManager/remote")
-@SecurityDomain("PlanetsRealm")
 public class RoleManagerImpl implements RoleManager {
 	private static Logger log = Logger.getLogger(RoleManagerImpl.class.getName());
 

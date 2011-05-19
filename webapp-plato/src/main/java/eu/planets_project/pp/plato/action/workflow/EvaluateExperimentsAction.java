@@ -24,7 +24,6 @@ import javax.ejb.Stateful;
 import javax.faces.application.FacesMessage;
 
 import org.apache.commons.logging.Log;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;

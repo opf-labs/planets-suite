@@ -18,7 +18,6 @@ import javax.ejb.Remove;
 import javax.ejb.Stateful;
 
 import org.apache.commons.logging.Log;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;

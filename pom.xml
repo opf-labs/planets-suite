@@ -409,11 +409,6 @@
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>jboss</groupId>
-                <artifactId>jboss-annotations-ejb3</artifactId>
-                <version>4.2.0.GA</version>
-            </dependency>
-            <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-annotations</artifactId>
                 <version>3.2.0.ga</version>
