@@ -24,10 +24,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>jboss</groupId>
 			<artifactId>jbossall-client</artifactId>
 		</dependency>

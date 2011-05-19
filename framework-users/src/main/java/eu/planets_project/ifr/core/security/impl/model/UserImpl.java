@@ -30,8 +30,6 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.hibernate.annotations.Target;
-import org.hibernate.annotations.Type;
 import org.jboss.security.Util;
 
 
@@ -151,7 +149,6 @@ public class UserImpl implements User, Serializable {
      * @see eu.planets_project.ifr.core.security.api.model.User#getAddress()
      */
     @Embedded
-    @Target(AddressImpl.class)
     public Address getAddress() {
         return address;
     }
@@ -212,7 +209,6 @@ public class UserImpl implements User, Serializable {
      * @see eu.planets_project.ifr.core.security.api.model.User#getAccountEnabled()
      */
     @Column(name = "account_enabled", nullable = false)
-    @Type(type="yes_no")
     public boolean getAccountEnabled() {
         return enabled;
     }
@@ -222,7 +218,6 @@ public class UserImpl implements User, Serializable {
      * @see eu.planets_project.ifr.core.security.api.model.User#getAccountExpired()
      */
     @Column(name = "account_expired", nullable = false)
-    @Type(type="yes_no")
     public boolean getAccountExpired() {
         return accountExpired;
     }
@@ -232,7 +227,6 @@ public class UserImpl implements User, Serializable {
      * @see eu.planets_project.ifr.core.security.api.model.User#getAccountLocked()
      */
     @Column(name = "account_locked", nullable = false)
-    @Type(type="yes_no")
     public boolean getAccountLocked() {
         return accountLocked;
     }
@@ -242,7 +236,6 @@ public class UserImpl implements User, Serializable {
      * @see eu.planets_project.ifr.core.security.api.model.User#getCredentialsExpired()
      */
     @Column(name = "credentials_expired", nullable = false)
-    @Type(type="yes_no")
     public boolean getCredentialsExpired() {
         return credentialsExpired;
     }
