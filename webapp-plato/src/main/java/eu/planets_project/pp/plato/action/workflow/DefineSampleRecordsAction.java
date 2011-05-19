@@ -81,7 +81,6 @@ import eu.planets_project.pp.plato.xml.plato.StringCapsule;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("defineSampleRecords")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class DefineSampleRecordsAction extends AbstractWorkflowStep
 implements   IDefineSampleRecords {
    

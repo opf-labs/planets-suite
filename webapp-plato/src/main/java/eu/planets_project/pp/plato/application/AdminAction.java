@@ -67,7 +67,6 @@ import eu.planets_project.pp.plato.xml.ProjectExporter;
 @Stateful
 @Scope(ScopeType.APPLICATION)
 @Name("admin")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class AdminAction implements IAdmin, Serializable {
     /**
      * 

@@ -71,7 +71,6 @@ import eu.planets_project.pp.plato.validators.TreeValidator;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("evalexperiments")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class EvaluateExperimentsAction extends AbstractWorkflowStep implements
         IEvaluateExperiments, INodeValidator, IStatusListener{
     /**

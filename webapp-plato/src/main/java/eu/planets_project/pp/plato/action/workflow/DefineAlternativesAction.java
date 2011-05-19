@@ -64,7 +64,6 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("defineAlternatives")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class DefineAlternativesAction extends AbstractWorkflowStep implements
         IDefineAlternatives {
 

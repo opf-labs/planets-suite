@@ -33,7 +33,6 @@ import eu.planets_project.pp.plato.action.workflow.SetImportanceFactorsAction;
  */
 @Stateful
 @Scope(ScopeType.SESSION)
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class BooleanCapsule implements IBooleanCapsule {
     /**
      * 

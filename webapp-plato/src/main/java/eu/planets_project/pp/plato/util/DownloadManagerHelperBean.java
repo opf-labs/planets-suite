@@ -35,7 +35,6 @@ import eu.planets_project.pp.plato.model.PlanProperties;
 @Name("downloadManagerHelperBean")
 @Stateful
 @Scope(ScopeType.SESSION)
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class DownloadManagerHelperBean implements Serializable, IDownloadManagerHelperBean {
 
     /**

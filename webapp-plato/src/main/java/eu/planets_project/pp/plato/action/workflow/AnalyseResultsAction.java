@@ -54,7 +54,6 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("analyseResults")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class AnalyseResultsAction extends AbstractWorkflowStep implements
         IAnalyseResults {
 

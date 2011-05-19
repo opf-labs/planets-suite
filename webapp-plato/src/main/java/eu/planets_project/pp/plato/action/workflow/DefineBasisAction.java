@@ -49,7 +49,6 @@ import eu.planets_project.pp.plato.xml.TreeLoader;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("defineBasis")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class DefineBasisAction extends AbstractWorkflowStep implements IDefineBasis {
 
     /**

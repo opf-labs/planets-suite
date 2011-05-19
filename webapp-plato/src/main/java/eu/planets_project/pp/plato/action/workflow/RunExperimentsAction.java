@@ -87,7 +87,6 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("runexperiments")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class RunExperimentsAction extends AbstractWorkflowStep implements
         IRunExperiments {
     

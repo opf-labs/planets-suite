@@ -135,7 +135,6 @@ import eu.planets_project.pp.plato.xml.plato.TriggerFactory;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("projectImport")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class ProjectImporter implements IProjectImport, Serializable {
 
     /**

@@ -61,7 +61,6 @@ import eu.planets_project.pp.plato.xml.ProjectExporter;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("requirementsExpert")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class RequirementsExpertAction extends AbstractWorkflowStep implements
         IRequirementsExpert {
 

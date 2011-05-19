@@ -54,7 +54,6 @@ import eu.planets_project.pp.plato.validators.TreeValidator;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("importanceFactors")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class SetImportanceFactorsAction extends AbstractWorkflowStep implements ISetImportanceFactorsAction, INodeValidator {
 
     /**

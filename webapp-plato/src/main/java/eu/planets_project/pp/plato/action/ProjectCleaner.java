@@ -42,7 +42,6 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Scope(ScopeType.METHOD)
 @Name("projectCleaner")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class ProjectCleaner implements Serializable, IProjectCleaner {
 
     private static final long serialVersionUID = 2155152208617526555L;

@@ -31,7 +31,6 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Scope(ScopeType.APPLICATION)
 @Name("utilAction")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class UtilAction implements Serializable, IUtilAction {
 
     private static final long serialVersionUID = -2323932267631251076L;

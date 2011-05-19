@@ -72,7 +72,6 @@ import eu.planets_project.pp.plato.xml.ProjectExporter;
 @Stateful
 @Scope(ScopeType.EVENT)
 @Name("projectExport")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class ProjectExportAction implements Serializable, IProjectExport {
 
     private static final long serialVersionUID = 2155152208617526555L;

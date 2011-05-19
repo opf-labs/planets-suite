@@ -51,7 +51,6 @@ import eu.planets_project.pp.plato.validators.TreeValidator;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("transform")
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class TransformMeasuredValuesAction extends AbstractWorkflowStep implements ITransformMeasuredValues, INodeValidator {
 
     /**
