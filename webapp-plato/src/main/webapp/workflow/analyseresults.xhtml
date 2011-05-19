@@ -1,0 +1,800 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich"
+   xmlns:p="http://planets-project.eu/taglibs/plato"
+   xmlns:c="http://java.sun.com/jstl/core"
+   template="../template.xhtml">
+   <ui:define name="scripts"></ui:define>
+   <ui:define name="title">PLANETS Preservation Planning Tool - Analyse Results</ui:define>
+   <ui:define name="content">
+      <div id="content">
+		<h1><h:outputText value="Analyse evaluation results for #{selectedPlan.planProperties.name}" /></h1>
+
+		<div><small><h:outputText value="Report creation date: #{currentDate}" /></small></div>
+
+		<div class="margin-bottom-huge"><h:form id="changelogs">
+			<h:commandButton rendered="#{displayChangelogs.bool}" value="Hide Changelogs"
+				actionListener="#{analyseResults.switchDisplayChangelogs}" />
+			<h:commandButton rendered="#{!displayChangelogs.bool}" value="Display Changelogs"
+				actionListener="#{analyseResults.switchDisplayChangelogs}" />
+		</h:form></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="planname">Plan name</h:outputLabel></strong> <h:outputText
+			id="planname" value="#{selectedPlan.planProperties.name}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="statename">Current state</h:outputLabel></strong> <h:outputText
+			id="statename" value="#{selectedPlan.stateName}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="plandescription">Plan description</h:outputLabel></strong> <h:outputText
+			id="plandescription" value="#{selectedPlan.planProperties.description}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="planners">Responsible planners</h:outputLabel></strong> <h:outputText
+			id="planners" value="#{selectedPlan.planProperties.author}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="organization">Organization</h:outputLabel></strong> <h:outputText
+			id="organization" value="#{selectedPlan.planProperties.organization}" /></div>
+
+		<c:if test="#{displayChangelogs.bool}">
+			<table>
+				<tr>
+					<th width="80px"></th>
+					<th width="160px">Date</th>
+					<th width="160px">User</th>
+				</tr>
+				<tr>
+					<td>Created</td>
+					<td><h:outputText value="#{selectedPlan.planProperties.changeLog.createdString}" /></td>
+					<td><h:outputText value="#{selectedPlan.planProperties.changeLog.createdBy}" /></td>
+				</tr>
+				<tr>
+					<td>Changed</td>
+					<td><h:outputText value="#{selectedPlan.planProperties.changeLog.changedString}" /></td>
+					<td><h:outputText value="#{selectedPlan.planProperties.changeLog.changedBy}" /></td>
+				</tr>
+			</table>
+		</c:if>
+
+		<ul>
+			<li><a href="analyseresults.xhtml#basis">Basis</a></li>
+			<li><a href="analyseresults.xhtml#samplerecords">Sample Records</a></li>
+			<li><a href="analyseresults.xhtml#requirements">Requirements</a></li>
+			<li><a href="analyseresults.xhtml#alternatives">Alternatives</a></li>
+			<li><a href="analyseresults.xhtml#gonogo">Go-Decision</a></li>
+			<li><a href="analyseresults.xhtml#experiments">Experiments</a></li>
+			<li><a href="analyseresults.xhtml#evaluation">Evaluation &amp; Transformation</a></li>
+			<li><a href="analyseresults.xhtml#resultsMult">Results: Weighted multiplication</a></li>
+			<li><a href="analyseresults.xhtml#resultsSum">Results: Weighted sum</a></li>
+			<li><a href="analyseresults.xhtml#sensitivity-analysis">Sensitivity analysis</a></li>
+			<li><a href="analyseresults.xhtml#conclusion">Conclusion</a></li>
+		</ul>
+
+		<a name="basis" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Basis</h2>
+		</div>
+
+
+		<table width="100%">
+		  <tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Identification code<br/></b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode1" value="#{selectedPlan.projectBasis.identificationCode}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Document types<br/></b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode2" value="#{selectedPlan.projectBasis.documentTypes}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Mandate<br/></b></td>
+				<td  style="padding-top:10px">
+				  <h:outputText id="idcode3" value="#{selectedPlan.projectBasis.mandate}" />
+				</td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Planning purpose<br/></b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode4" value="#{selectedPlan.projectBasis.planningPurpose}" /></td>
+			</tr>
+
+			<tr>
+				<td  style="padding-top:10px"><b>Designated community<br/></b></td>
+				<td  style="padding-top:10px">
+				  <h:outputText id="idcode5" value="#{selectedPlan.projectBasis.designatedCommunity}" />
+				</td>
+			</tr>
+
+			<tr>
+				<td  style="padding-top:10px"><b>Applying policies</b></td>
+				<td  style="padding-top:10px">
+				  <h:outputText id="idcode6" value="#{selectedPlan.projectBasis.applyingPolicies}" />
+				</td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Relevant organisational procedures and workflows</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode7" value="#{selectedPlan.projectBasis.organisationalProcedures}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Contracts and agreements specifying preservation rights</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode8" value="#{selectedPlan.projectBasis.preservationRights}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Reference to agreements of maintenance and access</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode9" value="#{selectedPlan.projectBasis.referenceToAgreements}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Plan relations</b></td>
+				<td  style="padding-top:10px"><h:outputText id="idcode10" value="#{selectedPlan.projectBasis.planRelations}" /></td>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Triggers</b></td>
+        <td style="padding-top:10px">
+
+              <table cellpadding="30" class="size-full">
+                    <tr>
+                    	<th width="170px">Trigger</th>
+                    	<th>Description</th>
+                    </tr>
+
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.newCollection}" />
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.periodicReview}" />
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.changedEnvironment}" />
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.changedObjective}" />
+                    <p:outputTrigger trigger="#{selectedPlan.projectBasis.triggers.changedCollectionProfile}" />
+
+                  </table>
+
+				</td>
+			</tr>
+			<tr>
+			  <td colspan="2" style="padding-top:10px">
+		    <h:form id="policytreeform">
+             <ui:include src="shared/policytree.xhtml"/>
+		    </h:form>
+			  </td>
+			</tr>
+		</table>
+
+		<c:if test="#{displayChangelogs.bool}">
+			<table>
+				<tr>
+					<th width="80px"></th>
+					<th width="160px">Date</th>
+					<th width="160px">User</th>
+				</tr>
+				<tr>
+					<td>Created</td>
+					<td><h:outputText value="#{selectedPlan.projectBasis.changeLog.createdString}" /></td>
+					<td><h:outputText value="#{selectedPlan.projectBasis.changeLog.createdBy}" /></td>
+				</tr>
+				<tr>
+					<td>Changed</td>
+					<td><h:outputText value="#{selectedPlan.projectBasis.changeLog.changedString}" /></td>
+					<td><h:outputText value="#{selectedPlan.projectBasis.changeLog.changedBy}" /></td>
+				</tr>
+			</table>
+		</c:if>
+
+		<a name="samplerecords" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+
+		<h2>Sample Records</h2>
+		</div>
+
+		<table width="100%">
+		  <tr>
+				<th width="20%"></th>
+				<th width="80%"></th>
+			</tr>
+			<tr>
+				<td  style="padding-top:10px"><b>Samples description:<br/></b></td>
+				<td  style="padding-top:10px"><h:outputText id="idsamplesdescription" value="#{selectedPlan.sampleRecordsDefinition.samplesDescription}" /></td>
+			</tr>
+		</table>
+
+		<h3>Collection profile</h3>
+<fieldset class="size-full">
+		<div style="clear:both;"><strong><h:outputLabel for="collid">Collection ID:</h:outputLabel></strong> <h:outputText
+			id="collid" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.collectionID}" /></div>
+		<div style="clear:both;"><strong><h:outputLabel for="colldesc">Description:</h:outputLabel></strong> <h:outputText
+			id="colldesc" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.description}" /></div>
+		<div style="clear:both;"><strong><h:outputLabel for="colltype">Type of objects:</h:outputLabel></strong> <h:outputText
+			id="colltype" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.typeOfObjects}" /></div>
+		<div style="clear:both;"><strong><h:outputLabel for="collnum">Number of objects:</h:outputLabel></strong> <h:outputText
+			id="collnum" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.numberOfObjects}" /></div>
+		<div style="clear:both;"><strong><h:outputLabel for="growthrate">Expected growth rate:</h:outputLabel></strong> <h:outputText
+			id="growthrate" value="#{selectedPlan.sampleRecordsDefinition.collectionProfile.expectedGrowthRate}" /></div>
+
+
+		<s:div rendered="#{displayChangelogs.bool}">
+			<tr>
+				<td><strong>Changelog:</strong></td>
+				<td>
+				<table>
+					<tr>
+						<th width="80px"></th>
+						<th width="160px">Date</th>
+						<th width="160px">User</th>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td><h:outputText value="#{selectedPlan.sampleRecordsDefinition.changeLog.createdString}" /></td>
+						<td><h:outputText value="#{selectedPlan.sampleRecordsDefinition.changeLog.createdBy}" /></td>
+					</tr>
+					<tr>
+						<td>Changed</td>
+						<td><h:outputText value="#{selectedPlan.sampleRecordsDefinition.changeLog.changedString}" /></td>
+						<td><h:outputText value="#{selectedPlan.sampleRecordsDefinition.changeLog.changedBy}" /></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</s:div>
+		</fieldset>
+
+    <h:form id="samples">
+		<div><h:dataTable value="#{selectedPlan.sampleRecordsDefinition.records}" var="row"
+			columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big border,
+			 margin-top-small margin-bottom-small margin-left-big margin-right-big border,
+			 margin-top-small margin-bottom-small margin-left-big margin-right-big border" rowClasses="border"
+             style="width: 100%;">
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Name" />
+				</f:facet>
+				<h:outputText rendered="#{not row.dataExistent}" value="#{row.fullname}" />
+				<h:commandLink rendered="#{row.dataExistent}" action="#{analyseResults.download(row)}">
+				  <h:outputText value="#{row.fullname}" />
+        </h:commandLink>
+
+
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Short name" />
+				</f:facet>
+				<h:outputText value="#{row.shortName}"/>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Description" />
+				</f:facet>
+				<h:outputText value="#{row.description}"/>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Original environment" />
+				</f:facet>
+				<h:outputText value="#{row.originalTechnicalEnvironment}"/>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Data" />
+				</f:facet>
+				<h:outputText value="No data" rendered="#{not row.dataExistent}" />
+				<h:outputText value="Data existent (#{row.data.size}B)" rendered="#{row.dataExistent}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Object-format" />
+				</f:facet>
+				<table class="margin-bottom-huge">
+					<tr>
+						<td width="200px"><strong>PUID:</strong></td>
+						<td><h:outputText value="#{row.formatInfo.puid}" /></td>
+					</tr>
+					<tr>
+						<td><strong>Name:</strong></td>
+						<td><h:outputText value="#{row.formatInfo.name}" /></td>
+					</tr>
+					<tr>
+						<td><strong>Version:</strong></td>
+						<td><h:outputText value="#{row.formatInfo.version}" /></td>
+					</tr>
+					<tr>
+						<td><strong>mime-type:</strong></td>
+						<td><h:outputText value="#{row.formatInfo.mimeType}" /></td>
+					</tr>
+				</table>
+			</h:column>
+
+			<h:column rendered="#{displayChangelogs.bool}">
+				<f:facet name="header">
+					<h:outputText value="Changelog" />
+				</f:facet>
+				<table>
+					<tr>
+						<th width="80px"></th>
+						<th width="160px">Date</th>
+						<th width="160px">User</th>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td><h:outputText value="#{row.changeLog.createdString}" /></td>
+						<td><h:outputText value="#{row.changeLog.createdBy}" /></td>
+					</tr>
+					<tr>
+						<td>Changed</td>
+						<td><h:outputText value="#{row.changeLog.changedString}" /></td>
+						<td><h:outputText value="#{row.changeLog.changedBy}" /></td>
+					</tr>
+				</table>
+			</h:column>
+
+		</h:dataTable></div>
+		</h:form>
+
+		<a name="requirements" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Requirements &amp; Weighting</h2>
+		</div>
+
+          <ui:include src="shared/treeSummary.xhtml"/>
+
+
+
+		<a name="alternatives" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Alternatives</h2>
+		</div>
+
+				<div style="clear:both;"><strong><h:outputLabel for="alternativesDescription">Evaluation comments:</h:outputLabel></strong> <h:outputText
+					id="alternativesDescription" value="#{selectedPlan.alternativesDefinition.description}" /></div>
+		
+		<h:dataTable value="#{selectedPlan.alternativesDefinition.alternatives}" var="alt"
+			headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border "
+			columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big ">
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Name" />
+				</f:facet>
+				<h:outputText value="#{alt.name}" class="size-max" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Description" />
+				</f:facet>
+				<h:outputText value="#{alt.description}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Reason for considering" />
+				</f:facet>
+				<h:outputText value="#{alt.resourceDescription.reasonForConsidering}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Config settings" />
+				</f:facet>
+				<h:outputText value="#{alt.resourceDescription.configSettings}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Necessary resources" />
+				</f:facet>
+				<h:outputText value="#{alt.resourceDescription.necessaryResources}" />
+			</h:column>
+
+			<h:column rendered="#{displayChangelogs.bool}">
+				<f:facet name="header">
+					<h:outputText value="Changelog" />
+				</f:facet>
+				<table>
+					<tr>
+						<th width="80px"></th>
+						<th width="160px">Date</th>
+						<th width="160px">User</th>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td><h:outputText value="#{alt.changeLog.createdString}" /></td>
+						<td><h:outputText value="#{alt.changeLog.createdBy}" /></td>
+					</tr>
+					<tr>
+						<td>Changed</td>
+						<td><h:outputText value="#{alt.changeLog.changedString}" /></td>
+						<td><h:outputText value="#{alt.changeLog.changedBy}" /></td>
+					</tr>
+				</table>
+			</h:column>
+
+		</h:dataTable> <!-- TODO "Alternatives in italics have been discarded when taking the go-decision" --> 
+		
+		<a
+			name="gonogo" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Go-Decision</h2>
+		</div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="godecision">Decision:</h:outputLabel></strong> <h:outputText
+			id="godecision" value="#{selectedPlan.decision.decision}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="goreason">Reason:</h:outputLabel></strong> <h:outputText
+			id="goreason" value="#{selectedPlan.decision.reason}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="actionneeded">Action needed:</h:outputLabel></strong> <h:outputText
+			id="actionneeded" value="#{selectedPlan.decision.actionNeeded}" /></div>
+
+		<a name="experiments" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Experiments</h2>
+		</div>
+
+		<h:dataTable value="#{selectedPlan.alternativesDefinition.consideredAlternatives}" var="alt"
+			headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border"
+			columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big">
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Alternative" />
+				</f:facet>
+				<h:outputText value="#{alt.name}" class="size-max" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Experiment description" />
+				</f:facet>
+				<h:outputText value="#{alt.experiment.description}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Run description" />
+				</f:facet>
+				<h:outputText value="#{alt.experiment.detailedRunDescription}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Experiment data uploaded" />
+				</f:facet>
+
+				<h:outputText value="Yes" rendered="#{alt.experiment.recordUploaded}" />
+				<h:outputText value="No" rendered="#{not alt.experiment.recordUploaded}" />
+			</h:column>
+
+			<h:column rendered="#{displayChangelogs.bool}">
+				<f:facet name="header">
+					<h:outputText value="Changelog" />
+				</f:facet>
+				<table>
+					<tr>
+						<th width="80px"></th>
+						<th width="160px">Date</th>
+						<th width="160px">User</th>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td><h:outputText value="#{alt.experiment.changeLog.createdString}" /></td>
+						<td><h:outputText value="#{alt.experiment.changeLog.createdBy}" /></td>
+					</tr>
+					<tr>
+						<td>Changed</td>
+						<td><h:outputText value="#{alt.experiment.changeLog.changedString}" /></td>
+						<td><h:outputText value="#{alt.experiment.changeLog.changedBy}" /></td>
+					</tr>
+				</table>
+			</h:column>
+
+		</h:dataTable>
+		
+		<a name="evaluation" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Evaluation &amp; Transformation</h2>
+		</div>		
+
+<h:form id="evalTransForm">
+		 <c:forEach items="#{leafBeans}" var="bean">
+		<a name="results#{bean.leaf.id}" />
+			<h3><h:outputText value="#{bean.leaf.parent.name} > #{bean.leaf.name}" /></h3>
+
+			<!-- TABLE LAYOUT! -->
+			<table>
+				<tr>
+					<td class="margin-right-huge">
+					<h4>Results</h4>
+
+					<h:dataTable value="#{selectedPlan.alternativesDefinition.consideredAlternatives}" var="alter"
+						headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border "
+						columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big ">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Alternatives" />
+							</f:facet>
+							<h:outputText value="#{alter.name}" />
+						</h:column>
+
+						<c:choose>
+							<c:when test="#{bean.leaf.single}">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Result" />
+									</f:facet>
+									<h:outputText value="#{bean.leaf.valueMap[alter.name].list[0].value}" />
+								</h:column>
+							</c:when>
+
+							<c:otherwise>
+								<c:forEach items="#{selectedPlan.sampleRecordsDefinition.records}" varStatus="status">
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="#{status.index + 1}" />
+										</f:facet>
+										<h:outputText value="#{bean.leaf.valueMap[alter.name].list[status.index].value}" />
+									</h:column>
+								</c:forEach>
+
+							</c:otherwise>
+
+						</c:choose>
+
+					</h:dataTable> <!-- TABLE LAYOUT! --></td>
+					<td class="margin-right-huge">
+					<h4>Transformer</h4>
+
+					<!-- Ordinal --> <s:div rendered='#{bean.leaf.scale.type == "ordinal"}'>
+						<h:dataTable value="#{bean.leaf.scale.list}" var="ordinalValue"
+							headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border "
+							columnClasses="margin-top-small margin-bottom-small margin-left-small margin-right-small">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Ordinal Value" />
+								</f:facet>
+								<h:outputText value="#{ordinalValue}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="Target Value" />
+								</f:facet>
+								<h:outputText value="-> " />
+								<h:outputText value="#{bean.leaf.transformer.mapping[ordinalValue].value}" />
+							</h:column>
+
+						</h:dataTable>
+					</s:div> <!-- Numerical --> 
+					
+					<s:div rendered='#{bean.leaf.scale.type != "ordinal"}'>
+						<table>
+							<tr>
+								<th class="margin-top-small margin-bottom-small margin-left-big margin-right-big border nowrap">Threshold</th>
+								<th class="margin-top-small margin-bottom-small margin-left-big margin-right-big border nowrap">Target value</th>
+							</tr>
+
+
+							<p:thresholditem threshold="#{bean.leaf.transformer.threshold1}" index="1" unit="#{bean.leaf.scale.unit}"/>
+							<p:thresholditem threshold="#{bean.leaf.transformer.threshold2}" index="2" unit="#{bean.leaf.scale.unit}"/>
+							<p:thresholditem threshold="#{bean.leaf.transformer.threshold3}" index="3" unit="#{bean.leaf.scale.unit}"/>
+							<p:thresholditem threshold="#{bean.leaf.transformer.threshold4}" index="4" unit="#{bean.leaf.scale.unit}"/>
+							<p:thresholditem threshold="#{bean.leaf.transformer.threshold5}" index="5" unit="#{bean.leaf.scale.unit}"/>
+
+						</table>
+						<h:outputText value="Threshold stepping: #{bean.leaf.transformer.mode}" />
+
+					</s:div> 
+					<c:if test="#{displayChangelogs.bool}">
+
+						<h4>Transformer-Changelog</h4>
+
+						<table>
+							<tr>
+								<th width="80px"></th>
+								<th width="160px">Date</th>
+								<th width="160px">User</th>
+							</tr>
+							<tr>
+								<td>Created</td>
+								<td><h:outputText value="#{bean.leaf.transformer.changeLog.createdString}" /></td>
+								<td><h:outputText value="#{bean.leaf.transformer.changeLog.createdBy}" /></td>
+							</tr>
+							<tr>
+								<td>Changed</td>
+								<td><h:outputText value="#{bean.leaf.transformer.changeLog.changedString}" /></td>
+								<td><h:outputText value="#{bean.leaf.transformer.changeLog.changedBy}" /></td>
+							</tr>
+						</table>
+					</c:if>					
+                    </td>
+					<td>
+
+					<h4>Transformed Results</h4>
+
+					<!-- Transformed + aggregated values --> 
+					<h:dataTable
+						value="#{selectedPlan.alternativesDefinition.consideredAlternatives}" var="alter"
+						headerClass="margin-top-small margin-bottom-small margin-left-big margin-right-big border nowrap"
+						columnClasses="margin-top-small margin-bottom-small margin-left-big comment-medium">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Alternatives" />
+							</f:facet>
+							<h:outputText value="#{alter.name}" />
+						</h:column>
+
+						<c:choose>
+							<c:when test="#{bean.leaf.single}">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Result" />
+									</f:facet>
+									<h:outputText value="#{bean.resultValues[alter]}">
+										<f:convertNumber maxFractionDigits="2" />
+									</h:outputText>
+								</h:column>
+							</c:when>
+
+							<c:otherwise>
+								<c:forEach items="#{selectedPlan.sampleRecordsDefinition.records}" varStatus="status">
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="#{status.index + 1}" />
+										</f:facet>
+										<h:outputText value="#{bean.transformedValues[alter].list[status.index].value}">
+											<f:convertNumber maxFractionDigits="2" />
+										</h:outputText>
+									</h:column>
+								</c:forEach>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Aggregated result" />
+									</f:facet>
+									<h:outputText value="#{bean.resultValues[alter]}">
+										<f:convertNumber maxFractionDigits="2" />
+									</h:outputText>
+
+								</h:column>
+
+							</c:otherwise>
+
+						</c:choose>
+
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Comments" />
+							</f:facet>
+
+							<h:outputText value="#{bean.leaf.valueMap[alter.name].comment}" />
+
+						</h:column>
+
+					</h:dataTable> <h:outputText value="Aggregation mode: #{bean.leaf.aggregationMode}" rendered="#{!bean.leaf.single}" />
+
+					</td>
+				</tr>
+			</table>
+
+			<div class="margin-top-small margin-bottom-small border-bottom big" />
+
+
+		</c:forEach>
+
+		<div style="clear:both;"><strong><h:outputLabel for="evalcomments">Evaluation comments:</h:outputLabel></strong> <h:outputText
+			id="evalcomments" value="#{selectedPlan.evaluation.comment}" /></div>
+
+		<div style="clear:both;"><strong><h:outputLabel for="transcomments">Transformation comments:</h:outputLabel></strong>
+		<h:outputText id="transcomments" value="#{selectedPlan.transformation.comment}" /></div>
+</h:form>
+
+		<ui:include src="shared/resultTrees.xhtml"/>
+	
+		<p:help
+			url="/plato/help/sensitivity-analysis.html"
+			text="What is sensitivity analysis and how does it work?" />
+		<a name="sensitivity-analysis" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Sensitivity analysis</h2>
+		</div>
+
+        <rich:tree
+				id="sensitivityTree"
+				switchType="client" 
+				immediate="true"
+				adviseNodeOpened="#{sensitivityTreeHelper.adviseNodeOpened}" 
+				style="padding-top:10px;width:880px"
+				showConnectingLines="false">
+
+			 <rich:recursiveTreeNodesAdaptor
+				roots="#{sumNode}" var="sensNode"
+				nodes="#{sensNode.children}">
+
+				<rich:treeNode 
+				    styleClass="treenode"
+				    highlightedClass="highlighted"
+					iconLeaf="" 
+					icon="">
+			
+					<div class="treenode">
+						<div style="float:left; position: relative; white-space:normal;  width:40%;">
+							<s:div styleClass="#{sensNode.style}">
+								<s:div rendered="#{sensNode.leaf}">
+									<a href="analyseresults.xhtml#results#{sensNode.id}">
+									<h:outputText value="#{sensNode.name}"/>
+									</a>
+								</s:div>
+								<h:outputText value="#{sensNode.name}" rendered="#{not sensNode.leaf}"/>
+								<br/>
+ 
+                            <s:div rendered="#{not sensNode.leaf}">
+								<h:outputText style="font-size:10px;"
+									value="Changes in the importance factors might result in a different ordering of the alternatives."
+									rendered="#{(not sensNode.leaf) and (sensNode.sensitive)}"/>
+								<h:outputText style="font-size:10px;"
+									rendered="#{(sensNode.anyChildSensitive) and (not sensNode.sensitive)}"
+									value="Some requiremens further down the tree have unstable importance factors. Expand the tree to see them." />                          
+                            </s:div>
+
+							</s:div>								
+						</div>	
+						<div style="float:right;position: relative;min-width:380px;">
+							<table>
+								<c:forEach items="#{acceptableAlternatives}" var="a" varStatus="i">
+									<tr>
+										<td><h:outputText value="#{a.name}: &nbsp;&nbsp;" /></td>
+										<td width="40px"><h:outputText value="#{sensNode.resultStrings[a.name]}&nbsp;&nbsp;" /></td>
+										<td width="253px"><img width="#{50 * sensNode.results[a.name]}" height="10"
+											src="../../src/main/webapp/img/chart/chart-bar#{i.index%8}.jpg" /></td>
+									</tr>
+								</c:forEach>
+							</table>                              						
+						</div>
+					</div>
+				</rich:treeNode>
+			</rich:recursiveTreeNodesAdaptor>
+		</rich:tree>
+
+
+		<a name="conclusion" />
+		<div id="menu" class="margin-top-big margin-bottom-big">
+		<h2>Conclusion</h2>
+		</div>
+
+        <h:form id="mainform">
+         <fieldset id="recommendation" class="size-full">
+            <legend>Recommendation</legend>
+               <div>
+                  <h:outputLabel for="recommendation">
+                     Recommendation:
+                  </h:outputLabel>
+                  <h:selectOneListbox id="recommendation" size="1"
+                     value="#{selectedRecommendation}"
+                     converter="#{emptyStringToNullConverter}">
+                     <f:selectItem itemValue="" />
+                     <s:selectItems
+                        value="#{recommendationAlternatives}" var="a"
+                        label="#{a}" />
+                  </h:selectOneListbox>
+               </div>
+               <div>
+                  <p:inputTextArea labelText="Reasoning" id="reasoning"  required="true"
+                     input="#{selectedPlan.recommendation.reasoning}" />
+               </div>
+               <div>
+                  <p:inputTextArea labelText="Effects of applying this strategy" id="effects"
+                    required="true" input="#{selectedPlan.recommendation.effects}" />
+               </div>
+         </fieldset>
+         <p:buttons bean="#{analyseResults}" />
+         </h:form>
+      </div>
+   </ui:define>
+   <ui:define name="controls"></ui:define>
+</ui:composition>

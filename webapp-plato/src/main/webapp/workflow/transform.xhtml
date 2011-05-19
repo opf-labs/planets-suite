@@ -1,0 +1,101 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:p="http://planets-project.eu/taglibs/plato"
+   xmlns:rich="http://richfaces.org/rich"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:c="http://java.sun.com/jstl/core"
+   template="../template.xhtml">
+   <ui:define name="scripts"></ui:define>
+      <ui:define name="title">PLANETS Preservation Planning Tool - Transform Measured Values</ui:define>
+   <ui:define name="content">
+      <h1>Transform Measured Values</h1>
+          <p:help url="/plato/help/transform.html" text="What is this transformation and how does it work?"/>
+      <h:form id="mainform">
+         <h:inputText id="changedflag" value="#{changed}"
+            style="display:none" />
+         <div id="content">
+                <fieldset id="treenavigationset" style="width:100%">
+            	<legend>
+                  <h:outputText value="Select the tree parts to display" />
+               </legend>
+                 <rich:tree switchType="client" immediate="true"
+							iconLeaf="" icon="">
+							<rich:recursiveTreeNodesAdaptor roots="#{selectedPlan.tree.root}" var="node"
+								nodes="#{node.children}">
+								<rich:treeNode>
+									<a4j:commandLink eventsQueue="ajaxQ" ignoreDupResponses="true" reRender="content" action="#{transform.select(node)}">  
+						           	      	<h:outputText value="#{node.name}" />
+									</a4j:commandLink>  
+								</rich:treeNode>
+							</rich:recursiveTreeNodesAdaptor>
+						</rich:tree>
+					</fieldset>
+					
+                           <div  style="height:20px;font-weight:bold;"><a4j:status  startText="Processing, please wait.... " stopText="&nbsp;" /></div>
+		<fieldset id="comments" style="width:100%">
+				<legend>
+                  <h:outputText value="Comments" />
+               </legend>
+                        <p:inputTextArea labelText="Comments"
+                           id="transformMeasuredValuesComments"
+                           input="#{selectedPlan.transformation.comment}"
+                           bean="#{selectedPlan.transformation}"
+                           actionMethodName="touch" />
+                           </fieldset>
+                     
+<fieldset id="transformation" style="width:100%">
+            	<legend>
+                  <h:outputText value="Define the transformation functions" />
+               </legend>
+                       <s:div rendered="#{(empty leaves) and (empty errorleaves)}">
+                        <h:outputText value="No leaves selected" />
+                        </s:div>
+               						                            
+<s:div rendered="#{not empty leaves}">
+
+<p:transformationLeafList listofleaves="#{leaves}"/>
+</s:div>
+
+
+<s:div rendered="#{not empty errorleaves}">
+
+<p:transformationLeafList listofleaves="#{errorleaves}"/>
+
+</s:div>
+
+</fieldset>
+             <fieldset id="buttons" style="width:100%">
+				<p> You can calculate default transformation settings based on the distribution
+				of the evaluation values. This is currently a very primitive function that needs
+				further adjustment. <br/>
+            		<h:commandButton value="Calculate default transformation settings"
+                 	action="#{transform.calculateDefaultTransformers}" /><br/>
+        	         Make sure you check all transformation functions and approve them. 
+        	         Transformation settings that have not been defined or not yet approved 
+        	         are marked with a star (*).
+                 </p>
+                 <hr/>
+                 <p>
+                 	The planning process requires you to either enter by yourself or confirm all transformation settings.
+            		In order to approve all transformation settings, please select<br/> 
+		            <h:commandButton value="Confirm transformation settings"
+        	         action="#{transform.approve}" />
+                 </p>
+             </fieldset>
+             
+              
+            	<p:buttons bean="#{transform}" />
+            
+         </div>
+      </h:form>
+   </ui:define>
+   <!--
+      <ui:define name="controls">
+      <h:commandButton value="Proceed" action="#{transform.proceed}" />
+      </ui:define>
+   -->
+</ui:composition>

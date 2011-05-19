@@ -1,69 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components xmlns="http://jboss.com/products/seam/components"
-	xmlns:core="http://jboss.com/products/seam/core" 
-	xmlns:persistence="http://jboss.com/products/seam/persistence"
-	xmlns:drools="http://jboss.com/products/seam/drools" 
-	xmlns:bpm="http://jboss.com/products/seam/bpm"
-	xmlns:security="http://jboss.com/products/seam/security" 
-	xmlns:mail="http://jboss.com/products/seam/mail"
-	xmlns:web="http://jboss.com/products/seam/web" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:transaction="http://jboss.com/products/seam/transaction"
-	xsi:schemaLocation="http://jboss.com/products/seam/core 
-	http://jboss.com/products/seam/core-2.1.xsd
-	     http://jboss.com/products/seam/transaction
-                 http://jboss.com/products/seam/persistence
-                 http://jboss.com/products/seam/persistence-2.1.xsd
-                 http://jboss.com/products/seam/drools
-                 http://jboss.com/products/seam/drools-2.1.xsd
-                 http://jboss.com/products/seam/bpm
-                 http://jboss.com/products/seam/bpm-2.1.xsd
-                 http://jboss.com/products/seam/security
-                 http://jboss.com/products/seam/security-2.1.xsd
-                 http://jboss.com/products/seam/mail
-                 http://jboss.com/products/seam/mail-2.1.xsd
-                 http://jboss.com/products/seam/web
-                 http://jboss.com/products/seam/web-2.1.xsd
-                 http://jboss.com/products/seam/components
-                 http://jboss.com/products/seam/components-2.1.xsd">
+            xmlns:core="http://jboss.com/products/seam/core"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
+            xmlns:drools="http://jboss.com/products/seam/drools"
+            xmlns:security="http://jboss.com/products/seam/security"
+            xmlns:mail="http://jboss.com/products/seam/mail"
+            xmlns:web="http://jboss.com/products/seam/web"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:transaction="http://jboss.com/products/seam/transaction"
+            xsi:schemaLocation="
+            http://jboss.com/products/seam/core
+            http://jboss.com/products/seam/core-2.1.xsd
+            http://jboss.com/products/seam/transaction
+            http://jboss.com/products/seam/persistence
+            http://jboss.com/products/seam/persistence-2.1.xsd
+            http://jboss.com/products/seam/drools
+            http://jboss.com/products/seam/drools-2.1.xsd
+            http://jboss.com/products/seam/security
+            http://jboss.com/products/seam/security-2.1.xsd
+            http://jboss.com/products/seam/mail
+            http://jboss.com/products/seam/mail-2.1.xsd
+            http://jboss.com/products/seam/web
+            http://jboss.com/products/seam/web-2.1.xsd
+            http://jboss.com/products/seam/components
+            http://jboss.com/products/seam/components-2.1.xsd"
+>
 
-	<core:init jndi-pattern="plato/#{ejbName}/local" debug="true" />
+    <core:init jndi-pattern="plato/#{ejbName}/local" debug="true"/>
 
-	<core:manager concurrent-request-timeout="500"
-		conversation-timeout="120000" conversation-id-parameter="cid"
-		parent-conversation-id-parameter="pid" />
+    <core:manager concurrent-request-timeout="500"
+                  conversation-timeout="120000" conversation-id-parameter="cid"
+                  parent-conversation-id-parameter="pid"/>
 
-	<persistence:managed-persistence-context
-		name="em" auto-create="true" persistence-unit-jndi-name="java:/platoEntityManagerFactory" />
+    <persistence:managed-persistence-context
+            name="em" auto-create="true" persistence-unit-jndi-name="java:/platoEntityManagerFactory"/>
 
 
-<!-- 
-  org.jboss.seam.core.ejb
-    Bootstraps the JBoss Embeddable EJB3 container. Install as class org.jboss.seam.core.Ejb. This is useful when using Seam with EJB components outside the context of a Java EE 5 application server.
-    The basic Embedded EJB configuration is defined in jboss-embedded-beans.xml. Additional microcontainer configuration (for example, extra datasources) may be specified by jboss-beans.xml or META-INF/jboss-beans.xml in the classpath.
+    <!--
+     org.jboss.seam.core.ejb
+       Bootstraps the JBoss Embeddable EJB3 container. Install as class org.jboss.seam.core.Ejb. This is useful when using Seam with EJB components outside the context of a Java EE 5 application server.
+       The basic Embedded EJB configuration is defined in jboss-embedded-beans.xml. Additional microcontainer configuration (for example, extra datasources) may be specified by jboss-beans.xml or META-INF/jboss-beans.xml in the classpath.
 
-http://www.redhat.com/docs/manuals/jboss/jboss-eap-4.2/doc/seam/Seam_Reference_Guide/Built_in_Seam_components-Infrastructural_components.html
- -->
-    
-  <core:ejb/>  
-	<web:hot-deploy-filter url-pattern="*.seam" />
-	
-	<!-- <core:ejb installed="true"></core:ejb> -->
+   http://www.redhat.com/docs/manuals/jboss/jboss-eap-4.2/doc/seam/Seam_Reference_Guide/Built_in_Seam_components-Infrastructural_components.html
+    -->
 
-	<!-- default setting: 20MB -->
-	<web:multipart-filter create-temp-files="true"
-		max-request-size="200000000" url-pattern="*.seam"/>
+    <core:ejb/>
+    <web:hot-deploy-filter url-pattern="*.seam"/>
 
-<!--
- In an EJB3 environment, 
- we recommend the use of a special built-in component 
- for transaction management,
-  that is fully aware of container transactions, 
-  and can correctly process transaction success 
-  events registered with the Events component. 
-  If you don't add this line to your components.xml file, 
-  Seam won't know when container-managed transactions end:
-  WCHICH MIGHT BE WHAT WE WANT
-<transaction:ejb-transaction/>
--->
+    <!-- <core:ejb installed="true"></core:ejb> -->
+
+    <!-- default setting: 20MB -->
+    <web:multipart-filter create-temp-files="true"
+                          max-request-size="200000000" url-pattern="*.seam"/>
+
+    <!--
+     In an EJB3 environment,
+     we recommend the use of a special built-in component
+     for transaction management,
+      that is fully aware of container transactions,
+      and can correctly process transaction success
+      events registered with the Events component.
+      If you don't add this line to your components.xml file,
+      Seam won't know when container-managed transactions end:
+      WCHICH MIGHT BE WHAT WE WANT
+    <transaction:ejb-transaction/>
+    -->
 </components>

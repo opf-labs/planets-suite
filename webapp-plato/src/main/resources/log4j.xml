@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  Log4j Configuration                                                  -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+
+<!-- $Id: log4j.xml 56612 2006-09-07 15:12:39Z thomas.diesler@jboss.com $ -->
+
+<!--
+	| For more configuration infromation and examples see the Jakarta Log4j
+	| owebsite: http://jakarta.apache.org/log4j
+-->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="false">
+
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %c{1} - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- ================================= -->
+	<!-- Preserve messages in a local file -->
+	<!-- ================================= -->
+
+	<!-- A time/date based rolling appender -->
+	<appender name="FILE"
+		class="org.jboss.logging.appender.DailyRollingFileAppender">
+		<errorHandler
+			class="org.jboss.logging.util.OnlyOnceErrorHandler" />
+		<param name="File"
+			value="${jboss.server.log.dir}/plato-server.log" />
+		<param name="Append" value="false" />
+
+		<!-- Rollover at midnight each day -->
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<!-- Rollover at the top of each hour
+			<param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+		-->
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- The default pattern: Date Priority [Category] Message\n -->
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+
+			<!-- The full pattern: Date MS Priority [Category] (Thread:NDC) Message\n
+				<param name="ConversionPattern" value="%d %-5r %-5p [%c] (%t:%x) %m%n"/>
+			-->
+		</layout>
+	</appender>
+
+	<!-- A time/date based rolling appender -->
+	<appender name="platofile"
+		class="org.jboss.logging.appender.DailyRollingFileAppender">
+		<errorHandler
+			class="org.jboss.logging.util.OnlyOnceErrorHandler" />
+		<param name="File" value="${jboss.server.log.dir}/plato.log" />
+		<param name="Append" value="false" />
+
+		<!-- Rollover at midnight each day -->
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<!-- Rollover at the top of each hour
+			<param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+		-->
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MMM-dd HH:mm:ss,SSS} [%t] %c %x%n %-5p %m%n" />
+		</layout>
+	</appender>
+
+	<!-- A time/date based rolling appender -->
+	<appender name="minimeefile"
+		class="org.jboss.logging.appender.DailyRollingFileAppender">
+		<errorHandler
+			class="org.jboss.logging.util.OnlyOnceErrorHandler" />
+		<param name="File" value="${jboss.server.log.dir}/minimee.log" />
+		<param name="Append" value="false" />
+
+		<!-- Rollover at midnight each day -->
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<!-- Rollover at the top of each hour
+			<param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+		-->
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MMM-dd HH:mm:ss,SSS} [%t] %c %x%n %-5p %m%n" />
+		</layout>
+	</appender>
+
+	<!-- A size based file rolling appender
+		<appender name="FILE" class="org.jboss.logging.appender.RollingFileAppender">
+		<errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>
+		<param name="File" value="${jboss.server.log.dir}/server.log"/>
+		<param name="Append" value="false"/>
+		<param name="MaxFileSize" value="500KB"/>
+		<param name="MaxBackupIndex" value="1"/>
+
+		<layout class="org.apache.log4j.PatternLayout">
+		<param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+		</layout>
+		</appender>
+	-->
+
+	<!-- ================ -->
+	<!-- Limit categories -->
+	<!-- ================ -->
+
+	<!-- Limit the org.apache category to INFO as its DEBUG is verbose -->
+	<category name="org.ajax4jsf">
+		<priority value="WARN" />
+	</category>
+
+	<category name="edu.yale.its.tp.cas.client.filter.CASFilter">
+		<priority value="WARN" />
+	</category>
+	
+	<category name="eu.planets_project.pp.plato.action.project.XmlAction">
+		<priority value="DEBUG" />
+	</category>
+
+	
+	<category name="eu.planets_project.CASGH">
+		<priority value="INFO" />
+	</category>
+
+	<category name="org.jbpm">
+		<priority value="WARN" />
+	</category>
+
+	<category name="org.apache">
+		<priority value="INFO" />
+		<appender-ref ref="FILE" />
+	</category>
+
+	<category name="org.jboss.serial">
+		<priority value="INFO" />
+		<appender-ref ref="FILE" />
+	</category>
+
+	<category name="eu.planets_project.pp">
+		<priority value="DEBUG" />
+		<appender-ref ref="platofile" />
+		<appender-ref ref="console" />
+	</category>
+
+	<category name="at.tuwien.minimee">
+		<priority value="DEBUG" />
+		<appender-ref ref="minimeefile" />
+		<appender-ref ref="console" />
+	</category>
+
+
+	<!--  see http://www.hibernate.org/hib_docs/v3/reference/en/html/session-configuration.html
+
+		org.hibernate.SQL            Log all SQL DML statements as they are executed
+		org.hibernate.type           Log all JDBC parameters
+		org.hibernate.tool.hbm2ddl   Log all SQL DDL statements as they are executed
+		org.hibernate.pretty         Log the state of all entities (max 20 entities) associated with the session at flush time
+		org.hibernate.cache          Log all second-level cache activity
+		org.hibernate.transaction    Log transaction related activity
+		org.hibernate.jdbc           Log all JDBC resource acquisition
+		org.hibernate.hql.ast.AST    Log HQL and SQL ASTs during query parsing
+		org.hibernate.secure         Log all JAAS authorization requests
+		org.hibernate                Log everything (a lot of information, but very useful for troubleshooting)
+	-->
+
+	<category name="org.hibernate">
+		<priority value="WARN" />
+		<appender-ref ref="FILE" />
+	</category>
+
+	<category name="org.hibernate.SQL" additivity="false">
+		<priority value="WARN" />
+	</category>
+
+	<category name="org.hibernate.transaction" additivity="false">
+		<priority value="WARN" />
+	</category>
+
+	<category name="org.hibernate.tool.hbm2ddl" additivity="false">
+		<priority value="WARN" />
+	</category>
+
+	<category name="org.hibernate.type" additivity="false">
+		<priority value="WARN" />
+	</category>
+
+	<!-- hibernate uses ehcache -->
+	<category name="net.sf.ehcache">
+		<priority value="WARN" />
+		<appender-ref ref="FILE" />
+	</category>
+
+	<category name="org.jboss">
+		<priority value="INFO" />
+	</category>
+
+	<!--
+		<category name="org.jboss">
+		<priority value="INFO"/>
+		<appender-ref ref="FILE"/>
+		</category>
+	-->
+	<!-- Limit the org.jboss.serial (jboss-serialization) to INFO as its DEBUG is verbose -->
+	<!--
+   <category name="org.jboss.serial">
+      <priority value="DEBUG"/>
+   </category>
+	-->
+
+	<!-- Limit the org.jgroups category to WARN as its INFO is verbose -->
+	<category name="org.jgroups">
+		<priority value="WARN" />
+		<appender-ref ref="FILE" />
+	</category>
+
+	<!-- Limit the jacorb category to WARN as its INFO is verbose -->
+	<category name="jacorb">
+		<priority value="WARN" />
+	</category>
+
+	<!-- Limit the JSR77 categories -->
+	<category name="org.jboss.management">
+		<priority value="INFO" />
+	</category>
+
+
+	<!-- Enable JBossWS message tracing
+		<category name="jbossws.SOAPMessage">
+		<priority value="TRACE" class="org.jboss.logging.XLevel"/>
+		</category>
+	-->
+
+	<!-- Decrease the priority threshold for the org.jboss.varia category
+		<category name="org.jboss.varia">
+		<priority value="DEBUG"/>
+		</category>
+	-->
+
+	<!-- Show the evolution of the DataSource pool in the logs [inUse/Available/Max]
+		<category name="org.jboss.resource.connectionmanager.JBossManagedConnectionPool">
+		<priority value="TRACE" class="org.jboss.logging.XLevel"/>
+		</category>
+	-->
+
+	<!--
+		| An example of enabling the custom TRACE level priority that is used
+		| by the JBoss internals to diagnose low level details. This example
+		| turns on TRACE level msgs for the org.jboss.ejb.plugins package and its
+		| subpackages. This will produce A LOT of logging output.
+		<category name="org.jboss.system">
+		<priority value="TRACE" class="org.jboss.logging.XLevel"/>
+		</category>
+		<category name="org.jboss.ejb.plugins">
+		<priority value="TRACE" class="org.jboss.logging.XLevel"/>
+		</category>
+	-->
+
+	<!--
+		| Logs these events to SNMP:
+		- server starts/stops
+		- cluster evolution (node death/startup)
+		- When an EJB archive is deployed (and associated verified messages)
+		- When an EAR archive is deployed
+
+		<category name="org.jboss.system.server.Server">
+		<priority value="INFO" />
+		<appender-ref ref="TRAP_LOG"/>
+		</category>
+
+		<category name="org.jboss.ha.framework.interfaces.HAPartition.lifecycle">
+		<priority value="INFO" />
+		<appender-ref ref="TRAP_LOG"/>
+		</category>
+
+		<category name="org.jboss.deployment.MainDeployer">
+		<priority value="ERROR" />
+		<appender-ref ref="TRAP_LOG"/>
+		</category>
+
+		<category name="org.jboss.ejb.EJBDeployer">
+		<priority value="INFO" />
+		<appender-ref ref="TRAP_LOG"/>
+		</category>
+
+		<category name="org.jboss.deployment.EARDeployer">
+		<priority value="INFO" />
+		<appender-ref ref="TRAP_LOG"/>
+		</category>
+
+	-->
+
+	<!-- Clustering logging -->
+	<!-- Uncomment the following to redirect the org.jgroups and
+		org.jboss.ha categories to a cluster.log file.
+
+		<appender name="CLUSTER" class="org.jboss.logging.appender.RollingFileAppender">
+		<errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>
+		<param name="File" value="${jboss.server.log.dir}/cluster.log"/>
+		<param name="Append" value="false"/>
+		<param name="MaxFileSize" value="500KB"/>
+		<param name="MaxBackupIndex" value="1"/>
+
+		<layout class="org.apache.log4j.PatternLayout">
+		<param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+		</layout>
+		</appender>
+		<category name="org.jgroups">
+		<priority value="DEBUG" />
+		<appender-ref ref="CLUSTER"/>
+		</category>
+		<category name="org.jboss.ha">
+		<priority value="DEBUG" />
+		<appender-ref ref="CLUSTER"/>
+		</category>
+	-->
+
+</log4j:configuration>

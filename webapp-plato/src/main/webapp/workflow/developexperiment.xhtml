@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:p="http://planets-project.eu/taglibs/plato"  
+   template="../template.xhtml">
+   <ui:define name="title">PLANETS Preservation Planning Tool - Develop Experiment</ui:define>
+   <ui:define name="scripts"></ui:define>
+   <ui:define name="content">
+      <div id="content">
+			<h1>Develop experiments</h1>
+         <h:form id="mainform">
+            <h:inputText id="changedflag" value="#{changed}"
+               style="display:none" />
+            <h:dataTable id="alternatives"
+               value="#{selectedPlan.alternativesDefinition.consideredAlternatives}"
+               var="alt"
+               columnClasses="align-vertical-center border,align-vertical-center border, size-max border"
+               headerClass="border nowrap"
+               rowClasses="border"
+               styleClass="margin-bottom-big size-max">
+            	<h:column>
+            		<f:facet name="header">Registry</f:facet>
+            		<s:div rendered="#{alt.action != null}">
+            	     <img src="../../src/main/webapp/img/icons/registries/developexperiment.xhtml#{alt.action.actionIdentifier}.png"
+                                                alt="#{alt.action.actionIdentifier}" height="40" width="120" />
+                     </s:div>
+            	</h:column>
+               <h:column>
+                  <f:facet name="header">Alternative</f:facet>
+                  <h:outputText value="#{alt.name}" />
+               </h:column>
+               <h:column>
+                  <f:facet name="header">Description</f:facet>
+                  <p:inputTextArea id="developExperimentDescription"
+                     input="#{alt.experiment.description}" labelText="Description"
+                     bean="#{alt.experiment}" actionMethodName="touch" />
+                                          
+                  <p:inputTextArea id="developExperimentSettings"
+                     input="#{alt.experiment.settings}"  labelText="Settings"
+                     bean="#{alt.experiment}" actionMethodName="touch" />
+                  
+                  <s:div rendered="#{(alt.action != null) and (alt.action.parameterInfo != null) and (alt.action.parameterInfo != '')}">
+                     
+	                  <h:outputLabel for="parameterInfo" value="Information about parameters:"/>
+	                  
+	                  <pre class="overflow-s" style="width:58%;">
+	                  	<h:outputText id="parameterInfo" rendered="#{alt.action != null}" 
+	                    	 value="#{alt.action.parameterInfo}"/>
+	                  </pre>
+	                  
+                  </s:div>
+                     
+               </h:column>
+            </h:dataTable>
+            <p:buttons bean="#{devexperiments}" />
+         </h:form>
+      </div>
+   </ui:define>
+   <!--
+      Proceed button cannot be displayed here. It must be within the form.
+      <ui:define name="controls">
+      <h:commandButton value="Proceed" action="#{devexperiments.proceed}" />
+      </ui:define>
+   -->
+</ui:composition>

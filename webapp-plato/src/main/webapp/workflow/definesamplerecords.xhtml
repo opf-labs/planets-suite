@@ -1,0 +1,327 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:p="http://planets-project.eu/taglibs/plato"
+   xmlns:c="http://java.sun.com/jstl/core"  
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich" 
+   template="../template.xhtml">
+   <ui:define name="scripts">
+     <ui:include src="shared/validateSampleScript.xhtml"/>
+      
+</ui:define>
+   <ui:define name="title">
+      PLANETS Preservation Planning Tool - Define Sample Records
+   </ui:define>
+   <ui:define name="content">
+      <div id="content">
+        <p:jhoveTree tree1_root="#{jhoveTree.root}" />
+        <p:fitsInfo/>
+      
+         <h1>Define Sample Records</h1>
+         <div id="anchors">
+            <ul>
+               <li>
+                  <a href="definesamplerecords.xhtml#collectionprofile">Collection Profile</a>
+               </li>
+               <li>
+                  <a href="definesamplerecords.xhtml#samplerecords">Sample Records</a>
+               </li>
+            </ul>
+         </div>
+         <h:form id="mainform">
+            <h:inputText id="changedflag" value="#{changed}"
+                style="display:none" />
+
+            <fieldset id="collectionprofile" class="size-full">
+               <legend>
+                  <ui:include src="../legend_nav.xhtml"></ui:include>
+                  <h:outputText value="Collection Profile" />
+               </legend>
+               <p:inputTextArea labelText="Collection ID"
+                  id="collectionID"
+                  input="#{selectedPlan.sampleRecordsDefinition.collectionProfile.collectionID}"
+                  bean="#{selectedPlan.sampleRecordsDefinition}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Description"
+                  id="collectionDescription"
+                  input="#{selectedPlan.sampleRecordsDefinition.collectionProfile.description}"
+                  bean="#{selectedPlan.sampleRecordsDefinition}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Type of objects"
+                  id="collectionTypeOfObjects"
+                  input="#{selectedPlan.sampleRecordsDefinition.collectionProfile.typeOfObjects}"
+                  bean="#{selectedPlan.sampleRecordsDefinition}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Number of objects"
+                  id="collectionNumberOfObjects"
+                  input="#{selectedPlan.sampleRecordsDefinition.collectionProfile.numberOfObjects}"
+                  bean="#{selectedPlan.sampleRecordsDefinition}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Expected growth rate"
+                  id="collectionExpectedGrowthRate"
+                  input="#{selectedPlan.sampleRecordsDefinition.collectionProfile.expectedGrowthRate}"
+                  bean="#{selectedPlan.sampleRecordsDefinition}"
+                  actionMethodName="touch" />
+                <p:inputTextArea labelText="Retention period (time horizon)"
+                  id="collectionRetentionPeriod"
+                  input="#{selectedPlan.sampleRecordsDefinition.collectionProfile.retentionPeriod}"
+                  bean="#{selectedPlan.sampleRecordsDefinition}"
+                  actionMethodName="touch" />
+            </fieldset>
+            <p:help url="/plato/help/samples.html" text="What are sample records and why do I need them?"/>
+            <fieldset id="samplerecords" class="size-full">
+               <legend>
+                  <ui:include src="../legend_nav.xhtml"></ui:include>
+                  <h:outputText value="Sample Records" />
+               </legend>
+               <div class="margin-bottom-huge">
+                  <p:inputTextArea
+                     labelText="Description of sample records"
+                     id="samplesDescription"
+                     input="#{selectedPlan.sampleRecordsDefinition.samplesDescription}"
+                     bean="#{selectedPlan.sampleRecordsDefinition}"
+                     required="true" actionMethodName="touch" />
+               </div>
+               <h:inputText id="changedflag2" value="#{changed}"
+                  style="display:none" />
+               <!-- div class="margin-bottom-big">< in case the project doesn't have any records so far, we display a message -->
+               <h:outputText value="No records added so far"
+                  rendered="#{records != null and records.rowCount==0}" />
+               <!-- we display all records -->
+
+                  <h:dataTable id="allrecords" value="#{records}" var="row"
+                     rendered="#{records != null and records.rowCount>0}"
+                     columnClasses="size-xxl margin-top-big margin-bottom-small margin-left-big margin-right-big noborder, size-xxl margin-top-big margin-bottom-big margin-left-small margin-right-small noborder, align-vertical-center margin-left-big margin-right-big border size-xs"
+                     headerClass="margin-left-big margin-right-big border nowrap"
+                     styleClass="size-xxl" rowClasses="border">
+                     <h:column>
+                        <f:facet name="header">
+                           <h:outputText value="Sample Record" />
+                        </f:facet>
+                        <!-- the question is if this sampleRecord already has a name, "row.data == null" is useless -->
+                        <div class="nonwrapped">
+                           <p:inputText labelText="Full name"
+                              id="fullName" input="#{row.fullname}"
+                              bean="#{row}"
+                              disabled="#{row.dataExistent}"
+                              required="true" actionMethodName="touch" />
+                        </div>
+                        <div class="nonwrapped">
+                           <p:inputText labelText="Short name"
+                              id="shortName" input="#{row.shortName}"
+                              maxlength="255"
+                              required="true" bean="#{row}"
+                              actionMethodName="touch" />
+                        </div>
+                        <h:outputLabel for="datayes" class="small">
+                           Has data:
+                        </h:outputLabel>
+                        <!-- we would like to show a tooltip text for this element but unfortunately it is not  -->
+                        <!-- maybe the data-object is there but empty -->
+                        <div id="data" class="nonwrapped ">
+                           <h:selectBooleanCheckbox id="datayes"
+                              disabled="true"
+                              value="#{row.dataExistent}" />
+                           <h:outputText
+                              rendered="#{row.dataExistent}"
+                              disabled="true"
+                              value=" #{row.dataInMB} MB"/>
+                           <h:commandButton value="download"
+                              action="#{defineSampleRecords.download(row)}"
+                              rendered="#{row.dataExistent}" />
+                        </div>
+                        <div class="float-off">
+                           <p:inputTextArea
+                              labelText="Original technical environment"
+                              id="originalTechnicalEnvironment"
+                              input="#{row.originalTechnicalEnvironment}"
+                              maxlength="5000"
+                              bean="#{row}" actionMethodName="touch" />
+                        </div>
+                        <div class="float-off">
+                           <p:inputTextArea labelText="Description"
+                              id="sampleRecordDescription"
+                              input="#{row.description}"
+                              maxlength="5000" bean="#{row}"
+                              actionMethodName="touch" />
+                        </div>
+                        <div class="margin-top-big margin-bottom-big">
+                           <h:commandButton id="cbutton#{row.id}"
+                              rendered="#{allowRemove != row.id}"
+                              value="Remove sample"
+                              action="#{defineSampleRecords.askRemoveRecord}"
+                              immediate="true"/>
+                           <h:outputText
+                              rendered="#{allowRemove == row.id}"
+                              value="This sample has associated evaluation values. These will be removed as well. Are you sure?"
+                              class="size-max" />
+                           <h:commandButton
+                              rendered="#{allowRemove == row.id}"
+                              value="Yes, remove it."
+                              action="#{defineSampleRecords.removeRecord}"
+                              onclick="changed()"
+                              immediate="true"/>
+                        </div>
+                     </h:column>
+                     <h:column>
+                        <f:facet name="header">
+                           <h:outputText value="Object Format" />
+                        </f:facet>
+                        <s:div rendered="#{row.dataExistent}" id="div4rendering">
+                            <s:div styleClass="messageBox infoMessage margin-left-big margin-right-big margin-top-big margin-bottom-big" 
+                                rendered="#{(not empty formatMessage) and (identifiedRecord == row)}">
+                                <h:outputText id="formatMessageid"  value="#{formatMessage}"/>
+                            </s:div>
+                            <h:outputLabel id="forselectFormat"  
+                                rendered="#{(identifiedRecord == row) and (not empty possibleFormatsString)}" 
+                                for="selectFormat" >
+                            </h:outputLabel>
+                            <h:selectOneMenu 
+                                id="selectFormat"
+                                value="#{selectedFormat.value}"
+                                rendered="#{(identifiedRecord == row) and (not empty possibleFormatsString)}" 
+                                converter="#{emptyStringToNullConverter}">
+                                <s:selectItems
+                                    value="#{possibleFormatsString}" 
+                                    var="format"
+                                    label="#{format}" />
+                                <a4j:support event="onchange" onsubmit="validateSampleRecords();changed();"
+                                    action="#{defineSampleRecords.changeFormat()}" reRender="allrecords" />
+                            </h:selectOneMenu>
+                            
+                             <s:div id="formatInfos" >
+                                <h:outputLabel for="formatHint" class="small"
+                                    rendered="#{(not empty possibleFormatsString) and (not empty possibleFormats[selectedFormat.value].hitWarning)}">
+                                    Please consider:
+                                </h:outputLabel>
+                                <h:outputText styleClass="errorMessage" id="formatHint" value="#{possibleFormats[selectedFormat.value].hitWarning}"
+                                    rendered="#{(not empty possibleFormatsString) and (not empty possibleFormats[selectedFormat.value].hitWarning)}"/>
+
+                                <p:formatInfo value="#{row.formatInfo}" />
+                             </s:div>
+                            <h:outputLabel id="forapproveFormat"  
+                                rendered="#{(identifiedRecord == row) and (not empty possibleFormatsString)}" 
+                                for="approveFormat" >
+                            </h:outputLabel>
+                             <a4j:commandButton id="approveFormat"
+                                 onclick="validateSampleRecords();"
+                                 rendered="#{(identifiedRecord == row) and (not empty possibleFormatsString)}" 
+                                 value="Approve format"
+                                 action="#{defineSampleRecords.selectFormat()}"
+                                 eventsQueue="ajaxQ" ignoreDupResponses="true"
+                                 reRender="allrecords"
+                                >
+                             </a4j:commandButton>
+                            <s:div styleClass="nonwrapped margin-right-huge" >
+                                <h:outputLabel for="identifyFormatButton"  class="small">
+                                </h:outputLabel>
+                                <a4j:commandButton
+                                    id="identifyFormatButton"
+                                    onclick="validateSampleRecords();"
+								    disabled="#{not ((identifiedRecord != row) or (empty possibleFormatsString))}" 
+                                    value="Identify format"
+                                    action="#{defineSampleRecords.identifyFormat(row)}"
+                                    eventsQueue="ajaxQ"  ignoreDupResponses="true"
+                                    reRender="allrecords">
+                                </a4j:commandButton>
+                                <a href="http://droid.sourceforge.net/" target="blank" >
+                                    <img src="../../src/main/webapp/img/logos/droid.gif" alt="DROID"  height="39" width="150" style="vertical-align:middle;"/>
+                                </a>
+                            </s:div>
+							<br/>
+							<label class="small" for="showItem" />
+							<a4j:commandButton id="showItem"
+								action="#{defineSampleRecords.characteriseJHoveTree(row)}"
+								immediate="true"
+								styleClass="small" value="View Characteristics"
+								oncomplete="Richfaces.showModalPanel('jhovePanel',{top:'100px',width:'550px', top:'200px'});"
+								reRender="myModalDiv" 
+								eventsQueue="ajaxQ" ignoreDupResponses="true"
+								/>
+
+							<a href="http://hul.harvard.edu/jhove/" target="blank">
+                               <img
+								src="../../src/main/webapp/img/logos/jhove.gif" alt="JHOVE" height="39"
+								width="150" style="vertical-align:middle;" />
+                            </a>
+    			            <div class="margin-bottom-huge margin-top-big">
+                               <h:outputLabel for="showFITS"
+                                  class="small">
+                                  FITS Description:
+                               </h:outputLabel>
+                               <a4j:commandButton id="showFITS" value="View FITS Characteristics"
+                                  oncomplete="Richfaces.showModalPanel('fitsPanel');"
+                                  reRender="fitsModalDiv"
+                                  eventsQueue="ajaxQ" ignoreDupResponses="true"
+                                  action="#{defineSampleRecords.characteriseFits(row)}"/>
+    			            </div>
+								                            
+    			            <div class="margin-bottom-huge margin-top-big">
+                               <h:outputLabel for="downloadXcdl"
+                                  class="small">
+                                  XCDL Description:
+                               </h:outputLabel>
+                               <h:commandButton id="downloadXcdl" value="download"
+                                  rendered="#{row.xcdlDescription != null}"
+                                  action="#{defineSampleRecords.download(row.xcdlDescription)}"/>
+    			            </div>
+
+                        </s:div>
+                        
+                     </h:column>
+                  </h:dataTable>
+                <div class="margin-bottom-huge margin-top-big">
+                    <h:commandButton id="extractObjectProperties"
+                       value="             Describe samples in XCDL"
+                       rendered="true"
+                       action="#{defineSampleRecords.extractObjectProperties}" class="save" style="height: 4.5em; background-image: url(../../src/main/webapp/img/icons/big/document-properties.png)"/>
+ <div align="left"> <a target="_blank" href="../../src/main/webapp/help/fields.html#xcdl">What is XCDL?</a>
+                </div>                       
+                </div>
+
+            </fieldset>
+
+            
+            <p:buttons bean="#{defineSampleRecords}" />
+            <h3>Add new sample without file</h3>
+            <div>
+               <h:commandButton value="Add sample" id="addRecord"
+                  action="#{defineSampleRecords.newRecord}"
+                  onclick="changed()"
+                  immediate="true"/>
+            </div>
+            <s:div rendered="#{user.admin}">
+             <h3>Add samples from directory</h3>
+                <s:decorate>
+                   <div class="inputDecorate">
+                       <span class="#{invalid?'errors':''}">
+                           <s:validateAll>
+                           	   <h:inputText id="iduploadpath" value="#{uploadBean.path}" class="size-xxl" >
+               	 	    	       <f:validateLength maximum="255" />
+                    	       </h:inputText>
+                           </s:validateAll>
+				   <h:commandButton value="Add All Files in Dir" id="addAllRecords"
+                  		action="#{defineSampleRecords.addAllRecords}"
+                  		onclick="changed()"/>
+                       </span>
+                       <s:message styleClass="errorMessage" />
+                       
+                   </div>
+                   
+               </s:decorate>
+            </s:div>
+         </h:form>
+         <h3>Upload new sample</h3>
+         <div>
+            <p:fileUploadForm id="recordsUploadForm" data="#{sampleRecordToUpload.data.data}"
+            text="Upload new sample file"
+               fileName="#{sampleRecordToUpload.fullname}" contentType="#{sampleRecordToUpload.contentType}"
+               bean="#{defineSampleRecords}" actionMethodName="upload" />
+         </div>
+      </div>
+   </ui:define>
+</ui:composition>
