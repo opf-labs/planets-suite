@@ -10,7 +10,6 @@
  *******************************************************************************/
 package at.tuwien.minimee;
 
-import at.tuwien.minimee.emulation.EmulationService;
 import at.tuwien.minimee.migration.MigrationService;
 import at.tuwien.minimee.model.ToolConfig;
 import at.tuwien.minimee.registry.ToolRegistry;
@@ -18,7 +17,6 @@ import at.tuwien.minimee.registry.ToolRegistry;
 /**
  * This is the generic class for action services in MiniMEE -
  * @see MigrationService
- * @see EmulationService
  * @author cbu
  *
  */
