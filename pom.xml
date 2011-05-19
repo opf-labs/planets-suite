@@ -147,7 +147,6 @@
         <module>services-jhove</module>
         <module>services-jtidy</module>
         <module>services-libtiff</module>
-        <module>services-metadata</module>
         <module>services-odf</module>
         <module>services-pdfbox</module>
         <module>services-sanselan</module>
