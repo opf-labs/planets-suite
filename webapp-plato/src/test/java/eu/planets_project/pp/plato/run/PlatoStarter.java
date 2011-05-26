@@ -15,6 +15,10 @@ import java.io.IOException;
 
 public class PlatoStarter {
 
+    /**
+     * @param args if not 8080 then pass port as an integer arg
+     * @throws Exception when it goes wrong
+     */
     public static void main(String... args) throws Exception {
         int port = 8080;
         if (args.length > 0) {
