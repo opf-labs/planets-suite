@@ -19,6 +19,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;
 
 /**
  * This converter is needed in order to display null as an option in selectMenus.
@@ -26,8 +27,8 @@ import org.jboss.seam.annotations.Name;
  * So in case of a null value an empty string will be displayed.
  */
 @Name("emptyStringToNullConverter")
-//@org.jboss.seam.annotations.jsf.Converter(forClass=java.lang.String.class)
 @org.jboss.seam.annotations.faces.Converter(forClass=java.lang.String.class)
+@BypassInterceptors
 public class EmptyStringToNullConverter implements Converter, Serializable {
 
     private static final long serialVersionUID = 2665071598357929282L;
