@@ -1,6 +1,8 @@
 package eu.planets_project.pp.plato.run;
 
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.security.HashUserRealm;
+import org.mortbay.jetty.security.UserRealm;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 import java.io.File;
@@ -20,12 +22,16 @@ public class PlatoStarter {
      * @throws Exception when it goes wrong
      */
     public static void main(String... args) throws Exception {
+        System.setProperty("java.naming.factory.url.pkgs","org.mortbay.naming");
+        System.setProperty("java.naming.factory.initial","org.mortbay.naming.InitialContextFactory");
         int port = 8080;
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         }
         Server server = new Server(port);
         server.addHandler(new WebAppContext(getProjectRoot().getAbsolutePath() + "/webapp-plato/src/main/webapp", "/plato"));
+        HashUserRealm planetsRealm = new HashUserRealm("PlanetsRealm");
+        server.setUserRealms(new UserRealm[] { planetsRealm });
         server.start();
     }
 

@@ -2,20 +2,17 @@
 <components xmlns="http://jboss.com/products/seam/components"
             xmlns:core="http://jboss.com/products/seam/core"
             xmlns:persistence="http://jboss.com/products/seam/persistence"
-            xmlns:drools="http://jboss.com/products/seam/drools"
             xmlns:security="http://jboss.com/products/seam/security"
             xmlns:mail="http://jboss.com/products/seam/mail"
             xmlns:web="http://jboss.com/products/seam/web"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:transaction="http://jboss.com/products/seam/transaction"
             xsi:schemaLocation="
-            http://jboss.com/products/seam/core
-            http://jboss.com/products/seam/core-2.1.xsd
+            http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.1.xsd
             http://jboss.com/products/seam/transaction
+            http://jboss.com/products/seam/transaction-2.1.xsd
             http://jboss.com/products/seam/persistence
             http://jboss.com/products/seam/persistence-2.1.xsd
-            http://jboss.com/products/seam/drools
-            http://jboss.com/products/seam/drools-2.1.xsd
             http://jboss.com/products/seam/security
             http://jboss.com/products/seam/security-2.1.xsd
             http://jboss.com/products/seam/mail
@@ -32,8 +29,9 @@
                   conversation-timeout="120000" conversation-id-parameter="cid"
                   parent-conversation-id-parameter="pid"/>
 
-    <persistence:managed-persistence-context
-            name="em" auto-create="true" persistence-unit-jndi-name="java:/platoEntityManagerFactory"/>
+    <persistence:managed-persistence-context persistence-unit-jndi-name="java:/platoEntityManagerFactory"/>
+    <!--<persistence:managed-persistence-context-->
+            <!--name="em" auto-create="true" persistence-unit-jndi-name="java:/platoEntityManagerFactory"/>-->
 
 
     <!--
@@ -44,7 +42,8 @@
    http://www.redhat.com/docs/manuals/jboss/jboss-eap-4.2/doc/seam/Seam_Reference_Guide/Built_in_Seam_components-Infrastructural_components.html
     -->
 
-    <core:ejb/>
+    <!--<core:ejb/>-->
+
     <web:hot-deploy-filter url-pattern="*.seam"/>
 
     <!-- <core:ejb installed="true"></core:ejb> -->
