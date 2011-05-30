@@ -25,13 +25,14 @@
 
     <core:init jndi-pattern="plato/#{ejbName}/local" debug="true"/>
 
+    <transaction:entity-transaction entity-manager="#{persist}"/>
     <transaction:ejb-transaction/>
 
     <core:manager concurrent-request-timeout="500"
                   conversation-timeout="120000" conversation-id-parameter="cid"
                   parent-conversation-id-parameter="pid"/>
 
-    <persistence:managed-persistence-context persistence-unit-jndi-name="java:/platoEntityManagerFactory"/>
+    <persistence:managed-persistence-context name="persist" persistence-unit-jndi-name="java:/platoEntityManagerFactory"/>
     <!--<persistence:managed-persistence-context-->
             <!--name="em" auto-create="true" persistence-unit-jndi-name="java:/platoEntityManagerFactory"/>-->
 

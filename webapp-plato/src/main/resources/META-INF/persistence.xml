@@ -12,7 +12,6 @@
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="jboss.entity.manager.factory.jndi.name" value="java:/platoEntityManagerFactory"/>
-            <!--<property name="hibernate.transaction.manager_lookup_class" value="org.apache.openejb.hibernate.TransactionManagerLookup"/>-->
         </properties>
     </persistence-unit>
 </persistence>
