@@ -39,9 +39,10 @@ public class PlatoStarter {
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         }
-        LOG.info("Setting up JNDI");
-        System.setProperty("java.naming.factory.url.pkgs", "org.mortbay.naming");
-        System.setProperty("java.naming.factory.initial", "org.mortbay.naming.InitialContextFactory");
+        System.setProperty("openejb.base", "src/test/resources");
+        java.util.Properties props = new java.util.Properties();
+        props.put("openejb.jndiname.format","{interfaceType.annotationName}");
+        org.apache.openejb.OpenEJB.init(props);
         LOG.info("Binding data source");
         bindDataSource();
         LOG.info("Binding entity manager");

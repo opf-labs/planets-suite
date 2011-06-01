@@ -23,7 +23,7 @@
             http://jboss.com/products/seam/components-2.1.xsd"
 >
 
-    <core:init jndi-pattern="plato/#{ejbName}/local" debug="true"/>
+    <core:init jndi-pattern="#{ejbName}/local" debug="true"/>
 
     <core:manager concurrent-request-timeout="500"
                   conversation-timeout="120000" conversation-id-parameter="cid"
