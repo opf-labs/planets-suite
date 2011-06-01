@@ -1,0 +1,333 @@
+/*C3*/SET SCHEMA PUBLIC
+CONNECT USER SA
+DISCONNECT
+/*C4*/SET SCHEMA PUBLIC
+CONNECT USER SA
+alter table Alternative drop constraint FK57AECF8D3556EFF3
+alter table Alternative drop constraint FK57AECF8DD69C7D10
+alter table Alternative drop constraint FK57AECF8DB0AA26D0
+alter table Alternative drop constraint FK57AECF8D7C43C5A4
+alter table Alternative drop constraint FK57AECF8DF861A944
+alter table AlternativesDefinition drop constraint FKAE394479B0AA26D0
+alter table ByteStream drop constraint FK945F92C8BBDD8C44
+alter table Decision drop constraint FK259293FCB0AA26D0
+alter table DetailedExperimentInfo drop constraint FK955F473BB0AA26D0
+alter table DigitalObject drop constraint FK5A8BB5727EC1910
+alter table DigitalObject drop constraint FK5A8BB57E0745182
+alter table DigitalObject drop constraint FK5A8BB577AEE1A30
+alter table DigitalObject drop constraint FK5A8BB57E36C48C4
+alter table DigitalObject drop constraint FK5A8BB57B0AA26D0
+alter table Evaluation drop constraint FKA9FDE35CB0AA26D0
+alter table ExecutablePlanDefinition drop constraint FKADA866B0AA26D0
+alter table Experiment drop constraint FK71BBB81DB0AA26D0
+alter table Experiment_DetailedExperimentInfo drop constraint FK94899D9D16CB276A
+alter table Experiment_DetailedExperimentInfo drop constraint FK94899D9DCA6C38C1
+alter table Experiment_DetailedExperimentInfo drop constraint FK_EXP_DETAILEDINFO
+alter table Experiment_DigitalObject drop constraint FK7AB4EB516CB276A
+alter table Experiment_DigitalObject drop constraint FK_EXP_RESULTS
+alter table Experiment_DigitalObject drop constraint FK7AB4EB525CB7031
+alter table FormatInfo drop constraint FK8A19D965B0AA26D0
+alter table ImportanceWeighting drop constraint FK37173236B0AA26D0
+alter table LibraryTree drop constraint FK3F12DED9B34019E6
+alter table MeasurableProperty drop constraint FK79F14ED6B2D8A1FF
+alter table MeasurableProperty drop constraint FK79F14ED6B0AA26D0
+alter table Measurement drop constraint FKF75C839C8C7295F7
+alter table Measurement drop constraint FKF75C839C36F8AA98
+alter table MeasurementInfo drop constraint FK281C2E6A8C7295F7
+alter table MeasurementInfo drop constraint FK281C2E6AB0AA26D0
+alter table MeasurementInfo drop constraint FK281C2E6ABCEB6936
+alter table Measurements_Measurement drop constraint FKF69C07B4843FFAD6
+alter table Measurements_Measurement drop constraint FKF69C07B4B10F681C
+alter table Metric drop constraint FK892AE1D0B2D8A1FF
+alter table Metric drop constraint FK892AE1D0B0AA26D0
+alter table ObjectProperty drop constraint FK5F740254B0AA26D0
+alter table ObjectiveTree drop constraint FK7E1C8C572EDEE39E
+alter table Organisation drop constraint FK441E54FA2D271A64
+alter table Organisation drop constraint FK441E54FA4A03F9A0
+alter table Parameter drop constraint FKEBF0D38957A8F89F
+alter table Plan drop constraint FK25FF4927EC1910
+alter table Plan drop constraint FK25FF49FB70FFC4
+alter table Plan drop constraint FK25FF49B0AA26D0
+alter table Plan drop constraint FK25FF49C1715010
+alter table Plan drop constraint FK25FF49B6764A4D
+alter table Plan drop constraint FK25FF4939F64524
+alter table Plan drop constraint FK25FF49FAE55104
+alter table Plan drop constraint FK25FF4990AC8944
+alter table Plan drop constraint FK25FF494A7827
+alter table Plan drop constraint FK25FF496E272604
+alter table Plan drop constraint FK25FF49917F0464
+alter table Plan drop constraint FK25FF49A666C724
+alter table Plan drop constraint FK25FF49A00C9064
+alter table Plan drop constraint FK25FF49F861A944
+alter table Plan drop constraint FK25FF49D268EBC4
+alter table PlanDefinition drop constraint FK5385497CB0AA26D0
+alter table PlanDefinition drop constraint FK5385497CC7018300
+alter table PlanProperties drop constraint FK58C9A15C605CA392
+alter table PlanProperties drop constraint FK58C9A15CB0AA26D0
+alter table PolicyNode drop constraint FKD5CABA744740BFD8
+alter table PolicyTree drop constraint FKD5CD80101E1CBCF6
+alter table PreservationActionDefinition drop constraint FK136581C5B0AA26D0
+alter table PreservationActionDefinition drop constraint FK136581C594CAAD3
+alter table ProjectBasis drop constraint FK402AF4C5B0AA26D0
+alter table ProjectBasis drop constraint FK402AF4C54A03F9A0
+alter table ProjectBasis drop constraint FK402AF4C5C7018300
+alter table Recommendation drop constraint FK86F70BD91F2FA6D0
+alter table Recommendation drop constraint FK86F70BD9B0AA26D0
+alter table RequirementsDefinition drop constraint FK4B53F623B0AA26D0
+alter table RequirementsDefinition_DigitalObject drop constraint FK76238A3B39642415
+alter table RequirementsDefinition_DigitalObject drop constraint FK76238A3BFAE55104
+alter table ResourceDescription drop constraint FK611BBAEEB0AA26D0
+alter table SampleRecordsDefinition drop constraint FKE4ED308BB0AA26D0
+alter table SampleRecordsDefinition drop constraint FKE4ED308B87AE7170
+alter table Scale drop constraint FK4C0192AB0AA26D0
+alter table TemplateTree drop constraint FKCF9F3B58F048DE0
+alter table Transformation drop constraint FK60ABDF29B0AA26D0
+alter table Transformer drop constraint FKEC3AF4F9B0AA26D0
+alter table Transformer_TargetValueObject drop constraint FKE490FBD9B44837A1
+alter table Transformer_TargetValueObject drop constraint FKE490FBD9457D7C35
+alter table TreeNode drop constraint FK5676FAE05802E680
+alter table TreeNode drop constraint FK5676FAE0ACB50C4E
+alter table TreeNode drop constraint FK5676FAE0B2D8A1FF
+alter table TreeNode drop constraint FK5676FAE0B0AA26D0
+alter table TreeNode drop constraint FK5676FAE019CC2B9E
+alter table TreeNode_ValueList drop constraint FKCAAE92F0F5F49CBE
+alter table TreeNode_ValueList drop constraint FKCAAE92F042B45ABB
+alter table TriggerDefinition drop constraint FK2DECE10BDE570B69
+alter table TriggerDefinition drop constraint FK2DECE10BA1496E31
+alter table TriggerDefinition drop constraint FK2DECE10BD4AB1415
+alter table TriggerDefinition drop constraint FK2DECE10BFDB8A1AA
+alter table TriggerDefinition drop constraint FK2DECE10BF9BBC783
+alter table User drop constraint FK285FEB34DDA204
+alter table Value drop constraint FK4E9A151B2D8A1FF
+alter table Value drop constraint FK4E9A151B0AA26D0
+alter table ValueList_Value drop constraint FK45D012A13BC894F7
+alter table ValueList_Value drop constraint FK45D012A195DEA04B
+alter table detailedInfo_values drop constraint FK2401BB03C184F224
+alter table detailedInfo_values drop constraint FK2401BB039D329E3
+alter table toolexp_measurements drop constraint FKC096CCB1843FFAD6
+alter table toolexp_measurements drop constraint FKC096CCB139E3B2A4
+alter table user_role drop constraint FK143BF46A87FC5684
+alter table user_role drop constraint FK143BF46A2D271A64
+drop table Alternative if exists
+drop table AlternativesDefinition if exists
+drop table ByteStream if exists
+drop table ChangeLog if exists
+drop table CollectionProfile if exists
+drop table Decision if exists
+drop table DetailedExperimentInfo if exists
+drop table DigitalObject if exists
+drop table Evaluation if exists
+drop table ExecutablePlanDefinition if exists
+drop table Experiment if exists
+drop table Experiment_DetailedExperimentInfo if exists
+drop table Experiment_DigitalObject if exists
+drop table FormatInfo if exists
+drop table ImportanceWeighting if exists
+drop table LibraryTree if exists
+drop table MeasurableProperty if exists
+drop table Measurement if exists
+drop table MeasurementInfo if exists
+drop table Measurements if exists
+drop table Measurements_Measurement if exists
+drop table Metric if exists
+drop table ObjectProperty if exists
+drop table ObjectiveTree if exists
+drop table Organisation if exists
+drop table Parameter if exists
+drop table Plan if exists
+drop table PlanDefinition if exists
+drop table PlanProperties if exists
+drop table PlanState if exists
+drop table PolicyNode if exists
+drop table PolicyTree if exists
+drop table PreservationActionDefinition if exists
+drop table ProjectBasis if exists
+drop table RealByteStream if exists
+drop table Recommendation if exists
+drop table RequirementsDefinition if exists
+drop table RequirementsDefinition_DigitalObject if exists
+drop table ResourceDescription if exists
+drop table Role if exists
+drop table SampleRecordsDefinition if exists
+drop table Scale if exists
+drop table TargetValueObject if exists
+drop table TemplateTree if exists
+drop table ToolExperience if exists
+drop table Transformation if exists
+drop table Transformer if exists
+drop table Transformer_TargetValueObject if exists
+drop table TreeNode if exists
+drop table TreeNode_ValueList if exists
+drop table TriggerDefinition if exists
+drop table User if exists
+drop table Value if exists
+drop table ValueList if exists
+drop table ValueList_Value if exists
+drop table detailedInfo_values if exists
+drop table toolexp_measurements if exists
+drop table ttrigger if exists
+drop table user_role if exists
+create table Alternative (id integer generated by default as identity (start with 1), alternativeIndex bigint not null, description varchar(32672) not null, discarded bit not null, name varchar(30) not null, action_id integer, alternativesDefinition_id integer, changeLog_id integer, experiment_id integer, resourceDescription_id integer, primary key (id))
+create table AlternativesDefinition (id integer generated by default as identity (start with 1), description varchar(32672), changeLog_id integer, primary key (id))
+create table ByteStream (id integer generated by default as identity (start with 1), size integer not null, realByteStream_id integer, primary key (id))
+create table ChangeLog (id integer generated by default as identity (start with 1), changed bigint not null, changedBy varchar(255), created bigint not null, createdBy varchar(255), primary key (id))
+create table CollectionProfile (id integer generated by default as identity (start with 1), collectionID varchar(32672), description varchar(32672), expectedGrowthRate varchar(32672), numberOfObjects varchar(32672), retentionPeriod varchar(32672), typeOfObjects varchar(32672), primary key (id))
+create table Decision (id integer generated by default as identity (start with 1), actionNeeded varchar(32672), decision integer, reason varchar(32672), changeLog_id integer, primary key (id))
+create table DetailedExperimentInfo (id integer generated by default as identity (start with 1), cpr varchar(255), programOutput varchar(2000000), successful bit, changeLog_id integer, primary key (id))
+create table DigitalObject (type varchar(31) not null, id integer generated by default as identity (start with 1), contentType varchar(255), fitsXMLString varchar(2000000), fullname varchar(255), jhoveXMLString varchar(2000000), description varchar(5000), originalTechnicalEnvironment varchar(5000), sampleIndex bigint, shortName varchar(255), changeLog_id integer, data_id integer, formatInfo_id integer, xcdlDescription_id integer, sampleRecordsDefinition_id integer, primary key (id))
+create table Evaluation (id integer generated by default as identity (start with 1), comment varchar(32672), changeLog_id integer, primary key (id))
+create table ExecutablePlanDefinition (id integer generated by default as identity (start with 1), eprintsExecutablePlan varchar(2000000), executablePlan varchar(2000000), objectPath varchar(255), toolParameters varchar(32672), triggersConditions varchar(32672), validateQA varchar(32672), changeLog_id integer, primary key (id))
+create table Experiment (id integer generated by default as identity (start with 1), description varchar(2000000), settings varchar(32672), changeLog_id integer, primary key (id))
+create table Experiment_DetailedExperimentInfo (Experiment_id integer not null, detailedInfo_id integer not null, mapkey_id integer not null, primary key (Experiment_id, mapkey_id), unique (detailedInfo_id))
+create table Experiment_DigitalObject (Experiment_id integer not null, results_id integer not null, mapkey_id integer not null, primary key (Experiment_id, mapkey_id), unique (results_id))
+create table FormatInfo (id integer generated by default as identity (start with 1), defaultExtension varchar(255), mimeType varchar(255), name varchar(255), puid varchar(255), version varchar(255), changeLog_id integer, primary key (id))
+create table ImportanceWeighting (id integer generated by default as identity (start with 1), comment varchar(32672), changeLog_id integer, primary key (id))
+create table LibraryTree (id integer generated by default as identity (start with 1), name varchar(255), root_id integer, primary key (id))
+create table MeasurableProperty (id integer generated by default as identity (start with 1), category varchar(255), description varchar(32672), name varchar(255), propertyId varchar(255), changeLog_id integer, scale_id integer, primary key (id))
+create table Measurement (id integer generated by default as identity (start with 1), property_id integer, value_id integer, primary key (id))
+create table MeasurementInfo (id bigint generated by default as identity (start with 1), changeLog_id integer, metric_id bigint, property_id integer, primary key (id))
+create table Measurements (id integer generated by default as identity (start with 1), primary key (id))
+create table Measurements_Measurement (Measurements_id integer not null, list_id integer not null, unique (list_id))
+create table Metric (id bigint generated by default as identity (start with 1), description varchar(32672), metricId varchar(255), name varchar(255), changeLog_id integer, scale_id integer, primary key (id))
+create table ObjectProperty (optype varchar(31) not null, id bigint generated by default as identity (start with 1), description varchar(32672), name varchar(255), propertyId varchar(255), type varchar(255), unit varchar(255), changeLog_id integer, primary key (id))
+create table ObjectiveTree (id integer generated by default as identity (start with 1), weightsInitialized bit not null, root_id integer, primary key (id))
+create table Organisation (id integer generated by default as identity (start with 1), name varchar(255), policyTree_id integer, user_id bigint, primary key (id))
+create table Parameter (id integer generated by default as identity (start with 1), name varchar(255), value varchar(255), padef_fk integer, indexcol integer, primary key (id))
+create table Plan (id integer generated by default as identity (start with 1), alternativesdefinition_id integer, changeLog_id integer, decision_id integer, evaluation_id integer, executablePlanDefinition_id integer, importanceWeighting_id integer, planDefinition_id integer, planProperties_id integer, projectBasis_id integer, recommendation_id integer, requirementsDefinition_id integer, sampleRecordsDefinition_id integer, state_id integer, transformation_id integer, tree_id integer, primary key (id))
+create table PlanDefinition (id integer generated by default as identity (start with 1), costsIG varchar(255), costsPA varchar(255), costsPE varchar(255), costsQA varchar(255), costsREI varchar(255), costsRM varchar(255), costsRemarks varchar(32672), costsTCO varchar(255), currency varchar(255), responsibleExecution varchar(255), responsibleMonitoring varchar(255), changeLog_id integer, triggers_id integer, primary key (id))
+create table PlanProperties (id integer generated by default as identity (start with 1), author varchar(255), description varchar(32672), name varchar(255) not null, openHandle integer not null, openedByUser varchar(255), organization varchar(255), owner varchar(255), privateProject bit not null, reportPublic bit not null, changeLog_id integer, reportUpload_id integer, primary key (id))
+create table PlanState (id integer generated by default as identity (start with 1), value integer not null, primary key (id))
+create table PolicyNode (policy varchar(31) not null, id integer generated by default as identity (start with 1), name varchar(255), value varchar(255), parent_fk integer, indexcol integer, primary key (id))
+create table PolicyTree (id integer generated by default as identity (start with 1), root_id integer, primary key (id))
+create table PreservationActionDefinition (id integer generated by default as identity (start with 1), actionIdentifier varchar(255), descriptor varchar(255), emulated bit not null, executable bit not null, info varchar(32672), parameterInfo varchar(32672), shortname varchar(255), targetFormat varchar(255), url varchar(2000), changeLog_id integer, targetFormatInfo_id integer, primary key (id))
+create table ProjectBasis (id integer generated by default as identity (start with 1), applyingPolicies varchar(32672), designatedCommunity varchar(32672), documentTypes varchar(32672), identificationCode varchar(255), mandate varchar(32672), organisationalProcedures varchar(32672), planRelations varchar(32672), planningPurpose varchar(32672), preservationRights varchar(32672), referenceToAgreements varchar(32672), changeLog_id integer, policyTree_id integer, triggers_id integer, primary key (id))
+create table RealByteStream (id integer generated by default as identity (start with 1), data longvarbinary, primary key (id))
+create table Recommendation (id integer generated by default as identity (start with 1), effects varchar(32672), reasoning varchar(32672), alternative_id integer, changeLog_id integer, primary key (id))
+create table RequirementsDefinition (id integer generated by default as identity (start with 1), description varchar(32672), changeLog_id integer, primary key (id))
+create table RequirementsDefinition_DigitalObject (RequirementsDefinition_id integer not null, uploads_id integer not null, indexcol integer not null, primary key (RequirementsDefinition_id, indexcol), unique (uploads_id))
+create table ResourceDescription (id integer generated by default as identity (start with 1), configSettings varchar(32672), necessaryResources varchar(32672), reasonForConsidering varchar(32672), changeLog_id integer, primary key (id))
+create table Role (id integer generated by default as identity (start with 1), name varchar(255), primary key (id))
+create table SampleRecordsDefinition (id integer generated by default as identity (start with 1), samplesDescription varchar(32672), changeLog_id integer, collectionProfile_id integer, primary key (id))
+create table Scale (type varchar(31) not null, id integer generated by default as identity (start with 1), unit varchar(32672), lowerBound double, upperBound double, restriction varchar(255), changeLog_id integer, primary key (id))
+create table TargetValueObject (id integer generated by default as identity (start with 1), value double not null, primary key (id))
+create table TemplateTree (id integer generated by default as identity (start with 1), name varchar(255), owner varchar(255), root_id integer, primary key (id))
+create table ToolExperience (id integer generated by default as identity (start with 1), primary key (id))
+create table Transformation (id integer generated by default as identity (start with 1), comment varchar(32672), changeLog_id integer, primary key (id))
+create table Transformer (type varchar(31) not null, id integer generated by default as identity (start with 1), mode integer, threshold1 double, threshold2 double, threshold3 double, threshold4 double, threshold5 double, changeLog_id integer, primary key (id))
+create table Transformer_TargetValueObject (Transformer_id integer not null, mapping_id integer not null, key_name varchar(255), primary key (Transformer_id, key_name), unique (mapping_id))
+create table TreeNode (nodetype varchar(31) not null, id integer generated by default as identity (start with 1), description longvarchar, locked bit, name varchar(32672), single bit not null, weight double not null, category integer, predefined bit, aggregationMode integer, changeLog_id integer, parent_fk integer, measurementInfo_id bigint, scale_id integer, transformer_id integer, indexcol integer, primary key (id))
+create table TreeNode_ValueList (TreeNode_id integer not null, valueMap_id integer not null, key_name varchar(255), primary key (TreeNode_id, key_name), unique (valueMap_id))
+create table TriggerDefinition (id integer generated by default as identity (start with 1), changedCollectionProfile_id integer, changedEnvironment_id integer, changedObjective_id integer, newCollection_id integer, periodicReview_id integer, primary key (id))
+create table User (id bigint generated by default as identity (start with 1), email varchar(255), firstName varchar(255), lastName varchar(255), password varchar(255), username varchar(255), organisation_id integer, primary key (id), unique (username))
+create table Value (type varchar(31) not null, id integer generated by default as identity (start with 1), comment varchar(2000000), float_value double, integer_value integer, value varchar(255), ordinal_value varchar(255), int_value integer, target_value double, floatrange_value double, intrange_value integer, changeLog_id integer, scale_id integer, primary key (id))
+create table ValueList (id integer generated by default as identity (start with 1), comment varchar(2000000), primary key (id))
+create table ValueList_Value (ValueList_id integer not null, list_id integer not null, indexcol integer not null, primary key (ValueList_id, indexcol), unique (list_id))
+create table detailedInfo_values (DetailedExperimentInfo_id integer not null, measurements_id integer not null, key_prop varchar(255), primary key (DetailedExperimentInfo_id, key_prop), unique (measurements_id))
+create table toolexp_measurements (ToolExperience_id integer not null, measurements_id integer not null, key_name varchar(255), primary key (ToolExperience_id, key_name), unique (measurements_id))
+create table ttrigger (id integer generated by default as identity (start with 1), active bit not null, description varchar(32672), type integer, primary key (id))
+create table user_role (user_id bigint not null, role_id integer not null)
+alter table Alternative add constraint FK57AECF8D3556EFF3 foreign key (action_id) references PreservationActionDefinition
+alter table Alternative add constraint FK57AECF8DD69C7D10 foreign key (resourceDescription_id) references ResourceDescription
+alter table Alternative add constraint FK57AECF8DB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table Alternative add constraint FK57AECF8D7C43C5A4 foreign key (experiment_id) references Experiment
+alter table Alternative add constraint FK57AECF8DF861A944 foreign key (alternativesDefinition_id) references AlternativesDefinition
+alter table AlternativesDefinition add constraint FKAE394479B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table ByteStream add constraint FK945F92C8BBDD8C44 foreign key (realByteStream_id) references RealByteStream
+alter table Decision add constraint FK259293FCB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table DetailedExperimentInfo add constraint FK955F473BB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table DigitalObject add constraint FK5A8BB5727EC1910 foreign key (sampleRecordsDefinition_id) references SampleRecordsDefinition
+alter table DigitalObject add constraint FK5A8BB57E0745182 foreign key (data_id) references ByteStream
+alter table DigitalObject add constraint FK5A8BB577AEE1A30 foreign key (xcdlDescription_id) references DigitalObject
+alter table DigitalObject add constraint FK5A8BB57E36C48C4 foreign key (formatInfo_id) references FormatInfo
+alter table DigitalObject add constraint FK5A8BB57B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table Evaluation add constraint FKA9FDE35CB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table ExecutablePlanDefinition add constraint FKADA866B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table Experiment add constraint FK71BBB81DB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table Experiment_DetailedExperimentInfo add constraint FK94899D9D16CB276A foreign key (mapkey_id) references DigitalObject
+alter table Experiment_DetailedExperimentInfo add constraint FK94899D9DCA6C38C1 foreign key (detailedInfo_id) references DetailedExperimentInfo
+alter table Experiment_DetailedExperimentInfo add constraint FK_EXP_DETAILEDINFO foreign key (Experiment_id) references Experiment
+alter table Experiment_DigitalObject add constraint FK7AB4EB516CB276A foreign key (mapkey_id) references DigitalObject
+alter table Experiment_DigitalObject add constraint FK_EXP_RESULTS foreign key (Experiment_id) references Experiment
+alter table Experiment_DigitalObject add constraint FK7AB4EB525CB7031 foreign key (results_id) references DigitalObject
+alter table FormatInfo add constraint FK8A19D965B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table ImportanceWeighting add constraint FK37173236B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table LibraryTree add constraint FK3F12DED9B34019E6 foreign key (root_id) references TreeNode
+alter table MeasurableProperty add constraint FK79F14ED6B2D8A1FF foreign key (scale_id) references Scale
+alter table MeasurableProperty add constraint FK79F14ED6B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table Measurement add constraint FKF75C839C8C7295F7 foreign key (property_id) references MeasurableProperty
+alter table Measurement add constraint FKF75C839C36F8AA98 foreign key (value_id) references Value
+alter table MeasurementInfo add constraint FK281C2E6A8C7295F7 foreign key (property_id) references MeasurableProperty
+alter table MeasurementInfo add constraint FK281C2E6AB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table MeasurementInfo add constraint FK281C2E6ABCEB6936 foreign key (metric_id) references Metric
+alter table Measurements_Measurement add constraint FKF69C07B4843FFAD6 foreign key (Measurements_id) references Measurements
+alter table Measurements_Measurement add constraint FKF69C07B4B10F681C foreign key (list_id) references Measurement
+alter table Metric add constraint FK892AE1D0B2D8A1FF foreign key (scale_id) references Scale
+alter table Metric add constraint FK892AE1D0B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table ObjectProperty add constraint FK5F740254B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table ObjectiveTree add constraint FK7E1C8C572EDEE39E foreign key (root_id) references TreeNode
+alter table Organisation add constraint FK441E54FA2D271A64 foreign key (user_id) references User
+alter table Organisation add constraint FK441E54FA4A03F9A0 foreign key (policyTree_id) references PolicyTree
+alter table Parameter add constraint FKEBF0D38957A8F89F foreign key (padef_fk) references PreservationActionDefinition
+alter table Plan add constraint FK25FF4927EC1910 foreign key (sampleRecordsDefinition_id) references SampleRecordsDefinition
+alter table Plan add constraint FK25FF49FB70FFC4 foreign key (decision_id) references Decision
+alter table Plan add constraint FK25FF49B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table Plan add constraint FK25FF49C1715010 foreign key (importanceWeighting_id) references ImportanceWeighting
+alter table Plan add constraint FK25FF49B6764A4D foreign key (tree_id) references ObjectiveTree
+alter table Plan add constraint FK25FF4939F64524 foreign key (transformation_id) references Transformation
+alter table Plan add constraint FK25FF49FAE55104 foreign key (requirementsDefinition_id) references RequirementsDefinition
+alter table Plan add constraint FK25FF4990AC8944 foreign key (evaluation_id) references Evaluation
+alter table Plan add constraint FK25FF494A7827 foreign key (state_id) references PlanState
+alter table Plan add constraint FK25FF496E272604 foreign key (projectBasis_id) references ProjectBasis
+alter table Plan add constraint FK25FF49917F0464 foreign key (planProperties_id) references PlanProperties
+alter table Plan add constraint FK25FF49A666C724 foreign key (recommendation_id) references Recommendation
+alter table Plan add constraint FK25FF49A00C9064 foreign key (planDefinition_id) references PlanDefinition
+alter table Plan add constraint FK25FF49F861A944 foreign key (alternativesdefinition_id) references AlternativesDefinition
+alter table Plan add constraint FK25FF49D268EBC4 foreign key (executablePlanDefinition_id) references ExecutablePlanDefinition
+alter table PlanDefinition add constraint FK5385497CB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table PlanDefinition add constraint FK5385497CC7018300 foreign key (triggers_id) references TriggerDefinition
+alter table PlanProperties add constraint FK58C9A15C605CA392 foreign key (reportUpload_id) references DigitalObject
+alter table PlanProperties add constraint FK58C9A15CB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table PolicyNode add constraint FKD5CABA744740BFD8 foreign key (parent_fk) references PolicyNode
+alter table PolicyTree add constraint FKD5CD80101E1CBCF6 foreign key (root_id) references PolicyNode
+alter table PreservationActionDefinition add constraint FK136581C5B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table PreservationActionDefinition add constraint FK136581C594CAAD3 foreign key (targetFormatInfo_id) references FormatInfo
+alter table ProjectBasis add constraint FK402AF4C5B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table ProjectBasis add constraint FK402AF4C54A03F9A0 foreign key (policyTree_id) references PolicyTree
+alter table ProjectBasis add constraint FK402AF4C5C7018300 foreign key (triggers_id) references TriggerDefinition
+alter table Recommendation add constraint FK86F70BD91F2FA6D0 foreign key (alternative_id) references Alternative
+alter table Recommendation add constraint FK86F70BD9B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table RequirementsDefinition add constraint FK4B53F623B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table RequirementsDefinition_DigitalObject add constraint FK76238A3B39642415 foreign key (uploads_id) references DigitalObject
+alter table RequirementsDefinition_DigitalObject add constraint FK76238A3BFAE55104 foreign key (RequirementsDefinition_id) references RequirementsDefinition
+alter table ResourceDescription add constraint FK611BBAEEB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table SampleRecordsDefinition add constraint FKE4ED308BB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table SampleRecordsDefinition add constraint FKE4ED308B87AE7170 foreign key (collectionProfile_id) references CollectionProfile
+alter table Scale add constraint FK4C0192AB0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table TemplateTree add constraint FKCF9F3B58F048DE0 foreign key (root_id) references TreeNode
+alter table Transformation add constraint FK60ABDF29B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table Transformer add constraint FKEC3AF4F9B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table Transformer_TargetValueObject add constraint FKE490FBD9B44837A1 foreign key (mapping_id) references TargetValueObject
+alter table Transformer_TargetValueObject add constraint FKE490FBD9457D7C35 foreign key (Transformer_id) references Transformer
+alter table TreeNode add constraint FK5676FAE05802E680 foreign key (parent_fk) references TreeNode
+alter table TreeNode add constraint FK5676FAE0ACB50C4E foreign key (transformer_id) references Transformer
+alter table TreeNode add constraint FK5676FAE0B2D8A1FF foreign key (scale_id) references Scale
+alter table TreeNode add constraint FK5676FAE0B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table TreeNode add constraint FK5676FAE019CC2B9E foreign key (measurementInfo_id) references MeasurementInfo
+alter table TreeNode_ValueList add constraint FKCAAE92F0F5F49CBE foreign key (TreeNode_id) references TreeNode
+alter table TreeNode_ValueList add constraint FKCAAE92F042B45ABB foreign key (valueMap_id) references ValueList
+alter table TriggerDefinition add constraint FK2DECE10BDE570B69 foreign key (changedEnvironment_id) references ttrigger
+alter table TriggerDefinition add constraint FK2DECE10BA1496E31 foreign key (changedCollectionProfile_id) references ttrigger
+alter table TriggerDefinition add constraint FK2DECE10BD4AB1415 foreign key (periodicReview_id) references ttrigger
+alter table TriggerDefinition add constraint FK2DECE10BFDB8A1AA foreign key (newCollection_id) references ttrigger
+alter table TriggerDefinition add constraint FK2DECE10BF9BBC783 foreign key (changedObjective_id) references ttrigger
+alter table User add constraint FK285FEB34DDA204 foreign key (organisation_id) references Organisation
+alter table Value add constraint FK4E9A151B2D8A1FF foreign key (scale_id) references Scale
+alter table Value add constraint FK4E9A151B0AA26D0 foreign key (changeLog_id) references ChangeLog
+alter table ValueList_Value add constraint FK45D012A13BC894F7 foreign key (ValueList_id) references ValueList
+alter table ValueList_Value add constraint FK45D012A195DEA04B foreign key (list_id) references Value
+alter table detailedInfo_values add constraint FK2401BB03C184F224 foreign key (DetailedExperimentInfo_id) references DetailedExperimentInfo
+alter table detailedInfo_values add constraint FK2401BB039D329E3 foreign key (measurements_id) references Measurement
+alter table toolexp_measurements add constraint FKC096CCB1843FFAD6 foreign key (measurements_id) references Measurements
+alter table toolexp_measurements add constraint FKC096CCB139E3B2A4 foreign key (ToolExperience_id) references ToolExperience
+alter table user_role add constraint FK143BF46A87FC5684 foreign key (role_id) references Role
+alter table user_role add constraint FK143BF46A2D271A64 foreign key (user_id) references User

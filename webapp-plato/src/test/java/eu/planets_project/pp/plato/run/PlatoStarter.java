@@ -41,7 +41,7 @@ public class PlatoStarter {
         }
         System.setProperty("openejb.base", "src/test/resources");
         java.util.Properties props = new java.util.Properties();
-        props.put("openejb.jndiname.format","{interfaceType.annotationName}");
+        props.put("openejb.jndiname.format","{ejbClass.simpleName}/{interfaceType.annotationName}");
         org.apache.openejb.OpenEJB.init(props);
         LOG.info("Binding data source");
         bindDataSource();
