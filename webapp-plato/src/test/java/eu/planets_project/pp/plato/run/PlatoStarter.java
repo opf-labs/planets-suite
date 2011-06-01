@@ -72,8 +72,7 @@ public class PlatoStarter {
 
     private static void bindEntityManager() throws NamingException {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("platoDatabase");
-        EntityManager entityManager = factory.createEntityManager();
-        new InitialContext().rebind("java:/platoEntityManagerFactory", entityManager);
+        new InitialContext().rebind("java:/platoEntityManagerFactory", factory);
     }
 
     private static File getProjectRoot() throws IOException {
