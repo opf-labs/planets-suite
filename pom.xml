@@ -152,7 +152,6 @@
         <module>services-sanselan</module>
         <module>services-simple</module>
         <module>framework-wdt</module>
-        <module>webapp-testbed</module>
         <module>webapp-plato</module>
     </modules>
     <repositories>
@@ -210,6 +209,11 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>5.0-3</version>
         </dependency>
     </dependencies>
 

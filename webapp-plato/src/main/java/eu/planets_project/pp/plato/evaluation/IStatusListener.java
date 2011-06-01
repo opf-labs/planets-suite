@@ -11,14 +11,12 @@
 package eu.planets_project.pp.plato.evaluation;
 
 import eu.planets_project.pp.plato.action.workflow.EvaluateExperimentsAction;
-import eu.planets_project.pp.plato.action.workflow.RunExperimentsAction;
 
 /**
  * an interface to be used in several places in Plato
  * where longer-running processes should provide feedback
  * on the go.
  * @author cb
- * @see RunExperimentsAction#run(Object)
  * @see EvaluateExperimentsAction#evaluateAll()
  */
 public interface IStatusListener {

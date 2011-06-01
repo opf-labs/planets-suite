@@ -2,6 +2,7 @@ package eu.planets_project.pp.plato.run;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.log4j.Logger;
+import org.apache.openejb.OpenEJB;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.security.HashUserRealm;
 import org.mortbay.jetty.security.UserRealm;
@@ -19,6 +20,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * Start up the web application from within the test context.  Good for debugging.
@@ -40,9 +42,9 @@ public class PlatoStarter {
             port = Integer.parseInt(args[0]);
         }
         System.setProperty("openejb.base", "src/test/resources");
-        java.util.Properties props = new java.util.Properties();
+        Properties props = new Properties();
         props.put("openejb.jndiname.format","{ejbClass.simpleName}/{interfaceType.annotationName}");
-        org.apache.openejb.OpenEJB.init(props);
+        OpenEJB.init(props);
         LOG.info("Binding data source");
         bindDataSource();
         LOG.info("Binding entity manager");

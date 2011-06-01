@@ -131,7 +131,7 @@ public class EvaluateAlternativesFastTrack extends AbstractWorkflowStep
         //
         // We have to make sure that the value map of our leaves is properly initialized. If not, we have to 
         // call initValues to enable evaluation results to be stored for the requirements. In the 'normal' 
-        // workflow initValues is called in RunExperimentsAction.save, so from there on everything is in order. 
+        // workflow initValues is called in RunExperimentsAcction.save, so from there on everything is in order.
         // In FTE we can't do that
         //
         boolean valueMapProperlyInitialized = 

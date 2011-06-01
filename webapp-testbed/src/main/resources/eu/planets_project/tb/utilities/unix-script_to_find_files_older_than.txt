@@ -1,9 +1,0 @@
-#!/bin/sh
-#
-# Find all files older than 3 hours, apart from workflow logs, and remove them.
-#
-# Example that just lists the files:
-#find /tmp/ -type f -mmin +180 ! -name 'wfResult-id*' -exec ls -l {} \;
-#
-# This one actually deletes them:
-find /tmp/ -type f -mmin +180 ! -name 'wfResult-id*' -exec rm {} \;
