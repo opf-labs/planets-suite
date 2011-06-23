@@ -40,17 +40,24 @@
 				<version>1.0-beta-6</version>
 			</extension>
 		</extensions>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.1</version>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.0.2</version>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-					</configuration>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
@@ -59,7 +66,7 @@
 						<systemPropertyVariables>
 							<app.dir>${basedir}</app.dir>
 							<eu.planets-project.config.dir>${basedir}/../../test/config
-						</eu.planets-project.config.dir>
+                            </eu.planets-project.config.dir>
 						</systemPropertyVariables>
 						<includes>
 							<include>**/*Suite.java</include>
@@ -118,13 +125,6 @@
 				<!--</plugin> -->
 			</plugins>
 		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.1</version>
-			</plugin>
-		</plugins>
 	</build>
 	<modules>
 		<module>core-services</module>
@@ -147,13 +147,11 @@
 		<module>services-jhove</module>
 		<module>services-jtidy</module>
 		<module>services-libtiff</module>
-		<module>services-metadata</module>
 		<module>services-odf</module>
 		<module>services-pdfbox</module>
 		<module>services-sanselan</module>
 		<module>services-simple</module>
 		<module>framework-wdt</module>
-		<module>webapp-testbed</module>
 		<module>webapp-plato</module>
 	</modules>
 	<repositories>
@@ -172,12 +170,6 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>java.net1</id>
-			<name>Java.Net Maven1 Repository, hosts the javaee-api dependency
-			</name>
-			<url>http://download.java.net/maven/2</url>
-		</repository>
-		<repository>
 			<id>maven2-repository.dev.java.net</id>
 			<name>Java.net Repository for Maven 2</name>
 			<url>http://download.java.net/maven/2/</url>
@@ -185,9 +177,9 @@
 		<repository>
 			<id>opf-releases</id>
 			<name>The Planets Suite Maven Repository, hosted by github.
-			</name>
+            </name>
 			<url>https://github.com/openplanets/opf-mvn-repo/raw/master/releases
-			</url>
+            </url>
 		</repository>
 		<repository>
 			<id>k-int</id>
@@ -219,10 +211,9 @@
 			<version>1.2.14</version>
 		</dependency>
 		<dependency>
-			<groupId>javax</groupId>
+			<groupId>org.apache.openejb</groupId>
 			<artifactId>javaee-api</artifactId>
-			<version>6.0</version>
-			<scope>provided</scope>
+			<version>5.0-3</version>
 		</dependency>
 	</dependencies>
 
@@ -410,16 +401,6 @@
 			</dependency>
 			<dependency>
 				<groupId>jboss</groupId>
-				<artifactId>jboss-annotations-ejb3</artifactId>
-				<version>4.2.0.GA</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>3.2.0.ga</version>
-			</dependency>
-			<dependency>
-				<groupId>jboss</groupId>
 				<artifactId>jbossall-client</artifactId>
 				<version>4.2.2.GA</version>
 			</dependency>
@@ -435,6 +416,16 @@
 				<artifactId>wsdl4j</artifactId>
 				<version>1.6.2</version>
 			</dependency>
+			<dependency>
+				<groupId>javax.faces</groupId>
+				<artifactId>jsf-api</artifactId>
+				<version>1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.faces</groupId>
+				<artifactId>jsf-impl</artifactId>
+				<version>1.2-b19</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<distributionManagement>
@@ -447,7 +438,7 @@
 		<jdkLevel>1.6</jdkLevel>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8
-		</project.reporting.outputEncoding>
+        </project.reporting.outputEncoding>
 		<richfaces.version>3.3.3.Final</richfaces.version>
 	</properties>
 

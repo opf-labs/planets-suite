@@ -17,7 +17,6 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;
@@ -35,7 +34,6 @@ import eu.planets_project.pp.plato.model.PlanProperties;
 @Name("downloadManagerHelperBean")
 @Stateful
 @Scope(ScopeType.SESSION)
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class DownloadManagerHelperBean implements Serializable, IDownloadManagerHelperBean {
 
     /**

@@ -29,7 +29,6 @@ import javax.ejb.Stateful;
 import javax.faces.application.FacesMessage;
 
 import org.apache.commons.logging.Log;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
@@ -57,14 +56,12 @@ import eu.planets_project.pp.plato.model.XcdlDescription;
 import eu.planets_project.pp.plato.model.tree.Leaf;
 import eu.planets_project.pp.plato.model.tree.ObjectiveTree;
 import eu.planets_project.pp.plato.services.PlatoServiceException;
-import eu.planets_project.pp.plato.services.characterisation.DROIDIntegration;
 import eu.planets_project.pp.plato.services.characterisation.FormatHit;
 import eu.planets_project.pp.plato.services.characterisation.FormatIdentification;
 import eu.planets_project.pp.plato.services.characterisation.FormatIdentification.FormatIdentificationResult;
 import eu.planets_project.pp.plato.services.characterisation.fits.FitsIntegration;
 import eu.planets_project.pp.plato.services.characterisation.jhove.JHoveAdaptor;
 import eu.planets_project.pp.plato.services.characterisation.jhove.tree.JHoveTree;
-import eu.planets_project.pp.plato.services.characterisation.xcl.XcdlExtractor;
 import eu.planets_project.pp.plato.util.Downloader;
 import eu.planets_project.pp.plato.util.FileUtils;
 import eu.planets_project.pp.plato.util.OS;
@@ -74,7 +71,7 @@ import eu.planets_project.pp.plato.xml.plato.StringCapsule;
 /**
  * Implements actions for workflow step 'Define Sample Records'
  *
- * We use DROID to identify the record the user has uploaded. ({@link DROIDIntegration} is
+ * We use DROID to identify the record the user has uploaded. ({DROIDIntegration} is
  * doing the job. {@link FormatIdentification} is the information we receive from DROID.  
  *
  * @author Hannes Kulovits
@@ -82,7 +79,6 @@ import eu.planets_project.pp.plato.xml.plato.StringCapsule;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("defineSampleRecords")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class DefineSampleRecordsAction extends AbstractWorkflowStep
 implements   IDefineSampleRecords {
    
@@ -687,12 +683,12 @@ implements   IDefineSampleRecords {
             
             String filename = tempDigitalObjects.get(rec);
             
-            if (filename == null || "".equals(filename)) {
-                SampleObject rec2 = em.merge(rec);
-                ident = DROIDIntegration.getInstance().identifyFormat(rec2.getData().getData(), rec2.getFullname());    
-            } else {
-                ident = DROIDIntegration.getInstance().identify(filename);
-            }
+//            if (filename == null || "".equals(filename)) {
+//                SampleObject rec2 = em.merge(rec);
+//                ident = DROIDIntegration.getInstance().identifyFormat(rec2.getData().getData(), rec2.getFullname());
+//            } else {
+//                ident = DROIDIntegration.getInstance().identify(filename);
+//            }
             
             if (ident.getResult() == FormatIdentificationResult.ERROR) {
                 /*
@@ -756,43 +752,9 @@ implements   IDefineSampleRecords {
     }
     
     public String characteriseXcdl(Object object) {
-        if (object instanceof DigitalObject) {
-            
-            describeInXcdl((DigitalObject)object);
-        }
-        
         return "";
     }
 
-    private boolean describeInXcdl(DigitalObject record) {
-        XcdlExtractor extractor = new XcdlExtractor();
-        XcdlDescription xcdl = null;
-        if (record != null && record.isDataExistent()) {
-            try {
-                String filepath =  tempDigitalObjects.get(record);
-                if ((filepath != null) && (!"".equals(filepath))) {
-                    xcdl = extractor.extractProperties(record.getFullname(), filepath);
-                } else {
-                    DigitalObject rec2 = em.merge(record);
-                    xcdl = extractor.extractProperties(rec2);
-                }
-                
-                //xcdl = extractor.extractProperties(record.getFullname(), record);
-            } catch (PlatoServiceException e) {
-                log.error("XCDL characterisation failed: "+e.getMessage(),e);
-                return false;
-            }
-        }
-        if (xcdl != null) { 
-            // extraction succeeded
-            record.setXcdlDescription(xcdl);
-            return true;
-        } else {
-            // property extraction failed, remove old xcdl info
-            record.setXcdlDescription(null);
-            return false;
-        }
-    }
     
     /**
      * Extracts object properties of all sample records. 
@@ -802,9 +764,7 @@ implements   IDefineSampleRecords {
         ArrayList<String> failed = new ArrayList<String>();
         
         for (SampleObject record : records) {
-            if (!describeInXcdl(record)) {
                 failed.add(record.getFullname() + ": The description service returned an invalid result.");  
-            }
         }
         if (failed.size() == 0) {
             FacesMessages.instance().add(FacesMessage.SEVERITY_INFO, "Successfully described all sample records.");

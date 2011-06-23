@@ -46,7 +46,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.DocumentSource;
 import org.dom4j.io.XMLWriter;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;
@@ -72,7 +71,6 @@ import eu.planets_project.pp.plato.xml.ProjectExporter;
 @Stateful
 @Scope(ScopeType.EVENT)
 @Name("projectExport")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class ProjectExportAction implements Serializable, IProjectExport {
 
     private static final long serialVersionUID = 2155152208617526555L;

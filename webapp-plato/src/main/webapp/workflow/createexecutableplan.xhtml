@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:p="http://planets-project.eu/taglibs/plato"  
+   template="../template.xhtml">
+   <ui:define name="title">PLANETS Preservation Planning Tool - Create Executable Plan</ui:define>
+   <ui:define name="scripts"></ui:define>
+   <ui:define name="content">
+      <div id="content">
+         <h1>Create executable plan</h1>
+         <div align="right">
+            <a target="_blank" href="/plato/website/docs/plan-template.pdf">
+               What exactly is a preservation plan?
+            </a>
+         </div>
+         
+         <div id="anchors">
+            <ul>
+               <li>
+                  <a href="createexecutableplan.xhtml#when">When</a>
+               </li>
+               <li>
+                  <a href="createexecutableplan.xhtml#what">What</a>
+               </li>
+            </ul>
+         </div>
+
+         <h:form id="mainform">
+            <fieldset id="when">
+               <legend>
+                  <ui:include src="../legend_nav.xhtml"></ui:include>
+                  <h:outputText value=" When" />
+               </legend>
+               <p:inputTextArea labelText="Triggers and conditions"
+                  id="triggerscond"
+                  input="#{selectedPlan.executablePlanDefinition.triggersConditions}"
+                  bean="#{selectedPlan.executablePlanDefinition}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Validate and QA"
+                  id="validateQA"
+                  input="#{selectedPlan.executablePlanDefinition.validateQA}"
+                  bean="#{selectedPlan.executablePlanDefinition}"
+                  actionMethodName="touch" />
+            </fieldset>
+
+            <fieldset id="what">
+               <legend>
+                  <ui:include src="../legend_nav.xhtml"></ui:include>
+                  <h:outputText value=" What" />
+               </legend>
+			   <p:inputText labelText="Tool" 
+				  id="recommendation" 
+				  input="#{selectedPlan.recommendation.alternative.name}"
+                  bean="#{selectedPlan.recommendation}"
+				  disabled="true"
+				  noHelpLink="true" />
+               <p:inputText labelText="Location of records"
+                  id="path"
+                  input="#{selectedPlan.executablePlanDefinition.objectPath}"
+                  bean="#{selectedPlan.executablePlanDefinition}"
+                  actionMethodName="touch" />
+               <p:inputTextArea labelText="Parameters for tool"
+                  id="parameters"
+                  input="#{selectedPlan.executablePlanDefinition.toolParameters}"
+                  bean="#{selectedPlan.executablePlanDefinition}"
+                  actionMethodName="touch" />
+            </fieldset>
+
+            <fieldset id="executable_pp">
+               <legend>
+                  <ui:include src="../legend_nav.xhtml"></ui:include>
+                  <h:outputText value=" Executable Preservation Plan" />
+               </legend>
+               
+               <h:outputText rendered="#{executablePlanPossible.bool == false and eprintsExecutablePlanPossible.bool == false}" value="No executable preservation plan available" />
+               
+               <h:outputLabel rendered="#{executablePlanPossible.bool or eprintsExecutablePlanPossible.bool}" for="exec_plan_download">
+                  Please click on the following link to download the executable preservation plan: 
+               </h:outputLabel>
+			   <h:commandLink id="eprints_exec_plan_download" rendered="#{eprintsExecutablePlanPossible.bool}" action="#{createExecutablePlan.downloadEprintsExecutablePlan}">
+					<h:outputText value="executable-preservation-plan.xml" />
+        		</h:commandLink>        		
+               
+               
+               <h:outputLabel rendered="#{executablePlanPossible.bool}" for="exec_plan_download">
+                  Please click on the following link to download the executable preservation plan: 
+               </h:outputLabel>
+			   <h:commandLink id="exec_plan_download" rendered="#{executablePlanPossible.bool}" action="#{createExecutablePlan.downloadExecutablePlan}">
+					<h:outputText value="executable-preservation-plan.xml" />
+        		</h:commandLink>
+               
+            </fieldset>
+ 
+             <p:buttons bean="#{createExecutablePlan}" />
+         </h:form>
+      </div>
+   </ui:define>
+</ui:composition>

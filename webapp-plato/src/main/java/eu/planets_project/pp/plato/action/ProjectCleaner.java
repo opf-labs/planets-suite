@@ -22,7 +22,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.logging.Log;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;
@@ -42,7 +41,6 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Scope(ScopeType.METHOD)
 @Name("projectCleaner")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class ProjectCleaner implements Serializable, IProjectCleaner {
 
     private static final long serialVersionUID = 2155152208617526555L;

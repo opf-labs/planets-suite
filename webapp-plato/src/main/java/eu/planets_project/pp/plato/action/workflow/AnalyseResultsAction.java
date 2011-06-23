@@ -21,7 +21,6 @@ import javax.ejb.Stateful;
 import javax.faces.application.FacesMessage;
 
 import org.apache.commons.logging.Log;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
@@ -54,7 +53,6 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("analyseResults")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class AnalyseResultsAction extends AbstractWorkflowStep implements
         IAnalyseResults {
 

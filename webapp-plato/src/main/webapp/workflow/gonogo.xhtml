@@ -1,0 +1,86 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"  
+   xmlns:p="http://planets-project.eu/taglibs/plato"
+   template="../template.xhtml">
+   <ui:define name="scripts"></ui:define>
+      <ui:define name="title">PLANETS Preservation Planning Tool - Go-NoGo Decision</ui:define>
+   <ui:define name="content">
+      <div id="content">
+         <h1>Take the Go decision</h1>
+         <div>
+            <h:form id="mainform">
+               <h:inputText id="changedflag" value="#{changed}"
+                  style="display:none" />
+               <div class="margin-bottom-big">
+                  <h:outputText
+                     value="Alternatives that shall not be subject to evaluation can be discarded below." />
+               </div>
+               <h:dataTable value="#{alternativeList}" var="alt"
+                  rendered="#{alternativeList != null and alternativeList.rowCount>0}"
+                  columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xl, margin-top-small margin-bottom-small margin-left-big margin-right-big border, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs"
+                  headerClass="margin-left-big margin-right-big border nowrap"
+                  rowClasses="border"
+                  id="alternativeTable">
+                  <h:column>
+                     <f:facet name="header">
+                        <h:outputText value="Discard" />
+                     </f:facet>
+                     <h:selectBooleanCheckbox id="alternativeCheckbox"
+                        value="#{discardedAlternatives[alt]}"
+                        onchange="changed()" />
+                  </h:column>
+                  <h:column>
+                     <f:facet name="header">
+                        <h:outputText value="Name" />
+                     </f:facet>
+                     <h:outputText value="#{alt.name}" />
+                  </h:column>
+                  <h:column>
+                     <f:facet name="header">
+                        <h:outputText value="Description" />
+                     </f:facet>
+                     <h:outputText value="#{alt.description}" />
+                  </h:column>
+               </h:dataTable>
+               <fieldset id="decision" class="size-full">
+                  <legend>Decision</legend>
+                  <div class="margin-bottom-small">
+                     <h:selectOneMenu id="decisionList"
+                        value="#{decision.decision}">
+                        <s:convertEnum />
+                        <s:enumItem enumValue="UNDEFINED"
+                           label="Undefined" />
+                        <s:enumItem enumValue="GO" label="Go" />
+                        <s:enumItem enumValue="PROVISIONAL_GO"
+                           label="Provisional Go" />
+                        <s:enumItem enumValue="DEFERRED_GO"
+                           label="Deferred Go" />
+                        <s:enumItem enumValue="NO_GO" label="No Go" />
+                     </h:selectOneMenu>
+                     <a href="../../src/main/webapp/help/fields.html#goDecision" target="_blank">
+                       <img src="../../src/main/webapp/img/help-browser.png" alt="Help Link"/>
+                     </a>
+                  </div>
+                  <p:inputTextArea labelText="Reason for Decision"
+                     id="reasonForDecision" input="#{decision.reason}" required="true"
+                     bean="#{decision}" actionMethodName="touch" />
+                  <p:inputTextArea labelText="Action Needed"
+                     id="actionNeeded" input="#{decision.actionNeeded}" required="true"
+                     bean="#{decision}" actionMethodName="touch" />
+               </fieldset>
+               <p:buttons bean="#{gonogo}" />
+            </h:form>
+         </div>
+      </div>
+   </ui:define>
+   <!--
+      Proceed button cannot be displayed here. It must be within the form.
+      <ui:define name="controls">
+      <h:commandButton value="Proceed" action="#{gonogo.proceed}" />
+      </ui:define>
+   -->
+</ui:composition>

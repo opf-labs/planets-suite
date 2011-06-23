@@ -18,7 +18,6 @@ import java.util.List;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
 
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;
@@ -42,7 +41,6 @@ import eu.planets_project.pp.plato.action.interfaces.IMessages;
 @Name("allmessages")
 @Stateful
 @Synchronized
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class Messages implements IMessages, Serializable {
 
     /**

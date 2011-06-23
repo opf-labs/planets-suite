@@ -1,0 +1,60 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:p="http://planets-project.eu/taglibs/plato"  
+   template="../template.xhtml">
+   <ui:define name="scripts"></ui:define>
+      <ui:define name="title">PLANETS Preservation Planning Tool - New Plan</ui:define>
+   <ui:define name="content">
+      <h1>Create Preservation Plan</h1>
+      <div class="margin-top-small">
+         <h:form id="mainform">
+         	 <h:inputText id="changedflag" value="#{changed}"
+               style="display:none" />
+
+            <fieldset id="identification">
+               <s:validateAll>
+                  <p:inputTextArea labelText="Plan name" id="name"
+                     input="#{selectedPlan.planProperties.name}"
+                     bean="#{selectedPlan.planProperties}"
+                     actionMethodName="touch"
+                     required="true" />
+                  <p:inputTextArea labelText="Plan description"
+                     id="description"
+                     input="#{selectedPlan.planProperties.description}"
+                     bean="#{selectedPlan.planProperties}"
+                     actionMethodName="touch"
+                     required="true" />
+                  <p:inputText labelText="Responsible planner"
+                     id="author"
+                     input="#{selectedPlan.planProperties.author}"
+                     bean="#{selectedPlan.planProperties}"
+                     actionMethodName="touch"
+                     required="true" />
+                  <p:inputText labelText="Organisation"
+                     id="organization"
+                     input="#{selectedPlan.planProperties.organization}"
+                     bean="#{selectedPlan.planProperties}"
+                     actionMethodName="touch"
+                     required="true" />
+
+                  <div class="margin-top-huge">
+    		            <h:outputLabel for="private">Private:</h:outputLabel>
+ 		                <h:selectBooleanCheckbox id="private"
+    		              disabled="false"
+    		              value="#{selectedPlan.planProperties.privateProject}" />
+                  </div>
+
+                  <h:commandButton value="Create Plan" id="createProject"
+                     action="#{newProject.saveProject}" />
+                  <h:commandButton value="Discard Changes" id="discardChanges"
+                     action="#{loadPlan.closeProject}" immediate="true"/>
+               </s:validateAll>
+            </fieldset>
+         </h:form>
+      </div>
+   </ui:define>
+</ui:composition>

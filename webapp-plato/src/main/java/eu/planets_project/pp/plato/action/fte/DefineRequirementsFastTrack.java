@@ -25,7 +25,6 @@ import javax.faces.application.FacesMessage;
 import javax.persistence.EntityManager;
 
 import org.apache.commons.logging.Log;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
@@ -65,8 +64,7 @@ import eu.planets_project.pp.plato.xml.TreeLoader;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("FTrequirements")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
-public class DefineRequirementsFastTrack 
+public class DefineRequirementsFastTrack
 extends AbstractWorkflowStep 
 implements IFastTrackDefineRequirements {
     

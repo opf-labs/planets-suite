@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.dom4j.Document;
 import org.dom4j.io.XMLWriter;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
@@ -40,7 +39,6 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.faces.FacesMessages;
-import org.junit.runner.Computer;
 
 import eu.planets_project.pp.plato.action.IProjectCleaner;
 import eu.planets_project.pp.plato.action.IProjectExport;
@@ -68,7 +66,6 @@ import eu.planets_project.pp.plato.xml.ProjectExporter;
 @Stateful
 @Scope(ScopeType.APPLICATION)
 @Name("admin")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class AdminAction implements IAdmin, Serializable {
     /**
      * 

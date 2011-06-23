@@ -1,0 +1,14 @@
+<tr>
+	<td width="40px" style="nowrap;">
+	        <h:selectBooleanCheckbox xmlns:h="http://java.sun.com/jsf/html" id="#{id}Box"
+	         styleClass="nowrap;" value="#{trigger.active}"/>
+	</td>
+	
+	<td width="80px" style="nowrap">
+		<h:outputText xmlns:h="http://java.sun.com/jsf/html" value="#{trigger.type}"/>
+	</td>
+    <td>
+        <p:inputTextArea xmlns:p="http://planets-project.eu/taglibs/plato"   id="#{id}" input="#{trigger.description}" helpid="#{helpid}"
+	    bean="#{bean}" actionMethodName="#{actionMethodName}" />
+	</td>
+</tr>

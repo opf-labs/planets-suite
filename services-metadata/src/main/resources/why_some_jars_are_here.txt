@@ -1,9 +1,0 @@
-The adapter Jars found in this directory (*_adapter_*.jar) 
-contain DTD files required for the NZ metadata service to work.
-
-JBoss will only make these files available in the deployed WAR 
-if they are contained in WEB-INF/classes (where files in the 
-resources directory are copied by our Ant build system).
-
-So basically, these Jar files are also config files and therefore
-included here in the resources directory.

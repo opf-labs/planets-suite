@@ -1,0 +1,289 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://planets-project.eu/taglibs/plato">
+
+	<h:dataTable  style="width:100%" value="#{listofleaves}" var="leaf">
+
+		<h:column  style="width:100%">
+
+			<h:graphicImage value="../img/treetable/add-leaf.png" width="16"
+				height="16" />
+			<h:outputText style="font-weight:bold;padding-left:10px"
+				value="#{leaf.parent.name} > #{leaf.name}" />
+			<br />
+			<h:outputText value="#{leaf.scale.displayName}" />	
+			<h:outputText value="(#{leaf.scale.readableRestriction})"
+				rendered="#{leaf.scale.restricted and not empty leaf.scale.readableRestriction}" />
+
+
+			<h:dataTable
+				value="#{selectedPlan.alternativesDefinition.consideredAlternatives}"
+				var="alter" headerClass="margin-bottom-huge margin-top-huge" style="width:100%"
+				columnClasses="margin-right-big" rowClasses="margin-bottom-big-nocolor"
+				styleClass="margin-top-big-nocolor">
+				<h:column  style="width:20%" styleClass="margin-right-huge">
+					<f:facet name="header">
+						<h:outputText style="font-weight:normal; padding-right: 40px;" value="Alternatives and sample objects" />
+					</f:facet>
+					<h:outputText style="font-weight:bold;" value="#{alter.name}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
+				</h:column>
+
+				<!-- Single result value for this leaf -->
+				<h:column style="width:70%" rendered="#{leaf.single}">
+					<f:facet name="header">
+						<h:outputText style="font-weight:normal; padding-right: 40px;" value="Results and coments" />
+					</f:facet>
+					<table style="width:100%">
+						<tr class="margin-bottom-big-nocolor">
+							<td style="width:80px"></td>
+							<td style="width:350px">
+							
+							<!-- Ordinal --> 
+							<s:div rendered='#{leaf.scale.type == "ordinal" and leaf.single}'>
+								<!-- For ordinal scales, we use the dropdown -->
+								<h:selectOneMenu rendered="#{leaf.scale.restricted}"
+									id="singleOrdinalMenu"  
+									value="#{leaf.valueMap[alter.name].list[0].value}"
+									converter="#{emptyStringToNullConverter}">
+									<f:selectItem itemValue="" />
+									<s:selectItems value="#{leaf.scale.list}" var="ordinalValue"
+										label="#{ordinalValue}" />
+									<a4j:support ajaxSingle="true" onsubmit="changed()"
+										event="onchange"
+										action="#{leaf.valueMap[alter.name].list[0].touch}" />
+								</h:selectOneMenu>
+								<!-- For free text we use an input field -->
+								<s:div rendered="#{not leaf.scale.restricted}">
+									<p:inputText id="singleFreeText" noHelpLink="true"
+										input="#{leaf.valueMap[alter.name].list[0].value}"
+										bean="#{leaf.valueMap[alter.name].list[0]}"
+										actionMethodName="touch" />
+								</s:div>
+										
+								<p:inputTextArea id="valuecommentO" noHelpLink="true"   
+										input="#{leaf.valueMap[alter.name].list[0].comment}"
+										bean="#{leaf}" actionMethodName="touch" />			
+							</s:div>
+							
+							 <!-- Numerical --> 
+							 <s:div rendered='#{leaf.single and not (leaf.scale.type == "ordinal")}'>
+								<div class="nonwrapped">
+									<s:div rendered="#{not leaf.scale.integer}">
+										<p:inputNumber id="singlenumber" noHelpLink="true"
+											input="#{leaf.valueMap[alter.name].list[0].value}"
+											bean="#{leaf.valueMap[alter.name].list[0]}"
+											actionMethodName="touch" maxlength="20" />
+									</s:div> 
+									<s:div rendered="#{leaf.scale.integer}">
+										<p:inputInteger id="singleInteger" noHelpLink="true"
+											input="#{leaf.valueMap[alter.name].list[0].value}"
+											bean="#{leaf.valueMap[alter.name].list[0]}"
+											actionMethodName="touch" maxlength="20" />
+									</s:div>
+									<h:outputText
+										rendered="#{not leaf.valueMap[alter.name].list[0].evaluated}"
+										value="* &nbsp;" />
+									<h:outputText
+										rendered='#{leaf.scale.type == "restricted"}'
+										value="#{leaf.scale.readableRestriction}" /> 
+									
+									<h:outputText
+										rendered="#{leaf.scale.unit != null}"
+										value="#{leaf.scale.unit}" />
+									</div>
+								<h:message rendered="#{not leaf.scale.integer}"
+									styleClass="discreet-error" for="singlenumber" />
+								<h:message rendered="#{leaf.scale.integer}"
+									styleClass="discreet-error" for="singleInteger" />
+									
+								<p:inputTextArea id="valuecomment" noHelpLink="true"   
+										input="#{leaf.valueMap[alter.name].list[0].comment}"
+										bean="#{leaf}" actionMethodName="touch" />									
+							</s:div>
+						</td>
+						</tr>
+					</table>
+				</h:column>
+				
+				<!-- Not a single leaf: Different results for every sample object -->
+
+				<h:column style="width:70%"  rendered="#{not leaf.single}">
+					<f:facet name="header"  style="padding-right: 40px;padding-left:40px;">
+						<h:outputText style="font-weight:normal" value="Results and comments" />
+					</f:facet>
+					<table style="width:100%">
+						<c:forEach items="#{selectedPlan.sampleRecordsDefinition.records}"
+							var="record" varStatus="status">
+
+							<tr class="margin-bottom-big-nocolor">
+								<td style="width:80px; padding-right: 10px;">
+									<h:outputText value="#{record.shortName}" />
+								</td>
+								<td style="width:350px;">
+								
+								<!-- Ordinal --> 
+								<s:div rendered='#{leaf.scale.type == "ordinal" and (not leaf.single)}'>
+									<!-- Empty String to Null-Conversion doesn't work smoothly when using
+                                                   s:selectItems with the "noSelectionLabel"-attribute, therefore custom fix. -->
+									<!-- DON'T ADD COMMENTS INSIDE THE selectOneMenu, DOING SO BREAKS IT!!11 -->
+									<!-- For ordinal scales, we use the dropdown -->
+									<h:selectOneMenu
+										rendered="#{leaf.scale.type == 'ordinal' and leaf.scale.restricted}"
+										id="notsingleOrdinalMenu_id#{status.index}"
+										value="#{leaf.valueMap[alter.name].list[status.index].value}"
+										converter="#{emptyStringToNullConverter}">
+										<f:selectItem itemValue="" />
+										<s:selectItems value="#{leaf.scale.list}" var="ordinalValue"
+											label="#{ordinalValue}" />
+										<a4j:support ajaxSingle="true" onsubmit="changed()"
+											event="onchange"
+											action="#{leaf.valueMap[alter.name].list[status.index].touch}" />
+									</h:selectOneMenu>
+									<!-- For free text we use an input field -->
+									<s:div rendered="#{not leaf.scale.restricted}">
+										<p:inputText id="freeText_id#{status.index}" noHelpLink="true"
+											input="#{leaf.valueMap[alter.name].list[status.index].value}"
+											bean="#{leaf.valueMap[alter.name].list[status.index]}"
+											actionMethodName="touch" />
+									</s:div>
+									<!-- define changed-flag separately, to control line break -->
+									<h:outputText
+										rendered="#{not leaf.valueMap[alter.name].list[status.index].evaluated}"
+										value="* &nbsp;" />
+											
+									<p:inputTextArea id="valuecommentO_#{status.index}" noHelpLink="true"   
+										input="#{leaf.valueMap[alter.name].list[0].comment}"
+										bean="#{leaf}" actionMethodName="touch" />		
+								</s:div> 
+								
+								<!-- Numerical --> 
+								<s:div rendered='#{not (leaf.scale.type == "ordinal")  and (not leaf.single)}'>
+									<s:div rendered="#{not leaf.scale.integer}">
+										<p:inputNumber id="_num#{status.index}" noHelpLink="true"
+											input="#{leaf.valueMap[alter.name].list[status.index].value}"
+											bean="#{leaf.valueMap[alter.name].list[status.index]}"
+											required="true" actionMethodName="touch" maxlength="20" />
+									</s:div> 
+									<s:div rendered="#{leaf.scale.integer}">
+										<p:inputInteger id="_int#{status.index}" noHelpLink="true"
+											input="#{leaf.valueMap[alter.name].list[status.index].value}"
+											bean="#{leaf.valueMap[alter.name].list[status.index]}"
+											required="true" actionMethodName="touch" maxlength="20" />
+									</s:div> 
+									<!-- define changed-flag separately, to control line break -->
+									<h:outputText
+										rendered="#{not leaf.valueMap[alter.name].list[status.index].evaluated}"
+										value="* &nbsp;" />
+						
+									<h:outputText
+										rendered='#{leaf.scale.type == "restricted"}'
+										value="#{leaf.scale.readableRestriction}" /> 
+										
+									<h:message rendered="#{not leaf.scale.integer}" styleClass="discreet-error" for="_num#{status.index}" />
+									<h:message rendered="#{leaf.scale.integer}" styleClass="discreet-error" for="_int#{status.index}" />
+
+									<p:inputTextArea id="valuecomment_#{status.index}"  noHelpLink="true"
+										input="#{leaf.valueMap[alter.name].list[status.index].comment}"
+										bean="#{leaf.valueMap[alter.name].list[status.index]}"
+										actionMethodName="touch" />
+								</s:div> 
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+
+				</h:column>
+
+			
+
+
+				<!-- Unit column -->
+				<h:column>
+					<f:facet name="header">
+						<h:outputText style="font-weight:normal;" value="Unit" />
+					</f:facet>
+					<h:outputText value="#{leaf.scale.unit}" />
+				</h:column>
+
+				<!-- Evaluation status: not so easy to do it here, for all non-singles we need the iterator
+				<h:column>
+					<f:facet name="header">
+						<h:outputText style="font-weight:normal;padding-left:20px;" value="Status" />
+					</f:facet>
+					<s:div rendered="#{leaf.single and not leaf.valueMap[alter.name].list[0].evaluated}">
+						<h:outputText style="font-weight:bold;padding-left:20px;" value="missing" />
+					</s:div>					
+				</h:column>
+				-->
+			</h:dataTable>
+			<h:panelGroup rendered="#{leaf.mapped}">
+				<h:outputText
+					value="This leaf has been mapped, which means it can be measured automatically." />
+				<br />
+				<table
+					style="border-width: 1px; border-style: dotted; background: #CCFFFF">
+					<colgroup>
+						<col width="120" />
+						<col width="300" />
+					</colgroup>
+					<tr>
+						<td>Property category</td>
+						<td><h:outputText
+							value="#{leaf.measurementInfo.property.category.category}-#{leaf.measurementInfo.property.category.subCategory}" /></td>
+					</tr>
+					<tr>
+						<td>Property ID</td>
+						<td><h:outputText
+							value="#{leaf.measurementInfo.property.propertyId}" /></td>
+					</tr>
+					<tr>
+						<td>Property name</td>
+						<td><h:outputText
+							value="#{leaf.measurementInfo.property.name}" /></td>
+					</tr>
+					<tr>
+						<td>Property description</td>
+						<td><h:outputText
+							value="#{leaf.measurementInfo.property.description}" /></td>
+					</tr>
+					<tr>
+						<td>Metric ID</td>
+						<td><h:outputText
+							value="#{leaf.measurementInfo.metric.metricId}" /></td>
+					</tr>
+					<tr>
+						<td>Metric name</td>
+						<td><h:outputText value="#{leaf.measurementInfo.metric.name}" /></td>
+					</tr>
+					<tr>
+						<td>Metric description</td>
+						<td><h:outputText
+							value="#{leaf.measurementInfo.metric.description}" /></td>
+					</tr>
+					<tr>
+						<td>Measurement scale</td>
+						<td><h:outputText
+							value="#{leaf.measurementInfo.scale.displayName}" /></td>
+					</tr>
+					<tr>
+						<td>Measurement unit</td>
+						<td><h:outputText value="#{leaf.measurementInfo.scale.unit}" /></td>
+					</tr>
+				</table>
+			</h:panelGroup>
+			<h:commandButton rendered="#{leaf.mapped}" value="Evaluate"
+				action="#{evalexperiments.evaluate(leaf)}" reRender="leafTable" />
+
+			<hr />
+
+		</h:column>
+	</h:dataTable>
+
+
+</ui:composition>

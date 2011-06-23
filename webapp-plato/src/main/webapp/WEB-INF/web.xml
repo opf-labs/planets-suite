@@ -1,102 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd">
 
- <servlet>
-    <servlet-name>Faces Servlet</servlet-name>
-    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>*.seam</url-pattern>
-  </servlet-mapping>
-  <context-param>
-    <param-name>org.richfaces.SKIN</param-name>
-    <param-value>blueSky</param-value>
-  </context-param>
-  <context-param>
-			<param-name>facelets.LIBRARIES</param-name>
-			<param-value>/WEB-INF/facelets/plato.templates.taglib.xml</param-value>
-		</context-param>
-  <listener>
-    <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
-  </listener>
-  <filter>
-    <filter-name>Seam Filter</filter-name>
-    <filter-class>org.jboss.seam.servlet.SeamFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>Seam Filter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  <servlet>
-    <servlet-name>Seam Resource Servlet</servlet-name>
-    <servlet-class>org.jboss.seam.servlet.SeamResourceServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Seam Resource Servlet</servlet-name>
-    <url-pattern>/seam/resource/*</url-pattern>
-  </servlet-mapping>
-  <context-param>
-    <param-name>facelets.DEVELOPMENT</param-name>
-    <param-value>true</param-value>
-  </context-param>
-  <context-param>
-    <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-    <param-value>.xhtml</param-value>
-  </context-param>
-
-
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.seam</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>org.richfaces.SKIN</param-name>
+        <param-value>blueSky</param-value>
+    </context-param>
+    <context-param>
+        <param-name>facelets.LIBRARIES</param-name>
+        <param-value>/WEB-INF/facelets/plato.templates.taglib.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
+    </listener>
+    <filter>
+        <filter-name>Seam Filter</filter-name>
+        <filter-class>org.jboss.seam.servlet.SeamFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Seam Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>Seam Resource Servlet</servlet-name>
+        <servlet-class>org.jboss.seam.servlet.SeamResourceServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Seam Resource Servlet</servlet-name>
+        <url-pattern>/seam/resource/*</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>facelets.DEVELOPMENT</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+        <param-value>.xhtml</param-value>
+    </context-param>
 
 
-	<servlet>
-		<servlet-name>LogInitServlet</servlet-name>
-		<servlet-class>eu.planets_project.pp.plato.util.LogInitServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
+    <servlet>
+        <servlet-name>LogInitServlet</servlet-name>
+        <servlet-class>eu.planets_project.pp.plato.util.LogInitServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
-	<servlet>
-		<servlet-name>DownloadServlet</servlet-name>
-		<servlet-class>eu.planets_project.pp.plato.util.DownloadServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DownloadServlet</servlet-name>
-		<url-pattern>/servlets/DownloadServlet</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>DownloadServlet</servlet-name>
+        <servlet-class>eu.planets_project.pp.plato.util.DownloadServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DownloadServlet</servlet-name>
+        <url-pattern>/servlets/DownloadServlet</url-pattern>
+    </servlet-mapping>
 
-  <welcome-file-list>
-  	<welcome-file>index.html</welcome-file>
-    <welcome-file>/home/home.seam</welcome-file>
-	</welcome-file-list>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>/home/home.seam</welcome-file>
+    </welcome-file-list>
 
-  <session-config>
-      <session-timeout>7</session-timeout>
-  </session-config>
+    <session-config>
+        <session-timeout>7</session-timeout>
+    </session-config>
 
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Protected workflow pages</web-resource-name>
-			<url-pattern>/workflow/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<description>Allow users regardless of which role to access</description>
-			<role-name>*</role-name>
-		</auth-constraint>
-	</security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected workflow pages</web-resource-name>
+            <url-pattern>/workflow/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Allow users regardless of which role to access</description>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
 
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Protected Plato admin pages</web-resource-name>
-			<url-pattern>/project/admin-utils.seam</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<description>Allow users of role admin to access Plato admin pages</description>
-			<role-name>admin</role-name>
-		</auth-constraint>
-	</security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected Plato admin pages</web-resource-name>
+            <url-pattern>/project/admin-utils.seam</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Allow users of role admin to access Plato admin pages</description>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
 
     <security-constraint>
         <web-resource-collection>
@@ -110,55 +108,60 @@
     </security-constraint>
 
 
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Protected project pages</web-resource-name>
-			<url-pattern>/project/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<description>Allow users regardless of which role to access</description>
-			<role-name>*</role-name>
-		</auth-constraint>
-	</security-constraint>
- 
- <security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Protected home pages</web-resource-name>
-			<url-pattern>/home/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<description>Allow users regardless of which role to access</description>
-			<role-name>*</role-name>
-		</auth-constraint>
-	</security-constraint>
- 
- 
-  <security-constraint>
-    <display-name>Restrict raw XHTML Documents</display-name>
-    <web-resource-collection>
-      <web-resource-name>XHTML</web-resource-name>
-      <url-pattern>*.xhtml</url-pattern>
-    </web-resource-collection>
-    <auth-constraint/>
-  </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected project pages</web-resource-name>
+            <url-pattern>/project/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Allow users regardless of which role to access</description>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
 
-	<login-config>
-		<auth-method>FORM</auth-method>
-		<realm-name>PlanetsRealm</realm-name>
-		<form-login-config>
-			<form-login-page>/login.seam</form-login-page>
-			<form-error-page>/login.seam</form-error-page>
-		</form-login-config>
-	</login-config>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected home pages</web-resource-name>
+            <url-pattern>/home/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Allow users regardless of which role to access</description>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
 
-	<security-role>
-		<description>Just an ordinary user</description>
-		<role-name>user</role-name>
-	</security-role>
 
-	<security-role>
-		<description>Just an ordinary administrator</description>
-		<role-name>admin</role-name>
-	</security-role>
+    <security-constraint>
+        <display-name>Restrict raw XHTML Documents</display-name>
+        <web-resource-collection>
+            <web-resource-name>XHTML</web-resource-name>
+            <url-pattern>*.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint/>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>PlanetsRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/login.seam</form-login-page>
+            <form-error-page>/login.seam</form-error-page>
+        </form-login-config>
+    </login-config>
+
+    <security-role>
+        <description>Just an ordinary user</description>
+        <role-name>user</role-name>
+    </security-role>
+
+    <security-role>
+        <description>Just an ordinary administrator</description>
+        <role-name>admin</role-name>
+    </security-role>
+
+    <!--<context-param>-->
+    <!--<param-name>org.apache.myfaces.EXPRESSION_FACTORY</param-name>-->
+    <!--<param-value>com.sun.el.ExpressionFactoryImpl</param-value>-->
+    <!--</context-param>-->
 
 </web-app>

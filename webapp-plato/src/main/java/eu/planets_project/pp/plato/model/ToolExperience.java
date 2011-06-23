@@ -10,9 +10,11 @@
  *******************************************************************************/
 package eu.planets_project.pp.plato.model;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import eu.planets_project.pp.plato.model.measurement.Measurement;
+import eu.planets_project.pp.plato.model.measurement.Measurements;
+import eu.planets_project.pp.plato.model.values.INumericValue;
+import eu.planets_project.pp.plato.services.action.MigrationResult;
+import org.hibernate.annotations.MapKey;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,14 +24,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.MapKey;
-
-import eu.planets_project.pp.plato.model.measurement.Measurement;
-import eu.planets_project.pp.plato.model.measurement.Measurements;
-import eu.planets_project.pp.plato.model.values.INumericValue;
-import eu.planets_project.pp.plato.services.action.MigrationResult;
-import flanagan.analysis.Regression;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Holds measured values of a tool.
@@ -135,17 +132,19 @@ public class ToolExperience implements Serializable {
             xArray[i] = (resultFileSize / factor) * 100.0;
             yArray[i] = ((INumericValue)elapsedTimeMeasurements.getList().get(i).getValue()).value(); 
         }
-        
-        Regression reg = new Regression(xArray, yArray);
-        reg.linear();
-        double[] bestEstimates = reg.getBestEstimates();
+
+        // todo: not sure what this is about, can this whole class be removed?
+//        Regression reg = new Regression(xArray, yArray);
+//        reg.linear();
+//        double[] bestEstimates = reg.getBestEstimates();
         
         // y = k*x + d
         // y = bestEstimate[1]*x + bestEstimate[0]
-        double startUpTime = bestEstimates[0];
+//        double startUpTime = bestEstimates[0];
+//
+//        return startUpTime;
 
-        return startUpTime;
-        
+        return 1.0;
     }
 
     public Map<String, Measurements> getMeasurements() {

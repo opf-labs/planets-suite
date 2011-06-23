@@ -12,7 +12,7 @@ package eu.planets_project.pp.plato.action.interfaces;
 
 import java.util.List;
 
-import org.jboss.annotation.ejb.Local;
+import javax.ejb.Local;
 
 import eu.planets_project.pp.plato.application.ErrorClass;
 import eu.planets_project.pp.plato.application.NewsClass;

@@ -1,0 +1,566 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:c="http://java.sun.com/jstl/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich"  >
+   <head>
+      <title>
+         <ui:insert name="title"></ui:insert>
+      </title>
+      <meta http-equiv="Content-Type"
+         content="text/html; charset=UTF-8" />
+      <meta name="description"
+         content="PLANETS Preservation Planning Tool" />
+      <meta http-equiv="Pragma" content="no-cache" />
+      <link rel="shortcut icon" type="image/png"
+         href="../img/plato_icon.png" />
+      <link rel="stylesheet" href="../css/content.css" type="text/css" />
+      <link rel="stylesheet" media="screen" href="../css/plato.css"
+         type="text/css" title="Plato" />
+      <link rel="stylesheet" media="screen" href="../css/header.css"
+         type="text/css" title="Plato" />
+      <link rel="stylesheet" href="../css/menu.css" type="text/css" />
+      <link rel="stylesheet" media="screen" href="../css/footer.css"
+         type="text/css" title="Plato" />
+      <link rel="stylesheet" media="print" href="../css/print.css"
+         type="text/css" />
+      <link rel="stylesheet" href="../css/content-treetable.css"
+         type="text/css" />
+      <link rel="stylesheet" href="../css/content-slider.css"
+         type="text/css" />
+      <ui:insert name="scripts"></ui:insert>
+      <script type="text/javascript">
+
+  function getChangedflagInput() {
+      var changedflag = null;
+      // tr:forms and h:forms handle their child components in different ways
+      if (document.mainform != null) {
+          changedflag = document.mainform.changedflag;
+      }
+      if (changedflag == null) {
+          changedflag = document.getElementById('mainform:changedflag');
+      }
+      return changedflag;
+  }
+  function mayExit_noClick() {
+      var changedflag = getChangedflagInput();
+      if (changedflag != null) {
+         if ((changedflag.value != null) &amp;&amp; (changedflag.value != '')) {
+             // there are some changes, stay
+             alert('There are unsaved changes, please save or discard the changes first.');
+             return false
+         }
+      }
+      return true
+  }
+  function mayExit(target) {
+      var changedflag = getChangedflagInput();
+      if (changedflag != null) {
+         if ((changedflag.value != null) &amp;&amp; (changedflag.value != '')) {
+             // there are some changes, stay
+             alert('There are unsaved changes, please save or discard the changes first.');
+             return false
+         }
+      }
+      var button = document.getElementById('menuform:' + target + 'Button');
+      button.click();
+      return true
+
+  }
+  function changed() {
+      var changedflag = getChangedflagInput();
+
+      if (changedflag != null)
+         changedflag.value="T";
+      // in some places changed() is called before other funtions, make sure they are called too
+      return true;
+  }
+  // checks if the given input has a value set.
+  // result: true .. found an error: input is missing, or the input has no value
+  function setErrorStyle(input)
+  {
+    if (input == null) {
+       return true;
+    }
+    if (input.value != null &amp;&amp; (input.value !='')) {
+       input.parentNode.setAttribute('class', '');
+       return false;
+    } else {
+       input.parentNode.setAttribute('class', 'errors');
+       return true;
+    }
+  }
+  </script>
+   </head>
+   <body id="top">
+      <div id="header">
+         <a href="/plato" title="home">
+            <img src="../img/polarbear.gif" id="polarbear"
+               alt="Vienna University of Technology" height="100"
+               width="150" />
+         </a>
+         <h1>
+            <b>Plato 3</b>
+         </h1> 
+         
+         <img src="../img/plato_right.jpg" id="planetsLogo"
+            alt="Information &amp; Software Engineering Group"
+            height="100" width="150" />
+         <a4j:region id="sessionRegion">
+         <!-- Contact server every 20 sec. to keep the session alive
+              -other aj4-ppr requests should use the same eventQueue (pprQueue)
+         -->
+         <h:form id="sessionForm">
+            <a4j:poll id="keepAlive" interval="300000" enabled="#{sessionManager != null}"
+               reRender="keepAlive" limitToList="true" eventsQueue="pprQueue" actionListener="#{sessionManager.keepAlive}"/>
+<!-- Could be used to display the polling action, maybe spinning the planetsLogo above? -->
+            <a4j:status id="keepAliveStatus">
+                <f:facet name="start">
+                    <h:graphicImage value="/img/spinner.gif" />
+                </f:facet>
+                <f:facet name="stop"> </f:facet>
+            </a4j:status>
+         </h:form>
+         </a4j:region>
+         
+         
+         <h3><em>The PLANETS Preservation Planning Tool</em></h3>
+         
+         <h:form id="auth">
+         	<h:outputText value="#{selectedPlan.planProperties.name}" />
+         	<h:commandLink id="logoutUser" rendered="#{user != null}" 
+         	   action="#{sessionManager.logout}" value="[logout #{user.firstName}]" 
+         	   onclick="return mayExit_noClick();"/>
+         	   
+            <a href="../project/feedback.seam"
+               onclick="return mayExit_noClick();" 
+               title="Feedback form">
+               [feedback]
+            </a>
+            <a href="../help/workflow.html" target="_blank"
+               title="help">
+               [help]
+            </a>
+         </h:form>
+         
+      </div>
+      <div id="menu">
+         <h:form id="menuform">
+		    <a4j:commandButton id="logoutUserButton"
+               action="#{sessionManager.logout}"
+               eventsQueue="ajaxQ" ignoreDupResponses="true"
+               style="display:none" />
+            <h:commandButton id="listMyProjectsButton"
+               action="#{loadPlan.listMyProjects}"
+               style="display:none" />
+            <h:commandButton id="listPublicProjectsButton"
+               action="#{loadPlan.listPublicProjects}"
+               style="display:none" />
+ 			<h:commandButton id="listAllProjectsButton"
+               action="#{loadPlan.listAllProjects}"
+               style="display:none" />               
+            <h:commandButton id="projectSettingsButton"
+               action="#{projectSettings.enter}" style="display:none" />
+            <h:commandButton id="exportProjectButton"
+               action="#{xml.export}" style="display:none" />
+            <h:commandButton id="closeProjectButton"
+               action="#{loadPlan.closeProject}"
+               style="display:none" />
+            <h:commandButton id="newProjectButton"
+               action="#{newProject.createProject}"
+               style="display:none" />
+            <h:commandButton id="defineBasisButton"
+               action="#{defineBasis.enter}" style="display:none" />
+            <h:commandButton id="defineSampleRecordsButton"
+               action="#{defineSampleRecords.enter}"
+               style="display:none" />
+            <h:commandButton id="identifyRequirementsButton"
+               action="#{identifyRequirements.enter}"
+               style="display:none" />
+            <h:commandButton id="defineAlternativesButton"
+               action="#{defineAlternatives.enter}"
+               style="display:none" />
+            <h:commandButton id="gonogoButton" action="#{gonogo.enter}"
+               style="display:none" />
+            <h:commandButton id="devexperimentsButton"
+               action="#{devexperiments.enter}" style="display:none" />
+            <h:commandButton id="runexperimentsButton"
+               action="#{runexperiments.enter}" style="display:none" />
+            <h:commandButton id="evalexperimentsButton"
+               action="#{evalexperiments.enter}" style="display:none" />
+            <h:commandButton id="transformButton"
+               action="#{transform.enter}" style="display:none" />
+            <h:commandButton id="importanceFactorsButton"
+               action="#{importanceFactors.enter}" style="display:none" />
+            <h:commandButton id="analyseResultsButton"
+               action="#{analyseResults.enter}" style="display:none" />
+            <h:commandButton id="createExecutablePlanButton"
+               action="#{createExecutablePlan.enter}" style="display:none" />
+            <h:commandButton id="definePlanButton"
+               action="#{definePlan.enter}" style="display:none" />
+            <h:commandButton id="validatePlanButton"
+               action="#{validatePlan.enter}" style="display:none" />
+               
+			<h:commandButton id="ftRequirementsButton"
+               action="#{FTrequirements.enter}" style="display:none" />	               
+			<h:commandButton id="ftEvaluateButton"
+               action="#{FTevaluate.enter}" style="display:none" />	               
+			<h:commandButton id="ftAnalyseButton"
+               action="#{FTanalyse.enter}" style="display:none" />	               
+               
+            <rich:toolBar itemSeparator="line">
+               <rich:toolBarGroup rendered="#{user != null}">
+                  <rich:dropDownMenu value="Plan">
+                     <rich:menuItem submitMode="none" id="listMyProjects"
+                        value="List my plans" rendered="#{selectedPlan == null}"
+                        onclick="mayExit('listMyProjects')">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/text-x-generic.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                      <rich:menuItem submitMode="none" id="listPublicProjects"
+                        value="List public plans" rendered="#{selectedPlan == null}"
+                        onclick="mayExit('listPublicProjects')">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/text-x-generic.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                      <rich:menuItem submitMode="none" id="listAllProjects"
+                        value="List all plans" rendered="#{selectedPlan == null and user.admin}"
+                        onclick="mayExit('listAllProjects')">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/text-x-generic.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     
+                     
+                     <rich:menuSeparator id="sep1" />
+                     <rich:menuItem submitMode="none"
+                        value="New plan" rendered="#{selectedPlan == null}"
+                        onclick="mayExit('newProject')"
+                        id="newProject">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/document-new.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuSeparator id="sep2" />
+                     <rich:menuItem submitMode="none"
+                        value="Plan settings"
+                        onclick="mayExit('projectSettings')"
+                        rendered="#{selectedPlan != null and selectedPlan.state.value > 0}"
+                        id="projectSettings">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/applications-system.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Export plan"
+                        onclick="mayExit('exportProject')"
+                        rendered="#{selectedPlan != null and selectedPlan.state.value > 0}"
+                        id="exportProject">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/mail-send-receive.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none" id="closeProject"
+                        value="Close plan"
+                        onclick="mayExit('closeProject')"
+                        rendered="#{selectedPlan != null}">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/system-log-out.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     
+                  </rich:dropDownMenu>
+               </rich:toolBarGroup>
+               
+               <rich:toolBarGroup itemSeparator="grid"
+                  rendered="#{selectedPlan != null and user != null and selectedPlan.fastTrackEvaluationPlan}">
+                  <rich:dropDownMenu value="Fast-track Evaluation">
+                     <rich:menuItem submitMode="none"
+                        value="Define Requirements FT"
+                        onclick="mayExit('ftRequirements')"
+                        id="FTrequirements">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/document-properties.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                      <rich:menuItem submitMode="none"
+                        value="Evaluate alternatives FT"
+                        onclick="mayExit('ftEvaluate')"
+                        id="FTevaluate">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/media-playback-start.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                      <rich:menuItem submitMode="none"
+                        value="Analyse results FT"
+                        onclick="mayExit('ftAnalyse')"
+                        id="FTanalyse">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/checkmark.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     
+                  </rich:dropDownMenu>
+				</rich:toolBarGroup>
+               
+				      
+               <!-- This toolbar group is only visible if a preservation project is loaded -->
+               <rich:toolBarGroup itemSeparator="grid"
+                  rendered="#{selectedPlan != null and user != null and not selectedPlan.approved and not selectedPlan.fastTrackEvaluationPlan}">
+                  <rich:dropDownMenu value="Define Requirements">
+                     <rich:menuItem submitMode="none"
+                        value="Define Basis"
+                        onclick="mayExit('defineBasis')"
+                        id="defineBasis">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/document-properties.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Define Sample Records"
+                        onclick="mayExit('defineSampleRecords')"
+                        id="defineSampleRecords">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/document-properties.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Identify Requirements"
+                        onclick="mayExit('identifyRequirements')"
+                        id="identifyRequirements">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/tree.png" width="16" height="16"/>
+                        </f:facet>
+                     </rich:menuItem>
+                  </rich:dropDownMenu>
+                  <rich:dropDownMenu value="Evaluate Alternatives">
+                     <rich:menuItem submitMode="none"
+                        value="Define Alternatives"
+                        onclick="mayExit('defineAlternatives')"
+                        id="defineAlternatives">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/document-properties.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none" value="Go/No-Go"
+                        onclick="mayExit('gonogo')"
+                        id="gonogo">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/checkmark.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Develop Experiments"
+                        onclick="mayExit('devexperiments')"
+                        id="developExperiments">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/document-properties.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Run Experiments"
+                        onclick="mayExit('runexperiments')"
+                        id="runExperiments">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/media-playback-start.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Evaluate Experiments"
+                        onclick="mayExit('evalexperiments')"
+                        id="evalExperiments">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/tree.png" width="16" height="16"/> 
+                        </f:facet>
+                     </rich:menuItem>
+                  </rich:dropDownMenu>
+                  <rich:dropDownMenu value="Analyse Results">
+                     <rich:menuItem submitMode="none"
+                        value="Transform Measured Values"
+                        onclick="mayExit('transform')"
+                        id="transformMeasuredValues">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/tree.png" width="16" height="16"/>
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Set Importance Factors"
+                        onclick="mayExit('importanceFactors')"
+                        id="setImportanceFactors">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/tree.png" width="16" height="16" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Analyse Results"
+                        onclick="mayExit('analyseResults')"
+                        id="analyseResults">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/checkmark.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                  </rich:dropDownMenu>
+                  <rich:dropDownMenu value="Build Preservation Plan">
+                     <rich:menuItem submitMode="none"
+                        value="Create Executable Plan"
+                        onclick="mayExit('createExecutablePlan')"
+                        id="createExecutablePlan">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/document-properties.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Define Preservation Plan"
+                        onclick="mayExit('definePlan')"
+                        id="definePlan">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/small/document-properties.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                     <rich:menuItem submitMode="none"
+                        value="Validate Preservation Plan"
+                        onclick="mayExit('validatePlan')"
+                        id="validatePlan">
+                        <f:facet name="icon">
+                           <h:graphicImage
+                              value="../img/icons/checkmark.png" />
+                        </f:facet>
+                     </rich:menuItem>
+                  </rich:dropDownMenu>
+               </rich:toolBarGroup>
+               <!-- The toolbargroup renders the outputText and the image in different <td>s! -->
+               <rich:toolBarGroup location="right"
+                  rendered="#{selectedPlan != null and selectedPlan.state.value > 0}">
+                  <h:graphicImage
+                     value="../img/projectstate/#{selectedPlan.state.value}.png"
+                     alt="Statusbar indicating project state #{selectedPlan.stateName}"
+                     title="Current Project State: #{selectedPlan.stateName}" />
+               </rich:toolBarGroup>
+            </rich:toolBar>
+         </h:form>
+       </div>      
+      <c:set var="existInfoMessages" value="no" />
+      <c:set var="existErrorMessages" value="no" />
+      <c:forEach items="#{facesMessages.currentGlobalMessages}" var="m"
+         varStatus="i">
+         <c:choose>
+            <c:when test="#{m.severity.ordinal &lt; 2}">
+               <c:set var="existInfoMessages" value="yes" />
+            </c:when>
+            <c:when test="#{m.severity.ordinal &gt; 1}">
+               <c:set var="existErrorMessages" value="yes" />
+            </c:when>
+         </c:choose>
+      </c:forEach>
+      <ui:fragment
+         rendered="#{not empty facesMessages.currentGlobalMessages}">
+         <c:if test="#{existInfoMessages == 'yes'}">
+            <div class="messageBox infoMessage">
+               <ui:repeat var="message"
+                  value="#{facesMessages.currentGlobalMessages}">
+                  <ui:fragment rendered="#{message.severity.ordinal &lt; 2}">
+	                  		<s:div rendered="#{(message.summary != message.detail) and (not empty(message.detail))}">
+		                  		<a onclick="#{rich:component('detailedMsgPanel')}.show()" href="template.xhtml#">
+		                  			<h:outputText value="#{message.summary}" escape="false"/>
+		                  		</a>
+								<rich:modalPanel id="detailedMsgPanel"  >
+									<f:facet name="header">
+										<h:outputText value="Detailed information"/>
+									</f:facet>
+							        <f:facet name="controls">
+		 				                <h:graphicImage width="16" height="16"
+		 				                	onclick="#{rich:component('detailedMsgPanel')}.hide()"
+		 				                	value="../img/icons/big/cancel.png" />
+							        </f:facet>
+							        <b><h:outputText value="#{message.summary}"/></b>
+							        <br/>
+							        <h:outputText value="#{message.detail}" escape="false"/>
+							    </rich:modalPanel>
+							 </s:div>
+	                  		<s:div rendered="#{(message.summary == message.detail) or (empty(message.detail))}">
+	                  			<h:outputText value="#{message.summary}"/>
+	                  		</s:div>
+                  	</ui:fragment>
+               </ui:repeat>
+            </div>
+         </c:if>
+         <c:if test="#{existErrorMessages == 'yes'}">
+            <div class="messageBox errorMessage">
+               <ui:repeat var="message"
+                  value="#{facesMessages.currentGlobalMessages}">
+                  <ui:fragment rendered="#{message.severity.ordinal &gt; 1}">
+	                  		<s:div rendered="#{(message.summary != message.detail) and (not empty(message.detail))}">
+		                  		<a onclick="#{rich:component('detailedMsgPanel')}.show()" href="template.xhtml#">
+		                  			<h:outputText value="#{message.summary}" escape="false"/>
+		                  		</a>
+								<rich:modalPanel id="detailedMsgPanel"  >
+									<f:facet name="header">
+										<h:outputText value="Detailed information"/>
+									</f:facet>
+							        <f:facet name="controls">
+		 				                <h:graphicImage width="16" height="16"
+		 				                	onclick="#{rich:component('detailedMsgPanel')}.hide()"
+		 				                	value="../img/icons/big/cancel.png" />
+							        </f:facet>
+							        <b><h:outputText value="#{message.summary}"/></b>
+							        <br/>
+							        <h:outputText value="#{message.detail}" escape="false"/>
+							    </rich:modalPanel>
+							 </s:div>
+	                  		<s:div rendered="#{(message.summary == message.detail) or (empty(message.detail))}">
+	                  			<h:outputText value="#{message.summary}"/>
+	                  		</s:div>
+                  </ui:fragment>
+               </ui:repeat>
+            </div>
+         </c:if>
+      </ui:fragment>
+      <!-- Here we only display global messages, i.e. messages that are not associated with a component. -->
+      <s:div id="content">
+         <ui:insert name="content">Default Content</ui:insert>
+      </s:div>
+      <div id="footer">
+            Release 3.0 - Institute of Software Technology and Interactive Systems: &#171;
+            <a
+               href="mailto:plato@ifs.tuwien.ac.at?subject=[Planets-Plato:]">
+               off-ice bears
+            </a>
+            &#187;
+         <h:form>
+            <ui:insert name="controls"></ui:insert>
+            <a class="toplink" href="template.xhtml#top" title="top" alt="top">
+               <img src="../img/icons/small/go-top.png" border="0" />
+            </a>
+         </h:form>
+      </div>
+   </body>
+</html>

@@ -48,9 +48,9 @@
         take effect (i.e. order is important!).
     -->
 
-    <exception class="javax.ejb.EJBNoSuchObjectException">
-        <redirect view-id="/sessiontimedout.xhtml"></redirect>
-    </exception>
+    <!--<exception class="javax.ejb.EJBNoSuchObjectException">-->
+        <!--<redirect view-id="/sessiontimedout.xhtml"></redirect>-->
+    <!--</exception>-->
 
     <!-- In most cases this exception occurs when the session has timed out.
         

@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:f="http://java.sun.com/jsf/core">
+   
+	<tr>
+		<td class="margin-top-small margin-bottom-small margin-left-small margin-right-small">
+		<div class="nonwrapped">
+		<h:outputText value="#{threshold}" /> 
+		<h:outputText rendered="#{unit != null}" value=" #{unit}" />
+		</div>
+		</td>
+		<td class="margin-top-small margin-bottom-small margin-left-small margin-right-small nowrap">
+		<h:outputText value="-> #{index}" /></td>
+	</tr>
+   
+</ui:composition>

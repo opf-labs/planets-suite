@@ -29,10 +29,6 @@ import javax.persistence.Query;
 import javax.rmi.PortableRemoteObject;
 import javax.security.auth.Subject;
 
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
-
 import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
 import eu.planets_project.ifr.core.security.api.model.Role;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -55,9 +51,6 @@ import eu.planets_project.ifr.core.security.impl.model.UserImpl;
 @Stateless(mappedName="security/LocalUserManager")
 @Local(UserManager.class)
 @Remote(UserManager.class)
-@LocalBinding(jndiBinding="planets-project.eu/UserManager/local")
-@RemoteBinding(jndiBinding="planets-project.eu/UserManager/remote")
-@SecurityDomain("PlanetsRealm")
 public class UserManagerImpl implements UserManager {
 	private static Logger log = Logger.getLogger(UserManagerImpl.class.getName());
 

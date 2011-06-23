@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:p="http://planets-project.eu/taglibs/plato"  
+   template="../template.xhtml">
+   <ui:define name="title">PLANETS Preservation Planning Tool - Define Preservation Plan</ui:define>
+   <ui:define name="scripts"></ui:define>
+   <ui:define name="content">
+      <div id="content">
+      
+            <p id="welcome">
+            <b>Welcome to the Home screen of Plato.</b> You can always reach this screen by clicking on the polar bear in the upper left.
+            </p>
+
+         <h:form id="mainform">
+			<s:div styleClass="margin-bottom-big" rendered="#{microsoft}">
+				<div id="mswarning" class="margin-top-big margin-bottom-big" style="border-top:none;background-color: #C6E2FF;">
+				<h2>Browser compatibility</h2>
+				</div>
+				<p>
+				<img src="../img/icons/big/emblem-important.png"/>
+				Dear user, we have tested Plato as thoroughly as possible with all leading browsers.<br/>
+				Please notice that we have experienced some layout problems with Internet Explorer that we are unable to fix.
+				<b>It is possible to use Plato with Internet Explorer, but the layout is not rendered entirely correctly on some pages.</b> (You might have noticed already that the top menu bar looks too big.) 
+				On some versions, some functions might not work correctly, but in our tests the <b>functionality is correct</b>.
+				We still recommend using any other major browser, such as Firefox, Opera, Safari, Google Chrome, or Konqueror, for accessing Plato.<br/>
+				More information can be found on the <a href="/plato/website/intro_browser.html" target="_blank">browser compatibility page</a>.
+				<br/><br/>
+				If you do not have the option of using another browser, you can hide this notification here: <br/>
+				<h:commandButton action="#{sessionManager.acceptMicrosoft}" value="I want to continue using Plato with IE." />
+				</p>
+			</s:div>
+		
+		
+			<s:div styleClass="margin-bottom-big" rendered="#{!empty allmessages.news}">
+				<div id="menu" class="margin-top-big margin-bottom-big">
+				<h2>News:</h2>
+				</div>
+				<h:dataTable value="#{allmessages.news}" var="news"
+					columnClasses="margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xxl, margin-top-small margin-bottom-small margin-left-big margin-right-big border, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-l, margin-top-small margin-bottom-small margin-left-big margin-right-big border size-xs"
+					headerClass="margin-left-big margin-right-big border nowrap"
+					rowClasses="border" styleClass="size-max">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Timestamp" />
+						</f:facet>
+						<h:outputText value="#{news.timestamp}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Author" />
+						</f:facet>
+						<h:outputText value="#{news.author}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="News" />
+						</f:facet>
+						<h:outputText value="#{news.news}" />
+					</h:column>
+
+				</h:dataTable>
+			</s:div>
+			
+	
+	<div style="float:left;width:33%;min-width:200px">
+			
+			<div id="menu" class="margin-top-big margin-bottom-big" style="border-top:none;background-color: #C6E2FF;">
+			<h2>Actions</h2>
+			</div>
+			
+			
+		<div class="home-item">
+			<h:commandLink action="#{loadPlan.listMyProjects}">
+				<div align="center">
+					<img src="../img/large/editor.png" width="80px" height="80px"/>
+				</div>
+				<p align="center">List my <br/>preservation plans</p>
+			</h:commandLink>
+		</div>			
+				
+		<div class="home-item">
+			<h:commandLink action="#{loadPlan.listPublicProjects}">
+				<div align="center">
+					<img src="../img/large/public.png" width="80px" height="80px"/><br/>
+				</div>
+				<p align="center">List public <br/>preservation plans</p>
+			</h:commandLink>
+		</div>			
+		
+		<s:div rendered="#{user.admin}" styleClass="home-item">
+			<h:commandLink action="#{loadPlan.listAllProjects}">
+				<div align="center">
+					<img src="../img/large/public.png" width="80px" height="80px"/><br/>
+				</div>
+				<p align="center">List all <br/>preservation plans</p>
+			</h:commandLink>
+		</s:div>			
+		
+		
+		<div class="home-item">
+			<h:commandLink action="#{newProject.createProject}">
+					<div align="center">
+					 <img src="../img/large/new.png" width="80px" height="80px"/>
+					 </div>
+					 <p align="center">New plan</p>
+				</h:commandLink>
+		</div>			
+		<div class="home-item">
+		<a href="../user/organisationalpolicies.seam">
+				<div align="center">
+					<img src="../img/large/preferences.png" width="80px" height="80px"/><br/>
+				</div>
+				<p align="center">Define policy</p>
+				</a>
+		</div>
+		<div class="home-item">
+			<div align="center">
+				<a href="http://www.ifs.tuwien.ac.at/dp/plato/intro_documentation.html" target="_blank">
+				<img src="../img/large/help.png" width="80px" height="80px"/>
+				<br/><br/>Documentation
+				</a>
+			</div>
+		</div>		
+		
+		<div class="home-item">
+			<h:commandLink action="#{loadPlan.listFTEProjects}">
+					<div align="center">
+					 <img src="../img/large/fte.png" width="80px" height="80px"/>
+					 </div>
+					 <p align="center">List my fast track results</p>
+				</h:commandLink>
+		</div>
+		
+		<div class="home-item">
+			<h:commandLink action="#{loadPlan.listPublicFTEResults}">
+					<div align="center">
+					 <img src="../img/large/publicfte.png" width="80px" height="80px"/>
+					 </div>
+					 <p align="center">List public fast track results</p>
+				</h:commandLink>
+		</div>
+		
+		<div class="home-item">
+			<h:commandLink action="#{newProject.createFTE}">
+					<div align="center">
+					 <img src="../img/large/new-fasttrack.png" width="80px" height="80px"/>
+					 </div>
+					 <p align="center">New fast track evaluation</p>
+				</h:commandLink>
+		</div>			
+					
+			
+	</div>
+	<div style="float:right;width:66%;">
+		<div id="menu" class="margin-top-big margin-bottom-big" style="border-top:none;background-color: #C6E2FF;">
+			<h2>Information</h2>
+		</div>
+		<p><b>How to start?</b><br/>If you are unsure to how to get started, we recommend to do the following:</p>
+		<ol>
+		<li>Take a look at the definition of the preservation plan at the documentation page,</li>
+		<li>Read through the description of the preservation planning procedure (below), and then</li>
+		<li>Create a <em>demo plan</em> in the list of plans, and walk through the steps to familiarise yourself with
+		the procedure and tool.</li>
+		<li>If you have any questions, comments, or ideas, please <a href="../project/feedback.seam" title="Feedback form">
+		let us know!</a></li>
+		</ol>
+		<p>Below you find an abstracted diagram of the principal structure of the Planets preservation planning environment.<br/>
+		</p>
+		<div style="float:left;width:45%;text-align:justify;padding-right:10px;">
+		The planning procedure is completely supported by Plato, relying on a variety of information sources and services.<br/>
+		When you load a plan, you will find four menu items on the top which correspond to the four planning phases:
+			<ol>
+			<li>Define requirements,</li>
+			<li>Evaluate alternatives,</li>
+			<li>Analyse results, and</li>
+			<li>Define preservation plan.</li>
+			</ol>
+		</div>
+		<div style="float:right;width:45%;align:center">
+			<a href="/plato/help/workflow.html" target="_blank">
+			<img src="/plato/help/pp-overview.png"/>
+			<br/>More about the planning workflow
+			</a>
+		</div>
+	</div>
+    </h:form>
+   </div>
+   </ui:define>
+</ui:composition>

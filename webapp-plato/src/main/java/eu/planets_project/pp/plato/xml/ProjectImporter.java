@@ -49,7 +49,6 @@ import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.NodeCreateRule;
 import org.apache.commons.logging.Log;
 import org.dom4j.io.XMLWriter;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
@@ -135,7 +134,6 @@ import eu.planets_project.pp.plato.xml.plato.TriggerFactory;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("projectImport")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class ProjectImporter implements IProjectImport, Serializable {
 
     /**

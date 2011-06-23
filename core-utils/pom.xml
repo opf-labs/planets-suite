@@ -50,5 +50,17 @@
 			<groupId>ch.enterag.utils</groupId>
 			<artifactId>zip64</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+        	<groupId>javax.mail</groupId>
+        	<artifactId>mail</artifactId>
+        	<version>1.4.1</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
 	</dependencies>
 </project>

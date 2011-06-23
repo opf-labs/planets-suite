@@ -19,7 +19,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;
@@ -31,7 +30,6 @@ import eu.planets_project.pp.plato.util.PlatoLogger;
 @Stateful
 @Scope(ScopeType.APPLICATION)
 @Name("utilAction")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class UtilAction implements Serializable, IUtilAction {
 
     private static final long serialVersionUID = -2323932267631251076L;

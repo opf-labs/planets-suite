@@ -15,7 +15,6 @@ import java.io.Serializable;
 
 //@Name("uploadBean")
 //@Scope(ScopeType.SESSION)
-//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class UploadBean implements Serializable  {
 
     /**

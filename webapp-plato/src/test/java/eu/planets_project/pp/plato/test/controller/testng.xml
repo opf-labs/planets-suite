@@ -1,0 +1,24 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+
+<suite name="test" verbose="2" parallel="false">
+
+   <test name="Xml Import Export">
+     <classes>
+       <class name="eu.planets_project.pp.plato.test.controller.ProjectExporterImporterUnitTest"/>
+     </classes>
+   </test>
+
+   <test name="Tester">
+     <classes>
+       <class name="eu.planets_project.pp.plato.test.controller.Tester"/>
+     </classes>
+   </test>
+
+  <test name="Tests proofing bugs">
+
+	  <packages>
+		  <package name="eu.planets_project.pp.plato.test.controller.errortests"></package>
+		</packages>
+   </test>
+
+</suite>

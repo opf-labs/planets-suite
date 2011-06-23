@@ -18,7 +18,6 @@ import javax.ejb.Stateful;
 import javax.faces.application.FacesMessage;
 
 import org.apache.commons.logging.Log;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
@@ -69,7 +68,6 @@ import eu.planets_project.pp.plato.validators.TreeValidator;
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("FTevaluate")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class EvaluateAlternativesFastTrack extends AbstractWorkflowStep
         implements IFastTrackEvaluateAlternatives, INodeValidator {
 
@@ -133,7 +131,7 @@ public class EvaluateAlternativesFastTrack extends AbstractWorkflowStep
         //
         // We have to make sure that the value map of our leaves is properly initialized. If not, we have to 
         // call initValues to enable evaluation results to be stored for the requirements. In the 'normal' 
-        // workflow initValues is called in RunExperimentsAction.save, so from there on everything is in order. 
+        // workflow initValues is called in RunExperimentsAcction.save, so from there on everything is in order.
         // In FTE we can't do that
         //
         boolean valueMapProperlyInitialized = 

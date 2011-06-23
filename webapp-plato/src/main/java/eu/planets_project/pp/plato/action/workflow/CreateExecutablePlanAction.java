@@ -27,7 +27,6 @@ import javax.xml.rpc.ServiceException;
 import org.apache.commons.logging.Log;
 import org.jaxen.JaxenException;
 import org.jaxen.jdom.JDOMXPath;
-import org.jboss.annotation.ejb.cache.Cache;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
@@ -51,14 +50,12 @@ import eu.planets_project.pp.plato.model.PlanState;
 import eu.planets_project.pp.plato.services.action.IPreservationActionRegistry;
 import eu.planets_project.pp.plato.services.action.PreservationActionRegistryDefinition;
 import eu.planets_project.pp.plato.services.action.PreservationActionRegistryFactory;
-import eu.planets_project.pp.plato.services.action.minimee.MiniMeeServiceRegistry;
 import eu.planets_project.pp.plato.util.Downloader;
 import eu.planets_project.pp.plato.util.PlatoLogger;
 
 @Stateful
 @Scope(ScopeType.SESSION)
 @Name("createExecutablePlan")
-@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 public class CreateExecutablePlanAction extends AbstractWorkflowStep implements ICreateExecutablePlan {
     
     /**
@@ -119,27 +116,6 @@ public class CreateExecutablePlanAction extends AbstractWorkflowStep implements 
     
     public boolean isEprintsPlanPossible() {
         
-        IPreservationActionRegistry registry = getMiniMeeRegistry();
-        
-        if (registry == null) {
-            return false;
-        }
-        
-        Alternative recommendedAlternative = selectedPlan.getRecommendation().getAlternative();
-        
-        if (recommendedAlternative.getAction() == null) {
-            return false;
-        }
-        
-        if ("MiniMEE-migration".equals(recommendedAlternative.getAction().getActionIdentifier())) {
-
-            String toolIdentifier = getToolIdentifier(registry);
-            
-            if (toolIdentifier != null && !"".equals(toolIdentifier)) {
-                return true;
-            }
-        }
-        
         return false;
     }
     
@@ -153,36 +129,6 @@ public class CreateExecutablePlanAction extends AbstractWorkflowStep implements 
     }
 
     
-    private IPreservationActionRegistry getMiniMeeRegistry() {
-        
-        IPreservationActionRegistry registry = null;
-        
-        List<PreservationActionRegistryDefinition> list = PreservationActionRegistryFactory.getAvailableRegistries();
-        
-        PreservationActionRegistryDefinition minimee = null;
-        for (PreservationActionRegistryDefinition par : list) {
-            if (par.getType().equalsIgnoreCase(MiniMeeServiceRegistry.class.getName())) {
-                minimee = par;
-                break;
-            }
-        }
-        
-        Alternative recommendedAlternative = selectedPlan.getRecommendation().getAlternative();
-        
-        if (minimee != null) {
-            registry = PreservationActionRegistryFactory.getInstance(minimee);
-        }
-        
-        if (registry != null) {
-            try {
-                registry.connect("");
-            } catch (MalformedURLException e) {
-            } catch (ServiceException e) {
-            }
-        }
-        
-        return registry;
-    }
         
     
 
@@ -326,57 +272,6 @@ public class CreateExecutablePlanAction extends AbstractWorkflowStep implements 
       selectedPlan.getExecutablePlanDefinition().setExecutablePlan(byteArray.toString());
     }
     
-    private void generateEprintsExecutablePlan() {
-        
-        IPreservationActionRegistry registry = getMiniMeeRegistry();
-        
-        Alternative recommendedAlternative = selectedPlan.getRecommendation().getAlternative();
-        
-        Element eprintsPlan = new Element("eprintsPlan");
-        
-        Element tool = new Element("tool");
-        
-        eprintsPlan.addContent(tool);
-        
-        String id = getToolIdentifier(registry);
-        
-        Element toolIdentifier = new Element("toolIdentifier").setAttribute("uri", id);
-        
-        tool.addContent(toolIdentifier);
-        
-        String settings = selectedPlan.getRecommendation().getAlternative().getExperiment().getSettings();
-        
-        String toolParameters = registry.getToolParameters(recommendedAlternative.getAction().getUrl());
-        
-        if (settings != null) {
-            toolParameters += (" " + settings);    
-        }
-        
-        // TODO: we shouldn't need that here, this should come from the registry
-        //       at the moment we only have the OUTFILE which is not enough. we anticipate
-        //       that the tool can work with the structure <params> <input file> <output file>
-        // CB: from the minimee experience, you CANNOT always assume that!
-        // e.g. -i IN -o OUT etc.! or even TOOL -param IN > OUT etc.
-        toolParameters += (" " + "%INFILE% %OUTFILE%");
-        
-        Element parameters = new Element("parameters").setAttribute("toolParameters", toolParameters);
-        tool.addContent(parameters);
-        
-        Element targetFormat = new Element("targetFormat").setText(recommendedAlternative.getAction().getTargetFormat());
-        tool.addContent(targetFormat);
-        
-        XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
-        
-        ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-
-        try {
-            outputter.output(eprintsPlan, byteArray);
-        } catch (IOException e) {
-            log.error(e.getMessage(),e);
-        }
-        
-        selectedPlan.getExecutablePlanDefinition().setEprintsExecutablePlan(byteArray.toString());
-    }    
 
     public boolean validate(boolean showValidationErrors) {
 
@@ -417,11 +312,6 @@ public class CreateExecutablePlanAction extends AbstractWorkflowStep implements 
         
         if (executablePlanPossible.isBool() == true) {
             generateExecutablePlan();
-            return;
-        }
-        
-        if (eprintsExecutablePlanPossible.isBool() == true) {
-            generateEprintsExecutablePlan();
             return;
         }
         
