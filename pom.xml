@@ -1,5 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>oss-parent</artifactId>
+		<groupId>org.sonatype.oss</groupId>
+		<version>7</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opf_labs.suite</groupId>
 	<artifactId>parent</artifactId>
@@ -14,12 +19,16 @@
 		</license>
 	</licenses>
 	<scm>
+		<connection>scm:git:git@github.com:openplanets/planets-suite.git</connection>
+		<developerConnection>scm:git:git@github.com:openplanets/planets-suite.git</developerConnection>
 		<url>scm:git:git@github.com:openplanets/planets-suite.git</url>
 	</scm>
 	<organization>
 		<name>Open Planets Foundation</name>
 		<url>http://www.openplanetsfoundation.org/</url>
 	</organization>
+	<description>The PLANETS Project digital preservation toolkit.</description>
+	<url>http://www.openplanetsfoundation.org/</url>
 	<developers>
 		<developer>
 			<id>carl</id>
@@ -133,6 +142,7 @@
 		<module>core-servreg</module>
 		<module>core-wee</module>
 		<module>core-storage</module>
+<!--
 		<module>framework-admin</module>
 		<module>framework-generic</module>
 		<module>framework-selfreg</module>
@@ -153,6 +163,7 @@
 		<module>services-simple</module>
 		<module>framework-wdt</module>
 		<module>webapp-plato</module>
+-->
 	</modules>
 	<repositories>
 		<repository>
