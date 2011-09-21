@@ -94,6 +94,7 @@
 	<modules>
 		<module>core</module>
 		<module>services</module>
+		<module>external-zip64</module>
 	</modules>
 	<!--
 		NOTE that for uploading to work, you need something like this in your

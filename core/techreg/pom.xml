@@ -61,7 +61,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opf-labs.planets</groupId>
-			<artifactId>planets-core-services</artifactId>
+			<artifactId>core-services</artifactId>
 			<version>1.0.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
