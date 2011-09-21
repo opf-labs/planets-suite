@@ -58,23 +58,23 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>planets-suite</groupId>
+			<groupId>org.opf-labs.planets</groupId>
 			<artifactId>core-services</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>1.0.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>planets-suite</groupId>
+			<groupId>org.opf-labs.planets</groupId>
 			<artifactId>core-techreg</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>1.0.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>planets-suite</groupId>
+			<groupId>org.opf-labs.planets</groupId>
 			<artifactId>core-utils</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>1.0.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
