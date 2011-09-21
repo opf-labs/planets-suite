@@ -59,21 +59,21 @@
 		</dependency>
 		<dependency>
 			<groupId>planets-suite</groupId>
-			<artifactId>planets-core-services</artifactId>
+			<artifactId>core-services</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>planets-suite</groupId>
-			<artifactId>planets-core-techreg</artifactId>
+			<artifactId>core-techreg</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>planets-suite</groupId>
-			<artifactId>planets-core-utils</artifactId>
+			<artifactId>core-utils</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
