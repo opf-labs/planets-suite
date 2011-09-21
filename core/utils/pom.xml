@@ -1,13 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>planets-core</artifactId>
-        <groupId>planets-suite</groupId>
-        <version>1.0.1-SNAPSHOT</version>
+        <groupId>org.opf_labs.planets</groupId>
+        <version>1.0.1</version>
     </parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>planets-suite</groupId>
-	<artifactId>planets-core-utils</artifactId>
+	<groupId>org.opf_labs.planets</groupId>
+	<artifactId>core-utils</artifactId>
 	<name>Planets Service Development Utilities</name>
   <build>
   <plugins>
@@ -44,13 +43,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>josso</groupId>
-			<artifactId>josso</artifactId>
-			<version>1.7</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/josso-1.7.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
@@ -72,11 +64,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>zip64</groupId>
-			<artifactId>zip64</artifactId>
-			<version>1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/Zip64File.jar</systemPath>
+			<groupId>net.sourceforge.zip64file</groupId>
+			<artifactId>zip64file</artifactId>
+			<version>1.02</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -121,16 +111,16 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>planets-suite</groupId>
-			<artifactId>planets-core-services</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<groupId>org.opf_labs.planets</groupId>
+			<artifactId>core-services</artifactId>
+			<version>1.0.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>planets-suite</groupId>
-			<artifactId>planets-core-techreg</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<groupId>org.opf_labs.planets</groupId>
+			<artifactId>core-techreg</artifactId>
+			<version>1.0.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

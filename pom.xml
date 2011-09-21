@@ -1,16 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>oss-parent</artifactId>
+		<groupId>org.sonatype.oss</groupId>
+		<version>7</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>planets-suite</groupId>
+	<groupId>org.opf_labs.planets</groupId>
 	<artifactId>planets-suite</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<packaging>pom</packaging>
 	<name>Planets Suite</name>
-	<url>http://planets-suite.sourceforge.net/maven2/site/</url>
+	<description>The PLANETS Project digital preservation toolkit.</description>
+	<url>http://www.openplanetsfoundation.org/</url>
 	<scm>
-		<connection>scm:svn:https://planets-suite.svn.sourceforge.net/svnroot/planets-suite/trunk</connection>
-		<developerConnection>scm:svn:https://planets-suite.svn.sourceforge.net/svnroot/planets-suite/trunk/</developerConnection>
-		<url>http://planets-suite.svn.sourceforge.net/viewvc/planets-suite/trunk</url>
+		<connection>scm:git:git@github.com:openplanets/planets-suite.git</connection>
+		<developerConnection>scm:git:git@github.com:openplanets/planets-suite.git</developerConnection>
+		<url>scm:git:git@github.com:openplanets/planets-suite.git</url>
 	</scm>
 	<licenses>
 		<license>
@@ -19,6 +24,10 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<organization>
+		<name>Open Planets Foundation</name>
+		<url>http://www.openplanetsfoundation.org/</url>
+	</organization>
 	<build>
 		<resources>
 		</resources>
@@ -76,42 +85,8 @@
 	<modules>
 		<module>core</module>
 		<module>services</module>
+                <module>external-zip64</module>
 	</modules>
-	<repositories>
-        <repository>
-            <id>jboss-public-repository-group</id>
-            <name>JBoss Public Maven Repository Group</name>
-            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-          </repository>
-          <repository>
-                   <id>maven2-repository.dev.java.net</id>
-                          <name>Java.net Repository for Maven 2</name>
-                                 <url>http://download.java.net/maven/2/</url>
-                                      </repository>
-        <repository>
-        	<id>planets-suite-repository</id>
-        	<name>The Planets Suite Maven Repository, hosted by SourceForge.</name>
-        	<url>http://planets-suite.sourceforge.net/maven2/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-         <pluginRepository>
-                <id>maven2-repository.dev.java.net</id>
-                     <url>http://download.java.net/maven/2/</url>
-                        </pluginRepository>
-                         </pluginRepositories>   
 	<!--
 		NOTE that for uploading to work, you need something like this in your
 		.m2/settings.xml <servers> <server>
@@ -150,4 +125,11 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<properties>
+		<jdkLevel>1.5</jdkLevel>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8
+        </project.reporting.outputEncoding>
+	</properties>
+	
 </project>
