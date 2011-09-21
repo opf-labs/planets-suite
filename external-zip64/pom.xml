@@ -3,13 +3,30 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sourceforge.zip64file</groupId>
 	<artifactId>zip64file</artifactId>
-	<name>External - Zip64File</name>
+	<name>Zip64File</name>
 	<description>Zip64File is a JAVA library which implements the 64-bit extension of the ZIP standard from PKWARE (http://www.pkware.com/documents/casestudies/APPNOTE.TXT) using random-access, permitting to access archives larger than 4 GB with more than 65 K files.</description>
 	<version>1.02</version>
 	<url>http://sourceforge.net/projects/zip64file/</url>
 	<scm>
 		<connection>scm:svn:https://zip64file.svn.sourceforge.net/svnroot/zip64file zip64file</connection>
+		<url>https://zip64file.svn.sourceforge.net/svnroot/zip64file</url>
 	</scm>
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL)</name>
+			<url>http://www.gnu.org/copyleft/gpl.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>hartwigthomas</id>
+			<name>Hartwig Thomas</name>
+			<email>hartwig.thomas@enterag.ch</email>
+			<organization>Enter AG, Zurich, Switzerland</organization>
+			<organizationUrl>http://sourceforge.net/users/hartwigthomas</organizationUrl>
+		</developer>
+	</developers>
 	<build>
         <sourceDirectory>target/generated-sources/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>

@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>planets-core</artifactId>
-        <groupId>org.opf_labs.planets</groupId>
+        <groupId>org.opf-labs.planets</groupId>
         <version>1.0.1</version>
     </parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.opf_labs.planets</groupId>
+	<groupId>org.opf-labs.planets</groupId>
 	<artifactId>core-utils</artifactId>
 	<name>Planets Service Development Utilities</name>
   <build>
@@ -64,11 +64,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.sourceforge.zip64file</groupId>
-			<artifactId>zip64file</artifactId>
-			<version>1.02</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.1</version>
@@ -111,16 +106,23 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.opf_labs.planets</groupId>
+			<groupId>org.opf-labs.planets</groupId>
 			<artifactId>core-services</artifactId>
 			<version>1.0.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.opf_labs.planets</groupId>
+			<groupId>org.opf-labs.planets</groupId>
 			<artifactId>core-techreg</artifactId>
 			<version>1.0.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.zip64file</groupId>
+			<artifactId>zip64file</artifactId>
+			<version>1.02</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

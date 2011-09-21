@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>planets-core</artifactId>
-		<groupId>org.opf_labs.planets</groupId>
+		<groupId>org.opf-labs.planets</groupId>
 		<version>1.0.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.opf_labs.planets</groupId>
+	<groupId>org.opf-labs.planets</groupId>
 	<artifactId>core-techreg</artifactId>
 	<name>Planets Technical Registry</name>
 	<build>
@@ -60,7 +60,7 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.opf_labs.planets</groupId>
+			<groupId>org.opf-labs.planets</groupId>
 			<artifactId>planets-core-services</artifactId>
 			<version>1.0.1</version>
 			<type>jar</type>

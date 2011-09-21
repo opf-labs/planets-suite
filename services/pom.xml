@@ -1,13 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>planets-suite</artifactId>
-		<groupId>org.opf_labs.planets</groupId>
+		<groupId>org.opf-labs.planets</groupId>
 		<version>1.0.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-  <groupId>org.opf_labs.planets</groupId>
+  <groupId>org.opf-labs.planets</groupId>
   <artifactId>planets-services</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Planets Preservation Services</name>
   <modules>

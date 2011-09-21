@@ -5,7 +5,7 @@
 		<version>7</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.opf_labs.planets</groupId>
+	<groupId>org.opf-labs.planets</groupId>
 	<artifactId>planets-suite</artifactId>
 	<version>1.0.1</version>
 	<packaging>pom</packaging>
@@ -24,6 +24,15 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<developers>
+		<developer>
+			<id>anj</id>
+			<name>Andy Jackson</name>
+			<email>Andrew.Jackson@bl.uk</email>
+			<organization>The British Library</organization>
+			<organizationUrl>http://www.bl.uk</organizationUrl>
+		</developer>
+	</developers>
 	<organization>
 		<name>Open Planets Foundation</name>
 		<url>http://www.openplanetsfoundation.org/</url>
@@ -85,7 +94,6 @@
 	<modules>
 		<module>core</module>
 		<module>services</module>
-                <module>external-zip64</module>
 	</modules>
 	<!--
 		NOTE that for uploading to work, you need something like this in your
@@ -98,6 +106,7 @@
 		maven deploy
 	-->
 	<distributionManagement>
+<!--
 		<site>
 			<id>planets-suite.sourceforge.net</id>
 			<url>sftp://web.sourceforge.net/home/groups/p/pl/planets-suite/htdocs/maven2/site</url>
@@ -112,6 +121,7 @@
 			<name>planets-suite maven 2 repository at sourceforge</name>
 			<url>sftp://web.sourceforge.net/home/groups/p/pl/planets-suite/htdocs/maven2/snapshots</url>
 		</snapshotRepository>
+-->
 	</distributionManagement>
 	<reporting>
 		<plugins>
