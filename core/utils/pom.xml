@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opf-labs.planets</groupId>
 	<artifactId>core-utils</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>Planets Service Development Utilities</name>
   <build>
   <plugins>
