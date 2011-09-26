@@ -2,12 +2,12 @@
     <parent>
         <artifactId>planets-core</artifactId>
         <groupId>org.opf-labs.planets</groupId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opf-labs.planets</groupId>
 	<artifactId>core-utils</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>Planets Service Development Utilities</name>
   <build>
   <plugins>
@@ -109,14 +109,14 @@
 		<dependency>
 			<groupId>org.opf-labs.planets</groupId>
 			<artifactId>core-services</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.opf-labs.planets</groupId>
 			<artifactId>core-techreg</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opf-labs.planets</groupId>
 	<artifactId>planets-suite</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Planets Suite</name>
 	<description>The PLANETS Project digital preservation toolkit.</description>
