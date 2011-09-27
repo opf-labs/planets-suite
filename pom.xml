@@ -6,8 +6,8 @@
 		<version>7</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.opf_labs.suite</groupId>
-	<artifactId>parent</artifactId>
+	<groupId>org.opf-labs.planets</groupId>
+	<artifactId>planets-suite</artifactId>
 	<version>1.1.0</version>
 	<packaging>pom</packaging>
 	<name>Planets Suite - Parent</name>
@@ -34,6 +34,13 @@
 			<id>carl</id>
 			<name>Carl Wilson</name>
 			<email>carl.wilson@bl.uk</email>
+			<organization>The British Library</organization>
+			<organizationUrl>http://www.bl.uk</organizationUrl>
+		</developer>
+		<developer>
+			<id>anj</id>
+			<name>Andy Jackson</name>
+			<email>Andrew.Jackson@bl.uk</email>
 			<organization>The British Library</organization>
 			<organizationUrl>http://www.bl.uk</organizationUrl>
 		</developer>
