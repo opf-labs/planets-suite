@@ -194,7 +194,7 @@
 				<site>
 					<id>opf.jenkins.local.site</id>
 					<name>OPF Projects Website</name>
-					<url>file:///var/www/projects/opf/project-healthcheck</url>
+					<url>file:///var/www/projects/opf/planets-suite</url>
 				</site>
 			</distributionManagement>
 		</profile>
