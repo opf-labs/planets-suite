@@ -11,11 +11,11 @@
 	<packaging>pom</packaging>
 	<name>Planets Suite</name>
 	<description>The PLANETS Project digital preservation toolkit.</description>
-	<url>http://www.openplanetsfoundation.org/</url>
+	<url>http://www.openpreservation.org/</url>
 	<scm>
-		<connection>scm:git:git@github.com:openplanets/planets-suite.git</connection>
-		<developerConnection>scm:git:git@github.com:openplanets/planets-suite.git</developerConnection>
-		<url>scm:git:git@github.com:openplanets/planets-suite.git</url>
+		<connection>scm:git:git@github.com:openpreserve/planets-suite.git</connection>
+		<developerConnection>scm:git:git@github.com:openpreserve/planets-suite.git</developerConnection>
+		<url>scm:git:git@github.com:openpreserve/planets-suite.git</url>
 	</scm>
 	<licenses>
 		<license>
@@ -194,7 +194,7 @@
 				<site>
 					<id>opf.jenkins.local.site</id>
 					<name>OPF Projects Website</name>
-					<url>file:///var/www/projects/opf/planets-suite</url>
+					<url>file:///var/www/projects.opf-labs.org/opf/planets-suite</url>
 				</site>
 			</distributionManagement>
 		</profile>
