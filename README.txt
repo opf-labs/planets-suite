@@ -3,6 +3,10 @@ Planets Suite Project
 
 Homepage: http://sourceforge.net/projects/planets-suite/
 
+Vulnerability Warning
+---------------------
+Be aware that this project is affected by the [log4j vulnerability](https://www.ncsc.gov.uk/information/log4j-vulnerability-what-everyone-needs-to-know). Please read and understand the issue before deploying or using this project.
+
 Service Development Guidelines
 ------------------------------
 Go to this URL to get full details on developing Planets Services.
